@@ -1077,24 +1077,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
 
-        /*
-        //https://www.tutorialspoint.com/android/android_list_fragment.htm
-        //https://stackoverflow.com/questions/17268110/how-to-setup-the-onclicklistener-for-the-imageview-in-the-listview/17268172#17268172
-        public class onMyClick implements View.OnClickListener {
-
-            private final int pos;
-            public onMyClick(int pos) {
-                this.pos = pos;
-            }
-
-            @Override
-            public void onClick(View v) {
-                //mMyListFragment.imagepos(pos);
-            }
-
-        }
-        */
-
         private ViewHolder createViewHolderFrom(View view) {
 
             TextView NameTextView = view.findViewById(R.id.entryNameTextView);
@@ -1110,4 +1092,3 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 }
-
