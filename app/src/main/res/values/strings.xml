@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Birthday Countdown</string>
+
+    <string name="menu_refresh">Обновить</string>
+    <string name="menu_settings">Типы событий...</string>
+    <string name="menu_search">Фильтр...</string>
+    <string name="menu_exit">Выход</string>
+
+    <string name="msg_no_access">Нет доступа к информации о контактах</string>
+    <string name="msg_no_events">События не найдены</string>
+    <string name="msg_filter">, фильтр:</string>
+    <string name="msg_before_event_prefix">Дней до</string>
+    <string name="msg_before_event_postfix">:</string>
+    <string name="msg_today">Сегодня</string>
+    <string name="msg_tomorrow">Завтра</string>
+    <string name="msg_day_after_tomorrow">Послезавтра</string>
+    <string name="msg_stats_prefix">событий:</string>
+
+    <string name="hint_ContactIcon">Фото</string>
+    <string name="hint_Name">ФИО</string>
+    <string name="hint_Age">Возраст</string>
+    <string name="hint_Date">Дата</string>
+    <string name="hint_EventDistance">До события</string>
+    <string name="hint_Description">Подробности</string>
+    <string name="hint_EventIcon">Иконка</string>
+
+    <string name="title_activity_settings">Типы событий</string>
+    <string name="title_activity_search">Фильтр</string>
+
+    <string name="button_OK">OK</string>
+    <string name="button_Clear">Очистить</string>
+    <string name="button_Cancel">Отмена</string>
+
+    <string name="account_google">com.google</string>
+    <string name="account_skype">com.skype.contacts.sync</string>
+    <string name="account_vk">com.vkontakte.account</string>
+    <string name="account_xiaomi">com.xiaomi</string>
+
+    <string name="event_type_birthday">День рождения</string>
+    <string name="event_type_anniversary">Годовщина свадьбы</string>
+    <string name="event_type_other">Другое событие</string>
+
+    <string name="event_type_birthday_2">дня рождения</string>
+    <string name="event_type_anniversary_2">годовщины свадьбы</string>
+    <string name="event_type_other_2">события</string>
+    <string name="event_type_death_2">годовщины смерти</string>
+
+
+</resources>
