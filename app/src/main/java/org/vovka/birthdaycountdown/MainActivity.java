@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -68,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     static final String Div1 = "###";
     static final String Div2 = "~~~";
     static final String Div3 = ": ";
+    final String prefs_EventTypes = "EventTypes";
+    final String prefs_EventON = "true";
+    final String prefs_EventOFF = "false";
+    final String prefs_EventTypes_Default = "true,true,true,true,false";
+    final boolean[] prefs_EventTypes_DefaultB = {true,true,true,true,false};
     final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     List<String> dataList = new ArrayList<>();
     SwipeRefreshLayout swiperefresh;
@@ -91,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     TreeMap<Integer, String> UserData = new TreeMap <>();
     String[] event_types;
     boolean[] event_types_on;
+    int[] event_types_id;
 
     public int countDaysDiff(Date date1, Date date2) {
         //https://stackoverflow.com/questions/1555262/calculating-the-difference-between-two-java-date-instances/43681941#43681941
@@ -220,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             };
 
-
             //About
             findViewById(R.id.toolbar).setOnClickListener(new View.OnClickListener() {
 
@@ -249,6 +256,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Инициализация и считывание настроек
 
+            event_types_id = new int[]{
+                    ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY,
+                    ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY,
+                    ContactsContract.CommonDataKinds.Event.TYPE_OTHER,
+                    ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM,
+                    11
+            };
+
             event_types = new String[]{
                     "Дни рождения",
                     "Годовщины свадьб",
@@ -257,14 +272,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     "Круглые даты (10K дней)"
             };
 
-            event_types_on = new boolean[]{
-                    true,
-                    true,
-                    true,
-                    true,
-                    false
-            };
+            event_types_on = prefs_EventTypes_DefaultB;
 
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            String savedTypes = preferences.getString(prefs_EventTypes, prefs_EventTypes_Default);
+
+            String[] savedTypes_arr = savedTypes.split(Div1);
+            if (savedTypes_arr.length == event_types_on.length) {
+                for (int i = 0; i < savedTypes_arr.length; i++) {
+                    event_types_on[i] = savedTypes_arr[i].equals(prefs_EventON);
+                }
+            }
 
             //Получение и отображение контактных данных
             swiperefresh.post(new Runnable() {
@@ -344,14 +362,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        /*
+                        //Сохранение настроек
+
+                        String savedTypes = EMPTY_STRING;
                         for (int i = 0; i<event_types_on.length; i++){
-                            boolean checked = event_types_on[i];
-                            if (checked) {
-                                Toast.makeText(getApplicationContext(), eventList.get(i), Toast.LENGTH_SHORT).show();
-                            }
+                            if (i > 0) savedTypes = savedTypes.concat(Div1);
+                            savedTypes = savedTypes.concat(event_types_on[i] ?  prefs_EventON : prefs_EventOFF);
                         }
-                        */
+
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(prefs_EventTypes, savedTypes);
+                        editor.apply();
+
+                        // Обновление
 
                         getContacts();
                         drawList();
@@ -778,10 +802,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Получаем требуемые события (дни рождения, и т.п.)
             List<String> EventTypes = new ArrayList<>();
-            if (event_types_on[0]) EventTypes.add(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + EMPTY_STRING);
-            if (event_types_on[1]) EventTypes.add(ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + EMPTY_STRING);
-            if (event_types_on[2]) EventTypes.add(ContactsContract.CommonDataKinds.Event.TYPE_OTHER + EMPTY_STRING);
-            if (event_types_on[3]) EventTypes.add(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM + EMPTY_STRING);
+            if (event_types_on[0]) EventTypes.add(Integer.toString(event_types_id[0]));
+            if (event_types_on[1]) EventTypes.add(Integer.toString(event_types_id[1]));
+            if (event_types_on[2]) EventTypes.add(Integer.toString(event_types_id[2]));
+            if (event_types_on[3]) EventTypes.add(Integer.toString(event_types_id[3]));
 
             ContentResolver contentResolver = getContentResolver();
 
