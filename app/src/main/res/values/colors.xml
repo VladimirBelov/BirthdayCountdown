@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1b5e20</color>
+    <color name="colorPrimary">#1B5E20</color>
     <color name="colorAccent">#808080</color>
-    <color name="lighter_gray">#dddddd</color>
+    <color name="lighter_gray">#DDDDDD</color>
     <color name="dark_red">#bb0000</color>
-    <color name="red">#ec0000</color>
+    <color name="red">#ff0000</color>
+    <color name="yellow">#FFEE00</color>
+    <color name="white">#ffffff</color>
+    <color name="dark_grey">#121212</color>
+    <color name="black">#000000</color>
+    <color name="back_FIO">#50000000</color>
+    <color name="back_Age">#1e000000</color>
+    <color name="green">#2ED70E</color>
 </resources>

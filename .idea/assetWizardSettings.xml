@@ -102,8 +102,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="C:\Android\Projects\BirthdayCountdown\icons8-cemetery-80.png" />
-                                      <entry key="outputName" value="ic_event_death" />
+                                      <entry key="imageAsset" value="C:\Android\Projects\BirthdayCountdown\WIdget0.jpg" />
+                                      <entry key="outputName" value="ic_widget" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -135,11 +135,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="512" />
-                            <entry key="outputName" value="ic_event_wedding" />
+                            <entry key="height" value="80" />
+                            <entry key="outputName" value="ic_event_crowning" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Android\Projects\BirthdayCountdown\224802.svg" />
-                            <entry key="width" value="512" />
+                            <entry key="sourceFile" value="C:\Android\Projects\BirthdayCountdown\icons8-crowning.svg" />
+                            <entry key="width" value="80" />
                           </map>
                         </option>
                       </PersistentState>

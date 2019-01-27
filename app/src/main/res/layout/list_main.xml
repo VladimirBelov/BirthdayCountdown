@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -25,7 +25,8 @@
             android:paddingLeft="5dp"
             android:textAlignment="textEnd"
             android:textColor="@color/lighter_gray"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:paddingStart="5dp" />
 
         <TextView
             android:id="@+id/mainStatsRedTextView"
@@ -39,8 +40,9 @@
             android:minLines="1"
             android:paddingLeft="3dp"
             android:paddingRight="2dp"
-            android:textColor="@color/red"
-            android:textSize="10sp" />
+            android:textColor="@color/yellow"
+            android:textSize="10sp"
+            android:paddingStart="3dp" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,9 +54,7 @@
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:foregroundGravity="top"
-            android:scrollbarSize="40dip"
-            android:scrollbarStyle="insideOverlay" />
+            android:foregroundGravity="top"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

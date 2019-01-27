@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.vovka.birthdaycountdown">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- todo: Подумать над резервным копированием настроек -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_birthdaycountdowngreen77"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_birthdaycountdowngreen77"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!-- todo: добавить всплывающие уведомления -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -20,6 +25,49 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <!-- https://stackoverflow.com/questions/31787778/android-is-android-intent-action-date-changed-triggered-at-device-reboot -->
+        <!-- https://stackoverflow.com/questions/32114436/broadcastreceiver-for-date-changed-only-works-if-i-set-a-date-in-the-future/32172482#32172482 -->
+        <receiver
+            android:name=".DateReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".Widget5x1"
+            android:label="@string/appwidget_name_5">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget5x1_info" />
+        </receiver>
+
+        <receiver
+            android:name=".Widget2x2"
+            android:label="@string/appwidget_name_1">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget2x2_info" />
+        </receiver>
     </application>
 
 </manifest>

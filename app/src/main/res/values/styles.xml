@@ -12,8 +12,25 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Заголовок главной активности -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <!-- Меню главной активности -->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Заголовок окна настроек -->
+    <style name="AppTheme.SettingsBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!--<item name="android:layout_marginTop">50dp</item>-->
+    </style>
+
+    <!-- Меню окна настроек -->
+    <!--<style name="AppTheme.SettingsPopup" parent="ThemeOverlay.AppCompat.Light">-->
+        <!--<item name="colorPrimary">@color/design_default_color_primary_dark</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppTheme.Settings" parent="AppTheme">-->
+        <!--<item name="actionBarSize">100dp</item>-->
+        <!--<item name="android:layout_marginTop">100dp</item>-->
+    <!--</style>-->
 
 </resources>
