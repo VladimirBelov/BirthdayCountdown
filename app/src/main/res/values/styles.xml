@@ -1,36 +1,166 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- Светлая тема -->
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/dark_green</item> <!-- Основной цвет: заголовки окон -->
+        <item name="windowStatusbarColor">@color/darker_green</item>
+        <item name="colorPrimaryDark">?attr/windowStatusbarColor</item> <!-- Цвет статусной строки -->
+        <item name="android:navigationBarColor">?attr/windowStatusbarColor</item> <!-- Цвет кнопок навигации -->
+        <item name="colorAccent">@color/light_green</item> <!-- Цвет вторичных элементов: переключатели в настройках и.т.п. -->
+        <item name="windowTitleColor">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:listDivider">@color/dark_green_transp</item>
+        <item name="listDividerColor">@color/dark_green_transp</item>
+        <item name="eventFullNameColor">@color/medium_gray</item>
+        <item name="eventDistanceColor">@color/light_gray_darker</item>
+        <item name="eventAgeColor">@color/medium_gray</item>
+        <item name="eventDateColor">@color/light_gray_darker</item>
+        <item name="eventDetailsColor">@color/light_gray_darker</item>
+        <item name="borderWindowColor">@color/dark_green</item>
+        <item name="actionBarSize">42dp</item>
+        <item name="android:textColorPrimary">@color/medium_gray</item>
+        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="dialogTextColor">@color/dark_gray</item>
+        <item name="dialogHintColor">@color/light_gray</item>
+        <item name="actionBarTheme">@style/PreferencesTheme.ActionBarTheme</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="PreferencesTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- THIS is where you can color the arrow -->
+        <item name="colorPrimaryDark">@color/darker_green</item>
+    </style>
+
+    <!-- Тёмно-серая тема -->
+    <style name="AppTheme.DarkGray" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/medium_gray</item>
+        <item name="windowStatusbarColor">@color/medium_dark_gray</item>
+        <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
+        <item name="colorAccent">@color/light_gray</item>
+        <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="backgroundColor">@color/lighter_gray</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:listDivider">@color/light_gray_trans</item>
+        <item name="listDividerColor">@color/light_gray_trans</item>
+        <item name="eventFullNameColor">@color/medium_gray</item>
+        <item name="eventDistanceColor">@color/light_gray_darker</item>
+        <item name="eventAgeColor">@color/medium_gray</item>
+        <item name="eventDateColor">@color/light_gray_darker</item>
+        <item name="eventDetailsColor">@color/light_gray_darker</item>
+        <item name="borderWindowColor">@color/medium_gray</item>
+        <item name="actionBarSize">42dp</item>
+        <item name="android:textColorPrimary">@color/medium_gray</item>
+        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogHintColor">@color/light_gray</item>
+    </style>
+
+    <!-- Чёрная тема -->
+    <style name="AppTheme.Black" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/dark_gray</item>
+        <item name="windowStatusbarColor">@color/dark_gray</item>
+        <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
+        <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?attr/windowNavbarDividerColor</item>
+        <item name="colorAccent">@color/light_gray</item>
+        <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="backgroundColor">@color/dark_gray</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:listDivider">@color/light_gray_trans</item>
+        <item name="listDividerColor">@color/light_gray_trans</item>
+        <item name="eventFullNameColor">@color/lighter_gray</item>
+        <item name="eventDistanceColor">@color/light_gray</item>
+        <item name="eventAgeColor">@color/lighter_gray</item>
+        <item name="eventDateColor">@color/light_gray</item>
+        <item name="eventDetailsColor">@color/light_gray_darker</item>
+        <item name="borderWindowColor">@color/lighter_gray</item>
+        <item name="actionBarSize">42dp</item>
+        <item name="android:textColorPrimary">@color/lighter_gray</item>
+        <item name="android:textColorSecondary">@color/light_gray</item>
+        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogHintColor">@color/light_gray_darker</item>
+    </style>
+
+    <!-- Светлая тема без панели действий -->
+    <style name="AppTheme.Light.NoActionBar" parent="AppTheme.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Заголовок главной активности -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <!-- Меню главной активности -->
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <!-- Заголовок окна настроек -->
-    <style name="AppTheme.SettingsBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!--<item name="android:layout_marginTop">50dp</item>-->
+    <!-- Тёмно-серая тема без панели действий -->
+    <style name="AppTheme.DarkGray.NoActionBar" parent="AppTheme.DarkGray">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Меню окна настроек -->
-    <!--<style name="AppTheme.SettingsPopup" parent="ThemeOverlay.AppCompat.Light">-->
-        <!--<item name="colorPrimary">@color/design_default_color_primary_dark</item>-->
-    <!--</style>-->
+    <!-- Чёрная тема без панели действий -->
+    <style name="AppTheme.Black.NoActionBar" parent="AppTheme.Black">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:alertDialogTheme">@style/AlertDialog.Black</item>
+    </style>
 
-    <!--<style name="AppTheme.Settings" parent="AppTheme">-->
-        <!--<item name="actionBarSize">100dp</item>-->
-        <!--<item name="android:layout_marginTop">100dp</item>-->
-    <!--</style>-->
+    <!-- todo: использовать цвета тем -->
+    <!-- Меню главной активности -->
+    <style name="AppTheme.Light.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="AppTheme.DarkGray.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorBackground">@color/medium_gray</item>
+        <item name="android:textColor">@color/lighter_gray</item>
+    </style>
+    <style name="AppTheme.Black.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorBackground">@color/dark_gray</item>
+        <item name="android:textColor">@color/light_gray</item>
+    </style>
+
+    <!-- Заголовок окна, так и не понял - работает или нет -->
+    <style name="AppTheme.Light.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">?attr/windowTitleColor</item>
+    </style>
+    <style name="AppTheme.DarkGray.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">?attr/windowTitleColor</item>
+    </style>
+    <style name="AppTheme.Black.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">?attr/windowTitleColor</item>
+    </style>
+
+    <!-- Меню действий -->
+    <style name="AppTheme.Light.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+    <style name="AppTheme.DarkGray.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/lighter_gray</item>
+    </style>
+    <style name="AppTheme.Black.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/light_gray</item>
+    </style>
+
+    <!-- Темы диалогов -->
+    <style name="AlertDialog.Light" parent="android:Theme.Material.Dialog">
+        <item name="android:textColor">@color/medium_gray</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorPrimary">@color/medium_gray</item>
+    </style>
+
+    <style name="AlertDialog.DarkGray" parent="android:Theme.Material.Dialog">
+        <item name="android:textColor">@color/lighter_gray</item>
+        <item name="android:background">@color/medium_gray</item>
+        <item name="android:textColorPrimary">@color/lighter_gray</item>
+        <item name="android:colorAccent">@color/lighter_gray</item>
+    </style>
+
+    <style name="AlertDialog.Black" parent="android:Theme.Material.Dialog">
+        <item name="android:textColor">@color/lighter_gray</item>
+        <item name="android:background">@color/dark_gray</item>
+        <item name="android:textColorPrimary">@color/lighter_gray</item>
+        <item name="android:colorAccent">@color/lighter_gray</item>
+    </style>
 
 </resources>

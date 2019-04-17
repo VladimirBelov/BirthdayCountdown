@@ -4,22 +4,24 @@
     package="org.vovka.birthdaycountdown">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
-    <!-- todo: Подумать над резервным копированием настроек -->
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_birthdaycountdowngreen77"
         android:label="@string/app_name"
+        android:icon="@drawable/ic_birthdaycountdowngreen77"
         android:roundIcon="@drawable/ic_birthdaycountdowngreen77"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        >
 
-        <!-- todo: добавить всплывающие уведомления -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.DarkGray.NoActionBar"
+            android:screenOrientation="portrait"
+            > <!-- android:configChanges="orientation|screenSize" что-то не работает https://www.dev2qa.com/android-change-orientation-without-restarting-activity-example/ -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,8 +30,20 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity">
+            android:theme="@style/AppTheme.DarkGray.NoActionBar"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
+        <activity
+            android:name=".WidgetConfigureActivity"
+            android:theme="@style/AppTheme.DarkGray"
+            android:screenOrientation="portrait"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
         </activity>
 
         <!-- https://stackoverflow.com/questions/31787778/android-is-android-intent-action-date-changed-triggered-at-device-reboot -->
@@ -47,14 +61,14 @@
 
         <receiver
             android:name=".Widget5x1"
-            android:label="@string/appwidget_name_5">
+            android:label="@string/appwidget_name_1_7">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget5x1_info" />
+                android:resource="@xml/widget5x1_info"/>
         </receiver>
 
         <receiver
@@ -67,6 +81,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget2x2_info" />
+        </receiver>
+
+        <receiver
+            android:name=".Widget4x1"
+            android:label="@string/appwidget_name_5">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget4x1bc_info" />
         </receiver>
     </application>
 

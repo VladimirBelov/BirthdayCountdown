@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -14,35 +15,36 @@
         <TextView
             android:id="@+id/mainStatsTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
+            android:layout_height="14dp"
+            android:layout_marginTop="40dip"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:gravity="top|end"
+            android:background="?attr/colorPrimary"
+            android:gravity="center_vertical|end"
             android:maxLines="1"
             android:minEms="50"
             android:minLines="1"
-            android:paddingLeft="5dp"
-            android:textAlignment="textEnd"
-            android:textColor="@color/lighter_gray"
+            android:paddingStart="5dip"
+            android:textAlignment="gravity"
+            android:textColor="?attr/windowTitleColor"
             android:textSize="10sp"
-            android:paddingStart="5dp" />
+            tools:ignore="RtlSymmetry,SmallSp" />
 
         <TextView
             android:id="@+id/mainStatsRedTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
+            android:layout_height="14dp"
+            android:layout_marginTop="40dip"
             android:layout_weight="0"
-            android:background="@color/colorPrimary"
-            android:gravity="top|end"
+            android:background="?attr/colorPrimary"
+            android:gravity="top|center_vertical|end"
             android:maxLines="1"
             android:minLines="1"
-            android:paddingLeft="3dp"
-            android:paddingRight="2dp"
+            android:paddingStart="3dip"
+            android:paddingEnd="2dip"
+            android:textAlignment="gravity"
             android:textColor="@color/yellow"
             android:textSize="10sp"
-            android:paddingStart="3dp" />
+            tools:ignore="SmallSp" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,7 +56,8 @@
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:foregroundGravity="top"/>
+            android:background="?attr/backgroundColor"
+            android:foregroundGravity="top" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

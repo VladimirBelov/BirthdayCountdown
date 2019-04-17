@@ -1,15 +1,14 @@
 <resources>
     <string name="app_name" translatable="false">Birthday Countdown</string>
 
-    <string name="msg_before_event_postfix" translatable="false">:</string>
+    <string name="account_skype" translatable="false">"com.skype."</string>
+    <string name="account_vk" translatable="false">"com.vkontakte.account"</string>
 
-    <string name="account_skype" translatable="false">com.skype.</string>
-    <string name="account_vk" translatable="false">com.vkontakte.account</string>
-
-    <string name="event_type_wedding_labels" translatable="false">wedding|свадьба|свадьбы</string>
-    <string name="event_type_name_day_labels" translatable="false">"name-day|name day|именины|день ангела"</string>
-    <string name="event_type_death_labels" translatable="false">"death|день смерти|дата смерти|смерть"</string>
-    <string name="event_type_crowning_labels" translatable="false">"crowning|coronation|венчание"</string>
+    <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження"</string>
+    <string name="event_type_wedding_labels" translatable="false">"wedding,свадьба,свадьбы,весілля"</string>
+    <string name="event_type_nameday_labels" translatable="false">"name-day,name day,именины,день ангела,іменини"</string>
+    <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті"</string>
+    <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання"</string>
 
     <string name="pref_Language_key" translatable="false">Language</string>
 
@@ -17,9 +16,20 @@
         <item>AUTO</item>
         <item>en</item>
         <item>ru</item>
+        <item>uk</item>
     </string-array>
 
     <string name="pref_Language_default" translatable="false">AUTO</string>
+
+    <string name="pref_Theme_key" translatable="false">Theme</string>
+
+    <string-array name="pref_Theme_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_Theme_default" translatable="false">1</string>
 
     <string name="pref_Events_key" translatable="false">EventTypes</string>
 
@@ -38,7 +48,62 @@
         <item>11</item>
     </string-array>
 
-    <string name="pref_List_debug" translatable="false">ListShowDebugInfo</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_key" translatable="false">CustomEvents_Birthday_UseInternal</string>
+    <string name="pref_CustomEvents_Birthday_Labels_key" translatable="false">CustomEvents_Birthday_Labels</string>
+
+    <string name="pref_CustomEvents_Anniversary_UseInternal_default" translatable="false">true</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_key" translatable="false">CustomEvents_Anniversary_UseInternal</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_key" translatable="false">CustomEvents_Anniversary_Labels</string>
+
+    <string name="pref_CustomEvents_NameDay_UseInternal_default" translatable="false">true</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_key" translatable="false">CustomEvents_NameDay_UseInternal</string>
+    <string name="pref_CustomEvents_NameDay_Labels_key" translatable="false">CustomEvents_NameDay_Labels</string>
+
+    <string name="pref_CustomEvents_Crowning_UseInternal_default" translatable="false">true</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_key" translatable="false">CustomEvents_Crowning_UseInternal</string>
+    <string name="pref_CustomEvents_Crowning_Labels_key" translatable="false">CustomEvents_Crowning_Labels</string>
+
+    <string name="pref_CustomEvents_Death_UseInternal_default" translatable="false">true</string>
+    <string name="pref_CustomEvents_Death_UseInternal_key" translatable="false">CustomEvents_Death_UseInternal</string>
+    <string name="pref_CustomEvents_Death_Labels_key" translatable="false">CustomEvents_Death_Labels</string>
+
+    <string name="pref_CustomEvents_Custom1_Caption_key" translatable="false">CustomEvents_Custom1_Caption</string>
+    <string name="pref_CustomEvents_Custom1_Labels_key" translatable="false">CustomEvents_Custom1_Labels</string>
+    <string name="pref_CustomEvents_Custom1_UseYear_key" translatable="false">CustomEvents_Custom1_UseYear</string>
+
+    <string name="pref_CustomEvents_Custom2_Caption_key" translatable="false">CustomEvents_Custom2_Caption</string>
+    <string name="pref_CustomEvents_Custom2_Labels_key" translatable="false">CustomEvents_Custom2_Labels</string>
+    <string name="pref_CustomEvents_Custom2_UseYear_key" translatable="false">CustomEvents_Custom2_UseYear</string>
+
+    <string name="pref_CustomEvents_Custom3_Caption_key" translatable="false">CustomEvents_Custom3_Caption</string>
+    <string name="pref_CustomEvents_Custom3_Labels_key" translatable="false">CustomEvents_Custom3_Labels</string>
+    <string name="pref_CustomEvents_Custom3_UseYear_key" translatable="false">CustomEvents_Custom3_UseYear</string>
+
+    <string name="pref_CustomEvents_Custom4_Caption_key" translatable="false">CustomEvents_Custom4_Caption</string>
+    <string name="pref_CustomEvents_Custom4_Labels_key" translatable="false">CustomEvents_Custom4_Labels</string>
+    <string name="pref_CustomEvents_Custom4_UseYear_key" translatable="false">CustomEvents_Custom4_UseYear</string>
+
+    <string name="pref_CustomEvents_Custom5_Caption_key" translatable="false">CustomEvents_Custom5_Caption</string>
+    <string name="pref_CustomEvents_Custom5_Labels_key" translatable="false">CustomEvents_Custom5_Labels</string>
+    <string name="pref_CustomEvents_Custom5_UseYear_key" translatable="false">CustomEvents_Custom5_UseYear</string>
+    <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
+
+    <string name="pref_List_BottomInfo_key" translatable="false">List_BottomInfo</string>
+
+    <string-array name="pref_List_BottomInfo_values_default" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_List_BottomInfo_values" translatable="false">
+        <item>1</item> <!--Должность-->
+        <item>2</item> <!--Организация-->
+        <item>3</item> <!--Подробности события-->
+        <item>91</item> <!--Тип аккаунта и хранимая дата-->
+    </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
 
@@ -55,11 +120,17 @@
     <string name="pref_Widgets_EventIcons_key" translatable="false">Widget_EventIcons</string>
     <string name="pref_Widgets_EventIcons_default" translatable="false">true</string>
 
+    <string name="pref_Widgets_ContactPhotos_key" translatable="false">Widget_ContactPhotos</string>
+    <string name="pref_Widgets_ContactPhotos_default" translatable="false">true</string>
+
     <string name="pref_Widgets_Color_EventToday_key" translatable="false">Widget_Color_EventToday</string>
     <string name="pref_Widgets_Color_EventToday_default" translatable="false">green</string>
 
     <string name="pref_Widgets_Color_EventSoon_key" translatable="false">Widget_Color_EventSoon</string>
     <string name="pref_Widgets_Color_EventSoon_default" translatable="false">yellow</string>
+
+    <string name="pref_Widgets_Days_EventSoon_key" translatable="false">Widget_Days_EventSoon</string>
+    <string name="pref_Widgets_Days_EventSoon_default" translatable="false">2</string>
 
     <string-array name="pref_Widgets_Colors_values" translatable="false">
         <item>green</item>
@@ -69,8 +140,56 @@
     </string-array>
 
 
+    <string-array name="widget_config_numbers" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Days_EventSoon_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Days_EventSoon_entries" translatable="false"> <!-- пока без перевода -->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
+    <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0</string>
+
+    <string name="last_name_comletions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
+    <string name="last_name_comletions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
+
+    <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,arthur,austin,benjamin,billy,bobby,brandon,brian,brother,bruce,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,eric,ethan,eugene,father,frank,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henry,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,logan,louis,mark,matthew,michael,nathan,nicholas,noah,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vincent,walter,wayne,william,willie,zachary</string>
+    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,аксинья,алевтина,александра,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,анжела,анжелика,анна,антонина,анфиса,анфіса,арина,аріна,белла,березня,божена,валентина,валерия,валерія,ванда,варвара,василина,василиса,вера,вероника,вероніка,виктория,виола,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,глафира,глафіра,дарья,диана,дина,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,зиновия,злата,зоя,зіновія,ивонна,изольда,илона,инга,инесса,инна,ирина,ия,iванка,капитолина,капітоліна,карина,каролина,катерина,кира,клавдия,клара,клеопатра,кору,кохана,кристина,ксения,ксенія,лада,лариса,лиана,лидия,лилия,лина,лия,лора,льоха,любава,любимая,любовь,любов,кохання,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надія,настасия,настасья,настасія,наталия,наталья,наталя,невістка,нелли,ника,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,олімпіада,парасковія,пекла,пелагея,полина,поля,прасковья,раиса,раїса,рената,римма,роза,роксана,рут,руфь,сарра,свекровь,свекруха,светлана,світла,серафима,сестра,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,таисия,таисья,тамара,татьяна,таїсія,текле,тетяна,тетя,томи,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,фёкла,хаврония,христина,эвелина,эдита,элеонора,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,ядвига,ядвіга,яна,ярослава,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,alexis,alice,amanda,amber,amy,andrea,angela,ann,anna,ashley,aunt,barbara,betty,beverly,brenda,brittany,carol,carolyn,catherine,cheryl,christina,christine,cynthia,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,elizabeth,emily,emma,evelyn,frances,gloria,grace,granddaughter,hannah,heather,helen,jacqueline,jane,janet,janice,jean,jennifer,jessica,joan,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,laura,lauren,linda,lisa,lori,madison,margaret,maria,marie,marilyn,martha,mary,megan,melissa,michelle,mom,mother,nancy,natalie,nicole,olivia,pamela,patricia,rachel,rebecca,rose,ruth,samantha,sandra,sara,sarah,sharon,shirley,sister,stephanie,susan,teresa,theresa,tiffany,victoria,virginia</string>
+
+    <string name="second_name_comletions_man" translatable="false">ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
+    <string name="second_name_comletions_female" translatable="false">овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
 
 <!-- DEFAULT LANGUAGE -->
+
+    <string name="window_settings">Settings</string>
+    <string name="window_widget_settings">Widget settings</string>
 
     <string name="menu_refresh">Refresh</string>
     <string name="menu_settings">Settings</string>
@@ -80,12 +199,12 @@
     <string name="msg_no_access">No access to contacts</string>
     <string name="msg_no_events">Events not found</string>
     <string name="msg_filter">, filter:</string>
-    <string name="msg_before_event_prefix">Days before</string>
     <string name="msg_today">Today</string>
     <string name="msg_tomorrow">Tomorrow</string>
     <string name="msg_day_after_tomorrow">Day after tomorrow</string>
     <string name="msg_stats_prefix">events:</string>
-    <string name="msg_hint_search">Enter filter value (part of full name, contact type, job, title, some part of event date), several values enter by comma:</string>
+    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma):</string>
+    <string name="msg_hint_search">Filter value</string>
 
     <string name="hint_ContactIcon">Photo</string>
     <string name="hint_Name">Full name</string>
@@ -101,18 +220,23 @@
     <string name="button_OK">OK</string>
     <string name="button_Clear">Clear</string>
     <string name="button_Cancel">Cancel</string>
+    <string name="button_Rate">Rate app</string>
 
     <string name="event_type_birthday">Birthday</string>
     <string name="event_type_anniversary">Anniversary</string>
     <string name="event_type_other">Other event</string>
+    <string name="event_type_death">Death anniversary</string>
+    <string name="event_type_crowning">Crowning</string>
+    <string name="event_type_nameday">Name day</string>
     <string name="event_type_birthday_2">birthday</string>
     <string name="event_type_anniversary_2">anniversary</string>
     <string name="event_type_other_2">event</string>
     <string name="event_type_death_2">death anniversary</string>
 
     <string name="appwidget_text">Loading…</string>
-    <string name="appwidget_name_5">For 1–5 events</string>
+    <string name="appwidget_name_1_7">For 1–7 events</string>
     <string name="appwidget_name_1">For 1 event</string>
+    <string name="appwidget_name_5">For 5 events</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
     <string name="widget_Date">Date</string>
@@ -123,14 +247,16 @@
     <string name="pref_Events_title">Common</string>
     <string name="pref_Language_title">Language</string>
     <string name="pref_Language_description">Interface and data language</string>
+    <string name="pref_Theme_title">Color theme</string>
+    <string name="pref_Theme_description">Interface color theme</string>
     <string name="pref_EventTypes_title">Event types</string>
     <string name="pref_EventTypes_description">What kind of events to show</string>
     <string name="pref_List_title">Events list</string>
-    <string name="pref_List_debug_title">Debug info</string>
-    <string name="pref_List_debug_description">Show debug event data: account type and stored date</string>
-    <string name="pref_Widgets_title">Widgets</string>
+    <string name="pref_List_BottomInfo_title">Event details</string>
+    <string name="pref_List_BottomInfo_description">What to show below contact name</string>
 
-    <string name="pref_Widgets_BottomInfo_title">Bottom info</string>
+    <string name="pref_Widgets_title">Widgets</string>
+    <string name="pref_Widgets_BottomInfo_title">Event caption</string>
     <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
 
     <string-array name="pref_EventTypes_entries">
@@ -141,6 +267,48 @@
         <item>Round days count (5K, 10K, 15K days)</item>
     </string-array>
 
+    <string name="pref_CustomEvents_title">Events customizing</string>
+    <string name="pref_CustomEvents_summary">Preferences to detect custom events</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standart labels to detect birthday events</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this labels will bee identified as birthdays (by comma)</string>
+
+    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standart labels to detect anniversary events</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Contacts events with this labels will bee identified as anniversaries (by comma)</string>
+
+    <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_description">Use standart labels to detect name days events</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Contacts events with this labels will bee identified as name days (by comma)</string>
+
+    <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_description">Use standart labels to detect crowning events</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Contacts events with this labels will bee identified as crownings (by comma)</string>
+
+    <string name="pref_CustomEvents_Death_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Death_UseInternal_description">Use standart labels to detect death anniversary events</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Contacts events with this labels will bee identified as death anniversaries (by comma)</string>
+
+    <string name="pref_CustomEvents_Custom_title">User-defined event</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Custom_Labels_description">Contacts events with this labels will bee identified as this event (by comma)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
+    <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
+
+    <string-array name="pref_List_BottomInfo_entries">
+        <item>Title</item>
+        <item>Job</item>
+        <item>Event description</item>
+        <item>Event account and raw date</item>
+    </string-array>
+
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>[Last name] [First name] [Second name]</item>
         <item>[Last name] [F.] [S.]</item>
@@ -149,14 +317,20 @@
         <item>Nothing</item>
     </string-array>
 
-    <string name="pref_Widgets_EventIcons_title">Event icons</string>
-    <string name="pref_Widgets_EventIcons_description">Display event icons</string>
+    <string name="pref_Widgets_ContactPhotos_title">Contact photo</string>
+    <string name="pref_Widgets_ContactPhotos_description">Display contact photo</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Today event</string>
+    <string name="pref_Widgets_EventIcons_title">Event icon</string>
+    <string name="pref_Widgets_EventIcons_description">Display event icon</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Color for \"Age\"</string>
     <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Event soon</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Color for \"Days to event\"</string>
     <string name="pref_Widgets_Color_EventSoon_description">Color of days count for near events</string>
+
+    <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
+    <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
 
     <string-array name="pref_Widgets_Color_entries">
         <item>Green</item>
@@ -169,12 +343,48 @@
         <item>Auto</item>
         <item>English</item>
         <item>Russian</item>
+        <item>Ukrainian</item>
+    </string-array>
+
+    <string-array name="weekDays">
+        <item>" on Sunday"</item>
+        <item>" on Monday"</item>
+        <item>" on Tuesday"</item>
+        <item>" on Wednesday"</item>
+        <item>" on Thursday"</item>
+        <item>" on Friday"</item>
+        <item>" on Saturday"</item>
+    </string-array>
+
+    <string-array name="pref_Theme_entries">
+        <item>Green</item>
+        <item>Dark gray</item>
+        <item>Black</item>
+    </string-array>
+
+    <string name="widget_config_index_label">Event start index to display:</string>
+    <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
+
+    <string name="widget_config_font_label">Font magnify factor</string>
+    <string name="widget_config_font_description">Font scale multiplicator for age, event distance and under photo info text</string>
+    <string-array name="widget_config_font">
+        <item>Auto</item>
+        <item>x0.75</item>
+        <item>x1.0</item>
+        <item>x1.2</item>
+        <item>x1.5</item>
+        <item>x1.75</item>
     </string-array>
 
     <string name="msg_after_age_prefix_1">" year"</string>
     <string name="msg_after_age_prefix_4_21">" years"</string>
     <string name="msg_after_age_prefix_1_">" years"</string>
     <string name="msg_after_age_prefix_2_3_4">" years"</string>
+    <string name="msg_before_event_prefix">"in "</string>
+    <string name="msg_before_event_prefix_1">" day"</string>
+    <string name="msg_before_event_prefix_2_3_4">" days"</string>
+    <string name="msg_before_event_prefix_1_">" day"</string>
+    <string name="msg_before_event_prefix_4_21">" days"</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <string name="event_type_wedding_1">Paper</string>
@@ -202,37 +412,38 @@
     <string name="event_type_wedding_23">""</string>
     <string name="event_type_wedding_24">Opal</string>
     <string name="event_type_wedding_25">Silver</string>
-    <string name="event_type_wedding_30">Pearl</string>
     <string name="event_type_wedding_26">""</string>
     <string name="event_type_wedding_27">""</string>
     <string name="event_type_wedding_28">""</string>
     <string name="event_type_wedding_29">""</string>
-    <string name="event_type_wedding_35">Coral or Jade</string>
+    <string name="event_type_wedding_30">Pearl</string>
     <string name="event_type_wedding_31">""</string>
     <string name="event_type_wedding_32">""</string>
     <string name="event_type_wedding_33">""</string>
     <string name="event_type_wedding_34">""</string>
-    <string name="event_type_wedding_40">Ruby</string>
-    <string name="event_type_wedding_45">Sapphire</string>
-    <string name="event_type_wedding_50">Gold</string>
-    <string name="event_type_wedding_55">Emerald</string>
-    <string name="event_type_wedding_60">Diamond, yellow</string>
-    <string name="event_type_wedding_75">Diamond, gold</string>
-    <string name="event_type_wedding_80">Diamond, pearl</string>
-    <string name="event_type_wedding_90">Stone</string>
-    <string name="event_type_wedding_65">Blue sapphire</string>
-    <string name="event_type_wedding_70">Platinum</string>
+    <string name="event_type_wedding_35">Coral or Jade</string>
     <string name="event_type_wedding_36">""</string>
     <string name="event_type_wedding_37">""</string>
     <string name="event_type_wedding_38">""</string>
     <string name="event_type_wedding_39">""</string>
+    <string name="event_type_wedding_40">Ruby</string>
     <string name="event_type_wedding_41">""</string>
     <string name="event_type_wedding_42">""</string>
     <string name="event_type_wedding_43">""</string>
     <string name="event_type_wedding_44">""</string>
+    <string name="event_type_wedding_45">Sapphire</string>
     <string name="event_type_wedding_46">""</string>
     <string name="event_type_wedding_47">""</string>
     <string name="event_type_wedding_48">""</string>
     <string name="event_type_wedding_49">""</string>
+    <string name="event_type_wedding_50">Gold</string>
+    <string name="event_type_wedding_55">Emerald</string>
+    <string name="event_type_wedding_60">Diamond, yellow</string>
+    <string name="event_type_wedding_65">Blue sapphire</string>
+    <string name="event_type_wedding_70">Platinum</string>
+    <string name="event_type_wedding_75">Diamond, gold</string>
+    <string name="event_type_wedding_80">Diamond, pearl</string>
+    <string name="event_type_wedding_90">Stone</string>
     <string name="event_type_wedding_100">""</string>
+
 </resources>
