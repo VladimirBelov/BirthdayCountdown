@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- https://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-3-ae9793fd31ec -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref_main">
+
+    <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
+	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
+    <!-- todo: подумать, как показывать названия настроек, если они не влезают в одну строку http://www.lucazanini.eu/en/2014/android/display-icon-preferences/ -->
+    <PreferenceCategory
+        android:title="@string/pref_Events_title"
+        android:layout="@layout/settings_category">
+
+        <ListPreference
+            android:defaultValue="@string/pref_Language_default"
+            android:entries="@array/pref_Language_entries"
+            android:entryValues="@array/pref_Language_values"
+            android:key="@string/pref_Language_key"
+            android:summary="@string/pref_Language_description"
+            android:title="@string/pref_Language_title"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:dialogIcon="@android:drawable/ic_menu_mapmode"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Theme_default"
+            android:entries="@array/pref_Theme_entries"
+            android:entryValues="@array/pref_Theme_values"
+            android:key="@string/pref_Theme_key"
+            android:summary="@string/pref_Theme_description"
+            android:title="@string/pref_Theme_title"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:dialogIcon="@android:drawable/ic_menu_gallery"/>
+
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_EventTypes_values_default"
+            android:entries="@array/pref_EventTypes_entries"
+            android:entryValues="@array/pref_EventTypes_values"
+            android:key="@string/pref_Events_key"
+            android:title="@string/pref_EventTypes_title"
+            android:summary="@string/pref_EventTypes_description"
+            android:icon="@android:drawable/ic_menu_month"
+            android:dialogIcon="@android:drawable/ic_menu_month"/>
+
+		<!-- todo: вернуть разделители между элементами категории -->
+		<!-- https://www.javarticles.com/2015/04/example-of-grouping-android-preferences-by-sub-screens.html -->
+		<!-- https://stackoverflow.com/questions/18261601/how-do-i-do-sub-categories-in-preferences -->
+		<!-- https://stackoverflow.com/questions/27862299/toolbar-is-hidden-in-nested-preferencescreen -->
+        <PreferenceScreen
+            android:key="pref_custom_events"
+            android:summary="@string/pref_CustomEvents_summary"
+            android:title="@string/pref_CustomEvents_title"
+            android:icon="@android:drawable/ic_menu_manage">
+
+            <PreferenceCategory
+                android:title="@string/event_type_birthday"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_birthday">
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Birthday_UseInternal_default"
+                    android:key="@string/pref_CustomEvents_Birthday_UseInternal_key"
+                    android:summary="@string/pref_CustomEvents_Birthday_UseInternal_description"
+                    android:title="@string/pref_CustomEvents_Birthday_UseInternal_title"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Birthday_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
+                    android:title="@string/pref_CustomEvents_Birthday_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/event_type_anniversary"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_wedding">
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Anniversary_UseInternal_default"
+                    android:key="@string/pref_CustomEvents_Anniversary_UseInternal_key"
+                    android:summary="@string/pref_CustomEvents_Anniversary_UseInternal_description"
+                    android:title="@string/pref_CustomEvents_Anniversary_UseInternal_title"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Anniversary_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
+                    android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/event_type_nameday"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_other">
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_NameDay_UseInternal_default"
+                    android:key="@string/pref_CustomEvents_NameDay_UseInternal_key"
+                    android:summary="@string/pref_CustomEvents_NameDay_UseInternal_description"
+                    android:title="@string/pref_CustomEvents_NameDay_UseInternal_title"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_NameDay_Labels_key"
+                    android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
+                    android:title="@string/pref_CustomEvents_NameDay_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/event_type_crowning"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_crowning">
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Crowning_UseInternal_default"
+                    android:key="@string/pref_CustomEvents_Crowning_UseInternal_key"
+                    android:summary="@string/pref_CustomEvents_Crowning_UseInternal_description"
+                    android:title="@string/pref_CustomEvents_Crowning_UseInternal_title"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Crowning_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
+                    android:title="@string/pref_CustomEvents_Crowning_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/event_type_death"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_death">
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Death_UseInternal_default"
+                    android:key="@string/pref_CustomEvents_Death_UseInternal_key"
+                    android:summary="@string/pref_CustomEvents_Death_UseInternal_description"
+                    android:title="@string/pref_CustomEvents_Death_UseInternal_title"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Death_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Death_Labels_summary"
+                    android:title="@string/pref_CustomEvents_Death_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Custom_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_custom1">
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom1_Caption_key"
+                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:capitalize="sentences"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom1_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Custom1_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Custom_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_custom2">
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom2_Caption_key"
+                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:capitalize="sentences"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom2_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Custom2_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Custom_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_custom3">
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom3_Caption_key"
+                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:capitalize="sentences"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom3_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Custom3_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Custom_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_custom4">
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom4_Caption_key"
+                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:capitalize="sentences"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom4_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Custom4_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Custom_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_custom5">
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom5_Caption_key"
+                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:capitalize="sentences"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <EditTextPreference
+                    android:key="@string/pref_CustomEvents_Custom5_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Custom5_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+
+            </PreferenceCategory>
+
+        </PreferenceScreen>
+
+
+		<!-- todo: список игнорируемых событий -->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_List_title"
+        android:layout="@layout/settings_category">
+	
+		<!-- todo: добавить настройку на показ предыдущих событий: за последние х дней, последних y событий -->
+
+		<!-- todo: сделать сортировку через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_List_BottomInfo_values_default"
+            android:entries="@array/pref_List_BottomInfo_entries"
+            android:entryValues="@array/pref_List_BottomInfo_values"
+            android:key="@string/pref_List_BottomInfo_key"
+            android:summary="@string/pref_List_BottomInfo_description"
+            android:title="@string/pref_List_BottomInfo_title"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_Widgets_title"
+        android:layout="@layout/settings_category">
+
+        <SwitchPreference
+            android:defaultValue="@string/pref_Widgets_ContactPhotos_default"
+            android:key="@string/pref_Widgets_ContactPhotos_key"
+            android:summary="@string/pref_Widgets_ContactPhotos_description"
+            android:title="@string/pref_Widgets_ContactPhotos_title"
+            android:icon="@android:drawable/ic_menu_view"/>
+
+        <SwitchPreference
+            android:defaultValue="@string/pref_Widgets_EventIcons_default"
+            android:key="@string/pref_Widgets_EventIcons_key"
+            android:summary="@string/pref_Widgets_EventIcons_description"
+            android:title="@string/pref_Widgets_EventIcons_title"
+            android:icon="@android:drawable/ic_menu_view"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_BottomInfo_default"
+            android:key="@string/pref_Widgets_BottomInfo_key"
+            android:entries="@array/pref_Widgets_BottomInfo_entries"
+            android:entryValues="@array/pref_Widgets_BottomInfo_values"
+            android:title="@string/pref_Widgets_BottomInfo_title"
+            android:summary="@string/pref_Widgets_BottomInfo_description"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
+
+        <!-- todo: сделать цветные переключатели http://0x5453.blogspot.com/2014/06/61214.html -->
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_Color_EventToday_default"
+            android:entries="@array/pref_Widgets_Color_entries"
+            android:entryValues="@array/pref_Widgets_Colors_values"
+            android:key="@string/pref_Widgets_Color_EventToday_key"
+            android:summary="@string/pref_Widgets_Color_EventToday_description"
+            android:title="@string/pref_Widgets_Color_EventToday_title"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_Days_EventSoon_default"
+            android:entries="@array/pref_Widgets_Days_EventSoon_entries"
+            android:entryValues="@array/pref_Widgets_Days_EventSoon_values"
+            android:key="@string/pref_Widgets_Days_EventSoon_key"
+            android:summary="@string/pref_Widgets_Days_EventSoon_description"
+            android:title="@string/pref_Widgets_Days_EventSoon_title"
+            android:icon="@android:drawable/ic_menu_week"
+            android:dialogIcon="@android:drawable/ic_menu_week"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_Color_EventSoon_default"
+            android:entries="@array/pref_Widgets_Color_entries"
+            android:entryValues="@array/pref_Widgets_Colors_values"
+            android:key="@string/pref_Widgets_Color_EventSoon_key"
+            android:summary="@string/pref_Widgets_Color_EventSoon_description"
+            android:title="@string/pref_Widgets_Color_EventSoon_title"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"/>
+			
+		<!-- todo: добавить цвет далёких событий -->
+
+		<!-- todo: добавить цвет инфо под фото -->
+		
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- https://stackoverflow.com/questions/19238738/android-shape-with-bottom-stroke/19239478#19239478 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    <item android:top="-2dp" android:right="-2dp" android:left="-2dp">
+        <shape>
+            <solid android:color="?android:attr/colorPrimary" />
+            <stroke
+                android:width="1px"
+                android:color="?attr/borderWindowColor" />
+        </shape>
+    </item>
+</layer-list>

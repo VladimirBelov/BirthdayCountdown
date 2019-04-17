@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WidgetConfigureActivity" >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorPrimary"	>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/AppTheme.DarkGray.ActionBar"
+            app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+	<!-- todo: сделать поддержку цветов темы -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="42sp"
+        android:background="?attr/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_index_label"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <Spinner
+                android:id="@+id/spinnerEventShift"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/widget_config_numbers"
+                android:prompt="@string/widget_config_index_label" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_index_description"
+                android:textColor="?android:attr/textColorSecondary"/>
+
+            <View
+                android:id="@+id/dividerFontMagnify"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:background="@color/lighter_gray" /> <!--Divider-->
+
+            <TextView
+                android:id="@+id/spinnerFontMagnifyLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_font_label"
+                android:textColor="?android:attr/textColorSecondary"/>
+
+            <Spinner
+                android:id="@+id/spinnerFontMagnify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/widget_config_font"
+                android:prompt="@string/widget_config_font_label" />
+
+            <TextView
+                android:id="@+id/textViewFontMagnify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_font_description"
+                android:textColor="?android:attr/textColorSecondary"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:onClick="buttonCancelOnClick"
+                android:text="@string/button_Cancel"
+                tools:ignore="ButtonStyle"
+                android:textColor="?attr/colorPrimary"/>
+
+            <Button
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:onClick="buttonOkOnClick"
+                android:text="@string/button_OK"
+                tools:ignore="ButtonStyle"
+                android:textColor="?attr/colorPrimary"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

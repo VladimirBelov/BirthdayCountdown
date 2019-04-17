@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme">
+        <attr name="windowTitleColor" format="color"/>
+        <attr name="windowStatusbarColor" format="color"/>
+        <attr name="windowNavbarDividerColor" format="color"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="borderWindowColor" format="color"/>
+        <attr name="listDividerColor" format="color"/>
+        <attr name="eventFullNameColor" format="color"/>
+        <attr name="eventDistanceColor" format="color"/>
+        <attr name="eventAgeColor" format="color"/>
+        <attr name="eventDateColor" format="color"/>
+        <attr name="eventDetailsColor" format="color"/>
+        <attr name="dialogTextColor" format="color"/>
+        <attr name="dialogHintColor" format="color"/>
+    </declare-styleable>
+</resources>

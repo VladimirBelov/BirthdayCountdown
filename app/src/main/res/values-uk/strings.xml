@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="window_settings">Налаштування</string>
+    <string name="window_widget_settings">Налаштування віджета</string>
+
+    <string name="menu_settings">Налаштування</string>
+    <string name="menu_refresh">Оновити</string>
+    <string name="menu_search">Фільтр…</string>
+    <string name="menu_exit">Вихід</string>
+
+    <string name="msg_no_access">Не вдається отримати доступ до контактів</string>
+    <string name="msg_no_events">Подій не знайдено</string>
+    <string name="msg_filter">, фільтр:</string>
+    <string name="msg_before_event_prefix">"через "</string>
+    <string name="msg_today">Сьогодні</string>
+    <string name="msg_tomorrow">Завтра</string>
+    <string name="msg_day_after_tomorrow">Післязавтра</string>
+    <string name="msg_stats_prefix">подій:</string>
+    <string name="msg_after_age_prefix_1">" рік"</string>
+    <string name="msg_after_age_prefix_2_3_4">" роки"</string>
+    <string name="msg_after_age_prefix_1_">" рік"</string>
+    <string name="msg_after_age_prefix_4_21">" років"</string>
+    <string name="msg_before_event_prefix_1">" день"</string>
+    <string name="msg_before_event_prefix_2_3_4">" днi"</string>
+    <string name="msg_before_event_prefix_1_">" день"</string>
+    <string name="msg_before_event_prefix_4_21">" днів"</string>
+    <string name="msg_label_search">Введіть частину П.І.Б., тип контакта, місце роботи, посада, дати (кілька значень можна вводити через кому):</string>
+    <string name="msg_hint_search">Значення фільтра</string>
+
+    <string name="hint_ContactIcon">Фото</string>
+    <string name="hint_Name">ПІБ</string>
+    <string name="hint_Age">Вік</string>
+    <string name="hint_Date">Дата</string>
+    <string name="hint_EventDistance">До події</string>
+    <string name="hint_Description">Деталі</string>
+    <string name="hint_EventIcon">Значок</string>
+
+    <string name="title_activity_settings">Типи подій</string>
+    <string name="title_activity_search">Фільтр</string>
+
+    <string name="button_OK">OK</string>
+    <string name="button_Clear">Очистити</string>
+    <string name="button_Cancel">Відміна</string>
+    <string name="button_Rate">Оцінити програму</string>
+
+    <string name="event_type_birthday">День народження</string>
+    <string name="event_type_anniversary">Річниця весілля</string>
+    <string name="event_type_other">Інша подія событие</string>
+    <string name="event_type_death">Річниця смерті</string>
+    <string name="event_type_crowning">Вінчання</string>
+    <string name="event_type_nameday">Iменини</string>
+    <string name="event_type_birthday_2">дня народження</string>
+    <string name="event_type_anniversary_2">річниці весілля</string>
+    <string name="event_type_other_2">події</string>
+    <string name="event_type_death_2">річниці смерті</string>
+
+    <string name="appwidget_text">Завантаження…</string>
+    <string name="appwidget_name_1_7">На 1–7 подій</string>
+    <string name="appwidget_name_5">На 5 подію</string>
+    <string name="appwidget_name_1">На 1 подію</string>
+    <string name="widget_Photo">Фото</string>
+    <string name="widget_FIO">ПІБ</string>
+    <string name="widget_Date">Дата</string>
+    <string name="widget_Age">РР</string>
+    <string name="widget_TypeIcon">Тип</string>
+    <string name="widget_Distance">До</string>
+
+    <string name="pref_Events_title">Загальні</string>
+    <string name="pref_Language_title">Мова</string>
+    <string name="pref_Language_description">Мова інтерфейсу та відображаємих даних</string>
+    <string name="pref_Theme_title">Тема</string>
+    <string name="pref_Theme_description">Колірна тема інтерфейсу</string>
+
+    <string-array name="pref_Language_entries">
+        <item>Автоматично</item>
+        <item>Англійська</item>
+        <item>Російська</item>
+        <item>Українська</item>
+    </string-array>
+
+    <string-array name="weekDays">
+        <item>" у неділю"</item>
+        <item>" у понеділок"</item>
+        <item>" у вівторок"</item>
+        <item>" у середу"</item>
+        <item>" у четвер"</item>
+        <item>" у п\'ятницю"</item>
+        <item>" у суботу"</item>
+    </string-array>
+
+    <string-array name="pref_Theme_entries">
+        <item>Зелена</item>
+        <item>Темно-сіра</item>
+        <item>Чорна</item>
+    </string-array>
+
+    <string name="pref_EventTypes_title">Типи подій</string>
+    <string name="pref_EventTypes_description">Які події показувати у списку</string>
+
+    <string-array name="pref_EventTypes_entries">
+        <item>Дні народження</item>
+        <item>Річниці весілля</item>
+        <item>Інші події</item>
+        <item>Події користувача</item>
+        <item>Круглі дати (5K днів)</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_title">Налаштування подій</string>
+    <string name="pref_CustomEvents_summary">Параметри визначення користувальницьких подій</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_description">Використовувати стандартні найменування для визначення днів народжень</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як дні народження (через кому)</string>
+
+    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Використовувати стандартні найменування для визначення річниць весіль</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці весіль (через кому)</string>
+
+    <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_description">Використовувати стандартні найменування дляя визначення іменин</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як іменини (через кому)</string>
+
+    <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартні найменування</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_description">Використовувати стандартні найменування для визначення вінчань</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як вінчання (через кому)</string>
+
+    <string name="pref_CustomEvents_Death_UseInternal_title">Стандартні найменування</string>
+    <string name="pref_CustomEvents_Death_UseInternal_description">Використовувати стандартні найменування для визначення річниць смерті</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці смерті (через кому)</string>
+
+    <string name="pref_CustomEvents_Custom_title">Настраіваемоё подія</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Найменування подій</string>
+    <string name="pref_CustomEvents_Custom_Labels_description">Події контактів з такою міткою будуть ідентифіковані як ця подія (через кому)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Використовувати рік</string>
+    <string name="pref_CustomEvents_Custom_UseYear_description">Використовувати рік для розрахунку річниць (не тільки день і місяць)</string>
+
+    <string name="pref_List_title">Список подій</string>
+
+    <string name="pref_List_BottomInfo_title">Деталі події</string>
+    <string name="pref_List_BottomInfo_description">Що показувати під ім\'ям контакту</string>
+
+    <string name="pref_Widgets_title">Віджети</string>
+
+    <string name="pref_Widgets_BottomInfo_title">Інформація під фото</string>
+    <string name="pref_Widgets_BottomInfo_description">Що показувати під фотографією</string>
+
+    <string name="pref_Widgets_ContactPhotos_title">Фото контакту</string>
+    <string name="pref_Widgets_ContactPhotos_description">Показувати фото контакту</string>
+
+    <string name="pref_Widgets_EventIcons_title">Значок події</string>
+    <string name="pref_Widgets_EventIcons_description">Показувати значок події</string>
+
+    <string-array name="pref_Widgets_Color_entries">
+        <item>Зелений</item>
+        <item>Червоний</item>
+        <item>Жовтий</item>
+        <item>Білий</item>
+    </string-array>
+
+    <string-array name="pref_List_BottomInfo_entries">
+        <item>Посада</item>
+        <item>Організація</item>
+        <item>Подробиці події</item>
+        <item>Тип аккаунта і збережена дата</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_BottomInfo_entries">
+        <item>Прізвище Ім’я По-батькові</item>
+        <item>Прізвище І.П.</item>
+        <item>Ім’я По-батькові Прізвище</item>
+        <item>Дата події</item>
+        <item>Нічого</item>
+    </string-array>
+
+    <string name="pref_Widgets_Color_EventToday_title">Колір для \"Вік\"</string>
+    <string name="pref_Widgets_Color_EventToday_description">Колір віку для сьогоднішньої події</string>
+
+    <string name="pref_Widgets_Color_EventSoon_title">Колір для \"Днів до події\"</string>
+    <string name="pref_Widgets_Color_EventSoon_description">Колір лічильника днів до найближчих подій</string>
+
+    <string name="pref_Widgets_Days_EventSoon_description">За скільки днів події вважаються найближчими</string>
+    <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>
+
+    <string name="widget_config_index_label">Стартовий номер події:</string>
+    <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
+
+    <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
+    <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, дистанції до події та інформації під фото</string>
+    <string-array name="widget_config_font">
+        <item>Автоматично</item>
+        <item>x0.75</item>
+        <item>x1.0</item>
+        <item>x1.2</item>
+        <item>x1.5</item>
+        <item>x1.75</item>
+    </string-array>
+
+    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
+    <string name="event_type_wedding_1">Стеців</string>
+    <string name="event_type_wedding_2">Паперова</string>
+    <string name="event_type_wedding_3">Шкіряна</string>
+    <string name="event_type_wedding_4">Льняна</string>
+    <string name="event_type_wedding_5">Дерев\'яна</string>
+    <string name="event_type_wedding_6">Чавунна</string>
+    <!-- Цинковая свадьба — 6,5 лет -->
+    <string name="event_type_wedding_7">Мідна</string>
+    <string name="event_type_wedding_8">Жерстяна</string>
+    <string name="event_type_wedding_9">Фаянсова</string>
+    <string name="event_type_wedding_10">Олов\'яне</string>
+    <string name="event_type_wedding_11">Сталева</string>
+    <string name="event_type_wedding_12">Нікелева</string>
+    <!-- Никелевая свадьба — 12,5 лет -->
+    <string name="event_type_wedding_13">Мереживна</string>
+    <string name="event_type_wedding_14">Агатова</string>
+    <string name="event_type_wedding_15">Кришталева</string>
+    <string name="event_type_wedding_16">Топазовая</string>
+    <string name="event_type_wedding_17">Рожева</string>
+    <string name="event_type_wedding_18">Бірюзова</string>
+    <string name="event_type_wedding_19">Гранатова</string>
+    <string name="event_type_wedding_20">Фарфорова</string>
+    <string name="event_type_wedding_21">Опалова</string>
+    <string name="event_type_wedding_22">Бронзова</string>
+    <string name="event_type_wedding_23">Берилові</string>
+    <string name="event_type_wedding_24">Атласна</string>
+    <string name="event_type_wedding_25">Срібна</string>
+    <string name="event_type_wedding_26">Нефритовая</string>
+    <string name="event_type_wedding_27">Червоного дерева</string>
+    <string name="event_type_wedding_28">Нікелева</string>
+    <string name="event_type_wedding_29">Оксамитова</string>
+    <string name="event_type_wedding_30">Перлова</string>
+    <string name="event_type_wedding_31">Смаглява або Сонячна</string>
+    <string name="event_type_wedding_32">Мідна</string> <!-- http://www.grc-eka.ru/svadba/32-goda-mednaya.html -->
+    <string name="event_type_wedding_33">Кам\'яна або Полунична</string>
+    <string name="event_type_wedding_34">Янтарна</string>
+    <string name="event_type_wedding_35">Полотняна або Коралове</string>
+    <string name="event_type_wedding_36">день Кістяного порцеляни</string> <!-- https://materinstvo.ru/art/svadebnye-godovshiny-35-100-let -->
+    <string name="event_type_wedding_37">Муслінову</string>
+    <!-- Алюминиевая свадьба — 37,5 лет -->
+    <string name="event_type_wedding_38">Ртутна</string>
+    <string name="event_type_wedding_39">Крепова</string>
+    <string name="event_type_wedding_40">Рубінова</string>
+    <string name="event_type_wedding_41">Земляна</string> <!-- http://www.grc-eka.ru/svadba/41-god-zemlyanaya.html -->
+    <string name="event_type_wedding_42">Перламутрова</string>
+    <string name="event_type_wedding_43">Фланелева</string>
+    <string name="event_type_wedding_44">Топазовая</string>
+    <string name="event_type_wedding_45">Сапфірове</string>
+    <string name="event_type_wedding_46">Лавандова</string>
+    <string name="event_type_wedding_47">Кашемірова</string>
+    <string name="event_type_wedding_48">Аметистова</string>
+    <string name="event_type_wedding_49">Кедрова</string>
+    <string name="event_type_wedding_50">Золота</string>
+    <string name="event_type_wedding_55">Смарагдова</string>
+    <string name="event_type_wedding_60">Діамантова</string>
+    <string name="event_type_wedding_65">Залізна</string>
+    <!-- Каменная свадьба — 67,5 лет -->
+    <string name="event_type_wedding_70">Благодатна</string>
+    <string name="event_type_wedding_75">Коронна</string>
+    <string name="event_type_wedding_80">Дубова</string>
+    <string name="event_type_wedding_90">Гранітна</string>
+    <string name="event_type_wedding_100">Червона або латіновая</string>
+</resources>

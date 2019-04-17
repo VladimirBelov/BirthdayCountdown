@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- minWidth: 70 * n - 30 -->
+<!-- 21600000 - обновлять 1 раз в 6 часов -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/widget4x1bc"
+    android:initialLayout="@layout/widget4x1bc"
+    android:minWidth="320dp"
+    android:minHeight="40dp"
+    android:previewImage="@drawable/widget5x1"
+    android:updatePeriodMillis="21600000"
+    android:widgetCategory="home_screen"
+    android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>

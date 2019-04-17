@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- для xxxhdpi (4.0), 560dpi (3.5) -->
+<resources>
+    <dimen name="widget_21cellHeight">80.0dip</dimen>
+    <dimen name="widget_21cellWidth">70.0dip</dimen>
+
+    <dimen name="widget_31cellHeight">80.0dip</dimen>
+    <dimen name="widget_31cellWidth">70.5dip</dimen>
+
+    <dimen name="widget_41cellHeight">80.0dip</dimen>
+    <dimen name="widget_41cellWidth">72.0dip</dimen>
+
+    <dimen name="widget_51cellHeight">80.0dip</dimen>
+    <dimen name="widget_51cellWidth">74.0dip</dimen>
+
+    <dimen name="widget_61cellHeight">80.0dip</dimen>
+    <dimen name="widget_61cellWidth">74.0dip</dimen>
+</resources>

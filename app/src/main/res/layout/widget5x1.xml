@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appwidget_main"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/widget_51cellHeight">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/appwidget_text"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/appwidget_text"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <RelativeLayout
+        android:id="@+id/eventInfo0"
+        android:layout_width="@dimen/widget_51cellWidth"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView0"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="3dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
+            android:contentDescription="@string/widget_Photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_man01" />
+
+        <TextView
+            android:id="@+id/textView0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="3dip"
+            android:layout_marginTop="-9.0dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewCentered0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="3dip"
+            android:layout_marginTop="-9.0dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewDistance0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginEnd="4.0dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3.0"
+            android:singleLine="true"
+            android:text="@string/widget_Distance"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/widgetDaysX_fontSize"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:id="@+id/iconEventType0"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dip"
+            android:layout_marginTop="4dip"
+            android:contentDescription="@string/widget_TypeIcon"
+            android:src="@drawable/ic_event_birthday" />
+
+        <TextView
+            android:id="@+id/textViewAge0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dip"
+            android:layout_marginEnd="1dip"
+            android:layout_marginBottom="1dip"
+            android:layout_toEndOf="@+id/iconEventType0"
+            android:paddingTop="1dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@string/widget_Age"
+            android:textSize="@dimen/widgetMarks_fontSize"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/eventInfo1"
+        android:layout_width="@dimen/widget_51cellWidth"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/eventInfo0"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="1dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
+            android:contentDescription="@string/widget_Photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_man01" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewCentered1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewDistance1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginEnd="4.0dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3.0"
+            android:singleLine="true"
+            android:text="@string/widget_Distance"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/widgetDaysX_fontSize"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:id="@+id/iconEventType1"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dip"
+            android:layout_marginTop="4dip"
+            android:contentDescription="@string/widget_TypeIcon"
+            android:src="@drawable/ic_event_birthday" />
+
+        <TextView
+            android:id="@+id/textViewAge1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dip"
+            android:layout_marginEnd="1dip"
+            android:layout_marginBottom="1dip"
+            android:layout_toEndOf="@+id/iconEventType1"
+            android:paddingTop="1dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@string/widget_Age"
+            android:textSize="@dimen/widgetMarks_fontSize"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/eventInfo2"
+        android:layout_width="@dimen/widget_51cellWidth"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@+id/eventInfo1"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="1dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
+            android:contentDescription="@string/widget_Photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_man01" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewCentered2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewDistance2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginEnd="4.0dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3.0"
+            android:singleLine="true"
+            android:text="@string/widget_Distance"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/widgetDaysX_fontSize"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:id="@+id/iconEventType2"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dip"
+            android:layout_marginTop="4dip"
+            android:contentDescription="@string/widget_TypeIcon"
+            android:src="@drawable/ic_event_birthday" />
+
+        <TextView
+            android:id="@+id/textViewAge2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dip"
+            android:layout_marginEnd="1dip"
+            android:layout_marginBottom="1dip"
+            android:layout_toEndOf="@+id/iconEventType2"
+            android:paddingTop="1dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@string/widget_Age"
+            android:textSize="@dimen/widgetMarks_fontSize"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/eventInfo3"
+        android:layout_width="@dimen/widget_51cellWidth"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/eventInfo2"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="1dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
+            android:contentDescription="@string/widget_Photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_man01" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewCentered3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewDistance3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginEnd="4.0dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3.0"
+            android:singleLine="true"
+            android:text="@string/widget_Distance"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/widgetDaysX_fontSize"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:id="@+id/iconEventType3"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dip"
+            android:layout_marginTop="4dip"
+            android:contentDescription="@string/widget_TypeIcon"
+            android:src="@drawable/ic_event_birthday" />
+
+        <TextView
+            android:id="@+id/textViewAge3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dip"
+            android:layout_marginEnd="1dip"
+            android:layout_marginBottom="1dip"
+            android:layout_toEndOf="@+id/iconEventType3"
+            android:paddingTop="1dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@string/widget_Age"
+            android:textSize="@dimen/widgetMarks_fontSize"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/eventInfo4"
+        android:layout_width="@dimen/widget_51cellWidth"
+        android:layout_height="@dimen/widget_51cellHeight"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/eventInfo3"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="1dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginEnd="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
+            android:contentDescription="@string/widget_Photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_man01" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewCentered4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
+            android:layout_marginBottom="3.0dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textViewDistance4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginEnd="4.0dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3.0"
+            android:singleLine="true"
+            android:text="@string/widget_Distance"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/widgetDaysX_fontSize"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:id="@+id/iconEventType4"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dip"
+            android:layout_marginTop="4dip"
+            android:contentDescription="@string/widget_TypeIcon"
+            android:src="@drawable/ic_event_birthday" />
+
+        <TextView
+            android:id="@+id/textViewAge4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dip"
+            android:layout_marginEnd="1dip"
+            android:layout_marginBottom="1dip"
+            android:layout_toEndOf="@+id/iconEventType4"
+            android:paddingTop="1dip"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@string/widget_Age"
+            android:textSize="@dimen/widgetMarks_fontSize"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</RelativeLayout>

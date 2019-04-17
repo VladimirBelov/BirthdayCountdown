@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
+<resources>
+    <dimen name="widgetDate_fontSize">10.0sp</dimen>
+    <dimen name="widgetMarks_fontSize">12.0sp</dimen>
+    <dimen name="widgetDaysX_fontSize">24.0sp</dimen>
+
+    <dimen name="widget_21cellHeight">80.0dip</dimen>
+    <dimen name="widget_21cellWidth">70.0dip</dimen>
+
+    <dimen name="widget_31cellHeight">80.0dip</dimen>
+    <dimen name="widget_31cellWidth">70.0dip</dimen>
+
+    <dimen name="widget_41cellHeight">80.0dip</dimen>
+    <dimen name="widget_41cellWidth">72.0dip</dimen>
+
+    <dimen name="widget_51cellHeight">80.0dip</dimen>
+    <dimen name="widget_51cellWidth">72.0dip</dimen>
+
+    <dimen name="widget_61cellHeight">80.0dip</dimen>
+    <dimen name="widget_61cellWidth">72.0dip</dimen>
+
+    <dimen name="widget_71cellHeight">80.0dip</dimen>
+    <dimen name="widget_71cellWidth">72.0dip</dimen>
+
+    <dimen name="eventlist_photoSize">70.0dip</dimen>
+
+    <dimen name="widget_41bc_fullwidth">320dip</dimen>
+    <dimen name="widget_41bc_cellWidth">66.0dip</dimen>
+    <dimen name="widget_41bc_cellHeight">80.0dip</dimen>
+</resources>
