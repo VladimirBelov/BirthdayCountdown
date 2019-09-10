@@ -12,9 +12,13 @@
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_filter">, фільтр:</string>
     <string name="msg_before_event_prefix">"через "</string>
+    <string name="msg_after_event_prefix">""</string>
+    <string name="msg_after_event_postfix">" тому"</string>
     <string name="msg_today">Сьогодні</string>
     <string name="msg_tomorrow">Завтра</string>
     <string name="msg_day_after_tomorrow">Післязавтра</string>
+    <string name="msg_yesterday">Вчора</string>
+    <string name="msg_beforeyesterday">Позавчора</string>
     <string name="msg_stats_prefix">подій:</string>
     <string name="msg_after_age_prefix_1">" рік"</string>
     <string name="msg_after_age_prefix_2_3_4">" роки"</string>
@@ -24,8 +28,12 @@
     <string name="msg_before_event_prefix_2_3_4">" днi"</string>
     <string name="msg_before_event_prefix_1_">" день"</string>
     <string name="msg_before_event_prefix_4_21">" днів"</string>
-    <string name="msg_label_search">Введіть частину П.І.Б., тип контакта, місце роботи, посада, дати (кілька значень можна вводити через кому):</string>
+    <string name="msg_label_search">Введіть частину П.І.Б., тип контакта, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Значення фільтра</string>
+    <string name="msg_notifications_soon_no_events">Немає подій на найближчі дні</string>
+    <string name="msg_notifications_today_no_events">Немає подій на сьогодні</string>
+    <string name="msg_notifications_soon">"Скоро подій - "</string>
+    <string name="msg_notifications_today">"Подій сьогодні - "</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ПІБ</string>
@@ -49,10 +57,6 @@
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Iменини</string>
-    <string name="event_type_birthday_2">дня народження</string>
-    <string name="event_type_anniversary_2">річниці весілля</string>
-    <string name="event_type_other_2">події</string>
-    <string name="event_type_death_2">річниці смерті</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_name_1_7">На 1–7 подій</string>
@@ -74,6 +78,7 @@
     <string-array name="pref_Language_entries">
         <item>Автоматично</item>
         <item>Англійська</item>
+        <item>Німецький</item>
         <item>Російська</item>
         <item>Українська</item>
     </string-array>
@@ -95,7 +100,7 @@
     </string-array>
 
     <string name="pref_EventTypes_title">Типи подій</string>
-    <string name="pref_EventTypes_description">Які події показувати у списку</string>
+    <string name="pref_EventTypes_description">Які події відображати в списку подій і віджети</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Дні народження</item>
@@ -105,8 +110,19 @@
         <item>Круглі дати (5K днів)</item>
     </string-array>
 
+    <string name="pref_List_SadPhoto_title">"Щоб пам'ятати"</string>
+    <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів чорною стрічкою</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Ніколи</item>
+        <item>Тільки для однієї події</item>
+        <item>Для всіх подій контакту</item>
+    </string-array>
+
     <string name="pref_CustomEvents_title">Налаштування подій</string>
     <string name="pref_CustomEvents_summary">Параметри визначення користувальницьких подій</string>
+    <string name="pref_CustomEvents_hint">Найменування (через кому)</string>
+    <string name="pref_CustomEvent_Caption_hint">Тема події</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Використовувати стандартні найменування для визначення днів народжень</string>
@@ -142,6 +158,21 @@
 
     <string name="pref_List_title">Список подій</string>
 
+    <string name="pref_List_PrevEvents_title">Попередні події</string>
+    <string name="pref_List_PrevEvents_description">Показувати попередні події у верхній частині списку</string>
+
+    <string-array name="pref_List_PrevEvents_entries">
+        <item>Не відображати</item>
+        <item>Вчорашні події</item>
+        <item>Події за 2 попередні дні</item>
+        <item>Події за 3 попередні дні</item>
+        <item>Події за 3 попередні дні, але не більше одного</item>
+        <item>Події за 3 попередні дні, але не більше двох</item>
+        <item>Одне попереднє подія</item>
+        <item>Два попередніх події</item>
+        <item>Три попередніх події</item>
+    </string-array>
+
     <string name="pref_List_BottomInfo_title">Деталі події</string>
     <string name="pref_List_BottomInfo_description">Що показувати під ім\'ям контакту</string>
 
@@ -167,6 +198,7 @@
         <item>Посада</item>
         <item>Організація</item>
         <item>Подробиці події</item>
+        <item>Початкове найменування події</item>
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
@@ -201,6 +233,45 @@
         <item>x1.75</item>
     </string-array>
 
+    <string name="pref_Notifications_title">Повідомлення</string>
+
+    <string name="pref_Notifications_Type_title">Стиль повідомлень</string>
+    <string name="pref_Notifications_Type_description">Як повідомлення будуть виглядати</string>
+
+    <string-array name="pref_Notifications_Type_entries">
+        <item>Одне загальне повідомлення</item>
+        <item>Кожна подія в окремому повідомленні</item>
+        <item>Якщо подію менше 3 => окремі, інакше - загальне</item>
+        <item>Якщо подію менше 4 => окремі, інакше - загальне</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Iнтервал повідомлень</string>
+    <string name="pref_Notifications_Days_description">За скільки днів повідомляти</string>
+
+    <string-array name="pref_Notifications_Days_entries">
+        <item>Чи не повідомляти</item>
+        <item>У день події</item>
+        <item>За один день</item>
+        <item>За два дні</item>
+        <item>За три дні</item>
+        <item>За тиждень</item>
+    </string-array>
+
+    <string name="pref_Notifications_AlarmHour_title">Час повідомлення</string>
+    <string name="pref_Notifications_AlarmHour_description">В який час повідомляти</string>
+
+    <string-array name="pref_Notifications_AlarmHour_entries">
+        <item>В 7 утра</item>
+        <item>В 8 утра</item>
+        <item>В 9 утра</item>
+        <item>В 10 дня</item>
+        <item>В 11 дня</item>
+        <item>В полдень</item>
+    </string-array>
+
+    <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
+    <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>
+
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
     <string name="event_type_wedding_1">Стеців</string>
     <string name="event_type_wedding_2">Паперова</string>
@@ -216,7 +287,7 @@
     <string name="event_type_wedding_11">Сталева</string>
     <string name="event_type_wedding_12">Нікелева</string>
     <!-- Никелевая свадьба — 12,5 лет -->
-    <string name="event_type_wedding_13">Мереживна</string>
+    <string name="event_type_wedding_13">Конвалієве або Мереживна</string>
     <string name="event_type_wedding_14">Агатова</string>
     <string name="event_type_wedding_15">Кришталева</string>
     <string name="event_type_wedding_16">Топазовая</string>
@@ -235,11 +306,11 @@
     <string name="event_type_wedding_29">Оксамитова</string>
     <string name="event_type_wedding_30">Перлова</string>
     <string name="event_type_wedding_31">Смаглява або Сонячна</string>
-    <string name="event_type_wedding_32">Мідна</string> <!-- http://www.grc-eka.ru/svadba/32-goda-mednaya.html -->
+    <string name="event_type_wedding_32">""</string>
     <string name="event_type_wedding_33">Кам\'яна або Полунична</string>
     <string name="event_type_wedding_34">Янтарна</string>
     <string name="event_type_wedding_35">Полотняна або Коралове</string>
-    <string name="event_type_wedding_36">день Кістяного порцеляни</string> <!-- https://materinstvo.ru/art/svadebnye-godovshiny-35-100-let -->
+    <string name="event_type_wedding_36">""</string>
     <string name="event_type_wedding_37">Муслінову</string>
     <!-- Алюминиевая свадьба — 37,5 лет -->
     <string name="event_type_wedding_38">Ртутна</string>
@@ -256,12 +327,13 @@
     <string name="event_type_wedding_49">Кедрова</string>
     <string name="event_type_wedding_50">Золота</string>
     <string name="event_type_wedding_55">Смарагдова</string>
-    <string name="event_type_wedding_60">Діамантова</string>
+    <string name="event_type_wedding_60">Алмазна</string>
     <string name="event_type_wedding_65">Залізна</string>
     <!-- Каменная свадьба — 67,5 лет -->
     <string name="event_type_wedding_70">Благодатна</string>
     <string name="event_type_wedding_75">Коронна</string>
     <string name="event_type_wedding_80">Дубова</string>
+    <string name="event_type_wedding_85">""</string>
     <string name="event_type_wedding_90">Гранітна</string>
-    <string name="event_type_wedding_100">Червона або латіновая</string>
+    <string name="event_type_wedding_100">Червона або Платіновая</string>
 </resources>

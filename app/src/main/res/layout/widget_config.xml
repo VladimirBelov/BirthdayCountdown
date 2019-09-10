@@ -19,7 +19,7 @@
             app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 	<!-- todo: сделать поддержку цветов темы -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="42sp"

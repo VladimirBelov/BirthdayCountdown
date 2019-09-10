@@ -42,7 +42,7 @@ public class Widget4x1 extends AppWidgetProvider {
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget4x1bc);
-        //Toast.makeText(context, "minWidth=" + minWidth + ", getCellsForSize=" + getCellsForSize(minWidth) + ", density=" + context.getResources().getDisplayMetrics().density + ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) + ", appWidgetId=" + appWidgetId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "4x1 minWidth=" + minWidth + ", getCellsForSize=" + getCellsForSize(minWidth) + ", density=" + context.getResources().getDisplayMetrics().density + ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) + ", appWidgetId=" + appWidgetId, Toast.LENGTH_LONG).show();
         new WidgetUpdater(context, ContactsEvents.getInstance(), views, getCellsForSize(minWidth), minWidth, minHeight, appWidgetId).invoke();
         appWidgetManager.updateAppWidget(appWidgetId, views);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);

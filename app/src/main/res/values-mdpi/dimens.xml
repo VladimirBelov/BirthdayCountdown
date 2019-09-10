@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- для mdpi (1.0) -->
 <resources>
+    <string name="dimenSet">mdpi (1.0)</string>
+
     <dimen name="widget_21cellHeight">80.0dip</dimen>
     <dimen name="widget_21cellWidth">86.0dip</dimen>
 

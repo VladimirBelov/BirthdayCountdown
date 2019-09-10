@@ -49,7 +49,12 @@ public class Widget5x1 extends AppWidgetProvider {
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
         RemoteViews views = getRemoteViews(context, getCellsForSize(minWidth));
-        //Toast.makeText(context, "minWidth=" + minWidth + ", getCellsForSize=" + getCellsForSize(minWidth) + ", density=" + context.getResources().getDisplayMetrics().density + ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) + ", appWidgetId=" + appWidgetId, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "5x1 minWidth=" + minWidth +
+//                ", getCellsForSize=" + getCellsForSize(minWidth) +
+//                ", density=" + context.getResources().getDisplayMetrics().density +
+//                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
+//                ", appWidgetId=" + appWidgetId +
+//                ", dimenSet=" + context.getResources().getString(R.string.dimenSet), Toast.LENGTH_LONG).show();
         new WidgetUpdater(context, ContactsEvents.getInstance(), views, getCellsForSize(minWidth), minWidth, minHeight, appWidgetId).invoke();
         appWidgetManager.updateAppWidget(appWidgetId, views);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
@@ -63,7 +68,7 @@ public class Widget5x1 extends AppWidgetProvider {
             case 2:  return new RemoteViews(context.getPackageName(), R.layout.widget2x1);
             case 3:  return new RemoteViews(context.getPackageName(), R.layout.widget3x1);
             case 4:  return new RemoteViews(context.getPackageName(), R.layout.widget4x1);
-            case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget5x1);
+            //case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget5x1);
             case 6:  return new RemoteViews(context.getPackageName(), R.layout.widget6x1);
             case 7:  return new RemoteViews(context.getPackageName(), R.layout.widget7x1);
             default: return new RemoteViews(context.getPackageName(), R.layout.widget5x1);

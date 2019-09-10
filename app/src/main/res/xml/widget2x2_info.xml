@@ -11,6 +11,6 @@
     android:minResizeHeight="40dp"
     android:previewImage="@drawable/widget2x2"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="21600000"
+    android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen"
     android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>

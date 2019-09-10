@@ -4,6 +4,8 @@
     package="org.vovka.birthdaycountdown">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
     <application
@@ -94,6 +96,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget4x1bc_info" />
         </receiver>
+
+        <receiver android:name=".DeviceBootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".AlarmReceiver" />
     </application>
 
 </manifest>

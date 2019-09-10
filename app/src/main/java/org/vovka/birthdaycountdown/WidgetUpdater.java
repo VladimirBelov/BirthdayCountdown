@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -17,9 +16,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 
 @SuppressWarnings("ConstantConditions")
 class WidgetUpdater {
@@ -52,7 +48,7 @@ class WidgetUpdater {
         boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
         if (canReadContacts && (eventsData.dataArray == null || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
             eventsData.context = context;
-            if (eventsData.getContactsEvents()) eventsData.computeDates();
+            if (eventsData.getContactsEvents(context)) eventsData.computeDates();
         }
 
         //Отрисовываем события
@@ -126,7 +122,8 @@ class WidgetUpdater {
                 //Отрисовываем информацию о событиях
                 for (int i = 0; i < eventsToShow; i++) {
                     try {
-                        String[] singleRowArray = eventsData.dataArray[i + startingIndex - 1].split(ContactsEvents.Div1);
+                        String event = eventsData.dataArray[i + startingIndex - 1];
+                        String[] singleRowArray = event.split(ContactsEvents.Div1);
                         String eventType = singleRowArray[ContactsEvents.dataMap.get("eventType")];
                         Person person = new Person(context, eventsData.dataArray[i + startingIndex - 1]);
 
@@ -141,7 +138,7 @@ class WidgetUpdater {
                                 views.setViewVisibility(id_widget_Date, View.GONE);
                                 break;
                             case "2": //Дата события
-                                views.setTextViewText(id_widget_Date, singleRowArray[ContactsEvents.dataMap.get("eventDate")]);
+                                views.setTextViewText(id_widget_Date, singleRowArray[ContactsEvents.dataMap.get("eventDateText")]);
                                 views.setViewVisibility(id_widget_FIO, View.GONE);
                                 views.setViewVisibility(id_widget_Date, View.VISIBLE);
                                 break;
@@ -168,42 +165,15 @@ class WidgetUpdater {
                         //Фото
                         // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
                         int id_widget_Photo = resources.getIdentifier("imageView" + i, "id", packageName);
-                        if (eventsData.preferences_widgets_contactsphotos && !singleRowArray[ContactsEvents.dataMap.get("photo_uri")].equalsIgnoreCase("null")) {
-                            //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                            Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[ContactsEvents.dataMap.get("contact_id")]);
-                            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactUri, true);
-                            BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                            Bitmap bm = BitmapFactory.decodeStream(buf);
-                            buf.close();
-                            photo_stream.close();
-                            if (cells > 1) {
-                                views.setImageViewBitmap(id_widget_Photo, bm);
-                            } else {
-                                //потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
-                                Bitmap bm_small = Bitmap.createScaledBitmap(bm, 120, 120, true);
-                                bm.recycle();
-                                views.setImageViewBitmap(id_widget_Photo, bm_small);
-                            }
 
+                        Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_contactsphotos);
+                        if (photo != null && cells == 1) {
+                            //потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
+                            Bitmap bm_small = Bitmap.createScaledBitmap(photo, 120, 120, true);
+                            photo.recycle();
+                            views.setImageViewBitmap(id_widget_Photo, bm_small);
                         } else {
-
-                            //случайное фото с соответствиии с возрастом и полом
-
-                            int idPhoto = R.drawable.photo_man01;
-                            int growAge = 16;
-
-                            String eventLabel = eventType.equals(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM)) ? singleRowArray[ContactsEvents.dataMap.get("eventLabel")].toLowerCase() : "#~#";
-                            boolean notDeath = eventsData.preferences_death_labels == null || !eventsData.preferences_death_labels.reset(eventLabel.toLowerCase()).find();
-
-                            if (person.getGender() == 1 && (person.Age >= 0 && person.Age < growAge) && notDeath) {
-                                idPhoto = R.drawable.photo_boy01;
-                            } else if (person.getGender() == 2 && (person.Age >= 0 && person.Age < growAge) && notDeath) {
-                                idPhoto = R.drawable.photo_girl01;
-                            } else if (person.getGender() == 2) {
-                                idPhoto = R.drawable.photo_woman01;
-                            }
-
-                            views.setImageViewResource(id_widget_Photo, idPhoto);
+                            views.setImageViewBitmap(id_widget_Photo, photo);
                         }
                         //views.setInt(id_widget_Photo, "setBackgroundResource", R.drawable.selection_rectangle); //не работает
 

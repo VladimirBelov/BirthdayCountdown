@@ -67,6 +67,8 @@
                     android:key="@string/pref_CustomEvents_Birthday_Labels_key"
                     android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
                     android:title="@string/pref_CustomEvents_Birthday_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -86,6 +88,8 @@
                     android:key="@string/pref_CustomEvents_Anniversary_Labels_key"
                     android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
                     android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -105,6 +109,8 @@
                     android:key="@string/pref_CustomEvents_NameDay_Labels_key"
                     android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
                     android:title="@string/pref_CustomEvents_NameDay_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -124,6 +130,8 @@
                     android:key="@string/pref_CustomEvents_Crowning_Labels_key"
                     android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
                     android:title="@string/pref_CustomEvents_Crowning_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -143,6 +151,8 @@
                     android:key="@string/pref_CustomEvents_Death_Labels_key"
                     android:summary="@string/pref_CustomEvents_Death_Labels_summary"
                     android:title="@string/pref_CustomEvents_Death_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -155,13 +165,17 @@
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:capitalize="sentences"
+                    android:hint="@string/pref_CustomEvent_Caption_hint"
+                    android:textSize="16sp"
+                    android:inputType="textCapSentences"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <SwitchPreference
@@ -180,13 +194,17 @@
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:capitalize="sentences"
+                    android:hint="@string/pref_CustomEvent_Caption_hint"
+                    android:textSize="16sp"
+                    android:inputType="textCapSentences"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <SwitchPreference
@@ -205,13 +223,17 @@
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:capitalize="sentences"
+                    android:hint="@string/pref_CustomEvent_Caption_hint"
+                    android:textSize="16sp"
+                    android:inputType="textCapSentences"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <SwitchPreference
@@ -230,13 +252,17 @@
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:capitalize="sentences"
+                    android:hint="@string/pref_CustomEvent_Caption_hint"
+                    android:textSize="16sp"
+                    android:inputType="textCapSentences"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <SwitchPreference
@@ -255,13 +281,17 @@
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:capitalize="sentences"
+                    android:hint="@string/pref_CustomEvent_Caption_hint"
+                    android:textSize="16sp"
+                    android:inputType="textCapSentences"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <SwitchPreference
@@ -274,8 +304,17 @@
 
         </PreferenceScreen>
 
+        <ListPreference
+            android:defaultValue="@string/pref_List_SadPhoto_default"
+            android:entries="@array/pref_List_SadPhoto_entries"
+            android:entryValues="@array/pref_List_SadPhoto_values"
+            android:key="@string/pref_List_SadPhoto_key"
+            android:summary="@string/pref_List_SadPhoto_description"
+            android:title="@string/pref_List_SadPhoto_title"
+            android:icon="@android:drawable/ic_menu_crop"
+            android:dialogIcon="@android:drawable/ic_menu_crop"/>
 
-		<!-- todo: список игнорируемых событий -->
+        <!-- todo: список игнорируемых событий -->
 
     </PreferenceCategory>
 
@@ -283,7 +322,16 @@
         android:title="@string/pref_List_title"
         android:layout="@layout/settings_category">
 	
-		<!-- todo: добавить настройку на показ предыдущих событий: за последние х дней, последних y событий -->
+        <ListPreference
+            android:defaultValue="@string/pref_List_PrevEvents_default"
+            android:entries="@array/pref_List_PrevEvents_entries"
+            android:entryValues="@array/pref_List_PrevEvents_values"
+            android:key="@string/pref_List_PrevEvents_key"
+            android:summary="@string/pref_List_PrevEvents_description"
+            android:title="@string/pref_List_PrevEvents_title"
+            android:minHeight="48dp"
+            android:icon="@android:drawable/ic_menu_revert"
+            android:dialogIcon="@android:drawable/ic_menu_revert"/>
 
 		<!-- todo: сделать сортировку через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
         <MultiSelectListPreference
@@ -345,6 +393,7 @@
             android:summary="@string/pref_Widgets_Days_EventSoon_description"
             android:title="@string/pref_Widgets_Days_EventSoon_title"
             android:icon="@android:drawable/ic_menu_week"
+            android:minHeight="48dp"
             android:dialogIcon="@android:drawable/ic_menu_week"/>
 
         <ListPreference
@@ -362,4 +411,48 @@
 		<!-- todo: добавить цвет инфо под фото -->
 		
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_Notifications_title"
+        android:layout="@layout/settings_category">
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_Days_default"
+            android:entries="@array/pref_Notifications_Days_entries"
+            android:entryValues="@array/pref_Notifications_Days_values"
+            android:key="@string/pref_Notifications_Days_key"
+            android:summary="@string/pref_Notifications_Days_description"
+            android:title="@string/pref_Notifications_Days_title"
+            android:icon="@android:drawable/ic_menu_week"
+            android:dialogIcon="@android:drawable/ic_menu_week"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_Type_default"
+            android:entries="@array/pref_Notifications_Type_entries"
+            android:entryValues="@array/pref_Notifications_Type_values"
+            android:key="@string/pref_Notifications_Type_key"
+            android:summary="@string/pref_Notifications_Type_description"
+            android:title="@string/pref_Notifications_Type_title"
+            android:icon="@android:drawable/ic_menu_view"
+            android:dialogIcon="@android:drawable/ic_menu_view"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_AlarmHour_default"
+            android:entries="@array/pref_Notifications_AlarmHour_entries"
+            android:entryValues="@array/pref_Notifications_AlarmHour_values"
+            android:key="@string/pref_Notifications_AlarmHour_key"
+            android:summary="@string/pref_Notifications_AlarmHour_description"
+            android:title="@string/pref_Notifications_AlarmHour_title"
+            android:icon="@android:drawable/ic_menu_today"
+            android:dialogIcon="@android:drawable/ic_menu_today"/>
+
+        <Preference
+            android:id="@+id/pref_NotifyTest"
+            android:key="@string/pref_Notifications_NotifyTest_key"
+            android:summary="@string/pref_Notifications_NotifyTest_description"
+            android:title="@string/pref_Notifications_NotifyTest_title"
+            android:icon="@android:drawable/ic_menu_info_details"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

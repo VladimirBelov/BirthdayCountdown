@@ -2,12 +2,15 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +22,8 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import static org.vovka.birthdaycountdown.MainActivity.NOTIFICATION_CHANNEL_ID;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -69,10 +74,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -86,8 +89,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
 
-        if (preference instanceof PreferenceScreen) {
-            setUpNestedScreen((PreferenceScreen) preference);
+        try {
+
+            if (preference instanceof PreferenceScreen) {
+                setUpNestedScreen((PreferenceScreen) preference);
+            } else if ("NotifyTest".equals(preference.getKey())) {
+                ContactsEvents eventsData = ContactsEvents.getInstance();
+                eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
+
+                if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_DEFAULT);
+                        channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
+                        notificationManager.createNotificationChannel(channel);
+                    }
+                    eventsData.showNotifications(true);
+                } else {
+                    Toast.makeText(this, "Notifications disabled", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "SettingsActivity->onPreferenceTreeClick error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
         }
 
         return false;
@@ -136,4 +161,5 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
     }
+
 }

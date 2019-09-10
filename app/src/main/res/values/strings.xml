@@ -15,6 +15,7 @@
     <string-array name="pref_Language_values" translatable="false">
         <item>AUTO</item>
         <item>en</item>
+        <item>de</item>
         <item>ru</item>
         <item>uk</item>
     </string-array>
@@ -46,6 +47,12 @@
         <item>2</item>
         <item>0</item>
         <item>11</item>
+    </string-array>
+
+    <string-array name="pref_List_SadPhoto_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
 
@@ -102,7 +109,26 @@
         <item>1</item> <!--Должность-->
         <item>2</item> <!--Организация-->
         <item>3</item> <!--Подробности события-->
+        <item>4</item> <!--Исходное наименование события-->
         <item>91</item> <!--Тип аккаунта и хранимая дата-->
+    </string-array>
+
+    <string name="pref_List_PrevEvents_key" translatable="false">List_PrevEvents</string>
+    <string name="pref_List_PrevEvents_default" translatable="false">""</string>
+
+    <string name="pref_List_SadPhoto_key" translatable="false">List_SadPhoto</string>
+    <string name="pref_List_SadPhoto_default" translatable="false">1</string>
+
+    <string-array name="pref_List_PrevEvents_values" translatable="false">
+        <item>""</item>
+        <item>1d</item>
+        <item>2d</item>
+        <item>3d</item>
+        <item>3d1e</item>
+        <item>3d2e</item>
+        <item>1e</item>
+        <item>2e</item>
+        <item>3e</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
@@ -180,13 +206,52 @@
     <string name="last_name_comletions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
     <string name="last_name_comletions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
 
-    <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,arthur,austin,benjamin,billy,bobby,brandon,brian,brother,bruce,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,eric,ethan,eugene,father,frank,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henry,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,logan,louis,mark,matthew,michael,nathan,nicholas,noah,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vincent,walter,wayne,william,willie,zachary</string>
-    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,аксинья,алевтина,александра,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,анжела,анжелика,анна,антонина,анфиса,анфіса,арина,аріна,белла,березня,божена,валентина,валерия,валерія,ванда,варвара,василина,василиса,вера,вероника,вероніка,виктория,виола,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,глафира,глафіра,дарья,диана,дина,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,зиновия,злата,зоя,зіновія,ивонна,изольда,илона,инга,инесса,инна,ирина,ия,iванка,капитолина,капітоліна,карина,каролина,катерина,кира,клавдия,клара,клеопатра,кору,кохана,кристина,ксения,ксенія,лада,лариса,лиана,лидия,лилия,лина,лия,лора,льоха,любава,любимая,любовь,любов,кохання,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надія,настасия,настасья,настасія,наталия,наталья,наталя,невістка,нелли,ника,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,олімпіада,парасковія,пекла,пелагея,полина,поля,прасковья,раиса,раїса,рената,римма,роза,роксана,рут,руфь,сарра,свекровь,свекруха,светлана,світла,серафима,сестра,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,таисия,таисья,тамара,татьяна,таїсія,текле,тетяна,тетя,томи,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,фёкла,хаврония,христина,эвелина,эдита,элеонора,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,ядвига,ядвіга,яна,ярослава,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,alexis,alice,amanda,amber,amy,andrea,angela,ann,anna,ashley,aunt,barbara,betty,beverly,brenda,brittany,carol,carolyn,catherine,cheryl,christina,christine,cynthia,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,elizabeth,emily,emma,evelyn,frances,gloria,grace,granddaughter,hannah,heather,helen,jacqueline,jane,janet,janice,jean,jennifer,jessica,joan,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,laura,lauren,linda,lisa,lori,madison,margaret,maria,marie,marilyn,martha,mary,megan,melissa,michelle,mom,mother,nancy,natalie,nicole,olivia,pamela,patricia,rachel,rebecca,rose,ruth,samantha,sandra,sara,sarah,sharon,shirley,sister,stephanie,susan,teresa,theresa,tiffany,victoria,virginia</string>
+    <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,henry,jack,jacob,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,noah,oscar,oskar,papa,patrick,paul,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,vincent,walter,wayne,william,willie,zachary</string>
+    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,аксинья,алевтина,александра,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,анжела,анжелика,анна,антонина,анфиса,анфіса,арина,аріна,белла,березня,божена,валентина,валерия,валерія,ванда,варвара,василина,василиса,вера,вероника,вероніка,виктория,виола,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,глафира,глафіра,дарья,диана,дина,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,зиновия,злата,зоя,зіновія,ивонна,изольда,илона,инга,инесса,инна,ирина,ия,капитолина,капітоліна,карина,каролина,катерина,кира,клавдия,клара,клеопатра,кору,кохана,кохання,кристина,ксения,ксенія,лада,лариса,лиана,лидия,лилия,лина,лия,лора,льоха,любава,любимая,любовь,любов,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надія,настасия,настасья,настасія,наталия,наталья,наталя,невістка,нелли,ника,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,олімпіада,парасковія,пекла,пелагея,полина,поля,прасковья,раиса,раїса,рената,римма,роза,роксана,рут,руфь,сарра,свекровь,свекруха,светлана,світла,серафима,сестра,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,таисия,таисья,тамара,татьяна,таїсія,текле,тетяна,тетя,томи,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,фёкла,хаврония,христина,эвелина,эдита,элеонора,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,ядвига,ядвіга,яна,ярослава,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,alexis,alice,amanda,amber,amelie,amy,andrea,angela,ann,anna,anna,ashley,aunt,barbara,betty,beverly,brenda,brittany,carol,carolyn,catherine,charlotte,cheryl,christina,christine,clara,cynthia,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,elizabeth,emilia,emilie,emily,emily,emma,emma,evelyn,frances,gloria,grace,granddaughter,hanna,hannah,hannah,heather,helen,iванка,jacqueline,jane,janet,janice,jean,jennifer,jessica,joan,johanna,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,klara,laura,lauren,lea,leah,lena,leonie,lili,lilly,lina,linda,lisa,lori,louisa,luisa,madison,mama,mammi,margaret,maria,marie,marie,marilyn,martha,mary,megan,melissa,mia,michelle,mila,mom,mother,mutti,nancy,natalie,nicole,olivia,pamela,patricia,rachel,rebecca,rose,ruth,samantha,sandra,sara,sarah,schwester,sharon,shirley,sister,sofia,sofie,sophia,sophie,stephanie,susan,tante,teresa,theresa,tiffany,tochter,victoria,virginia</string>
 
     <string name="second_name_comletions_man" translatable="false">ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
     <string name="second_name_comletions_female" translatable="false">овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
 
-<!-- DEFAULT LANGUAGE -->
+    <string name="pref_Notifications_Type_key" translatable="false">Notifications_Type</string>
+    <string name="pref_Notifications_Type_default" translatable="false">0</string>
+
+    <string-array name="pref_Notifications_Type_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_key" translatable="false">Notifications_Days</string>
+    <string name="pref_Notifications_Days_default" translatable="false">-1</string>
+    <string name="pref_Notifications_Days_test" translatable="false">7</string>
+
+    <string-array name="pref_Notifications_Days_values" translatable="false">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>7</item>
+    </string-array>
+
+    <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>
+    <string name="pref_Notifications_AlarmHour_default" translatable="false">9</string>
+
+    <string-array name="pref_Notifications_AlarmHour_values">
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>
+    <string name="pref_Notifications_Notification_Channel_Name" translatable="false">Upcoming events</string> <!--todo: перевести на все языки-->
+    <string name="pref_Notifications_Notification_Channel_Description" translatable="false">Show notifications for upcoming events</string>
+
+    <!-- DEFAULT LANGUAGE -->
 
     <string name="window_settings">Settings</string>
     <string name="window_widget_settings">Widget settings</string>
@@ -202,9 +267,15 @@
     <string name="msg_today">Today</string>
     <string name="msg_tomorrow">Tomorrow</string>
     <string name="msg_day_after_tomorrow">Day after tomorrow</string>
+    <string name="msg_yesterday">Yesterday</string>
+    <string name="msg_beforeyesterday">Day before yesterday</string>
     <string name="msg_stats_prefix">events:</string>
-    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma):</string>
+    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
     <string name="msg_hint_search">Filter value</string>
+    <string name="msg_notifications_soon_no_events">No events for nearest days</string>
+    <string name="msg_notifications_today_no_events">No events for today</string>
+    <string name="msg_notifications_soon">"Events coming soon - "</string>
+    <string name="msg_notifications_today">"Events today - "</string>
 
     <string name="hint_ContactIcon">Photo</string>
     <string name="hint_Name">Full name</string>
@@ -228,10 +299,6 @@
     <string name="event_type_death">Death anniversary</string>
     <string name="event_type_crowning">Crowning</string>
     <string name="event_type_nameday">Name day</string>
-    <string name="event_type_birthday_2">birthday</string>
-    <string name="event_type_anniversary_2">anniversary</string>
-    <string name="event_type_other_2">event</string>
-    <string name="event_type_death_2">death anniversary</string>
 
     <string name="appwidget_text">Loading…</string>
     <string name="appwidget_name_1_7">For 1–7 events</string>
@@ -250,14 +317,14 @@
     <string name="pref_Theme_title">Color theme</string>
     <string name="pref_Theme_description">Interface color theme</string>
     <string name="pref_EventTypes_title">Event types</string>
-    <string name="pref_EventTypes_description">What kind of events to show</string>
+    <string name="pref_EventTypes_description">What kind of events to include in event list and widgets</string>
     <string name="pref_List_title">Events list</string>
     <string name="pref_List_BottomInfo_title">Event details</string>
     <string name="pref_List_BottomInfo_description">What to show below contact name</string>
-
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_BottomInfo_title">Event caption</string>
     <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
+    <string name="pref_Notifications_title">Notifications</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Birthdays</item>
@@ -267,8 +334,19 @@
         <item>Round days count (5K, 10K, 15K days)</item>
     </string-array>
 
+    <string name="pref_List_SadPhoto_title">Sad events photos</string>
+    <string name="pref_List_SadPhoto_description">Mark photos of deceased contacts with a black ribbon</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Never</item>
+        <item>Only for single event</item>
+        <item>For all contact events</item>
+    </string-array>
+
     <string name="pref_CustomEvents_title">Events customizing</string>
     <string name="pref_CustomEvents_summary">Preferences to detect custom events</string>
+    <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
+    <string name="pref_CustomEvent_Caption_hint">Event caption</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standart labels</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standart labels to detect birthday events</string>
@@ -302,10 +380,26 @@
     <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
 
+    <string name="pref_List_PrevEvents_title">Previous events</string>
+    <string name="pref_List_PrevEvents_description">Show previous events on top of the events list</string>
+
+    <string-array name="pref_List_PrevEvents_entries">
+        <item>None</item>
+        <item>Events for yesterdays</item>
+        <item>Events for 2 previous days</item>
+        <item>Events for 3 previous days</item>
+        <item>Events for 3 previous days but no more one</item>
+        <item>Events for 3 previous days but no more two</item>
+        <item>One previous event</item>
+        <item>Two previous events</item>
+        <item>Three previous events</item>
+    </string-array>
+
     <string-array name="pref_List_BottomInfo_entries">
         <item>Title</item>
         <item>Job</item>
         <item>Event description</item>
+        <item>Original event label</item>
         <item>Event account and raw date</item>
     </string-array>
 
@@ -342,6 +436,7 @@
     <string-array name="pref_Language_entries">
         <item>Auto</item>
         <item>English</item>
+        <item>German</item>
         <item>Russian</item>
         <item>Ukrainian</item>
     </string-array>
@@ -376,11 +471,50 @@
         <item>x1.75</item>
     </string-array>
 
+    <string name="pref_Notifications_Type_title">Style of notifications</string>
+    <string name="pref_Notifications_Type_description">How notifications will be looks like</string>
+
+    <string-array name="pref_Notifications_Type_entries">
+        <item>One summary notification</item>
+        <item>Each event in separate notification</item>
+        <item>Events less 3 => separate, otherwise - summary</item>
+        <item>Events less 4 => separate, otherwise - summary</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Notification interval</string>
+    <string name="pref_Notifications_Days_description">How many days to notify</string>
+
+    <string-array name="pref_Notifications_Days_entries">
+        <item>None</item>
+        <item>On event day</item>
+        <item>One day</item>
+        <item>Two days</item>
+        <item>Three days</item>
+        <item>Week</item>
+    </string-array>
+
+    <string name="pref_Notifications_AlarmHour_title">Alarm hour</string>
+    <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
+
+    <string-array name="pref_Notifications_AlarmHour_entries">
+        <item>At 7 am</item>
+        <item>At 8 am</item>
+        <item>At 9 am</item>
+        <item>At 10 am</item>
+        <item>At 11 am</item>
+        <item>At noon</item>
+    </string-array>
+
+    <string name="pref_Notifications_NotifyTest_title">Notification example</string>
+    <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
+
     <string name="msg_after_age_prefix_1">" year"</string>
     <string name="msg_after_age_prefix_4_21">" years"</string>
     <string name="msg_after_age_prefix_1_">" years"</string>
     <string name="msg_after_age_prefix_2_3_4">" years"</string>
     <string name="msg_before_event_prefix">"in "</string>
+    <string name="msg_after_event_postfix">" ago"</string>
+    <string name="msg_after_event_prefix">""</string>
     <string name="msg_before_event_prefix_1">" day"</string>
     <string name="msg_before_event_prefix_2_3_4">" days"</string>
     <string name="msg_before_event_prefix_1_">" day"</string>
@@ -443,6 +577,7 @@
     <string name="event_type_wedding_70">Platinum</string>
     <string name="event_type_wedding_75">Diamond, gold</string>
     <string name="event_type_wedding_80">Diamond, pearl</string>
+    <string name="event_type_wedding_85">""</string>
     <string name="event_type_wedding_90">Stone</string>
     <string name="event_type_wedding_100">""</string>
 

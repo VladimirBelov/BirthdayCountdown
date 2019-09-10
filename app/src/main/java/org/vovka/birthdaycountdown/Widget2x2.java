@@ -50,21 +50,22 @@ public class Widget2x2 extends AppWidgetProvider {
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
         RemoteViews views = getRemoteViews(context, getCellsForSize(minWidth));
-        //Toast.makeText(context, "minWidth=" + minWidth + ", getCellsForSize=" + getCellsForSize(minWidth) + ", layoutId=" + views.getLayoutId(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "2x2 minWidth=" + minWidth + ", getCellsForSize=" + getCellsForSize(minWidth) + ", layoutId=" + views.getLayoutId(), Toast.LENGTH_SHORT).show();
         new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invoke();
         appWidgetManager.updateAppWidget(appWidgetId, views);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 
-    static private RemoteViews getRemoteViews(Context context, int eventsCount) {
+    static private RemoteViews getRemoteViews(Context context, @SuppressWarnings("unused") int eventsCount) {
 
-        switch (eventsCount) {
+        //switch (eventsCount) {
             /*case 1:  return new RemoteViews(context.getPackageName(), R.layout.widget2x2);
             case 2:  return new RemoteViews(context.getPackageName(), R.layout.widget2x1);
             case 4:  return new RemoteViews(context.getPackageName(), R.layout.widget4x1);
             case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget5x1);*/
-            default: return new RemoteViews(context.getPackageName(), R.layout.widget2x2);
-        }
+        //    default: return new RemoteViews(context.getPackageName(), R.layout.widget2x2);
+        //}
+        return new RemoteViews(context.getPackageName(), R.layout.widget2x2);
 
     }
 

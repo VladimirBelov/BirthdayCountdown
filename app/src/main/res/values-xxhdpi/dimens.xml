@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- для xxhdpi (3.0) -->
 <resources>
+    <string name="dimenSet">xxhdpi (3.0)</string>
+
     <dimen name="widget_21cellHeight">80.0dip</dimen>
-    <dimen name="widget_21cellWidth">60.0dip</dimen>
+    <dimen name="widget_21cellWidth">62.0dip</dimen>
 
     <dimen name="widget_31cellHeight">80.0dip</dimen>
     <dimen name="widget_31cellWidth">62.0dip</dimen>
