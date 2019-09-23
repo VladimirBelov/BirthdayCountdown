@@ -1,3 +1,14 @@
+EN:
+The android.permission.READ_CONTACTS permission is used to get data from the Android address book. Information is not copied anywhere and does not change in any way.
 
-
+RU:
 Разрешение android.permission.READ_CONTACTS используется для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
+
+DE:
+Mit der Berechtigung android.permission.READ_CONTACTS werden Daten aus dem Android-Adressbuch abgerufen. Informationen werden nirgendwo kopiert und ändern sich in keiner Weise.
+
+UKR:
+Дозвіл android.permission.READ_CONTACTS використовується для отримання даних з адресної книги Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
+
+CHINA:
+android.permission.READ_CONTACTS权限用于从Android通讯录获取数据。 信息不会被复制到任何地方，也不会以任何方式更改。
