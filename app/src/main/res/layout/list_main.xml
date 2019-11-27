@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,12 +22,12 @@
 
         <TextView
             android:id="@+id/mainStatsTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="14dp"
             android:layout_marginTop="40dip"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            android:gravity="center_vertical|end"
+            android:gravity="center_vertical|fill_vertical|end"
             android:maxLines="1"
             android:minEms="50"
             android:minLines="1"
@@ -29,22 +37,6 @@
             android:textSize="10sp"
             tools:ignore="RtlSymmetry,SmallSp" />
 
-        <TextView
-            android:id="@+id/mainStatsRedTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:layout_marginTop="40dip"
-            android:layout_weight="0"
-            android:background="?attr/colorPrimary"
-            android:gravity="top|center_vertical|end"
-            android:maxLines="1"
-            android:minLines="1"
-            android:paddingStart="3dip"
-            android:paddingEnd="2dip"
-            android:textAlignment="gravity"
-            android:textColor="@color/yellow"
-            android:textSize="10sp"
-            tools:ignore="SmallSp" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

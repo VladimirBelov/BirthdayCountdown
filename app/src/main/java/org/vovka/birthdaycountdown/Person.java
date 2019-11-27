@@ -1,9 +1,21 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 27.11.19 13:35
+ *  * Copyright (c) 2018 - 2019. All rights reserved.
+ *  * Last modified 27.11.19 13:35
+ *
+ */
+
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
+
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
 class Person {
     private String LastName;
@@ -14,25 +26,20 @@ class Person {
     String Age_str;
     private Context context;
 
-    Person(Context context, String eventData) {
+    private Person(@NonNull Context context, @NonNull String[] eventArray) {
 
         try {
+
             this.context = context;
-            String[] singleRowArray = eventData.split(ContactsEvents.Div1);
-            Integer ind = ContactsEvents.dataMap.get("fio");
             String strFIO;
-            if (ind != null) {
-                strFIO = singleRowArray[ind];
-            } else {
-                strFIO = "";
-            }
-            int spaceFirst = strFIO.indexOf(" ");
+            strFIO = eventArray[ContactsEvents.Position_fio];
+            int spaceFirst = strFIO.indexOf(STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 FirstName = strFIO;
-                LastName = "";
-                SecondName = "";
+                LastName = STRING_EMPTY;
+                SecondName = STRING_EMPTY;
             } else {
-                int spaceLast = strFIO.lastIndexOf(" ");
+                int spaceLast = strFIO.lastIndexOf(STRING_SPACE);
                 if (spaceFirst != spaceLast) { //Есть отчество
                     LastName = strFIO.substring(0, spaceFirst);
                     FirstName = strFIO.substring(spaceFirst + 1, spaceLast);
@@ -40,58 +47,41 @@ class Person {
                 } else {
                     LastName = strFIO.substring(0, spaceFirst);
                     FirstName = strFIO.substring(spaceFirst + 1);
-                    SecondName = "";
+                    SecondName = STRING_EMPTY;
                 }
             }
 
-            ind = ContactsEvents.dataMap.get("age");
-            if (ind != null) {
-                try {
-                    Age = Integer.parseInt(singleRowArray[ind]);
-                } catch (NumberFormatException e) {
-                    //Пусто
-                }
+            try {
+                Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);
+            } catch (NumberFormatException e) {
+                //Пусто
             }
-
-            ind = ContactsEvents.dataMap.get("age_caption");
-            Age_str = ind != null ? singleRowArray[ind] : "";
-
-            /*ind = ContactsEvents.dataMap.get("age");
-            if (ind != null) {
-                if (ind <= singleRowArray.length) Age_str = singleRowArray[ind];
-                if (Age_str == null || Age_str.equals(" ")) Age_str = "";
-            } else {
-                Age_str = "";
-            }
-
-            Age = -1;
-            if (!Age_str.equals("")) {
-                if (Age_str.contains(" ")) {
-                    Age = Integer.parseInt(Age_str.substring(0, Age_str.indexOf(" ")));
-                }
-            }*/
+            Age_str = eventArray[ContactsEvents.Position_age_caption];
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Person->Constructor error: " + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.PERSON_CONSTRUCTOR_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
 
+    Person(@NonNull Context context, @NonNull String eventData) {
+        this(context, eventData.split(Constants.STRING_2HASH));
     }
 
     String getFullName () { //Фамилия Имя Отчество
 
         try{
-            if (!LastName.equals("")) {
-                return LastName + (!FirstName.equals("") ? " " + FirstName : "") + (!SecondName.equals("") ? " " + SecondName : "");
-            } else if (!FirstName.equals("")) {
-                return FirstName + (!SecondName.equals("") ? " " + SecondName : "");
+            if (!LastName.equals(STRING_EMPTY)) {
+                return LastName + (!FirstName.equals(STRING_EMPTY) ? STRING_SPACE + FirstName : STRING_EMPTY) + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY);
+            } else if (!FirstName.equals(STRING_EMPTY)) {
+                return FirstName + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY);
             } else {
-                return "";
+                return STRING_EMPTY;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Person->getFullName error: " + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
-            return "";
+            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return STRING_EMPTY;
         }
 
     }
@@ -99,15 +89,15 @@ class Person {
     String getFullNameAlt () { //Имя Отчество Фамилия
 
         try{
-            if (!FirstName.equals("")) {
-                return FirstName + (!SecondName.equals("") ? " " + SecondName : "") + (!LastName.equals("") ? " " + LastName : "");
+            if (!FirstName.equals(STRING_EMPTY)) {
+                return FirstName + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY) + (!LastName.equals(STRING_EMPTY) ? STRING_SPACE + LastName : STRING_EMPTY);
             } else {
                 return LastName;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Person->getFullNameAlt error: " + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
-            return "";
+            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_ALT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return STRING_EMPTY;
         }
 
     }
@@ -138,17 +128,17 @@ class Person {
         */
 
         try {
-            if (!LastName.equals("")) {
-                return LastName + (!FirstName.equals("") ? " " + FirstName.substring(0, 1).toUpperCase() + "." : "") + (!SecondName.equals("") ? " " + SecondName.substring(0, 1).toUpperCase() + "." : "");
-            } else if (!FirstName.equals("")) {
-                return FirstName.substring(0, 1).toUpperCase() + "." + (!SecondName.equals("") ? " " + SecondName.substring(0, 1).toUpperCase() + "." : "");
+            if (!LastName.equals(STRING_EMPTY)) {
+                return LastName + (!FirstName.equals(STRING_EMPTY) ? STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY) + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
+            } else if (!FirstName.equals(STRING_EMPTY)) {
+                return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
             } else {
-                return "";
+                return STRING_EMPTY;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Person->getFullNameShort error: " + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
-            return "";
+            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_SHORT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return STRING_EMPTY;
         }
 
     }
@@ -164,17 +154,17 @@ class Person {
             ContactsEvents eventsData = ContactsEvents.getInstance();
 
             if (eventsData.preferences_last_name_comletions_man == null) {//Ищем первый раз
-                //eventsData.preferences_first_names_female = new HashSet<>(Arrays.asList(context.getString(R.string.first_names_female).split(ContactsEvents.Div4)));
+                //eventsData.preferences_first_names_female = new HashSet<>(Arrays.asList(context.getString(R.string.first_names_female).split(ContactsEvents.STRING_COMMA)));
 
                 final String regex_inter = "\\Z|";
                 final String regex_last = "\\Z";
 
-                eventsData.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_comletions_man).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
-                eventsData.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_comletions_female).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
-                eventsData.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
-                eventsData.preferences_first_names_female = Pattern.compile(context.getString(R.string.first_names_female).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
-                eventsData.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_comletions_man).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
-                eventsData.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_comletions_female).replace(ContactsEvents.Div4, regex_inter) + regex_last).matcher("");
+                eventsData.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_comletions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                eventsData.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_comletions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                eventsData.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                eventsData.preferences_first_names_female = Pattern.compile(context.getString(R.string.first_names_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                eventsData.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_comletions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                eventsData.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_comletions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
 
             }
 
@@ -182,17 +172,17 @@ class Person {
 //            Toast.makeText(context, "Gender: " + (eventsData.preferences_last_name_comletions_female.reset("Белова").find() ? "Female" : "Man"), Toast.LENGTH_LONG).show();
 
             int ind = 0;
-            if (!this.LastName.equals("")) {
+            if (!this.LastName.equals(STRING_EMPTY)) {
                 if (eventsData.preferences_last_name_comletions_man.reset(this.LastName.toLowerCase()).find()) {ind++;}
                 else if (eventsData.preferences_last_name_comletions_female.reset(this.LastName.toLowerCase()).find()) {ind--;}
             }
 
-            if (!this.SecondName.equals("")) {
+            if (!this.SecondName.equals(STRING_EMPTY)) {
                 if (eventsData.preferences_second_name_comletions_man.reset(this.SecondName.toLowerCase()).find()) {ind++;}
                 else if (eventsData.preferences_second_name_comletions_female.reset(this.SecondName.toLowerCase()).find()) {ind--;}
             }
 
-            if (!this.FirstName.equals("")) {
+            if (!this.FirstName.equals(STRING_EMPTY)) {
                 if (eventsData.preferences_first_names_man.reset(this.FirstName.toLowerCase()).find()) {ind++;}
                 else if (eventsData.preferences_first_names_female.reset(this.FirstName.toLowerCase()).find()) {ind--;}
             }
@@ -202,7 +192,7 @@ class Person {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Person->getGender error: " + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.PERSON_GET_GENDER_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             return -1;
         }
 

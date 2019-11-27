@@ -1,3 +1,24 @@
+EN:
+Permission android.permission.READ_CONTACTS is required to obtain data from the Android address book. Information is not copied anywhere and does not change in any way.
+Permission android.permission.WAKE_LOCK (prevent device from sleeping) is necessary to automatically update widgets on Android 8+.
+Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notification.
 
+RU:
+Разрешение android.permission.READ_CONTACTS необходимо для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
+Разрешение android.permission.WAKE_LOCK (prevent device from sleeping) необходимо для автоматического обновления виджетов на Android 8+.
+Разрешение android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необходимо для корректировки времени появления уведомления о предстоящих событиях.
 
-Разрешение android.permission.READ_CONTACTS используется для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
+DE:
+Die Berechtigung android.permission.READ_CONTACTS ist erforderlich, um Daten aus dem Android-Adressbuch abzurufen. Informationen werden nirgendwo kopiert und ändern sich in keiner Weise.
+Die Berechtigung android.permission.WAKE_LOCK (Standby-Modus des Geräts verhindern) ist erforderlich, um Widgets unter Android 8+ automatisch zu aktualisieren.
+Die Berechtigung android.permission.RECEIVE_BOOT_COMPLETED (wird beim Start ausgeführt) ist erforderlich, um den Zeitpunkt der Benachrichtigung über bevorstehende Ereignisse anzupassen.
+
+UKR:
+Дозвіл android.permission.READ_CONTACTS необхідно для отримання даних з адресної книги Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
+Дозвіл android.permission.WAKE_LOCK (prevent device from sleeping) необхідно для автоматичного оновлення віджетів на Android 8+.
+Дозвіл android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необхідно для коригування часу появи повідомлення про майбутні події.
+
+CN:
+必须具有android.permission.READ_CONTACTS权限才能从Android通讯簿获取数据。 信息不会被复制到任何地方，并且不会以任何方式改变。
+必须具有权限android.permission.WAKE_LOCK（防止设备进入休眠状态），才能在Android 8+上自动更新小部件。
+权限android.permission.RECEIVE_BOOT_COMPLETED（在启动时运行）对于调整即将发生的事件的通知时间是必需的。

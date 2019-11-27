@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 27.11.19 13:35
+ *  * Copyright (c) 2018 - 2019. All rights reserved.
+ *  * Last modified 27.11.19 13:35
+ *
+ */
+
 package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
@@ -71,7 +79,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "WidgetConfigureActivity->onCreate error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -86,7 +94,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (this.widgetId != 0 && selectedItemPosition != -1) {
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString(this.getString(R.string.widget_config_PrefName) + this.widgetId,
                         spinnerIndex.getItemAtPosition(selectedItemPosition).toString()
-                                .concat(ContactsEvents.Div4)
+                                .concat(Constants.STRING_COMMA)
                                 .concat(widgetType.equals(".Widget2x2") ? spinnerMagnify.getSelectedItemPosition() + "" : "0")
                 ).apply();
             }
@@ -102,7 +110,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             finish();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "WidgetConfigureActivity->buttonOkOnClick error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

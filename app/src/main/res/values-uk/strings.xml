@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <resources>
     <string name="window_settings">Налаштування</string>
     <string name="window_widget_settings">Налаштування віджета</string>
 
+    <string name="title_activity_search">Фільтр</string>
+    <string name="title_activity_events_scope">Режим відображення подій</string>
+
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Фільтр…</string>
+    <string name="menu_hidden_events">Приховані події</string>
     <string name="menu_exit">Вихід</string>
+    <string name="menu_context_open_card">Відкрити картку контакту</string>
+    <string name="menu_context_events">Всі події контакту</string>
+    <string name="menu_context_event_info">Дані про подію</string>
+    <string name="menu_context_hide_event">Приховати подія</string>
+    <string name="menu_context_unhide_event">Повернути показ події</string>
 
     <string name="msg_no_access">Не вдається отримати доступ до контактів</string>
     <string name="msg_no_events">Подій не знайдено</string>
-    <string name="msg_filter">, фільтр:</string>
+    <string name="msg_filter">", фільтр: "</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -20,6 +37,8 @@
     <string name="msg_yesterday">Вчора</string>
     <string name="msg_beforeyesterday">Позавчора</string>
     <string name="msg_stats_prefix">подій:</string>
+    <string name="msg_stats_hidden_prefix">прихованих подій:</string>
+    <string name="msg_label_hidden">Приховано</string>
     <string name="msg_after_age_prefix_1">" рік"</string>
     <string name="msg_after_age_prefix_2_3_4">" роки"</string>
     <string name="msg_after_age_prefix_1_">" рік"</string>
@@ -34,6 +53,10 @@
     <string name="msg_notifications_today_no_events">Немає подій на сьогодні</string>
     <string name="msg_notifications_soon">"Скоро подій - "</string>
     <string name="msg_notifications_today">"Подій сьогодні - "</string>
+    <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
+
+    <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ПІБ</string>
@@ -43,13 +66,16 @@
     <string name="hint_Description">Деталі</string>
     <string name="hint_EventIcon">Значок</string>
 
-    <string name="title_activity_settings">Типи подій</string>
-    <string name="title_activity_search">Фільтр</string>
+<!--    <string name="title_activity_settings">Типи подій</string>-->
 
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистити</string>
     <string name="button_Cancel">Відміна</string>
     <string name="button_Rate">Оцінити програму</string>
+
+    <string name="events_scope_not_hidden">Все неприховано</string>
+    <string name="events_scope_all">Всі</string>
+    <string name="events_scope_hidden">Приховані</string>
 
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
@@ -110,8 +136,8 @@
         <item>Круглі дати (5K днів)</item>
     </string-array>
 
-    <string name="pref_List_SadPhoto_title">"Щоб пам'ятати"</string>
-    <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів чорною стрічкою</string>
+    <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
+    <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів траурною стрічкою</string>
 
     <string-array name="pref_List_SadPhoto_entries">
         <item>Ніколи</item>
@@ -269,8 +295,15 @@
         <item>В полдень</item>
     </string-array>
 
+    <string name="pref_Notifications_Ringtone_title">Звук сповіщення</string>
+    <string name="pref_Notifications_Ringtone_description">Звук повідомлення про майбутні події</string>
+
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
     <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>
+
+    <string name="pref_Debug_title">Налагодження</string>
+    <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
+    <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
     <string name="event_type_wedding_1">Стеців</string>

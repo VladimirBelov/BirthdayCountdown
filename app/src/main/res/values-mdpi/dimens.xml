@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <!-- для mdpi (1.0) -->
 <resources>
-    <string name="dimenSet">mdpi (1.0)</string>
+    <string name="dimenSet">mdpi</string>
 
     <dimen name="widget_21cellHeight">80.0dip</dimen>
     <dimen name="widget_21cellWidth">86.0dip</dimen>

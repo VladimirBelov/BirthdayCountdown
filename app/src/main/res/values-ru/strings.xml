@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <resources>
     <string name="window_settings">Настройки</string>
     <string name="window_widget_settings">Настройки виджета</string>
 
+    <string name="title_activity_search">Фильтр</string>
+    <string name="title_activity_events_scope">Режим отображения событий</string>
+
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Фильтр…</string>
+    <string name="menu_hidden_events">Скрытые события</string>
     <string name="menu_exit">Выход</string>
+    <string name="menu_context_open_card">Открыть карточку контакта</string>
+    <string name="menu_context_events">Все события контакта</string>
+    <string name="menu_context_event_info">Данные о событии</string>
+    <string name="menu_context_hide_event">Скрыть событие</string>
+    <string name="menu_context_unhide_event">Вернуть показ события</string>
 
     <string name="msg_no_access">Нет доступа к контактам</string>
     <string name="msg_no_events">События не найдены</string>
-    <string name="msg_filter">, фильтр:</string>
+    <string name="msg_filter">", фильтр: "</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
@@ -20,6 +37,8 @@
     <string name="msg_beforeyesterday">Позавчера</string>
     <string name="msg_day_after_tomorrow">Послезавтра</string>
     <string name="msg_stats_prefix">событий:</string>
+    <string name="msg_stats_hidden_prefix">скрытых событий:</string>
+    <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_after_age_prefix_1">" год"</string>
     <string name="msg_after_age_prefix_2_3_4">" года"</string>
     <string name="msg_after_age_prefix_1_">" год"</string>
@@ -34,6 +53,10 @@
     <string name="msg_notifications_today_no_events">Нет событий на сегодня</string>
     <string name="msg_notifications_soon">"Скоро событий - "</string>
     <string name="msg_notifications_today">"Событий сегодня - "</string>
+    <string name="msg_notifications_disabled">Уведомления выключены</string>
+
+    <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ФИО</string>
@@ -43,13 +66,16 @@
     <string name="hint_Description">Подробности</string>
     <string name="hint_EventIcon">Иконка</string>
 
-    <string name="title_activity_settings">Типы событий</string>
-    <string name="title_activity_search">Фильтр</string>
+<!--    <string name="title_activity_settings">Типы событий</string>-->
 
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистить</string>
     <string name="button_Cancel">Отмена</string>
     <string name="button_Rate">Оценить приложение</string>
+
+    <string name="events_scope_not_hidden">Все нескрытые</string>
+    <string name="events_scope_all">Все</string>
+    <string name="events_scope_hidden">Скрытые</string>
 
     <string name="event_type_birthday">День рождения</string>
     <string name="event_type_anniversary">Годовщина свадьбы</string>
@@ -141,14 +167,14 @@
 
     <string-array name="pref_EventTypes_entries">
         <item>Дни рождения</item>
-        <item>Годовщины свадьб</item>
+        <item>Годовщины свадеб</item>
         <item>Другие события</item>
         <item>Пользовательские события</item>
         <item>Круглые даты (5K дней)</item>
     </string-array>
 
-    <string name="pref_List_SadPhoto_title">Чтобы помнить</string>
-    <string name="pref_List_SadPhoto_description">Отмечать фотографии умерших контактов черной лентой</string>
+    <string name="pref_List_SadPhoto_title">Траурная лента</string>
+    <string name="pref_List_SadPhoto_description">Отмечать фотографии умерших контактов траурной лентой</string>
 
     <string-array name="pref_List_SadPhoto_entries">
         <item>Никогда</item>
@@ -241,8 +267,8 @@
     <string-array name="pref_Notifications_Type_entries">
         <item>Одно общее уведомление</item>
         <item>Каждое событие в отдельном уведомлении</item>
-        <item>Если собыий меньше 3 => отдельные, иначе - общее</item>
-        <item>Если собыий меньше 4 => отдельные, иначе - общее</item>
+        <item>Если событий меньше 3 => отдельные, иначе - общее</item>
+        <item>Если событий меньше 4 => отдельные, иначе - общее</item>
     </string-array>
 
     <string name="pref_Notifications_Days_title">Интервал уведомлений</string>
@@ -269,8 +295,15 @@
         <item>В полдень</item>
     </string-array>
 
+    <string name="pref_Notifications_Ringtone_title">Звук уведомения</string>
+    <string name="pref_Notifications_Ringtone_description">Звук уведомления о предстоящих событиях</string>
+
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
     <string name="pref_Notifications_NotifyTest_description">Нажмите для показа тестового уведомления за сегодня</string>
+
+    <string name="pref_Debug_title">Отладка</string>
+    <string name="pref_Debug_On_title">Отладочные сообщения</string>
+    <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
     <!-- https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->

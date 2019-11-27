@@ -1,3 +1,11 @@
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <vector android:height="48dp" android:viewportHeight="640"
     android:viewportWidth="640" android:width="48dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillAlpha="1" android:fillColor="#1b5e20" android:pathData="M320,0C143.27,0 0,143.27 0,320C0,496.73 143.27,640 320,640C496.73,640 640,496.73 640,320C640,143.27 496.73,0 320,0Z"/>

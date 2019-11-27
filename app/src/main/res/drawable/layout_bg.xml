@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="#1e000000"/>
     <stroke android:width="1dp" android:color="#3cffffff" />

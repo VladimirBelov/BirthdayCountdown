@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <!-- https://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-3-ae9793fd31ec -->
 
 <PreferenceScreen
@@ -446,12 +454,35 @@
             android:icon="@android:drawable/ic_menu_today"
             android:dialogIcon="@android:drawable/ic_menu_today"/>
 
+        <RingtonePreference
+            android:key="@string/pref_Notifications_Ringtone_key"
+            android:ringtoneType="notification"
+            android:title="@string/pref_Notifications_Ringtone_title"
+            android:summary="@string/pref_Notifications_Ringtone_description"
+            android:showSilent="false"
+            android:showDefault="true"
+            android:defaultValue="content://settings/system/notification_sound"
+            android:icon="@drawable/ic_ringtone"
+            android:dialogIcon="@drawable/ic_ringtone"/>
+
         <Preference
             android:id="@+id/pref_NotifyTest"
             android:key="@string/pref_Notifications_NotifyTest_key"
             android:summary="@string/pref_Notifications_NotifyTest_description"
             android:title="@string/pref_Notifications_NotifyTest_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_Debug_title"
+        android:layout="@layout/settings_category">
+
+        <SwitchPreference
+            android:key="@string/pref_Debug_On_key"
+            android:summary="@string/pref_Debug_On_description"
+            android:title="@string/pref_Debug_On_title"
+            android:icon="@android:drawable/ic_menu_manage"/>
 
     </PreferenceCategory>
 

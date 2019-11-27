@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Copyright (c) 2018 - 2019. All rights reserved.
+  ~  * Last modified 27.11.19 13:35
+  ~  */
+  -->
+
 <!-- https://stackoverflow.com/questions/19238738/android-shape-with-bottom-stroke/19239478#19239478 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>

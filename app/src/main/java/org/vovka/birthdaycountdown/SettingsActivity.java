@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 27.11.19 13:35
+ *  * Copyright (c) 2018 - 2019. All rights reserved.
+ *  * Last modified 27.11.19 13:35
+ *
+ */
+
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
@@ -6,10 +14,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -23,11 +34,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static org.vovka.birthdaycountdown.MainActivity.NOTIFICATION_CHANNEL_ID;
+import java.util.Random;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
+
+    private String testChannelId = "";
 
     @SuppressLint("PrivateResource")
     @Override
@@ -67,7 +80,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "SettingsActivity->onCreate error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -99,26 +112,57 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                         NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_DEFAULT);
+
+                        //если был предыдущий тест
+                        notificationManager.deleteNotificationChannel(testChannelId);
+
+                        Random r = new Random();
+                        testChannelId = Integer.toString(r.nextInt(1000));
+
+                        NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
+                        channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                        channel.enableVibration(true);
+
                         notificationManager.createNotificationChannel(channel);
                     }
-                    eventsData.showNotifications(true);
+                    eventsData.showNotifications(true, testChannelId);
+
+//                    if (isMIUI(eventsData.context)) {
+//                        TypedArray ta = eventsData.context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(eventsData.context, ContactsEvents.getInstance().preferences_theme.themeDialog))
+//                                .setTitle(R.string.title_notifications_MIUI)
+//                                .setMessage(R.string.msg_notifications_MIUI)
+//                                .setIcon(android.R.drawable.ic_menu_info_details)
+//                                .setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel())
+//                                .setCancelable(true);
+//
+//                        AlertDialog alertToShow = builder.create();
+//
+//                        alertToShow.setOnShowListener(arg0 -> {
+//                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+//                        });
+//
+//                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                        alertToShow.show();
+//                    }
+
                 } else {
-                    Toast.makeText(this, "Notifications disabled", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.msg_notifications_disabled), Toast.LENGTH_LONG).show();
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "SettingsActivity->onPreferenceTreeClick error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
         return false;
     }
 
-    private void setUpNestedScreen(PreferenceScreen preferenceScreen) {
+    private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
 
         try {
             //Добавляем тулбар
@@ -157,9 +201,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "SettingsActivity->setUpNestedScreen error:\n" + e.getMessage() + " in line " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
+
+    @Override
+    public void onStop() {
+
+        //удаляем временный канал оповещений
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals("")) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.deleteNotificationChannel(testChannelId);
+        }
+
+        super.onStop();
+    }
+
+//    private static boolean isIntentResolved(Context context, Intent intent ){
+//        return (intent != null && context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null);
+//    }
+//
+//    public static boolean isMIUI(Context ctx) {
+//        //https://stackoverflow.com/questions/47610456/how-to-detect-miui-rom-programmatically-in-android
+//        isIntentResolved(ctx, new Intent("miui.intent.action.OP_AUTO_START").addCategory(Intent.CATEGORY_DEFAULT))
+//                || isIntentResolved(ctx, new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")))
+//                || isIntentResolved(ctx, new Intent("miui.intent.action.POWER_HIDE_MODE_APP_LIST").addCategory(Intent.CATEGORY_DEFAULT))
+//                || isIntentResolved(ctx, new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.powercenter.PowerSettings")))}
 
 }
