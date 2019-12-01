@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Created by Vladimir Belov on 01.12.19 18:48
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 27.11.19 13:35
+  ~  * Last modified 30.11.19 2:43
   ~  */
   -->
 
@@ -54,6 +54,7 @@
     <string name="msg_notifications_soon">"Скоро подій - "</string>
     <string name="msg_notifications_today">"Подій сьогодні - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
+    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути Запілля в картках Ваших контактів або імпортування встановленими на смартфон додатками (Google, Skype, VK, …)</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -66,12 +67,11 @@
     <string name="hint_Description">Деталі</string>
     <string name="hint_EventIcon">Значок</string>
 
-<!--    <string name="title_activity_settings">Типи подій</string>-->
-
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистити</string>
     <string name="button_Cancel">Відміна</string>
     <string name="button_Rate">Оцінити програму</string>
+    <string name="button_Open_AddresBook">Відкрити адресну книгу…</string>
 
     <string name="events_scope_not_hidden">Все неприховано</string>
     <string name="events_scope_all">Всі</string>

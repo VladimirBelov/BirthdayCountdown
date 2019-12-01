@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.11.19 13:35
+ *  * Created by Vladimir Belov on 01.12.19 18:48
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 27.11.19 13:35
+ *  * Last modified 30.11.19 2:43
  *
  */
 
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private int statsAllEvents = 0;
     private int statsHiddenEvents = 0;
+    private boolean triggeredMsgNoEvents = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,38 +192,54 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_eventDateColor, 0));
             });
 
-            //Permissions
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                //https://developer.android.com/training/permissions/requesting.html#java
-
-                swipeRefresh.setRefreshing(false);
-                swipeRefresh.setEnabled(false);
-
-                setHint(setHTMLColor(getString(R.string.msg_no_access), HTML_COLOR_RED));
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-                return;
-
-            }
-
-            //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
             swipeRefreshListener = () -> {
+                //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
                 if (eventsData.getContactsEvents(this)) {
                     eventsData.computeDates();
                     drawList();
                     eventsData.updateWidgets();
                     swipeRefresh = findViewById(R.id.swiperefresh);
                     if (swipeRefresh != null) swipeRefresh.setRefreshing(false); // Disables the refresh icon
-                }
-            };
 
-            //Получение и отображение контактных данных
+                    //Сообщение для тех, у кого не заведено ни одного события
+                    boolean isTypesOn = false;
+                    for (boolean t: eventsData.event_types_on) if (t) {isTypesOn = true; break;}
+
+                    if (!triggeredMsgNoEvents && isTypesOn && (eventsData.dataArray == null || eventsData.dataArray.length == 0)) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                        builder.setTitle(getString(R.string.msg_no_events));
+                        builder.setIcon(android.R.drawable.ic_menu_info_details);
+                        builder.setMessage(getString(R.string.msg_no_events_hint));
+                        builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                        builder.setNeutralButton(R.string.button_Open_AddresBook, ((dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts")))));
+                        AlertDialog alertToShow = builder.create();
+                        alertToShow.setOnShowListener(arg0 -> {
+                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        });
+                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertToShow.show();
+                        triggeredMsgNoEvents = true;
+                    }
+                }
+
+            };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
+
+            //Permissions
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                //https://developer.android.com/training/permissions/requesting.html#java
+                setHint(setHTMLColor(getString(R.string.msg_no_access), HTML_COLOR_RED));
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                return;
+            }
 
             //Уведомления
             initNotifications();
 
             registerForContextMenu(findViewById(R.id.mainListView));
+
 
 
         } catch (Exception e) {
@@ -513,12 +530,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                swipeRefresh.setEnabled(true);
                 registerForContextMenu(findViewById(R.id.mainListView));
                 if (eventsData.getContactsEvents(this)) {
                     eventsData.computeDates();
                     drawList();
                     eventsData.updateWidgets();
+                }
+                if (swipeRefresh != null) {
+                    swipeRefresh.setRefreshing(false); //Disables the refresh icon
+                    swipeRefresh.setEnabled(true);
                 }
             }
         }
@@ -785,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private String setHTMLColor(String msg, int color) {
-       try {
+        try {
 
             if (color == HTML_COLOR_RED) {
 

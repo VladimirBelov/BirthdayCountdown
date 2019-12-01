@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Created by Vladimir Belov on 01.12.19 18:48
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 27.11.19 13:35
+  ~  * Last modified 30.11.19 2:43
   ~  */
   -->
 
@@ -303,6 +303,7 @@
     <string name="msg_notifications_soon">"Events coming soon - "</string>
     <string name="msg_notifications_today">"Events today - "</string>
     <string name="msg_notifications_disabled">Notifications disabled</string>
+    <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -315,12 +316,11 @@
     <string name="hint_Description">Details</string>
     <string name="hint_EventIcon">Icon</string>
 
-<!--    <string name="title_activity_settings">Events types</string>-->
-
     <string name="button_OK">OK</string>
     <string name="button_Clear">Clear</string>
     <string name="button_Cancel">Cancel</string>
     <string name="button_Rate">Rate app</string>
+    <string name="button_Open_AddresBook">Open address book…</string>
 
     <string name="events_scope_not_hidden">All not hidden</string>
     <string name="events_scope_all">All</string>

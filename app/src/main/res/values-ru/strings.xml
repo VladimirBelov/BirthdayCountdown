@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.11.19 13:35
+  ~  * Created by Vladimir Belov on 01.12.19 18:48
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 27.11.19 13:35
+  ~  * Last modified 30.11.19 2:43
   ~  */
   -->
 
@@ -54,6 +54,7 @@
     <string name="msg_notifications_soon">"Скоро событий - "</string>
     <string name="msg_notifications_today">"Событий сегодня - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
+    <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполены в карточках Ваших контактов или импортированны установленными на смартфон приложениями (Google, Skype, VK, …)</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -66,12 +67,11 @@
     <string name="hint_Description">Подробности</string>
     <string name="hint_EventIcon">Иконка</string>
 
-<!--    <string name="title_activity_settings">Типы событий</string>-->
-
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистить</string>
     <string name="button_Cancel">Отмена</string>
     <string name="button_Rate">Оценить приложение</string>
+    <string name="button_Open_AddresBook">Открыть адресную книгу…</string>
 
     <string name="events_scope_not_hidden">Все нескрытые</string>
     <string name="events_scope_all">Все</string>

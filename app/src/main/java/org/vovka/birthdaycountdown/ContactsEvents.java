@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.11.19 13:35
+ *  * Created by Vladimir Belov on 01.12.19 18:48
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 27.11.19 13:35
+ *  * Last modified 30.11.19 2:43
  *
  */
 
@@ -141,7 +141,7 @@ class ContactsEvents {
 
     //Хранилища данных
     String[] dataArray = null; //todo: переделать на объект или хотя бы ArrayList
-    private boolean[] event_types_on;
+    boolean[] event_types_on;
     private String currentLocale = Constants.STRING_EMPTY;
     int currentTheme = 0;
     final private String systemLocale = Locale.getDefault().getLanguage();

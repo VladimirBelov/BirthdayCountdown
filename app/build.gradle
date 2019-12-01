@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword 'wyhiwycB1'
+            storeFile file('C:/Users/v.belov/.android/release.keystore.jks')
+            storePassword 'wyhiwycB1'
+        }
+    }
+    compileSdkVersion 28
+    buildToolsVersion '29.0.2'
+    //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            applicationId "org.vovka.birthdaycountdown"
+            //https://stackoverflow.com/questions/24441178/recommended-minimum-android-app-sdk
+            minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
+            //noinspection OldTargetApi
+            targetSdkVersion 28
+            //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+            versionCode code
+            versionName "1.4.3"
+            vectorDrawables.useSupportLibrary = false //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
+        }
+    } else {
+        throw new FileNotFoundException("Could not read version.properties!")
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
+            signingConfig signingConfigs.release
+            //https://habr.com/ru/post/415499/
+            proguardFiles 'proguard-rules.pro', getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
+            buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
+            jniDebuggable true
+            renderscriptDebuggable = true
+        }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+    //https://stackoverflow.com/questions/28249036/app-release-apk-how-to-change-this-default-generated-apk-name
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def project = "BirthdayCountdown"
+            def SEP = "_"
+            def version = variant.versionName
+            def newApkName = project + SEP + version + ".apk"
+            outputFileName = new File(newApkName)
+        }
+    }
+
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.0-beta3'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+}
