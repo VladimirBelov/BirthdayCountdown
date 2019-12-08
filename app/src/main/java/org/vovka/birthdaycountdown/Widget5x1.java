@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 01.12.19 19:06
  *
  */
 
@@ -13,7 +13,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 

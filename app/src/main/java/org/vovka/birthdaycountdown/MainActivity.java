@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 08.12.19 15:12
  *
  */
 
@@ -17,19 +17,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.text.method.LinkMovementMethod;
@@ -49,6 +41,16 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -149,14 +151,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
                 //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+                //https://stackoverflow.com/a/21119027/4928833
+                //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
                 TextView msg = new TextView(this);
                 msg.setText(Html.fromHtml(STRING_EMPTY +
                         "<font color=\"#" + Integer.toHexString(ta.getColor(R.styleable.Theme_dialogTextColor, 0) & 0x00ffffff) + "\">" +
                         STRING_DIALOG_TAB + "&nbsp;&nbsp;created by Vladimir Belov" +
                         STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
-                        "<br>&nbsp;" +
-                        //https://stackoverflow.com/a/21119027/4928833
-                        //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
+                        "<br>&nbsp;"      +
                         STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
                         STRING_DIALOG_TAB + "build date: " + formater.format(BuildConfig.BUILD_TIME) +
                         STRING_DIALOG_TAB + "load speed:" +
@@ -202,25 +204,48 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (swipeRefresh != null) swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
                     //Сообщение для тех, у кого не заведено ни одного события
-                    boolean isTypesOn = false;
-                    for (boolean t: eventsData.event_types_on) if (t) {isTypesOn = true; break;}
 
-                    if (!triggeredMsgNoEvents && isTypesOn && (eventsData.dataArray == null || eventsData.dataArray.length == 0)) {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                        builder.setTitle(getString(R.string.msg_no_events));
-                        builder.setIcon(android.R.drawable.ic_menu_info_details);
-                        builder.setMessage(getString(R.string.msg_no_events_hint));
-                        builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
-                        builder.setNeutralButton(R.string.button_Open_AddresBook, ((dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts")))));
-                        AlertDialog alertToShow = builder.create();
-                        alertToShow.setOnShowListener(arg0 -> {
-                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        });
-                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        alertToShow.show();
-                        triggeredMsgNoEvents = true;
+                    if (!triggeredMsgNoEvents && (eventsData.dataArray == null || eventsData.dataArray.length == 0)) {
+
+                        boolean isTypesOn = false;
+                        for (boolean t: eventsData.event_types_on) if (t) {isTypesOn = true; break;}
+
+                        if (!eventsData.getPreferences_Accounts().isEmpty()) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                            builder.setTitle(getString(R.string.msg_no_events));
+                            builder.setIcon(android.R.drawable.ic_menu_info_details);
+                            builder.setMessage(getString(R.string.msg_no_events_check_prefs, getString(R.string.pref_Accounts_title), getString(R.string.pref_EventTypes_title)));
+                            builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                            builder.setNeutralButton(R.string.button_Open_AppSettings, (dialog, which) -> startActivity(new Intent(this, SettingsActivity.class)));
+                            AlertDialog alertToShow = builder.create();
+                            alertToShow.setOnShowListener(arg0 -> {
+                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            alertToShow.show();
+                            triggeredMsgNoEvents = true;
+
+                        } else if (isTypesOn) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                            builder.setTitle(getString(R.string.msg_no_events));
+                            builder.setIcon(android.R.drawable.ic_menu_info_details);
+                            builder.setMessage(getString(R.string.msg_no_events_hint));
+                            builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                            builder.setNeutralButton(R.string.button_Open_AddresBook, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts"))));
+                            AlertDialog alertToShow = builder.create();
+                            alertToShow.setOnShowListener(arg0 -> {
+                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            alertToShow.show();
+                            triggeredMsgNoEvents = true;
+                        }
+
                     }
                 }
 
@@ -306,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         try {
 
@@ -420,12 +445,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case R.id.menu_hidden_events:
 
+                    //todo: убрать Ок кнопку - по выбору выходим https://material.io/components/dialogs/
+
                     ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
                     final CharSequence[] scopesArr = new CharSequence[]{
-                            this.getString(R.string.events_scope_not_hidden) + Constants.STRING_PARENTHESIS_OPEN + (statsAllEvents - statsHiddenEvents) + Constants.STRING_PARENTHESIS_CLOSE,
-                            this.getString(R.string.events_scope_all) + Constants.STRING_PARENTHESIS_OPEN + statsAllEvents + Constants.STRING_PARENTHESIS_CLOSE,
-                            this.getString(R.string.events_scope_hidden) + Constants.STRING_PARENTHESIS_OPEN + statsHiddenEvents + STRING_COMMA_SPACE + "stored " + eventsData.getHiddenEventsCount() + Constants.STRING_PARENTHESIS_CLOSE
+                            getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents),
+                            getString(R.string.events_scope_all, statsAllEvents),
+                            statsHiddenEvents == eventsData.getHiddenEventsCount() ? getString(R.string.events_scope_hidden, statsHiddenEvents) : getString(R.string.events_scope_hidden2, statsHiddenEvents, eventsData.getHiddenEventsCount())
                     };
 
                     builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
@@ -445,6 +472,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     alertToShow.setOnShowListener(arg0 -> {
                         alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                         alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                        float dpi = getResources().getDisplayMetrics().density;
+                        ListView listView = alertToShow.getListView();
+                        listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
+                        listView.setDividerHeight(2);
+                        listView.setPadding((int)(30*dpi), 0, (int)(20*dpi), 0);
                     });
 
                     alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -488,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             super.onResume();
 
             eventsData = ContactsEvents.getInstance();
-            eventsData.context = this; //getApplicationContext();
+            if (eventsData.context == null) eventsData.context = getApplicationContext(); //this
             eventsData.getPreferences();
 
             //Устанавливаем язык приложения
@@ -586,7 +619,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         try {
 
             switch (item.getItemId()) {
@@ -919,8 +952,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.DayDistanceTextView.setTypeface(null, Typeface.BOLD);
                         holder.DayDistanceTextView.setTextColor(ContextCompat.getColor(context, R.color.dark_green));
                         break;
-
-                    //todo: сделать предыдщие
 
                     default: //Попозже
                         holder.DayDistanceTextView.setText(eventDistanceText);

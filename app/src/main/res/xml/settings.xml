@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 04.12.19 19:43
   ~  */
   -->
 
 <!-- https://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-3-ae9793fd31ec -->
 
+<!--suppress DeprecatedClassUsageInspection -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="pref_main">
@@ -39,6 +40,12 @@
             android:title="@string/pref_Theme_title"
             android:icon="@android:drawable/ic_menu_gallery"
             android:dialogIcon="@android:drawable/ic_menu_gallery"/>
+
+        <Preference
+            android:key="@string/pref_Accounts_key"
+            android:title="@string/pref_Accounts_title"
+            android:summary="@string/pref_Accounts_description"
+            android:icon="@android:drawable/ic_menu_my_calendar"/>
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_EventTypes_values_default"
@@ -322,8 +329,6 @@
             android:icon="@android:drawable/ic_menu_crop"
             android:dialogIcon="@android:drawable/ic_menu_crop"/>
 
-        <!-- todo: список игнорируемых событий -->
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -379,8 +384,8 @@
             android:entryValues="@array/pref_Widgets_BottomInfo_values"
             android:title="@string/pref_Widgets_BottomInfo_title"
             android:summary="@string/pref_Widgets_BottomInfo_description"
-            android:icon="@android:drawable/ic_menu_my_calendar"
-            android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"/>
 
         <!-- todo: сделать цветные переключатели http://0x5453.blogspot.com/2014/06/61214.html -->
         <ListPreference

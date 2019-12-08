@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 01.12.19 19:06
   ~  */
   -->
 
-<android.support.v7.widget.Toolbar
+<androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

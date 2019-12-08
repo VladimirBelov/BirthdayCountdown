@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 08.12.19 15:45
   ~  */
   -->
 
@@ -55,6 +55,8 @@
     <string name="msg_notifications_today">"Подій сьогодні - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
     <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути Запілля в картках Ваших контактів або імпортування встановленими на смартфон додатками (Google, Skype, VK, …)</string>
+    <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не дали до них доступ"</string>
+    <string name="msg_no_events_check_prefs">"Чи не знайдено жодної події. Прокрутіть у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -72,10 +74,13 @@
     <string name="button_Cancel">Відміна</string>
     <string name="button_Rate">Оцінити програму</string>
     <string name="button_Open_AddresBook">Відкрити адресну книгу…</string>
+    <string name="button_Open_AppSettings">Відкрийте налаштування…</string>
+    <string name="button_All">Всі</string>
 
-    <string name="events_scope_not_hidden">Все неприховано</string>
-    <string name="events_scope_all">Всі</string>
-    <string name="events_scope_hidden">Приховані</string>
+    <string name="events_scope_not_hidden">Все неприховано (%1$d)</string>
+    <string name="events_scope_all">Всі (%1$d)</string>
+    <string name="events_scope_hidden">Приховані (%1$d)</string>
+    <string name="events_scope_hidden2">Приховані (%1$d, saved %2$d)</string>
 
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
@@ -100,6 +105,8 @@
     <string name="pref_Language_description">Мова інтерфейсу та відображаємих даних</string>
     <string name="pref_Theme_title">Тема</string>
     <string name="pref_Theme_description">Колірна тема інтерфейсу</string>
+    <string name="pref_Accounts_title">Облікові записи</string>
+    <string name="pref_Accounts_description">Сканувати лише ці акаунти на події</string>
 
     <string-array name="pref_Language_entries">
         <item>Автоматично</item>
@@ -232,6 +239,7 @@
         <item>Прізвище Ім’я По-батькові</item>
         <item>Прізвище І.П.</item>
         <item>Ім’я По-батькові Прізвище</item>
+        <item>Ім’я</item>
         <item>Дата події</item>
         <item>Нічого</item>
     </string-array>

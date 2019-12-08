@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 08.12.19 15:49
  *
  */
 
@@ -18,8 +18,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -77,7 +77,7 @@ class WidgetUpdater {
             //Получаем настройки отображения виджета
             int startingIndex;
             String widgetPref_raw = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + widgetId, context.getString(R.string.widget_config_defaultPref));
-            String[] widgetPref = (widgetPref_raw == null || widgetPref_raw.equals("") ? context.getString(R.string.widget_config_defaultPref) : widgetPref_raw).split(Constants.STRING_COMMA);
+            String[] widgetPref = (widgetPref_raw.equals("") ? context.getString(R.string.widget_config_defaultPref) : widgetPref_raw).split(Constants.STRING_COMMA);
             //Toast.makeText(context, "Prefs for " + widgetId + " is " + widgetPref_raw, Toast.LENGTH_SHORT).show();
             try {
                 startingIndex = Integer.parseInt(widgetPref[0]);
@@ -162,6 +162,11 @@ class WidgetUpdater {
                                     break;
                                 case "3": //Фамилия И.О.
                                     views.setTextViewText(id_widget_FIO, person.getFullNameShort());
+                                    views.setViewVisibility(id_widget_FIO, View.VISIBLE);
+                                    views.setViewVisibility(id_widget_Date, View.GONE);
+                                    break;
+                                case "5": //Имя
+                                    views.setTextViewText(id_widget_FIO, person.getFirstName());
                                     views.setViewVisibility(id_widget_FIO, View.VISIBLE);
                                     views.setViewVisibility(id_widget_Date, View.GONE);
                                     break;

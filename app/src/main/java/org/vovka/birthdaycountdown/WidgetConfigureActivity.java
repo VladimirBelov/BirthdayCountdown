@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 01.12.19 23:31
  *
  */
 
@@ -13,9 +13,9 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -83,6 +83,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     public void buttonOkOnClick(View view) {
         try {
             //ContactsEvents eventsData = ContactsEvents.getInstance();
@@ -114,6 +115,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     public void buttonCancelOnClick(View view) {
         setResult(RESULT_CANCELED);
         finish();

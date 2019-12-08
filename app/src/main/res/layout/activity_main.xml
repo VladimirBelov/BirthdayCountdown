@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 01.12.19 19:06
   ~  */
   -->
 
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -15,19 +15,19 @@
 	android:layout_height="match_parent"
 	tools:context=".MainActivity">
 
-	<android.support.design.widget.AppBarLayout
+	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@drawable/border_bottom">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/AppTheme.DarkGray.ActionBar"
             app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
-	</android.support.design.widget.AppBarLayout>
+	</com.google.android.material.appbar.AppBarLayout>
 
 	<include layout="@layout/list_main" />
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

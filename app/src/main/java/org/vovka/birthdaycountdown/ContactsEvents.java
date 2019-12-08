@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 08.12.19 15:20
  *
  */
 
@@ -36,11 +36,12 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -144,12 +145,12 @@ class ContactsEvents {
     boolean[] event_types_on;
     private String currentLocale = Constants.STRING_EMPTY;
     int currentTheme = 0;
-    final private String systemLocale = Locale.getDefault().getLanguage();
+    final String systemLocale = Locale.getDefault().getLanguage();
     private HashSet<String> set_events_deaths;
 
     //Настройки
     boolean preferences_debug_on;
-    private String preferences_language;
+    String preferences_language;
 
     Set<String> preferences_list_bottom_info;
     String preferences_list_prev_events;
@@ -223,6 +224,7 @@ class ContactsEvents {
     MyTheme preferences_theme;
 
     private Set<String> preferences_hiddenEvents = new HashSet<>();
+    private Set<String> preferences_Accounts = new HashSet<>();
 
 
     //Статистика
@@ -632,6 +634,9 @@ class ContactsEvents {
             Set<String> someSets = preferences.getStringSet(context.getString(R.string.pref_Events_Hidden_key), new HashSet<>());
             preferences_hiddenEvents = new HashSet<>(someSets); // THIS LINE CREATE A COPY
 
+            someSets = preferences.getStringSet(context.getString(R.string.pref_Accounts_key), new HashSet<>());
+            preferences_Accounts = new HashSet<>(someSets);
+
 
         } catch (Exception e){
             e.printStackTrace();
@@ -649,8 +654,11 @@ class ContactsEvents {
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
+
             editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
             editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
+            editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
+
             editor.apply();
 
         } catch (Exception e){
@@ -674,27 +682,36 @@ class ContactsEvents {
             // http://developer.alexanderklimov.ru/android/locale.php
             if (force || !preferences_language.equals(currentLocale)) {
 
-                Configuration configuration = new Configuration();
+                Configuration configuration = context.getResources().getConfiguration(); //new Configuration();
                 Locale locale;
                 if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
                     //Auto
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        locale = configuration.getLocales().get(0);
-                    } else {
+                    //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    //    locale = configuration.getLocales().get(0);
+                    //} else {
                         locale = new Locale(systemLocale);
-                    }
+                    //}
                 } else {
                     locale = new Locale(preferences_language);
                 }
 
-                configuration.setLocale(locale);
-
-                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                //    context = context.createConfigurationContext(configuration);
-                //} else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    configuration.setLocales(new android.os.LocaleList(locale));
+                } else {
+                    configuration.setLocale(locale);
+                }
+                Locale.setDefault(locale);
                 resources = context.getResources();
-                resources.updateConfiguration(configuration, null);
-                //}
+                resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+//                Resources applicationRes = context.getApplicationContext().getResources();
+//                Configuration applicationConf = applicationRes.getConfiguration();
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    applicationConf.setLocales(new android.os.LocaleList(locale));
+//                } else {
+//                    applicationConf.setLocale(locale);
+//                }
+//                applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
                 currentLocale = preferences_language;
 
@@ -720,7 +737,6 @@ class ContactsEvents {
 
             StringBuilder dataRow;
             TreeMap<Integer, String> userData = new TreeMap <>();
-            //TreeMap<String, TreeMap<Integer, String>> fullUserData = new TreeMap<>();
             List<String> dataList = new ArrayList<>();
 
             dataArray = null;
@@ -816,18 +832,20 @@ class ContactsEvents {
             if (cursor != null) {
                 String eventKey = Constants.STRING_EMPTY;
 
-
                 if (cursor.moveToFirst()) {
                     do {
                         String eventDate = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
                         String eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
+                        String accountType = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_TYPE));
+                        String accountName = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_NAME));
+                        String accountKey = accountName + STRING_PARENTHESIS_OPEN + accountType + Constants.STRING_PARENTHESIS_CLOSE;
 
-                        if (eventDate != null) {
+
+                        if (eventDate != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
                             String contactName = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)); //бывает пусто
                             if (contactName == null) contactName = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME));
                             if (contactName == null) contactName = Constants.STRING_EMPTY;
-                            String accountType = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_TYPE));
                             String eventLabel = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL));
                             if (eventLabel == null) eventLabel = Constants.STRING_EMPTY;
                             boolean nonemptyEventLabel = !eventLabel.equals(Constants.STRING_EMPTY);
@@ -932,7 +950,7 @@ class ContactsEvents {
                                 if (!eventType.equals(typeBirthday) && !eventType.equals(typeAnniversary) && !eventType.equals(typeOther))
                                     eventKey_next = eventKey_next.concat(STRING_COMMA).concat(eventLabel);
 
-                                String newEventDate = accountType.concat(Constants.STRING_COLON_SPACE).concat(eventDate);
+                                String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDate;
 
                                 if (!eventKey_next.equalsIgnoreCase(eventKey)) { //Начало данных нового контакта
 
@@ -1104,12 +1122,14 @@ class ContactsEvents {
 
             Locale locale_en = new Locale("en"); //Все даты Android хранит в этой локали, типа 11 Jan 1991
             Locale locale_ru = new Locale("ru"); //Skype хранит даты в той локале, которая указана в приложении Skype
+            Locale locale_us = new Locale("en_US"); // Jan 11, 1991
             Locale locale_ukr = new Locale("uk_UA");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", locale_en);
             SimpleDateFormat skypedf = new SimpleDateFormat("dd MMM yyyy", locale_en);
             SimpleDateFormat sdfYear = new SimpleDateFormat("dd.MM.yyyy", locale_en);
             SimpleDateFormat sdfNoYear = new SimpleDateFormat("dd.MM", locale_en);
             SimpleDateFormat sdf_ru = new SimpleDateFormat("dd MMMMM yyyy г.", locale_ru);
+            SimpleDateFormat sdf_us = new SimpleDateFormat("MMM dd, yyyy", locale_us);
             SimpleDateFormat sdf_ukr = new SimpleDateFormat("dd MMMMM yyyy г.", locale_ukr);
 
             Calendar now = Calendar.getInstance();
@@ -1154,7 +1174,11 @@ class ContactsEvents {
                                 try {
                                     storedDate_Date = sdf_ukr.parse(storedDate);
                                 } catch (ParseException e3) {
-                                    //Не получилось распознать
+                                    try {
+                                        storedDate_Date = sdf_us.parse(storedDate);
+                                    } catch (ParseException e4) {
+                                        //Не получилось распознать
+                                    }
                                 }
                             }
                         }
@@ -1450,7 +1474,7 @@ class ContactsEvents {
                     eventDistance.append(getResources().getString(R.string.msg_yesterday));
                 } else if (dayDiff == -2) { //Позавчера
                     eventDistance.append(getResources().getString(R.string.msg_beforeyesterday));
-                } else if (dayDiff < 0) { //Подальше
+                } else if (dayDiff < 0) { //Подальше назад
                     eventDistance.append(getResources().getString(R.string.msg_after_event_prefix)).append(-dayDiff);
                     if (dayDiff > 4 && dayDiff < 21) {
                         eventDistance.append(getResources().getString(R.string.msg_before_event_prefix_4_21));
@@ -1946,7 +1970,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_hiddenEvents.size();
+            return preferences_hiddenEvents == null ? 0 : preferences_hiddenEvents.size();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1959,7 +1983,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_hiddenEvents.contains(key);
+            return preferences_hiddenEvents != null && preferences_hiddenEvents.contains(key);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2019,6 +2043,14 @@ class ContactsEvents {
             return false;
         }
 
+    }
+
+    Set<String> getPreferences_Accounts() {
+        return preferences_Accounts;
+    }
+
+    void setPreferences_Accounts(Set<String> preferences_Accounts) {
+        this.preferences_Accounts = preferences_Accounts;
     }
 
 }

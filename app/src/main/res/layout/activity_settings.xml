@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 01.12.19 19:06
   ~  */
   -->
 
@@ -13,7 +13,7 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

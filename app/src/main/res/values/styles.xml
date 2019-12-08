@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 07.12.19 21:38
   ~  */
   -->
 
@@ -173,6 +173,8 @@
         <item name="android:textColor">@color/medium_gray</item>
         <item name="android:background">@color/white</item>
         <item name="android:textColorPrimary">@color/medium_gray</item>
+        <item name="listDividerColor">@color/dark_green_transp</item>
+<!--        <item name="listDividerAlertDialog">@color/dark_green_transp</item>-->
     </style>
 
     <style name="AlertDialog.DarkGray" parent="android:Theme.Material.Dialog">
@@ -181,6 +183,7 @@
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="android:colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
+        <item name="listDividerColor">@color/light_gray_trans</item>
     </style>
 
     <style name="AlertDialog.Black" parent="android:Theme.Material.Dialog">
@@ -189,6 +192,8 @@
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="android:colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
+        <item name="android:textAppearanceListItem">@color/light_gray</item>
+        <item name="listDividerColor">@color/light_gray_trans</item>
     </style>
 
 </resources>

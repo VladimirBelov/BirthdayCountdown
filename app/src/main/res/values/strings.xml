@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 08.12.19 15:45
   ~  */
   -->
 
@@ -41,6 +41,8 @@
     </string-array>
 
     <string name="pref_Theme_default" translatable="false">1</string>
+
+    <string name="pref_Accounts_key" translatable="false">Accounts</string>
 
     <string name="pref_Events_key" translatable="false">EventTypes</string>
     <string name="pref_Events_Hidden_key" translatable="false">HiddenEvents</string>
@@ -148,6 +150,7 @@
         <item>1</item> <!--Фамилия Имя Отчество-->
         <item>3</item> <!--Фамилия И.О.-->
         <item>4</item> <!--Имя Отчество Фамилия-->
+        <item>5</item> <!--Имя-->
         <item>2</item> <!--Дата события-->
         <item>99</item> <!--Ничего-->
     </string-array>
@@ -304,6 +307,8 @@
     <string name="msg_notifications_today">"Events today - "</string>
     <string name="msg_notifications_disabled">Notifications disabled</string>
     <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
+    <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
+    <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -321,10 +326,13 @@
     <string name="button_Cancel">Cancel</string>
     <string name="button_Rate">Rate app</string>
     <string name="button_Open_AddresBook">Open address book…</string>
+    <string name="button_Open_AppSettings">Open settings…</string>
+    <string name="button_All">All</string>
 
-    <string name="events_scope_not_hidden">All not hidden</string>
-    <string name="events_scope_all">All</string>
-    <string name="events_scope_hidden">Hidden</string>
+    <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
+    <string name="events_scope_all">All (%1$d)</string>
+    <string name="events_scope_hidden">Hidden (%1$d)</string>
+    <string name="events_scope_hidden2">Hidden (%1$d, saved %2$d)</string>
 
     <string name="event_type_birthday">Birthday</string>
     <string name="event_type_anniversary">Anniversary</string>
@@ -349,6 +357,8 @@
     <string name="pref_Language_description">Interface and data language</string>
     <string name="pref_Theme_title">Color theme</string>
     <string name="pref_Theme_description">Interface color theme</string>
+    <string name="pref_Accounts_title">Accounts</string>
+    <string name="pref_Accounts_description">Scan only these accounts for events</string>
     <string name="pref_EventTypes_title">Event types</string>
     <string name="pref_EventTypes_description">What kind of events to include in event list and widgets</string>
     <string name="pref_List_title">Events list</string>
@@ -440,6 +450,7 @@
         <item>[Last name] [First name] [Second name]</item>
         <item>[Last name] [F.] [S.]</item>
         <item>[First name] [Second name] [Last name]</item>
+        <item>First name</item>
         <item>Event date</item>
         <item>Nothing</item>
     </string-array>

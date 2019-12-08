@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.12.19 18:48
+  ~  * Created by Vladimir Belov on 08.12.19 16:02
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 30.11.19 2:43
+  ~  * Last modified 08.12.19 15:45
   ~  */
   -->
 
@@ -55,6 +55,8 @@
     <string name="msg_notifications_today">"Событий сегодня - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
     <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполены в карточках Ваших контактов или импортированны установленными на смартфон приложениями (Google, Skype, VK, …)</string>
+    <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
+    <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -72,10 +74,13 @@
     <string name="button_Cancel">Отмена</string>
     <string name="button_Rate">Оценить приложение</string>
     <string name="button_Open_AddresBook">Открыть адресную книгу…</string>
+    <string name="button_Open_AppSettings">Открыть настройки…</string>
+    <string name="button_All">Все</string>
 
-    <string name="events_scope_not_hidden">Все нескрытые</string>
-    <string name="events_scope_all">Все</string>
-    <string name="events_scope_hidden">Скрытые</string>
+    <string name="events_scope_not_hidden">Все нескрытые (%1$d)</string>
+    <string name="events_scope_all">Все (%1$d)</string>
+    <string name="events_scope_hidden">Скрытые (%1$d)</string>
+    <string name="events_scope_hidden2">Скрытые (%1$d, сохранено %2$d)</string>
 
     <string name="event_type_birthday">День рождения</string>
     <string name="event_type_anniversary">Годовщина свадьбы</string>
@@ -100,6 +105,8 @@
     <string name="pref_Language_description">Язык интерфейса и отображаемых данных</string>
     <string name="pref_Theme_title">Цветовая тема</string>
     <string name="pref_Theme_description">Цветовая тема интерфейса</string>
+    <string name="pref_Accounts_title">Учётные записи</string>
+    <string name="pref_Accounts_description">Искать события только в этих учётных записях</string>
 
     <string-array name="pref_Language_entries">
         <item>Автоматически</item>
@@ -232,6 +239,7 @@
         <item>Фамилия Имя Отчество</item>
         <item>Фамилия И.О.</item>
         <item>Имя Отчество Фамилия</item>
+        <item>Имя</item>
         <item>Дата события</item>
         <item>Ничего</item>
     </string-array>

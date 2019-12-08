@@ -1,15 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.12.19 18:48
+ *  * Created by Vladimir Belov on 08.12.19 16:02
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 30.11.19 2:43
+ *  * Last modified 08.12.19 15:49
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
@@ -198,4 +198,7 @@ class Person {
 
     }
 
+    String getFirstName() {
+        return FirstName;
+    }
 }
