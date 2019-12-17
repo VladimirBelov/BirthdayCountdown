@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.12.19 16:02
+  ~  * Created by Vladimir Belov on 17.12.19 8:42
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 01.12.19 18:49
+  ~  * Last modified 13.12.19 1:54
   ~  */
   -->
 
 <!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
 <!-- https://stackoverflow.com/questions/32860815/how-to-define-dimens-xml-for-every-different-screen-size-in-android -->
+
+<!-- сначала размер берётся из  swXXXdp.xml, если не нашёл - из YYYdpi.xml -->
 <resources>
     <string name="dimenSet" translatable="false">default</string>
 

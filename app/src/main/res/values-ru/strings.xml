@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.12.19 16:02
+  ~  * Created by Vladimir Belov on 17.12.19 8:42
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 08.12.19 15:45
+  ~  * Last modified 17.12.19 2:54
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполены в карточках Ваших контактов или импортированны установленными на смартфон приложениями (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
+    <string name="msg_no_access_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -180,6 +181,9 @@
         <item>Круглые даты (5K дней)</item>
     </string-array>
 
+    <string name="pref_List_FavIcon_title">Избранные контакты</string>
+    <string name="pref_List_FavIcon_description">Отмечать избранные контакты значком</string>
+
     <string name="pref_List_SadPhoto_title">Траурная лента</string>
     <string name="pref_List_SadPhoto_description">Отмечать фотографии умерших контактов траурной лентой</string>
 
@@ -205,6 +209,9 @@
         <item>Два предыдущих события</item>
         <item>Три предыдущих события</item>
     </string-array>
+
+    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
+    <string name="pref_Widgets_ShowBorder_description">Показывать рамку виджета</string>
 
     <string name="pref_List_BottomInfo_title">Детали события</string>
     <string name="pref_List_BottomInfo_description">Что показывать под именем контакта</string>

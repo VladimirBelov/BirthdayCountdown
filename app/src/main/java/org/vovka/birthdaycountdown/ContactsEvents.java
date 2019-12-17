@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.12.19 16:02
+ *  * Created by Vladimir Belov on 17.12.19 8:42
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 08.12.19 15:20
+ *  * Last modified 17.12.19 8:37
  *
  */
 
@@ -17,6 +17,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,8 +69,11 @@ import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
+import static org.vovka.birthdaycountdown.Constants.STRING_3MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
+import static org.vovka.birthdaycountdown.Constants.STRING_NULL;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 import static org.vovka.birthdaycountdown.Constants.defaultNotificationID;
@@ -78,7 +82,6 @@ import static org.vovka.birthdaycountdown.Constants.defaultNotificationID;
 class ContactsEvents {
     @SuppressLint("StaticFieldLeak")
     private static final ContactsEvents ourInstance = new ContactsEvents();
-
 
     static ContactsEvents getInstance() {
         return ourInstance;
@@ -126,6 +129,8 @@ class ContactsEvents {
     static final int Position_contact_id = 15;
     static final int Position_eventIcon = 16;
     private static final int Position_eventEmoji = 17; //https://www.piliapp.com/emoji/list/
+    static final int Position_starred = 18;
+    static final int Position_lastContacted = 19;
 
     final int[] event_types_id = new int[]{
             ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY,
@@ -155,6 +160,7 @@ class ContactsEvents {
     Set<String> preferences_list_bottom_info;
     String preferences_list_prev_events;
     int preferences_list_prev_events_found = 0;
+    boolean preferences_list_fav_icon;
     private int preferences_list_sad_photo;
     int preferences_events_scope;
     int preferences_notification_channel_id;
@@ -162,6 +168,7 @@ class ContactsEvents {
     String preferences_widgets_bottom_info;
     String preferences_widgets_color_eventtoday;
     String preferences_widgets_color_eventsoon;
+    boolean preferences_widgets_showborder;
     boolean preferences_widgets_contactsphotos;
     boolean preferences_widgets_eventicons;
     int preferences_widgets_days_eventsoon;
@@ -251,6 +258,12 @@ class ContactsEvents {
         void clear() {
             mMap.clear();
         }
+    }
+
+    private static String checkNullOrZero(String strIn) {
+
+        return strIn == null || strIn.equals(STRING_NULL) || strIn.equals("0") ? Constants.STRING_3MINUS : strIn;
+
     }
 
     private static int countLeapYearsBetween(int y1, int y2) {
@@ -414,11 +427,13 @@ class ContactsEvents {
                 preferences_list_bottom_info = pref_List_Bottom_Info;
             }
             preferences_list_prev_events = preferences.getString(context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
+            preferences_list_fav_icon = preferences.getBoolean(context.getString(R.string.pref_List_FavIcon_key), Boolean.getBoolean(context.getString(R.string.pref_List_FavIcon_default)));
             preferences_list_sad_photo = Integer.parseInt(preferences.getString(context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default)));
             preferences_language = preferences.getString(context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_widgets_bottom_info = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
             preferences_widgets_color_eventtoday = preferences.getString(context.getString(R.string.pref_Widgets_Color_EventToday_key), context.getString(R.string.pref_Widgets_Color_EventToday_default));
             preferences_widgets_color_eventsoon = preferences.getString(context.getString(R.string.pref_Widgets_Color_EventSoon_key), context.getString(R.string.pref_Widgets_Color_EventSoon_default));
+            preferences_widgets_showborder = preferences.getBoolean(context.getString(R.string.pref_Widgets_ShowBorder_key), Boolean.getBoolean(context.getString(R.string.pref_Widgets_ShowBorder_default)));
             preferences_widgets_contactsphotos = preferences.getBoolean(context.getString(R.string.pref_Widgets_ContactPhotos_key), Boolean.getBoolean(context.getString(R.string.pref_Widgets_ContactPhotos_default)));
             preferences_widgets_eventicons = preferences.getBoolean(context.getString(R.string.pref_Widgets_EventIcons_key), Boolean.getBoolean(context.getString(R.string.pref_Widgets_EventIcons_default)));
             preferences_widgets_days_eventsoon = Integer.parseInt(preferences.getString(context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default)));
@@ -667,15 +682,13 @@ class ContactsEvents {
         }
     }
 
-
     void setLocale(boolean force) {
 
         if (context == null) return;
 
-        //todo: сделать так: https://stackoverflow.com/questions/39705739/android-n-change-language-programmatically/
-        //todo: для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
-        //todo: (?) переделать под onSharedPreferenceChanged https://stackoverflow.com/a/13862572
-        //todo: посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
+        //сделать так: https://stackoverflow.com/questions/39705739/android-n-change-language-programmatically/
+        //для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
+        //посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
         try {
             //getPreferences();
 
@@ -724,9 +737,9 @@ class ContactsEvents {
 
     }
 
-    //todo: попробовать добраться до ДР стандартными способами https://stackoverflow.com/questions/35448250/how-to-get-whatsapp-contacts-from-android
-    //todo: сделать импорт ДР одновлассники https://ruseller.com/lessons.php?id=1661 https://apiok.ru/ext/oauth/
     boolean getContactsEvents(Context in_context) {
+        //todo: попробовать добраться до ДР стандартными способами https://stackoverflow.com/questions/35448250/how-to-get-whatsapp-contacts-from-android
+        //todo: сделать импорт ДР одноклассники https://ruseller.com/lessons.php?id=1661 https://apiok.ru/ext/oauth/
 
         context = in_context;
         if (context == null) return false;
@@ -760,7 +773,6 @@ class ContactsEvents {
 
             ContentResolver contentResolver = context.getContentResolver();
             ColumnIndexCache cache = new ColumnIndexCache();
-            //resources = context.getResources(); TEST
 
             //Перебираем все данные и кэшируем организацию и должность
             HashMap<String, String> orgMap = new HashMap<>();
@@ -878,8 +890,8 @@ class ContactsEvents {
                                     eventCaption = preferences_customevent1_caption;
                                     eventIcon = R.drawable.ic_event_custom1;
                                     eventEmoji = "🗓️";
-                                    if (!preferences_customevent1_useyear && !eventDate.substring(0, 2).equals(Constants.STRING_3MINUS)) { //Если год не нужен, а он есть в событии
-                                        eventDate = Constants.STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                                    if (!preferences_customevent1_useyear && !eventDate.substring(0, 2).equals(STRING_3MINUS)) { //Если год не нужен, а он есть в событии
+                                        eventDate = STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                                     }
 
                                 } else  if (preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -887,8 +899,8 @@ class ContactsEvents {
                                     eventCaption = preferences_customevent2_caption;
                                     eventIcon = R.drawable.ic_event_custom2;
                                     eventEmoji = "🔔";
-                                    if (!preferences_customevent2_useyear && !eventDate.substring(0, 2).equals(Constants.STRING_3MINUS)) { //Если год не нужен, а он есть в событии
-                                        eventDate = Constants.STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                                    if (!preferences_customevent2_useyear && !eventDate.substring(0, 2).equals(STRING_3MINUS)) { //Если год не нужен, а он есть в событии
+                                        eventDate = STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                                     }
 
                                 } else if (preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -896,8 +908,8 @@ class ContactsEvents {
                                     eventCaption = preferences_customevent3_caption;
                                     eventIcon = R.drawable.ic_event_custom3;
                                     eventEmoji = "⏰";
-                                    if (!preferences_customevent3_useyear && !eventDate.substring(0, 2).equals(Constants.STRING_3MINUS)) { //Если год не нужен, а он есть в событии
-                                        eventDate = Constants.STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                                    if (!preferences_customevent3_useyear && !eventDate.substring(0, 2).equals(STRING_3MINUS)) { //Если год не нужен, а он есть в событии
+                                        eventDate = STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                                     }
 
                                 } else if (preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -905,8 +917,8 @@ class ContactsEvents {
                                     eventCaption = preferences_customevent4_caption;
                                     eventIcon = R.drawable.ic_event_custom4;
                                     eventEmoji = "❤️";
-                                    if (!preferences_customevent4_useyear && !eventDate.substring(0, 2).equals(Constants.STRING_3MINUS)) { //Если год не нужен, а он есть в событии
-                                        eventDate = Constants.STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                                    if (!preferences_customevent4_useyear && !eventDate.substring(0, 2).equals(STRING_3MINUS)) { //Если год не нужен, а он есть в событии
+                                        eventDate = STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                                     }
 
                                 } else if (preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -914,8 +926,8 @@ class ContactsEvents {
                                     eventCaption = preferences_customevent5_caption;
                                     eventIcon = R.drawable.ic_event_custom5;
                                     eventEmoji = "🎁";
-                                    if (!preferences_customevent5_useyear && !eventDate.substring(0, 2).equals(Constants.STRING_3MINUS)) { //Если год не нужен, а он есть в событии
-                                        eventDate = Constants.STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                                    if (!preferences_customevent5_useyear && !eventDate.substring(0, 2).equals(STRING_3MINUS)) { //Если год не нужен, а он есть в событии
+                                        eventDate = STRING_3MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                                     }
 
                                 } else if (preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -988,13 +1000,14 @@ class ContactsEvents {
                                     //подпорка: почему-то для одиноких skype событий в eventLabel находится дата события
                                     userData.put(Position_eventLabel, !eventLabel.equals(eventCaption) & !newEventDate.contains(eventLabel) ? eventLabel : Constants.STRING_EMPTY); //Заголовок пользовательского события
                                     userData.put(Position_eventType, eventType); //Тип события
-
                                     userData.put(Position_organization, orgMap.containsKey(contactID) ? orgMap.get(contactID) : Constants.STRING_EMPTY);
                                     userData.put(Position_title, titleMap.containsKey(contactID) ? titleMap.get(contactID) : Constants.STRING_EMPTY);
                                     //userData.put(dataMap.get("note"), ""); //noteMap.containsKey(contactID) ? noteMap.get(contactID) : "");
                                     userData.put(Position_dates, newEventDate);
                                     userData.put(Position_eventIcon, Integer.toString(eventIcon));
                                     userData.put(Position_eventEmoji, eventEmoji);
+                                    userData.put(Position_starred, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)));
+                                    userData.put(Position_lastContacted, checkNullOrZero(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.LAST_TIME_CONTACTED)))); //https://stackoverflow.com/questions/9249722/is-contactscontract-contacts-last-time-contacted-reliable
 
                                 } else { //Продолжаем добавлять даты контакта
 
@@ -1041,19 +1054,21 @@ class ContactsEvents {
         }
     }
 
-    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos) {
+    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean forWidget) {
 
         Bitmap bm;
 
         try {
 
             if (event.equals(Constants.STRING_EMPTY)) return null;
+
             String[] singleEventArray = event.split(Constants.STRING_2HASH);
             String eventType = singleEventArray[Position_eventType];
             String eventCaptionCustom = eventType.equals(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM)) ? singleEventArray[Position_eventCaption].toLowerCase() : "#~#";
             boolean isDeath = preferences_death_labels != null && preferences_death_labels.reset(eventCaptionCustom.toLowerCase()).find();
+            float offsetWidget = forWidget ? (9 * getResources().getDisplayMetrics().density) : 0;
 
-            if (showPhotos && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
+            if (showPhotos && !singleEventArray[Position_photo_uri].equalsIgnoreCase(STRING_NULL)) {
                 //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                 Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contact_id]);
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactUri, true);
@@ -1096,12 +1111,23 @@ class ContactsEvents {
                 paint.setColor(Color.BLACK);
                 paint.setStrokeWidth(bm.getWidth() / 6 /*1 /getResources().getDisplayMetrics().density*/);
                 canvas.drawBitmap(bm, new Matrix(), null);
-                canvas.drawLine(bm.getWidth() + bm.getWidth() / 4, bm.getHeight() - bm.getHeight() / 2, bm.getWidth() - bm.getWidth() / 2, bm.getHeight() + bm.getHeight() / 4, paint);
+                canvas.drawLine((float) (bm.getWidth() * 1.25), bm.getHeight() / 2, bm.getWidth() / 2, (float) (bm.getHeight() * 1.25), paint);
                 bm.recycle();
-                return bmOverlay;
-            } else {
-                return bm;
+                bm = bmOverlay;
             }
+
+            if (!forWidget && preferences_list_fav_icon && singleEventArray[Position_starred].equals("1")) {
+                Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawBitmap(bm, new Matrix(), null);
+                bm.recycle();
+                Bitmap bmStar = BitmapFactory.decodeResource(getResources(), R.drawable.fav_star);
+                canvas.drawBitmap(Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4, bmOverlay.getHeight() / 4, true), 2 + offsetWidget, bmOverlay.getHeight() - (float)(bmOverlay.getHeight() / 4) - 2 - offsetWidget, null);
+                bmStar.recycle();
+                bm = bmOverlay;
+            }
+
+            return bm;
 
         } catch (Exception e) {
             Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR + e.toString(), Toast.LENGTH_LONG).show();
@@ -1109,10 +1135,38 @@ class ContactsEvents {
         }
     }
 
+    String getContactName(Long contactId, String defaultName) {
+
+        try {
+
+            String firstName = STRING_EMPTY;
+            Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+            Uri dataUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Data.CONTENT_DIRECTORY);
+            Cursor nameCursor = context.getContentResolver().query(
+                    dataUri,
+                    null,
+                    ContactsContract.Data.MIMETYPE+"=?",
+                    new String[]{ ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE },
+                    null);
+            while (nameCursor.moveToNext())
+            {
+                firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.Data.DATA2));
+                if (!firstName.equals(STRING_EMPTY)) break;
+            }
+            nameCursor.close();
+            return !firstName.equals(STRING_EMPTY) ? firstName : defaultName;
+
+        } catch (Exception e) {
+            Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return defaultName;
+        }
+
+    }
+
     void computeDates() {
         //Вычисляем даты
 
-        if (dataArray == null || dataArray.length == 0) return;
+        if (isEmpty()) return;
 
         long statCurrentModuleStart = System.currentTimeMillis();
 
@@ -1228,14 +1282,14 @@ class ContactsEvents {
                         //com.lotus.sync.notes
                         //com.whatsapp
 
-                        if (storedDate.substring(0, 2).equals(Constants.STRING_3MINUS) || //Нет года, формат --MM-dd
+                        if (storedDate.substring(0, 2).equals(STRING_3MINUS) || //Нет года, формат --MM-dd
                                 storedDate.substring(0, 5).equals("0000-") || //Нет года, формат 0000-MM-dd
                                 storedDate.substring(0, 5).equals("1604-") || //Нет года, формат 1604-MM-dd
                                 (!eventCaption.equals(Constants.STRING_EMPTY) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
                         ) {
 
                             try {
-                                BDay = sdf.parse(now.get(YEAR) + "-" + storedDate.substring(storedDate.substring(0, 2).equals(Constants.STRING_3MINUS) ? 2 : 5));
+                                BDay = sdf.parse(now.get(YEAR) + "-" + storedDate.substring(storedDate.substring(0, 2).equals(STRING_3MINUS) ? 2 : 5));
                             } catch (ParseException e) {
                                 //Не получилось распознать
                             }
@@ -1403,12 +1457,8 @@ class ContactsEvents {
             dataArray = tmpList.toArray(new String[0]); //tmpList.size()
             tmpList.clear();
 
-            //todo: добавить события нескольких предыдущих дней или несколько событий (предыдущие события хранить отдельным списком)
-
             //Сортируем
             Arrays.sort(dataArray);
-
-            //todo: добавить уведомления https://stackoverflow.com/questions/33364368/android-system-notification-limit-per-app/33365915
 
             statLastComputeDates = System.currentTimeMillis();
             statComputeDates = statLastComputeDates - statCurrentModuleStart;
@@ -1497,7 +1547,6 @@ class ContactsEvents {
     }
 
     List<String> insertPreviousEvents(@NonNull List<String> dataList, @NonNull String params) {
-        //todo: Добавляем в начало списка предыдущие события, согласно параметров
 
         if (params.equals(Constants.STRING_EMPTY) || dataList.isEmpty()) return dataList;
 
@@ -1832,6 +1881,9 @@ class ContactsEvents {
             }
             if (listNotify.size() == 0 && !forceNoEventsMessage) return;
 
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.cancelAll();
+
             String[] dataNotify = listNotify.toArray(new String[0]);
             StringBuilder textBig;
             if (dataNotify.length == 0 || //Общее уведомление
@@ -1887,7 +1939,6 @@ class ContactsEvents {
                     builder.setSound(Uri.parse(preferences_notifications_ringtone));
                 }
 
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(defaultNotificationID, builder.build());
 
             } else { //Несколько отдельных уведомлений
@@ -1934,9 +1985,8 @@ class ContactsEvents {
                                 builder.setSound(Uri.parse(preferences_notifications_ringtone));
                             }
 
-                            builder.setLargeIcon(getContactPhoto(dataNotify[i], true));
+                            builder.setLargeIcon(getContactPhoto(dataNotify[i], true, false));
 
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                             notificationManager.notify(defaultNotificationID + r.nextInt(100), builder.build());
 
                         } else {
@@ -1952,6 +2002,8 @@ class ContactsEvents {
             Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
+
+    boolean isEmpty() {return dataArray == null || dataArray.length == 0;}
 
     boolean checkIsHiddenEvents() {
 

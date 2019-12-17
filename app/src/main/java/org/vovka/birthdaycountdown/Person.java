@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.12.19 16:02
+ *  * Created by Vladimir Belov on 17.12.19 8:42
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 08.12.19 15:49
+ *  * Last modified 09.12.19 23:06
  *
  */
 
@@ -167,9 +167,6 @@ class Person {
                 eventsData.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_comletions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
 
             }
-
-//            Toast.makeText(context, "Pattern: " + eventsData.preferences_last_name_comletions_female.pattern().toString(), Toast.LENGTH_LONG).show();
-//            Toast.makeText(context, "Gender: " + (eventsData.preferences_last_name_comletions_female.reset("Белова").find() ? "Female" : "Man"), Toast.LENGTH_LONG).show();
 
             int ind = 0;
             if (!this.LastName.equals(STRING_EMPTY)) {

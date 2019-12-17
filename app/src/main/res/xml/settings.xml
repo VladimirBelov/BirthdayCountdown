@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.12.19 16:02
+  ~  * Created by Vladimir Belov on 17.12.19 8:42
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 04.12.19 19:43
+  ~  * Last modified 16.12.19 1:02
   ~  */
   -->
 
@@ -17,6 +17,9 @@
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
 	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
     <!-- todo: подумать, как показывать названия настроек, если они не влезают в одну строку http://www.lucazanini.eu/en/2014/android/display-icon-preferences/ -->
+	<!-- todo: показывать значок избранных контактов starred -->
+	<!-- todo: отмечать тех, с кем уже сегодня контачил last_time_contacted times_contacted https://developer.android.com/guide/topics/providers/contacts-provider#ObsoleteData https://github.com/besthyman/AndroidContentProviderDemo/blob/master/src/com/hyman/demo/android/contentprovider/system/contactscontract/ContactsContractActivity.java -->
+	
     <PreferenceCategory
         android:title="@string/pref_Events_title"
         android:layout="@layout/settings_category">
@@ -45,7 +48,8 @@
             android:key="@string/pref_Accounts_key"
             android:title="@string/pref_Accounts_title"
             android:summary="@string/pref_Accounts_description"
-            android:icon="@android:drawable/ic_menu_my_calendar"/>
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_EventTypes_values_default"
@@ -319,6 +323,13 @@
 
         </PreferenceScreen>
 
+        <SwitchPreference
+            android:defaultValue="@string/pref_List_FavIcon_default"
+            android:key="@string/pref_List_FavIcon_key"
+            android:summary="@string/pref_List_FavIcon_description"
+            android:title="@string/pref_List_FavIcon_title"
+            android:icon="@drawable/ic_fav_star"/>
+
         <ListPreference
             android:defaultValue="@string/pref_List_SadPhoto_default"
             android:entries="@array/pref_List_SadPhoto_entries"
@@ -362,6 +373,13 @@
     <PreferenceCategory
         android:title="@string/pref_Widgets_title"
         android:layout="@layout/settings_category">
+
+        <SwitchPreference
+            android:defaultValue="@string/pref_Widgets_ShowBorder_default"
+            android:key="@string/pref_Widgets_ShowBorder_key"
+            android:summary="@string/pref_Widgets_ShowBorder_description"
+            android:title="@string/pref_Widgets_ShowBorder_title"
+            android:icon="@android:drawable/ic_menu_view"/>
 
         <SwitchPreference
             android:defaultValue="@string/pref_Widgets_ContactPhotos_default"

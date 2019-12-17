@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.12.19 16:02
+  ~  * Created by Vladimir Belov on 17.12.19 8:42
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 08.12.19 15:45
+  ~  * Last modified 17.12.19 2:53
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути Запілля в картках Ваших контактів або імпортування встановленими на смартфон додатками (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не дали до них доступ"</string>
     <string name="msg_no_events_check_prefs">"Чи не знайдено жодної події. Прокрутіть у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
+    <string name="msg_no_access_hint">Немає доступу до контактів. Перевірте дозволи на програму</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -143,6 +144,9 @@
         <item>Круглі дати (5K днів)</item>
     </string-array>
 
+    <string name="pref_List_FavIcon_title">Вибране знак</string>
+    <string name="pref_List_FavIcon_description">Виділіть улюблені контакти зі знаком зірки</string>
+
     <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
     <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів траурною стрічкою</string>
 
@@ -210,6 +214,9 @@
     <string name="pref_List_BottomInfo_description">Що показувати під ім\'ям контакту</string>
 
     <string name="pref_Widgets_title">Віджети</string>
+
+    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
+    <string name="pref_Widgets_ShowBorder_description">Показувати рамку віджета</string>
 
     <string name="pref_Widgets_BottomInfo_title">Інформація під фото</string>
     <string name="pref_Widgets_BottomInfo_description">Що показувати під фотографією</string>
