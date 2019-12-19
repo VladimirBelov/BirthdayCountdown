@@ -88,6 +88,7 @@
                     android:title="@string/pref_CustomEvents_Birthday_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -109,7 +110,13 @@
                     android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Anniversary_List_key"
+                    android:title="@string/pref_CustomEvents_Anniversary_List_title"
+                    android:summary="@string/pref_CustomEvents_Anniversary_List_description" />
 
             </PreferenceCategory>
 
@@ -130,6 +137,7 @@
                     android:title="@string/pref_CustomEvents_NameDay_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -151,6 +159,7 @@
                     android:title="@string/pref_CustomEvents_Crowning_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -172,6 +181,7 @@
                     android:title="@string/pref_CustomEvents_Death_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -187,6 +197,7 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
@@ -216,6 +227,7 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
@@ -245,6 +257,7 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
@@ -274,6 +287,7 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference
@@ -303,6 +317,7 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
+                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <EditTextPreference

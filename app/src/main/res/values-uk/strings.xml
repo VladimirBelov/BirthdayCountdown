@@ -170,6 +170,8 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Використовувати стандартні найменування для визначення річниць весіль</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Свої найменування</string>
     <string name="pref_CustomEvents_Anniversary_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці весіль (через кому)</string>
+    <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
+    <string name="pref_CustomEvents_Anniversary_List_description">Усі відомі назви ювілеїв (по роках)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_description">Використовувати стандартні найменування дляя визначення іменин</string>

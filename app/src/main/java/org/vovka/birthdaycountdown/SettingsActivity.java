@@ -60,6 +60,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
     private String testChannelId = Constants.STRING_EMPTY;
+    private TypedArray ta;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -68,6 +69,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             super.onCreate(savedInstanceState);
+
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.setLocale(true);
@@ -87,7 +89,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 applicationConf.setLocale(locale);
             }
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-            //
 
             //Toast.makeText(this, "locale=" + locale.toString() + ", pref=" + eventsData.preferences_language, Toast.LENGTH_LONG).show();
             //Toast.makeText(this, getString(R.string.button_Cancel), Toast.LENGTH_LONG).show();
@@ -98,11 +99,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             setContentView(R.layout.activity_settings);
+
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
 
             //Цвет заголовка окна
-            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             Window w = getWindow();
             w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
             w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
@@ -160,38 +162,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 setUpNestedScreen((PreferenceScreen) preference);
 
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Уведомления
-                ContactsEvents eventsData = ContactsEvents.getInstance();
-                eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
 
-                if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                testNotify();
 
-                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-
-                        if (notificationManager != null) {
-
-                            //если был предыдущий тест
-                            if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
-                                notificationManager.deleteNotificationChannel(testChannelId);
-                            }
-
-                            Random r = new Random();
-                            testChannelId = Integer.toString(r.nextInt(1000));
-
-                            NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
-                            channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
-                            channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                            channel.enableVibration(true);
-
-                            notificationManager.createNotificationChannel(channel);
-
-                        }
-                    }
-                    eventsData.showNotifications(true, testChannelId);
-
-                } else {
-                    Toast.makeText(this, getString(R.string.msg_notifications_disabled), Toast.LENGTH_LONG).show();
-                }
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -199,6 +172,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     selectAccounts();
                 }
+
+            } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
+
+                showAnniversaryList();
 
             }
 
@@ -208,50 +185,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
 
         return false;
-    }
-
-    private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
-
-        try {
-            //Добавляем тулбар
-            //https://code.i-harness.com/en/q/1cfc0dc
-
-            Dialog dialog = preferenceScreen.getDialog();
-            ListView list = dialog.findViewById(android.R.id.list);
-            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
-
-                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
-                marginParams.setMargins(0, (int) (42 * displayMetrics.density + 0.5f), 0, 0);
-                list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
-                ViewGroup root = (ViewGroup) list.getParent();
-                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
-                root.addView(bar, 0); // insert at top
-                bar.setTitle(preferenceScreen.getTitle());
-                bar.setNavigationOnClickListener(v -> dialog.dismiss());
-                root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
-
-            } else { //Для Android <= 6
-
-                list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
-                LinearLayout root = (LinearLayout) list.getParent();
-                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
-                root.addView(bar, 0); // insert at top
-                bar.setTitle(preferenceScreen.getTitle());
-                bar.setNavigationOnClickListener(v -> dialog.dismiss());
-                root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
-
-            }
-            list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_trans))));
-            list.setDividerHeight((int) (1 * displayMetrics.density));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-        }
-
     }
 
     @Override
@@ -277,9 +210,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
-    //https://stackoverflow.com/questions/57973627/configuration-setlocalelocale-doesnt-work-with-appcompatdelegate-setdefaultni
     @Override
     public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        //https://stackoverflow.com/questions/57973627/configuration-setlocalelocale-doesnt-work-with-appcompatdelegate-setdefaultni
         if (overrideConfiguration != null) {
             int uiMode = overrideConfiguration.uiMode;
             overrideConfiguration.setTo(getBaseContext().getResources().getConfiguration());
@@ -321,6 +254,85 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
+
+        try {
+            //Добавляем тулбар
+            //https://code.i-harness.com/en/q/1cfc0dc
+
+            Dialog dialog = preferenceScreen.getDialog();
+            ListView list = dialog.findViewById(android.R.id.list);
+            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+            //TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
+
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
+                marginParams.setMargins(0, (int) (42 * displayMetrics.density + 0.5f), 0, 0);
+                list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
+                ViewGroup root = (ViewGroup) list.getParent();
+                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+                root.addView(bar, 0); // insert at top
+                bar.setTitle(preferenceScreen.getTitle());
+                bar.setNavigationOnClickListener(v -> dialog.dismiss());
+                root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
+
+            } else { //Для Android <= 6
+
+                list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
+                LinearLayout root = (LinearLayout) list.getParent();
+                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+                root.addView(bar, 0); // insert at top
+                bar.setTitle(preferenceScreen.getTitle());
+                bar.setNavigationOnClickListener(v -> dialog.dismiss());
+                root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
+
+            }
+            list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_trans))));
+            list.setDividerHeight((int) (1 * displayMetrics.density));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void testNotify() {
+        ContactsEvents eventsData = ContactsEvents.getInstance();
+        eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
+
+        if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+                if (notificationManager != null) {
+
+                    //если был предыдущий тест
+                    if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
+                        notificationManager.deleteNotificationChannel(testChannelId);
+                    }
+
+                    Random r = new Random();
+                    testChannelId = Integer.toString(r.nextInt(1000));
+
+                    NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                    channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
+                    channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                    channel.enableVibration(true);
+
+                    notificationManager.createNotificationChannel(channel);
+
+                }
+            }
+            eventsData.showNotifications(true, testChannelId);
+
+        } else {
+            Toast.makeText(this, getString(R.string.msg_notifications_disabled), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void selectAccounts() {
 
         try {
@@ -348,7 +360,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
             }
 
-            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            //TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             if (accountNames.size() > 0) {
                 ListAdapter adapter = new GetAccountsListAdapter(this, accountNames, accountIcons, accountPackages, ta);
@@ -431,4 +443,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void showAnniversaryList() {
+
+        try {
+
+            ArrayList<String> items = new ArrayList<>();
+            Resources applicationRes = getBaseContext().getResources();
+            for(int i = 1; i <= 100; i++) {
+                String anCaption;
+                try {
+                    anCaption = this.getString(applicationRes.getIdentifier("event_type_wedding_" + i, "string", this.getPackageName()));
+                } catch (Resources.NotFoundException nfe) {
+                    anCaption = null;
+                }
+                if (anCaption != null && !anCaption.equals(Constants.STRING_EMPTY)) items.add(i + Constants.STRING_COLON_SPACE + anCaption);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_Anniversary_List_description)
+                    .setIcon(R.drawable.ic_event_wedding)
+                    .setItems(items.toArray(new CharSequence[0]), null)
+                    .setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SHOW_ANNIVERSARY_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
 }

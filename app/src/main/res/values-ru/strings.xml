@@ -141,6 +141,8 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Использовать стандартные наименования для определения годовщин свадеб</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Anniversary_Labels_summary">События контактов с такой меткой будут идентифицированы как годовщины свадеб (через запятую)</string>
+    <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
+    <string name="pref_CustomEvents_Anniversary_List_description">Все именные годовщины свадеб (по годам)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_description">Использовать стандартные наименования для определения именин</string>

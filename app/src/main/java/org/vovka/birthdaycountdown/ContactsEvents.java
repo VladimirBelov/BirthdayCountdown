@@ -1210,13 +1210,14 @@ class ContactsEvents {
                 String eventCaption = singleEventArray[Position_eventCaption];
 
                 //перебираем все даты и находим максимальную
+                final Resources resources = getResources();
                 for (String dayValue : dayArray) {
                     String accountType = dayValue.substring(0, dayValue.indexOf(Constants.STRING_COLON_SPACE));
                     String storedDate = dayValue.substring(dayValue.indexOf(Constants.STRING_COLON_SPACE) + Constants.STRING_COLON_SPACE.length());
                     Date storedDate_Date = null;
                     boolean storedDate_isYear = false;
 
-                    if (accountType.toLowerCase().contains(getResources().getString(R.string.account_skype))) {
+                    if (accountType.toLowerCase().contains(resources.getString(R.string.account_skype))) {
 
                         storedDate_isYear = true;
                         try {
@@ -1237,7 +1238,7 @@ class ContactsEvents {
                             }
                         }
 
-                    } else if (accountType.equalsIgnoreCase(getResources().getString(R.string.account_vk))) {
+                    } else if (accountType.equalsIgnoreCase(resources.getString(R.string.account_vk))) {
 
                         if (storedDate.substring(0, 5).equals("0000-")) { //Нет года, формат 0000-mm-dd
 
@@ -1383,7 +1384,7 @@ class ContactsEvents {
                         if (singleEventArray[Position_eventType].equals(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY))) {
                             String anCaption;
                             try {
-                                anCaption = context.getString(getResources().getIdentifier("event_type_wedding_" + Age, "string", context.getPackageName()));
+                                anCaption = context.getString(resources.getIdentifier("event_type_wedding_" + Age, "string", context.getPackageName()));
                             } catch (Resources.NotFoundException nfe) {
                                 anCaption = null;
                             }

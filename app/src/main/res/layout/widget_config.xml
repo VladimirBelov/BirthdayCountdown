@@ -26,7 +26,7 @@
             android:theme="@style/AppTheme.DarkGray.ActionBar"
             app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
-	<!-- todo: сделать поддержку цветов темы -->
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/widget_config_numbers"
                 android:prompt="@string/widget_config_index_label" />
+<!--            android:popupBackground="?attr/backgroundColor"-->
 
             <TextView
                 android:layout_width="fill_parent"

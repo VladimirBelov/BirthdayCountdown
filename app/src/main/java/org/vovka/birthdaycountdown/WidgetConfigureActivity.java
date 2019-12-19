@@ -10,15 +10,21 @@ package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import java.util.Locale;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -32,20 +38,29 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) {
-                eventsData.context = this; //if (eventsData.context == null) eventsData.context = getApplicationContext();
-                eventsData.getPreferences();
-            }
-
-            //todo: на новых андроидах локаль ставится системной, а не из настроек
+            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            eventsData.getPreferences();
             eventsData.setLocale(true);
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             setContentView(R.layout.widget_config);
-
-           /* ActionBar bar = getSupportActionBar();
-            if (bar != null) bar.setTitle(R.string.window_widget_settings);*/
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
@@ -57,6 +72,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
 
             setSupportActionBar(toolbar);
+
+            //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color
 
             setResult(RESULT_CANCELED);
             Intent intent = getIntent();
