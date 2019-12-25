@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 08.12.19 16:02
+  ~  * Last modified 22.12.19 22:25
   ~  */
   -->
 
@@ -23,7 +23,7 @@
     <color name="black">#000000</color>
     <color name="dark_gray">#121212</color>
     <color name="medium_dark_gray">#232323</color>
-	<color name="medium_dark_gray_trans">#80232323</color>
+	<color name="medium_dark_gray_trans">#40232323</color>
     <color name="medium_gray">#323232</color>
     <color name="light_gray">#808080</color>
     <color name="light_gray_trans">#33808080</color>

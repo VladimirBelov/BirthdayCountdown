@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.19 8:42
+ *  * Created by Vladimir Belov on 26.12.19 2:44
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 17.12.19 2:26
+ *  * Last modified 21.12.19 18:25
  *
  */
 
@@ -150,37 +150,89 @@ class WidgetUpdater {
                                 case "1": //Фамилия Имя Отчество
                                     views.setTextViewText(id_widget_Caption_left, person.getFullName());
                                     views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                                    views.setViewVisibility(id_widget_Caption_centered, View.GONE);
+                                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                                     break;
                                 case "2": //Дата события
                                     views.setTextViewText(id_widget_Caption_centered, singleRowArray[ContactsEvents.Position_eventDateText]);
-                                    views.setViewVisibility(id_widget_Caption_left, View.GONE);
+                                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                                     views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                                     break;
                                 case "4": //Имя Отчество Фамилия
                                     views.setTextViewText(id_widget_Caption_left, person.getFullNameAlt());
                                     views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                                    views.setViewVisibility(id_widget_Caption_centered, View.GONE);
+                                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                                     break;
                                 case "3": //Фамилия И.О.
                                     views.setTextViewText(id_widget_Caption_left, person.getFullNameShort());
                                     views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                                    views.setViewVisibility(id_widget_Caption_centered, View.GONE);
+                                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                                     break;
                                 case "5": //Имя
-                                    views.setTextViewText(id_widget_Caption_centered, eventsData.getContactName(Long.parseLong(singleRowArray[Position_contact_id]), person.getFirstName()));
-                                    views.setViewVisibility(id_widget_Caption_left, View.GONE);
+                                    views.setTextViewText(id_widget_Caption_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id]), person.getFirstName()));
+                                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                                    break;
+                                case "6": //Фамилия
+                                    views.setTextViewText(id_widget_Caption_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id]), person.getLastName()));
+                                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                                     views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                                     break;
                                 case "99": //Ничего
                                 default:
                                     views.setTextViewText(id_widget_Caption_left, "");
-                                    views.setViewVisibility(id_widget_Caption_left, View.GONE);
-                                    views.setViewVisibility(id_widget_Caption_centered, View.GONE);
+                                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                                     break;
                             }
+
                             views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
                             views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify)); //todo: убрать размер в ресурсы
+
+                            //Под фото (верхний ряд)
+                            int id_widget_Caption2nd_left = resources.getIdentifier("textView2nd" + eventCell, "id", packageName);
+                            int id_widget_Caption2nd_centered = resources.getIdentifier("textView2ndCentered" + eventCell, "id", packageName);
+
+                            switch (eventsData.preferences_widgets_bottom_info_2nd) {
+                                case "1": //Фамилия Имя Отчество
+                                    views.setTextViewText(id_widget_Caption2nd_left, person.getFullName());
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                                    break;
+                                case "2": //Дата события
+                                    views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[ContactsEvents.Position_eventDateText]);
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                                    break;
+                                case "4": //Имя Отчество Фамилия
+                                    views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameAlt());
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                                    break;
+                                case "3": //Фамилия И.О.
+                                    views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameShort());
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                                    break;
+                                case "5": //Имя
+                                    views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id]), person.getFirstName()));
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                                    break;
+                                case "6": //Фамилия
+                                    views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id]), person.getLastName()));
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                                    break;
+                                case "99": //Ничего
+                                default:
+                                    views.setTextViewText(id_widget_Caption2nd_left, "");
+                                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+                                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                                    break;
+                            }
+
+                            views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
+                            views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
 
                             //Фото
                             // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -242,6 +294,8 @@ class WidgetUpdater {
                             views.setTextColor(id_widget_Age, colorDefault);
                             views.setTextColor(id_widget_Caption_left, colorDefault);
                             views.setTextColor(id_widget_Caption_centered, colorDefault);
+                            views.setTextColor(id_widget_Caption2nd_left, colorDefault);
+                            views.setTextColor(id_widget_Caption2nd_centered, colorDefault);
                             //}
 
                             //Возраст
@@ -278,6 +332,8 @@ class WidgetUpdater {
                                         //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
                                         views.setTextColor(id_widget_Caption_left, colorEventToday);
                                         views.setTextColor(id_widget_Caption_centered, colorEventToday);
+                                        views.setTextColor(id_widget_Caption2nd_left, colorEventToday);
+                                        views.setTextColor(id_widget_Caption2nd_centered, colorEventToday);
                                     }
                                 }
                                 views.setTextViewText(idViewDistance, "");

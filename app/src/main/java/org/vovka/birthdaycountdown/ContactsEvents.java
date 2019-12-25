@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.19 8:42
+ *  * Created by Vladimir Belov on 26.12.19 2:44
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 17.12.19 8:37
+ *  * Last modified 21.12.19 16:33
  *
  */
 
@@ -166,6 +166,7 @@ class ContactsEvents {
     int preferences_notification_channel_id;
 
     String preferences_widgets_bottom_info;
+    String preferences_widgets_bottom_info_2nd;
     String preferences_widgets_color_eventtoday;
     String preferences_widgets_color_eventsoon;
     boolean preferences_widgets_showborder;
@@ -431,6 +432,7 @@ class ContactsEvents {
             preferences_list_sad_photo = Integer.parseInt(preferences.getString(context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default)));
             preferences_language = preferences.getString(context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_widgets_bottom_info = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
+            preferences_widgets_bottom_info_2nd = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
             preferences_widgets_color_eventtoday = preferences.getString(context.getString(R.string.pref_Widgets_Color_EventToday_key), context.getString(R.string.pref_Widgets_Color_EventToday_default));
             preferences_widgets_color_eventsoon = preferences.getString(context.getString(R.string.pref_Widgets_Color_EventSoon_key), context.getString(R.string.pref_Widgets_Color_EventSoon_default));
             preferences_widgets_showborder = preferences.getBoolean(context.getString(R.string.pref_Widgets_ShowBorder_key), Boolean.getBoolean(context.getString(R.string.pref_Widgets_ShowBorder_default)));
@@ -1135,7 +1137,7 @@ class ContactsEvents {
         }
     }
 
-    String getContactName(Long contactId, String defaultName) {
+    String getContactFirstName(Long contactId, String defaultName) {
 
         try {
 
@@ -1150,11 +1152,39 @@ class ContactsEvents {
                     null);
             while (nameCursor.moveToNext())
             {
-                firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.Data.DATA2));
+                firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                 if (!firstName.equals(STRING_EMPTY)) break;
             }
             nameCursor.close();
             return !firstName.equals(STRING_EMPTY) ? firstName : defaultName;
+
+        } catch (Exception e) {
+            Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return defaultName;
+        }
+
+    }
+
+    String getContactLastName(Long contactId, String defaultName) {
+
+        try {
+
+            String lastName = STRING_EMPTY;
+            Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+            Uri dataUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Data.CONTENT_DIRECTORY);
+            Cursor nameCursor = context.getContentResolver().query(
+                    dataUri,
+                    null,
+                    ContactsContract.Data.MIMETYPE+"=?",
+                    new String[]{ ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE },
+                    null);
+            while (nameCursor.moveToNext())
+            {
+                lastName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+                if (!lastName.equals(STRING_EMPTY)) break;
+            }
+            nameCursor.close();
+            return !lastName.equals(STRING_EMPTY) ? lastName : defaultName;
 
         } catch (Exception e) {
             Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();

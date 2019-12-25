@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 17.12.19 2:54
+  ~  * Last modified 25.12.19 23:31
   ~  */
   -->
 
@@ -226,8 +226,11 @@
     <string name="pref_Widgets_EventIcons_title">Иконка события</string>
     <string name="pref_Widgets_EventIcons_description">Показывать иконку события</string>
 
-    <string name="pref_Widgets_BottomInfo_title">Информация под фото</string>
+    <string name="pref_Widgets_BottomInfo_title">Информация под фото (нижний ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Что показывать под фотографией</string>
+
+    <string name="pref_Widgets_BottomInfo2nd_title">Информация под фото (верхний ряд)</string>
+    <string name="pref_Widgets_BottomInfo2nd_description">Что показывать под фотографией</string>
 
     <string-array name="pref_Widgets_Color_entries">
         <item>Зелёный</item>
@@ -249,6 +252,7 @@
         <item>Фамилия И.О.</item>
         <item>Имя Отчество Фамилия</item>
         <item>Имя</item>
+        <item>Фамилия</item>
         <item>Дата события</item>
         <item>Ничего</item>
     </string-array>
@@ -322,8 +326,7 @@
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>
 
-    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
-    <!-- https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
+    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1">Ситцевая</string>
     <string name="event_type_wedding_2">Бумажная</string>
     <string name="event_type_wedding_3">Кожаная</string>

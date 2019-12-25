@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.19 8:42
+ *  * Created by Vladimir Belov on 26.12.19 2:44
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 16.12.19 1:44
+ *  * Last modified 26.12.19 0:19
  *
  */
 
@@ -97,6 +97,7 @@ public class Widget5x1 extends AppWidgetProvider {
                                 "\n dimenSet=" + resources.getString(R.string.dimenSet) +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth +
+                                "\n minHeight=" + minHeight +
                                 "\n eventsCountSuggested=" + eventsCountSuggested +
                                 "\n eventsCount=" + eventsCount +
                                 "\n cellSize=" + getCellSize(context, eventsCountSuggested) +

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.19 8:42
+ *  * Created by Vladimir Belov on 26.12.19 2:44
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 09.12.19 23:06
+ *  * Last modified 21.12.19 16:15
  *
  */
 
@@ -18,6 +18,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
 class Person {
+
     private String LastName;
     private String FirstName;
     private String SecondName;
@@ -105,7 +106,8 @@ class Person {
     String getFullNameShort () { //Фамилия И. О.
 
         /*
-        //todo: сделать поддержку двойных фамилий и имён
+        //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
+
         // Fetch contact name with a specific ID
         Cursor nameFIO = contentResolver.query(
                 ContactsContract.Data.CONTENT_URI,
@@ -197,5 +199,9 @@ class Person {
 
     String getFirstName() {
         return FirstName;
+    }
+
+    String getLastName() {
+        return LastName;
     }
 }

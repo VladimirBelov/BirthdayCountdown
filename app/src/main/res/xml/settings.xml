@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 16.12.19 1:02
+  ~  * Last modified 21.12.19 16:37
   ~  */
   -->
 
@@ -409,6 +409,16 @@
             android:summary="@string/pref_Widgets_EventIcons_description"
             android:title="@string/pref_Widgets_EventIcons_title"
             android:icon="@android:drawable/ic_menu_view"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_BottomInfo2nd_default"
+            android:key="@string/pref_Widgets_BottomInfo2nd_key"
+            android:entries="@array/pref_Widgets_BottomInfo_entries"
+            android:entryValues="@array/pref_Widgets_BottomInfo_values"
+            android:title="@string/pref_Widgets_BottomInfo2nd_title"
+            android:summary="@string/pref_Widgets_BottomInfo2nd_description"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_BottomInfo_default"

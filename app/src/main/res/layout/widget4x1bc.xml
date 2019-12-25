@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 17.12.19 2:43
+  ~  * Last modified 26.12.19 2:20
   ~  */
   -->
 
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/appwidget_main"
     android:layout_width="@dimen/widget_41bc_fullwidth"
-    android:layout_height="@dimen/widget_41bc_cellHeight"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="@dimen/widget_41bc_cellHeight">
 
     <TextView
         android:id="@id/appwidget_text"
         android:layout_width="fill_parent"
-        android:layout_height="71.0dip"
+        android:layout_height="@dimen/widget_41bc_cellHeight"
         android:layout_centerInParent="true"
         android:contentDescription="@string/appwidget_text"
         android:gravity="center"
@@ -50,7 +50,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
+            android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
@@ -72,7 +72,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
+            android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
@@ -87,6 +87,45 @@
             android:singleLine="true"
             android:text="@string/appwidget_text"
             android:textColor="@color/white"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2nd0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView0"
+            android:layout_marginStart="3dip"
+            android:layout_marginBottom="9dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2ndCentered0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView0"
+            android:layout_marginStart="3dip"
+            android:layout_marginBottom="9dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
@@ -142,12 +181,11 @@
 
         <ImageView
             android:id="@+id/iconFav0"
-            android:layout_width="14.0dip"
-            android:layout_height="14.0dip"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/iconEventType0"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"
             android:src="@drawable/fav_star" />
     </RelativeLayout>
@@ -177,6 +215,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -197,6 +236,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -210,6 +250,43 @@
             android:singleLine="true"
             android:text="@string/appwidget_text"
             android:textColor="@color/white"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2nd1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView1"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2ndCentered1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView1"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
@@ -265,12 +342,11 @@
 
         <ImageView
             android:id="@+id/iconFav1"
-            android:layout_width="14.0dip"
-            android:layout_height="14.0dip"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/iconEventType1"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"
             android:src="@drawable/fav_star" />
     </RelativeLayout>
@@ -301,6 +377,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -321,6 +398,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -334,6 +412,43 @@
             android:singleLine="true"
             android:text="@string/appwidget_text"
             android:textColor="@color/white"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2nd2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView2"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2ndCentered2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView2"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
@@ -389,12 +504,11 @@
 
         <ImageView
             android:id="@+id/iconFav2"
-            android:layout_width="14.0dip"
-            android:layout_height="14.0dip"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/iconEventType2"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"
             android:src="@drawable/fav_star" />
     </RelativeLayout>
@@ -424,6 +538,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -444,6 +559,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -457,6 +573,43 @@
             android:singleLine="true"
             android:text="@string/appwidget_text"
             android:textColor="@color/white"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2nd3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView3"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2ndCentered3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView3"
+            android:layout_marginStart="1dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
@@ -512,12 +665,11 @@
 
         <ImageView
             android:id="@+id/iconFav3"
-            android:layout_width="14.0dip"
-            android:layout_height="14.0dip"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/iconEventType3"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"
             android:src="@drawable/fav_star" />
     </RelativeLayout>
@@ -549,7 +701,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="1dip"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -570,7 +723,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="1dip"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/medium_dark_gray_trans"
             android:ellipsize="marquee"
@@ -584,6 +738,45 @@
             android:singleLine="true"
             android:text="@string/appwidget_text"
             android:textColor="@color/white"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2nd4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView4"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:contentDescription="@string/widget_FIO"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_FIO"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/widgetDate_fontSize" />
+
+        <TextView
+            android:id="@+id/textView2ndCentered4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView4"
+            android:layout_marginStart="1dip"
+            android:layout_marginEnd="3dip"
+            android:background="@color/medium_dark_gray_trans"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:shadowColor="@color/dark_gray"
+            android:shadowDx="2"
+            android:shadowDy="-2"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/widget_Date"
+            android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
@@ -639,12 +832,11 @@
 
         <ImageView
             android:id="@+id/iconFav4"
-            android:layout_width="14.0dip"
-            android:layout_height="14.0dip"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/iconEventType4"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"
             android:src="@drawable/fav_star" />
     </RelativeLayout>

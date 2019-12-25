@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 14.12.19 9:40
+  ~  * Last modified 26.12.19 0:36
   ~  */
   -->
 
@@ -28,4 +28,6 @@
 
     <dimen name="widget_71cellHeight">80.0dip</dimen>
     <dimen name="widget_71cellWidth">82.0dip</dimen>
+
+    <dimen name="widget_41bc_cellHeight">60.0dip</dimen>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 17.12.19 2:53
+  ~  * Last modified 25.12.19 23:43
   ~  */
   -->
 
@@ -22,7 +22,7 @@
     <string name="menu_context_open_card">Відкрити картку контакту</string>
     <string name="menu_context_events">Всі події контакту</string>
     <string name="menu_context_event_info">Дані про подію</string>
-    <string name="menu_context_hide_event">Приховати подія</string>
+    <string name="menu_context_hide_event">Приховати подію</string>
     <string name="menu_context_unhide_event">Повернути показ події</string>
 
     <string name="msg_no_access">Не вдається отримати доступ до контактів</string>
@@ -47,17 +47,17 @@
     <string name="msg_before_event_prefix_2_3_4">" днi"</string>
     <string name="msg_before_event_prefix_1_">" день"</string>
     <string name="msg_before_event_prefix_4_21">" днів"</string>
-    <string name="msg_label_search">Введіть частину П.І.Б., тип контакта, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
+    <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Значення фільтра</string>
     <string name="msg_notifications_soon_no_events">Немає подій на найближчі дні</string>
     <string name="msg_notifications_today_no_events">Немає подій на сьогодні</string>
     <string name="msg_notifications_soon">"Скоро подій - "</string>
     <string name="msg_notifications_today">"Подій сьогодні - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
-    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути Запілля в картках Ваших контактів або імпортування встановленими на смартфон додатками (Google, Skype, VK, …)</string>
-    <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не дали до них доступ"</string>
-    <string name="msg_no_events_check_prefs">"Чи не знайдено жодної події. Прокрутіть у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
-    <string name="msg_no_access_hint">Немає доступу до контактів. Перевірте дозволи на програму</string>
+    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфон додатками (Google, Skype, VK, …)</string>
+    <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
+    <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
+    <string name="msg_no_access_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -73,26 +73,26 @@
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистити</string>
     <string name="button_Cancel">Відміна</string>
-    <string name="button_Rate">Оцінити програму</string>
+    <string name="button_Rate">Оцінити додаток</string>
     <string name="button_Open_AddresBook">Відкрити адресну книгу…</string>
-    <string name="button_Open_AppSettings">Відкрийте налаштування…</string>
+    <string name="button_Open_AppSettings">Відкрити налаштування…</string>
     <string name="button_All">Всі</string>
 
-    <string name="events_scope_not_hidden">Все неприховано (%1$d)</string>
+    <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
     <string name="events_scope_hidden">Приховані (%1$d)</string>
     <string name="events_scope_hidden2">Приховані (%1$d, saved %2$d)</string>
 
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
-    <string name="event_type_other">Інша подія событие</string>
+    <string name="event_type_other">Інша подія</string>
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Iменини</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_name_1_7">На 1–7 подій</string>
-    <string name="appwidget_name_5">На 5 подію</string>
+    <string name="appwidget_name_5">На 5 подій</string>
     <string name="appwidget_name_1">На 1 подію</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
@@ -103,11 +103,11 @@
 
     <string name="pref_Events_title">Загальні</string>
     <string name="pref_Language_title">Мова</string>
-    <string name="pref_Language_description">Мова інтерфейсу та відображаємих даних</string>
+    <string name="pref_Language_description">Мова інтерфейсу та відображених даних</string>
     <string name="pref_Theme_title">Тема</string>
-    <string name="pref_Theme_description">Колірна тема інтерфейсу</string>
+    <string name="pref_Theme_description">Кольорова тема інтерфейсу</string>
     <string name="pref_Accounts_title">Облікові записи</string>
-    <string name="pref_Accounts_description">Сканувати лише ці акаунти на події</string>
+    <string name="pref_Accounts_description">Шукати події тільки в даних облікових записах</string>
 
     <string-array name="pref_Language_entries">
         <item>Автоматично</item>
@@ -134,7 +134,7 @@
     </string-array>
 
     <string name="pref_EventTypes_title">Типи подій</string>
-    <string name="pref_EventTypes_description">Які події відображати в списку подій і віджети</string>
+    <string name="pref_EventTypes_description">Які події відображати в списку подій і віджетах</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Дні народження</item>
@@ -145,7 +145,7 @@
     </string-array>
 
     <string name="pref_List_FavIcon_title">Вибране знак</string>
-    <string name="pref_List_FavIcon_description">Виділіть улюблені контакти зі знаком зірки</string>
+    <string name="pref_List_FavIcon_description">Виділити улюблені контакти зіркою</string>
 
     <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
     <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів траурною стрічкою</string>
@@ -157,7 +157,7 @@
     </string-array>
 
     <string name="pref_CustomEvents_title">Налаштування подій</string>
-    <string name="pref_CustomEvents_summary">Параметри визначення користувальницьких подій</string>
+    <string name="pref_CustomEvents_summary">Параметри визначення подій користувача</string>
     <string name="pref_CustomEvents_hint">Найменування (через кому)</string>
     <string name="pref_CustomEvent_Caption_hint">Тема події</string>
 
@@ -220,8 +220,11 @@
     <string name="pref_Widgets_ShowBorder_title">Рамка</string>
     <string name="pref_Widgets_ShowBorder_description">Показувати рамку віджета</string>
 
-    <string name="pref_Widgets_BottomInfo_title">Інформація під фото</string>
+    <string name="pref_Widgets_BottomInfo_title">Інформація під фото (нижній ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Що показувати під фотографією</string>
+
+    <string name="pref_Widgets_BottomInfo2nd_title">Інформація під фото (верхній ряд)</string>
+    <string name="pref_Widgets_BottomInfo2nd_description">Що показувати під фотографією</string>
 
     <string name="pref_Widgets_ContactPhotos_title">Фото контакту</string>
     <string name="pref_Widgets_ContactPhotos_description">Показувати фото контакту</string>
@@ -249,6 +252,7 @@
         <item>Прізвище І.П.</item>
         <item>Ім’я По-батькові Прізвище</item>
         <item>Ім’я</item>
+        <item>Прізвище</item>
         <item>Дата події</item>
         <item>Нічого</item>
     </string-array>

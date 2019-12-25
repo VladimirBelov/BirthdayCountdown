@@ -1,12 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.19 8:42
+  ~  * Created by Vladimir Belov on 26.12.19 2:44
   ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 17.12.19 3:07
+  ~  * Last modified 25.12.19 23:31
   ~  */
   -->
 
 <resources>
+    <string name="window_settings">Settings</string>
+    <string name="window_widget_settings">Widget settings</string>
+
+    <string name="title_activity_search">Filter</string>
+    <string name="title_activity_events_scope">Events scope</string>
+
+    <string name="menu_settings">Settings</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_search">Filter…</string>
+    <string name="menu_hidden_events">Hidden events</string>
+    <string name="menu_exit">Exit</string>
+    <string name="menu_context_open_card">Open contact card</string>
+    <string name="menu_context_events">All contact events</string>
+    <string name="menu_context_event_info">Event data</string>
+    <string name="menu_context_hide_event">Hide event</string>
+    <string name="menu_context_unhide_event">Unhide event</string>
+
+    <string name="msg_no_access">No access to contacts</string>
+    <string name="msg_no_events">Events not found</string>
+    <string name="msg_filter">", filter: "</string>
+    <string name="msg_before_event_prefix">"in "</string>
+    <string name="msg_after_event_postfix">" ago"</string>
+    <string name="msg_after_event_prefix">""</string>
+    <string name="msg_today">Today</string>
+    <string name="msg_tomorrow">Tomorrow</string>
+    <string name="msg_yesterday">Yesterday</string>
+    <string name="msg_beforeyesterday">Day before yesterday</string>
+    <string name="msg_day_after_tomorrow">Day after tomorrow</string>
+    <string name="msg_stats_prefix">events:</string>
+    <string name="msg_stats_hidden_prefix">hidden events:</string>
+    <string name="msg_label_hidden">Hidden</string>
+    <string name="msg_after_age_prefix_1">" year"</string>
+    <string name="msg_after_age_prefix_4_21">" years"</string>
+    <string name="msg_after_age_prefix_1_">" years"</string>
+    <string name="msg_after_age_prefix_2_3_4">" years"</string>
+    <string name="msg_before_event_prefix_1">" day"</string>
+    <string name="msg_before_event_prefix_2_3_4">" days"</string>
+    <string name="msg_before_event_prefix_1_">" day"</string>
+    <string name="msg_before_event_prefix_4_21">" days"</string>
+    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
+    <string name="msg_hint_search">Filter value</string>
+    <string name="msg_notifications_soon_no_events">No events for nearest days</string>
+    <string name="msg_notifications_today_no_events">No events for today</string>
+    <string name="msg_notifications_soon">"Events coming soon - "</string>
+    <string name="msg_notifications_today">"Events today - "</string>
+    <string name="msg_notifications_disabled">Notifications disabled</string>
+    <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
+    <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
+    <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
+    <string name="msg_no_access_hint">No access to contacts. Check application permissions</string>
+
+    <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
+
+    <string name="hint_ContactIcon">Photo</string>
+    <string name="hint_Name">Full name</string>
+    <string name="hint_Age">Age</string>
+    <string name="hint_Date">Date</string>
+    <string name="hint_EventDistance">Before event</string>
+    <string name="hint_Description">Details</string>
+    <string name="hint_EventIcon">Icon</string>
+
+    <string name="button_OK">OK</string>
+    <string name="button_Clear">Clear</string>
+    <string name="button_Cancel">Cancel</string>
+    <string name="button_Rate">Rate app</string>
+    <string name="button_Open_AddresBook">Open address book…</string>
+    <string name="button_Open_AppSettings">Open settings…</string>
+    <string name="button_All">All</string>
+
+    <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
+    <string name="events_scope_all">All (%1$d)</string>
+    <string name="events_scope_hidden">Hidden (%1$d)</string>
+    <string name="events_scope_hidden2">Hidden (%1$d, saved %2$d)</string>
+
+    <string name="event_type_birthday">Birthday</string>
+    <string name="event_type_anniversary">Anniversary</string>
+    <string name="event_type_other">Other event</string>
+    <string name="event_type_death">Death anniversary</string>
+    <string name="event_type_crowning">Crowning</string>
+    <string name="event_type_nameday">Name day</string>
+
+    <string name="appwidget_text">Loading…</string>
+    <string name="appwidget_name_1_7">For 1–7 events</string>
+    <string name="appwidget_name_1">For 1 event</string>
+    <string name="appwidget_name_5">For 5 events</string>
+    <string name="widget_Photo">Photo</string>
+    <string name="widget_FIO">Full name</string>
+    <string name="widget_Date">Date</string>
+    <string name="widget_Age">YY</string>
+    <string name="widget_TypeIcon">Icon</string>
+    <string name="widget_Distance">DD</string>
+
+    <string name="pref_Events_title">Common</string>
+    <string name="pref_Language_title">Language</string>
+    <string name="pref_Language_description">Interface and data language</string>
+    <string name="pref_Theme_title">Color theme</string>
+    <string name="pref_Theme_description">Interface color theme</string>
+    <string name="pref_Accounts_title">Accounts</string>
+    <string name="pref_Accounts_description">Scan only these accounts for events</string>
+
+    <string-array name="pref_Language_entries">
+        <item>Auto</item>
+        <item>English</item>
+        <item>German</item>
+        <item>Russian</item>
+        <item>Ukrainian</item>
+    </string-array>
+
+    <string-array name="weekDays">
+        <item>" on Sunday"</item>
+        <item>" on Monday"</item>
+        <item>" on Tuesday"</item>
+        <item>" on Wednesday"</item>
+        <item>" on Thursday"</item>
+        <item>" on Friday"</item>
+        <item>" on Saturday"</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_title">Events customizing</string>
+    <string name="pref_CustomEvents_summary">Preferences to detect custom events</string>
+    <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
+    <string name="pref_CustomEvent_Caption_hint">Event caption</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standart labels to detect birthday events</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this labels will bee identified as birthdays (by comma)</string>
+
+    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standart labels to detect anniversary events</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Contacts events with this labels will bee identified as anniversaries (by comma)</string>
+    <string name="pref_CustomEvents_Anniversary_List_title">List</string>
+    <string name="pref_CustomEvents_Anniversary_List_description">All known anniversaries titles (by year)</string>
+
+    <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_description">Use standart labels to detect name days events</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Contacts events with this labels will bee identified as name days (by comma)</string>
+
+    <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_description">Use standart labels to detect crowning events</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Contacts events with this labels will bee identified as crownings (by comma)</string>
+
+    <string name="pref_CustomEvents_Death_UseInternal_title">Use standart labels</string>
+    <string name="pref_CustomEvents_Death_UseInternal_description">Use standart labels to detect death anniversary events</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Contacts events with this labels will bee identified as death anniversaries (by comma)</string>
+
+    <string name="pref_CustomEvents_Custom_title">User-defined event</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Custom_Labels_description">Contacts events with this labels will bee identified as this event (by comma)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
+    <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
+
+    <string-array name="pref_Theme_entries">
+        <item>Green</item>
+        <item>Dark gray</item>
+        <item>Black</item>
+    </string-array>
+
+    <string name="pref_EventTypes_title">Event types</string>
+    <string name="pref_EventTypes_description">What kind of events to include in event list and widgets</string>
+
+    <string-array name="pref_EventTypes_entries">
+        <item>Birthdays</item>
+        <item>Anniversaries</item>
+        <item>Others events</item>
+        <item>Custom events</item>
+        <item>Round days count (5K, 10K, 15K days)</item>
+    </string-array>
+
+    <string name="pref_List_FavIcon_title">Favorites sign</string>
+    <string name="pref_List_FavIcon_description">Highlight favorite contacts with star sign</string>
+
+    <string name="pref_List_SadPhoto_title">Mourning tape</string>
+    <string name="pref_List_SadPhoto_description">Mark photos of deceased contacts with mourning tape</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Never</item>
+        <item>Only for single event</item>
+        <item>For all contact events</item>
+    </string-array>
+
+    <string name="pref_List_title">Events list</string>
+
+    <string name="pref_List_PrevEvents_title">Previous events</string>
+    <string name="pref_List_PrevEvents_description">Show previous events on top of the events list</string>
+
+    <string-array name="pref_List_PrevEvents_entries">
+        <item>None</item>
+        <item>Events for yesterdays</item>
+        <item>Events for 2 previous days</item>
+        <item>Events for 3 previous days</item>
+        <item>Events for 3 previous days but no more one</item>
+        <item>Events for 3 previous days but no more two</item>
+        <item>One previous event</item>
+        <item>Two previous events</item>
+        <item>Three previous events</item>
+    </string-array>
+
+    <string name="pref_Widgets_ShowBorder_title">Border</string>
+    <string name="pref_Widgets_ShowBorder_description">Show widget border</string>
+
+    <string name="pref_List_BottomInfo_title">Event details</string>
+    <string name="pref_List_BottomInfo_description">What to show below contact name</string>
+
+    <string name="pref_Widgets_title">Widgets</string>
+
+    <string name="pref_Widgets_ContactPhotos_title">Contact photo</string>
+    <string name="pref_Widgets_ContactPhotos_description">Display contact photo</string>
+
+    <string name="pref_Widgets_EventIcons_title">Event icon</string>
+    <string name="pref_Widgets_EventIcons_description">Display event icon</string>
+
+    <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
+    <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
+
+    <string name="pref_Widgets_BottomInfo2nd_title">Event caption (upper row)</string>
+    <string name="pref_Widgets_BottomInfo2nd_description">What to show bellow photo</string>
+
+    <string-array name="pref_Widgets_Color_entries">
+        <item>Green</item>
+        <item>Red</item>
+        <item>Yellow</item>
+        <item>White</item>
+    </string-array>
+
+    <string-array name="pref_List_BottomInfo_entries">
+        <item>Title</item>
+        <item>Job</item>
+        <item>Event description</item>
+        <item>Original event label</item>
+        <item>Event account and raw date</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_BottomInfo_entries">
+        <item>[Last name] [First name] [Second name]</item>
+        <item>[Last name] [F.] [S.]</item>
+        <item>[First name] [Second name] [Last name]</item>
+        <item>First name</item>
+        <item>Last name</item>
+        <item>Event date</item>
+        <item>Nothing</item>
+    </string-array>
+
+    <string name="pref_Widgets_Color_EventToday_title">Color for \"Age\"</string>
+    <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
+
+    <string name="pref_Widgets_Color_EventSoon_title">Color for \"Days to event\"</string>
+    <string name="pref_Widgets_Color_EventSoon_description">Color of days count for near events</string>
+
+    <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
+    <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
+
+    <string name="widget_config_index_label">Event start index to display:</string>
+    <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
+
+    <string name="widget_config_font_label">Font magnify factor</string>
+    <string name="widget_config_font_description">Font scale multiplicator for age, event distance and under photo info text</string>
+    <string-array name="widget_config_font">
+        <item>Auto</item>
+        <item>x0.75</item>
+        <item>x1.0</item>
+        <item>x1.2</item>
+        <item>x1.5</item>
+        <item>x1.75</item>
+    </string-array>
+
+    <string name="pref_Notifications_title">Notifications</string>
+
+    <string name="pref_Notifications_Type_title">Style of notifications</string>
+    <string name="pref_Notifications_Type_description">How notifications will be looks like</string>
+
+    <string-array name="pref_Notifications_Type_entries">
+        <item>One summary notification</item>
+        <item>Each event in separate notification</item>
+        <item>Events less 3 => separate, otherwise - summary</item>
+        <item>Events less 4 => separate, otherwise - summary</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Notification interval</string>
+    <string name="pref_Notifications_Days_description">How many days to notify</string>
+
+    <string-array name="pref_Notifications_Days_entries">
+        <item>None</item>
+        <item>On event day</item>
+        <item>One day</item>
+        <item>Two days</item>
+        <item>Three days</item>
+        <item>Week</item>
+    </string-array>
+
+    <string name="pref_Notifications_AlarmHour_title">Alarm hour</string>
+    <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
+
+    <string-array name="pref_Notifications_AlarmHour_entries">
+        <item>At 7 am</item>
+        <item>At 8 am</item>
+        <item>At 9 am</item>
+        <item>At 10 am</item>
+        <item>At 11 am</item>
+        <item>At noon</item>
+    </string-array>
+
+    <string name="pref_Notifications_Ringtone_title">Notification sound</string>
+    <string name="pref_Notifications_Ringtone_description">Upcoming Events Sound</string>
+
+    <string name="pref_Notifications_NotifyTest_title">Notification example</string>
+    <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
+
+    <string name="pref_Debug_title">Debug</string>
+    <string name="pref_Debug_On_title">Debug notifications</string>
+    <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
+
+    <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
+    <string name="event_type_wedding_1">Paper</string>
+    <string name="event_type_wedding_2">Cotton</string>
+    <string name="event_type_wedding_3">Leather</string>
+    <string name="event_type_wedding_4">Linen or Silk</string>
+    <string name="event_type_wedding_5">Wood</string>
+    <string name="event_type_wedding_6">Iron</string>
+    <string name="event_type_wedding_7">Copper</string>
+    <string name="event_type_wedding_8">Bronze</string>
+    <string name="event_type_wedding_9">Pottery</string>
+    <string name="event_type_wedding_10">Tin</string>
+    <string name="event_type_wedding_11">Steel</string>
+    <string name="event_type_wedding_12">Silk</string>
+    <string name="event_type_wedding_13">Lace</string>
+    <string name="event_type_wedding_14">Ivory</string>
+    <string name="event_type_wedding_15">Crystal</string>
+    <string name="event_type_wedding_16">""</string>
+    <string name="event_type_wedding_20">China</string>
+    <string name="event_type_wedding_17">""</string>
+    <string name="event_type_wedding_18">""</string>
+    <string name="event_type_wedding_19">""</string>
+    <string name="event_type_wedding_21">""</string>
+    <string name="event_type_wedding_22">""</string>
+    <string name="event_type_wedding_23">""</string>
+    <string name="event_type_wedding_24">Opal</string>
+    <string name="event_type_wedding_25">Silver</string>
+    <string name="event_type_wedding_26">""</string>
+    <string name="event_type_wedding_27">""</string>
+    <string name="event_type_wedding_28">""</string>
+    <string name="event_type_wedding_29">""</string>
+    <string name="event_type_wedding_30">Pearl</string>
+    <string name="event_type_wedding_31">""</string>
+    <string name="event_type_wedding_32">""</string>
+    <string name="event_type_wedding_33">""</string>
+    <string name="event_type_wedding_34">""</string>
+    <string name="event_type_wedding_35">Coral or Jade</string>
+    <string name="event_type_wedding_36">""</string>
+    <string name="event_type_wedding_37">""</string>
+    <string name="event_type_wedding_38">""</string>
+    <string name="event_type_wedding_39">""</string>
+    <string name="event_type_wedding_40">Ruby</string>
+    <string name="event_type_wedding_41">""</string>
+    <string name="event_type_wedding_42">""</string>
+    <string name="event_type_wedding_43">""</string>
+    <string name="event_type_wedding_44">""</string>
+    <string name="event_type_wedding_45">Sapphire</string>
+    <string name="event_type_wedding_46">""</string>
+    <string name="event_type_wedding_47">""</string>
+    <string name="event_type_wedding_48">""</string>
+    <string name="event_type_wedding_49">""</string>
+    <string name="event_type_wedding_50">Gold</string>
+    <string name="event_type_wedding_55">Emerald</string>
+    <string name="event_type_wedding_60">Diamond, yellow</string>
+    <string name="event_type_wedding_65">Blue sapphire</string>
+    <string name="event_type_wedding_70">Platinum</string>
+    <string name="event_type_wedding_75">Diamond, gold</string>
+    <string name="event_type_wedding_80">Diamond, pearl</string>
+    <string name="event_type_wedding_85">""</string>
+    <string name="event_type_wedding_90">Stone</string>
+    <string name="event_type_wedding_100">""</string>
+
+
+<!-- COMMON STRINGS -->
+
     <string name="app_name" translatable="false">Birthday Countdown</string>
 
     <string name="account_skype" translatable="false">"com.skype."</string>
@@ -149,17 +532,20 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
+    <string name="pref_Widgets_BottomInfo2nd_key" translatable="false">Widget_BottomInfo2nd</string>
 
     <string-array name="pref_Widgets_BottomInfo_values" translatable="false">
         <item>1</item> <!--Фамилия Имя Отчество-->
         <item>3</item> <!--Фамилия И.О.-->
         <item>4</item> <!--Имя Отчество Фамилия-->
         <item>5</item> <!--Имя-->
+        <item>6</item> <!--Фамилия-->
         <item>2</item> <!--Дата события-->
         <item>99</item> <!--Ничего-->
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_default" translatable="false">1</string>
+    <string name="pref_Widgets_BottomInfo2nd_default" translatable="false">99</string>
 
     <string name="pref_Widgets_EventIcons_key" translatable="false">Widget_EventIcons</string>
     <string name="pref_Widgets_EventIcons_default" translatable="false">true</string>
@@ -221,6 +607,7 @@
         <item>14</item>
     </string-array>
 
+    <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
     <string name="widget_config_defaultPref" translatable="false">1,0</string>
 
@@ -275,376 +662,4 @@
     <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>
 
     <string name="pref_Debug_On_key" translatable="false">Debug</string>
-
-    <!-- DEFAULT LANGUAGE -->
-
-    <string name="window_settings">Settings</string>
-    <string name="window_widget_settings">Widget settings</string>
-
-    <string name="title_activity_search">Filter</string>
-    <string name="title_activity_events_scope">Events scope</string>
-
-    <string name="menu_refresh">Refresh</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_search">Filter…</string>
-    <string name="menu_hidden_events">Hidden events</string>
-    <string name="menu_exit">Exit</string>
-    <string name="menu_context_open_card">Open contact card</string>
-    <string name="menu_context_events">All contact events</string>
-    <string name="menu_context_event_info">Event data</string>
-    <string name="menu_context_hide_event">Hide event</string>
-    <string name="menu_context_unhide_event">Unhide event</string>
-
-    <string name="msg_no_access">No access to contacts</string>
-    <string name="msg_no_events">Events not found</string>
-    <string name="msg_filter">", filter: "</string>
-    <string name="msg_today">Today</string>
-    <string name="msg_tomorrow">Tomorrow</string>
-    <string name="msg_day_after_tomorrow">Day after tomorrow</string>
-    <string name="msg_yesterday">Yesterday</string>
-    <string name="msg_beforeyesterday">Day before yesterday</string>
-    <string name="msg_stats_prefix">events:</string>
-    <string name="msg_stats_hidden_prefix">hidden events:</string>
-    <string name="msg_label_hidden">Hidden</string>
-    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
-    <string name="msg_hint_search">Filter value</string>
-    <string name="msg_notifications_soon_no_events">No events for nearest days</string>
-    <string name="msg_notifications_today_no_events">No events for today</string>
-    <string name="msg_notifications_soon">"Events coming soon - "</string>
-    <string name="msg_notifications_today">"Events today - "</string>
-    <string name="msg_notifications_disabled">Notifications disabled</string>
-    <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
-    <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
-    <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
-    <string name="msg_no_access_hint">No access to contacts. Check application permissions</string>
-
-    <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
-    <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
-
-    <string name="hint_ContactIcon">Photo</string>
-    <string name="hint_Name">Full name</string>
-    <string name="hint_Age">Age</string>
-    <string name="hint_Date">Date</string>
-    <string name="hint_EventDistance">Before event</string>
-    <string name="hint_Description">Details</string>
-    <string name="hint_EventIcon">Icon</string>
-
-    <string name="button_OK">OK</string>
-    <string name="button_Clear">Clear</string>
-    <string name="button_Cancel">Cancel</string>
-    <string name="button_Rate">Rate app</string>
-    <string name="button_Open_AddresBook">Open address book…</string>
-    <string name="button_Open_AppSettings">Open settings…</string>
-    <string name="button_All">All</string>
-
-    <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
-    <string name="events_scope_all">All (%1$d)</string>
-    <string name="events_scope_hidden">Hidden (%1$d)</string>
-    <string name="events_scope_hidden2">Hidden (%1$d, saved %2$d)</string>
-
-    <string name="event_type_birthday">Birthday</string>
-    <string name="event_type_anniversary">Anniversary</string>
-    <string name="event_type_other">Other event</string>
-    <string name="event_type_death">Death anniversary</string>
-    <string name="event_type_crowning">Crowning</string>
-    <string name="event_type_nameday">Name day</string>
-
-    <string name="appwidget_text">Loading…</string>
-    <string name="appwidget_name_1_7">For 1–7 events</string>
-    <string name="appwidget_name_1">For 1 event</string>
-    <string name="appwidget_name_5">For 5 events</string>
-    <string name="widget_Photo">Photo</string>
-    <string name="widget_FIO">Full name</string>
-    <string name="widget_Date">Date</string>
-    <string name="widget_Age">YY</string>
-    <string name="widget_TypeIcon">Icon</string>
-    <string name="widget_Distance">DD</string>
-    <string name="widget_FavIcon" translatable="false">Icon</string>
-
-    <string name="pref_Events_title">Common</string>
-    <string name="pref_Language_title">Language</string>
-    <string name="pref_Language_description">Interface and data language</string>
-    <string name="pref_Theme_title">Color theme</string>
-    <string name="pref_Theme_description">Interface color theme</string>
-    <string name="pref_Accounts_title">Accounts</string>
-    <string name="pref_Accounts_description">Scan only these accounts for events</string>
-    <string name="pref_EventTypes_title">Event types</string>
-    <string name="pref_EventTypes_description">What kind of events to include in event list and widgets</string>
-    <string name="pref_List_title">Events list</string>
-    <string name="pref_List_FavIcon_title">Favorites sign</string>
-    <string name="pref_List_FavIcon_description">Highlight favorite contacts with star sign</string>
-    <string name="pref_List_SadPhoto_title">Mourning tape</string>
-    <string name="pref_List_SadPhoto_description">Mark photos of deceased contacts with mourning tape</string>
-    <string name="pref_List_BottomInfo_title">Event details</string>
-    <string name="pref_List_BottomInfo_description">What to show below contact name</string>
-    <string name="pref_Widgets_title">Widgets</string>
-    <string name="pref_Widgets_BottomInfo_title">Event caption</string>
-    <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
-    <string name="pref_Notifications_title">Notifications</string>
-
-    <string-array name="pref_EventTypes_entries">
-        <item>Birthdays</item>
-        <item>Anniversaries</item>
-        <item>Others events</item>
-        <item>Custom events</item>
-        <item>Round days count (5K, 10K, 15K days)</item>
-    </string-array>
-
-    <string-array name="pref_List_SadPhoto_entries">
-        <item>Never</item>
-        <item>Only for single event</item>
-        <item>For all contact events</item>
-    </string-array>
-
-    <string name="pref_CustomEvents_title">Events customizing</string>
-    <string name="pref_CustomEvents_summary">Preferences to detect custom events</string>
-    <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
-    <string name="pref_CustomEvent_Caption_hint">Event caption</string>
-
-    <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standart labels</string>
-    <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standart labels to detect birthday events</string>
-    <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this labels will bee identified as birthdays (by comma)</string>
-
-    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standart labels</string>
-    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standart labels to detect anniversary events</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Contacts events with this labels will bee identified as anniversaries (by comma)</string>
-    <string name="pref_CustomEvents_Anniversary_List_title">List</string>
-    <string name="pref_CustomEvents_Anniversary_List_description">All known anniversaries titles (by year)</string>
-
-    <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standart labels</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_description">Use standart labels to detect name days events</string>
-    <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Contacts events with this labels will bee identified as name days (by comma)</string>
-
-    <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standart labels</string>
-    <string name="pref_CustomEvents_Crowning_UseInternal_description">Use standart labels to detect crowning events</string>
-    <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Contacts events with this labels will bee identified as crownings (by comma)</string>
-
-    <string name="pref_CustomEvents_Death_UseInternal_title">Use standart labels</string>
-    <string name="pref_CustomEvents_Death_UseInternal_description">Use standart labels to detect death anniversary events</string>
-    <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Contacts events with this labels will bee identified as death anniversaries (by comma)</string>
-
-    <string name="pref_CustomEvents_Custom_title">User-defined event</string>
-    <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
-    <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Custom_Labels_description">Contacts events with this labels will bee identified as this event (by comma)</string>
-    <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
-    <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
-
-    <string name="pref_List_PrevEvents_title">Previous events</string>
-    <string name="pref_List_PrevEvents_description">Show previous events on top of the events list</string>
-
-    <string-array name="pref_List_PrevEvents_entries">
-        <item>None</item>
-        <item>Events for yesterdays</item>
-        <item>Events for 2 previous days</item>
-        <item>Events for 3 previous days</item>
-        <item>Events for 3 previous days but no more one</item>
-        <item>Events for 3 previous days but no more two</item>
-        <item>One previous event</item>
-        <item>Two previous events</item>
-        <item>Three previous events</item>
-    </string-array>
-
-    <string-array name="pref_List_BottomInfo_entries">
-        <item>Title</item>
-        <item>Job</item>
-        <item>Event description</item>
-        <item>Original event label</item>
-        <item>Event account and raw date</item>
-    </string-array>
-
-    <string-array name="pref_Widgets_BottomInfo_entries">
-        <item>[Last name] [First name] [Second name]</item>
-        <item>[Last name] [F.] [S.]</item>
-        <item>[First name] [Second name] [Last name]</item>
-        <item>First name</item>
-        <item>Event date</item>
-        <item>Nothing</item>
-    </string-array>
-
-    <string name="pref_Widgets_ShowBorder_title">Border</string>
-    <string name="pref_Widgets_ShowBorder_description">Show widget border</string>
-
-    <string name="pref_Widgets_ContactPhotos_title">Contact photo</string>
-    <string name="pref_Widgets_ContactPhotos_description">Display contact photo</string>
-
-    <string name="pref_Widgets_EventIcons_title">Event icon</string>
-    <string name="pref_Widgets_EventIcons_description">Display event icon</string>
-
-    <string name="pref_Widgets_Color_EventToday_title">Color for \"Age\"</string>
-    <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
-
-    <string name="pref_Widgets_Color_EventSoon_title">Color for \"Days to event\"</string>
-    <string name="pref_Widgets_Color_EventSoon_description">Color of days count for near events</string>
-
-    <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
-    <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
-
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Green</item>
-        <item>Red</item>
-        <item>Yellow</item>
-        <item>White</item>
-    </string-array>
-
-    <string-array name="pref_Language_entries">
-        <item>Auto</item>
-        <item>English</item>
-        <item>German</item>
-        <item>Russian</item>
-        <item>Ukrainian</item>
-    </string-array>
-
-    <string-array name="weekDays">
-        <item>" on Sunday"</item>
-        <item>" on Monday"</item>
-        <item>" on Tuesday"</item>
-        <item>" on Wednesday"</item>
-        <item>" on Thursday"</item>
-        <item>" on Friday"</item>
-        <item>" on Saturday"</item>
-    </string-array>
-
-    <string-array name="pref_Theme_entries">
-        <item>Green</item>
-        <item>Dark gray</item>
-        <item>Black</item>
-    </string-array>
-
-    <string name="widget_config_index_label">Event start index to display:</string>
-    <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
-
-    <string name="widget_config_font_label">Font magnify factor</string>
-    <string name="widget_config_font_description">Font scale multiplicator for age, event distance and under photo info text</string>
-    <string-array name="widget_config_font">
-        <item>Auto</item>
-        <item>x0.75</item>
-        <item>x1.0</item>
-        <item>x1.2</item>
-        <item>x1.5</item>
-        <item>x1.75</item>
-    </string-array>
-
-    <string name="pref_Notifications_Type_title">Style of notifications</string>
-    <string name="pref_Notifications_Type_description">How notifications will be looks like</string>
-
-    <string-array name="pref_Notifications_Type_entries">
-        <item>One summary notification</item>
-        <item>Each event in separate notification</item>
-        <item>Events less 3 => separate, otherwise - summary</item>
-        <item>Events less 4 => separate, otherwise - summary</item>
-    </string-array>
-
-    <string name="pref_Notifications_Days_title">Notification interval</string>
-    <string name="pref_Notifications_Days_description">How many days to notify</string>
-
-    <string-array name="pref_Notifications_Days_entries">
-        <item>None</item>
-        <item>On event day</item>
-        <item>One day</item>
-        <item>Two days</item>
-        <item>Three days</item>
-        <item>Week</item>
-    </string-array>
-
-    <string name="pref_Notifications_AlarmHour_title">Alarm hour</string>
-    <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
-
-    <string-array name="pref_Notifications_AlarmHour_entries">
-        <item>At 7 am</item>
-        <item>At 8 am</item>
-        <item>At 9 am</item>
-        <item>At 10 am</item>
-        <item>At 11 am</item>
-        <item>At noon</item>
-    </string-array>
-
-    <string name="pref_Notifications_Ringtone_title">Notification sound</string>
-    <string name="pref_Notifications_Ringtone_description">Upcoming Events Sound</string>
-
-    <string name="pref_Notifications_NotifyTest_title">Notification example</string>
-    <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
-
-    <string name="pref_Debug_title">Debug</string>
-    <string name="pref_Debug_On_title">Debug notifications</string>
-    <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
-
-    <string name="msg_after_age_prefix_1">" year"</string>
-    <string name="msg_after_age_prefix_4_21">" years"</string>
-    <string name="msg_after_age_prefix_1_">" years"</string>
-    <string name="msg_after_age_prefix_2_3_4">" years"</string>
-    <string name="msg_before_event_prefix">"in "</string>
-    <string name="msg_after_event_postfix">" ago"</string>
-    <string name="msg_after_event_prefix">""</string>
-    <string name="msg_before_event_prefix_1">" day"</string>
-    <string name="msg_before_event_prefix_2_3_4">" days"</string>
-    <string name="msg_before_event_prefix_1_">" day"</string>
-    <string name="msg_before_event_prefix_4_21">" days"</string>
-
-    <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
-    <string name="event_type_wedding_1">Paper</string>
-    <string name="event_type_wedding_2">Cotton</string>
-    <string name="event_type_wedding_3">Leather</string>
-    <string name="event_type_wedding_4">Linen or Silk</string>
-    <string name="event_type_wedding_5">Wood</string>
-    <string name="event_type_wedding_6">Iron</string>
-    <string name="event_type_wedding_7">Copper</string>
-    <string name="event_type_wedding_8">Bronze</string>
-    <string name="event_type_wedding_9">Pottery</string>
-    <string name="event_type_wedding_10">Tin</string>
-    <string name="event_type_wedding_11">Steel</string>
-    <string name="event_type_wedding_12">Silk</string>
-    <string name="event_type_wedding_13">Lace</string>
-    <string name="event_type_wedding_14">Ivory</string>
-    <string name="event_type_wedding_15">Crystal</string>
-    <string name="event_type_wedding_16">""</string>
-    <string name="event_type_wedding_20">China</string>
-    <string name="event_type_wedding_17">""</string>
-    <string name="event_type_wedding_18">""</string>
-    <string name="event_type_wedding_19">""</string>
-    <string name="event_type_wedding_21">""</string>
-    <string name="event_type_wedding_22">""</string>
-    <string name="event_type_wedding_23">""</string>
-    <string name="event_type_wedding_24">Opal</string>
-    <string name="event_type_wedding_25">Silver</string>
-    <string name="event_type_wedding_26">""</string>
-    <string name="event_type_wedding_27">""</string>
-    <string name="event_type_wedding_28">""</string>
-    <string name="event_type_wedding_29">""</string>
-    <string name="event_type_wedding_30">Pearl</string>
-    <string name="event_type_wedding_31">""</string>
-    <string name="event_type_wedding_32">""</string>
-    <string name="event_type_wedding_33">""</string>
-    <string name="event_type_wedding_34">""</string>
-    <string name="event_type_wedding_35">Coral or Jade</string>
-    <string name="event_type_wedding_36">""</string>
-    <string name="event_type_wedding_37">""</string>
-    <string name="event_type_wedding_38">""</string>
-    <string name="event_type_wedding_39">""</string>
-    <string name="event_type_wedding_40">Ruby</string>
-    <string name="event_type_wedding_41">""</string>
-    <string name="event_type_wedding_42">""</string>
-    <string name="event_type_wedding_43">""</string>
-    <string name="event_type_wedding_44">""</string>
-    <string name="event_type_wedding_45">Sapphire</string>
-    <string name="event_type_wedding_46">""</string>
-    <string name="event_type_wedding_47">""</string>
-    <string name="event_type_wedding_48">""</string>
-    <string name="event_type_wedding_49">""</string>
-    <string name="event_type_wedding_50">Gold</string>
-    <string name="event_type_wedding_55">Emerald</string>
-    <string name="event_type_wedding_60">Diamond, yellow</string>
-    <string name="event_type_wedding_65">Blue sapphire</string>
-    <string name="event_type_wedding_70">Platinum</string>
-    <string name="event_type_wedding_75">Diamond, gold</string>
-    <string name="event_type_wedding_80">Diamond, pearl</string>
-    <string name="event_type_wedding_85">""</string>
-    <string name="event_type_wedding_90">Stone</string>
-    <string name="event_type_wedding_100">""</string>
-
 </resources>

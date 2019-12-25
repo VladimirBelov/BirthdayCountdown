@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.19 8:42
+ *  * Created by Vladimir Belov on 26.12.19 2:44
  *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 16.12.19 1:44
+ *  * Last modified 20.12.19 13:57
  *
  */
 
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://stackoverflow.com/questions/2422562/how-to-change-theme-for-alertdialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                 builder.setTitle(R.string.app_name);
-                builder.setIcon(R.drawable.ic_birthdaycountdowngreen77);
+                builder.setIcon(R.drawable.ic_birthdaycountdown_app);
 
                 SimpleDateFormat formater = new SimpleDateFormat("dd MMM yyyy HH:mm", getResources().getConfiguration().locale);
                 formater.setTimeZone(TimeZone.getTimeZone("GMT+3"));
