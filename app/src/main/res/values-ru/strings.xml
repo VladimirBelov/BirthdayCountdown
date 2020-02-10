@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 25.12.19 23:31
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 17:39
   ~  */
   -->
 
 <resources>
     <string name="window_settings">Настройки</string>
     <string name="window_widget_settings">Настройки виджета</string>
+    <string name="window_about">О приложении</string>
 
     <string name="title_activity_search">Фильтр</string>
     <string name="title_activity_events_scope">Режим отображения событий</string>
@@ -58,6 +59,9 @@
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
     <string name="msg_no_access_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>
+    <string name="msg_welcome_title">Добро пожаловать!</string>
+    <string name="msg_welcome_text">Спасибо, что установили эту программу. Хотя большинство функций настроено максимально информативно и минимально надоедливо, рекомендуется проверить настройки приложения. Например, там можно включить уведомления о предстоящих событиях или задать параметры для виджетов. Приятного пользования!</string>
+    <string name="msg_newversion_title">"Изменения в версии %1$s:"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -73,9 +77,11 @@
     <string name="button_OK">OK</string>
     <string name="button_Clear">Очистить</string>
     <string name="button_Cancel">Отмена</string>
-    <string name="button_Rate">Оценить приложение</string>
+    <string name="button_Rate">Оценить</string>
+    <string name="button_Mail">Написать</string>
     <string name="button_Open_AddresBook">Открыть адресную книгу…</string>
     <string name="button_Open_AppSettings">Открыть настройки…</string>
+    <string name="button_Open_VersionHistory">История версий</string>
     <string name="button_All">Все</string>
 
     <string name="events_scope_not_hidden">Все нескрытые (%1$d)</string>
@@ -183,9 +189,6 @@
         <item>Круглые даты (5K дней)</item>
     </string-array>
 
-    <string name="pref_List_FavIcon_title">Избранные контакты</string>
-    <string name="pref_List_FavIcon_description">Отмечать избранные контакты значком</string>
-
     <string name="pref_List_SadPhoto_title">Траурная лента</string>
     <string name="pref_List_SadPhoto_description">Отмечать фотографии умерших контактов траурной лентой</string>
 
@@ -212,24 +215,52 @@
         <item>Три предыдущих события</item>
     </string-array>
 
-    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
-    <string name="pref_Widgets_ShowBorder_description">Показывать рамку виджета</string>
+    <string name="pref_List_Caption_title">Формат для имени контакта</string>
+    <string name="pref_List_Caption_description">И.О.Ф. или Ф.И.О.</string>
 
-    <string name="pref_List_BottomInfo_title">Детали события</string>
-    <string name="pref_List_BottomInfo_description">Что показывать под именем контакта</string>
+    <string-array name="pref_List_Caption_entries">
+        <item>Имя Отчество Фамилия</item>
+        <item>Фамилия Имя Отчество</item>
+    </string-array>
+
+    <string name="pref_List_EventInfo_title">Детали события</string>
+    <string name="pref_List_EventInfo_description">Какие дополнительные детали события показывать</string>
+
+    <string-array name="pref_List_EventInfo_entries">
+        <item>Фото контакта</item>
+        <item>Должность</item>
+        <item>Организация</item>
+        <item>Подробности события</item>
+        <item>Исходное наименование события</item>
+        <item>Иконка избранного контакта</item>
+        <item>Тип аккаунта и хранимая дата</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Виджеты</string>
+
+    <string name="pref_Widgets_EventInfo_title">Детали события</string>
+    <string name="pref_Widgets_EventInfo_description">Какие детали события и элементы виджета показывать</string>
+
+    <string-array name="pref_Widgets_EventInfo_entries">
+        <item>Фото контакта</item>
+        <item>Иконка типа события</item>
+        <item>Иконка избранного</item>
+        <item>Бордюр виджета</item>
+    </string-array>
+
+<!--    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
+    <string name="pref_Widgets_ShowBorder_description">Показывать рамку виджета</string>
 
     <string name="pref_Widgets_ContactPhotos_title">Фото контакта</string>
     <string name="pref_Widgets_ContactPhotos_description">Показывать фото контакта</string>
 
     <string name="pref_Widgets_EventIcons_title">Иконка события</string>
-    <string name="pref_Widgets_EventIcons_description">Показывать иконку события</string>
+    <string name="pref_Widgets_EventIcons_description">Показывать иконку события</string>-->
 
-    <string name="pref_Widgets_BottomInfo_title">Информация под фото (нижний ряд)</string>
+    <string name="pref_Widgets_BottomInfo_title">Заголовок (нижний ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Что показывать под фотографией</string>
 
-    <string name="pref_Widgets_BottomInfo2nd_title">Информация под фото (верхний ряд)</string>
+    <string name="pref_Widgets_BottomInfo2nd_title">Заголовок (верхний ряд)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Что показывать под фотографией</string>
 
     <string-array name="pref_Widgets_Color_entries">
@@ -237,14 +268,6 @@
         <item>Красный</item>
         <item>Жёлтый</item>
         <item>Белый</item>
-    </string-array>
-
-    <string-array name="pref_List_BottomInfo_entries">
-        <item>Должность</item>
-        <item>Организация</item>
-        <item>Подробности события</item>
-        <item>Исходное наименование события</item>
-        <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
@@ -322,9 +345,12 @@
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
     <string name="pref_Notifications_NotifyTest_description">Нажмите для показа тестового уведомления за сегодня</string>
 
-    <string name="pref_Debug_title">Отладка</string>
+    <string name="pref_Help_title">Помощь</string>
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>
+
+    <string name="changelog_title"><![CDATA[<h1>История версий:</h1>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Версия: %1$s</h2><ul>]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1">Ситцевая</string>

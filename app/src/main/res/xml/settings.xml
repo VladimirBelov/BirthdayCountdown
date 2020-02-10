@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 21.12.19 16:37
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 17:39
   ~  */
   -->
 
@@ -17,9 +17,7 @@
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
 	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
     <!-- todo: подумать, как показывать названия настроек, если они не влезают в одну строку http://www.lucazanini.eu/en/2014/android/display-icon-preferences/ -->
-	<!-- todo: показывать значок избранных контактов starred -->
-	<!-- todo: отмечать тех, с кем уже сегодня контачил last_time_contacted times_contacted https://developer.android.com/guide/topics/providers/contacts-provider#ObsoleteData https://github.com/besthyman/AndroidContentProviderDemo/blob/master/src/com/hyman/demo/android/contentprovider/system/contactscontract/ContactsContractActivity.java -->
-	
+
     <PreferenceCategory
         android:title="@string/pref_Events_title"
         android:layout="@layout/settings_category">
@@ -338,13 +336,6 @@
 
         </PreferenceScreen>
 
-        <SwitchPreference
-            android:defaultValue="@string/pref_List_FavIcon_default"
-            android:key="@string/pref_List_FavIcon_key"
-            android:summary="@string/pref_List_FavIcon_description"
-            android:title="@string/pref_List_FavIcon_title"
-            android:icon="@drawable/ic_fav_star"/>
-
         <ListPreference
             android:defaultValue="@string/pref_List_SadPhoto_default"
             android:entries="@array/pref_List_SadPhoto_entries"
@@ -372,14 +363,24 @@
             android:icon="@android:drawable/ic_menu_revert"
             android:dialogIcon="@android:drawable/ic_menu_revert"/>
 
-		<!-- todo: сделать сортировку через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
+        <ListPreference
+            android:defaultValue="@string/pref_List_Caption_default"
+            android:key="@string/pref_List_Caption_key"
+            android:entries="@array/pref_List_Caption_entries"
+            android:entryValues="@array/pref_List_Caption_values"
+            android:title="@string/pref_List_Caption_title"
+            android:summary="@string/pref_List_Caption_description"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+
+		<!-- todo: сделать сортировку для деталей под ФИО через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
         <MultiSelectListPreference
-            android:defaultValue="@array/pref_List_BottomInfo_values_default"
-            android:entries="@array/pref_List_BottomInfo_entries"
-            android:entryValues="@array/pref_List_BottomInfo_values"
-            android:key="@string/pref_List_BottomInfo_key"
-            android:summary="@string/pref_List_BottomInfo_description"
-            android:title="@string/pref_List_BottomInfo_title"
+            android:defaultValue="@array/pref_List_EventInfo_values_default"
+            android:entries="@array/pref_List_EventInfo_entries"
+            android:entryValues="@array/pref_List_EventInfo_values"
+            android:key="@string/pref_List_EventInfo_key"
+            android:summary="@string/pref_List_EventInfo_description"
+            android:title="@string/pref_List_EventInfo_title"
             android:icon="@android:drawable/ic_menu_agenda"
             android:dialogIcon="@android:drawable/ic_menu_agenda"/>
 
@@ -389,26 +390,15 @@
         android:title="@string/pref_Widgets_title"
         android:layout="@layout/settings_category">
 
-        <SwitchPreference
-            android:defaultValue="@string/pref_Widgets_ShowBorder_default"
-            android:key="@string/pref_Widgets_ShowBorder_key"
-            android:summary="@string/pref_Widgets_ShowBorder_description"
-            android:title="@string/pref_Widgets_ShowBorder_title"
-            android:icon="@android:drawable/ic_menu_view"/>
-
-        <SwitchPreference
-            android:defaultValue="@string/pref_Widgets_ContactPhotos_default"
-            android:key="@string/pref_Widgets_ContactPhotos_key"
-            android:summary="@string/pref_Widgets_ContactPhotos_description"
-            android:title="@string/pref_Widgets_ContactPhotos_title"
-            android:icon="@android:drawable/ic_menu_view"/>
-
-        <SwitchPreference
-            android:defaultValue="@string/pref_Widgets_EventIcons_default"
-            android:key="@string/pref_Widgets_EventIcons_key"
-            android:summary="@string/pref_Widgets_EventIcons_description"
-            android:title="@string/pref_Widgets_EventIcons_title"
-            android:icon="@android:drawable/ic_menu_view"/>
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_Widgets_EventInfo_values_default"
+            android:entries="@array/pref_Widgets_EventInfo_entries"
+            android:entryValues="@array/pref_Widgets_EventInfo_values"
+            android:key="@string/pref_Widgets_EventInfo_key"
+            android:summary="@string/pref_Widgets_EventInfo_description"
+            android:title="@string/pref_Widgets_EventInfo_title"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_BottomInfo2nd_default"
@@ -523,7 +513,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_Debug_title"
+        android:title="@string/pref_Help_title"
         android:layout="@layout/settings_category">
 
         <SwitchPreference
@@ -531,6 +521,12 @@
             android:summary="@string/pref_Debug_On_description"
             android:title="@string/pref_Debug_On_title"
             android:icon="@android:drawable/ic_menu_manage"/>
+
+        <Preference
+            android:id="@+id/pref_AboutActivity"
+            android:key="@string/pref_AboutActivity_key"
+            android:title="@string/window_about"
+            android:icon="@android:drawable/ic_menu_info_details"/>
 
     </PreferenceCategory>
 

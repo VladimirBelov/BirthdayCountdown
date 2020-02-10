@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 22.12.19 22:25
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 3:17
   ~  */
   -->
 
 <resources>
+    <color name="ic_launcher_background">#1B5E20</color>
+
     <color name="dark_red">#bb0000</color>
     <color name="red">#ff0000</color>
 

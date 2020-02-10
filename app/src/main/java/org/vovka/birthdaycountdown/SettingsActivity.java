@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.19 2:44
- *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 19.12.19 2:23
+ *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Copyright (c) 2018 - 2020. All rights reserved.
+ *  * Last modified 02.02.20 3:17
  *
  */
 
@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -164,6 +165,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Уведомления
 
                 testNotify();
+
+            } else if (getString(R.string.pref_AboutActivity_key).equals(key)) { //О приложении
+
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
 
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
@@ -359,8 +365,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     accountPackages.add(Constants.STRING_EMPTY);
                 }
             }
-
-            //TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             if (accountNames.size() > 0) {
                 ListAdapter adapter = new GetAccountsListAdapter(this, accountNames, accountIcons, accountPackages, ta);

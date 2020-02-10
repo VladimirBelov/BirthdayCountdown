@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.19 2:44
- *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 20.12.19 0:05
+ *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Copyright (c) 2018 - 2020. All rights reserved.
+ *  * Last modified 02.02.20 3:17
  *
  */
 
@@ -69,8 +69,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Цвет заголовка окна
             TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
-            setSupportActionBar(toolbar);
-
             setSupportActionBar(toolbar);
 
             //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color

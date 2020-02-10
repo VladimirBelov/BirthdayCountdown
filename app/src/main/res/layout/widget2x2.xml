@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 22.12.19 22:40
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 3:17
   ~  */
   -->
 
@@ -188,7 +188,7 @@
             android:id="@id/iconFav0"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:layout_below="@id/iconEventType0"
+            android:layout_below="@id/textViewAge0"
             android:layout_alignParentStart="true"
             android:layout_marginStart="4dp"
             android:contentDescription="@string/widget_FavIcon"

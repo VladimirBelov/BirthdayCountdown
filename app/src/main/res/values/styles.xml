@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 19.12.19 0:47
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 3:17
   ~  */
   -->
 
@@ -194,6 +194,15 @@
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="android:textAppearanceListItem">@color/light_gray</item>
         <item name="listDividerColor">@color/light_gray_trans</item>
+    </style>
+
+    <style name="ButtonWithIcon">
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center|clip_horizontal</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+<!--        <item name="android:background">@drawable/row_selector</item>-->
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:drawablePadding">10dp</item>
     </style>
 
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 26.12.19 1:16
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 3:17
   ~  */
   -->
 
@@ -11,12 +11,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appwidget_main"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/widget_31cellHeight">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/appwidget_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/widget_31cellHeight"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:contentDescription="@string/appwidget_text"
         android:gravity="center_vertical|center_horizontal"
@@ -33,7 +33,7 @@
         <RelativeLayout
             android:id="@+id/eventInfo0"
             android:layout_width="@dimen/widget_31cellWidth"
-            android:layout_height="@dimen/widget_31cellHeight"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:visibility="gone">
@@ -54,7 +54,7 @@
                 android:id="@id/iconFav0"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:layout_below="@id/iconEventType0"
+                android:layout_below="@id/textViewAge0"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="4dp"
                 android:contentDescription="@string/widget_FavIcon"
@@ -193,7 +193,7 @@
         <RelativeLayout
             android:id="@+id/eventInfo1"
             android:layout_width="@dimen/widget_31cellWidth"
-            android:layout_height="@dimen/widget_31cellHeight"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/eventInfo0"
             android:visibility="gone">
@@ -214,7 +214,7 @@
                 android:id="@id/iconFav1"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:layout_below="@id/iconEventType1"
+                android:layout_below="@id/textViewAge1"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/widget_FavIcon"
@@ -349,7 +349,7 @@
         <RelativeLayout
             android:id="@+id/eventInfo2"
             android:layout_width="@dimen/widget_31cellWidth"
-            android:layout_height="@dimen/widget_31cellHeight"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/eventInfo1"
             android:visibility="gone">
@@ -371,7 +371,7 @@
                 android:id="@id/iconFav2"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:layout_below="@id/iconEventType2"
+                android:layout_below="@id/textViewAge2"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/widget_FavIcon"

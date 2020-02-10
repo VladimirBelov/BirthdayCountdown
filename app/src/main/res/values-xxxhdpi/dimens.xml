@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.19 2:44
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 26.12.19 0:35
+  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 02.02.20 3:17
   ~  */
   -->
 
@@ -11,20 +11,13 @@
 <resources>
     <string name="dimenSet">xxxhdpi</string>
 
-    <dimen name="widget_21cellHeight">54.0dip</dimen>
     <dimen name="widget_21cellWidth">70.0dip</dimen>
 
-    <dimen name="widget_31cellHeight">54.0dip</dimen>
     <dimen name="widget_31cellWidth">70.5dip</dimen>
 
-    <dimen name="widget_41cellHeight">54.0dip</dimen>
     <dimen name="widget_41cellWidth">72.0dip</dimen>
 
-    <dimen name="widget_51cellHeight">54.0dip</dimen>
     <dimen name="widget_51cellWidth">74.0dip</dimen>
 
-    <dimen name="widget_61cellHeight">54.0dip</dimen>
     <dimen name="widget_61cellWidth">74.0dip</dimen>
-
-    <dimen name="widget_41bc_cellHeight">60.0dip</dimen>
 </resources>

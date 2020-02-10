@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.19 2:44
- *  * Copyright (c) 2018 - 2019. All rights reserved.
- *  * Last modified 20.12.19 13:57
+ *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Copyright (c) 2018 - 2020. All rights reserved.
+ *  * Last modified 02.02.20 17:39
  *
  */
 
@@ -10,9 +10,9 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -22,11 +22,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.text.Html;
 import android.text.InputType;
-import android.text.method.LinkMovementMethod;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,17 +51,17 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.vovka.birthdaycountdown.Constants.HTML_BR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
@@ -71,7 +70,6 @@ import static org.vovka.birthdaycountdown.Constants.STRING_3MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
@@ -84,6 +82,7 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_fio;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     //UI объекты
+    private Resources resources;
     private SwipeRefreshLayout swipeRefresh;
     private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
     private Menu menu;
@@ -121,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем язык приложения
             eventsData.setLocale(true);
+            resources = getResources();
 
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
@@ -148,134 +148,231 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //About
             findViewById(R.id.toolbar).setOnClickListener(v -> {
-
-                //https://stackoverflow.com/questions/2422562/how-to-change-theme-for-alertdialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                builder.setTitle(R.string.app_name);
-                builder.setIcon(R.drawable.ic_birthdaycountdown_app);
-
-                SimpleDateFormat formater = new SimpleDateFormat("dd MMM yyyy HH:mm", getResources().getConfiguration().locale);
-                formater.setTimeZone(TimeZone.getTimeZone("GMT+3"));
-
-                //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
-                //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
-                //https://stackoverflow.com/a/21119027/4928833
-                //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
-                TextView msg = new TextView(this);
-                msg.setText(Html.fromHtml(STRING_EMPTY +
-                        "<font color=\"#" + Integer.toHexString(ta.getColor(R.styleable.Theme_dialogTextColor, 0) & 0x00ffffff) + "\">" +
-                        STRING_DIALOG_TAB + "&nbsp;&nbsp;created by Vladimir Belov" +
-                        STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
-                        "<br>&nbsp;"      +
-                        STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
-                        STRING_DIALOG_TAB + "build date: " + formater.format(BuildConfig.BUILD_TIME) +
-                        STRING_DIALOG_TAB + "load speed:" +
-                        STRING_DIALOG_TAB + "&nbsp;&nbsp;contacts scanning: " + Math.round(eventsData.statGetContacts * 100.0) / 100.0 + "msec" +
-                        STRING_DIALOG_TAB + "&nbsp;&nbsp;dates computing: " + Math.round(eventsData.statComputeDates * 100.0) / 100.0 + "msec" +
-                        STRING_DIALOG_TAB + "&nbsp;&nbsp;list drawing: " + Math.round(eventsData.statDrawList * 100.0) / 100.0 + "msec" +
-                        STRING_DIALOG_TAB + "screen: " + this.getResources().getDisplayMetrics().heightPixels + "x" + this.getResources().getDisplayMetrics().widthPixels + " (density " + this.getResources().getDisplayMetrics().density + Constants.STRING_PARENTHESIS_CLOSE +
-                        STRING_DIALOG_TAB + "dimension set: " + getString(R.string.dimenSet) + "</font>"));
-                msg.setMovementMethod(LinkMovementMethod.getInstance());
-                msg.setClickable(true);
-                builder.setView(msg);
-
-                builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
-
-                builder.setNeutralButton(R.string.button_Rate, (dialog, which) -> {
-                    dialog.cancel();
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-                    } catch (ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-                    }
-                });
-
-                AlertDialog alertToShow = builder.create();
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-                //alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_eventDateColor, 0));
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
             });
 
             swipeRefreshListener = () -> {
                 //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
-                if (eventsData.getContactsEvents(this)) {
-                    eventsData.computeDates();
-                    drawList();
-                    eventsData.updateWidgets();
-                    swipeRefresh = findViewById(R.id.swiperefresh);
-                    if (swipeRefresh != null) swipeRefresh.setRefreshing(false); // Disables the refresh icon
+                boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+                if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
+                    if (eventsData.getContactsEvents(this)) {
+                        eventsData.computeDates();
+                        drawList();
+                        eventsData.updateWidgets();
+                        swipeRefresh = findViewById(R.id.swiperefresh);
+                        if (swipeRefresh != null)
+                            swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
-                    //Сообщение для тех, у кого не заведено ни одного события
+                        //Сообщение для тех, у кого не заведено ни одного события
+                        if (!triggeredMsgNoEvents && eventsData.isEmpty()) {
 
+                            boolean isTypesOn = false;
+                            for (boolean t : eventsData.event_types_on)
+                                if (t) {
+                                    isTypesOn = true;
+                                    break;
+                                }
 
-                    if (!triggeredMsgNoEvents && eventsData.isEmpty()) {
+                            if (!eventsData.getPreferences_Accounts().isEmpty()) {
 
-                        boolean isTypesOn = false;
-                        for (boolean t: eventsData.event_types_on) if (t) {isTypesOn = true; break;}
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                                builder.setTitle(getString(R.string.msg_no_events));
+                                builder.setIcon(android.R.drawable.ic_menu_info_details);
+                                builder.setMessage(getString(R.string.msg_no_events_check_prefs, getString(R.string.pref_Accounts_title), getString(R.string.pref_EventTypes_title)));
+                                builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                                builder.setNeutralButton(R.string.button_Open_AppSettings, (dialog, which) -> startActivity(new Intent(this, SettingsActivity.class)));
+                                AlertDialog alertToShow = builder.create();
+                                alertToShow.setOnShowListener(arg0 -> {
+                                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                });
+                                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                alertToShow.show();
+                                triggeredMsgNoEvents = true;
 
-                        if (!eventsData.getPreferences_Accounts().isEmpty()) {
+                            } else if (isTypesOn) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                            builder.setTitle(getString(R.string.msg_no_events));
-                            builder.setIcon(android.R.drawable.ic_menu_info_details);
-                            builder.setMessage(getString(R.string.msg_no_events_check_prefs, getString(R.string.pref_Accounts_title), getString(R.string.pref_EventTypes_title)));
-                            builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
-                            builder.setNeutralButton(R.string.button_Open_AppSettings, (dialog, which) -> startActivity(new Intent(this, SettingsActivity.class)));
-                            AlertDialog alertToShow = builder.create();
-                            alertToShow.setOnShowListener(arg0 -> {
-                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            });
-                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            alertToShow.show();
-                            triggeredMsgNoEvents = true;
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                                builder.setTitle(getString(R.string.msg_no_events));
+                                builder.setIcon(android.R.drawable.ic_menu_info_details);
+                                builder.setMessage(getString(R.string.msg_no_events_hint));
+                                builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                                builder.setNeutralButton(R.string.button_Open_AddresBook, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts"))));
+                                AlertDialog alertToShow = builder.create();
+                                alertToShow.setOnShowListener(arg0 -> {
+                                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                });
+                                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                alertToShow.show();
+                                triggeredMsgNoEvents = true;
+                            }
 
-                        } else if (isTypesOn) {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                            builder.setTitle(getString(R.string.msg_no_events));
-                            builder.setIcon(android.R.drawable.ic_menu_info_details);
-                            builder.setMessage(getString(R.string.msg_no_events_hint));
-                            builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
-                            builder.setNeutralButton(R.string.button_Open_AddresBook, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts"))));
-                            AlertDialog alertToShow = builder.create();
-                            alertToShow.setOnShowListener(arg0 -> {
-                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            });
-                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            alertToShow.show();
-                            triggeredMsgNoEvents = true;
                         }
-
                     }
                 }
 
             };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
-            //Permissions
+            //Доступы
             if (checkAndShowNoAccessHint()) return;
 
             //Уведомления
             initNotifications();
 
+            //Контексное меню
             registerForContextMenu(findViewById(R.id.mainListView));
 
+            //Приветственное сообщение или описание новой версии
+            showWelcomeScreen();
 
+            //todo: сделать разные иконки приложения https://github.com/guardianproject/CameraV/commit/98d8c545c1901d03d9d238204bb45d502a623e59#diff-7ab4bf3d594a968a90e0250af33fcb9bR399
+            // https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
 
         } catch (Exception e) {
             e.printStackTrace();
-            //if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private void showWelcomeScreen() {
+
+        try {
+
+            AlertDialog.Builder builder;
+            AlertDialog alertToShow;
+            switch (checkNewVersion()) {
+                case +1: //при запуске новой версии показывать what's new
+
+                    StringBuilder sb = new StringBuilder();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) sb.append(HTML_BR);
+
+                    String[] arrChangeLog = resources.getStringArray(R.array.changelog);
+                    if (arrChangeLog.length >= 0) {
+
+                        String lastVersion = STRING_EMPTY;
+                        for(String strChange: arrChangeLog) {
+
+                            if (strChange.charAt(0) == '#') {
+
+                                if (!lastVersion.equals(STRING_EMPTY)) break;
+                                lastVersion = strChange.substring(1);
+                                sb.append("<ul>");
+
+                            } else {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    sb.append("<li>&nbsp;").append(strChange).append("</li>");
+                                } else {
+                                    sb.append("<br>&nbsp;-&nbsp;").append(strChange);
+                                }
+
+                            }
+                        }
+                        if (!lastVersion.equals(STRING_EMPTY)) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                sb.append("</ul>");
+                            } else {
+                                sb.append(HTML_BR);
+                            }
+                        }
+
+                        builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                        builder.setTitle(getString(R.string.msg_newversion_title, lastVersion));
+                        builder.setIcon(android.R.drawable.ic_menu_info_details);
+                        builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+                        builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                        builder.setNeutralButton(R.string.button_Open_VersionHistory, (dialog, which) -> startActivity(new Intent(this, AboutActivity.class)));
+                        alertToShow = builder.create();
+                        alertToShow.setOnShowListener(arg0 -> {
+                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        });
+                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertToShow.show();
+
+                    }
+                    setLastRunVersion();
+                    break;
+
+                case 0: //при первом запуске показывать welcome screen
+
+                    builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                    builder.setTitle(getString(R.string.msg_welcome_title));
+                    builder.setIcon(android.R.drawable.ic_menu_info_details);
+                    builder.setMessage(getString(R.string.msg_welcome_text));
+                    builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                    builder.setNeutralButton(R.string.button_Open_AppSettings, (dialog, which) -> startActivity(new Intent(this, SettingsActivity.class)));
+                    alertToShow = builder.create();
+                    alertToShow.setOnShowListener(arg0 -> {
+                        alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    });
+                    alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertToShow.show();
+
+                    setLastRunVersion();
+                    break;
+
+                default:
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void setLastRunVersion() {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(getString(R.string.pref_Version_LastRun), BuildConfig.VERSION_NAME);
+            editor.putString(getString(R.string.pref_VersionCode_LastRun), Integer.toString(BuildConfig.VERSION_CODE));
+            editor.apply();
+
+            if (eventsData.preferences_debug_on) Toast.makeText(this, "Set last run version: " + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private int checkNewVersion() {
+        // +1 - новая версия, 0 - первый запуск, -1 - такую версию уже запускали
+
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            final String pref_LastRunVersion = preferences.getString(getString(R.string.pref_VersionCode_LastRun), STRING_EMPTY);
+            if (STRING_EMPTY.equals(pref_LastRunVersion)) {//если нет сохранённой версии, но настройки меняли - это не первый запуск
+                if (!eventsData.preferences_list_prev_events.equals(getString(R.string.pref_List_PrevEvents_default)) ||
+                        !eventsData.preferences_language.equals(getString(R.string.pref_Language_default)) ||
+                        eventsData.preferences_notifications_days != Integer.parseInt(getString(R.string.pref_Notifications_Days_default)) ||
+                        eventsData.preferences_theme.prefNumber != Integer.parseInt(getString(R.string.pref_Theme_default)) ||
+                        eventsData.getHiddenEventsCount() == 0 ||
+                        !eventsData.getPreferences_Accounts().isEmpty()
+                ) {
+                    return +1;
+                } else {
+                    return 0;
+                }
+            } else if (Integer.toString(BuildConfig.VERSION_CODE).equals(pref_LastRunVersion)) {
+                return -1;
+            }
+            return +1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return -1;
+        }
     }
 
     private boolean checkAndShowNoAccessHint() {
@@ -323,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(this, log.toString(), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -336,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_REFRESH_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_REFRESH_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -425,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     builder.setView(input);
 
                     builder.setPositiveButton(R.string.button_OK, (dialog, which) -> {
-                        filterNames = input.getText().toString();
+                        filterNames = input.getText().toString().replace("(", "\\(").replace(")", "\\)");
 
                         if (menu != null) {
                             //https://stackoverflow.com/questions/19882443/how-to-change-menuitem-icon-in-actionbar-programmatically/19882555#19882555
@@ -503,7 +600,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     alertToShow.setOnShowListener(arg0 -> {
                         alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
-                        float dpi = getResources().getDisplayMetrics().density;
+                        float dpi = resources.getDisplayMetrics().density;
                         ListView listView = alertToShow.getListView();
                         listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
                         listView.setDividerHeight(2);
@@ -517,7 +614,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -541,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_BACK_PRESSED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_BACK_PRESSED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -556,6 +653,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем язык приложения
             eventsData.setLocale(true);
+            resources = getResources();
 
             //Устанавливаем тему и переоткрываем окно
             if (eventsData.currentTheme != eventsData.preferences_theme.themeMain) {
@@ -568,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Тему не меняли, просто обновляем данные
             boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-            if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
+            if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
                 if (eventsData.getContactsEvents(this)) {
                     eventsData.computeDates();
                     drawList();
@@ -582,7 +680,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_RESUME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_RESUME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -603,6 +701,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setRefreshing(false); //Disables the refresh icon
                     swipeRefresh.setEnabled(true);
                 }
+
+                showWelcomeScreen();
             }
         }
     }
@@ -644,7 +744,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -680,7 +780,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                             .setTitle(selectedEvent[Position_fio])
-                            .setIcon(new BitmapDrawable(getResources(), ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false )))
+                            .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false )))
                             .setMessage(eventInfo.toString())
                             .setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
 
@@ -718,7 +818,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CONTEXT_ITEM_SELECTED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CONTEXT_ITEM_SELECTED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             return true;
         }
     }
@@ -786,10 +886,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (dataArray_final.length > 0) {
                         //statsAllEvents = dataArray_final.length;
                         if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_Hidden) {
-                            setHint(getResources().getString(R.string.msg_stats_hidden_prefix) + Constants.STRING_SPACE +
+                            setHint(resources.getString(R.string.msg_stats_hidden_prefix) + Constants.STRING_SPACE +
                                     dataArray_final.length + getString(R.string.msg_filter) + setHTMLColor(filterNames, HTML_COLOR_YELLOW));
                         } else {
-                            setHint(getResources().getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE +
+                            setHint(resources.getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE +
                                     dataArray_final.length + getString(R.string.msg_filter) + setHTMLColor(filterNames, HTML_COLOR_YELLOW));
                         }
 
@@ -808,11 +908,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     dataArray_final = dataList.toArray(new String[0]);
                     //statsAllEvents = dataArray_final.length;
                     if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_Hidden) {
-                        setHint(getResources().getString(R.string.msg_stats_hidden_prefix) + Constants.STRING_SPACE + statsHiddenEvents);
+                        setHint(resources.getString(R.string.msg_stats_hidden_prefix) + Constants.STRING_SPACE + statsHiddenEvents);
                     } else if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_All) {
-                        setHint(getResources().getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE + statsAllEvents);
+                        setHint(resources.getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE + statsAllEvents);
                     } else {
-                        setHint(getResources().getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE + (statsAllEvents - statsHiddenEvents));
+                        setHint(resources.getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE + (statsAllEvents - statsHiddenEvents));
                     }
 
                 }
@@ -860,7 +960,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         } catch (Exception e) {
             eventsData.statDrawList = System.currentTimeMillis() - statCurrentModuleStart;
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_DRAW_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_DRAW_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -869,11 +969,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
 
             TextView stats = findViewById(R.id.mainStatsTextView);
-            stats.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
+            stats.setText(HtmlCompat.fromHtml(msg, 0), TextView.BufferType.SPANNABLE);
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HINT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HINT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -893,7 +993,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HTML_COLOR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HTML_COLOR + e.toString(), Toast.LENGTH_LONG).show();
         }
         return msg;
     }
@@ -965,9 +1065,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     return convertView;
                 }
 
-                //todo: сделать отображение Имя Фамилия + настройка
-                holder.NameTextView.setText(singleRowArray[ContactsEvents.Position_fio]);
-
                 if (tag_Bold_start == null) {
                     //https://stackoverflow.com/questions/5026995/android-get-color-as-string-value
                     tag_Bold_start = "<font color=\"#" + Integer.toHexString(ta.getColor(R.styleable.Theme_eventFullNameColor, ContextCompat.getColor(context, R.color.medium_gray)) & 0x00ffffff) + "\">";
@@ -1002,10 +1099,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Дата оригинального события
                 holder.DateTextView.setText(singleRowArray[ContactsEvents.Position_eventDateText]);
 
+                switch (eventsData.preferences_list_caption) {
+                    case 2: //Фамилия Имя Отчество
+                        holder.NameTextView.setText(person.getFullName());
+                        break;
+                    case 1: //Имя Отчество Фамилия
+                    default:
+                        holder.NameTextView.setText(person.getFullNameAlt());
+                        break;
+                }
+
+                //holder.NameTextView.setText(singleRowArray[ContactsEvents.Position_fio]);
+
                 //Инфо под именем
                 //todo: добавить ник
                 StringBuilder eventDetails = new StringBuilder();
-                if (eventsData.preferences_list_bottom_info.contains("1") && eventsData.preferences_list_bottom_info.contains("2")) {
+                if (eventsData.preferences_list_event_info.contains("1") && eventsData.preferences_list_event_info.contains("2")) {
                     if (singleRowArray[ContactsEvents.Position_organization].trim().length() > 0) {
                         eventDetails.append(singleRowArray[ContactsEvents.Position_organization].trim());
                     }
@@ -1016,33 +1125,33 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (eventDetails.length() > 0) {
                         eventDetails.insert(0, tag_Bold_start).append(tag_Bold_end);
                     }
-                } else if (eventsData.preferences_list_bottom_info.contains("1") && singleRowArray[ContactsEvents.Position_organization].trim().length() > 0) {
+                } else if (eventsData.preferences_list_event_info.contains("1") && singleRowArray[ContactsEvents.Position_organization].trim().length() > 0) {
                     eventDetails.append(Constants.HTML_BOLD_START).append(singleRowArray[ContactsEvents.Position_organization].trim()).append(Constants.HTML_BOLD_END);
-                } else if (eventsData.preferences_list_bottom_info.contains("2") && singleRowArray[ContactsEvents.Position_title].trim().length() > 0) {
+                } else if (eventsData.preferences_list_event_info.contains("2") && singleRowArray[ContactsEvents.Position_title].trim().length() > 0) {
                     eventDetails.append(Constants.HTML_BOLD_START).append(singleRowArray[ContactsEvents.Position_title].trim()).append(Constants.HTML_BOLD_END);
                 }
 
                 String eventLabel = singleRowArray[ContactsEvents.Position_eventLabel];
                 String eventCaption = singleRowArray[ContactsEvents.Position_eventCaption];
-                if (eventsData.preferences_list_bottom_info.contains("3")) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    if (eventsData.preferences_list_bottom_info.contains("4") && !eventCaption.equals(eventLabel) && !eventLabel.equals(STRING_EMPTY)) {
+                if (eventsData.preferences_list_event_info.contains("3")) {
+                    if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
+                    if (eventsData.preferences_list_event_info.contains("4") && !eventCaption.equals(eventLabel) && !eventLabel.equals(STRING_EMPTY)) {
                         eventDetails.append(eventCaption).append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(Constants.STRING_PARENTHESIS_CLOSE);
                     } else {
                         eventDetails.append(eventCaption);
                     }
-                } else if (eventsData.preferences_list_bottom_info.contains("4") && !eventLabel.equals(STRING_EMPTY)) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                } else if (eventsData.preferences_list_event_info.contains("4") && !eventLabel.equals(STRING_EMPTY)) {
+                    if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(eventLabel);
                 }
 
-                if (eventsData.preferences_list_bottom_info.contains("91")) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(singleRowArray[ContactsEvents.Position_dates].replace(Constants.STRING_2TILDA, Constants.HTML_BR).trim());
+                if (eventsData.preferences_list_event_info.contains("91")) {
+                    if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
+                    eventDetails.append(singleRowArray[ContactsEvents.Position_dates].replace(Constants.STRING_2TILDA, HTML_BR).trim());
                 }
 
                 if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_All && eventsData.checkIsHiddenEvents() && eventsData.checkIsHiddenEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(setHTMLColor(getString(R.string.msg_label_hidden), HTML_COLOR_RED));
                 }
 
@@ -1051,16 +1160,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } else {
                     //https://stackoverflow.com/questions/2116162/how-to-display-html-in-textview
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        holder.DetailsTextView.setText(Html.fromHtml(eventDetails.toString(), Html.FROM_HTML_MODE_COMPACT));
+                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT));
                     } else {
-                        holder.DetailsTextView.setText(Html.fromHtml(eventDetails.toString()));
+                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), 0));
                     }
                 }
 
                 //Определяем иконку события
 
                 //Фото
-                holder.PhotoImageView.setImageBitmap(eventsData.getContactPhoto(event, true, false));
+                holder.PhotoImageView.setImageBitmap(eventsData.getContactPhoto(event, eventsData.preferences_list_event_info.contains("6"), false));
 
                 if (person.Age > -1 && person.Age % 10 == 0) {
                     holder.CounterTextView.setTextColor(resources.getColor(R.color.dark_red));
@@ -1086,7 +1195,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 e.printStackTrace();
                 //todo: исправить IllegalStateException на API28+ https://stackoverflow.com/questions/39689494/unable-to-add-window-android https://geekscompete.blogspot.com/2018/08/unable-to-add-window-token.html
                 //if (Build.VERSION.SDK_INT >= 28) {Toast.cancel();}
-                Toast.makeText(context, Constants.MY_ADAPTER_GET_VIEW_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+                if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.MY_ADAPTER_GET_VIEW_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             }
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(context);
