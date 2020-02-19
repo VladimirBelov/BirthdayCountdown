@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:51
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 02.02.20 3:17
+ *  * Last modified 19.02.20 0:04
  *
  */
 
@@ -12,15 +12,15 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 // На 1 событие масштабируемый
 public class Widget2x2 extends AppWidgetProvider {
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, @SuppressWarnings("SameParameterValue") int eventsCount) {
+    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         try {
 
@@ -28,7 +28,7 @@ public class Widget2x2 extends AppWidgetProvider {
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             RemoteViews views = getRemoteViews(context);
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount, minWidth, minHeight, appWidgetId).invoke();
+            new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invoke();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class Widget2x2 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, 1);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -51,8 +51,9 @@ public class Widget2x2 extends AppWidgetProvider {
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
         for (int appWidgetId : appWidgetIds) {
-            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + appWidgetId).apply();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGETS_REMOVED, appWidgetId), Toast.LENGTH_LONG).show();
+
+            eventsData.removeWidgetPreference(appWidgetId);
+
         }
     }
 
@@ -75,11 +76,11 @@ public class Widget2x2 extends AppWidgetProvider {
             }
             if (eventsData.preferences_debug_on) {
                 Toast.makeText(context, this.getClass().getName() +
-                        "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                        "\n layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
                         "\n appWidgetId=" + appWidgetId +
                         "\n screen: " + context.getResources().getDisplayMetrics().heightPixels + "x" + context.getResources().getDisplayMetrics().widthPixels + " (density " + context.getResources().getDisplayMetrics().density + ")" +
-                        "\n dimenSet=" + context.getResources().getString(R.string.dimenSet), Toast.LENGTH_LONG).show();
+                        "\n layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
+                        "\n minWidth=" + minWidth + ", minHeight=" + minHeight
+                , Toast.LENGTH_LONG).show();
             }
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invoke();

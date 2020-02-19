@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:51
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 02.02.20 3:17
+ *  * Last modified 18.02.20 22:31
  *
  */
 
@@ -12,10 +12,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 // На 5 событий
 public class Widget4x1 extends AppWidgetProvider {
@@ -47,8 +47,9 @@ public class Widget4x1 extends AppWidgetProvider {
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
         for (int appWidgetId : appWidgetIds) {
-            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + appWidgetId).apply();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGETS_REMOVED, appWidgetId), Toast.LENGTH_LONG).show();
+
+            eventsData.removeWidgetPreference(appWidgetId);
+
         }
     }
 

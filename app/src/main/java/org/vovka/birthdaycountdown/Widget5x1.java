@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:51
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 02.02.20 3:17
+ *  * Last modified 20.02.20 0:45
  *
  */
 
@@ -13,27 +13,37 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-
 import android.util.DisplayMetrics;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import java.util.List;
+
 // На 1-7 событий масштабируемый
 public class Widget5x1 extends AppWidgetProvider {
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, int eventsCountSuggested) {
+    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         try {
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            int eventsCount = (int) (minWidth / getCellSize(context, eventsCountSuggested)) > eventsCountSuggested ? eventsCountSuggested - 1 : eventsCountSuggested;
+            int eventsCount = getCellsForSize(minWidth);
 
-            RemoteViews views = getRemoteViews(context, eventsCount);
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount, minWidth, minHeight, appWidgetId).invoke();
+            //Уточняем количество событий в настройке
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+            int prefEventsCountIndex = 0;
+            try {
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+            } catch (Exception e2) {/**/}
+            int prefEventsCountDiff = prefEventsCountIndex == 1 ? -1 : prefEventsCountIndex == 2 ? 1 : 0;
+
+            RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
+            new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invoke();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
@@ -48,9 +58,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
 
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
-            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            updateAppWidget(context, appWidgetManager, appWidgetId, getCellsForSize(minWidth));
+            updateAppWidget(context, appWidgetManager, appWidgetId);
 
         }
     }
@@ -61,8 +69,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
 
-            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + appWidgetId).apply();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGETS_REMOVED, appWidgetId), Toast.LENGTH_LONG).show();
+            eventsData.removeWidgetPreference(appWidgetId);
 
         }
     }
@@ -81,10 +88,17 @@ public class Widget5x1 extends AppWidgetProvider {
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            int eventsCountSuggested = getCellsForSize(minWidth);
-            int eventsCount = (int) (minWidth / getCellSize(context, eventsCountSuggested)) > eventsCountSuggested ? eventsCountSuggested - 1 : eventsCountSuggested;
+            int eventsCount = getCellsForSize(minWidth);
 
-            RemoteViews views = getRemoteViews(context, eventsCount);
+            //Уточняем количество событий в настройке
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+            int prefEventsCountIndex = 0;
+            try {
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+            } catch (Exception e2) {/**/}
+            int prefEventsCountDiff = prefEventsCountIndex == 1 ? -1 : prefEventsCountIndex == 2 ? 1 : 0;
+
+            RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
 
             if (eventsData.preferences_debug_on) {
 
@@ -94,23 +108,15 @@ public class Widget5x1 extends AppWidgetProvider {
                 Toast.makeText(context, this.getClass().getName() +
                                 "\n appWidgetId=" + appWidgetId +
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
-                                "\n dimenSet=" + resources.getString(R.string.dimenSet) +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth +
                                 "\n minHeight=" + minHeight +
-                                "\n eventsCountSuggested=" + eventsCountSuggested +
                                 "\n eventsCount=" + eventsCount +
-                                "\n cellSize=" + getCellSize(context, eventsCountSuggested) +
-                        "\n widget_21cellWidth=" + (resources.getDimension(R.dimen.widget_21cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_21cellWidth) + "px" +
-                        "\n widget_31cellWidth=" + (resources.getDimension(R.dimen.widget_31cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_31cellWidth) + "px" +
-                        "\n widget_41cellWidth=" + (resources.getDimension(R.dimen.widget_41cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_41cellWidth) + "px" +
-                        "\n widget_51cellWidth=" + (resources.getDimension(R.dimen.widget_51cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_51cellWidth) + "px" +
-                        "\n widget_61cellWidth=" + (resources.getDimension(R.dimen.widget_61cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_61cellWidth) + "px" +
-                        "\n widget_71cellWidth=" + (resources.getDimension(R.dimen.widget_71cellWidth) / density) + "dip or " + resources.getDimension(R.dimen.widget_71cellWidth) + "px"
+                                "\n eventsDiff=" + prefEventsCountDiff
                 , Toast.LENGTH_LONG).show();
             }
 
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount, minWidth, minHeight, appWidgetId).invoke();
+            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invoke();
             appWidgetManager.updateAppWidget(appWidgetId, views);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
@@ -120,33 +126,18 @@ public class Widget5x1 extends AppWidgetProvider {
         }
     }
 
-
     static private RemoteViews getRemoteViews(@NonNull Context context, int eventsCount) {
 
         switch (eventsCount) {
-            case 1:  return new RemoteViews(context.getPackageName(), R.layout.widget1x1);
+            case 0:
+            case 1:
+                    return new RemoteViews(context.getPackageName(), R.layout.widget1x1);
             case 2:  return new RemoteViews(context.getPackageName(), R.layout.widget2x1);
             case 3:  return new RemoteViews(context.getPackageName(), R.layout.widget3x1);
             case 4:  return new RemoteViews(context.getPackageName(), R.layout.widget4x1);
             case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget5x1);
             case 6:  return new RemoteViews(context.getPackageName(), R.layout.widget6x1);
             default:  return new RemoteViews(context.getPackageName(), R.layout.widget7x1);
-        }
-
-    }
-
-    static private float getCellSize(@NonNull Context context, int eventsCount) {
-
-        Resources resources = context.getResources();
-        switch (eventsCount) {
-            case 1:
-            case 2:
-                     return resources.getDimension(R.dimen.widget_21cellWidth);
-            case 3:  return resources.getDimension(R.dimen.widget_31cellWidth);
-            case 4:  return resources.getDimension(R.dimen.widget_41cellWidth);
-            case 5:  return resources.getDimension(R.dimen.widget_51cellWidth);
-            case 6:  return resources.getDimension(R.dimen.widget_61cellWidth);
-            default: return resources.getDimension(R.dimen.widget_71cellWidth);
         }
 
     }

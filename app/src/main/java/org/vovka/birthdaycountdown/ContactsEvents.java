@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 10.02.20 21:30
+ *  * Last modified 20.02.20 0:16
  *
  */
 
@@ -2136,8 +2136,7 @@ class ContactsEvents {
 
             if (!preferences_hiddenEvents.add(key)) return false;
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = preferences.edit();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             editor.apply();
 
@@ -2160,8 +2159,7 @@ class ContactsEvents {
 
             if (!preferences_hiddenEvents.remove(key)) return false;
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = preferences.edit();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
 
             //Если удалили последнее - скидываем режим на стандартный
@@ -2179,6 +2177,66 @@ class ContactsEvents {
             e.printStackTrace();
             if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             return false;
+        }
+
+    }
+
+    void setWidgetPreference(int id, String value) {
+
+        try {
+
+            if (value == null) return;
+
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putString(context.getString(R.string.widget_config_PrefName) + id, value);
+            editor.apply();
+
+            if (preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_SAVED, id) + value, Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    List<String> getWidgetPreference(int id) {
+
+        List<String> defaultPref = Arrays.asList(context.getString(R.string.widget_config_defaultPref).split(STRING_COMMA));
+
+        try {
+
+            //if (preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_DATA, id) + pref, Toast.LENGTH_SHORT).show();
+
+            String[] pref = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + id, context.getString(R.string.widget_config_defaultPref)).split(STRING_COMMA);
+            List<String> prefWidget = new ArrayList<>(Arrays.asList(pref));
+            //prefWidget.addAll(Arrays.asList(pref));
+
+            //Добиваем дефолтными значениями
+            while (prefWidget.size() < defaultPref.size()) {
+                prefWidget.add(defaultPref.get(prefWidget.size() - 1));
+            }
+
+            return prefWidget;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return defaultPref;
+        }
+
+    }
+
+    void removeWidgetPreference(int id) {
+
+        try {
+
+            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + id).apply();
+            if (preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_REMOVED, id), Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_REMOVE_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 02.02.20 3:17
+ *  * Last modified 20.02.20 0:47
  *
  */
 
@@ -16,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -26,6 +25,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
@@ -38,7 +39,7 @@ class WidgetUpdater {
     final private int eventsCount;
     final private int width;
     final private int height;
-    final private int widgetId;
+    private final int widgetId;
     private Resources resources;
     private DisplayMetrics displayMetrics;
     private String packageName;
@@ -54,7 +55,7 @@ class WidgetUpdater {
         this.context = context;
         this.eventsData = eventsData;
         this.views = views;
-        this.eventsCount = eventsCount;
+        this.eventsCount = eventsCount > 7 ? 7 : eventsCount > 0 ? eventsCount : 1;
         this.width = width;
         this.height = height;
         this.widgetId = widgetId;
@@ -86,15 +87,12 @@ class WidgetUpdater {
             }
 
             //Получаем настройки отображения виджета
-            int startingIndex;
-            String widgetPref_raw = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + widgetId, context.getString(R.string.widget_config_defaultPref));
-            String[] widgetPref = (widgetPref_raw.equals("") ? context.getString(R.string.widget_config_defaultPref) : widgetPref_raw).split(Constants.STRING_COMMA);
-            //Toast.makeText(context, "Prefs for " + widgetId + " is " + widgetPref_raw, Toast.LENGTH_SHORT).show();
+            List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+
+            int startingIndex = 1;
             try {
-                startingIndex = Integer.parseInt(widgetPref[0]);
-            } catch (Exception e) {
-                startingIndex = 1;
-            }
+                if (widgetPref.size() > 0) startingIndex = Integer.parseInt(widgetPref.get(0));
+            } catch (Exception e) {/**/}
 
             if (!canReadContacts) {
 
@@ -113,9 +111,9 @@ class WidgetUpdater {
                 //Увеличение шрифтов в зависимости от размеров окна
                 fontMagnify = 1;
                 cells = getCellsForSize(Math.min(width, height));
-                if (cells != 1) {
-                    if (widgetPref.length > 1 && !widgetPref[1].equals("0")) {
-                        switch (widgetPref[1]) {
+                //if (cells != 1) { //todo: проверить и убрать совсем
+                    if (widgetPref.size() > 1 && !widgetPref.get(1).equals("0")) {
+                        switch (widgetPref.get(1)) {
                             case "1":
                                 fontMagnify = cells * 0.75;
                                 break;
@@ -135,7 +133,7 @@ class WidgetUpdater {
                     } else if (eventsToShow == 1) {
                         fontMagnify = 1 + 1.0 * (cells - 1);
                     }
-                }
+                //}
 
                 colorDefault = resources.getColor(R.color.white);
                 colorEventToday = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventtoday, "color", packageName));
@@ -392,6 +390,15 @@ class WidgetUpdater {
                     Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contact_id]);
                     intent.setData(uri);
                     views.setOnClickPendingIntent(resources.getIdentifier("eventInfo" + eventCell, "id", packageName), PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+                } else {
+
+                    Intent intent = new Intent(context, WidgetConfigureActivity.class);
+                    intent.setAction("LAUNCH_ACTIVITY");
+                    intent.putExtra("appWidgetId", widgetId);
+                    views.setOnClickPendingIntent(resources.getIdentifier("textView" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    views.setOnClickPendingIntent(resources.getIdentifier("textViewCentered" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+
                 }
 
                 //Показываем событие

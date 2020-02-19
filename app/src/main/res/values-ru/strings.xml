@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 02.02.20 17:39
+  ~  * Last modified 20.02.20 0:51
   ~  */
   -->
 
@@ -303,6 +303,14 @@
         <item>x1.75</item>
     </string-array>
 
+    <string name="widget_config_events_count_label">Количество событий</string>
+    <string name="widget_config_events_count_description">Если событиям слишком \"узко\" или \"широко\" в виджете, откорректируйте количество событий</string>
+    <string-array name="widget_config_events_count">
+        <item>Авто</item>
+        <item>-1</item>
+        <item>+1</item>
+    </string-array>
+
     <string name="pref_Notifications_title">Уведомления</string>
 
     <string name="pref_Notifications_Type_title">Стиль уведомлений</string>
@@ -350,7 +358,7 @@
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>
 
     <string name="changelog_title"><![CDATA[<h1>История версий:</h1>]]></string>
-    <string name="changelog_release_title"><![CDATA[<h2>Версия: %1$s</h2><ul>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Версия: %1$s:</h2><ul>]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1">Ситцевая</string>

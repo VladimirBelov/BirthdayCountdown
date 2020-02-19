@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 10.02.20 21:09
+  ~  * Last modified 18.02.20 23:56
   ~  */
   -->
 
@@ -12,23 +12,9 @@
 
 <!-- сначала размер берётся из  swXXXdp.xml, если не нашёл - из YYYdpi.xml -->
 <resources>
-    <string name="dimenSet" translatable="false">default</string>
-
     <dimen name="widgetDate_fontSize">10.0sp</dimen>
     <dimen name="widgetMarks_fontSize">12.0sp</dimen>
     <dimen name="widgetDaysX_fontSize">24.0sp</dimen>
-
-    <dimen name="widget_21cellWidth">70.0dip</dimen>
-
-    <dimen name="widget_31cellWidth">70.0dip</dimen>
-
-    <dimen name="widget_41cellWidth">72.0dip</dimen>
-
-    <dimen name="widget_51cellWidth">72.0dip</dimen>
-
-    <dimen name="widget_61cellWidth">72.0dip</dimen>
-
-    <dimen name="widget_71cellWidth">72.0dip</dimen>
 
     <dimen name="eventlist_photoSize">70.0dip</dimen>
 

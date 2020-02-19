@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.20 21:52
+ *  * Created by Vladimir Belov on 20.02.20 1:25
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 02.02.20 17:39
+ *  * Last modified 15.02.20 13:27
  *
  */
 
@@ -253,13 +253,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     String[] arrChangeLog = resources.getStringArray(R.array.changelog);
                     if (arrChangeLog.length >= 0) {
 
-                        String lastVersion = STRING_EMPTY;
+                        String currentVersion = STRING_EMPTY;
+                        int countChanges = 0;
+
                         for(String strChange: arrChangeLog) {
 
                             if (strChange.charAt(0) == '#') {
 
-                                if (!lastVersion.equals(STRING_EMPTY)) break;
-                                lastVersion = strChange.substring(1);
+                                if (!currentVersion.equals(STRING_EMPTY)) break;
+                                currentVersion = strChange.substring(1);
+                                if (!currentVersion.equals(BuildConfig.VERSION_NAME)) break;
                                 sb.append("<ul>");
 
                             } else {
@@ -268,30 +271,31 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 } else {
                                     sb.append("<br>&nbsp;-&nbsp;").append(strChange);
                                 }
+                                countChanges++;
 
                             }
                         }
-                        if (!lastVersion.equals(STRING_EMPTY)) {
+                        if (countChanges > 0) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                 sb.append("</ul>");
                             } else {
                                 sb.append(HTML_BR);
                             }
-                        }
 
-                        builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                        builder.setTitle(getString(R.string.msg_newversion_title, lastVersion));
-                        builder.setIcon(android.R.drawable.ic_menu_info_details);
-                        builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
-                        builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
-                        builder.setNeutralButton(R.string.button_Open_VersionHistory, (dialog, which) -> startActivity(new Intent(this, AboutActivity.class)));
-                        alertToShow = builder.create();
-                        alertToShow.setOnShowListener(arg0 -> {
-                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        });
-                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        alertToShow.show();
+                            builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                            builder.setTitle(getString(R.string.msg_newversion_title, currentVersion));
+                            builder.setIcon(android.R.drawable.ic_menu_info_details);
+                            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+                            builder.setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel());
+                            builder.setNeutralButton(R.string.button_Open_VersionHistory, (dialog, which) -> startActivity(new Intent(this, AboutActivity.class)));
+                            alertToShow = builder.create();
+                            alertToShow.setOnShowListener(arg0 -> {
+                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            alertToShow.show();
+                        }
 
                     }
                     setLastRunVersion();

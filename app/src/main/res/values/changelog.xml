@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 20.02.20 1:22
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.7</item>
+        <item>Scalable widget update: now all events should fit exactly the entire width of the widget</item>
+        <item>The settings for each widget can now be edited. To call the settings, you need to click on caption of the rightmost event on the widget</item>
+        <item>Added ability to adjust the number of displayed events (widget settings)</item>
+
+        <item>#1.4.6</item>
+        <item>Added version history to About dialog</item>
+        <item>Analysis of the name has been changed: if job position of the contact is not specified, then everything that is inside the brackets in the full name is the position</item>
+        <item>Increased photo height on widgets</item>
+        <item>Switches for event details visibility in settings have been redone into lists</item>
+        <item>Silhouettes for elder persons (from 65 years old) added</item>
+        <item>Bugs fixing</item>
+
+        <item>#1.4.5</item>
+        <item>Widgets layout fixing</item>
+        <item>Corrections in Ukrainian translation  (thanks @Esperanzzza)</item>
+        <item>Added option not to show widget frame</item>
+        <item>Added highlighting of favorite contacts with star sign</item>
+        <item>Added second text row for person info (on widgets)</item>
+        <item>Added setting for displaying the name in the list (first name or last name at first)</item>
+        <item>List of known anniversaries titles (by year): Settings->Events customizing->Anniversary->List</item>
+        <item>Bugs fixing</item>
+
+        <item>#1.4.4</item>
+        <item>Change of the language or color theme applied instantly</item>
+        <item>Accounts selection for events scanning</item>
+        <item>Added support for USA dates format in Skype</item>
+        <item>Added display of just first name under the photo in widgets</item>
+        <item>Switched to SDK version 29 and migrated to AndroidX library</item>
+
+        <item>#1.4.3</item>
+        <item>Hiding individual events</item>
+        <item>Customizable notification ringtone</item>
+        <item>Fixed initialization of notifications after reboot</item>
+        <item>Added dialog about the absence of events in the address book</item>
+
+        <item>#1.4.2</item>
+        <item>UI improvements and notifications bugs fixing</item>
+        <item>Widgets size fixing (again)</item>
+        <item>Start building a context menu for events</item>
+        <item>If notifications format is separate messages, then the events now appear in the reverse order (at the top are the nearest)</item>
+        <item>The number of days before the event is added to the notification</item>
+
+        <item>#1.4.1</item>
+        <item>Added marking photos of deceased contacts with a mourning tape</item>
+        <item>Bug fixing</item>
+
+        <item>#1.4.0</item>
+        <item>Added notifications of upcoming events. Turn on in settings</item>
+        <item>Android 10 ready</item>
+
+        <item>#1.3.6</item>
+        <item>Added German localization</item>
+        <item>"Find" function switched to regexp, so you can find via complex queries. Examples - in the program description</item>
+        <item>Added option to display the original label of a custom event</item>
+        <item>Bugfixing</item>
+
+        <item>#1.3.5</item>
+        <item>Added shading of previous events</item>
+        <item>Bugs fixing</item>
+
+        <item>#1.3.4</item>
+        <item>Added 5 user-defined custom events</item>
+        <item>Added new events display options</item>
+        <item>Added previous events displaying on list top</item>
+        <item>Bugs fixing</item>
+
+        <item>#1.3.3</item>
+        <item>Minor color themes corrections</item>
+        <item>Landscape mode disabled</item>
+        <item>Added weekday displaying for evens in list</item>
+        <item>Bugs fixing</item>
+
+        <item>#1.3.2</item>
+        <item>Finished dark gray and black color themes</item>
+        <item>Customization of the definition of user events is implemented (you can use standard names or set your own). This setting is used to display, not to filter events</item>
+        <item>Minor bugs fixed</item>
+
+        <item>#1.3.1</item>
+        <item>Added ukrainian translation</item>
+        <item>Added event details option for list: event type, contact title and organization and so on</item>
+        <item>Some theme colors changes and events list elements alignment</item>
+        <item>User pics for persons w/o photos choosing by age and gender (4 variants)</item>
+
+        <item>#1.3.0</item>
+        <item>Added configuration for every widget. New settings: event starting index and font magnify factor (for resizable 2x2 widget). Now you can make your own event ribbon with any number of one event widgets</item>
+        <item>Color themes support added. Now there are green, dark gray and full black themes</item>
+        <item>Since this version minimum Android version is 5.0 (for themes support)</item>
+
+        <item>#1.2.9</item>
+        <item>Added layout for 6 and 7 events</item>
+        <item>Increased font size magnification for widget 2x2</item>
+        <item>Added 4x1 unresizable widget for 5 events (for devices with non standard screens)</item>
+        <item>Name-days always parse w/o year</item>
+        <item>Some bugs fixed</item>
+
+        <item>#1.2.8</item>
+        <item>Fixed widget layouts for different display dpi (xhpdi, xxhdpi, xxxhdpi)</item>
+
+        <item>#1.2.7</item>
+        <item>Added new setting to hide events icons on widgets</item>
+        <item>Added elements scaling for 2x2 widget</item>
+        <item>Improved look for events list</item>
+        <item>Increased size of photos on widgets</item>
+
+        <item>#1.2.6</item>
+        <item>Contacts photos in high resolution</item>
+        <item>Widget 1x1 became 2x2 (this is new default widget size, it\'s resizable)</item>
+        <item>Widget 4x1 became resizable (for 1, 2, 4 or 5 events)</item>
+        <item>Contacts photos in event list cropped by center (for compatibility with non square photos)</item>
+        <item>Turned on fast scrolling for event list</item>
+
+        <item>#1.2.5</item>
+        <item>Added some transparency for widgets background</item>
+        <item>Added more variants for data bellow photo on widgets</item>
+        <item>Added color preferences for some widget elements</item>
+
+        <item>#1.2.4</item>
+        <item>Added icon for custom event "Crowning" (holy mystery in the Eastern Orthodox Church)</item>
+        <item>Fixed bug with displaying round days event icon</item>
+
+        <item>#1.2.3</item>
+        <item>Added support for Skype Lite events for Russian locale</item>
+
+        <item>#1.2.2</item>
+        <item>Some small widgets elements alignments</item>
+
+        <item>#1.2.1</item>
+        <item>Fixed bug of app language auto selection</item>
+        <item>Some small widgets elements alignments</item>
+
+        <item>#1.2.0</item>
+        <item>First multilingual release</item>
+        <item>New settings: language selection, bottom photo info selection for widgets, debug dates info is optional now</item>
+        <item>Bug fixing</item>
+
+    </string-array>
+
+</resources>

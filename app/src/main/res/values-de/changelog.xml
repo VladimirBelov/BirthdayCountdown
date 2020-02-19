@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 20.02.20 1:24
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.7</item>
+        <item>Skalierbares Widget-Update: Jetzt sollten alle Ereignisse genau auf die gesamte Breite des Widgets passen</item>
+        <item>Die Einstellungen für jedes Widget können jetzt bearbeitet werden. Um die Einstellungen aufzurufen, müssen Sie im Widget auf die Beschriftung des Ereignisses ganz rechts klicken</item>
+        <item>Möglichkeit hinzugefügt, die Anzahl der angezeigten Ereignisse anzupassen (Widget-Einstellungen)</item>
+
+        <item>#1.4.6</item>
+        <item>Versionsverlaufsbeschreibung hinzugefügt</item>
+        <item>Die Analyse des Namens wurde geändert: Wenn die Position des Kontakts nicht angegeben ist, ist alles, was sich im vollständigen Namen in den Klammern befindet, die Position</item>
+        <item>Erhöhte Fotohöhe bei Widgets</item>
+        <item>Schalter für die Sichtbarkeit von Ereignisdetails in den Einstellungen wurden in Listen überarbeite</item>
+        <item>Silhouetten für ältere Personen (ab 65 Jahre) hinzugefügt</item>
+        <item>Fehlerbehebungen</item>
+
+        <item>#1.4.5</item>
+        <item>Widgets Layout-Korrektur</item>
+        <item>Korrekturen in der ukrainischen Übersetzung</item>
+        <item>Option hinzugefügt, um den WidgetEinfassung nicht anzuzeigen</item>
+        <item>Hervorhebung von Lieblingskontakten mit Sternzeichen hinzugefügt</item>
+        <item>Zweite Textzeile für Personeninfo (auf Widgets) hinzugefügt</item>
+        <item>Einstellung zur Anzeige des Namens in der Liste hinzugefügt (Vorname oder Nachname zuerst)</item>
+        <item>Liste der bekannten Jahrestitel (nach Jahr): Einstellungen-> Ereigniseinrichtung->Hochzeitstag-> Liste</item>
+        <item>Fehlerbehebung</item>
+
+        <item>#1.4.4</item>
+        <item>Änderung der Sprache oder des Farbthemas sofort angewendet</item>
+        <item>Kontenauswahl für die Ereignisüberprüfung</item>
+        <item>Unterstützung für das Datumsformat USA in Skype hinzugefügt</item>
+        <item>Anzeige nur des Vornamens unter dem Foto in Widgets hinzugefügt</item>
+        <item>Auf SDK-Version 29 umgestellt und auf die AndroidX-Bibliothek migriert</item>
+
+    </string-array>
+
+</resources>

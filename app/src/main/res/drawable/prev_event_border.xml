@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 10.02.20 21:53
+  ~  */
+  -->
+
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="-2dp"
+    android:insetRight="-2dp"
+    android:insetLeft="-2dp">
+
+    <shape android:shape="rectangle">
+        <stroke android:width="2dp" android:color="?attr/dividerHorizontal" />
+        <solid android:color="?attr/backgroundColor" />
+    </shape>
+</inset>

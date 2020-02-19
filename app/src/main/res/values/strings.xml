@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 02.02.20 17:39
+  ~  * Last modified 20.02.20 0:57
   ~  */
   -->
 
@@ -303,6 +303,14 @@
         <item>x1.75</item>
     </string-array>
 
+    <string name="widget_config_events_count_label">Custom events count</string>
+    <string name="widget_config_events_count_description">If there is too \"narrow\" or \"loose\" for events on the widget, adjust the number of events</string>
+    <string-array name="widget_config_events_count">
+        <item>Auto</item>
+        <item>-1</item>
+        <item>+1</item>
+    </string-array>
+
     <string name="pref_Notifications_title">Notifications</string>
 
     <string name="pref_Notifications_Type_title">Style of notifications</string>
@@ -350,7 +358,7 @@
     <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Version history:</h1>]]></string>
-    <string name="changelog_release_title"><![CDATA[<h2>Release: %1$s</h2><ul>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Release: %1$s:</h2><ul>]]></string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <string name="event_type_wedding_1">Paper</string>
@@ -664,7 +672,7 @@
 
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
-    <string name="widget_config_defaultPref" translatable="false">1,0</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0</string>
 
     <string name="last_name_comletions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
     <string name="last_name_comletions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
@@ -718,5 +726,17 @@
 
     <string name="pref_Debug_On_key" translatable="false">Debug</string>
 
-    <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); }h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
+    <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); }h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
+
+    <string name="debuglog_body" translatable="false"><![CDATA[
+<h1>Debug information:</h1>
+<h2>Load speed:</h2><ul>
+    <li>contacts scanning: %1$s msec
+    <li>dates computing: %2$s msec
+    <li>list drawing: %3$s msec
+</ul>
+<h3>Screen: %4$sx%5$s (density %6$s)</h3>
+<br>
+]]></string>
+
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 02.02.20 17:39
+  ~  * Last modified 20.02.20 0:53
   ~  */
   -->
 
@@ -303,6 +303,14 @@
         <item>x1.75</item>
     </string-array>
 
+    <string name="widget_config_events_count_label">Кількість подій</string>
+    <string name="widget_config_events_count_description">Якщо подій занадто \"вузько\" або \"широко\" в віджеті, відкоригуйте кількість подій</string>
+    <string-array name="widget_config_events_count">
+        <item>Авто</item>
+        <item>-1</item>
+        <item>+1</item>
+    </string-array>
+
     <string name="pref_Notifications_title">Повідомлення</string>
 
     <string name="pref_Notifications_Type_title">Стиль повідомлень</string>
@@ -350,7 +358,7 @@
     <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
-    <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s</h2><ul>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s:</h2><ul>]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
     <string name="event_type_wedding_1">Стеців</string>

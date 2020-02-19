@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.20 21:51
+  ~  * Created by Vladimir Belov on 20.02.20 1:25
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 02.02.20 3:17
+  ~  * Last modified 15.02.20 21:27
   ~  */
   -->
 
@@ -25,23 +25,24 @@
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <RelativeLayout
             android:id="@+id/eventInfo0"
-            android:layout_width="@dimen/widget_41cellWidth"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:visibility="gone">
+            android:layout_weight="1"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView0"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="3dip"
                 android:layout_marginTop="3dip"
                 android:layout_marginBottom="3dip"
@@ -62,7 +63,7 @@
 
             <TextView
                 android:id="@+id/textView0"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="3dip"
@@ -82,7 +83,7 @@
 
             <TextView
                 android:id="@+id/textViewCentered0"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="3dip"
@@ -102,7 +103,7 @@
 
             <TextView
                 android:id="@+id/textView2nd0"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView0"
                 android:layout_marginStart="3dip"
@@ -122,7 +123,7 @@
 
             <TextView
                 android:id="@+id/textView2ndCentered0"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView0"
                 android:layout_marginStart="3dip"
@@ -192,16 +193,15 @@
 
         <RelativeLayout
             android:id="@+id/eventInfo1"
-            android:layout_width="@dimen/widget_41cellWidth"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/eventInfo0"
-            android:visibility="gone">
+            android:layout_weight="1"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="1dip"
                 android:layout_marginTop="3dip"
                 android:layout_marginBottom="3dip"
@@ -222,7 +222,7 @@
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -241,7 +241,7 @@
 
             <TextView
                 android:id="@+id/textViewCentered1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -260,7 +260,7 @@
 
             <TextView
                 android:id="@+id/textView2nd1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView1"
                 android:layout_marginStart="1dip"
@@ -279,7 +279,7 @@
 
             <TextView
                 android:id="@+id/textView2ndCentered1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView1"
                 android:layout_marginStart="1dip"
@@ -348,16 +348,15 @@
 
         <RelativeLayout
             android:id="@+id/eventInfo2"
-            android:layout_width="@dimen/widget_41cellWidth"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/eventInfo1"
-            android:visibility="gone">
+            android:layout_weight="1"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="1dip"
                 android:layout_marginTop="3dip"
                 android:layout_marginBottom="3dip"
@@ -378,7 +377,7 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -397,7 +396,7 @@
 
             <TextView
                 android:id="@+id/textViewCentered2"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -416,7 +415,7 @@
 
             <TextView
                 android:id="@+id/textView2nd2"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView2"
                 android:layout_marginStart="1dip"
@@ -435,7 +434,7 @@
 
             <TextView
                 android:id="@+id/textView2ndCentered2"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView2"
                 android:layout_marginStart="1dip"
@@ -504,17 +503,15 @@
 
         <RelativeLayout
             android:id="@+id/eventInfo3"
-            android:layout_width="@dimen/widget_41cellWidth"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="false"
-            android:layout_toEndOf="@id/eventInfo2"
-            android:visibility="gone">
+            android:layout_weight="1"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="1dip"
                 android:layout_marginTop="3dip"
                 android:layout_marginEnd="2dip"
@@ -536,7 +533,7 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -556,7 +553,7 @@
 
             <TextView
                 android:id="@+id/textViewCentered3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="1dip"
@@ -576,7 +573,7 @@
 
             <TextView
                 android:id="@+id/textView2nd3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView3"
                 android:layout_marginStart="1dip"
@@ -596,7 +593,7 @@
 
             <TextView
                 android:id="@+id/textView2ndCentered3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textView3"
                 android:layout_marginStart="1dip"
@@ -664,6 +661,6 @@
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
