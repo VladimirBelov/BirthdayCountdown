@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 0:57
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -29,7 +29,7 @@
     <string name="msg_no_access">No access to contacts</string>
     <string name="msg_no_events">Events not found</string>
     <string name="msg_filter">", filter: "</string>
-    <string name="msg_before_event_prefix">"in "</string>
+    <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_today">Today</string>
@@ -62,6 +62,7 @@
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
     <string name="msg_newversion_title">"What's new in v. %1$s:"</string>
+    <string name="msg_not_implemented">Not implemented yet!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -83,6 +84,7 @@
     <string name="button_Open_AppSettings">Open settings…</string>
     <string name="button_Open_VersionHistory">Version history</string>
     <string name="button_All">All</string>
+    <string name="button_Snooze">Remind in an hour</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -301,15 +303,19 @@
         <item>x1.2</item>
         <item>x1.5</item>
         <item>x1.75</item>
+        <item>x2.0</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Custom events count</string>
     <string name="widget_config_events_count_description">If there is too \"narrow\" or \"loose\" for events on the widget, adjust the number of events</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
+        <item>-2</item>
         <item>-1</item>
         <item>+1</item>
     </string-array>
+
+    <string name="widget_hint">To modify widget preferences click on caption of the rightmost event:</string>
 
     <string name="pref_Notifications_title">Notifications</string>
 

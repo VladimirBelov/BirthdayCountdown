@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 0:53
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -29,7 +29,7 @@
     <string name="msg_no_access">Не вдається отримати доступ до контактів</string>
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_filter">", фільтр: "</string>
-    <string name="msg_before_event_prefix">"через "</string>
+    <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
     <string name="msg_today">Сьогодні</string>
@@ -62,6 +62,7 @@
     <string name="msg_welcome_title">Ласкаво просимо!</string>
     <string name="msg_welcome_text">Дякую, що встановили цю програму. Хоча більшість функцій налаштоване максимально інформативно і мінімально набридливо, рекомендується перевірити налаштування програми. Наприклад, там можна включити повідомлення про майбутні події або задати параметри для віджетів. Приємного користування!</string>
     <string name="msg_newversion_title">"Зміни в версії %1$s:"</string>
+    <string name="msg_not_implemented">Ще не реалізовано!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -83,6 +84,7 @@
     <string name="button_Open_AppSettings">Відкрити налаштування…</string>
     <string name="button_Open_VersionHistory">Історія версій</string>
     <string name="button_All">Всі</string>
+    <string name="button_Snooze">Нагадати через годину</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -248,20 +250,11 @@
         <item>Рамка</item>
     </string-array>
 
-<!--    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
-    <string name="pref_Widgets_ShowBorder_description">Показувати рамку віджета</string>-->
-
     <string name="pref_Widgets_BottomInfo_title">Підпис (нижній ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Що показувати під фотографією</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Підпис (верхній ряд)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Що показувати під фотографією</string>
-
-<!--    <string name="pref_Widgets_ContactPhotos_title">Фото контакту</string>
-    <string name="pref_Widgets_ContactPhotos_description">Показувати фото контакту</string>
-
-    <string name="pref_Widgets_EventIcons_title">Значок події</string>
-    <string name="pref_Widgets_EventIcons_description">Показувати значок події</string>-->
 
     <string-array name="pref_Widgets_Color_entries">
         <item>Зелений</item>
@@ -301,15 +294,19 @@
         <item>x1.2</item>
         <item>x1.5</item>
         <item>x1.75</item>
+        <item>x2.0</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Кількість подій</string>
     <string name="widget_config_events_count_description">Якщо подій занадто \"вузько\" або \"широко\" в віджеті, відкоригуйте кількість подій</string>
     <string-array name="widget_config_events_count">
         <item>Авто</item>
+        <item>-2</item>
         <item>-1</item>
         <item>+1</item>
     </string-array>
+
+    <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис найправішої події:</string>
 
     <string name="pref_Notifications_title">Повідомлення</string>
 

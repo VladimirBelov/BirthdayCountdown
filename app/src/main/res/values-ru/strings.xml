@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 0:51
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -29,7 +29,7 @@
     <string name="msg_no_access">Нет доступа к контактам</string>
     <string name="msg_no_events">События не найдены</string>
     <string name="msg_filter">", фильтр: "</string>
-    <string name="msg_before_event_prefix">"через "</string>
+    <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
     <string name="msg_today">Сегодня</string>
@@ -62,6 +62,7 @@
     <string name="msg_welcome_title">Добро пожаловать!</string>
     <string name="msg_welcome_text">Спасибо, что установили эту программу. Хотя большинство функций настроено максимально информативно и минимально надоедливо, рекомендуется проверить настройки приложения. Например, там можно включить уведомления о предстоящих событиях или задать параметры для виджетов. Приятного пользования!</string>
     <string name="msg_newversion_title">"Изменения в версии %1$s:"</string>
+    <string name="msg_not_implemented">Ещё не реализовано!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -83,6 +84,7 @@
     <string name="button_Open_AppSettings">Открыть настройки…</string>
     <string name="button_Open_VersionHistory">История версий</string>
     <string name="button_All">Все</string>
+    <string name="button_Snooze">Напомнить через час</string>
 
     <string name="events_scope_not_hidden">Все нескрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -248,15 +250,6 @@
         <item>Бордюр виджета</item>
     </string-array>
 
-<!--    <string name="pref_Widgets_ShowBorder_title">Рамка</string>
-    <string name="pref_Widgets_ShowBorder_description">Показывать рамку виджета</string>
-
-    <string name="pref_Widgets_ContactPhotos_title">Фото контакта</string>
-    <string name="pref_Widgets_ContactPhotos_description">Показывать фото контакта</string>
-
-    <string name="pref_Widgets_EventIcons_title">Иконка события</string>
-    <string name="pref_Widgets_EventIcons_description">Показывать иконку события</string>-->
-
     <string name="pref_Widgets_BottomInfo_title">Заголовок (нижний ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Что показывать под фотографией</string>
 
@@ -301,15 +294,19 @@
         <item>x1.2</item>
         <item>x1.5</item>
         <item>x1.75</item>
+        <item>x2.0</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Количество событий</string>
     <string name="widget_config_events_count_description">Если событиям слишком \"узко\" или \"широко\" в виджете, откорректируйте количество событий</string>
     <string-array name="widget_config_events_count">
         <item>Авто</item>
+        <item>-2</item>
         <item>-1</item>
         <item>+1</item>
     </string-array>
+
+    <string name="widget_hint">Чтобы отредактировать настройки виджета, нажмите на подпись самого правого события:</string>
 
     <string name="pref_Notifications_title">Уведомления</string>
 

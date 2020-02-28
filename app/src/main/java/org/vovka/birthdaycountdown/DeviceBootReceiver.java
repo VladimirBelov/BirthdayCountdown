@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 10.02.20 21:53
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -20,11 +20,11 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        ContactsEvents eventsData = ContactsEvents.getInstance();
         try {
             if (Objects.equals(intent.getAction(), Constants.Broadcast_ANDROID_INTENT_ACTION_BOOT_COMPLETED)) { // on device boot complete, reset the alarm
 
                 StringBuilder log = new StringBuilder();
-                ContactsEvents eventsData = ContactsEvents.getInstance();
                 if (eventsData.context == null) eventsData.context = context;
                 eventsData.getPreferences();
                 eventsData.initNotifications(log);
@@ -35,7 +35,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 }

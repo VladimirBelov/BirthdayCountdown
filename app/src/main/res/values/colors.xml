@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 10.02.20 21:53
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -25,7 +25,8 @@
     <color name="black">#000000</color>
     <color name="dark_gray">#121212</color>
     <color name="medium_dark_gray">#232323</color>
-	<color name="medium_dark_gray_trans">#40232323</color>
+	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->
+	<color name="medium_dark_gray_trans_25">#40232323</color>
     <color name="medium_gray">#323232</color>
     <color name="light_gray">#808080</color>
     <color name="light_gray_trans">#33808080</color>

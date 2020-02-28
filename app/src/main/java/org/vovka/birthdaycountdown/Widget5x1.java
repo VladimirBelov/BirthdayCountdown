@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 20.02.20 0:45
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -30,6 +30,8 @@ public class Widget5x1 extends AppWidgetProvider {
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.setLocale(true);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             int eventsCount = getCellsForSize(minWidth);
@@ -38,9 +40,21 @@ public class Widget5x1 extends AppWidgetProvider {
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
             int prefEventsCountIndex = 0;
             try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+                if (widgetPref != null && widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
             } catch (Exception e2) {/**/}
-            int prefEventsCountDiff = prefEventsCountIndex == 1 ? -1 : prefEventsCountIndex == 2 ? 1 : 0;
+
+            int prefEventsCountDiff = 0;
+            switch (prefEventsCountIndex) {
+                case 1:
+                    prefEventsCountDiff = -2;
+                    break;
+                case 2:
+                    prefEventsCountDiff = -1;
+                    break;
+                case 3:
+                    prefEventsCountDiff = 1;
+                    break;
+            }
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
             new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invoke();
@@ -96,7 +110,19 @@ public class Widget5x1 extends AppWidgetProvider {
             try {
                 if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
             } catch (Exception e2) {/**/}
-            int prefEventsCountDiff = prefEventsCountIndex == 1 ? -1 : prefEventsCountIndex == 2 ? 1 : 0;
+
+            int prefEventsCountDiff = 0;
+            switch (prefEventsCountIndex) {
+                case 1:
+                    prefEventsCountDiff = -2;
+                    break;
+                case 2:
+                    prefEventsCountDiff = -1;
+                    break;
+                case 3:
+                    prefEventsCountDiff = 1;
+                    break;
+            }
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
 
@@ -109,10 +135,9 @@ public class Widget5x1 extends AppWidgetProvider {
                                 "\n appWidgetId=" + appWidgetId +
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
-                                "\n minWidth=" + minWidth +
-                                "\n minHeight=" + minHeight +
-                                "\n eventsCount=" + eventsCount +
-                                "\n eventsDiff=" + prefEventsCountDiff
+                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
+                                "\n widgetPref=" + widgetPref.toString() +
+                                "\n eventsCount=" + eventsCount + ", eventsDiff=" + prefEventsCountDiff
                 , Toast.LENGTH_LONG).show();
             }
 

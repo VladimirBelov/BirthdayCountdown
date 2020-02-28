@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 1:00
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -29,8 +29,8 @@
     <string name="msg_no_access">Kein Zugriff auf Kontakte</string>
     <string name="msg_no_events">Keine Termine gefunden</string>
     <string name="msg_filter">", filter: "</string>
-    <string name="msg_before_event_prefix">"in "</string>
-    <string name="msg_after_event_prefix">"vor "</string>
+    <string name="msg_before_event_prefix">"In "</string>
+    <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_today">Heute</string>
     <string name="msg_tomorrow">Morgen</string>
@@ -62,6 +62,7 @@
     <string name="msg_welcome_title">Willkommen!</string>
     <string name="msg_welcome_text">Vielen Dank, dass Sie dieses Programm installiert haben. Obwohl die meisten Funktionen so informativ und minimal ärgerlich wie möglich konfiguriert sind, wird empfohlen, die Anwendungseinstellungen zu überprüfen. Dort können Sie beispielsweise Benachrichtigungen über bevorstehende Ereignisse aktivieren oder Parameter für Widgets festlegen. Viel Spaß beim Gebrauch!</string>
     <string name="msg_newversion_title">"Änderungen in der Version %1$s:"</string>
+    <string name="msg_not_implemented">Noch nicht implementiert!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -83,6 +84,7 @@
     <string name="button_Open_AppSettings">Einstellungen öffnen…</string>
     <string name="button_Open_VersionHistory">Versionsverlauf</string>
     <string name="button_All">Alle</string>
+    <string name="button_Snooze">Verschieben</string>
 
     <string name="events_scope_not_hidden">Alles aufgedeckt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -248,15 +250,6 @@
         <item>Einfassung</item>
     </string-array>
 
-<!--    <string name="pref_Widgets_ShowBorder_title">Einfassung</string>
-    <string name="pref_Widgets_ShowBorder_description">Widget-Einfassung anzeigen</string>
-
-    <string name="pref_Widgets_ContactPhotos_title">Kontaktfoto</string>
-    <string name="pref_Widgets_ContactPhotos_description">Kontaktfoto anzeigen</string>
-
-    <string name="pref_Widgets_EventIcons_title">Ereignissymbol</string>
-    <string name="pref_Widgets_EventIcons_description">Ereignissymbol anzeigen</string>-->
-
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
     <string name="pref_Widgets_BottomInfo_description">Was unter dem Foto zu zeigen</string>
 
@@ -301,15 +294,19 @@
         <item>x1.2</item>
         <item>x1.5</item>
         <item>x1.75</item>
+        <item>x2.0</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Ereignisse zählen</string>
     <string name="widget_config_events_count_description">Wenn das Widget \"zu eng\" oder \"zu locker\" für Ereignisse ist, passen Sie die Anzahl der Ereignisse an</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
+        <item>-2</item>
         <item>-1</item>
         <item>+1</item>
     </string-array>
+
+    <string name="widget_hint">Um die Widget-Einstellungen zu ändern, klicken Sie auf die Beschriftung des Ereignisses ganz rechts:</string>
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
 

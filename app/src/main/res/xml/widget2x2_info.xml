@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 10.02.20 21:53
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
 <!-- minWidth: 70 * n - 30 -->
-<!-- 21600000 - обновлять 1 раз в 6 часов -->
-<!-- todo: сделать новые initialLayout для трёх виджетов -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/widget2x2"
     android:initialLayout="@layout/widget2x2"
@@ -17,7 +15,7 @@
     android:minHeight="110dp"
     android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"
-    android:previewImage="@drawable/widget2x2"
+    android:previewImage="@drawable/preview_widget2x2"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen"

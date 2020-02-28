@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 20.02.20 1:17
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -29,7 +29,6 @@ import java.util.Locale;
 public class WidgetConfigureActivity extends AppCompatActivity {
 
     private int widgetId = 0;
-    private String widgetType;
     private ContactsEvents eventsData;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -79,10 +78,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Bundle extras = intent.getExtras();
             if (extras != null) widgetId = extras.getInt("appWidgetId", 0);
 
-            //if (eventsData.preferences_debug_on) Toast.makeText(this, "widgetId=" + widgetId, Toast.LENGTH_LONG).show();
-
             List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
 
+            //Заполняем стартовый номер
             int prefStartingIndex = 1;
             try {
                 if (widgetPref.size() > 0) prefStartingIndex = Integer.parseInt(widgetPref.get(0));
@@ -91,26 +89,34 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             spinnerIndex.setSelection(prefStartingIndex - 1);
 
-            widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
+            //Заполняем Коэффициент масштабирования размера шрифта
+            int prefMagnifyIndex = 0;
+            try {
+                if (widgetPref.size() > 1) prefMagnifyIndex = Integer.parseInt(widgetPref.get(1));
+            } catch (Exception e2) {/**/}
 
-            if (!widgetType.equals(".Widget2x2")) {
+            Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
+            spinnerMagnify.setSelection(prefMagnifyIndex);
+
+            //Заполняем количество событий
+            int prefEventsCountIndex = 0;
+            try {
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+            } catch (Exception e2) {/**/}
+
+            Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
+            spinnerEventsCount.setSelection(prefEventsCountIndex);
+
+
+            String widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
+
+            if (widgetType.equals(".Widget4x1")) {
 
                 //Скрываем Коэффициент масштабирования размера шрифта
                 findViewById(R.id.dividerFontMagnify).setVisibility(View.GONE);
                 findViewById(R.id.spinnerFontMagnifyLabel).setVisibility(View.GONE);
                 findViewById(R.id.spinnerFontMagnify).setVisibility(View.GONE);
                 findViewById(R.id.textViewFontMagnify).setVisibility(View.GONE);
-
-            } else {
-
-                //Заполняем Коэффициент масштабирования размера шрифта
-                int prefMagnifyIndex = 0;
-                try {
-                    if (widgetPref.size() > 1) prefMagnifyIndex = Integer.parseInt(widgetPref.get(1));
-                } catch (Exception e2) {/**/}
-
-                Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-                spinnerMagnify.setSelection(prefMagnifyIndex);
 
             }
 
@@ -122,16 +128,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerEventsCount).setVisibility(View.GONE);
                 findViewById(R.id.textViewEventsCount).setVisibility(View.GONE);
 
-            } else {
+            }
 
-                //Заполняем количество событий
-                int prefEventsCountIndex = 0;
-                try {
-                    if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-                } catch (Exception e2) {/**/}
+            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId)) {
 
-                Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
-                spinnerEventsCount.setSelection(prefEventsCountIndex);
+                //Скрываем подсказку для существующих виджетов
+                findViewById(R.id.widget_hint).setVisibility(View.GONE);
 
             }
 
@@ -156,9 +158,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 eventsData.setWidgetPreference(widgetId,
                         spinnerIndex.getItemAtPosition(selectedItemPosition).toString() //тут именно значение в списке
                         .concat(Constants.STRING_COMMA)
-                        .concat(widgetType.equals(".Widget2x2") ? String.valueOf(spinnerMagnify.getSelectedItemPosition()) : "0") //тут позиция в списке
+                        .concat(String.valueOf(spinnerMagnify.getSelectedItemPosition())) //тут позиция в списке
                         .concat(Constants.STRING_COMMA)
-                        .concat(widgetType.equals(".Widget5x1") ? String.valueOf(spinnerEventsCount.getSelectedItemPosition()) : "0") //тут позиция в списке
+                        .concat(String.valueOf(spinnerEventsCount.getSelectedItemPosition())) //тут позиция в списке
                 );
 
             }

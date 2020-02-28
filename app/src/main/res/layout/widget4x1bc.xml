@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 10.02.20 21:53
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -53,7 +53,7 @@
             android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="start"
             android:paddingStart="2dip"
@@ -75,7 +75,7 @@
             android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingStart="2dip"
@@ -96,7 +96,7 @@
             android:layout_above="@id/textView0"
             android:layout_marginStart="3dip"
             android:layout_marginBottom="9dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
@@ -116,7 +116,7 @@
             android:layout_above="@id/textView0"
             android:layout_marginStart="3dip"
             android:layout_marginBottom="9dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:shadowColor="@color/dark_gray"
@@ -160,7 +160,7 @@
 
         <TextView
             android:id="@id/textViewAge0"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
@@ -217,7 +217,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="start"
             android:paddingStart="2dip"
@@ -238,7 +238,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingStart="2dip"
@@ -258,7 +258,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView1"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
@@ -277,7 +277,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView1"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:shadowColor="@color/dark_gray"
@@ -321,7 +321,7 @@
 
         <TextView
             android:id="@id/textViewAge1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
@@ -379,7 +379,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="start"
             android:paddingStart="2dip"
@@ -400,7 +400,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingStart="2dip"
@@ -420,7 +420,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView2"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
@@ -439,7 +439,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView2"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:shadowColor="@color/dark_gray"
@@ -483,7 +483,7 @@
 
         <TextView
             android:id="@id/textViewAge2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
@@ -540,7 +540,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="start"
             android:paddingStart="2dip"
@@ -561,7 +561,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="1dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingStart="2dip"
@@ -581,7 +581,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView3"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
@@ -600,7 +600,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textView3"
             android:layout_marginStart="1dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:shadowColor="@color/dark_gray"
@@ -644,7 +644,7 @@
 
         <TextView
             android:id="@id/textViewAge3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
@@ -704,7 +704,7 @@
             android:layout_marginStart="1dip"
             android:layout_marginEnd="3dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="start"
             android:paddingStart="2dip"
@@ -726,7 +726,7 @@
             android:layout_marginStart="1dip"
             android:layout_marginEnd="3dip"
             android:layout_marginBottom="3.0dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingStart="2dip"
@@ -747,7 +747,7 @@
             android:layout_above="@id/textView4"
             android:layout_marginStart="1dip"
             android:layout_marginEnd="3dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
@@ -767,7 +767,7 @@
             android:layout_above="@id/textView4"
             android:layout_marginStart="1dip"
             android:layout_marginEnd="3dip"
-            android:background="@color/medium_dark_gray_trans"
+            android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
             android:shadowColor="@color/dark_gray"
@@ -811,7 +811,7 @@
 
         <TextView
             android:id="@id/textViewAge4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"

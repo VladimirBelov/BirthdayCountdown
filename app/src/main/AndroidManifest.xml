@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.11.19 13:35
-  ~  * Copyright (c) 2018 - 2019. All rights reserved.
-  ~  * Last modified 27.11.19 13:35
+  ~  * Created by Vladimir Belov on 27.02.20 22:05
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 20.02.20 23:25
   ~  */
   -->
 
@@ -27,12 +27,13 @@
         android:fullBackupContent="true"
         >
 
+        <!--Activities-->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:screenOrientation="portrait"
-            > <!-- android:configChanges="orientation|screenSize" что-то не работает https://www.dev2qa.com/android-change-orientation-without-restarting-activity-example/ -->
+            tools:ignore="LockedOrientationActivity"> <!-- android:configChanges="orientation|screenSize" что-то не работает https://www.dev2qa.com/android-change-orientation-without-restarting-activity-example/ -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,13 +45,13 @@
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            />
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".WidgetConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
@@ -58,21 +59,30 @@
         <activity android:name=".AboutActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
-        <!-- https://stackoverflow.com/questions/31787778/android-is-android-intent-action-date-changed-triggered-at-device-reboot -->
-        <!-- https://stackoverflow.com/questions/32114436/broadcastreceiver-for-date-changed-only-works-if-i-set-a-date-in-the-future/32172482#32172482 -->
+        <!--Receivers-->
         <receiver
             android:name=".DateReceiver"
             android:enabled="true">
             <intent-filter>
-                <!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" /> по идее, виджеты сами получат сообщения -->
+                <!-- https://stackoverflow.com/questions/31787778/android-is-android-intent-action-date-changed-triggered-at-device-reboot -->
+                <!-- https://stackoverflow.com/questions/32114436/broadcastreceiver-for-date-changed-only-works-if-i-set-a-date-in-the-future/32172482#32172482 -->
                 <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".DeviceBootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".AlarmReceiver" />
 
+        <!--Widgets-->
         <receiver
             android:name=".Widget5x1"
             android:label="@string/appwidget_name_1_7">
@@ -108,14 +118,5 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget4x1bc_info" />
         </receiver>
-
-        <receiver android:name=".DeviceBootReceiver"
-            android:enabled="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".AlarmReceiver" />
     </application>
-
 </manifest>

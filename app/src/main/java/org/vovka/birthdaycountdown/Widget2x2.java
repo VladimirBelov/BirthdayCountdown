@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 19.02.20 0:04
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -24,6 +24,9 @@ public class Widget2x2 extends AppWidgetProvider {
 
         try {
 
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.setLocale(true);
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);

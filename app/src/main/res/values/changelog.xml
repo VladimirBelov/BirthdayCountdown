@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 1:22
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -13,8 +13,9 @@
 
         <item>#1.4.7</item>
         <item>Scalable widget update: now all events should fit exactly the entire width of the widget</item>
-        <item>The settings for each widget can now be edited. To call the settings, you need to click on caption of the rightmost event on the widget</item>
-        <item>Added ability to adjust the number of displayed events (widget settings)</item>
+        <item>The preferences for each widget can now be edited. To call the settings, you need to click on caption of the rightmost event on the widget</item>
+        <item>For scalable widget added ability to adjust the number of displayed events and font magnify factor (widget settings)</item>
+        <item>Single notification can be postponed for 1 hour</item>
 
         <item>#1.4.6</item>
         <item>Added version history to About dialog</item>

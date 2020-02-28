@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 10.02.20 21:53
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -89,7 +89,7 @@
         <item name="windowStatusbarColor">@color/dark_gray</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
-        <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans</item>
+        <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?attr/windowNavbarDividerColor</item>
         <item name="colorAccent">@color/light_gray</item>
         <item name="windowTitleColor">@color/lighter_gray</item>

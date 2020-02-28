@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 19.02.20 23:50
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -34,6 +34,7 @@
         android:background="?attr/backgroundColor">
 
         <LinearLayout
+            android:id="@+id/layout_prefs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -50,13 +51,13 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/widget_config_numbers"
                 android:prompt="@string/widget_config_index_label" />
-<!--            android:popupBackground="?attr/backgroundColor"-->
+            <!--            android:popupBackground="?attr/backgroundColor"-->
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_index_description"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary" />
 
             <View
                 android:id="@+id/dividerFontMagnify"
@@ -71,7 +72,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_font_label"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary" />
 
             <Spinner
                 android:id="@+id/spinnerFontMagnify"
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_font_description"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary" />
 
             <View
                 android:id="@+id/dividerEventsCount"
@@ -100,7 +101,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_events_count_label"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary" />
 
             <Spinner
                 android:id="@+id/spinnerEventsCount"
@@ -114,10 +115,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_events_count_description"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/widget_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/layout_buttons"
+            android:drawableBottom="@drawable/pref_widget"
+            android:padding="6dp"
+            android:text="@string/widget_hint"
+            android:textColor="?android:attr/textColorSecondary" />
+
+
         <LinearLayout
+            android:id="@+id/layout_buttons"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -129,8 +142,8 @@
                 android:layout_weight="1.0"
                 android:onClick="buttonCancelOnClick"
                 android:text="@string/button_Cancel"
-                tools:ignore="ButtonStyle"
-                android:textColor="?attr/colorPrimary"/>
+                android:textColor="?attr/colorPrimary"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:layout_width="0.0dip"
@@ -138,8 +151,8 @@
                 android:layout_weight="1.0"
                 android:onClick="buttonOkOnClick"
                 android:text="@string/button_OK"
-                tools:ignore="ButtonStyle"
-                android:textColor="?attr/colorPrimary"/>
+                android:textColor="?attr/colorPrimary"
+                tools:ignore="ButtonStyle" />
 
         </LinearLayout>
 

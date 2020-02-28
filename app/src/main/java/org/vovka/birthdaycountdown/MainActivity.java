@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 15.02.20 13:27
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -1094,7 +1094,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         break;
 
                     default: //Попозже
-                        holder.DayDistanceTextView.setText(eventDistanceText);
+                        holder.DayDistanceTextView.setText(eventDistanceText.toLowerCase());
                         holder.DayDistanceTextView.setTypeface(null, Typeface.NORMAL);
                         holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(context, R.color.dark_gray)));
 

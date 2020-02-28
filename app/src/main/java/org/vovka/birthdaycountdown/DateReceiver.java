@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 10.02.20 21:53
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -24,23 +24,31 @@ public class DateReceiver extends BroadcastReceiver {
 
         if (action != null && (
                 action.equalsIgnoreCase(Constants.Broadcast_ANDROID_INTENT_ACTION_TIME_SET) ||
-                action.equalsIgnoreCase(Constants.Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED) ||
-                action.equalsIgnoreCase(Constants.Broadcast_ANDROID_INTENT_ACTION_TIMEZONE_CHANGED))
+                        action.equalsIgnoreCase(Constants.Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED) ||
+                        action.equalsIgnoreCase(Constants.Broadcast_ANDROID_INTENT_ACTION_TIMEZONE_CHANGED))
         ) {
 
-            StringBuilder log = new StringBuilder();
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
-            eventsData.getPreferences();
+            try {
 
-            //Переинициализируем уведомления
-            eventsData.initNotifications(log);
+                StringBuilder log = new StringBuilder();
 
-            //Посылаем сообщения на обновление виджетов
-            eventsData.updateWidgets();
-            log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(STRING_EOF);
+                if (eventsData.context == null) eventsData.context = context;
+                eventsData.getPreferences();
 
-            if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
+                //Переинициализируем уведомления
+                eventsData.initNotifications(log);
+
+                //Посылаем сообщения на обновление виджетов
+                eventsData.updateWidgets();
+                log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(STRING_EOF);
+
+                if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.DATE_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            }
 
         }
 

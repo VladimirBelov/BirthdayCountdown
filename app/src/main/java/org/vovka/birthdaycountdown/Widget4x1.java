@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 18.02.20 22:31
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -24,6 +24,9 @@ public class Widget4x1 extends AppWidgetProvider {
 
         try {
 
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.setLocale(true);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget4x1bc);
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 5, -1, -1, appWidgetId).invoke();
             appWidgetManager.updateAppWidget(appWidgetId, views);

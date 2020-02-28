@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 18.02.20 23:56
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -107,7 +107,7 @@ public class AboutActivity extends AppCompatActivity {
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
             //Debug information
-            if (eventsData.preferences_debug_on) {
+            /*if (eventsData.preferences_debug_on) {
 
                 sb.append(getString(R.string.debuglog_body,
                         String.valueOf(Math.round(eventsData.statGetContacts * 100.0) / 100.0),
@@ -118,7 +118,7 @@ public class AboutActivity extends AppCompatActivity {
                         String.valueOf(resources.getDisplayMetrics().density)
                 ));
 
-            }
+            }*/
 
             //Change log
             String[] arrChangeLog = resources.getStringArray(R.array.changelog);

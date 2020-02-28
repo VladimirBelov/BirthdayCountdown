@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.20 1:25
+ *  * Created by Vladimir Belov on 28.02.20 23:49
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 18.02.20 23:50
+ *  * Last modified 27.02.20 23:46
  *
  */
 
@@ -39,6 +39,11 @@ class Constants {
     final static int MY_PERMISSIONS_REQUEST__GET_ACCOUNTS = 101;
 
     static final int defaultNotificationID = 1000;
+    static final String ACTION_SNOOZE = "ACTION_SNOOZE";
+    static final String ACTION_NOTIFY = "ACTION_NOTIFY";
+    static final String ACTION_LAUNCH = "LAUNCH_ACTIVITY";
+    static final String EXTRA_NOTIFICATION_ID = "notificationID";
+    static final String EXTRA_NOTIFICATION_DATA = "notificationData";
 
     static final int HTML_COLOR_RED = 1;
     static final int HTML_COLOR_YELLOW = 2;
@@ -95,11 +100,14 @@ class Constants {
     static final String CONTACTS_EVENTS_SET_LOCALE_ERROR = "ContactsEvents->setLocale error:\n";
     static final String CONTACTS_EVENTS_SET_PREFERENCES_ERROR = "ContactsEvents->setPreferences error:\n";
     static final String CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR = "ContactsEvents->showNotifications error:\n";
+    static final String CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR = "ContactsEvents->SnoozeNotification error:\n";
+    static final String CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR = "ContactsEvents->ShowNotification error:\n";
     static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_ERROR = "ContactsEvents->countDaysDiff error:\n";
     static final String CONTACTS_EVENTS_ADD_YEAR_ERROR = "ContactsEvents->addYear error:\n";
     static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
+    static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
 
     static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "GetAccountsListAdapter->getView error:\n";
 
@@ -148,5 +156,4 @@ class Constants {
     static final String WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR = "WidgetConfigureActivity->onCreate error:\n";
     static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invoke error:\n";
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
-
 }

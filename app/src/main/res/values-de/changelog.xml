@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.20 1:25
+  ~  * Created by Vladimir Belov on 28.02.20 23:49
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 1:24
+  ~  * Last modified 27.02.20 23:46
   ~  */
   -->
 
@@ -14,7 +14,8 @@
         <item>#1.4.7</item>
         <item>Skalierbares Widget-Update: Jetzt sollten alle Ereignisse genau auf die gesamte Breite des Widgets passen</item>
         <item>Die Einstellungen für jedes Widget können jetzt bearbeitet werden. Um die Einstellungen aufzurufen, müssen Sie im Widget auf die Beschriftung des Ereignisses ganz rechts klicken</item>
-        <item>Möglichkeit hinzugefügt, die Anzahl der angezeigten Ereignisse anzupassen (Widget-Einstellungen)</item>
+        <item>Für skalierbares Widget wurde die Möglichkeit hinzugefügt, die Anzahl der angezeigten Ereignisse und den Schriftvergrößerungsfaktor anzupassen (Widget-Einstellungen)</item>
+        <item>Eine separate Benachrichtigung kann um 1 Stunde verzögert werden</item>
 
         <item>#1.4.6</item>
         <item>Versionsverlaufsbeschreibung hinzugefügt</item>
