@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:11
   ~  */
   -->
 
@@ -15,6 +15,8 @@
     <string name="title_activity_search">Фільтр</string>
     <string name="title_activity_events_scope">Режим відображення подій</string>
 
+    <string name="shortcut_notify">Повідомлення</string>
+
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Фільтр…</string>
@@ -25,8 +27,15 @@
     <string name="menu_context_event_info">Дані про подію</string>
     <string name="menu_context_hide_event">Приховати подію</string>
     <string name="menu_context_unhide_event">Повернути показ події</string>
+    <string name="menu_context_remind">Нагадати…</string>
+    <string name="menu_context_remind_1h">За 1 годину</string>
+    <string name="menu_context_remind_morning">В наступний ранок</string>
+    <string name="menu_context_anniversary_list">Усі назви ювілеїв</string>
+    <string name="menu_context_silent_event">Чи не повідомляти</string>
+    <string name="menu_context_unsilent_event">Продовжте сповіщення</string>
 
-    <string name="msg_no_access">Не вдається отримати доступ до контактів</string>
+    <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
+    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_filter">", фільтр: "</string>
     <string name="msg_before_event_prefix">"Через "</string>
@@ -40,6 +49,7 @@
     <string name="msg_stats_prefix">подій:</string>
     <string name="msg_stats_hidden_prefix">прихованих подій:</string>
     <string name="msg_label_hidden">Приховано</string>
+    <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_after_age_prefix_1">" рік"</string>
     <string name="msg_after_age_prefix_2_3_4">" роки"</string>
     <string name="msg_after_age_prefix_1_">" рік"</string>
@@ -58,11 +68,14 @@
     <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфон додатками (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
-    <string name="msg_no_access_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>
+    <string name="msg_no_access_contacts_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>
+    <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте дозволи додатку</string>
     <string name="msg_welcome_title">Ласкаво просимо!</string>
     <string name="msg_welcome_text">Дякую, що встановили цю програму. Хоча більшість функцій налаштоване максимально інформативно і мінімально набридливо, рекомендується перевірити налаштування програми. Наприклад, там можна включити повідомлення про майбутні події або задати параметри для віджетів. Приємного користування!</string>
     <string name="msg_newversion_title">"Зміни в версії %1$s:"</string>
     <string name="msg_not_implemented">Ще не реалізовано!</string>
+    <string name="msg_snoozed_until">"Відкладено до %1$s"</string>
+    <string name="msg_notify_time">"Повідомлення встановлено на %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -75,16 +88,16 @@
     <string name="hint_Description">Деталі</string>
     <string name="hint_EventIcon">Значок</string>
 
-    <string name="button_OK">OK</string>
-    <string name="button_Clear">Очистити</string>
-    <string name="button_Cancel">Відміна</string>
-    <string name="button_Rate">Оцінити</string>
-    <string name="button_Mail">Написати</string>
-    <string name="button_Open_AddresBook">Відкрити адресну книгу…</string>
-    <string name="button_Open_AppSettings">Відкрити налаштування…</string>
-    <string name="button_Open_VersionHistory">Історія версій</string>
-    <string name="button_All">Всі</string>
-    <string name="button_Snooze">Нагадати через годину</string>
+    <string name="button_ok">OK</string>
+    <string name="button_clear">Очистити</string>
+    <string name="button_cancel">Відміна</string>
+    <string name="button_rate">Оцінити</string>
+    <string name="button_mail">Написати</string>
+    <string name="button_open_addresbook">Відкрити адресну книгу…</string>
+    <string name="button_open_app_settings">Відкрити налаштування…</string>
+    <string name="button_open_version_history">Історія версій</string>
+    <string name="button_all">Всі</string>
+    <string name="button_snooze">Нагадати через годину</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -232,7 +245,8 @@
         <item>Фото контакту</item>
         <item>Посада</item>
         <item>Організація</item>
-        <item>Подробиці події</item>
+        <item>Псевдонім</item>
+        <item>Найменування події</item>
         <item>Початкове найменування події</item>
         <item>Значок вибраного</item>
         <item>Тип аккаунта і збережена дата</item>
@@ -268,6 +282,7 @@
         <item>Прізвище І.П.</item>
         <item>Ім’я По-батькові Прізвище</item>
         <item>Ім’я</item>
+        <item>Псевдонім</item>
         <item>Прізвище</item>
         <item>Дата події</item>
         <item>Нічого</item>
@@ -356,6 +371,21 @@
 
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s:</h2><ul>]]></string>
+
+    <string name="debuglog_body"><![CDATA[
+<h1>Статистика:</h1>
+<h2>Швидкість завантаження:</h2><ul>
+    <li>сканування контактів: %1$s мс
+    <li>підрахунок дат: %2$s мс
+    <li>отрисовка: %3$s мс
+</ul>
+<h2>Дані контактів:</h2><ul>
+    <li>оригінальних подій: %4$d
+    <li>посад: %5$d
+    <li>організацій: %6$d
+    <li>псевдонімів: %7$d
+</ul>
+]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
     <string name="event_type_wedding_1">Стеців</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.20 23:49
+ *  * Created by Vladimir Belov on 22.03.20 23:03
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 27.02.20 23:46
+ *  * Last modified 22.03.20 22:07
  *
  */
 
@@ -28,8 +28,18 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_0;
+import static org.vovka.birthdaycountdown.Constants.STRING_1;
+import static org.vovka.birthdaycountdown.Constants.STRING_2;
+import static org.vovka.birthdaycountdown.Constants.STRING_3;
+import static org.vovka.birthdaycountdown.Constants.STRING_4;
+import static org.vovka.birthdaycountdown.Constants.STRING_5;
+import static org.vovka.birthdaycountdown.Constants.STRING_6;
+import static org.vovka.birthdaycountdown.Constants.STRING_7;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_nickname;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
 
 class WidgetUpdater {
@@ -83,7 +93,7 @@ class WidgetUpdater {
             displayMetrics = resources.getDisplayMetrics();
             packageName = context.getPackageName();
             for (int e = 0; e < eventsCount; e++) {
-                views.setViewVisibility(resources.getIdentifier("eventInfo" + e, "id", packageName), View.GONE);
+                views.setViewVisibility(resources.getIdentifier(Constants.STRING_EVENT_INFO + e, Constants.STRING_ID, packageName), View.GONE);
             }
 
             //Получаем настройки отображения виджета
@@ -96,7 +106,7 @@ class WidgetUpdater {
 
             if (!canReadContacts) {
 
-                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access));
+                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access_contacts));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
             } else if (eventsData.isEmpty() || eventsData.dataArray.length < startingIndex) {
@@ -112,24 +122,24 @@ class WidgetUpdater {
                 fontMagnify = 1;
                 cells = getCellsForSize(Math.min(width, height));
                 //if (cells != 1) { //todo: проверить и убрать совсем
-                    if (widgetPref.size() > 1 && !widgetPref.get(1).equals("0")) {
+                    if (widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
                         switch (widgetPref.get(1)) {
-                            case "1":
+                            case STRING_1:
                                 fontMagnify = cells * 0.75;
                                 break;
-                            case "2":
+                            case STRING_2:
                                 fontMagnify = cells * 1.0;
                                 break;
-                            case "3":
+                            case STRING_3:
                                 fontMagnify = cells * 1.2;
                                 break;
-                            case "4":
+                            case STRING_4:
                                 fontMagnify = cells * 1.5;
                                 break;
-                            case "5":
+                            case STRING_5:
                                 fontMagnify = cells * 1.75;
                                 break;
-                            case "6":
+                            case STRING_6:
                                 fontMagnify = cells * 2.0;
                                 break;
                         }
@@ -167,55 +177,62 @@ class WidgetUpdater {
         try {
             String event = eventsData.dataArray[i + startingIndex - 1];
             String[] singleRowArray = event.split(Constants.STRING_2HASH);
-            if (!eventsData.checkIsHiddenEvents() || !eventsData.checkIsHiddenEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
+            if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
                 Person person = new Person(context, event);
                 int eventCell = i - eventsHidden;
                 int visibleCell = 1; //2 - top left, 3 - top center, 5 - bottom left, 7 - bottom center
 
                 //Под фото
-                int id_widget_Caption_left = resources.getIdentifier("textView" + eventCell, "id", packageName);
-                int id_widget_Caption_centered = resources.getIdentifier("textViewCentered" + eventCell, "id", packageName);
+                int id_widget_Caption_left = resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Caption_centered = resources.getIdentifier("textViewCentered" + eventCell, Constants.STRING_ID, packageName);
 
                 switch (eventsData.preferences_widgets_bottom_info) {
-                    case "1": //Фамилия Имя Отчество
+                    case STRING_1: //Фамилия Имя Отчество
                         views.setTextViewText(id_widget_Caption_left, person.getFullName());
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                         visibleCell*=2;
                         break;
-                    case "2": //Дата события
+                    case STRING_2: //Дата события
                         views.setTextViewText(id_widget_Caption_centered, singleRowArray[ContactsEvents.Position_eventDateText]);
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
                         break;
-                    case "4": //Имя Отчество Фамилия
-                        views.setTextViewText(id_widget_Caption_left, person.getFullNameAlt());
-                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                        views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                        visibleCell*=2;
-                        break;
-                    case "3": //Фамилия И.О.
+                    case STRING_3: //Фамилия И.О.
                         views.setTextViewText(id_widget_Caption_left, person.getFullNameShort());
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                         visibleCell*=2;
                         break;
-                    case "5": //Имя
+                    case STRING_4: //Имя Отчество Фамилия
+                        views.setTextViewText(id_widget_Caption_left, person.getFullNameAlt());
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
+                        visibleCell*=2;
+                        break;
+                    case STRING_5: //Имя
                         views.setTextViewText(id_widget_Caption_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
                         break;
-                    case "6": //Фамилия
+                    case STRING_6: //Фамилия
                         views.setTextViewText(id_widget_Caption_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell*=3;
+                        break;
+                    case STRING_7: //Псевдоним (Имя)
+                        views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
+                                eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
                         break;
                     case "99": //Ничего
                     default:
-                        views.setTextViewText(id_widget_Caption_left, "");
+                        views.setTextViewText(id_widget_Caption_left, STRING_EMPTY);
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                         break;
@@ -225,49 +242,56 @@ class WidgetUpdater {
                 views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify)); //todo: убрать размер в ресурсы
 
                 //Под фото (верхний ряд)
-                int id_widget_Caption2nd_left = resources.getIdentifier("textView2nd" + eventCell, "id", packageName);
-                int id_widget_Caption2nd_centered = resources.getIdentifier("textView2ndCentered" + eventCell, "id", packageName);
+                int id_widget_Caption2nd_left = resources.getIdentifier("textView2nd" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Caption2nd_centered = resources.getIdentifier("textView2ndCentered" + eventCell, Constants.STRING_ID, packageName);
 
                 switch (eventsData.preferences_widgets_bottom_info_2nd) {
-                    case "1": //Фамилия Имя Отчество
+                    case STRING_1: //Фамилия Имя Отчество
                         views.setTextViewText(id_widget_Caption2nd_left, person.getFullName());
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
                         visibleCell*=5;
                         break;
-                    case "2": //Дата события
+                    case STRING_2: //Дата события
                         views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[ContactsEvents.Position_eventDateText]);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
                         break;
-                    case "4": //Имя Отчество Фамилия
-                        views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameAlt());
-                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                        views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                        visibleCell*=5;
-                        break;
-                    case "3": //Фамилия И.О.
+                    case STRING_3: //Фамилия И.О.
                         views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameShort());
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
                         visibleCell*=5;
                         break;
-                    case "5": //Имя
+                    case STRING_4: //Имя Отчество Фамилия
+                        views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameAlt());
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                        visibleCell*=5;
+                        break;
+                    case STRING_5: //Имя
                         views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
                         break;
-                    case "6": //Фамилия
+                    case STRING_6: //Фамилия
                         views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell*=7;
+                        break;
+                    case STRING_7: //Псевдоним (Имя)
+                        views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
+                                eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
                         break;
                     case "99": //Ничего
                     default:
-                        views.setTextViewText(id_widget_Caption2nd_left, "");
+                        views.setTextViewText(id_widget_Caption2nd_left, STRING_EMPTY);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
                         break;
@@ -278,9 +302,9 @@ class WidgetUpdater {
 
                 //Фото
                 // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
-                int id_widget_Photo = resources.getIdentifier("imageView" + eventCell, "id", packageName);
+                int id_widget_Photo = resources.getIdentifier("imageView" + eventCell, Constants.STRING_ID, packageName);
 
-                Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains("1"), true);
+                Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(STRING_1), true);
                 if (photo != null) {
                     if (cells == 1) {
                         views.setImageViewBitmap(id_widget_Photo, photo);
@@ -294,10 +318,10 @@ class WidgetUpdater {
                 //views.setInt(id_widget_Photo, "setBackgroundResource", R.drawable.selection_rectangle); //не работает
 
                 //Определяем иконку события
-                int id_widget_EventIcon = resources.getIdentifier("iconEventType" + eventCell, "id", packageName);
-                int id_widget_Age = resources.getIdentifier("textViewAge" + eventCell, "id", packageName);
+                int id_widget_EventIcon = resources.getIdentifier("iconEventType" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Age = resources.getIdentifier("textViewAge" + eventCell, Constants.STRING_ID, packageName);
 
-                if (eventsData.preferences_widgets_event_info.contains("2")) {
+                if (eventsData.preferences_widgets_event_info.contains(STRING_2)) {
 
                     int eventIcon;
                     try {
@@ -347,14 +371,14 @@ class WidgetUpdater {
                 } else if (person.Age > -1) {
                     views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
                 } else {
-                    views.setTextViewText(id_widget_Age, "");
+                    views.setTextViewText(id_widget_Age, STRING_EMPTY);
                 }
 
-                views.setTextColor(resources.getIdentifier("textView" + eventCell, "id", packageName), colorDefault);
+                views.setTextColor(resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName), colorDefault);
                 //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
 
                 //Сколько осталось до события
-                int idViewDistance = resources.getIdentifier("textViewDistance" + eventCell, "id", packageName);
+                int idViewDistance = resources.getIdentifier("textViewDistance" + eventCell, Constants.STRING_ID, packageName);
 
                 String eventDistance = singleRowArray[ContactsEvents.Position_eventDistance];
                 int eventDistance_Days;
@@ -378,7 +402,7 @@ class WidgetUpdater {
                             views.setTextColor(id_widget_Caption2nd_centered, colorEventToday);
                         }
                     }
-                    views.setTextViewText(idViewDistance, "");
+                    views.setTextViewText(idViewDistance, STRING_EMPTY);
 
                 } else if (1 <= eventDistance_Days && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
 
@@ -396,8 +420,8 @@ class WidgetUpdater {
                 }
 
                 //Иконка фаворита
-                int id_widget_FavIcon = resources.getIdentifier("iconFav" + eventCell, "id", packageName);
-                views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains("3") && singleRowArray[Position_starred].equals("1") ? View.VISIBLE : View.GONE);
+                int id_widget_FavIcon = resources.getIdentifier("iconFav" + eventCell, Constants.STRING_ID, packageName);
+                views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains(STRING_3) && singleRowArray[Position_starred].equals(STRING_1) ? View.VISIBLE : View.GONE);
 
                 //Если не последнее событие - по нажатию на фото открываем карточку контакта
                 if (eventsToShow > 1 && eventCell < (eventsToShow - 1)) {
@@ -405,22 +429,22 @@ class WidgetUpdater {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contact_id]);
                     intent.setData(uri);
-                    views.setOnClickPendingIntent(resources.getIdentifier("eventInfo" + eventCell, "id", packageName), PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                    views.setOnClickPendingIntent(resources.getIdentifier(Constants.STRING_EVENT_INFO + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 
                 } else {
 
                     Intent intent = new Intent(context, WidgetConfigureActivity.class);
                     intent.setAction(Constants.ACTION_LAUNCH);
                     intent.putExtra("appWidgetId", widgetId);
-                    if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textViewCentered" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2nd" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2ndCentered" + eventCell, "id", packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textViewCentered" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2nd" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2ndCentered" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
 
                 }
 
                 //Показываем событие
-                views.setViewVisibility(resources.getIdentifier("eventInfo" + eventCell, "id", packageName), View.VISIBLE);
+                views.setViewVisibility(resources.getIdentifier(Constants.STRING_EVENT_INFO + eventCell, Constants.STRING_ID, packageName), View.VISIBLE);
 
             } else
                 return eventsHidden + 1;

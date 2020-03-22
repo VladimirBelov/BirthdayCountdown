@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 19.03.20 19:23
   ~  */
   -->
 
@@ -12,9 +12,8 @@
 
     <color name="dark_red">#bb0000</color>
     <color name="red">#ff0000</color>
-
+    <color name="brown">#873A07</color>
     <color name="yellow">#FFEE00</color>
-
     <color name="green">#2ED70E</color>
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#1B5E20</color>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 18.03.20 23:08
   ~  */
   -->
 
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:onClick="buttonCancelOnClick"
-                android:text="@string/button_Cancel"
+                android:text="@string/button_cancel"
                 android:textColor="?attr/colorPrimary"
                 tools:ignore="ButtonStyle" />
 
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:onClick="buttonOkOnClick"
-                android:text="@string/button_OK"
+                android:text="@string/button_ok"
                 android:textColor="?attr/colorPrimary"
                 tools:ignore="ButtonStyle" />
 

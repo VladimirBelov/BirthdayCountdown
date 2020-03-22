@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:39
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.8</item>
+        <item>Добавлена поддержка уведомлений с мелодией из внешнего хранилища. Необходимо дать разрешение на доступ</item>
+        <item>Добавлена возможность отключить уведомление об отдельном событии</item>
+        <item>Добавлено отображение псевдонимов</item>
+        <item>Обновление контекстного меню события: поставить напоминание о событии, список всех именных свадеб</item>
+        <item>Добавлен ярлык приложения для повторного вызова уведомлений (Android 7.1+)</item>
 
         <item>#1.4.7</item>
         <item>Переделан масштабируемый виджет: теперь все события должны помещаться ровно на всю ширину виджета</item>

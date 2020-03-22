@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:56
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.8</item>
+        <item>Added support for notifications with a melody from external storage. You must give permission to access</item>
+        <item>Added ability to disable notification of an individual event</item>
+        <item>Added contact nicknames support</item>
+        <item>Additions to event context menu: set event reminder, a list of all named weddings</item>
+        <item>Added application shortcut for notifications recall (Android 7.1+)</item>
 
         <item>#1.4.7</item>
         <item>Scalable widget update: now all events should fit exactly the entire width of the widget</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:45
   ~  */
   -->
 
@@ -182,6 +182,15 @@
                     android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
+                <ListPreference
+                    android:defaultValue="@string/pref_List_SadPhoto_default"
+                    android:entries="@array/pref_List_SadPhoto_entries"
+                    android:entryValues="@array/pref_List_SadPhoto_values"
+                    android:key="@string/pref_List_SadPhoto_key"
+                    android:summary="@string/pref_List_SadPhoto_description"
+                    android:title="@string/pref_List_SadPhoto_title"
+                    android:dialogIcon="@android:drawable/ic_menu_crop"/>
+
             </PreferenceCategory>
 
             <PreferenceCategory
@@ -336,16 +345,6 @@
 
         </PreferenceScreen>
 
-        <ListPreference
-            android:defaultValue="@string/pref_List_SadPhoto_default"
-            android:entries="@array/pref_List_SadPhoto_entries"
-            android:entryValues="@array/pref_List_SadPhoto_values"
-            android:key="@string/pref_List_SadPhoto_key"
-            android:summary="@string/pref_List_SadPhoto_description"
-            android:title="@string/pref_List_SadPhoto_title"
-            android:icon="@android:drawable/ic_menu_crop"
-            android:dialogIcon="@android:drawable/ic_menu_crop"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -492,16 +491,16 @@
             android:icon="@android:drawable/ic_menu_today"
             android:dialogIcon="@android:drawable/ic_menu_today"/>
 
+        <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
         <RingtonePreference
             android:key="@string/pref_Notifications_Ringtone_key"
-            android:ringtoneType="notification"
+            android:ringtoneType="notification|ringtone"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_description"
             android:showSilent="false"
             android:showDefault="true"
             android:defaultValue="content://settings/system/notification_sound"
-            android:icon="@drawable/ic_ringtone"
-            android:dialogIcon="@drawable/ic_ringtone"/>
+            android:icon="@android:drawable/ic_menu_more"/>
 
         <Preference
             android:id="@+id/pref_NotifyTest"

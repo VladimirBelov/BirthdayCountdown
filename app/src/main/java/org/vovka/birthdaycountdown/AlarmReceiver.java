@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.20 23:49
+ *  * Created by Vladimir Belov on 22.03.20 23:03
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 27.02.20 23:46
+ *  * Last modified 18.03.20 23:08
  *
  */
 
@@ -53,7 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 //https://stackoverflow.com/questions/5746582/implementing-snooze-in-android-notifications
                 //https://stackoverflow.com/questions/44232699/specific-snooze-functionality-in-notification-button
-                eventsData.snoozeNotification(notificationData);
+                eventsData.snoozeNotification(notificationData, 1, null);
 
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 

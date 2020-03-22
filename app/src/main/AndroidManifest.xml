@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.02.20 22:05
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.02.20 23:25
+  ~  * Last modified 22.03.20 21:34
   ~  */
   -->
 
@@ -15,17 +15,19 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />  <!-- без этого на Android 8+ виджеты не обновляются https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- для проигрывания уведомлений из внешнего хранилища https://stackoverflow.com/questions/54120745/android-9-0-notificationmanager-notify-throwing-java-lang-securityexception -->
     <supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
     <application
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher_snowflake"
-        android:roundIcon="@drawable/ic_launcher_snowflake"
+        android:icon="@drawable/ic_launcher_spring"
+        android:roundIcon="@drawable/ic_launcher_spring"
         android:supportsRtl="false"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
         android:fullBackupContent="true"
         >
+        <!--todo: добавить шоткаты https://developer.android.com/guide/topics/ui/shortcuts https://habr.com/ru/post/335480/ -->
 
         <!--Activities-->
         <activity
@@ -38,6 +40,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
 
         <activity
@@ -61,6 +65,14 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
+        <!--https://developer.android.com/guide/topics/ui/shortcuts https://habr.com/ru/post/335480/-->
+        <activity android:name=".NotifyActivity"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:parentActivityName=".MainActivity"
+            />
 
         <!--Receivers-->
         <receiver

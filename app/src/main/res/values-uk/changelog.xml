@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:55
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.8</item>
+        <item>Додана підтримка повідомлень з мелодією з зовнішнього сховища. Необхідно дати дозвіл на доступ</item>
+        <item>Додана можливість відключити повідомлення про окремий подію</item>
+        <item>Додано відображення псевдонімів</item>
+        <item>Оновлення контекстного меню події: поставити нагадування про подію, список всіх іменних весіль</item>
+        <item>Доданий ярлик програми для повторного виклику повідомлень (Android 7.1+)</item>
 
         <item>#1.4.7</item>
         <item>Перероблений масштабований віджет: тепер всі події повинні міститися рівно на всю ширину віджету</item>

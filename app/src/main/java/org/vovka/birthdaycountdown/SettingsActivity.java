@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.20 23:49
+ *  * Created by Vladimir Belov on 22.03.20 23:03
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 27.02.20 23:46
+ *  * Last modified 22.03.20 22:12
  *
  */
 
@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     private String testChannelId = Constants.STRING_EMPTY;
     private TypedArray ta;
+    private ContactsEvents eventsData;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -71,7 +73,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             super.onCreate(savedInstanceState);
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.setLocale(true);
 
@@ -92,7 +94,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             //Toast.makeText(this, "locale=" + locale.toString() + ", pref=" + eventsData.preferences_language, Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, getString(R.string.button_Cancel), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, getString(R.string.button_cancel), Toast.LENGTH_LONG).show();
             addPreferencesFromResource(R.xml.settings);
 
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -120,6 +122,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
                 bar.setTitle(R.string.window_settings);
             }
+
+            Preference notificationSoundPref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
+            notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                eventsData.getPreferences();
+                //Toast.makeText(this, eventsData.preferences_notifications_ringtone, Toast.LENGTH_LONG).show();
+                if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                        builder.setTitle(getString(R.string.msg_no_access_contacts));
+                        builder.setIcon(android.R.drawable.ic_menu_info_details);
+                        builder.setMessage(getString(R.string.msg_no_access_storage_hint));
+                        builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                        builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) ->
+                                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName()))));
+                        AlertDialog alertToShow = builder.create();
+                        alertToShow.setOnShowListener(arg0 -> {
+                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        });
+                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertToShow.show();
+
+                    } else {
+
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                    }
+
+                }
+                return true;
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,7 +217,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
 
-                showAnniversaryList();
+                eventsData.showAnniversaryList(this);
+                return true;
 
             }
 
@@ -231,6 +268,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
+        //Toast.makeText(this, key, Toast.LENGTH_LONG).show();
         if (getString(R.string.pref_Language_key).equals(key)) {
 
             eventsData.getPreferences();
@@ -243,17 +281,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             this.recreate();
 
         }
-        //Toast.makeText(this, key, Toast.LENGTH_LONG).show();
+        /* bug. так не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
+        else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
+        }*/
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        //todo: наверное, убрать - не работает тут: https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == Constants.MY_PERMISSIONS_REQUEST__GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            //todo: наверное, убрать - не работает тут: https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectAccounts();
             }
@@ -372,7 +412,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
                         .setAdapter(adapter, null)
-                        .setPositiveButton(R.string.button_OK, (dialog, which) -> {
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
                             //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
                             SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
@@ -387,8 +427,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             eventsData.setPreferences();
 
                         })
-                        .setNegativeButton(R.string.button_Cancel, (dialog, which) -> dialog.cancel())
-                        .setNeutralButton(R.string.button_All, (dialog, which) -> {
+                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                        .setNeutralButton(R.string.button_all, (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
                             eventsData.setPreferences();
                         })
@@ -421,7 +461,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
                         .setMessage(R.string.msg_no_accounts_hint)
-                        .setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel())
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel())
                         .setCancelable(true);
 
                 AlertDialog alertToShow = builder.create();
@@ -447,39 +487,5 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private void showAnniversaryList() {
 
-        try {
-
-            ArrayList<String> items = new ArrayList<>();
-            Resources applicationRes = getBaseContext().getResources();
-            for(int i = 1; i <= 100; i++) {
-                String anCaption;
-                try {
-                    anCaption = this.getString(applicationRes.getIdentifier("event_type_wedding_" + i, "string", this.getPackageName()));
-                } catch (Resources.NotFoundException nfe) {
-                    anCaption = null;
-                }
-                if (anCaption != null && !anCaption.equals(Constants.STRING_EMPTY)) items.add(i + Constants.STRING_COLON_SPACE + anCaption);
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                    .setTitle(R.string.pref_CustomEvents_Anniversary_List_description)
-                    .setIcon(R.drawable.ic_event_wedding)
-                    .setItems(items.toArray(new CharSequence[0]), null)
-                    .setPositiveButton(R.string.button_OK, (dialog, which) -> dialog.cancel())
-                    .setCancelable(true);
-
-            AlertDialog alertToShow = builder.create();
-
-            alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
-
-            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            alertToShow.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, Constants.SHOW_ANNIVERSARY_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
 }

@@ -3,24 +3,29 @@ Permission android.permission.READ_CONTACTS is required to obtain data from the 
 Permission android.permission.WAKE_LOCK (prevent device from sleeping) is necessary to automatically update widgets on Android 8+.
 Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notification.
 Permission android.permission.GET_ACCOUNTS is required to obtain data about user accounts. Information is not copied anywhere and does not change in any way.
+Permission android.permission.READ_EXTERNAL_STORAGE is necessary for playing notifications with a melody from external storage.
 
 RU:
 Разрешение android.permission.READ_CONTACTS необходимо для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.WAKE_LOCK (prevent device from sleeping) необходимо для автоматического обновления виджетов на Android 8+.
 Разрешение android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необходимо для корректировки времени появления уведомления о предстоящих событиях.
 Разрешение android.permission.GET_ACCOUNTS необходимо для получения данных о пользовательских учётных записях Android. Информация больше никуда не копируется и никак не изменяется.
+Разрешение android.permission.READ_EXTERNAL_STORAGE необходимо для проигрывания уведомлений с мелодией из внешнего хранилища.
 
 DE:
 Die Berechtigungen android.permission.READ_CONTACTS und android.permission.GET_ACCOUNTS sind erforderlich, um Daten aus dem Android-Adressbuch abzurufen. Informationen werden nirgendwo kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.WAKE_LOCK (Standby-Modus des Geräts verhindern) ist erforderlich, um Widgets unter Android 8+ automatisch zu aktualisieren.
 Die Berechtigung android.permission.RECEIVE_BOOT_COMPLETED (wird beim Start ausgeführt) ist erforderlich, um den Zeitpunkt der Benachrichtigung über bevorstehende Ereignisse anzupassen.
+Die Berechtigung android.permission.READ_EXTERNAL_STORAGE ist erforderlich, um Benachrichtigungen mit einer Melodie aus einem externen Speicher abzuspielen.
 
 UKR:
 Для отримання даних з адресної книги Android потрібно дозволу android.permission.READ_CONTACTS та android.permission.GET_ACCOUNTS. Інформація нікуди не копіюється і жодним чином не змінюється.
 Дозвіл android.permission.WAKE_LOCK (prevent device from sleeping) необхідно для автоматичного оновлення віджетів на Android 8+.
 Дозвіл android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необхідно для коригування часу появи повідомлення про майбутні події.
+Дозвіл android.permission.READ_EXTERNAL_STORAGE необхідно для програвання повідомлень з мелодією з зовнішнього сховища.
 
 CN:
 从Android通讯录获取数据需要android.permission.READ_CONTACTS和android.permission.GET_ACCOUNTS权限。 信息不会被复制到任何地方，并且不会以任何方式改变。
 必须具有权限android.permission.WAKE_LOCK（防止设备进入休眠状态），才能在Android 8+上自动更新小部件。
 权限android.permission.RECEIVE_BOOT_COMPLETED（在启动时运行）对于调整即将发生的事件的通知时间是必需的。
+播放来自外部存储器的带有旋律的通知时，需要android.permission.READ_EXTERNAL_STORAGE权限。

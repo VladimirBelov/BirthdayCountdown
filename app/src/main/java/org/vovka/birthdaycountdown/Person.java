@@ -1,16 +1,17 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.20 23:49
+ *  * Created by Vladimir Belov on 22.03.20 23:03
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 27.02.20 23:46
+ *  * Last modified 18.03.20 23:08
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import java.util.regex.Pattern;
 

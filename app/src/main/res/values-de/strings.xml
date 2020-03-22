@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.20 23:49
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.02.20 23:46
+  ~  * Last modified 22.03.20 22:12
   ~  */
   -->
 
@@ -15,6 +15,8 @@
     <string name="title_activity_search">Filter</string>
     <string name="title_activity_events_scope">Ereignisanzeigemodus</string>
 
+    <string name="shortcut_notify">Benachrichtigungen</string>
+
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
     <string name="menu_search">Filtern…</string>
@@ -25,8 +27,15 @@
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
     <string name="menu_context_unhide_event">Ereignisanzeige zurückgeben</string>
+    <string name="menu_context_remind">Zu erinnern…</string>
+    <string name="menu_context_remind_1h">In einer Stunde</string>
+    <string name="menu_context_remind_morning">Am nächsten Morgen</string>
+    <string name="menu_context_anniversary_list">Alle Hochzeitstage</string>
+    <string name="menu_context_silent_event">Nicht benachrichtigen</string>
+    <string name="menu_context_unsilent_event">Benachrichtigung fortsetzen</string>
 
-    <string name="msg_no_access">Kein Zugriff auf Kontakte</string>
+    <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
+    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>
     <string name="msg_no_events">Keine Termine gefunden</string>
     <string name="msg_filter">", filter: "</string>
     <string name="msg_before_event_prefix">"In "</string>
@@ -40,6 +49,7 @@
     <string name="msg_stats_prefix">Ereignisse:</string>
     <string name="msg_stats_hidden_prefix">versteckte Ereignisse:</string>
     <string name="msg_label_hidden">Versteckt</string>
+    <string name="msg_label_silenced">Ohne Vorankündigung</string>
     <string name="msg_after_age_prefix_1">" Jahr"</string>
     <string name="msg_after_age_prefix_2_3_4">" Jahre"</string>
     <string name="msg_after_age_prefix_1_">" Jahre"</string>
@@ -58,11 +68,14 @@
     <string name="msg_no_events_hint">In Ihrem Adressbuch wurden keine Ereignisse gefunden. Um Ereignisse (Geburtstage, Jahrestage, Namenstage) anzuzeigen, müssen diese in die Karten Ihrer Kontakte eingetragen oder von auf Ihrem Smartphone installierten Anwendungen (Google, Skype, VK, …) importiert werden.</string>
     <string name="msg_no_accounts_hint">"Es wurden keine Konten gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_events_check_prefs">"Keine Ereignisse gefunden. Überprüfen Sie die Punkte \"%1$s\" und \"%2$s\" in den Programmeinstellungen"</string>
-    <string name="msg_no_access_hint">Kein Zugriff auf Kontakte. Überprüfen Sie die Anwendungsberechtigungen</string>
+    <string name="msg_no_access_contacts_hint">Kein Zugriff auf Kontakte. Überprüfen Sie die Anwendungsberechtigungen</string>
+    <string name="msg_no_access_storage_hint">Kein Zugriff auf externen Speicher. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_welcome_title">Willkommen!</string>
     <string name="msg_welcome_text">Vielen Dank, dass Sie dieses Programm installiert haben. Obwohl die meisten Funktionen so informativ und minimal ärgerlich wie möglich konfiguriert sind, wird empfohlen, die Anwendungseinstellungen zu überprüfen. Dort können Sie beispielsweise Benachrichtigungen über bevorstehende Ereignisse aktivieren oder Parameter für Widgets festlegen. Viel Spaß beim Gebrauch!</string>
     <string name="msg_newversion_title">"Änderungen in der Version %1$s:"</string>
     <string name="msg_not_implemented">Noch nicht implementiert!</string>
+    <string name="msg_snoozed_until">"Bis zum %1$s geschlafen"</string>
+    <string name="msg_notify_time">"Die Kündigung erfolgt um %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -75,16 +88,16 @@
     <string name="hint_Description">Einzelheiten</string>
     <string name="hint_EventIcon">Icon</string>
 
-    <string name="button_OK">OK</string>
-    <string name="button_Clear">Klar</string>
-    <string name="button_Cancel">Abbrechen</string>
-    <string name="button_Rate">Bewerten</string>
-    <string name="button_Mail">Schreiben</string>
-    <string name="button_Open_AddresBook">Adressbuch öffnen…</string>
-    <string name="button_Open_AppSettings">Einstellungen öffnen…</string>
-    <string name="button_Open_VersionHistory">Versionsverlauf</string>
-    <string name="button_All">Alle</string>
-    <string name="button_Snooze">Verschieben</string>
+    <string name="button_ok">OK</string>
+    <string name="button_clear">Klar</string>
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_rate">Bewerten</string>
+    <string name="button_mail">Schreiben</string>
+    <string name="button_open_addresbook">Adressbuch öffnen…</string>
+    <string name="button_open_app_settings">Einstellungen öffnen…</string>
+    <string name="button_open_version_history">Versionsverlauf</string>
+    <string name="button_all">Alle</string>
+    <string name="button_snooze">Verschieben</string>
 
     <string name="events_scope_not_hidden">Alles aufgedeckt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -232,7 +245,8 @@
         <item>Kontaktfoto</item>
         <item>Position</item>
         <item>Organisation</item>
-        <item>Ereignisdetails</item>
+        <item>Pseudonym</item>
+        <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
         <item>Favoritensymbol</item>
         <item>Kontotyp und Speicherdatum</item>
@@ -268,6 +282,7 @@
         <item>Nachname und Initialen</item>
         <item>Name Patronymischer Nachname</item>
         <item>Name</item>
+        <item>Pseudonym</item>
         <item>Nachname</item>
         <item>Datum der Ereignis</item>
         <item>Nichts</item>
@@ -356,6 +371,21 @@
 
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
+
+    <string name="debuglog_body"><![CDATA[
+<h1>Statistik:</h1>
+<h2>Download-Geschwindigkeit:</h2><ul>
+    <li>Kontaktscan: %1$s msec
+    <li>Datumsanzahl: %2$s msec
+    <li>Rendering: %3$s msec
+</ul>
+<h2>Kontaktdaten:</h2><ul>
+    <li>ursprüngliche Ereignisse: %4$d
+    <li>Beiträge: %5$d
+    <li>Organisationen: %6$d
+    <li>Aliase: %7$d
+</ul>
+]]></string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
     <string name="event_type_wedding_1">Papierne</string>

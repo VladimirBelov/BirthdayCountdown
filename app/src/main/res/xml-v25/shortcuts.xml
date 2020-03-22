@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 22.03.20 22:47
+  ~  */
+  -->
+
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="Notify"
+        android:enabled="true"
+        android:icon="@drawable/ic_event_custom2"
+        android:shortcutShortLabel="@string/shortcut_notify" >
+
+        <intent android:action="android.intent.action.VIEW"
+                android:targetPackage="org.vovka.birthdaycountdown"
+                android:targetClass="org.vovka.birthdaycountdown.NotifyActivity" />
+    </shortcut>
+</shortcuts>

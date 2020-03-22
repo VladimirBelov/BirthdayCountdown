@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.20 23:49
+ *  * Created by Vladimir Belov on 22.03.20 23:03
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 27.02.20 23:46
+ *  * Last modified 18.03.20 23:11
  *
  */
 
@@ -83,8 +83,8 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
             }
 
-            SimpleDateFormat formater = new SimpleDateFormat("dd MMM yyyy HH:mm", resources.getConfiguration().locale);
-            formater.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", resources.getConfiguration().locale);
+            formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
             //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
             //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
@@ -96,7 +96,7 @@ public class AboutActivity extends AppCompatActivity {
                     STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
                     "<br>&nbsp;"      +
                     STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
-                    STRING_DIALOG_TAB + "built: " + formater.format(BuildConfig.BUILD_TIME)
+                    STRING_DIALOG_TAB + "built: " + formatter.format(BuildConfig.BUILD_TIME)
             , 0));
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
@@ -107,18 +107,22 @@ public class AboutActivity extends AppCompatActivity {
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
             //Debug information
-            /*if (eventsData.preferences_debug_on) {
+            if (eventsData.preferences_debug_on) {
 
                 sb.append(getString(R.string.debuglog_body,
-                        String.valueOf(Math.round(eventsData.statGetContacts * 100.0) / 100.0),
-                        String.valueOf(Math.round(eventsData.statComputeDates * 100.0) / 100.0),
-                        String.valueOf(Math.round(eventsData.statDrawList * 100.0) / 100.0),
-                        String.valueOf(resources.getDisplayMetrics().heightPixels),
+                        String.valueOf(Math.round(eventsData.statTimeGetContacts)),
+                        String.valueOf(Math.round(eventsData.statTimeComputeDates)),
+                        String.valueOf(Math.round(eventsData.statTimeDrawList)),
+                        eventsData.statAllEvents,
+                        eventsData.statAllTitles,
+                        eventsData.statAllOrganizations,
+                        eventsData.statAllNicknames
+                        /*String.valueOf(resources.getDisplayMetrics().heightPixels),
                         String.valueOf(resources.getDisplayMetrics().widthPixels),
-                        String.valueOf(resources.getDisplayMetrics().density)
+                        String.valueOf(resources.getDisplayMetrics().density)*/
                 ));
 
-            }*/
+            }
 
             //Change log
             String[] arrChangeLog = resources.getStringArray(R.array.changelog);
