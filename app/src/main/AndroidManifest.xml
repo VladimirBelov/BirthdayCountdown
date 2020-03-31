@@ -25,9 +25,7 @@
         android:supportsRtl="false"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
-        android:fullBackupContent="true"
-        >
-        <!--todo: добавить шоткаты https://developer.android.com/guide/topics/ui/shortcuts https://habr.com/ru/post/335480/ -->
+        android:fullBackupContent="true">
 
         <!--Activities-->
         <activity
@@ -40,7 +38,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
 
@@ -60,6 +57,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".AboutActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
@@ -71,8 +69,7 @@
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.NoDisplay"
-            android:parentActivityName=".MainActivity"
-            />
+            android:parentActivityName=".MainActivity" />
 
         <!--Receivers-->
         <receiver
@@ -86,12 +83,14 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".DeviceBootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".AlarmReceiver" />
 
         <!--Widgets-->
@@ -104,7 +103,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget5x1_info"/>
+                android:resource="@xml/widget5x1_info" />
         </receiver>
 
         <receiver

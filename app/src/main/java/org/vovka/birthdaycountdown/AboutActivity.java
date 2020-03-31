@@ -31,8 +31,13 @@ import androidx.core.text.HtmlCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
+import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
+import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
@@ -83,7 +88,7 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
             }
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", resources.getConfiguration().locale);
+            SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
             //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
@@ -110,8 +115,8 @@ public class AboutActivity extends AppCompatActivity {
             if (eventsData.preferences_debug_on) {
 
                 sb.append(getString(R.string.debuglog_body,
-                        String.valueOf(Math.round(eventsData.statTimeGetContacts)),
-                        String.valueOf(Math.round(eventsData.statTimeComputeDates)),
+                        eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContacts)), eventsData.statTimeGetContacts > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
+                        eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
                         String.valueOf(Math.round(eventsData.statTimeDrawList)),
                         eventsData.statAllEvents,
                         eventsData.statAllTitles,
@@ -122,6 +127,10 @@ public class AboutActivity extends AppCompatActivity {
                         String.valueOf(resources.getDisplayMetrics().density)*/
                 ));
 
+                for(Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
+                    sb.append(Constants.HTML_LI).append(entry.getKey()).append(STRING_COLON_SPACE).append(entry.getValue());
+                }
+                sb.append(Constants.HTML_UL_END);
             }
 
             //Change log
@@ -135,16 +144,16 @@ public class AboutActivity extends AppCompatActivity {
                     countRows++;
                     if (strChange.charAt(0) == '#') {
 
-                        if (countRows > 1) sb.append("</ul>");
+                        if (countRows > 1) sb.append(Constants.HTML_UL_END);
                         sb.append(getString(R.string.changelog_release_title, strChange.substring(1)));
 
                     } else {
 
-                        sb.append("<li>").append(strChange).append("</li>");
+                        sb.append(Constants.HTML_LI).append(strChange);
 
                     }
                 }
-                if (countRows > 0) sb.append("</ul>");
+                if (countRows > 0) sb.append(Constants.HTML_UL_END);
 
             }
 

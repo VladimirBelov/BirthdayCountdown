@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 
 import java.util.regex.Pattern;
 
+import static android.text.TextUtils.isEmpty;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
@@ -74,9 +75,9 @@ class Person {
 
         try{
             if (!LastName.equals(STRING_EMPTY)) {
-                return LastName + (!FirstName.equals(STRING_EMPTY) ? STRING_SPACE + FirstName : STRING_EMPTY) + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY);
-            } else if (!FirstName.equals(STRING_EMPTY)) {
-                return FirstName + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY);
+                return LastName + (!isEmpty(FirstName) ? STRING_SPACE + FirstName : STRING_EMPTY) + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
+            } else if (!isEmpty(FirstName)) {
+                return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
             } else {
                 return STRING_EMPTY;
             }
@@ -91,8 +92,8 @@ class Person {
     String getFullNameAlt () { //Имя Отчество Фамилия
 
         try{
-            if (!FirstName.equals(STRING_EMPTY)) {
-                return FirstName + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName : STRING_EMPTY) + (!LastName.equals(STRING_EMPTY) ? STRING_SPACE + LastName : STRING_EMPTY);
+            if (!isEmpty(FirstName)) {
+                return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY) + (!isEmpty(LastName) ? STRING_SPACE + LastName : STRING_EMPTY);
             } else {
                 return LastName;
             }
@@ -104,32 +105,9 @@ class Person {
 
     }
 
+    /*
     String getFullNameShort () { //Фамилия И. О.
-
-        /*
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
-
-        // Fetch contact name with a specific ID
-        Cursor nameFIO = contentResolver.query(
-                ContactsContract.Data.CONTENT_URI,
-                null,
-                ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = " + contactID,
-                new String[] {ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE},
-                null
-        );
-        while (nameFIO.moveToNext()) {
-            String given = nameFIO.getString(cache.getColumnIndex(nameFIO, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-            String family = nameFIO.getString(cache.getColumnIndex(nameFIO, ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-            String display = nameFIO.getString(cache.getColumnIndex(nameFIO, ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
-            //Toast.makeText(this, "Name: " + given + " Family: " +  family + " Displayname: "  + display, Toast.LENGTH_LONG).show();
-            if (family != null) {
-                userData.put(dataMap.get("lastName"), family);
-                break;
-            }
-        }
-        nameFIO.close();
-        */
-
         try {
             if (!LastName.equals(STRING_EMPTY)) {
                 return LastName + (!FirstName.equals(STRING_EMPTY) ? STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY) + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
@@ -143,8 +121,8 @@ class Person {
             Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_SHORT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             return STRING_EMPTY;
         }
-
     }
+    */
 
     int getGender() { //Определение пола по фамилии, имени, отчеству
         // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён

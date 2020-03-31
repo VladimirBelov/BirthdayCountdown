@@ -62,8 +62,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.text.TextUtils.isEmpty;
 import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener = () -> {
                 //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
                 boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-                if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
+                if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
                     if (eventsData.getContactsEvents(this)) {
                         eventsData.computeDates();
                         drawList();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
                         //Сообщение для тех, у кого не заведено ни одного события
-                        if (!triggeredMsgNoEvents && eventsData.isEmpty()) {
+                        if (!triggeredMsgNoEvents && eventsData.isEmptyArray()) {
 
                             boolean isTypesOn = false;
                             for (boolean t : eventsData.event_types_on)
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
             //Доступы
-            if (checkAndShowNoAccessHint()) return;
+            if (isNoAccessToContacts()) return;
 
             //Уведомления
             initNotifications();
@@ -235,7 +235,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             registerForContextMenu(findViewById(R.id.mainListView));
 
             //Приветственное сообщение или описание новой версии
-            showWelcomeScreen();
+            //todo: кажется, welcome screen не покажется никогда
+            if (!triggeredMsgNoEvents) showWelcomeScreen();
 
             //todo: сделать разные иконки приложения https://github.com/guardianproject/CameraV/commit/98d8c545c1901d03d9d238204bb45d502a623e59#diff-7ab4bf3d594a968a90e0250af33fcb9bR399
             // https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
@@ -326,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     alertToShow.show();
 
+                    //todo: сделать очистку "мусора" в настройках о прежних виджетах
                     setLastRunVersion();
                     break;
 
@@ -364,7 +366,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             final String pref_LastRunVersion = preferences.getString(getString(R.string.pref_VersionCode_LastRun), STRING_EMPTY);
-            if (STRING_EMPTY.equals(pref_LastRunVersion)) {//если нет сохранённой версии, но настройки меняли - это не первый запуск
+            if (STRING_EMPTY.equals(pref_LastRunVersion)) {
+                /*
+                //если нет сохранённой версии, но настройки меняли - это не первый запуск
                 if (!eventsData.preferences_list_prev_events.equals(getString(R.string.pref_List_PrevEvents_default)) ||
                         !eventsData.preferences_language.equals(getString(R.string.pref_Language_default)) ||
                         eventsData.preferences_notifications_days != Integer.parseInt(getString(R.string.pref_Notifications_Days_default)) ||
@@ -373,9 +377,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         !eventsData.getPreferences_Accounts().isEmpty()
                 ) {
                     return +1;
-                } else {
+                } else {*/
                     return 0;
-                }
+                //}
             } else if (Integer.toString(BuildConfig.VERSION_CODE).equals(pref_LastRunVersion)) {
                 return -1;
             }
@@ -388,33 +392,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean checkAndShowNoAccessHint() {
+    private boolean isNoAccessToContacts() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             //https://developer.android.com/training/permissions/requesting.html#java
             swipeRefresh.setEnabled(false);
-            setHint(setHTMLColor(getString(R.string.msg_no_access_contacts), HTML_COLOR_RED));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                builder.setTitle(getString(R.string.msg_no_access_contacts));
-                builder.setIcon(android.R.drawable.ic_menu_info_details);
-                builder.setMessage(getString(R.string.msg_no_access_contacts_hint));
-                builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-                builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) ->
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName()))));
-                AlertDialog alertToShow = builder.create();
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                });
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-                triggeredMsgNoEvents = true;
-
-            } else{
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            }
+            setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts), HTML_COLOR_RED));
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             return true;
         }
         return false;
@@ -463,11 +447,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ((MenuBuilder) menu).setOptionalIconsVisible(true);
         }
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        if (!filterNames.equals(STRING_EMPTY) && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        if (!isEmpty(filterNames) && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             menu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, android.R.drawable.ic_menu_zoom));
         }
 
-        if (!eventsData.isEmpty() && eventsData.getHiddenEventsCount() > 0) { //показывать, если список скрытых не пустой
+        if (!eventsData.isEmptyArray() && eventsData.getHiddenEventsCount() > 0) { //показывать, если список скрытых не пустой
             menu.getItem(3).setVisible(true);
         }
         this.menu = menu;
@@ -487,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 case R.id.menu_refresh:
 
                     //Permissions
-                    if (checkAndShowNoAccessHint()) return true;
+                    if (isNoAccessToContacts()) return true;
 
                     //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                     //https://medium.com/@elye.project/swipe-to-refresh-not-showing-why-96b76c5c93e7
@@ -539,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         if (menu != null) {
                             //https://stackoverflow.com/questions/19882443/how-to-change-menuitem-icon-in-actionbar-programmatically/19882555#19882555
-                            if (!filterNames.equals(STRING_EMPTY) && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                            if (!isEmpty(filterNames) && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                                 menu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, android.R.drawable.ic_menu_zoom));
                             } else {
                                 menu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, android.R.drawable.ic_menu_search));
@@ -624,6 +608,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     alertToShow.show();
 
                     return true;
+					
+					/* todo: add event
+					
+					else if (android.support.v4.b.a.a((Context) MainActivity.this, "android.permission.WRITE_CONTACTS") == 0 && android.support.v4.b.a.a((Context) MainActivity.this, "android.permission.READ_CONTACTS") == 0) {
+                                try {
+                                    MainActivity.this.startActivityForResult(new Intent("android.intent.action.PICK", Contacts.CONTENT_URI), 123);
+                                } catch (Exception e) {
+                                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.contacts_app_not_found), 1).show();
+                                }
+                            } else {
+                                android.support.v4.a.a.a(MainActivity.this, new String[]{"android.permission.WRITE_CONTACTS", "android.permission.READ_CONTACTS"}, 7);
+                            }
+					
+					*/
+					
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -679,7 +678,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Тему не меняли, просто обновляем данные
             boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-            if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
+            if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
                 if (eventsData.getContactsEvents(this)) {
                     eventsData.computeDates();
                     drawList();
@@ -714,8 +713,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setRefreshing(false); //Disables the refresh icon
                     swipeRefresh.setEnabled(true);
                 }
-
                 showWelcomeScreen();
+
+            } else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                builder.setTitle(getString(R.string.msg_no_access_contacts));
+                builder.setIcon(android.R.drawable.ic_menu_info_details);
+                builder.setMessage(getString(R.string.msg_no_access_contacts_hint));
+                builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) ->
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName()))));
+                AlertDialog alertToShow = builder.create();
+                alertToShow.setOnShowListener(arg0 -> {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                });
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
+                triggeredMsgNoEvents = true;
+
             }
         }
     }
@@ -909,9 +926,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Проверки
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
-                setHint(setHTMLColor(getString(R.string.msg_no_access_contacts), HTML_COLOR_RED));
-            else if (eventsData.isEmpty())
-                setHint(setHTMLColor(getString(R.string.msg_no_events), HTML_COLOR_YELLOW));
+                setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts), HTML_COLOR_RED));
+            else if (eventsData.isEmptyArray())
+                setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events), HTML_COLOR_YELLOW));
             else {
 
                 statsAllEvents = eventsData.dataArray.length;
@@ -961,20 +978,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         //statsAllEvents = dataArray_final.length;
                         if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_Hidden) {
                             setHint(resources.getString(R.string.msg_stats_hidden_prefix) + Constants.STRING_SPACE +
-                                    dataArray_final.length + getString(R.string.msg_filter) + setHTMLColor(filterNames, HTML_COLOR_YELLOW));
+                                    dataArray_final.length + getString(R.string.msg_filter) + eventsData.setHTMLColor(filterNames, HTML_COLOR_YELLOW));
                         } else {
                             setHint(resources.getString(R.string.msg_stats_prefix) + Constants.STRING_SPACE +
-                                    dataArray_final.length + getString(R.string.msg_filter) + setHTMLColor(filterNames, HTML_COLOR_YELLOW));
+                                    dataArray_final.length + getString(R.string.msg_filter) + eventsData.setHTMLColor(filterNames, HTML_COLOR_YELLOW));
                         }
 
                     } else {
-                        setHint(getString(R.string.msg_no_events) + getString(R.string.msg_filter) + setHTMLColor(filterNames, HTML_COLOR_YELLOW));
+                        setHint(getString(R.string.msg_no_events) + getString(R.string.msg_filter) + eventsData.setHTMLColor(filterNames, HTML_COLOR_YELLOW));
                     }
 
                 } else {
 
                     //Получаем предыдцщие события
-                    if (!eventsData.preferences_list_prev_events.equals(STRING_EMPTY) && eventsData.preferences_events_scope != Constants.pref_Events_Scope_Hidden) {
+                    if (!isEmpty(eventsData.preferences_list_prev_events) && eventsData.preferences_events_scope != Constants.pref_Events_Scope_Hidden) {
                         //todo: придумать, как ловить прошедшие 5K+
                         dataList = eventsData.insertPreviousEvents(dataList, eventsData.preferences_list_prev_events);
                     }
@@ -1050,33 +1067,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HINT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    private String setHTMLColor(String msg, int color) {
-        try {
-
-            int colorId;
-            switch (color) {
-                case HTML_COLOR_RED:
-                    colorId = R.color.dark_red;
-                    break;
-                case HTML_COLOR_YELLOW:
-                    colorId = R.color.yellow;
-                    break;
-                case HTML_COLOR_BROWN:
-                    colorId = R.color.brown;
-                    break;
-
-                default:
-                    return msg;
-            }
-            return String.format(HTML_COLOR, Integer.toHexString(ContextCompat.getColor(this, colorId) & 0x00ffffff), msg);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_HTML_COLOR + e.toString(), Toast.LENGTH_LONG).show();
-        }
-        return msg;
     }
 
     private static class ViewHolder {
@@ -1236,11 +1226,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_events_scope == Constants.pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                    eventDetails.append(setHTMLColor(getString(R.string.msg_label_hidden), HTML_COLOR_RED));
+                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), HTML_COLOR_RED));
                 }
                 if (eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                    eventDetails.append(setHTMLColor(getString(R.string.msg_label_silenced), HTML_COLOR_BROWN));
+                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_silenced), HTML_COLOR_BROWN));
                 }
 
                 if (eventDetails.length() == 0) {

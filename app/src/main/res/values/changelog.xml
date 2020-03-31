@@ -17,6 +17,9 @@
         <item>Added contact nicknames support</item>
         <item>Additions to event context menu: set event reminder, a list of all named weddings</item>
         <item>Added application shortcut for notifications recall (Android 7.1+)</item>
+        <item>Fixed display of dates without a year on Huawei devices</item>
+        <item>Fixed display \"Surname N.P.\" for contacts with a suffix or prefix in the name</item>
+        <item>Fixed widgets display on tablets with Android 5.x</item>
 
         <item>#1.4.7</item>
         <item>Scalable widget update: now all events should fit exactly the entire width of the widget</item>
@@ -72,7 +75,7 @@
 
         <item>#1.3.6</item>
         <item>Added German localization</item>
-        <item>"Find" function switched to regexp, so you can find via complex queries. Examples - in the program description</item>
+        <item>\"Find\" function switched to regexp, so you can find via complex queries. Examples - in the program description</item>
         <item>Added option to display the original label of a custom event</item>
         <item>Bugfixing</item>
 
@@ -137,7 +140,7 @@
         <item>Added color preferences for some widget elements</item>
 
         <item>#1.2.4</item>
-        <item>Added icon for custom event "Crowning" (holy mystery in the Eastern Orthodox Church)</item>
+        <item>Added icon for custom event \"Crowning\" (holy mystery in the Eastern Orthodox Church)</item>
         <item>Fixed bug with displaying round days event icon</item>
 
         <item>#1.2.3</item>

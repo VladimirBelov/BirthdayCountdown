@@ -11,11 +11,15 @@ package org.vovka.birthdaycountdown;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import java.util.List;
 
 // На 1 событие масштабируемый
 public class Widget2x2 extends AppWidgetProvider {
@@ -66,10 +70,8 @@ public class Widget2x2 extends AppWidgetProvider {
         try {
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
-
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-
             RemoteViews views = getRemoteViews(context);
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
@@ -77,13 +79,19 @@ public class Widget2x2 extends AppWidgetProvider {
                 eventsData.context = context;
                 eventsData.getPreferences();
             }
+
             if (eventsData.preferences_debug_on) {
+                List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+                final Resources resources = context.getResources();
+                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+                final float density = displayMetrics.density;
                 Toast.makeText(context, this.getClass().getName() +
-                        "\n appWidgetId=" + appWidgetId +
-                        "\n screen: " + context.getResources().getDisplayMetrics().heightPixels + "x" + context.getResources().getDisplayMetrics().widthPixels + " (density " + context.getResources().getDisplayMetrics().density + ")" +
-                        "\n layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
-                        "\n minWidth=" + minWidth + ", minHeight=" + minHeight
-                , Toast.LENGTH_LONG).show();
+                                "\n appWidgetId=" + appWidgetId +
+                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
+                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
+                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
+                                "\n widgetPref=" + widgetPref.toString()
+                        , Toast.LENGTH_LONG).show();
             }
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invoke();

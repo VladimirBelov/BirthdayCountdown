@@ -393,6 +393,7 @@
     <li>contacts organizations: %6$d
     <li>contacts nicknames: %7$d
 </ul>
+<h2>Events by accounts:</h2><ul>
 ]]></string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
@@ -462,6 +463,8 @@
 
     <string name="account_skype" translatable="false">"com.skype."</string>
     <string name="account_vk" translatable="false">"com.vkontakte.account"</string>
+    <string name="account_exchange" translatable="false">"com.google.android.gm.exchange"</string>
+    <string name="account_huawei" translatable="false">"com.android.huawei.phone"</string>
 
     <string name="pref_AboutActivity_key" translatable="false">AboutActivity</string>
 

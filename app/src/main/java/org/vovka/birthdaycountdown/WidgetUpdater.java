@@ -58,7 +58,6 @@ class WidgetUpdater {
     private int colorEventToday;
     private int colorEventSoon;
     private int eventsHidden;
-    private int cells;
     private int eventsToShow;
 
     WidgetUpdater(@NonNull Context context, @NonNull ContactsEvents eventsData, @NonNull RemoteViews views, int eventsCount, int width, int height, int widgetId) {
@@ -80,7 +79,7 @@ class WidgetUpdater {
 
         //Получаем данные
         boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        if (canReadContacts && (eventsData.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
+        if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
             eventsData.context = context;
             if (eventsData.getContactsEvents(context)) eventsData.computeDates();
         }
@@ -109,7 +108,7 @@ class WidgetUpdater {
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access_contacts));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
-            } else if (eventsData.isEmpty() || eventsData.dataArray.length < startingIndex) {
+            } else if (eventsData.isEmptyArray() || eventsData.dataArray.length < startingIndex) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
@@ -120,33 +119,31 @@ class WidgetUpdater {
 
                 //Увеличение шрифтов в зависимости от размеров окна
                 fontMagnify = 1;
-                cells = getCellsForSize(Math.min(width, height));
-                //if (cells != 1) { //todo: проверить и убрать совсем
-                    if (widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
-                        switch (widgetPref.get(1)) {
-                            case STRING_1:
-                                fontMagnify = cells * 0.75;
-                                break;
-                            case STRING_2:
-                                fontMagnify = cells * 1.0;
-                                break;
-                            case STRING_3:
-                                fontMagnify = cells * 1.2;
-                                break;
-                            case STRING_4:
-                                fontMagnify = cells * 1.5;
-                                break;
-                            case STRING_5:
-                                fontMagnify = cells * 1.75;
-                                break;
-                            case STRING_6:
-                                fontMagnify = cells * 2.0;
-                                break;
-                        }
-                    } else if (eventsToShow == 1) {
-                        fontMagnify = 1 + 1.0 * (cells - 1);
+                int cells = getCellsForSize(Math.min(width, height));
+                if (widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
+                    switch (widgetPref.get(1)) {
+                        case STRING_1:
+                            fontMagnify = cells * 0.75;
+                            break;
+                        case STRING_2:
+                            fontMagnify = cells * 1.0;
+                            break;
+                        case STRING_3:
+                            fontMagnify = cells * 1.2;
+                            break;
+                        case STRING_4:
+                            fontMagnify = cells * 1.5;
+                            break;
+                        case STRING_5:
+                            fontMagnify = cells * 1.75;
+                            break;
+                        case STRING_6:
+                            fontMagnify = cells * 2.0;
+                            break;
                     }
-                //}
+                } else {
+                    fontMagnify = 1 + 1.0 * (cells - 1);
+                }
 
                 colorDefault = resources.getColor(R.color.white);
                 colorEventToday = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventtoday, "color", packageName));
@@ -162,7 +159,7 @@ class WidgetUpdater {
 
                 //Если события есть - рисуем бордюр, иначе - прозрачность
                 //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
-                views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains("10") ? R.drawable.layout_bg : 0);
+                views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(Constants.STRING_10) ? R.drawable.layout_bg : 0);
 
             }
 
@@ -200,7 +197,7 @@ class WidgetUpdater {
                         visibleCell*=3;
                         break;
                     case STRING_3: //Фамилия И.О.
-                        views.setTextViewText(id_widget_Caption_left, person.getFullNameShort());
+                        views.setTextViewText(id_widget_Caption_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                         visibleCell*=2;
@@ -259,7 +256,7 @@ class WidgetUpdater {
                         visibleCell*=7;
                         break;
                     case STRING_3: //Фамилия И.О.
-                        views.setTextViewText(id_widget_Caption2nd_left, person.getFullNameShort());
+                        views.setTextViewText(id_widget_Caption2nd_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_contact_id])));
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
                         visibleCell*=5;
@@ -306,11 +303,11 @@ class WidgetUpdater {
 
                 Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(STRING_1), true);
                 if (photo != null) {
-                    if (cells == 1) {
+                    if (eventsToShow == 1) {
                         views.setImageViewBitmap(id_widget_Photo, photo);
                     } else {
                         //потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
-                        Bitmap bm_small = Bitmap.createScaledBitmap(photo, 120, 120, true);
+                        Bitmap bm_small = Bitmap.createScaledBitmap(photo, 2*width/eventsToShow, (2*photo.getHeight()*width)/(photo.getWidth()*eventsToShow) , true);
                         photo.recycle();
                         views.setImageViewBitmap(id_widget_Photo, bm_small);
                     }

@@ -17,6 +17,7 @@
         <item>Unterstützung für Kontakt-Spitznamen hinzugefügt</item>
         <item>Aktualisierung des Ereigniskontextmenüs: Festlegen der Ereigniserinnerung, einer Liste aller genannten Hochzeiten</item>
         <item>Anwendungsverknüpfung für Benachrichtigungsrückruf hinzugefügt (Android 7.1+)</item>
+        <item>Anzeige von Daten ohne ein Jahr auf Huawei-Geräten korrigiert</item>
 
         <item>#1.4.7</item>
         <item>Skalierbares Widget-Update: Jetzt sollten alle Ereignisse genau auf die gesamte Breite des Widgets passen</item>

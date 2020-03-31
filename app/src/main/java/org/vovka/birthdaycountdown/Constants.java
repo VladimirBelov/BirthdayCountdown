@@ -19,6 +19,7 @@ class Constants {
     static final String STRING_MINUS1 = "-1";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
+    static final String STRING_0000 = "0000-";
     static final String STRING_EQ = "=?";
     static final String STRING_1 = "1";
     static final String STRING_2 = "2";
@@ -27,14 +28,26 @@ class Constants {
     static final String STRING_5 = "5";
     static final String STRING_6 = "6";
     static final String STRING_7 = "7";
-    static final String STRING_0000 = "0000-";
-    static final String DATETIME_DD_MM_YYYY = "dd.MM.yyyy";
-    static final String DATETIME_DD_MM = "dd.MM";
+    static final String STRING_10 = "10";
+
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
+    static final String LANG_US = "en_US";
+    static final String LANG_UA = "uk_UA";
+
+    static final String DATETIME_DD_MM_YYYY = "dd.MM.yyyy";
+    static final String DATETIME_DD_MM = "dd.MM";
+    static final String DATETIME_DD_MMM_YYYY = "dd MMM yyyy";
+    static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
     static final String DATETIME_RUS = "dd MMMMM yyyy г.";
     static final String DATETIME_US = "MMM dd, yyyy";
     static final String DATE_JAVA = "yyyy-MM-dd";
+
+    static final String STRING_ID = "id";
+    static final String STRING_TEXT_VIEW = "textView";
+    static final String STRING_EVENT_INFO = "eventInfo";
+    static final String STRING_TYPE_WEDDING = "event_type_wedding_";
+
     static final String STRING_2HASH = "##"; //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String STRING_2TILDA = "~~";
     static final String STRING_COLON_SPACE = ": ";
@@ -65,6 +78,7 @@ class Constants {
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
 
+    static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
     static final int HTML_COLOR_YELLOW = 2;
     static final int HTML_COLOR_BROWN = 3;
@@ -73,6 +87,8 @@ class Constants {
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
     static final String HTML_COLOR = "<font color=\"#%s\">%s</font>"; //https://dzone.com/articles/java-string-format-examples
+    static final String HTML_LI = "<li>";
+    static final String HTML_UL_END = "</ul>";
 
     static final String Broadcast_ANDROID_INTENT_ACTION_TIME_SET = "android.intent.action.TIME_SET";
     static final String Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED = "android.intent.action.DATE_CHANGED";
@@ -131,6 +147,7 @@ class Constants {
     static final String CONTACTS_EVENTS_ADD_YEAR_ERROR = "ContactsEvents->addYear error:\n";
     static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
     static final String SHOW_ANNIVERSARY_LIST_ERROR = "ContactsEvents->showAnniversaryList error:\n";
+    static final String CONTACTS_EVENTS_SET_HTML_COLOR = "ContactsEvents->setHTMLColor error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
     static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
@@ -148,7 +165,6 @@ class Constants {
     static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
     static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
     static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
-    static final String MAIN_ACTIVITY_SET_HTML_COLOR = "MainActivity->setHTMLColor error:\n";
     static final String MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR = "MainActivity->checkNewVersion error:\n";
     static final String MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR = "MainActivity->setLastRunVersion error:\n";
     static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
@@ -158,7 +174,6 @@ class Constants {
     static final String PERSON_CONSTRUCTOR_ERROR = "Person->Constructor error:\n";
     static final String PERSON_GET_FULL_NAME_ALT_ERROR = "Person->getFullNameAlt error:\n";
     static final String PERSON_GET_FULL_NAME_ERROR = "Person->getFullName error: ";
-    static final String PERSON_GET_FULL_NAME_SHORT_ERROR = "Person->getFullNameShort error:\n";
     static final String PERSON_GET_GENDER_ERROR = "Person->getGender error:\n";
 
     static final String SETTINGS_ACTIVITY_ON_CREATE_ERROR = "SettingsActivity->onCreate error:\n";
@@ -182,7 +197,4 @@ class Constants {
     static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invoke error:\n";
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
-    static final String STRING_ID = "id";
-    static final String STRING_TEXT_VIEW = "textView";
-    static final String STRING_EVENT_INFO = "eventInfo";
 }

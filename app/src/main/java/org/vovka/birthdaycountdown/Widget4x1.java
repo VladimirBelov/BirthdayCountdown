@@ -27,8 +27,13 @@ public class Widget4x1 extends AppWidgetProvider {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
             eventsData.setLocale(true);
+
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget4x1bc);
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, 5, -1, -1, appWidgetId).invoke();
+            new WidgetUpdater(context, ContactsEvents.getInstance(), views, 5, minWidth, minHeight, appWidgetId).invoke();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
