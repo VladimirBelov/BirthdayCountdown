@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 12.04.20 0:31
+  ~  */
+  -->
+
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="@string/app_name"
+    android:hint="@string/msg_label_search" />

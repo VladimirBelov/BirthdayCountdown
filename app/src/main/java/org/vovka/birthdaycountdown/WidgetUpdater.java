@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.20 23:03
+ *  * Created by Vladimir Belov on 28.04.20 23:21
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 22.03.20 22:07
+ *  * Last modified 16.04.20 18:37
  *
  */
 
@@ -174,7 +174,7 @@ class WidgetUpdater {
         try {
             String event = eventsData.dataArray[i + startingIndex - 1];
             String[] singleRowArray = event.split(Constants.STRING_2HASH);
-            if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(singleRowArray[Position_contact_id] + Constants.STRING_2HASH + singleRowArray[Position_eventType])) {
+            if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray))) {
                 Person person = new Person(context, event);
                 int eventCell = i - eventsHidden;
                 int visibleCell = 1; //2 - top left, 3 - top center, 5 - bottom left, 7 - bottom center

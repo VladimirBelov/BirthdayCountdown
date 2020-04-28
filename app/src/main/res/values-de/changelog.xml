@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:58
+  ~  * Last modified 21.04.20 19:11
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.9</item>
+        <item>Die Benutzeroberfläche für die Ereignissuche wurde überarbeitet</item>
+        <item>Die Schaltfläche \"+\" wurde hinzugefügt, um ein neues Ereignis zum Kontakt hinzuzufügen</item>
+        <item>Der Menüpunkt \"Kontaktkarte öffnen\" wird durch \"Kontakt bearbeiten\" ersetzt</item>
+        <item>Unterstützung für horizontale Bildschirmausrichtung zurückgegeben</item>
+        <item>Lokalisierungsaktualisierung und einige UI-Optimierungen</item>
 
         <item>#1.4.8</item>
         <item>Unterstützung für Benachrichtigungen mit einer Melodie aus dem externen Speicher hinzugefügt. Sie müssen die Berechtigung zum Zugriff geben</item>

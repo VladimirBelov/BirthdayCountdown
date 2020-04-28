@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:11
+  ~  * Last modified 26.04.20 22:06
   ~  */
   -->
 
@@ -12,17 +12,19 @@
     <string name="window_widget_settings">Настройки виджета</string>
     <string name="window_about">О приложении</string>
 
-    <string name="title_activity_search">Фильтр</string>
-    <string name="title_activity_events_scope">Режим отображения событий</string>
+    <string name="title_activity_search">Поиск</string>
+    <string name="title_activity_events_scope">Фильтр</string>
 
     <string name="shortcut_notify">Уведомления</string>
 
+    <string name="menu_add_event">Добавить событие</string>
+    <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
-    <string name="menu_search">Фильтр…</string>
-    <string name="menu_hidden_events">Скрытые события</string>
+    <string name="menu_search">Поиск…</string>
+    <string name="menu_filter_events">Фильтр…</string>
     <string name="menu_exit">Выход</string>
-    <string name="menu_context_open_card">Открыть карточку контакта</string>
+    <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_events">Все события контакта</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
@@ -35,7 +37,7 @@
     <string name="menu_context_unsilent_event">Вернуть уведомление</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
-    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>
+<!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
     <string name="msg_no_events">События не найдены</string>
     <string name="msg_filter">", фильтр: "</string>
     <string name="msg_before_event_prefix">"Через "</string>
@@ -46,8 +48,9 @@
     <string name="msg_yesterday">Вчера</string>
     <string name="msg_beforeyesterday">Позавчера</string>
     <string name="msg_day_after_tomorrow">Послезавтра</string>
-    <string name="msg_stats_prefix">событий:</string>
-    <string name="msg_stats_hidden_prefix">скрытых событий:</string>
+    <string name="msg_stats_prefix">"событий: "</string>
+    <string name="msg_stats_hidden_prefix">"скрытых событий: "</string>
+    <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_after_age_prefix_1">" год"</string>
@@ -59,13 +62,13 @@
     <string name="msg_before_event_prefix_1_">" день"</string>
     <string name="msg_before_event_prefix_4_21">" дней"</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
-    <string name="msg_hint_search">Значение фильтра</string>
+    <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_notifications_soon_no_events">Нет событий на ближайшие дни</string>
     <string name="msg_notifications_today_no_events">Нет событий на сегодня</string>
     <string name="msg_notifications_soon">"Скоро событий - "</string>
     <string name="msg_notifications_today">"Событий сегодня - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
-    <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполены в карточках Ваших контактов или импортированны установленными на смартфон приложениями (Google, Skype, VK, …)</string>
+    <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполнены в карточках Ваших контактов или импортированы установленными на смартфон приложениями (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
     <string name="msg_no_access_contacts_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>
@@ -76,6 +79,7 @@
     <string name="msg_not_implemented">Ещё не реализовано!</string>
     <string name="msg_snoozed_until">"Отложено до %1$s"</string>
     <string name="msg_notify_time">"Уведомление установлено на %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Удалить все фильтры?</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -99,10 +103,13 @@
     <string name="button_all">Все</string>
     <string name="button_snooze">Напомнить через час</string>
 
-    <string name="events_scope_not_hidden">Все нескрытые (%1$d)</string>
+    <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
     <string name="events_scope_hidden">Скрытые (%1$d)</string>
     <string name="events_scope_hidden2">Скрытые (%1$d, сохранено %2$d)</string>
+    <string name="events_scope_silenced">Без уведомления (%1$d)</string>
+    <string name="events_scope_silenced2">Без уведомления (%1$d, сохранено %2$d)</string>
+    <string name="events_scope_clear">Удалить фильтры</string>
 
     <string name="event_type_birthday">День рождения</string>
     <string name="event_type_anniversary">Годовщина свадьбы</string>
@@ -359,7 +366,7 @@
         <item>В полдень</item>
     </string-array>
 
-    <string name="pref_Notifications_Ringtone_title">Звук уведомения</string>
+    <string name="pref_Notifications_Ringtone_title">Звук уведомления</string>
     <string name="pref_Notifications_Ringtone_description">Звук уведомления о предстоящих событиях</string>
 
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
@@ -376,13 +383,12 @@
 <h2>Скорость загрузки:</h2><ul>
     <li>сканирование контактов: %1$s мс
     <li>подсчёт дат: %2$s мс
-    <li>отрисовка: %3$s мс
 </ul>
 <h2>Данные контактов:</h2><ul>
-    <li>оригинальных событий: %4$d
-    <li>должностей: %5$d
-    <li>организаций: %6$d
-    <li>псевдонимов: %7$d
+    <li>оригинальных событий: %3$d
+    <li>должностей: %4$d
+    <li>организаций: %5$d
+    <li>псевдонимов: %6$d
 </ul>
 <h2>События по аккаунтам:</h2><ul>
 ]]></string>

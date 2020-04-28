@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:45
+  ~  * Last modified 15.04.20 11:48
   ~  */
   -->
 
@@ -12,16 +12,17 @@
 <!--suppress DeprecatedClassUsageInspection -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:key="pref_main">
 
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
 	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
-    <!-- todo: подумать, как показывать названия настроек, если они не влезают в одну строку http://www.lucazanini.eu/en/2014/android/display-icon-preferences/ -->
 
     <PreferenceCategory
         android:title="@string/pref_Events_title"
         android:layout="@layout/settings_category">
 
+        <!-- todo: добавить другие языки https://crowdin.com/ -->
         <ListPreference
             android:defaultValue="@string/pref_Language_default"
             android:entries="@array/pref_Language_entries"
@@ -194,6 +195,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Custom1_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom1">
@@ -224,6 +226,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Custom2_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom2">
@@ -254,6 +257,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Custom3_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom3">
@@ -284,6 +288,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Custom4_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom4">
@@ -314,6 +319,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Custom5_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom5">
@@ -519,7 +525,9 @@
             android:key="@string/pref_Debug_On_key"
             android:summary="@string/pref_Debug_On_description"
             android:title="@string/pref_Debug_On_title"
-            android:icon="@android:drawable/ic_menu_manage"/>
+            android:icon="@android:drawable/ic_menu_manage"
+            android:singleLineTitle="false"
+            tools:ignore="UnusedAttribute" />
 
         <Preference
             android:id="@+id/pref_AboutActivity"

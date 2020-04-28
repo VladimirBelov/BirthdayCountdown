@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.20 23:03
+ *  * Created by Vladimir Belov on 28.04.20 23:21
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 22.03.20 22:12
+ *  * Last modified 28.04.20 22:40
  *
  */
 
@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -167,13 +168,65 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     @Override
     protected void onResume() {
         super.onResume();
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        if (getPreferenceScreen() != null && getPreferenceScreen().getSharedPreferences() != null) {
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+            updateTitles();
+        }
+    }
+
+    private void updateTitles() {
+
+        try {
+
+            PreferenceCategory prefCat;
+            eventsData.getPreferences();
+
+            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom1_key));
+            if (!eventsData.preferences_customevent1_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_customevent1_caption);
+            } else {
+                prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+            }
+
+            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom2_key));
+            if (!eventsData.preferences_customevent2_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_customevent2_caption);
+            } else {
+                prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+            }
+
+            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom3_key));
+            if (!eventsData.preferences_customevent3_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_customevent3_caption);
+            } else {
+                prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+            }
+
+            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom4_key));
+            if (!eventsData.preferences_customevent4_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_customevent4_caption);
+            } else {
+                prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+            }
+
+            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom5_key));
+            if (!eventsData.preferences_customevent5_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_customevent5_caption);
+            } else {
+                prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        if (getPreferenceScreen() != null) getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -268,17 +321,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
-        //Toast.makeText(this, key, Toast.LENGTH_LONG).show();
-        if (getString(R.string.pref_Language_key).equals(key)) {
+        if (key.equals(getString(R.string.pref_Language_key))) {
 
             eventsData.getPreferences();
             this.recreate();
 
-        } else if (getString(R.string.pref_Theme_key).equals(key)) {
+        } else if (key.equals(getString(R.string.pref_Theme_key))) {
 
             eventsData.getPreferences();
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.recreate();
+
+        } else if (key.equals(getString(R.string.pref_CustomEvents_Custom1_Caption_key)) ||
+                key.equals(getString(R.string.pref_CustomEvents_Custom2_Caption_key)) ||
+                key.equals(getString(R.string.pref_CustomEvents_Custom3_Caption_key)) ||
+                key.equals(getString(R.string.pref_CustomEvents_Custom4_Caption_key)) ||
+                key.equals(getString(R.string.pref_CustomEvents_Custom5_Caption_key))) {
+
+            updateTitles();
 
         }
         /* bug. так не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
@@ -390,7 +450,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
             Account[] accounts = AccountManager.get(this).getAccounts();
-            AuthenticatorDescription[] descriptions =  AccountManager.get(this).getAuthenticatorTypes();
+            AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
             for (Account account : accounts) {
                 accountNames.add(account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE);
                 for (AuthenticatorDescription desc : descriptions) {

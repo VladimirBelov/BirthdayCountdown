@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 18.03.20 23:08
+  ~  * Last modified 15.04.20 11:50
   ~  */
   -->
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="18sp"
             android:textStyle="bold"

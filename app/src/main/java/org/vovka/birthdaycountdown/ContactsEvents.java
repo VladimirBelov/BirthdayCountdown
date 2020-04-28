@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.20 23:03
+ *  * Created by Vladimir Belov on 28.04.20 23:21
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 19.03.20 18:27
+ *  * Last modified 26.04.20 21:54
  *
  */
 
@@ -78,6 +78,8 @@ import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static org.vovka.birthdaycountdown.Constants.ACTION_SNOOZE;
+import static org.vovka.birthdaycountdown.Constants.CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR;
+import static org.vovka.birthdaycountdown.Constants.CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR;
 import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_NAME;
 import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_TYPE;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
@@ -183,6 +185,7 @@ class ContactsEvents {
     int currentTheme = 0;
     final String systemLocale = Locale.getDefault().getLanguage();
     private HashSet<String> set_events_deaths;
+    private HashSet<String> set_contacts_ids;
 
     //Настройки
     boolean preferences_debug_on;
@@ -216,27 +219,27 @@ class ContactsEvents {
     private Matcher preferences_crowning_labels;
 
     private boolean preferences_customevent1_enabled;
-    private String preferences_customevent1_caption;
+    String preferences_customevent1_caption;
     private Matcher preferences_customevent1_labels;
     private boolean preferences_customevent1_useyear;
 
     private boolean preferences_customevent2_enabled;
-    private String preferences_customevent2_caption;
+    String preferences_customevent2_caption;
     private Matcher preferences_customevent2_labels;
     private boolean preferences_customevent2_useyear;
 
     private boolean preferences_customevent3_enabled;
-    private String preferences_customevent3_caption;
+    String preferences_customevent3_caption;
     private Matcher preferences_customevent3_labels;
     private boolean preferences_customevent3_useyear;
 
     private boolean preferences_customevent4_enabled;
-    private String preferences_customevent4_caption;
+    String preferences_customevent4_caption;
     private Matcher preferences_customevent4_labels;
     private boolean preferences_customevent4_useyear;
 
     private boolean preferences_customevent5_enabled;
-    private String preferences_customevent5_caption;
+    String preferences_customevent5_caption;
     private Matcher preferences_customevent5_labels;
     private boolean preferences_customevent5_useyear;
 
@@ -268,7 +271,7 @@ class ContactsEvents {
     //Статистика
     long statTimeGetContacts = 0;
     long statTimeComputeDates = 0;
-    long statTimeDrawList = 0;
+    //long statTimeDrawList = 0;
     long statLastComputeDates = 0;
     int statAllEvents = 0;
     int statAllTitles = 0;
@@ -714,6 +717,8 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
             editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
+            editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
+            editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
 
             editor.apply();
 
@@ -787,6 +792,7 @@ class ContactsEvents {
             dataList.clear();
             userData.clear();
             set_events_deaths = new HashSet<>();
+            set_contacts_ids = new HashSet<>();
             statAllEvents = 0;
             statAllTitles = 0;
             statAllOrganizations = 0;
@@ -861,6 +867,24 @@ class ContactsEvents {
                 }
             }
             statAllNicknames = nickMap.size();
+
+            //Собираем id всех контактов
+            contactData = contentResolver.query(
+                    ContactsContract.Contacts.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    int index = contactData.getColumnIndex(ContactsContract.Contacts._ID);
+                    do
+                        set_contacts_ids.add(contactData.getString(index));
+                    while (contactData.moveToNext());
+                    contactData.close();
+                }
+            }
 
             //Перебираем все данные и кэшируем заметки
             //пока уберу, нужно только для поиска
@@ -2042,7 +2066,7 @@ class ContactsEvents {
             List<String> listNotify = new ArrayList<>();
             for (String event: dataArray) {
                 String[] singleEventArray = event.split(Constants.STRING_2HASH);
-                final String eventKey = singleEventArray[Position_contact_id] + Constants.STRING_2HASH + singleEventArray[Position_eventType];
+                final String eventKey = getEventKey(singleEventArray);
                 if ((getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey)) && (getSilencedEventsCount() == 0 || !checkIsSilencedEvent(eventKey))) {
                     Date eventDate = null;
                     try {
@@ -2192,6 +2216,14 @@ class ContactsEvents {
         }
     }
 
+    String getEventKey(@NonNull String[] singleEventArray) {
+        return singleEventArray[Position_contact_id] + Constants.STRING_2HASH + singleEventArray[Position_eventType];
+    }
+
+    private String[] getKeyParts(@NonNull String eventKey) {
+        return eventKey.split(Constants.STRING_2HASH);
+    }
+
     void snoozeNotification(@NonNull String dataNotify, int snoozeHours, Date wakeDateTime) {
 
         try {
@@ -2313,18 +2345,18 @@ class ContactsEvents {
 
     boolean isEmptyArray() {return dataArray == null || dataArray.length == 0;}
 
-/*    boolean checkIsHiddenEvents() {
+    void clearHiddenEvents() {
 
         try {
 
-            return !preferences_hiddenEvents.isEmpty();
+            if (getHiddenEventsCount() > 0) preferences_hiddenEvents.clear();
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-            return true;
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
-    }*/
+
+    }
 
     int getHiddenEventsCount() {
 
@@ -2356,7 +2388,9 @@ class ContactsEvents {
 
         try {
 
-            if (!preferences_hiddenEvents.add(key)) return false;
+            if (preferences_hiddenEvents == null || !preferences_hiddenEvents.add(key)) return false;
+
+            clearNobodyHiddenEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
@@ -2378,14 +2412,15 @@ class ContactsEvents {
         try {
 
             if (!checkIsHiddenEvent(key)) return false;
+            if (preferences_hiddenEvents == null || !preferences_hiddenEvents.remove(key)) return false;
 
-            if (!preferences_hiddenEvents.remove(key)) return false;
+            clearNobodyHiddenEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
 
-            //Если удалили последнее - скидываем режим на стандартный
-            if (preferences_hiddenEvents.isEmpty()) {
+            //Если удалили последнее событие - скидываем режим на стандартный
+            if (preferences_events_scope == Constants.pref_Events_Scope_Hidden && preferences_hiddenEvents.isEmpty()) {
                 preferences_events_scope = Constants.pref_Events_Scope_NotHidden;
                 editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
             }
@@ -2399,6 +2434,19 @@ class ContactsEvents {
             e.printStackTrace();
             if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             return false;
+        }
+
+    }
+
+    void clearSilencedEvents() {
+
+        try {
+
+            if (getSilencedEventsCount() > 0) preferences_silentEvents.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_SILENCED_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -2433,7 +2481,9 @@ class ContactsEvents {
 
         try {
 
-            if (!preferences_silentEvents.add(key)) return false;
+            if (preferences_silentEvents == null || !preferences_silentEvents.add(key)) return false;
+
+            clearNobodySilencedEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
@@ -2455,11 +2505,18 @@ class ContactsEvents {
         try {
 
             if (!checkIsSilencedEvent(key)) return false;
+            if (preferences_silentEvents == null || !preferences_silentEvents.remove(key)) return false;
 
-            if (!preferences_silentEvents.remove(key)) return false;
+            clearNobodySilencedEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
+
+            //Если удалили последнее событие - скидываем режим на стандартный
+            if (preferences_events_scope == Constants.pref_Events_Scope_Silenced && preferences_silentEvents.isEmpty()) {
+                preferences_events_scope = Constants.pref_Events_Scope_NotHidden;
+                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
+            }
 
             editor.apply();
 
@@ -2474,7 +2531,43 @@ class ContactsEvents {
 
     }
 
-    void setWidgetPreference(int id, String value) {
+    private void clearNobodySilencedEvents() {
+
+        try {
+
+            if (getSilencedEventsCount() == 0 || set_contacts_ids == null) return;
+
+            Set<String> toRemove = new HashSet<>();
+            for (String event: preferences_silentEvents) {
+                if (!set_contacts_ids.contains(getKeyParts(event)[0])) toRemove.add(event);
+            }
+            if (toRemove.size() > 0) preferences_silentEvents.removeAll(toRemove);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void clearNobodyHiddenEvents() {
+
+        try {
+
+            if (getHiddenEventsCount() == 0 || set_contacts_ids == null) return;
+
+            Set<String> toRemove = new HashSet<>();
+            for (String event: preferences_hiddenEvents) {
+                if (!set_contacts_ids.contains(getKeyParts(event)[0])) toRemove.add(event);
+            }
+            if (toRemove.size() > 0) preferences_hiddenEvents.removeAll(toRemove);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    void setWidgetPreference(int id, @NonNull String value) {
 
         if (context == null) return;
 
@@ -2582,7 +2675,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.SHOW_ANNIVERSARY_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

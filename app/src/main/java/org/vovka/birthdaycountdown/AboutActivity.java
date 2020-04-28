@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.20 23:03
+ *  * Created by Vladimir Belov on 28.04.20 23:21
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 18.03.20 23:11
+ *  * Last modified 11.04.20 23:45
  *
  */
 
@@ -117,7 +117,6 @@ public class AboutActivity extends AppCompatActivity {
                 sb.append(getString(R.string.debuglog_body,
                         eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContacts)), eventsData.statTimeGetContacts > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
                         eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
-                        String.valueOf(Math.round(eventsData.statTimeDrawList)),
                         eventsData.statAllEvents,
                         eventsData.statAllTitles,
                         eventsData.statAllOrganizations,

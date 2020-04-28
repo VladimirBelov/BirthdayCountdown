@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 18.03.20 23:08
+  ~  * Last modified 20.04.20 19:31
   ~  */
   -->
 
@@ -38,6 +38,8 @@
         <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
         <item name="android:itemBackground">@color/white</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.Light</item>
+        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
     </style>
 
     <style name="PreferencesTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -75,6 +77,8 @@
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="android:itemBackground">@color/medium_gray</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.DarkGray</item>
+        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
     </style>
 
     <!--https://stackoverflow.com/questions/24652964/android-popup-menu-text-color-appcompat-->
@@ -110,6 +114,8 @@
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="android:itemBackground">@color/dark_gray</item>
+        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
     </style>
 
     <!-- Светлая тема без панели действий -->
@@ -147,7 +153,7 @@
     </style>
 
     <!-- Заголовок окна, так и не понял - работает или нет -->
-    <style name="AppTheme.Light.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <!--<style name="AppTheme.Light.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">?attr/windowTitleColor</item>
     </style>
     <style name="AppTheme.DarkGray.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -155,7 +161,7 @@
     </style>
     <style name="AppTheme.Black.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">?attr/windowTitleColor</item>
-    </style>
+    </style>-->
 
     <!-- Меню действий -->
     <style name="AppTheme.Light.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -203,6 +209,13 @@
 <!--        <item name="android:background">@drawable/row_selector</item>-->
         <item name="android:scaleType">fitCenter</item>
         <item name="android:drawablePadding">10dp</item>
+    </style>
+
+    <!-- https://stackoverflow.com/questions/15299508/i-want-to-change-actionbar-icon-size -->
+    <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">30dp</item>
+        <item name="android:maxWidth">48dp</item>
+        <item name="android:width">38dp</item>
     </style>
 
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:12
+  ~  * Last modified 26.04.20 22:08
   ~  */
   -->
 
@@ -12,17 +12,19 @@
     <string name="window_widget_settings">Widget-Einstellungen</string>
     <string name="window_about">Über die Anwendung</string>
 
-    <string name="title_activity_search">Filter</string>
-    <string name="title_activity_events_scope">Ereignisanzeigemodus</string>
+    <string name="title_activity_search">Suche</string>
+    <string name="title_activity_events_scope">Filter</string>
 
     <string name="shortcut_notify">Benachrichtigungen</string>
 
+    <string name="menu_add_event">Ereignis hinzufügen</string>
+    <string name="menu_add_event_to_contact">Ereignis zum Kontakt hinzufügen…</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
-    <string name="menu_search">Filtern…</string>
-    <string name="menu_hidden_events">Versteckte Ereignisse</string>
+    <string name="menu_search">Suche…</string>
+    <string name="menu_filter_events">Filtern…</string>
     <string name="menu_exit">Ausweg</string>
-    <string name="menu_context_open_card">Kontaktkarte öffnen</string>
+    <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_events">Alle Kontaktereignisse</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
@@ -35,7 +37,7 @@
     <string name="menu_context_unsilent_event">Benachrichtigung fortsetzen</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
-    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>
+<!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
     <string name="msg_no_events">Keine Termine gefunden</string>
     <string name="msg_filter">", filter: "</string>
     <string name="msg_before_event_prefix">"In "</string>
@@ -46,8 +48,9 @@
     <string name="msg_yesterday">Gestern</string>
     <string name="msg_beforeyesterday">Vorgestern</string>
     <string name="msg_day_after_tomorrow">Übermorgen</string>
-    <string name="msg_stats_prefix">Ereignisse:</string>
-    <string name="msg_stats_hidden_prefix">versteckte Ereignisse:</string>
+    <string name="msg_stats_prefix">"ereignisse: "</string>
+    <string name="msg_stats_hidden_prefix">"versteckte ereignisse: "</string>
+    <string name="msg_stats_silenced_prefix">"ereignisse ohne benachrichtigung: "</string>
     <string name="msg_label_hidden">Versteckt</string>
     <string name="msg_label_silenced">Ohne Vorankündigung</string>
     <string name="msg_after_age_prefix_1">" Jahr"</string>
@@ -59,7 +62,7 @@
     <string name="msg_before_event_prefix_1_">" Tage"</string>
     <string name="msg_before_event_prefix_4_21">" Tage"</string>
     <string name="msg_label_search">Geben Sie einen Teil des Namens, des Kontakttyps, des Arbeitsorts, der Position und des Datums ein (mehrere Werte können durch Kommas getrennt eingegeben werden, unterstützt von regexp):</string>
-    <string name="msg_hint_search">Filterwert</string>
+    <string name="msg_hint_search">Suchanfrage</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die kommenden Tage</string>
     <string name="msg_notifications_today_no_events">Keine Ereignisse für heute</string>
     <string name="msg_notifications_soon">"Ereignisse in Kürze - "</string>
@@ -76,6 +79,7 @@
     <string name="msg_not_implemented">Noch nicht implementiert!</string>
     <string name="msg_snoozed_until">"Bis zum %1$s geschlafen"</string>
     <string name="msg_notify_time">"Die Kündigung erfolgt um %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Alle Filter löschen?</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -102,7 +106,10 @@
     <string name="events_scope_not_hidden">Alles aufgedeckt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
     <string name="events_scope_hidden">Versteckt (%1$d)</string>
-    <string name="events_scope_hidden2">Versteckt (%1$d, saved %2$d)</string>
+    <string name="events_scope_hidden2">Versteckt (%1$d, gerettet %2$d)</string>
+    <string name="events_scope_silenced">Ohne Benachrichtigung (%1$d)</string>
+    <string name="events_scope_silenced2">Ohne Benachrichtigung (%1$d, gerettet %2$d)</string>
+    <string name="events_scope_clear">Filter entfernen</string>
 
     <string name="event_type_birthday">Geburtstag</string>
     <string name="event_type_anniversary">Hochzeitstag</string>
@@ -112,9 +119,9 @@
     <string name="event_type_nameday">Namenstag</string>
 
     <string name="appwidget_text">Laden…</string>
-    <string name="appwidget_name_1_7">Fur 1–7 Ereignisse</string>
-    <string name="appwidget_name_1">Fur 1 Ereignisse</string>
-    <string name="appwidget_name_5">Fur 5 Ereignisse</string>
+    <string name="appwidget_name_1_7">Für 1–7 Ereignisse</string>
+    <string name="appwidget_name_1">Für 1 Ereignisse</string>
+    <string name="appwidget_name_5">Für 5 Ereignisse</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Name</string>
     <string name="widget_Date">Datum</string>
@@ -248,7 +255,7 @@
         <item>Pseudonym</item>
         <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
-        <item>Favoritensymbol</item>
+        <item>Favoriten Symbol</item>
         <item>Kontotyp und Speicherdatum</item>
     </string-array>
 
@@ -260,7 +267,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>Kontaktfoto</item>
         <item>Ereignistyp-Symbol</item>
-        <item>Favoritenkontaktsymbol</item>
+        <item>Favoriten Symbol</item>
         <item>Einfassung</item>
     </string-array>
 
@@ -347,7 +354,7 @@
         <item>In einer Woche</item>
     </string-array>
 
-    <string name="pref_Notifications_AlarmHour_title">Benachrichtigungston</string>
+    <string name="pref_Notifications_AlarmHour_title">Benachrichtigungsstunde</string>
     <string name="pref_Notifications_AlarmHour_description">Kommende Ereignis Sound</string>
 
     <string-array name="pref_Notifications_AlarmHour_entries">
@@ -366,8 +373,8 @@
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Testbenachrichtigung anzuzeigen</string>
 
     <string name="pref_Help_title">Hilfe</string>
-    <string name="pref_Debug_On_title">Debug-Benachrichtigungen</string>
-    <string name="pref_Debug_On_description">Benachrichtigungen für das Debug anzeigen</string>
+    <string name="pref_Debug_On_title">Debug-Meldungen</string>
+    <string name="pref_Debug_On_description">Meldungen für das Debug anzeigen</string>
 
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
@@ -377,13 +384,12 @@
 <h2>Download-Geschwindigkeit:</h2><ul>
     <li>Kontaktscan: %1$s msec
     <li>Datumsanzahl: %2$s msec
-    <li>Rendering: %3$s msec
 </ul>
 <h2>Kontaktdaten:</h2><ul>
-    <li>ursprüngliche Ereignisse: %4$d
-    <li>Beiträge: %5$d
-    <li>Organisationen: %6$d
-    <li>Aliase: %7$d
+    <li>ursprüngliche Ereignisse: %3$d
+    <li>Beiträge: %4$d
+    <li>Organisationen: %5$d
+    <li>Aliase: %6$d
 </ul>
 <h2>Ereignisse nach Konten:</h2><ul>
 ]]></string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:11
+  ~  * Last modified 26.04.20 22:07
   ~  */
   -->
 
@@ -12,17 +12,19 @@
     <string name="window_widget_settings">Налаштування віджета</string>
     <string name="window_about">Про програму</string>
 
-    <string name="title_activity_search">Фільтр</string>
-    <string name="title_activity_events_scope">Режим відображення подій</string>
+    <string name="title_activity_search">Пошук</string>
+    <string name="title_activity_events_scope">Фільтр</string>
 
     <string name="shortcut_notify">Повідомлення</string>
 
+    <string name="menu_add_event">Додати подію</string>
+    <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
-    <string name="menu_search">Фільтр…</string>
-    <string name="menu_hidden_events">Приховані події</string>
+    <string name="menu_search">Пошук…</string>
+    <string name="menu_filter_events">Фільтр…</string>
     <string name="menu_exit">Вихід</string>
-    <string name="menu_context_open_card">Відкрити картку контакту</string>
+    <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_events">Всі події контакту</string>
     <string name="menu_context_event_info">Дані про подію</string>
     <string name="menu_context_hide_event">Приховати подію</string>
@@ -32,10 +34,10 @@
     <string name="menu_context_remind_morning">В наступний ранок</string>
     <string name="menu_context_anniversary_list">Усі назви ювілеїв</string>
     <string name="menu_context_silent_event">Чи не повідомляти</string>
-    <string name="menu_context_unsilent_event">Продовжте сповіщення</string>
+    <string name="menu_context_unsilent_event">Відновити повідомлення</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
-    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>
+<!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_filter">", фільтр: "</string>
     <string name="msg_before_event_prefix">"Через "</string>
@@ -46,8 +48,9 @@
     <string name="msg_day_after_tomorrow">Післязавтра</string>
     <string name="msg_yesterday">Вчора</string>
     <string name="msg_beforeyesterday">Позавчора</string>
-    <string name="msg_stats_prefix">подій:</string>
-    <string name="msg_stats_hidden_prefix">прихованих подій:</string>
+    <string name="msg_stats_prefix">"подій: "</string>
+    <string name="msg_stats_hidden_prefix">"прихованих подій: "</string>
+    <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_after_age_prefix_1">" рік"</string>
@@ -55,11 +58,11 @@
     <string name="msg_after_age_prefix_1_">" рік"</string>
     <string name="msg_after_age_prefix_4_21">" років"</string>
     <string name="msg_before_event_prefix_1">" день"</string>
-    <string name="msg_before_event_prefix_2_3_4">" днi"</string>
+    <string name="msg_before_event_prefix_2_3_4">" дні"</string>
     <string name="msg_before_event_prefix_1_">" день"</string>
     <string name="msg_before_event_prefix_4_21">" днів"</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
-    <string name="msg_hint_search">Значення фільтра</string>
+    <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_notifications_soon_no_events">Немає подій на найближчі дні</string>
     <string name="msg_notifications_today_no_events">Немає подій на сьогодні</string>
     <string name="msg_notifications_soon">"Скоро подій - "</string>
@@ -76,6 +79,7 @@
     <string name="msg_not_implemented">Ще не реалізовано!</string>
     <string name="msg_snoozed_until">"Відкладено до %1$s"</string>
     <string name="msg_notify_time">"Повідомлення встановлено на %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Очистити всі фільтри?</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
@@ -102,14 +106,17 @@
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
     <string name="events_scope_hidden">Приховані (%1$d)</string>
-    <string name="events_scope_hidden2">Приховані (%1$d, saved %2$d)</string>
+    <string name="events_scope_hidden2">Приховані (%1$d, збережено %2$d)</string>
+    <string name="events_scope_silenced">Без оповіщення (%1$d)</string>
+    <string name="events_scope_silenced2">Без оповіщення (%1$d, збережено %2$d)</string>
+    <string name="events_scope_clear">Видалити фільтри</string>
 
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
     <string name="event_type_other">Інша подія</string>
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
-    <string name="event_type_nameday">Iменини</string>
+    <string name="event_type_nameday">Іменини</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_name_1_7">На 1–7 подій</string>
@@ -192,7 +199,7 @@
     <string name="pref_CustomEvents_Anniversary_List_description">Усі відомі назви ювілеїв (по роках)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_description">Використовувати стандартні найменування дляя визначення іменин</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_description">Використовувати стандартні найменування для визначення іменин</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Свої найменування</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як іменини (через кому)</string>
 
@@ -206,7 +213,7 @@
     <string name="pref_CustomEvents_Death_Labels_title">Свої найменування</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці смерті (через кому)</string>
 
-    <string name="pref_CustomEvents_Custom_title">Настраіваемоё подія</string>
+    <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Найменування подій</string>
     <string name="pref_CustomEvents_Custom_Labels_description">Події контактів з такою міткою будуть ідентифіковані як ця подія (через кому)</string>
@@ -335,7 +342,7 @@
         <item>Якщо подію менше 4 => окремі, інакше - загальне</item>
     </string-array>
 
-    <string name="pref_Notifications_Days_title">Iнтервал повідомлень</string>
+    <string name="pref_Notifications_Days_title">Інтервал повідомлень</string>
     <string name="pref_Notifications_Days_description">За скільки днів повідомляти</string>
 
     <string-array name="pref_Notifications_Days_entries">
@@ -377,13 +384,12 @@
 <h2>Швидкість завантаження:</h2><ul>
     <li>сканування контактів: %1$s мс
     <li>підрахунок дат: %2$s мс
-    <li>отрисовка: %3$s мс
 </ul>
 <h2>Дані контактів:</h2><ul>
-    <li>оригінальних подій: %4$d
-    <li>посад: %5$d
-    <li>організацій: %6$d
-    <li>псевдонімів: %7$d
+    <li>оригінальних подій: %3$d
+    <li>посад: %4$d
+    <li>організацій: %5$d
+    <li>псевдонімів: %6$d
 </ul>
 <h2>Події за акаунтів:</h2><ul>
 ]]></string>

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:55
+  ~  * Last modified 21.04.20 18:48
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item># 1.4.9</item>
+        <item>Інтерфейс пошуку подій було перероблено</item>
+        <item>Кнопка \"+\", щоб додати нову подію до контакту</item>
+        <item>Пункт меню \"Відкрити контактну картку\" замінюється на \"Редагувати контакт\"</item>
+        <item>Повернена підтримка горизонтальної орієнтації екрана</item>
+        <item>Оновлення локалізації та деякі оптимізації інтерфейсу</item>
 
         <item>#1.4.8</item>
         <item>Додана підтримка повідомлень з мелодією з зовнішнього сховища. Необхідно дати дозвіл на доступ</item>

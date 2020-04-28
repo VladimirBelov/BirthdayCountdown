@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.20 23:03
+  ~  * Created by Vladimir Belov on 28.04.20 23:21
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 22.03.20 22:56
+  ~  * Last modified 21.04.20 19:09
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.4.9</item>
+        <item>Events search interface has been redone</item>
+        <item>Button \"+\" to add new contact event</item>
+        <item>Menu item \"Open contact card\" is replaced by \"Edit contact\"</item>
+        <item>Returned support for horizontal screen orientation</item>
+        <item>Localizations update and some UI optimizations</item>
 
         <item>#1.4.8</item>
         <item>Added support for notifications with a melody from external storage. You must give permission to access</item>
