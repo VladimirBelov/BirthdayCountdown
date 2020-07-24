@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.04.20 19:31
+  ~  * Last modified 29.04.20 13:35
   ~  */
   -->
 
@@ -30,16 +30,18 @@
         <item name="android:textColorPrimary">@color/medium_gray</item>
         <item name="android:textColorSecondary">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/dark_gray</item>
-        <item name="dialogHintColor">@color/light_gray</item>
+        <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogButtonColor">@color/dark_gray</item>
+<!--        <item name="android:editTextStyle">@style/EditTextStyle.AppTheme.Light</item>-->
         <item name="actionBarTheme">@style/PreferencesTheme.ActionBarTheme</item>
         <!--<item name="android:windowTranslucentStatus">true</item>-->
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
         <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
         <item name="android:itemBackground">@color/white</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.Light</item>
-        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
-        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
     </style>
 
     <style name="PreferencesTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -51,8 +53,20 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+<!--    <style name="EditTextStyle.AppTheme.Light" parent="android:style/Widget.EditText">-->
+<!--        <item name="android:textColor">@color/dark_gray</item>-->
+<!--        <item name="android:editTextColor">@color/dark_gray</item>-->
+<!--    </style>-->
+
+<!--
+<item name="android:background">@color/greyscale1</item>
+        <item name="android:editTextBackground">@color/greyscale2</item>
+<item name="android:button">@style/DarkButton</item>
+        <item name="android:inputType">number</item>
+-->
+
     <!-- Тёмно-серая тема -->
-    <style name="AppTheme.DarkGray" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme.DarkGray" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/medium_gray</item>
         <item name="windowStatusbarColor">@color/medium_dark_gray</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -77,8 +91,10 @@
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="android:itemBackground">@color/medium_gray</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.DarkGray</item>
-        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
-        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
+        <item name="android:alertDialogTheme">@style/AlertDialog.DarkGray</item>
     </style>
 
     <!--https://stackoverflow.com/questions/24652964/android-popup-menu-text-color-appcompat-->
@@ -110,12 +126,14 @@
         <item name="actionBarSize">42dp</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
-        <item name="dialogTextColor">@color/light_gray</item>
-        <item name="dialogHintColor">@color/light_gray_darker</item>
+        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="android:itemBackground">@color/dark_gray</item>
-        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
-        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
+        <item name="android:alertDialogTheme">@style/AlertDialog.Black</item>
     </style>
 
     <!-- Светлая тема без панели действий -->
@@ -176,11 +194,14 @@
 
     <!-- Темы диалогов -->
     <style name="AlertDialog.Light" parent="android:Theme.Material.Dialog">
-        <item name="android:textColor">@color/medium_gray</item>
+        <item name="android:textColor">@color/dark_gray</item>
         <item name="android:background">@color/white</item>
-        <item name="android:textColorPrimary">@color/medium_gray</item>
+        <item name="android:textColorPrimary">@color/dark_gray</item>
+        <item name="android:textColorSecondary">@color/dark_gray</item>
+        <item name="android:colorAccent">@color/dark_gray</item>
+        <item name="textColorAlertDialogListItem">@color/dark_gray</item>
         <item name="listDividerColor">@color/dark_green_transp</item>
-<!--        <item name="listDividerAlertDialog">@color/dark_green_transp</item>-->
+        <item name="contentDescription">@string/hint_AlertDialog</item>
     </style>
 
     <style name="AlertDialog.DarkGray" parent="android:Theme.Material.Dialog">
@@ -190,6 +211,7 @@
         <item name="android:colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="listDividerColor">@color/light_gray_trans</item>
+        <item name="contentDescription">@string/hint_AlertDialog</item>
     </style>
 
     <style name="AlertDialog.Black" parent="android:Theme.Material.Dialog">
@@ -199,7 +221,9 @@
         <item name="android:colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="android:textAppearanceListItem">@color/light_gray</item>
+        <item name="android:textColorAlertDialogListItem">@color/light_gray</item>
         <item name="listDividerColor">@color/light_gray_trans</item>
+        <item name="contentDescription">@string/hint_AlertDialog</item>
     </style>
 
     <style name="ButtonWithIcon">
@@ -212,10 +236,16 @@
     </style>
 
     <!-- https://stackoverflow.com/questions/15299508/i-want-to-change-actionbar-icon-size -->
-    <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+    <style name="ActionButtonCustomStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">30dp</item>
         <item name="android:maxWidth">48dp</item>
         <item name="android:width">38dp</item>
     </style>
 
+    <!-- https://stackoverflow.com/questions/58292548/options-menu-in-action-bar-displays-option-too-high-up -->
+    <style name="OptionsMenuCustomStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
+        <item name="android:dropDownVerticalOffset">4.0dip</item>
+    </style>
 </resources>

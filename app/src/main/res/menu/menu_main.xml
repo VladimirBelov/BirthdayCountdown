@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.04.20 18:38
+  ~  * Last modified 19.07.20 22:39
   ~  */
   -->
 
@@ -18,6 +18,7 @@
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always|collapseActionView"
         android:visible="false"
+        android:contentDescription="@string/hint_SearchPanel"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
     <!-- 1 MENU_MAIN_ADD_EVENT -->
@@ -33,6 +34,11 @@
                 android:id="@+id/menu_add_event_to_contact"
                 android:title="@string/menu_add_event_to_contact"
                 android:icon="@android:drawable/ic_menu_my_calendar" />
+
+            <item
+                android:id="@+id/menu_add_event_to_calendar"
+                android:title="@string/menu_add_event_to_calendar"
+                android:icon="@android:drawable/ic_menu_month" />
         </menu>
 
     </item>
@@ -57,9 +63,9 @@
         android:visible="false" />
 
     <!-- 5 MENU_MAIN_EXIT -->
-    <item
+<!--    <item
         android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+        android:icon="@android:drawable/ic_menu_close_clear_cancel" />-->
 
 </menu>

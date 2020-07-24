@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 08.04.20 0:58
+ *  * Last modified 07.07.20 8:59
  *
  */
 
@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -34,17 +36,28 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (eventsData.context == null) eventsData.context = context;
             eventsData.setLocale(true);
 
+            //Получаем входные параметры
+            Bundle extras = intent.getExtras();
+            int notificationID = 0;
+            String notificationData = STRING_EMPTY;
+            String[] singleEventArray = null;
+            String eventKey = STRING_EMPTY;
+
+            if (extras != null) {
+                notificationID = extras.getInt(EXTRA_NOTIFICATION_ID, 0);
+                notificationData = extras.getString(EXTRA_NOTIFICATION_DATA, STRING_EMPTY);
+
+                if (!notificationData.equals(STRING_EMPTY)) {
+                    singleEventArray = notificationData.split(Constants.STRING_2HASH);
+                    eventKey = eventsData.getEventKey(singleEventArray);
+                }
+            }
+
             if (action != null && action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
 
-                Bundle extras = intent.getExtras();
-                int notificationID = 0;
-                String notificationData = STRING_EMPTY;
-                if (extras != null) {
-                    notificationID = extras.getInt(EXTRA_NOTIFICATION_ID, 0);
-                    notificationData = extras.getString(EXTRA_NOTIFICATION_DATA, STRING_EMPTY);
-                }
                 if (notificationID == 0 || notificationData.equals(STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    if (eventsData.preferences_debug_on)
+                        Toast.makeText(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -55,13 +68,34 @@ public class AlarmReceiver extends BroadcastReceiver {
                 //https://stackoverflow.com/questions/44232699/specific-snooze-functionality-in-notification-button
                 eventsData.snoozeNotification(notificationData, 1, null);
 
+            } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
+
+                if (notificationID == 0 || notificationData.equals(STRING_EMPTY)) {
+                    if (eventsData.preferences_debug_on)
+                        Toast.makeText(context, Constants.ACTION_SILENT + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.cancel(notificationID);
+
+                eventsData.setSilencedEvent(eventKey);
+
+            } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
+
+                if (notificationID == 0 || notificationData.equals(STRING_EMPTY)) {
+                    if (eventsData.preferences_debug_on)
+                        Toast.makeText(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.cancel(notificationID);
+
+                eventsData.setHiddenEvent(eventKey);
+
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 
-                Bundle extras = intent.getExtras();
-                String notificationData = STRING_EMPTY;
-                if (extras != null) {
-                    notificationData = extras.getString(EXTRA_NOTIFICATION_DATA, STRING_EMPTY);
-                }
                 if (notificationData.equals(STRING_EMPTY)) {
                     if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
                     return;
@@ -69,12 +103,35 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 eventsData.showNotification(notificationData, Integer.toString(eventsData.preferences_notification_channel_id));
 
+            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
+
+                if (notificationID == 0 || notificationData.equals(STRING_EMPTY)) {
+                    if (eventsData.preferences_debug_on)
+                        Toast.makeText(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.cancel(notificationID);
+
+                String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[Position_contact_id]));
+                if (!phone.equals(STRING_EMPTY)) {
+
+                    //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
+                    Intent intentDial = new Intent(Intent.ACTION_DIAL);
+                    intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));
+                    intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intentDial);
+
+                }
+
             } else {
 
-                if (eventsData.getContactsEvents(context)) {
+                if (eventsData.getEvents(context)) {
                     eventsData.computeDates();
                     if (eventsData.preferences_notifications_days >= 0)
                         eventsData.showNotifications(false, Integer.toString(eventsData.preferences_notification_channel_id));
+                    eventsData.updateWidgets(); //может быть, оно здесь и не нужно
                 }
 
             }

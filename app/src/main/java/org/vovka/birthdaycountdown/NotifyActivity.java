@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 08.04.20 0:58
+ *  * Last modified 28.04.20 23:32
  *
  */
 
@@ -27,7 +27,7 @@ public class NotifyActivity extends Activity {
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.setLocale(true);
 
-            if (eventsData.getContactsEvents(eventsData.context)) {
+            if (eventsData.getEvents(eventsData.context)) {
                 eventsData.computeDates();
                 if (eventsData.preferences_notifications_days >= 0) {
 

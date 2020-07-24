@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 08.04.20 0:58
+ *  * Last modified 04.07.20 23:05
  *
  */
 
@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +32,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
     private int widgetId = 0;
     private ContactsEvents eventsData;
+    private List<String> eventTypesIDs;
+    private List<String> eventTypesValues;
+
 
     public void onCreate(Bundle savedInstanceState) {
         try {
@@ -107,7 +112,28 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             spinnerEventsCount.setSelection(prefEventsCountIndex);
 
+            //Заполняем тип событий
+            eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
+            eventTypesValues = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_entries));
 
+            MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
+            List<String> list = new ArrayList<>();
+
+            String[] eventsArray = null;
+            try {
+                if (widgetPref.size() > 3) eventsArray = widgetPref.get(3).split("\\+");
+                if (eventsArray != null) {
+                    for (String item : eventsArray) {
+                        if (eventTypesIDs.indexOf(item) != -1) list.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
+                    }
+                }
+            } catch (Exception e2) {/**/}
+
+            spinnerEventTypes.setZeroSelectedTitle(getString(R.string.widget_config_event_types_empty));
+            spinnerEventTypes.setItems(eventTypesValues);
+            spinnerEventTypes.setSelection(list);
+
+            //Скрываем недоступные параметры
             String widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
 
             if (widgetType.equals(".Widget4x1")) {
@@ -147,23 +173,47 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public void buttonOkOnClick(View view) {
 
         try {
+
+            MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
             Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             int selectedItemPosition = spinnerIndex.getSelectedItemPosition();
 
-            //Сохраняем настройки
-            if (widgetId != 0 && selectedItemPosition != -1) {
-
-                eventsData.setWidgetPreference(widgetId,
-                        spinnerIndex.getItemAtPosition(selectedItemPosition).toString() //тут именно значение в списке
-                        .concat(Constants.STRING_COMMA)
-                        .concat(String.valueOf(spinnerMagnify.getSelectedItemPosition())) //тут позиция в списке
-                        .concat(Constants.STRING_COMMA)
-                        .concat(String.valueOf(spinnerEventsCount.getSelectedItemPosition())) //тут позиция в списке
-                );
-
+            StringBuilder eventTypes = new StringBuilder();
+            for(String item: spinnerEventTypes.getSelectedStrings()) {
+                if (eventTypes.length() > 0) eventTypes.append("+");
+                eventTypes.append(eventTypesIDs.get(eventTypesValues.indexOf(item)));
             }
+
+            //Проверки
+
+            if (widgetId == 0) {
+                Toast.makeText(this, "widgetId is unknown!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (selectedItemPosition == -1) {
+                Toast.makeText(this, "selectedItemPosition is undefined!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            /*if (spinnerEventTypes.getSelectedStrings().isEmpty()) {
+                Toast.makeText(this, "Choose at least 1 event type!", Toast.LENGTH_LONG).show();
+                return;
+            }*/
+
+            //Сохраняем настройки
+
+            eventsData.setWidgetPreference(widgetId,
+                    spinnerIndex.getItemAtPosition(selectedItemPosition).toString() //тут именно значение в списке
+                    .concat(Constants.STRING_COMMA)
+                    .concat(String.valueOf(spinnerMagnify.getSelectedItemPosition())) //тут позиция в списке
+                    .concat(Constants.STRING_COMMA)
+                    .concat(String.valueOf(spinnerEventsCount.getSelectedItemPosition())) //тут позиция в списке
+                    .concat(Constants.STRING_COMMA)
+                    .concat(eventTypes.toString())
+            );
 
             Intent intent = new Intent();
             intent.putExtra("appWidgetId", widgetId);

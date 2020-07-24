@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 28.04.20 22:40
+ *  * Last modified 20.07.20 0:30
  *
  */
 
@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.provider.CalendarContract;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
@@ -43,6 +45,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -57,6 +60,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
+import static org.vovka.birthdaycountdown.Constants.Type_Other;
 
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -171,7 +179,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         if (getPreferenceScreen() != null && getPreferenceScreen().getSharedPreferences() != null) {
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData.getPreferences();
             updateTitles();
+            if (eventsData.preferences_notifications_days == -1) {
+                updateVisibility();
+            }
+
         }
     }
 
@@ -180,37 +195,36 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             PreferenceCategory prefCat;
-            eventsData.getPreferences();
 
-            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom1_key));
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom1_key));
             if (!eventsData.preferences_customevent1_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent1_caption);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
             }
 
-            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom2_key));
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom2_key));
             if (!eventsData.preferences_customevent2_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent2_caption);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
             }
 
-            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom3_key));
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom3_key));
             if (!eventsData.preferences_customevent3_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent3_caption);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
             }
 
-            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom4_key));
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom4_key));
             if (!eventsData.preferences_customevent4_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent4_caption);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
             }
 
-            prefCat = (PreferenceCategory)findPreference(getString(R.string.pref_CustomEvents_Custom5_key));
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom5_key));
             if (!eventsData.preferences_customevent5_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent5_caption);
             } else {
@@ -223,10 +237,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void updateVisibility() {
+        try {
+
+            PreferenceCategory prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
+
+            if (prefCat != null && eventsData.preferences_notifications_days == -1) {
+
+                if (findPreference(getString(R.string.pref_Notifications_Type_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Type_key)));
+                if (findPreference(getString(R.string.pref_Notifications_Events_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Events_key)));
+                if (findPreference(getString(R.string.pref_Notifications_AlarmHour_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_AlarmHour_key)));
+                if (findPreference(getString(R.string.pref_Notifications_QuickActions_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_QuickActions_key)));
+                if (findPreference(getString(R.string.pref_Notifications_Ringtone_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Ringtone_key)));
+                if (findPreference(getString(R.string.pref_Notifications_NotifyTest_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_NotifyTest_key)));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        if (getPreferenceScreen() != null) getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        if (getPreferenceScreen() != null)
+            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -263,16 +300,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST__GET_ACCOUNTS);
-                } else {
-                    selectAccounts();
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
+                    return true;
                 }
+
+                selectAccounts();
 
             } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
 
                 eventsData.showAnniversaryList(this);
                 return true;
 
+            } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
+                    return true;
+                }
+
+                selectCalendars(eventsData.eventTypesIDs.get(Type_Other));
             }
 
         } catch (Exception e) {
@@ -307,7 +353,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     @Override
-    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+    public void applyOverrideConfiguration(@Nullable Configuration overrideConfiguration) {
         //https://stackoverflow.com/questions/57973627/configuration-setlocalelocale-doesnt-work-with-appcompatdelegate-setdefaultni
         if (overrideConfiguration != null) {
             int uiMode = overrideConfiguration.uiMode;
@@ -319,16 +365,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
         ContactsEvents eventsData = ContactsEvents.getInstance();
+        eventsData.getPreferences();
 
         if (key.equals(getString(R.string.pref_Language_key))) {
 
-            eventsData.getPreferences();
             this.recreate();
 
         } else if (key.equals(getString(R.string.pref_Theme_key))) {
 
-            eventsData.getPreferences();
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.recreate();
 
@@ -340,25 +386,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             updateTitles();
 
+        } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
+
+            if (eventsData.preferences_notifications_days == -1) {
+                updateVisibility();
+            } else {
+                this.recreate();
+            }
+
         }
-        /* bug. так не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
+        /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
         else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
         }*/
 
     }
 
-    @Override
+    //todo: наверное, убрать - не работает тут: https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
+/*    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+//
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                selectAccounts();
+//            }
+//        }
 
-        if (requestCode == Constants.MY_PERMISSIONS_REQUEST__GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-            //todo: наверное, убрать - не работает тут: https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectAccounts();
-            }
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            Toast.makeText(this, "TEST", Toast.LENGTH_LONG).show();
         }
-    }
+
+    }*/
 
     private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
 
@@ -369,7 +429,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Dialog dialog = preferenceScreen.getDialog();
             ListView list = dialog.findViewById(android.R.id.list);
             DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-            //TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            //this.setTheme(eventsData.preferences_theme.themeMain);
+            //ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
 
@@ -448,21 +509,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<String> accountPackages = new ArrayList<>();
             ContactsEvents eventsData = ContactsEvents.getInstance();
 
-            //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
-            Account[] accounts = AccountManager.get(this).getAccounts();
-            AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
-            for (Account account : accounts) {
-                accountNames.add(account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE);
-                for (AuthenticatorDescription desc : descriptions) {
-                    if (account.type.equals(desc.type)) {
-                        accountIcons.add(desc.iconId);
-                        accountPackages.add(desc.packageName);
-                        break;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+                //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
+                Account[] accounts = AccountManager.get(this).getAccounts();
+                AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
+                for (Account account : accounts) {
+                    accountNames.add(account.name + STRING_PARENTHESIS_OPEN + account.type + STRING_PARENTHESIS_CLOSE);
+                    for (AuthenticatorDescription desc : descriptions) {
+                        if (account.type.equals(desc.type)) {
+                            accountIcons.add(desc.iconId);
+                            accountPackages.add(desc.packageName);
+                            break;
+                        }
                     }
-                }
-                if (accountNames.size() != accountIcons.size()) { //Не нашли иконку, что ОЧЕНЬ странно
-                    accountIcons.add(0);
-                    accountPackages.add(Constants.STRING_EMPTY);
+                    if (accountNames.size() != accountIcons.size()) { //Не нашли иконку, что ОЧЕНЬ странно
+                        accountIcons.add(0);
+                        accountPackages.add(Constants.STRING_EMPTY);
+                    }
                 }
             }
 
@@ -507,8 +570,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                     //Только здесь работает
 
+                    final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
                     for (int i = 0; i < accountNames.size(); i++) {
-                        final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
                         if (preferences_accounts.isEmpty() || preferences_accounts.contains(accountNames.get(i))) {
                             listView.setItemChecked(i, true);
                         }
@@ -547,5 +610,99 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void selectCalendars(String eventType) {
+        Cursor cursor = null;
+        try {
+
+            ArrayList<String> calIDs = new ArrayList<>();
+            ArrayList<String> calTitles = new ArrayList<>();
+            ArrayList<Boolean> calSelected = new ArrayList<>();
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+
+                Uri uri = CalendarContract.Calendars.CONTENT_URI;
+                cursor = getContentResolver().query(
+                        uri,
+                        new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.VISIBLE, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CalendarContract.Calendars.ACCOUNT_NAME},
+                        null,
+                        null,
+                        null
+                );
+
+                if (cursor != null) {
+
+                    Set<String> preferences_calendars = eventsData.getPreferences_Calendars(eventType);
+
+                    if (cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        for (int i = 0; i < cursor.getCount(); i++) {
+                            if (cursor.getInt(1) == 1) {
+                                String strID = cursor.getInt(0) + STRING_EMPTY;
+                                calIDs.add(strID);
+                                calTitles.add(cursor.getString(2).concat(STRING_PARENTHESIS_OPEN).concat(cursor.getString(3)).concat(STRING_PARENTHESIS_CLOSE));
+                                calSelected.add(preferences_calendars.contains(strID));
+                            }
+                            cursor.moveToNext();
+                        }
+                    }
+                    cursor.close();
+                }
+            }
+
+            if (calIDs.size() > 0) {
+                boolean[] sel = new boolean[calSelected.size()];
+                for (int i = 0; i < calSelected.size(); i++) {
+                    sel[i] = calSelected.get(i);
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                        .setTitle(R.string.pref_CustomEvents_Calendars_title)
+                        .setIcon(android.R.drawable.ic_menu_month)
+                        .setMultiChoiceItems(calTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> calSelected.set(which, isChecked))
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                            Set<String> toStore = new HashSet<>();
+                            for (int i = 0; i < calSelected.size(); i++) {
+                                if (calSelected.get(i)) toStore.add(calIDs.get(i));
+                            }
+                            eventsData.setPreferences_Calendars(eventType, toStore);
+                            eventsData.setPreferences();
+
+                            dialog.cancel();
+                        })
+                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                        .setCancelable(true);
+
+
+                AlertDialog alertToShow = builder.create();
+
+                alertToShow.setOnShowListener(arg0 -> {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                });
+
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
+
+            } else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                        .setTitle(R.string.pref_CustomEvents_Calendars_title)
+                        .setMessage(R.string.msg_no_calendars_hint)
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel())
+                        .setCancelable(true);
+
+                AlertDialog alertToShow = builder.create();
+                alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
+
+            }
+
+        } catch (Exception e) {
+            if (cursor != null && !cursor.isClosed()) cursor.close();
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

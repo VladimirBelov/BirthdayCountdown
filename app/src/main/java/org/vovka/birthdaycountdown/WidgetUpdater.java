@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 16.04.20 18:37
+ *  * Last modified 19.07.20 21:21
  *
  */
 
@@ -26,18 +26,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.vovka.birthdaycountdown.Constants.STRING_0;
-import static org.vovka.birthdaycountdown.Constants.STRING_1;
-import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_3;
-import static org.vovka.birthdaycountdown.Constants.STRING_4;
-import static org.vovka.birthdaycountdown.Constants.STRING_5;
-import static org.vovka.birthdaycountdown.Constants.STRING_6;
-import static org.vovka.birthdaycountdown.Constants.STRING_7;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.*;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_nickname;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
@@ -58,13 +52,15 @@ class WidgetUpdater {
     private int colorEventToday;
     private int colorEventSoon;
     private int eventsHidden;
+    private int eventsDisplayed;
     private int eventsToShow;
+    private List<String> widgetPref;
 
     WidgetUpdater(@NonNull Context context, @NonNull ContactsEvents eventsData, @NonNull RemoteViews views, int eventsCount, int width, int height, int widgetId) {
         this.context = context;
         this.eventsData = eventsData;
         this.views = views;
-        this.eventsCount = eventsCount > 7 ? 7 : eventsCount > 0 ? eventsCount : 1;
+        this.eventsCount = eventsCount > WIDGET_EVENTS_MAX ? WIDGET_EVENTS_MAX : eventsCount > 0 ? eventsCount : 1;
         this.width = width;
         this.height = height;
         this.widgetId = widgetId;
@@ -73,15 +69,15 @@ class WidgetUpdater {
     void invoke() {
         //По нажатию на виджет открываем основное окно
         //http://flowovertop.blogspot.com/2013/04/android-widget-with-button-click-to.html
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setAction(Constants.ACTION_LAUNCH);
-        views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        Intent intentView = new Intent(context, MainActivity.class);
+        intentView.setAction(ACTION_LAUNCH);
+        views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
 
         //Получаем данные
         boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
         if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
             eventsData.context = context;
-            if (eventsData.getContactsEvents(context)) eventsData.computeDates();
+            if (eventsData.getEvents(context)) eventsData.computeDates();
         }
 
         //Отрисовываем события
@@ -92,11 +88,11 @@ class WidgetUpdater {
             displayMetrics = resources.getDisplayMetrics();
             packageName = context.getPackageName();
             for (int e = 0; e < eventsCount; e++) {
-                views.setViewVisibility(resources.getIdentifier(Constants.STRING_EVENT_INFO + e, Constants.STRING_ID, packageName), View.GONE);
+                views.setViewVisibility(resources.getIdentifier(STRING_EVENT_INFO + e, STRING_ID, packageName), View.GONE);
             }
 
             //Получаем настройки отображения виджета
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+            widgetPref = eventsData.getWidgetPreference(widgetId);
 
             int startingIndex = 1;
             try {
@@ -108,14 +104,14 @@ class WidgetUpdater {
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access_contacts));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
-            } else if (eventsData.isEmptyArray() || eventsData.dataArray.length < startingIndex) {
+            } else if (eventsData.isEmptyArray() || eventsData.eventList.size() < startingIndex) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
             } else {
 
-                eventsToShow = Math.min(eventsCount, eventsData.dataArray.length);
+                eventsToShow = Math.min(eventsCount, eventsData.eventList.size());
 
                 //Увеличение шрифтов в зависимости от размеров окна
                 fontMagnify = 1;
@@ -151,37 +147,72 @@ class WidgetUpdater {
 
                 //Отрисовываем информацию о событиях
                 eventsHidden = 0;
+                eventsDisplayed = 0;
                 for (int i = 0; i < (eventsToShow + eventsHidden); i++) {
                     eventsHidden = drawEvent(i, startingIndex);
                 }
 
-                views.setViewVisibility(R.id.appwidget_text, View.GONE);
+                if (eventsDisplayed == 0) { //вообще ничего не нашли
+
+                    views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
+                    views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
+                    Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
+                    intentConfig.setAction(ACTION_LAUNCH);
+                    intentConfig.putExtra("appWidgetId", widgetId);
+                    views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+
+                } else {
+
+                    views.setViewVisibility(R.id.appwidget_text, View.GONE);
+
+                }
 
                 //Если события есть - рисуем бордюр, иначе - прозрачность
                 //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
-                views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(Constants.STRING_10) ? R.drawable.layout_bg : 0);
+                views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(STRING_10) ? R.drawable.layout_bg : 0);
 
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.WIDGET_UPDATER_INVOKE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_INVOKE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
     private int drawEvent(int i, int startingIndex) {
         //Отрисовываем одно событие
         try {
-            String event = eventsData.dataArray[i + startingIndex - 1];
-            String[] singleRowArray = event.split(Constants.STRING_2HASH);
-            if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray))) {
+
+            if ((i + startingIndex) > eventsData.eventList.size()) return eventsHidden; //больше ничего не нашли
+
+            String event = eventsData.eventList.get(i + startingIndex - 1);
+            String[] singleRowArray = event.split(STRING_2HASH);
+
+            boolean isVisibleEvent = false;
+            boolean useEventListPrefs = true;
+
+            if  (singleRowArray[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
+                useEventListPrefs = false;
+            } else if (widgetPref.size() > 3) {
+                List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split("\\+"));
+                if (eventsPrefList.size() > 0) {
+                    useEventListPrefs = false;
+                    isVisibleEvent = eventsPrefList.contains(singleRowArray[Position_eventType]) &&
+                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray)));
+                }
+            }
+            if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleRowArray[Position_eventType]) &&
+                    (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray)));
+
+            if (isVisibleEvent) {
                 Person person = new Person(context, event);
                 int eventCell = i - eventsHidden;
                 int visibleCell = 1; //2 - top left, 3 - top center, 5 - bottom left, 7 - bottom center
+                eventsDisplayed++;
 
                 //Под фото
-                int id_widget_Caption_left = resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName);
-                int id_widget_Caption_centered = resources.getIdentifier("textViewCentered" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Caption_left = resources.getIdentifier(STRING_TEXT_VIEW + eventCell, STRING_ID, packageName);
+                int id_widget_Caption_centered = resources.getIdentifier("textViewCentered" + eventCell, STRING_ID, packageName);
 
                 switch (eventsData.preferences_widgets_bottom_info) {
                     case STRING_1: //Фамилия Имя Отчество
@@ -235,12 +266,12 @@ class WidgetUpdater {
                         break;
                 }
 
-                views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
-                views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify)); //todo: убрать размер в ресурсы
+                views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+                views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
 
                 //Под фото (верхний ряд)
-                int id_widget_Caption2nd_left = resources.getIdentifier("textView2nd" + eventCell, Constants.STRING_ID, packageName);
-                int id_widget_Caption2nd_centered = resources.getIdentifier("textView2ndCentered" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Caption2nd_left = resources.getIdentifier("textView2nd" + eventCell, STRING_ID, packageName);
+                int id_widget_Caption2nd_centered = resources.getIdentifier("textView2ndCentered" + eventCell, STRING_ID, packageName);
 
                 switch (eventsData.preferences_widgets_bottom_info_2nd) {
                     case STRING_1: //Фамилия Имя Отчество
@@ -294,12 +325,12 @@ class WidgetUpdater {
                         break;
                 }
 
-                views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
-                views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (10 * fontMagnify));
+                views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+                views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
 
                 //Фото
                 // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
-                int id_widget_Photo = resources.getIdentifier("imageView" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_Photo = resources.getIdentifier("imageView" + eventCell, STRING_ID, packageName);
 
                 Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(STRING_1), true);
                 if (photo != null) {
@@ -307,16 +338,23 @@ class WidgetUpdater {
                         views.setImageViewBitmap(id_widget_Photo, photo);
                     } else {
                         //потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
-                        Bitmap bm_small = Bitmap.createScaledBitmap(photo, 2*width/eventsToShow, (2*photo.getHeight()*width)/(photo.getWidth()*eventsToShow) , true);
-                        photo.recycle();
-                        views.setImageViewBitmap(id_widget_Photo, bm_small);
+                        final int dstWidth = 2 * width / eventsToShow;
+                        final int dstHeight = (2 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow);
+                        if (dstHeight <= 0 || dstWidth <= 0) {
+                            Bitmap photo_icon = eventsData.getContactPhoto(event, false, true);
+                            views.setImageViewBitmap(id_widget_Photo, photo_icon);
+                        } else {
+                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
+                            views.setImageViewBitmap(id_widget_Photo, photo_small);
+                        }
+                        //photo.recycle(); //https://stackoverflow.com/questions/38784302/cant-parcel-a-recycled-bitmap
                     }
                 }
                 //views.setInt(id_widget_Photo, "setBackgroundResource", R.drawable.selection_rectangle); //не работает
 
                 //Определяем иконку события
-                int id_widget_EventIcon = resources.getIdentifier("iconEventType" + eventCell, Constants.STRING_ID, packageName);
-                int id_widget_Age = resources.getIdentifier("textViewAge" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_EventIcon = resources.getIdentifier("iconEventType" + eventCell, STRING_ID, packageName);
+                int id_widget_Age = resources.getIdentifier("textViewAge" + eventCell, STRING_ID, packageName);
 
                 if (eventsData.preferences_widgets_event_info.contains(STRING_2)) {
 
@@ -348,7 +386,7 @@ class WidgetUpdater {
                     if (eventsCount == 1) {
                         views.setViewPadding(id_widget_Age, convertDipToPixels(1, displayMetrics), 0, 0, 0);
                     } else {
-                        views.setViewPadding(id_widget_Age, convertDipToPixels(eventCell == 0 ? 4 : 2, displayMetrics), convertDipToPixels(1, displayMetrics), 0, 0);
+                        views.setViewPadding(id_widget_Age, convertDipToPixels(eventCell == 0 ? 4 : 2, displayMetrics), 0, 0, 0);
                     }
                     //}
                 }
@@ -361,22 +399,8 @@ class WidgetUpdater {
                 views.setTextColor(id_widget_Caption2nd_centered, colorDefault);
                 //}
 
-                //Возраст
-                views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) (12 * fontMagnify)); //todo: убрать размер в настройку
-                if (singleRowArray[Position_eventType].equals(Integer.toString(eventsData.event_types_id[4]))) {
-                    views.setTextViewText(id_widget_Age, singleRowArray[ContactsEvents.Position_age_caption]);
-                } else if (person.Age > -1) {
-                    views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
-                } else {
-                    views.setTextViewText(id_widget_Age, STRING_EMPTY);
-                }
-
-                views.setTextColor(resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName), colorDefault);
-                //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
-
                 //Сколько осталось до события
-                int idViewDistance = resources.getIdentifier("textViewDistance" + eventCell, Constants.STRING_ID, packageName);
-
+                int idViewDistance = resources.getIdentifier("textViewDistance" + eventCell, STRING_ID, packageName);
                 String eventDistance = singleRowArray[ContactsEvents.Position_eventDistance];
                 int eventDistance_Days;
                 try {
@@ -401,54 +425,65 @@ class WidgetUpdater {
                     }
                     views.setTextViewText(idViewDistance, STRING_EMPTY);
 
-                } else if (1 <= eventDistance_Days && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
+                } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
 
-                    if (colorEventSoon != 0)
-                        views.setTextColor(idViewDistance, colorEventSoon);
+                    if (colorEventSoon != 0) views.setTextColor(idViewDistance, colorEventSoon);
                     views.setTextViewText(idViewDistance, eventDistance);
-                    views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) (24 * fontMagnify));
+                    views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_BIG * fontMagnify));
 
                 } else { //Попозже
 
                     views.setTextColor(idViewDistance, colorDefault);
                     views.setTextViewText(idViewDistance, eventDistance);
-                    views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < 10 ? 18 : 12) * fontMagnify));
+                    views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < WIDGET_TEXT_SIZE_TINY ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 
                 }
 
+                //Возраст
+                if (singleRowArray[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_5K))) {
+                    views.setTextViewText(id_widget_Age, singleRowArray[ContactsEvents.Position_age_caption]);
+                } else if (person.Age > -1) {
+                    views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
+                } else {
+                    views.setTextViewText(id_widget_Age, STRING_EMPTY);
+                }
+                views.setTextColor(resources.getIdentifier(STRING_TEXT_VIEW + eventCell, STRING_ID, packageName), colorDefault);
+                //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
+                views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+
                 //Иконка фаворита
-                int id_widget_FavIcon = resources.getIdentifier("iconFav" + eventCell, Constants.STRING_ID, packageName);
+                int id_widget_FavIcon = resources.getIdentifier("iconFav" + eventCell, STRING_ID, packageName);
                 views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains(STRING_3) && singleRowArray[Position_starred].equals(STRING_1) ? View.VISIBLE : View.GONE);
 
                 //Если не последнее событие - по нажатию на фото открываем карточку контакта
                 if (eventsToShow > 1 && eventCell < (eventsToShow - 1)) {
 
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Intent intentView = new Intent(Intent.ACTION_VIEW);
                     Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contact_id]);
-                    intent.setData(uri);
-                    views.setOnClickPendingIntent(resources.getIdentifier(Constants.STRING_EVENT_INFO + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                    intentView.setData(uri);
+                    views.setOnClickPendingIntent(resources.getIdentifier(STRING_EVENT_INFO + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
 
                 } else {
 
-                    Intent intent = new Intent(context, WidgetConfigureActivity.class);
-                    intent.setAction(Constants.ACTION_LAUNCH);
-                    intent.putExtra("appWidgetId", widgetId);
-                    if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier(Constants.STRING_TEXT_VIEW + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textViewCentered" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2nd" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
-                    if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2ndCentered" + eventCell, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intent, 0));
+                    Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
+                    intentConfig.setAction(ACTION_LAUNCH);
+                    intentConfig.putExtra("appWidgetId", widgetId);
+                    if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier(STRING_TEXT_VIEW + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                    if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textViewCentered" + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                    if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2nd" + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                    if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier("textView2ndCentered" + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
 
                 }
 
                 //Показываем событие
-                views.setViewVisibility(resources.getIdentifier(Constants.STRING_EVENT_INFO + eventCell, Constants.STRING_ID, packageName), View.VISIBLE);
+                views.setViewVisibility(resources.getIdentifier(STRING_EVENT_INFO + eventCell, STRING_ID, packageName), View.VISIBLE);
 
             } else
                 return eventsHidden + 1;
 
-        } catch (Resources.NotFoundException | NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.WIDGET_UPDATER_DRAW_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_DRAW_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
         return eventsHidden;
     }
@@ -465,4 +500,5 @@ class WidgetUpdater {
     {
         return (int) (dips * displayMetrics.density + 0.5f);
     }
+
 }

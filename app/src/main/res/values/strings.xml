@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 26.04.20 22:10
+  ~  * Last modified 20.07.20 0:21
   ~  */
   -->
 
@@ -12,18 +12,19 @@
     <string name="window_widget_settings">Widget settings</string>
     <string name="window_about">About application</string>
 
-    <string name="title_activity_search">Search</string>
-    <string name="title_activity_events_scope">Filter</string>
+    <string name="activity_title_search">Search</string>
+    <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Notifications</string>
-
+    
     <string name="menu_add_event">Add event</string>
     <string name="menu_add_event_to_contact">Add event to contact…</string>
+    <string name="menu_add_event_to_calendar">Add event to calendar…</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_search">Search…</string>
     <string name="menu_filter_events">Filter…</string>
-    <string name="menu_exit">Exit</string>
+<!--    <string name="menu_exit">Close app</string>-->
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_events">All contact events</string>
     <string name="menu_context_event_info">Event data</string>
@@ -53,14 +54,25 @@
     <string name="msg_stats_silenced_prefix">"silenced events: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
-    <string name="msg_after_age_prefix_1">" year"</string>
-    <string name="msg_after_age_prefix_4_21">" years"</string>
-    <string name="msg_after_age_prefix_1_">" years"</string>
-    <string name="msg_after_age_prefix_2_3_4">" years"</string>
-    <string name="msg_before_event_prefix_1">" day"</string>
-    <string name="msg_before_event_prefix_2_3_4">" days"</string>
-    <string name="msg_before_event_prefix_1_">" day"</string>
-    <string name="msg_before_event_prefix_4_21">" days"</string>
+
+    <string name="msg_after_year_prefix_1">" year"</string>
+    <string name="msg_after_year_prefix_4_21">" years"</string>
+    <string name="msg_after_year_prefix_1_">" years"</string>
+    <string name="msg_after_year_prefix_2_3_4">" years"</string>
+
+    <string name="msg_after_month_prefix_1">" month"</string>
+    <string name="msg_after_month_prefix_2_3_4">" months"</string>
+    <string name="msg_after_month_prefix_1_">" month"</string>
+    <string name="msg_after_month_prefix_4_21">" months"</string>
+
+    <string name="msg_after_day_prefix_1">" day"</string>
+    <string name="msg_after_day_prefix_2_3_4">" days"</string>
+    <string name="msg_after_day_prefix_1_">" day"</string>
+    <string name="msg_after_day_prefix_4_21">" days"</string>
+
+    <string name="msg_age_now">"Age: "</string>
+    <string name="msg_age_was">"Death age: "</string>
+    <string name="msg_age_could_be">"Could be now: "</string>
     <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
     <string name="msg_hint_search">Search value</string>
     <string name="msg_notifications_soon_no_events">No events for nearest days</string>
@@ -70,6 +82,7 @@
     <string name="msg_notifications_disabled">Notifications disabled</string>
     <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
+    <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
     <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
     <string name="msg_no_access_contacts_hint">No access to contacts. Check application permissions</string>
     <string name="msg_no_access_storage_hint">No access to contacts. Check application permissions</string>
@@ -91,6 +104,8 @@
     <string name="hint_EventDistance">Before event</string>
     <string name="hint_Description">Details</string>
     <string name="hint_EventIcon">Icon</string>
+    <string name="hint_SearchPanel">Search panel</string>
+    <string name="hint_AlertDialog">Alert dialog</string>
 
     <string name="button_ok">OK</string>
     <string name="button_clear">Clear</string>
@@ -101,7 +116,10 @@
     <string name="button_open_app_settings">Open settings…</string>
     <string name="button_open_version_history">Version history</string>
     <string name="button_all">All</string>
-    <string name="button_snooze">Remind in an hour</string>
+    <string name="button_snooze">Remind</string>
+    <string name="button_hide">Hide</string>
+    <string name="button_silent">Disable</string>
+    <string name="button_dial">Dial</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -117,6 +135,7 @@
     <string name="event_type_death">Death anniversary</string>
     <string name="event_type_crowning">Crowning</string>
     <string name="event_type_nameday">Name day</string>
+    <string name="event_type_calendar">Calendar event</string>
 
     <string name="appwidget_text">Loading…</string>
     <string name="appwidget_name_1_7">For 1–7 events</string>
@@ -187,6 +206,12 @@
     <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Contacts events with this labels will bee identified as death anniversaries (by comma)</string>
 
+    <string name="pref_CustomEvents_Other_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Other_Labels_description">Contacts events with this labels will bee identified as other events (by comma)</string>
+    <string name="pref_CustomEvents_Other_Calendars_title">Calendars</string>
+    <string name="pref_CustomEvents_Other_Calendars_description">Import events from chosen calendars</string>
+    <string name="pref_CustomEvents_Calendars_title">Calendars</string>
+
     <string name="pref_CustomEvents_Custom_title">User-defined event</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
@@ -200,8 +225,8 @@
         <item>Black</item>
     </string-array>
 
-    <string name="pref_EventTypes_title">Event types</string>
-    <string name="pref_EventTypes_description">What kind of events to include in event list and widgets</string>
+    <string name="pref_List_EventTypes_title">Event types</string>
+    <string name="pref_List_EventTypes_description">What kind of events to include in list</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Birthdays</item>
@@ -256,6 +281,7 @@
         <item>Event type</item>
         <item>Original event label</item>
         <item>Favorites icon</item>
+        <item>Age</item>
         <item>Event account and raw date</item>
     </string-array>
 
@@ -270,15 +296,6 @@
         <item>Favorites icon</item>
         <item>Widget border</item>
     </string-array>
-
-<!--    <string name="pref_Widgets_ShowBorder_title">Border</string>
-    <string name="pref_Widgets_ShowBorder_description">Show widget border</string>
-
-    <string name="pref_Widgets_ContactPhotos_title">Contact photo</string>
-    <string name="pref_Widgets_ContactPhotos_description">Display contact photo</string>
-
-    <string name="pref_Widgets_EventIcons_title">Event icon</string>
-    <string name="pref_Widgets_EventIcons_description">Display event icon</string>-->
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
     <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
@@ -304,6 +321,19 @@
         <item>Nothing</item>
     </string-array>
 
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Do not highlight</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
     <string name="pref_Widgets_Color_EventToday_title">Color for \"Age\"</string>
     <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
 
@@ -312,6 +342,11 @@
 
     <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
+
+    <string name="widget_config_event_types_title">Event types</string>
+    <string name="widget_config_event_types_description">What kind of events to display on this widget</string>
+
+    <string name="widget_config_event_types_empty">Same with event list</string>
 
     <string name="widget_config_index_label">Event start index to display:</string>
     <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
@@ -335,6 +370,7 @@
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>
+        <item>+2</item>
     </string-array>
 
     <string name="widget_hint">To modify widget preferences click on caption of the rightmost event:</string>
@@ -363,6 +399,9 @@
         <item>Week</item>
     </string-array>
 
+    <string name="pref_Notifications_EventTypes_title">Event types</string>
+    <string name="pref_Notifications_EventTypes_description">What kind of events to include in notifications</string>
+
     <string name="pref_Notifications_AlarmHour_title">Alarm hour</string>
     <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
 
@@ -377,6 +416,16 @@
 
     <string name="pref_Notifications_Ringtone_title">Notification sound</string>
     <string name="pref_Notifications_Ringtone_description">Upcoming Events Sound</string>
+
+    <string name="pref_Notifications_QuickActions_title">Quick actions</string>
+    <string name="pref_Notifications_QuickActions_description">Which actions are available for single notification (up to 3)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Call</item>
+        <item>Exclude from notifications</item>
+        <item>Hide event</item>
+        <item>Remind in 1 hour</item>
+    </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Notification example</string>
     <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
@@ -508,7 +557,7 @@
 
     <string name="pref_Accounts_key" translatable="false">Accounts</string>
 
-    <string name="pref_Events_key" translatable="false">EventTypes</string>
+    <string name="pref_List_Events_key" translatable="false">EventTypes</string>
     <string name="pref_Events_Hidden_key" translatable="false">HiddenEvents</string>
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
 
@@ -555,6 +604,9 @@
     <string name="pref_CustomEvents_Death_UseInternal_key" translatable="false">CustomEvents_Death_UseInternal</string>
     <string name="pref_CustomEvents_Death_Labels_key" translatable="false">CustomEvents_Death_Labels</string>
 
+    <string name="pref_CustomEvents_Other_Labels_key" translatable="false">CustomEvents_Other_Labels</string>
+    <string name="pref_CustomEvents_Other_Calendars_key" translatable="false">CustomEvents_Other_Calendars</string>
+
     <string name="pref_CustomEvents_Custom1_key" translatable="false">CustomEvents_Custom1</string>
     <string name="pref_CustomEvents_Custom2_key" translatable="false">CustomEvents_Custom2</string>
     <string name="pref_CustomEvents_Custom3_key" translatable="false">CustomEvents_Custom3</string>
@@ -593,24 +645,35 @@
 
     <string name="pref_List_EventInfo_key" translatable="false">List_EventInfo</string>
 
+    <string name="pref_List_EventInfo_Photo" translatable="false">6</string>
+    <string name="pref_List_EventInfo_JobTitle" translatable="false">1</string>
+    <string name="pref_List_EventInfo_Organization" translatable="false">2</string>
+    <string name="pref_List_EventInfo_Nickname" translatable="false">7</string>
+    <string name="pref_List_EventInfo_EventCaption" translatable="false">3</string>
+    <string name="pref_List_EventInfo_StoredEventTitle" translatable="false">4</string>
+    <string name="pref_List_EventInfo_FavoritesIcon" translatable="false">5</string>
+    <string name="pref_List_EventInfo_Age" translatable="false">8</string>
+    <string name="pref_List_EventInfo_DebugInfo" translatable="false">91</string>
+
     <string-array name="pref_List_EventInfo_values_default" translatable="false">
-        <item>6</item>
-        <item>1</item>
-        <item>2</item>
-        <item>7</item>
-        <item>3</item>
-        <item>5</item>
+        <item>@string/pref_List_EventInfo_Photo</item>
+        <item>@string/pref_List_EventInfo_JobTitle</item>
+        <item>@string/pref_List_EventInfo_Organization</item>
+        <item>@string/pref_List_EventInfo_Nickname</item>
+        <item>@string/pref_List_EventInfo_EventCaption</item>
+        <item>@string/pref_List_EventInfo_FavoritesIcon</item>
     </string-array>
 
     <string-array name="pref_List_EventInfo_values" translatable="false">
-        <item>6</item> <!--Фото-->
-        <item>1</item> <!--Должность-->
-        <item>2</item> <!--Организация-->
-        <item>7</item> <!--Псевдоним-->
-        <item>3</item> <!--Подробности события-->
-        <item>4</item> <!--Исходное наименование события-->
-        <item>5</item> <!--Иконка избранного контакта-->
-        <item>91</item> <!--Тип аккаунта и хранимая дата-->
+        <item>@string/pref_List_EventInfo_Photo</item> <!--Фото-->
+        <item>@string/pref_List_EventInfo_JobTitle</item> <!--Должность-->
+        <item>@string/pref_List_EventInfo_Organization</item> <!--Организация-->
+        <item>@string/pref_List_EventInfo_Nickname</item> <!--Псевдоним-->
+        <item>@string/pref_List_EventInfo_EventCaption</item> <!--Подробности события-->
+        <item>@string/pref_List_EventInfo_StoredEventTitle</item> <!--Исходное наименование события-->
+        <item>@string/pref_List_EventInfo_FavoritesIcon</item> <!--Иконка избранного контакта-->
+        <item>@string/pref_List_EventInfo_Age</item> <!--Возраст-->
+        <item>@string/pref_List_EventInfo_DebugInfo</item> <!--Тип аккаунта и хранимая дата-->
     </string-array>
 
     <string name="pref_List_PrevEvents_key" translatable="false">List_PrevEvents</string>
@@ -692,18 +755,7 @@
     </string-array>
 
     <string-array name="pref_Widgets_Days_EventSoon_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>10</item>
-        <item>14</item>
-    </string-array>
-
-    <string-array name="pref_Widgets_Days_EventSoon_entries" translatable="false"> <!-- пока без перевода -->
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -728,10 +780,11 @@
     <string name="second_name_comletions_man" translatable="false">ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
     <string name="second_name_comletions_female" translatable="false">овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
 
-
+    <string name="pref_Notifications_key" translatable="false">Notifications</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
     <string name="pref_Notifications_Type_key" translatable="false">Notifications_Type</string>
     <string name="pref_Notifications_Type_default" translatable="false">1</string>
+    <string name="pref_Notifications_Events_key" translatable="false">Notifications_EventTypes</string>
 
     <string-array name="pref_Notifications_Type_values" translatable="false">
         <item>0</item>
@@ -767,6 +820,25 @@
 
     <string name="pref_Notifications_Ringtone_key" translatable="false">Notifications_Ringtone</string>
 
+    <string name="pref_Notifications_QuickActions_key" translatable="false">Notifications_QuickActions</string>
+
+    <string name="pref_Notifications_QuickActions_Dial" translatable="false">1</string>
+    <string name="pref_Notifications_QuickActions_Silent" translatable="false">2</string>
+    <string name="pref_Notifications_QuickActions_Hide" translatable="false">3</string>
+    <string name="pref_Notifications_QuickActions_Remind" translatable="false">4</string>
+
+    <string-array name="pref_Notifications_QuickActions_values" translatable="false">
+        <item>@string/pref_Notifications_QuickActions_Dial</item> <!--Позвонить-->
+        <item>@string/pref_Notifications_QuickActions_Silent</item> <!--Не уведомлять-->
+        <item>@string/pref_Notifications_QuickActions_Hide</item> <!--Скрыть событие-->
+        <item>@string/pref_Notifications_QuickActions_Remind</item> <!--Напомнить-->
+    </string-array>
+
+    <string-array name="pref_Notifications_QuickActions_values_default" translatable="false">
+        <item>@string/pref_Notifications_QuickActions_Silent</item>
+        <item>@string/pref_Notifications_QuickActions_Hide</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>
 
     <string name="pref_Debug_On_key" translatable="false">Debug</string>
@@ -784,5 +856,6 @@
     <integer name="menu_context_id_anniversary_list">9</integer>
     <integer name="menu_context_id_silent_event">10</integer>
     <integer name="menu_context_id_unsilent_event">11</integer>
+    <integer name="menu_context_id_edit_event">12</integer>
 
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 26.04.20 22:08
+  ~  * Last modified 20.07.20 0:53
   ~  */
   -->
 
@@ -12,18 +12,19 @@
     <string name="window_widget_settings">Widget-Einstellungen</string>
     <string name="window_about">Über die Anwendung</string>
 
-    <string name="title_activity_search">Suche</string>
-    <string name="title_activity_events_scope">Filter</string>
+    <string name="activity_title_search">Suche</string>
+    <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Benachrichtigungen</string>
 
     <string name="menu_add_event">Ereignis hinzufügen</string>
     <string name="menu_add_event_to_contact">Ereignis zum Kontakt hinzufügen…</string>
+    <string name="menu_add_event_to_calendar">Ereignis zum Kalender hinzufügen…</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
     <string name="menu_search">Suche…</string>
     <string name="menu_filter_events">Filtern…</string>
-    <string name="menu_exit">Ausweg</string>
+<!--    <string name="menu_exit">Schließe</string>-->
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_events">Alle Kontaktereignisse</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
@@ -53,14 +54,25 @@
     <string name="msg_stats_silenced_prefix">"ereignisse ohne benachrichtigung: "</string>
     <string name="msg_label_hidden">Versteckt</string>
     <string name="msg_label_silenced">Ohne Vorankündigung</string>
-    <string name="msg_after_age_prefix_1">" Jahr"</string>
-    <string name="msg_after_age_prefix_2_3_4">" Jahre"</string>
-    <string name="msg_after_age_prefix_1_">" Jahre"</string>
-    <string name="msg_after_age_prefix_4_21">" Jahre"</string>
-    <string name="msg_before_event_prefix_1">" Tag"</string>
-    <string name="msg_before_event_prefix_2_3_4">" Tage"</string>
-    <string name="msg_before_event_prefix_1_">" Tage"</string>
-    <string name="msg_before_event_prefix_4_21">" Tage"</string>
+
+    <string name="msg_after_year_prefix_1">" Jahr"</string>
+    <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
+    <string name="msg_after_year_prefix_1_">" Jahre"</string>
+    <string name="msg_after_year_prefix_4_21">" Jahre"</string>
+
+    <string name="msg_after_month_prefix_1">" Monat"</string>
+    <string name="msg_after_month_prefix_2_3_4">" Monate"</string>
+    <string name="msg_after_month_prefix_1_">" Monate"</string>
+    <string name="msg_after_month_prefix_4_21">" Monate"</string>
+
+    <string name="msg_after_day_prefix_1">" Tag"</string>
+    <string name="msg_after_day_prefix_2_3_4">" Tage"</string>
+    <string name="msg_after_day_prefix_1_">" Tage"</string>
+    <string name="msg_after_day_prefix_4_21">" Tage"</string>
+
+    <string name="msg_age_now">"Jetzt: "</string>
+    <string name="msg_age_was">"Todesalter: "</string>
+    <string name="msg_age_could_be">"Könnte jetzt sein: "</string>
     <string name="msg_label_search">Geben Sie einen Teil des Namens, des Kontakttyps, des Arbeitsorts, der Position und des Datums ein (mehrere Werte können durch Kommas getrennt eingegeben werden, unterstützt von regexp):</string>
     <string name="msg_hint_search">Suchanfrage</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die kommenden Tage</string>
@@ -70,6 +82,7 @@
     <string name="msg_notifications_disabled">Benachrichtigungen aus</string>
     <string name="msg_no_events_hint">In Ihrem Adressbuch wurden keine Ereignisse gefunden. Um Ereignisse (Geburtstage, Jahrestage, Namenstage) anzuzeigen, müssen diese in die Karten Ihrer Kontakte eingetragen oder von auf Ihrem Smartphone installierten Anwendungen (Google, Skype, VK, …) importiert werden.</string>
     <string name="msg_no_accounts_hint">"Es wurden keine Konten gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
+    <string name="msg_no_calendars_hint">"Es wurden keine verfügbaren Kalender gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_events_check_prefs">"Keine Ereignisse gefunden. Überprüfen Sie die Punkte \"%1$s\" und \"%2$s\" in den Programmeinstellungen"</string>
     <string name="msg_no_access_contacts_hint">Kein Zugriff auf Kontakte. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_no_access_storage_hint">Kein Zugriff auf externen Speicher. Überprüfen Sie die Anwendungsberechtigungen</string>
@@ -91,6 +104,8 @@
     <string name="hint_EventDistance">Vor der Ereignis</string>
     <string name="hint_Description">Einzelheiten</string>
     <string name="hint_EventIcon">Icon</string>
+    <string name="hint_SearchPanel">Suchfeld</string>
+    <string name="hint_AlertDialog">Warndialog</string>
 
     <string name="button_ok">OK</string>
     <string name="button_clear">Klar</string>
@@ -102,6 +117,9 @@
     <string name="button_open_version_history">Versionsverlauf</string>
     <string name="button_all">Alle</string>
     <string name="button_snooze">Verschieben</string>
+    <string name="button_hide">Ausblenden</string>
+    <string name="button_silent">Ausschließen</string>
+    <string name="button_dial">Telefonieren</string>
 
     <string name="events_scope_not_hidden">Alles aufgedeckt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -117,6 +135,7 @@
     <string name="event_type_death">Jahrestag des Todes</string>
     <string name="event_type_crowning">Kirchliche Hochzeit</string>
     <string name="event_type_nameday">Namenstag</string>
+    <string name="event_type_calendar">Kalenderereignis</string>
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_name_1_7">Für 1–7 Ereignisse</string>
@@ -187,6 +206,12 @@
     <string name="pref_CustomEvents_Death_Labels_title">Eigene Namen</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Kontaktereignisse mit diesem Tag werden als Jahrestage des Todes (durch Kommas getrennt) gekennzeichnet</string>
 
+    <string name="pref_CustomEvents_Other_Labels_title">Eigene Namen</string>
+    <string name="pref_CustomEvents_Other_Labels_description">Kontaktereignisse mit diesem Tag werden als Andere Ereignisse (durch Kommas getrennt) gekennzeichnet</string>
+    <string name="pref_CustomEvents_Other_Calendars_title">Kalender</string>
+    <string name="pref_CustomEvents_Other_Calendars_description">Importieren Sie Ereignisse aus ausgewählten Kalendern</string>
+    <string name="pref_CustomEvents_Calendars_title">Kalender</string>
+
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Titel der Veranstaltung</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Ereignisnamen</string>
@@ -200,8 +225,8 @@
         <item>Schwarz</item>
     </string-array>
 
-    <string name="pref_EventTypes_title">Arten von Ereignissen</string>
-    <string name="pref_EventTypes_description">Welche Ereignisse in der Liste der Ereignisse und Widgets angezeigt werden sollen</string>
+    <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
+    <string name="pref_List_EventTypes_description">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Geburtstage</item>
@@ -256,6 +281,7 @@
         <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
         <item>Favoriten Symbol</item>
+        <item>Alter</item>
         <item>Kontotyp und Speicherdatum</item>
     </string-array>
 
@@ -304,6 +330,11 @@
     <string name="pref_Widgets_Days_EventSoon_description">Für wie viele Tage gelten Ereignisse als am nächsten</string>
     <string name="pref_Widgets_Days_EventSoon_title">Kommende Ereignis</string>
 
+    <string name="widget_config_event_types_title">Ereignistypen</string>
+    <string name="widget_config_event_types_description">Welche Ereignisse sollen im Widget angezeigt werden</string>
+
+    <string name="widget_config_event_types_empty">Wie in der Ereignisliste</string>
+
     <string name="widget_config_index_label">Ereignisstartnummer:</string>
     <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>
 
@@ -326,6 +357,7 @@
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>
+        <item>+2</item>
     </string-array>
 
     <string name="widget_hint">Um die Widget-Einstellungen zu ändern, klicken Sie auf die Beschriftung des Ereignisses ganz rechts:</string>
@@ -354,6 +386,9 @@
         <item>In einer Woche</item>
     </string-array>
 
+    <string name="pref_Notifications_EventTypes_title">Ereignistypen</string>
+    <string name="pref_Notifications_EventTypes_description">Welche Ereignisse in Benachrichtigungen enthalten sein sollen</string>
+
     <string name="pref_Notifications_AlarmHour_title">Benachrichtigungsstunde</string>
     <string name="pref_Notifications_AlarmHour_description">Kommende Ereignis Sound</string>
 
@@ -368,6 +403,16 @@
 
     <string name="pref_Notifications_Ringtone_title">Benachrichtigungston</string>
     <string name="pref_Notifications_Ringtone_description">Kommende Benachrichtigung Sound</string>
+
+    <string name="pref_Notifications_QuickActions_title">Schnelle Aktionen</string>
+    <string name="pref_Notifications_QuickActions_description">Welche Aktionen für eine einzelne Benachrichtigung angezeigt werden sollen (bis zu 3 Teile)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Telefonieren</item>
+        <item>Von Benachrichtigungen ausschließen</item>
+        <item>Ereignis ausblenden</item>
+        <item>Erinnere mich in 1 Stunde</item>
+    </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Testbenachrichtigung anzuzeigen</string>

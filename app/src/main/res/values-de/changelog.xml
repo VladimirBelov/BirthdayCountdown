@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 21.04.20 19:11
+  ~  * Last modified 20.07.20 1:05
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.0</item>
+        <item>Ereignistypen werden für die Liste, Benachrichtigungen und jedes Widget separat konfiguriert</item>
+        <item>In Benachrichtigungen wurden Aktionen \"Ausblenden\", \"Ausschließen\", \"Aufrufen\" hinzugefügt (+ Einstellung)</item>
+        <item>Aktuelles Alter in der Ereignisliste</item>
+        <item>Unterstützung für Kalenderereignisse (Ereigniseinrichtung->Anderes Ereignis->Kalender)</item>
+        <item>Ausblenden und Deaktivieren von Benachrichtigungen für benutzerdefinierte Ereignisse</item>
+        <item>Themenfarben und andere Fehler behoben</item>
 
         <item>#1.4.9</item>
         <item>Die Benutzeroberfläche für die Ereignissuche wurde überarbeitet</item>

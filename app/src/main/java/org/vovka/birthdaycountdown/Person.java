@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 08.04.20 0:58
+ *  * Last modified 19.07.20 23:43
  *
  */
 
@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import static android.text.TextUtils.isEmpty;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
+import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
 
 class Person {
 
@@ -28,14 +29,18 @@ class Person {
     int Age = -1;
     String Age_str;
     private Context context;
+    private String[] eventArray;
+    ContactsEvents eventsData;
 
     private Person(@NonNull Context context, @NonNull String[] eventArray) {
 
         try {
 
             this.context = context;
+            this.eventsData = ContactsEvents.getInstance();
+            this.eventArray = eventArray;
             String strFIO;
-            strFIO = eventArray[ContactsEvents.Position_fio];
+            strFIO = this.eventArray[ContactsEvents.Position_fio];
             int spaceFirst = strFIO.indexOf(STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 FirstName = strFIO;
@@ -55,11 +60,11 @@ class Person {
             }
 
             try {
-                Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);
+                Age = Integer.parseInt(this.eventArray[ContactsEvents.Position_age]);
             } catch (NumberFormatException e) {
                 //Пусто
             }
-            Age_str = eventArray[ContactsEvents.Position_age_caption];
+            Age_str = this.eventArray[ContactsEvents.Position_age_caption];
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,13 +79,16 @@ class Person {
     String getFullName () { //Фамилия Имя Отчество
 
         try{
-            if (!LastName.equals(STRING_EMPTY)) {
+            if (this.eventArray[ContactsEvents.Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
+                return this.eventArray[ContactsEvents.Position_fio];
+            } else if (!LastName.equals(STRING_EMPTY)) {
                 return LastName + (!isEmpty(FirstName) ? STRING_SPACE + FirstName : STRING_EMPTY) + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
             } else if (!isEmpty(FirstName)) {
                 return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
             } else {
                 return STRING_EMPTY;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
@@ -92,7 +100,9 @@ class Person {
     String getFullNameAlt () { //Имя Отчество Фамилия
 
         try{
-            if (!isEmpty(FirstName)) {
+            if (this.eventArray[ContactsEvents.Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
+                return this.eventArray[ContactsEvents.Position_fio];
+            } else if (!isEmpty(FirstName)) {
                 return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY) + (!isEmpty(LastName) ? STRING_SPACE + LastName : STRING_EMPTY);
             } else {
                 return LastName;
@@ -131,8 +141,6 @@ class Person {
 
         try {
             if (Gender != 0) return Gender;
-
-            ContactsEvents eventsData = ContactsEvents.getInstance();
 
             if (eventsData.preferences_last_name_comletions_man == null) {//Ищем первый раз
                 //eventsData.preferences_first_names_female = new HashSet<>(Arrays.asList(context.getString(R.string.first_names_female).split(ContactsEvents.STRING_COMMA)));

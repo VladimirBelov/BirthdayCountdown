@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 15.04.20 11:48
+  ~  * Last modified 19.07.20 1:55
   ~  */
   -->
 
@@ -17,6 +17,7 @@
 
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
 	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
+    <!-- todo: попробовать https://github.com/Gericop/Android-Support-Preference-V7-Fix -->
 
     <PreferenceCategory
         android:title="@string/pref_Events_title"
@@ -50,17 +51,6 @@
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
 
-        <MultiSelectListPreference
-            android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_EventTypes_entries"
-            android:entryValues="@array/pref_EventTypes_values"
-            android:key="@string/pref_Events_key"
-            android:title="@string/pref_EventTypes_title"
-            android:summary="@string/pref_EventTypes_description"
-            android:icon="@android:drawable/ic_menu_month"
-            android:dialogIcon="@android:drawable/ic_menu_month"/>
-
-		<!-- todo: вернуть разделители между элементами категории -->
 		<!-- https://www.javarticles.com/2015/04/example-of-grouping-android-preferences-by-sub-screens.html -->
 		<!-- https://stackoverflow.com/questions/18261601/how-do-i-do-sub-categories-in-preferences -->
 		<!-- https://stackoverflow.com/questions/27862299/toolbar-is-hidden-in-nested-preferencescreen -->
@@ -81,13 +71,12 @@
                     android:summary="@string/pref_CustomEvents_Birthday_UseInternal_description"
                     android:title="@string/pref_CustomEvents_Birthday_UseInternal_title"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Birthday_Labels_key"
                     android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
                     android:title="@string/pref_CustomEvents_Birthday_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -103,13 +92,12 @@
                     android:summary="@string/pref_CustomEvents_Anniversary_UseInternal_description"
                     android:title="@string/pref_CustomEvents_Anniversary_UseInternal_title"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Anniversary_Labels_key"
                     android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
                     android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <Preference
@@ -122,7 +110,7 @@
             <PreferenceCategory
                 android:title="@string/event_type_nameday"
                 android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_other">
+                android:icon="@drawable/ic_event_nameday">
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_NameDay_UseInternal_default"
@@ -130,13 +118,12 @@
                     android:summary="@string/pref_CustomEvents_NameDay_UseInternal_description"
                     android:title="@string/pref_CustomEvents_NameDay_UseInternal_title"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_NameDay_Labels_key"
                     android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
                     android:title="@string/pref_CustomEvents_NameDay_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -152,13 +139,12 @@
                     android:summary="@string/pref_CustomEvents_Crowning_UseInternal_description"
                     android:title="@string/pref_CustomEvents_Crowning_UseInternal_title"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Crowning_Labels_key"
                     android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
                     android:title="@string/pref_CustomEvents_Crowning_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
             </PreferenceCategory>
@@ -174,13 +160,12 @@
                     android:summary="@string/pref_CustomEvents_Death_UseInternal_description"
                     android:title="@string/pref_CustomEvents_Death_UseInternal_title"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Death_Labels_key"
                     android:summary="@string/pref_CustomEvents_Death_Labels_summary"
                     android:title="@string/pref_CustomEvents_Death_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
                 <ListPreference
@@ -195,21 +180,40 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:title="@string/event_type_other"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_other">
+
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
+                    android:key="@string/pref_CustomEvents_Other_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Other_Labels_description"
+                    android:title="@string/pref_CustomEvents_Other_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:textSize="16sp"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Other_Calendars_key"
+                    android:title="@string/pref_CustomEvents_Other_Calendars_title"
+                    android:summary="@string/pref_CustomEvents_Other_Calendars_description"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
                 android:key="@string/pref_CustomEvents_Custom1_key"
                 android:title="@string/pref_CustomEvents_Custom_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom1">
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
@@ -231,16 +235,15 @@
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom2">
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
@@ -262,16 +265,15 @@
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom3">
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
@@ -293,16 +295,15 @@
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom4">
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
@@ -324,16 +325,15 @@
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_custom5">
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:textColorHint="?attr/dialogHintColor"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
-                <EditTextPreference
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Labels_key"
                     android:summary="@string/pref_CustomEvents_Custom_Labels_description"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
@@ -356,7 +356,17 @@
     <PreferenceCategory
         android:title="@string/pref_List_title"
         android:layout="@layout/settings_category">
-	
+
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_EventTypes_values_default"
+            android:entries="@array/pref_EventTypes_entries"
+            android:entryValues="@array/pref_EventTypes_values"
+            android:key="@string/pref_List_Events_key"
+            android:title="@string/pref_List_EventTypes_title"
+            android:summary="@string/pref_List_EventTypes_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
         <ListPreference
             android:defaultValue="@string/pref_List_PrevEvents_default"
             android:entries="@array/pref_List_PrevEvents_entries"
@@ -464,6 +474,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="@string/pref_Notifications_key"
         android:title="@string/pref_Notifications_title"
         android:layout="@layout/settings_category">
 
@@ -487,6 +498,16 @@
             android:icon="@android:drawable/ic_menu_view"
             android:dialogIcon="@android:drawable/ic_menu_view"/>
 
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_EventTypes_values_default"
+            android:entries="@array/pref_EventTypes_entries"
+            android:entryValues="@array/pref_EventTypes_values"
+            android:key="@string/pref_Notifications_Events_key"
+            android:title="@string/pref_Notifications_EventTypes_title"
+            android:summary="@string/pref_Notifications_EventTypes_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
         <ListPreference
             android:defaultValue="@string/pref_Notifications_AlarmHour_default"
             android:entries="@array/pref_Notifications_AlarmHour_entries"
@@ -507,6 +528,17 @@
             android:showDefault="true"
             android:defaultValue="content://settings/system/notification_sound"
             android:icon="@android:drawable/ic_menu_more"/>
+
+        <!--todo: сделать проверку, что выбрали не больше 3х действий https://stackoverflow.com/questions/11090304/multiselectlistpreference-example -->
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_Notifications_QuickActions_values_default"
+            android:entries="@array/pref_Notifications_QuickActions_entries"
+            android:entryValues="@array/pref_Notifications_QuickActions_values"
+            android:key="@string/pref_Notifications_QuickActions_key"
+            android:title="@string/pref_Notifications_QuickActions_title"
+            android:summary="@string/pref_Notifications_QuickActions_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
 
         <Preference
             android:id="@+id/pref_NotifyTest"

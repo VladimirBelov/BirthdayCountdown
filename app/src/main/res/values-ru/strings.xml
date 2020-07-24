@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 26.04.20 22:06
+  ~  * Last modified 20.07.20 0:15
   ~  */
   -->
 
@@ -12,18 +12,19 @@
     <string name="window_widget_settings">Настройки виджета</string>
     <string name="window_about">О приложении</string>
 
-    <string name="title_activity_search">Поиск</string>
-    <string name="title_activity_events_scope">Фильтр</string>
+    <string name="activity_title_search">Поиск</string>
+    <string name="activity_title_events_scope">Фильтр</string>
 
     <string name="shortcut_notify">Уведомления</string>
 
     <string name="menu_add_event">Добавить событие</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
+    <string name="menu_add_event_to_calendar">Добавить событие в календарь…</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Поиск…</string>
     <string name="menu_filter_events">Фильтр…</string>
-    <string name="menu_exit">Выход</string>
+<!--    <string name="menu_exit">Закрыть</string>-->
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_events">Все события контакта</string>
     <string name="menu_context_event_info">Данные о событии</string>
@@ -53,14 +54,25 @@
     <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
-    <string name="msg_after_age_prefix_1">" год"</string>
-    <string name="msg_after_age_prefix_2_3_4">" года"</string>
-    <string name="msg_after_age_prefix_1_">" год"</string>
-    <string name="msg_after_age_prefix_4_21">" лет"</string>
-    <string name="msg_before_event_prefix_1">" день"</string>
-    <string name="msg_before_event_prefix_2_3_4">" дня"</string>
-    <string name="msg_before_event_prefix_1_">" день"</string>
-    <string name="msg_before_event_prefix_4_21">" дней"</string>
+
+    <string name="msg_after_year_prefix_1">" год"</string>
+    <string name="msg_after_year_prefix_2_3_4">" года"</string>
+    <string name="msg_after_year_prefix_1_">" год"</string>
+    <string name="msg_after_year_prefix_4_21">" лет"</string>
+
+    <string name="msg_after_month_prefix_1">" месяц"</string>
+    <string name="msg_after_month_prefix_2_3_4">" месяца"</string>
+    <string name="msg_after_month_prefix_1_">" месяц"</string>
+    <string name="msg_after_month_prefix_4_21">" месяцев"</string>
+
+    <string name="msg_after_day_prefix_1">" день"</string>
+    <string name="msg_after_day_prefix_2_3_4">" дня"</string>
+    <string name="msg_after_day_prefix_1_">" день"</string>
+    <string name="msg_after_day_prefix_4_21">" дней"</string>
+
+    <string name="msg_age_now">"Сейчас: "</string>
+    <string name="msg_age_was">"Было: "</string>
+    <string name="msg_age_could_be">"Было бы сейчас: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_notifications_soon_no_events">Нет событий на ближайшие дни</string>
@@ -70,6 +82,7 @@
     <string name="msg_notifications_disabled">Уведомления выключены</string>
     <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполнены в карточках Ваших контактов или импортированы установленными на смартфон приложениями (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
+    <string name="msg_no_calendars_hint">Доступные календари не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
     <string name="msg_no_access_contacts_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>
     <string name="msg_no_access_storage_hint">Нет доступа к внешнему хранилищу. Проверьте разрешения приложения</string>
@@ -91,6 +104,8 @@
     <string name="hint_EventDistance">До события</string>
     <string name="hint_Description">Подробности</string>
     <string name="hint_EventIcon">Иконка</string>
+    <string name="hint_SearchPanel">Панель поиска</string>
+    <string name="hint_AlertDialog">Диалог оповещения</string>
 
     <string name="button_ok">OK</string>
     <string name="button_clear">Очистить</string>
@@ -101,7 +116,10 @@
     <string name="button_open_app_settings">Открыть настройки…</string>
     <string name="button_open_version_history">История версий</string>
     <string name="button_all">Все</string>
-    <string name="button_snooze">Напомнить через час</string>
+    <string name="button_snooze">Напомнить</string>
+    <string name="button_hide">Скрыть</string>
+    <string name="button_silent">Исключить</string>
+    <string name="button_dial">Позвонить</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -117,6 +135,7 @@
     <string name="event_type_death">Годовщина смерти</string>
     <string name="event_type_crowning">Венчание</string>
     <string name="event_type_nameday">Именины</string>
+    <string name="event_type_calendar">Событие календаря</string>
 
     <string name="appwidget_text">Загрузка…</string>
     <string name="appwidget_name_1_7">На 1–7 событий</string>
@@ -187,6 +206,12 @@
     <string name="pref_CustomEvents_Death_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Death_Labels_summary">События контактов с такой меткой будут идентифицированы как годовщины смерти (через запятую)</string>
 
+    <string name="pref_CustomEvents_Other_Labels_title">Свои наименования</string>
+    <string name="pref_CustomEvents_Other_Labels_description">События контактов с такой меткой будут идентифицированы как другие события (через запятую)</string>
+    <string name="pref_CustomEvents_Other_Calendars_title">Календари</string>
+    <string name="pref_CustomEvents_Other_Calendars_description">Импортировать события из выбранных календарей</string>
+    <string name="pref_CustomEvents_Calendars_title">Календари</string>
+
     <string name="pref_CustomEvents_Custom_title">Пользовательское событие</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Наименования событий</string>
@@ -200,8 +225,8 @@
         <item>Чёрная</item>
     </string-array>
 
-    <string name="pref_EventTypes_title">Типы событий</string>
-    <string name="pref_EventTypes_description">Какие события отображать в списке событий и виджетах</string>
+    <string name="pref_List_EventTypes_title">Типы событий</string>
+    <string name="pref_List_EventTypes_description">Какие события отображать в списке</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Дни рождения</item>
@@ -256,6 +281,7 @@
         <item>Наименование события</item>
         <item>Исходное наименование события</item>
         <item>Иконка избранного контакта</item>
+        <item>Возраст</item>
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
@@ -295,6 +321,19 @@
         <item>Ничего</item>
     </string-array>
 
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Не выделять</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
     <string name="pref_Widgets_Color_EventToday_title">Цвет для \"Возраст\"</string>
     <string name="pref_Widgets_Color_EventToday_description">Цвет возраста для события сегодня</string>
 
@@ -303,6 +342,11 @@
 
     <string name="pref_Widgets_Days_EventSoon_description">За сколько дней события считаются ближайшими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Ближайшие события</string>
+
+    <string name="widget_config_event_types_title">Типы событий</string>
+    <string name="widget_config_event_types_description">Какие события отображать на виджете</string>
+
+    <string name="widget_config_event_types_empty">Как в списке событий</string>
 
     <string name="widget_config_index_label">Стартовый номер события:</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>
@@ -326,6 +370,7 @@
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>
+        <item>+2</item>
     </string-array>
 
     <string name="widget_hint">Чтобы отредактировать настройки виджета, нажмите на подпись самого правого события:</string>
@@ -354,6 +399,9 @@
         <item>За неделю</item>
     </string-array>
 
+    <string name="pref_Notifications_EventTypes_title">Типы событий</string>
+    <string name="pref_Notifications_EventTypes_description">Какие события включать в уведомления</string>
+
     <string name="pref_Notifications_AlarmHour_title">Час уведомления</string>
     <string name="pref_Notifications_AlarmHour_description">В какой час уведомлять</string>
 
@@ -368,6 +416,16 @@
 
     <string name="pref_Notifications_Ringtone_title">Звук уведомления</string>
     <string name="pref_Notifications_Ringtone_description">Звук уведомления о предстоящих событиях</string>
+
+    <string name="pref_Notifications_QuickActions_title">Быстрые действия</string>
+    <string name="pref_Notifications_QuickActions_description">Какие действия показывать у одиночного уведомления (до 3х штук)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Позвонить</item>
+        <item>Исключить из уведомлений</item>
+        <item>Скрыть событие</item>
+        <item>Напомнить через 1 час</item>
+    </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
     <string name="pref_Notifications_NotifyTest_description">Нажмите для показа тестового уведомления за сегодня</string>

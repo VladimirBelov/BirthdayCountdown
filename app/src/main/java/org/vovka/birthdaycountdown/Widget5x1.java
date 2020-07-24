@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 08.04.20 0:58
+ *  * Last modified 16.07.20 23:22
  *
  */
 
@@ -34,7 +34,7 @@ public class Widget5x1 extends AppWidgetProvider {
             eventsData.setLocale(true);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            int eventsCount = getCellsForSize(minWidth);
+            int eventsCount = Math.min(getCellsForSize(minWidth), Constants.WIDGET_EVENTS_MAX);
 
             //Уточняем количество событий в настройке
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
@@ -53,6 +53,9 @@ public class Widget5x1 extends AppWidgetProvider {
                     break;
                 case 3:
                     prefEventsCountDiff = 1;
+                    break;
+                case 4:
+                    prefEventsCountDiff = 2;
                     break;
             }
 

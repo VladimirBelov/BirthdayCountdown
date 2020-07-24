@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 26.04.20 22:07
+  ~  * Last modified 20.07.20 0:53
   ~  */
   -->
 
@@ -12,18 +12,19 @@
     <string name="window_widget_settings">Налаштування віджета</string>
     <string name="window_about">Про програму</string>
 
-    <string name="title_activity_search">Пошук</string>
-    <string name="title_activity_events_scope">Фільтр</string>
+    <string name="activity_title_search">Пошук</string>
+    <string name="activity_title_events_scope">Фільтр</string>
 
     <string name="shortcut_notify">Повідомлення</string>
 
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
+    <string name="menu_add_event_to_calendar">Додати подію в календар…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Пошук…</string>
     <string name="menu_filter_events">Фільтр…</string>
-    <string name="menu_exit">Вихід</string>
+<!--    <string name="menu_exit">Закрити</string>-->
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_events">Всі події контакту</string>
     <string name="menu_context_event_info">Дані про подію</string>
@@ -53,14 +54,25 @@
     <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
-    <string name="msg_after_age_prefix_1">" рік"</string>
-    <string name="msg_after_age_prefix_2_3_4">" роки"</string>
-    <string name="msg_after_age_prefix_1_">" рік"</string>
-    <string name="msg_after_age_prefix_4_21">" років"</string>
-    <string name="msg_before_event_prefix_1">" день"</string>
-    <string name="msg_before_event_prefix_2_3_4">" дні"</string>
-    <string name="msg_before_event_prefix_1_">" день"</string>
-    <string name="msg_before_event_prefix_4_21">" днів"</string>
+
+    <string name="msg_after_year_prefix_1">" рік"</string>
+    <string name="msg_after_year_prefix_2_3_4">" роки"</string>
+    <string name="msg_after_year_prefix_1_">" рік"</string>
+    <string name="msg_after_year_prefix_4_21">" років"</string>
+
+    <string name="msg_after_month_prefix_1">" місяць"</string>
+    <string name="msg_after_month_prefix_2_3_4">" місяці"</string>
+    <string name="msg_after_month_prefix_1_">" місяць"</string>
+    <string name="msg_after_month_prefix_4_21">" місяців"</string>
+
+    <string name="msg_after_day_prefix_1">" день"</string>
+    <string name="msg_after_day_prefix_2_3_4">" дні"</string>
+    <string name="msg_after_day_prefix_1_">" день"</string>
+    <string name="msg_after_day_prefix_4_21">" днів"</string>
+
+    <string name="msg_age_now">"Зараз: "</string>
+    <string name="msg_age_was">"Було: "</string>
+    <string name="msg_age_could_be">"Было бы сейчас: "</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_notifications_soon_no_events">Немає подій на найближчі дні</string>
@@ -70,6 +82,7 @@
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
     <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфон додатками (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
+    <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
     <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
     <string name="msg_no_access_contacts_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>
     <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте дозволи додатку</string>
@@ -91,6 +104,8 @@
     <string name="hint_EventDistance">До події</string>
     <string name="hint_Description">Деталі</string>
     <string name="hint_EventIcon">Значок</string>
+    <string name="hint_SearchPanel">Панель пошуку</string>
+    <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
 
     <string name="button_ok">OK</string>
     <string name="button_clear">Очистити</string>
@@ -102,6 +117,9 @@
     <string name="button_open_version_history">Історія версій</string>
     <string name="button_all">Всі</string>
     <string name="button_snooze">Нагадати через годину</string>
+    <string name="button_hide">Приховати</string>
+    <string name="button_silent">Виключити</string>
+    <string name="button_dial">Дзвонити</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -117,6 +135,7 @@
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Іменини</string>
+    <string name="event_type_calendar">Подія календаря</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_name_1_7">На 1–7 подій</string>
@@ -155,32 +174,6 @@
         <item>" у суботу"</item>
     </string-array>
 
-    <string-array name="pref_Theme_entries">
-        <item>Зелена</item>
-        <item>Темно-сіра</item>
-        <item>Чорна</item>
-    </string-array>
-
-    <string name="pref_EventTypes_title">Типи подій</string>
-    <string name="pref_EventTypes_description">Які події відображати в списку подій і віджетах</string>
-
-    <string-array name="pref_EventTypes_entries">
-        <item>Дні народження</item>
-        <item>Річниці весілля</item>
-        <item>Інші події</item>
-        <item>Події користувача</item>
-        <item>Круглі дати (5K днів)</item>
-    </string-array>
-
-    <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
-    <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів траурною стрічкою</string>
-
-    <string-array name="pref_List_SadPhoto_entries">
-        <item>Ніколи</item>
-        <item>Тільки для однієї події</item>
-        <item>Для всіх подій контакту</item>
-    </string-array>
-
     <string name="pref_CustomEvents_title">Налаштування подій</string>
     <string name="pref_CustomEvents_summary">Параметри визначення подій користувача</string>
     <string name="pref_CustomEvents_hint">Найменування (через кому)</string>
@@ -213,12 +206,44 @@
     <string name="pref_CustomEvents_Death_Labels_title">Свої найменування</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці смерті (через кому)</string>
 
+    <string name="pref_CustomEvents_Other_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Other_Labels_description">Події контактів з такою міткою будуть ідентифіковані як інші події (через кому)</string>
+    <string name="pref_CustomEvents_Other_Calendars_title">Календарі</string>
+    <string name="pref_CustomEvents_Other_Calendars_description">Імпортувати події з обраних календарів</string>
+    <string name="pref_CustomEvents_Calendars_title">Календарі</string>
+
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Найменування подій</string>
     <string name="pref_CustomEvents_Custom_Labels_description">Події контактів з такою міткою будуть ідентифіковані як ця подія (через кому)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Custom_UseYear_description">Використовувати рік для розрахунку річниць (не тільки день і місяць)</string>
+
+    <string-array name="pref_Theme_entries">
+        <item>Зелена</item>
+        <item>Темно-сіра</item>
+        <item>Чорна</item>
+    </string-array>
+
+    <string name="pref_List_EventTypes_title">Типи подій</string>
+    <string name="pref_List_EventTypes_description">Які події відображати в списку подій</string>
+
+    <string-array name="pref_EventTypes_entries">
+        <item>Дні народження</item>
+        <item>Річниці весілля</item>
+        <item>Інші події</item>
+        <item>Події користувача</item>
+        <item>Круглі дати (5K днів)</item>
+    </string-array>
+
+    <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
+    <string name="pref_List_SadPhoto_description">Відзначати фотографії померлих контактів траурною стрічкою</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Ніколи</item>
+        <item>Тільки для однієї події</item>
+        <item>Для всіх подій контакту</item>
+    </string-array>
 
     <string name="pref_List_title">Список подій</string>
 
@@ -256,6 +281,7 @@
         <item>Найменування події</item>
         <item>Початкове найменування події</item>
         <item>Значок вибраного</item>
+        <item>Вік</item>
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
@@ -304,6 +330,11 @@
     <string name="pref_Widgets_Days_EventSoon_description">За скільки днів події вважаються найближчими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>
 
+    <string name="widget_config_event_types_title">Типи подій</string>
+    <string name="widget_config_event_types_description">Які події відображати на віджеті</string>
+
+    <string name="widget_config_event_types_empty">Як в списку подій</string>
+
     <string name="widget_config_index_label">Стартовий номер події:</string>
     <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
 
@@ -326,6 +357,7 @@
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>
+        <item>+2</item>
     </string-array>
 
     <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис найправішої події:</string>
@@ -354,6 +386,9 @@
         <item>За тиждень</item>
     </string-array>
 
+    <string name="pref_Notifications_EventTypes_title">Типи подій</string>
+    <string name="pref_Notifications_EventTypes_description">Які події включати в повідомлення</string>
+
     <string name="pref_Notifications_AlarmHour_title">Час повідомлення</string>
     <string name="pref_Notifications_AlarmHour_description">В який час повідомляти</string>
 
@@ -368,6 +403,16 @@
 
     <string name="pref_Notifications_Ringtone_title">Звук сповіщення</string>
     <string name="pref_Notifications_Ringtone_description">Звук повідомлення про майбутні події</string>
+
+    <string name="pref_Notifications_QuickActions_title">Швидкі дії</string>
+    <string name="pref_Notifications_QuickActions_description">Які дії показувати у одиночного повідомлення (до 3х штук)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Дзвонити</item>
+        <item>Виключити з повідомлень</item>
+        <item>Приховати подія</item>
+        <item>Нагадати через 1 годину</item>
+    </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
     <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>

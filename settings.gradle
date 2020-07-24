@@ -1,1 +1,9 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Copyright (c) 2018 - 2020. All rights reserved.
+ *  * Last modified 28.04.20 23:21
+ *
+ */
+
 include ':app'

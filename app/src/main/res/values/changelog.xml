@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 21.04.20 19:09
+  ~  * Last modified 28.04.20 23:21
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.0</item>
+        <item>Event types are configured separately for the list, notifications and each widget</item>
+        <item>Added actions \"Hide\", \"Disable\", \"Dial\" in notifications (+ setting)</item>
+        <item>Current age in the events list</item>
+        <item>Calendar events support (Events customizing->Other Event->Calendars)</item>
+        <item>Hiding and disabling notifications for single custom event</item>
+        <item>Fixed theme colors and other bugs</item>
 
         <item>#1.4.9</item>
         <item>Events search interface has been redone</item>

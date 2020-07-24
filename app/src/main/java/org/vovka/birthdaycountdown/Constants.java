@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.20 23:21
+ *  * Created by Vladimir Belov on 20.07.20 1:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 24.04.20 11:27
+ *  * Last modified 19.07.20 17:12
  *
  */
 
@@ -48,6 +48,21 @@ class Constants {
     static final String STRING_EVENT_INFO = "eventInfo";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
 
+    static final Integer Type_BirthDay = 0;
+    static final Integer Type_Anniversary = 1;
+    static final Integer Type_Other = 2;
+    static final Integer Type_Custom = 3;
+    static final Integer Type_5K = 4;
+    static final Integer Type_Death = 5;
+    static final Integer Type_NameDay = 6;
+    static final Integer Type_Crowning = 7;
+    static final Integer Type_Custom1 = 8;
+    static final Integer Type_Custom2 = 9;
+    static final Integer Type_Custom3 = 10;
+    static final Integer Type_Custom4 = 11;
+    static final Integer Type_Custom5 = 12;
+    static final Integer Type_CalendarEvent = 20;
+
     static final String STRING_2HASH = "##"; //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String STRING_2TILDA = "~~";
     static final String STRING_COLON_SPACE = ": ";
@@ -58,7 +73,7 @@ class Constants {
     static final String STRING_PARENTHESIS_OPEN = " (";
     static final String STRING_PARENTHESIS_START = "(";
     static final String STRING_PARENTHESIS_CLOSE = ")";
-    static final String STRING_3MINUS = "--";
+    static final String STRING_2MINUS = "--";
     static final String STRING_MINUS = "-";
     static final String STRING_DIALOG_TAB = "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
@@ -68,13 +83,17 @@ class Constants {
     static final String ColumnNames_PHOTO_URI = "photo_uri";
 
     final static int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    final static int MY_PERMISSIONS_REQUEST__GET_ACCOUNTS = 101;
+    final static int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
     final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
+    final static int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
 
     static final int defaultNotificationID = 1000;
     static final String ACTION_SNOOZE = "ACTION_SNOOZE";
     static final String ACTION_NOTIFY = "ACTION_NOTIFY";
     static final String ACTION_LAUNCH = "LAUNCH_ACTIVITY";
+    static final String ACTION_HIDE = "ACTION_HIDE";
+    static final String ACTION_SILENT = "ACTION_SILENT";
+    static final String ACTION_DIAL = "ACTION_DIAL";
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
     static final String EXTRA_FILTER = "filterText";
@@ -108,7 +127,12 @@ class Constants {
     static final int MENU_MAIN_REFRESH = 2;
     static final int MENU_MAIN_SETTINGS = 3;
     static final int MENU_MAIN_FILTER = 4;
-    static final int MENU_MAIN_EXIT = 5;
+    //static final int MENU_MAIN_EXIT = 5;
+
+    static final int WIDGET_TEXT_SIZE_TINY = 10;
+    static final int WIDGET_TEXT_SIZE_SMALL = 12;
+    static final int WIDGET_TEXT_SIZE_BIG = 18;
+    static final int WIDGET_EVENTS_MAX = 7;
 
     //Сообщения
 
@@ -130,9 +154,12 @@ class Constants {
     static final String CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR = "ContactsEvents->checkIsHiddenEvent error:\n";
     static final String CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR = "ContactsEvents->checkIsSilentEvent error:\n";
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
+    static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
+    static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR = "ContactsEvents->getContactFirstName error:\n";
+    static final String CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR = "ContactsEvents->getContactPhone error:\n";
     static final String CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR = "ContactsEvents->getEventDistanceText error:\n";
     static final String CONTACTS_EVENTS_GET_HIDDEN_EVENTS_COUNT_ERROR = "ContactsEvents->getHiddenEventsCount error:\n";
     static final String CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR = "ContactsEvents->clearHiddenEvents error:\n";
@@ -158,7 +185,9 @@ class Constants {
     static final String CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR = "ContactsEvents->SnoozeNotification error:\n";
     static final String CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR = "ContactsEvents->ShowNotification error:\n";
     static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_ERROR = "ContactsEvents->countDaysDiff error:\n";
+    static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_TEXT_ERROR = "ContactsEvents->countDaysDiffText error:\n";
     static final String CONTACTS_EVENTS_ADD_YEAR_ERROR = "ContactsEvents->addYear error:\n";
+    static final String CONTACTS_EVENTS_GET_AGE_STRING_ERROR = "ContactsEvents->getAgeString error:\n";
     static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
     static final String CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR = "ContactsEvents->showAnniversaryList error:\n";
     static final String CONTACTS_EVENTS_SET_HTML_COLOR = "ContactsEvents->setHTMLColor error:\n";
@@ -196,7 +225,9 @@ class Constants {
     static final String SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR = "SettingsActivity->setUpNestedScreen error:\n";
     static final String SETTINGS_ACTIVITY_ON_STOP_ERROR = "SettingsActivity->onStop error:\n";
     static final String SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR = "SettingsActivity->getAccounts error:\n";
+    static final String SETTINGS_ACTIVITY_GET_CALENDARS_ERROR = "SettingsActivity->getCalendars error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
+    static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
 
     static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
 

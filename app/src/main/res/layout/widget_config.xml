@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.20 23:21
+  ~  * Created by Vladimir Belov on 20.07.20 1:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 08.04.20 0:58
+  ~  * Last modified 30.05.20 2:09
   ~  */
   -->
 
@@ -38,6 +38,33 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_event_types_title"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <org.vovka.birthdaycountdown.MultiSelectionSpinner
+                android:id="@+id/spinnerEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_config_event_types_description"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <View
+                android:id="@+id/dividerEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:background="?attr/listDividerColor" /> <!--Divider-->
 
             <TextView
                 android:layout_width="fill_parent"
