@@ -13,7 +13,7 @@
 
         <item>#1.5.0</item>
         <item>Event types are configured separately for the list, notifications and each widget</item>
-        <item>Added actions \"Hide\", \"Disable\", \"Dial\" in notifications (+ setting)</item>
+        <item>Added actions \"Hide\", \"Disable\", \"Dial\" for single notification (+ preference)</item>
         <item>Current age in the events list</item>
         <item>Calendar events support (Events customizing->Other Event->Calendars)</item>
         <item>Hiding and disabling notifications for single custom event</item>

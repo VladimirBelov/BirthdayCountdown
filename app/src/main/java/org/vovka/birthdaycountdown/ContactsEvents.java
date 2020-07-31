@@ -71,6 +71,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -207,7 +208,7 @@ class ContactsEvents {
     final String systemLocale = Locale.getDefault().getLanguage();
     HashSet<String> set_events_deaths; //ID контактов с годовщиной смерти
     HashMap<String, Date> set_events_birthdays; //дни рождения
-    private HashSet<String> set_contacts_ids;
+    private HashSet<String> set_contacts_ids; //ID всех контактов в адресной книге
 
     //Настройки
     boolean preferences_debug_on;
@@ -1404,10 +1405,29 @@ class ContactsEvents {
             Locale locale_en = new Locale(Constants.LANG_EN);
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
             ContentResolver contentResolver = context.getContentResolver();
-            String[] projection = new String[] {CalendarContract.Events._ID, CalendarContract.Events.TITLE, CalendarContract.Events.DESCRIPTION, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND};
+            String[] projection = new String[] {
+                    CalendarContract.Events._ID,
+                    CalendarContract.Events.TITLE,
+                    CalendarContract.Events.DESCRIPTION,
+                    CalendarContract.Events.DTSTART,
+                    CalendarContract.Events.DTEND
+            };
+
             Calendar startTime = Calendar.getInstance();
-            Calendar endTime= Calendar.getInstance();
+            startTime.set(HOUR_OF_DAY, 0);
+            startTime.set(MINUTE, 0);
+            startTime.set(SECOND, 0);
+            startTime.set(MILLISECOND, 0);
+            final int zoneOffset = TimeZone.getDefault().getOffset(startTime.getTimeInMillis()); //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
+            startTime.add(MILLISECOND, zoneOffset);
+
+            Calendar endTime = Calendar.getInstance();
             endTime.set(YEAR, startTime.get(YEAR) + 1);
+            endTime.set(HOUR_OF_DAY, 0);
+            endTime.set(MINUTE, 0);
+            endTime.set(SECOND, 0);
+            endTime.set(MILLISECOND, 0);
+            endTime.add(MILLISECOND, zoneOffset);
 
             String eventType = eventTypesIDs.get(Type_Other);
             Set<String> preferences_calendars_other = getPreferences_Calendars(eventType);
@@ -1426,12 +1446,9 @@ class ContactsEvents {
 
                     Cursor cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, projection, selection, null, "dtstart ASC");
                     if (cursor != null) {
-                        //Toast.makeText(context, "calendar \"" + calID + "\": " + cursor.getCount(), Toast.LENGTH_LONG).show();
-
                         if (cursor.getCount() > 0) {
                             while (cursor.moveToNext()) {
                                 Date date = new Date(Long.parseLong(cursor.getString(3)));
-                                //Toast.makeText(context, sdf.format(date), Toast.LENGTH_LONG).show();
 
                                 userData.put(Position_eventDate_sorted, STRING_SPACE);
                                 userData.put(Position_fio, cursor.getString(1));
@@ -1453,7 +1470,7 @@ class ContactsEvents {
                                 userData.put(Position_eventIcon, Integer.toString(eventIcon));
                                 userData.put(Position_eventEmoji, eventEmoji);
                                 userData.put(Position_starred, STRING_EMPTY);
-                                userData.put(Position_nickname, STRING_SPACE);
+                                userData.put(Position_nickname, STRING_EMPTY);
                                 userData.put(Position_age_current, STRING_SPACE);
 
                                 dataRow = new StringBuilder();
@@ -1487,11 +1504,11 @@ class ContactsEvents {
 
     Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean forWidget) {
 
-        Bitmap bm;
+        Bitmap bm = null;
 
         try {
 
-            if (event.equals(STRING_EMPTY)) return null;
+            if (event.equals(STRING_EMPTY)) return bm;
 
             String[] singleEventArray = event.split(Constants.STRING_2HASH);
 
@@ -1506,13 +1523,15 @@ class ContactsEvents {
                 //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                 Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contact_id]);
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactUri, true);
-                BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                bm = BitmapFactory.decodeStream(buf);
-                buf.close();
-                photo_stream.close();
+                if (photo_stream != null) {
+                    BufferedInputStream buf = new BufferedInputStream(photo_stream);
+                    bm = BitmapFactory.decodeStream(buf);
+                    buf.close();
+                    photo_stream.close();
+                }
+            }
 
-            } else {
-
+            if (bm == null) {
                 //случайное фото с соответствиии с возрастом и полом
 
                 Person person = new Person(context, event);
@@ -1534,7 +1553,6 @@ class ContactsEvents {
 
                 bm = BitmapFactory.decodeResource(getResources(), idPhoto);
             }
-
 
             if (set_events_deaths != null &&
                     (preferences_list_sad_photo == 2 || (preferences_list_sad_photo == 1 && isDeath)) &&
@@ -2905,9 +2923,13 @@ class ContactsEvents {
 
             Set<String> toRemove = new HashSet<>();
             for (String event: preferences_silentEvents) {
-                if (!set_contacts_ids.contains(getKeyParts(event)[0])) toRemove.add(event);
+                final String[] keyParts = getKeyParts(event);
+                if (!keyParts[1].equals(eventTypesIDs.get(Type_CalendarEvent)) && !set_contacts_ids.contains(keyParts[0])) toRemove.add(event);
             }
-            if (toRemove.size() > 0) preferences_silentEvents.removeAll(toRemove);
+            if (toRemove.size() > 0) {
+                if (preferences_debug_on) Toast.makeText(context, "Cleared silenced events for absent contacts: " + toRemove.size(), Toast.LENGTH_LONG).show();
+                preferences_silentEvents.removeAll(toRemove);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2923,9 +2945,13 @@ class ContactsEvents {
 
             Set<String> toRemove = new HashSet<>();
             for (String event: preferences_hiddenEvents) {
-                if (!set_contacts_ids.contains(getKeyParts(event)[0])) toRemove.add(event);
+                final String[] keyParts = getKeyParts(event);
+                if (!keyParts[1].equals(eventTypesIDs.get(Type_CalendarEvent)) && !set_contacts_ids.contains(keyParts[0])) toRemove.add(event);
             }
-            if (toRemove.size() > 0) preferences_hiddenEvents.removeAll(toRemove);
+            if (toRemove.size() > 0) {
+                if (preferences_debug_on) Toast.makeText(context, "Cleared hidden events for absent contacts: " + toRemove.size(), Toast.LENGTH_LONG).show();
+                preferences_hiddenEvents.removeAll(toRemove);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
