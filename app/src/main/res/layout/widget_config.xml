@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 30.05.20 2:09
+  ~  * Last modified 12.08.20 12:27
   ~  */
   -->
 
@@ -12,7 +12,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".WidgetConfigureActivity" >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,19 +28,27 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="42sp"
         android:background="?attr/backgroundColor">
 
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:nestedScrollingEnabled="true"
+           android:fadeScrollbars="true"
+           android:layout_above="@id/widget_hint"
+           android:layout_alignParentTop="true">
         <LinearLayout
             android:id="@+id/layout_prefs"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:isScrollContainer="true">
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_event_types_title"
                 android:textColor="?android:attr/textColorSecondary" />
@@ -53,7 +61,7 @@
                 android:paddingEnd="8dp" />
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_event_types_description"
                 android:textColor="?android:attr/textColorSecondary" />
@@ -67,21 +75,21 @@
                 android:background="?attr/listDividerColor" /> <!--Divider-->
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_index_label"
                 android:textColor="?android:attr/textColorSecondary" />
 
             <Spinner
                 android:id="@+id/spinnerEventShift"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/widget_config_numbers"
                 android:prompt="@string/widget_config_index_label" />
             <!--            android:popupBackground="?attr/backgroundColor"-->
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_index_description"
                 android:textColor="?android:attr/textColorSecondary" />
@@ -96,7 +104,7 @@
 
             <TextView
                 android:id="@+id/spinnerFontMagnifyLabel"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_font_label"
                 android:textColor="?android:attr/textColorSecondary" />
@@ -125,7 +133,7 @@
 
             <TextView
                 android:id="@+id/spinnerEventsCountLabel"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_config_events_count_label"
                 android:textColor="?android:attr/textColorSecondary" />
@@ -144,6 +152,7 @@
                 android:text="@string/widget_config_events_count_description"
                 android:textColor="?android:attr/textColorSecondary" />
         </LinearLayout>
+    </ScrollView>
 
         <TextView
             android:id="@+id/widget_hint"
@@ -151,14 +160,14 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/layout_buttons"
             android:drawableBottom="@drawable/pref_widget"
-            android:padding="6dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:text="@string/widget_hint"
             android:textColor="?android:attr/textColorSecondary" />
 
-
         <LinearLayout
             android:id="@+id/layout_buttons"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal">

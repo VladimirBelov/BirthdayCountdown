@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 19.07.20 21:21
+ *  * Last modified 03.09.20 14:15
  *
  */
 
@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -30,7 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.vovka.birthdaycountdown.Constants.*;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_nickname;
@@ -191,7 +193,7 @@ class WidgetUpdater {
             boolean isVisibleEvent = false;
             boolean useEventListPrefs = true;
 
-            if  (singleRowArray[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
+            if  (singleRowArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
                 useEventListPrefs = false;
             } else if (widgetPref.size() > 3) {
                 List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split("\\+"));
@@ -228,7 +230,7 @@ class WidgetUpdater {
                         visibleCell*=3;
                         break;
                     case STRING_3: //Фамилия И.О.
-                        views.setTextViewText(id_widget_Caption_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_id])));
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
                         visibleCell*=2;
@@ -240,20 +242,25 @@ class WidgetUpdater {
                         visibleCell*=2;
                         break;
                     case STRING_5: //Имя
-                        views.setTextViewText(id_widget_Caption_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                                person.getFirstName());
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
                         break;
                     case STRING_6: //Фамилия
-                        views.setTextViewText(id_widget_Caption_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                                person.getSecondName());
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
                         break;
                     case STRING_7: //Псевдоним (Имя)
-                        views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
-                                eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_nickname].trim().length() > 0 ?
+                                singleRowArray[Position_nickname] :
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                         views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
                         visibleCell*=3;
@@ -287,7 +294,7 @@ class WidgetUpdater {
                         visibleCell*=7;
                         break;
                     case STRING_3: //Фамилия И.О.
-                        views.setTextViewText(id_widget_Caption2nd_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption2nd_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_id])));
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
                         visibleCell*=5;
@@ -299,20 +306,25 @@ class WidgetUpdater {
                         visibleCell*=5;
                         break;
                     case STRING_5: //Имя
-                        views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                                person.getFirstName());
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
                         break;
                     case STRING_6: //Фамилия
-                        views.setTextViewText(id_widget_Caption2nd_centered, eventsData.getContactLastName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                                person.getSecondName());
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
                         break;
                     case STRING_7: //Псевдоним (Имя)
-                        views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
-                                eventsData.getContactFirstName(Long.parseLong(singleRowArray[Position_contact_id])));
+                        views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_nickname].trim().length() > 0 ?
+                                singleRowArray[Position_nickname] :
+                                eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                         views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
                         visibleCell*=7;
@@ -440,7 +452,7 @@ class WidgetUpdater {
                 }
 
                 //Возраст
-                if (singleRowArray[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_5K))) {
+                if (singleRowArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
                     views.setTextViewText(id_widget_Age, singleRowArray[ContactsEvents.Position_age_caption]);
                 } else if (person.Age > -1) {
                     views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
@@ -459,7 +471,12 @@ class WidgetUpdater {
                 if (eventsToShow > 1 && eventCell < (eventsToShow - 1)) {
 
                     Intent intentView = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contact_id]);
+                    Uri uri;
+                    if (!singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_id]);
+                    } else {
+                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleRowArray[Position_id]);
+                    }
                     intentView.setData(uri);
                     views.setOnClickPendingIntent(resources.getIdentifier(STRING_EVENT_INFO + eventCell, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
 

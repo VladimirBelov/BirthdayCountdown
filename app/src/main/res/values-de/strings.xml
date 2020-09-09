@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.07.20 0:53
+  ~  * Last modified 01.09.20 17:53
   ~  */
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="window_settings">EiVeranstaltungennstellungen</string>
     <string name="window_widget_settings">Widget-Einstellungen</string>
     <string name="window_about">Über die Anwendung</string>
+    <string name="window_faq">Fragen und Antworten</string>
 
-    <string name="activity_title_search">Suche</string>
     <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Benachrichtigungen</string>
@@ -26,7 +26,6 @@
     <string name="menu_filter_events">Filtern…</string>
 <!--    <string name="menu_exit">Schließe</string>-->
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
-    <string name="menu_context_events">Alle Kontaktereignisse</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
     <string name="menu_context_unhide_event">Ereignisanzeige zurückgeben</string>
@@ -39,15 +38,14 @@
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
-    <string name="msg_no_events">Keine Termine gefunden</string>
-    <string name="msg_filter">", filter: "</string>
+    <string name="msg_no_events">Keine Ereignisеn gefunden</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_today">Heute</string>
     <string name="msg_tomorrow">Morgen</string>
     <string name="msg_yesterday">Gestern</string>
-    <string name="msg_beforeyesterday">Vorgestern</string>
+    <string name="msg_before_yesterday">Vorgestern</string>
     <string name="msg_day_after_tomorrow">Übermorgen</string>
     <string name="msg_stats_prefix">"ereignisse: "</string>
     <string name="msg_stats_hidden_prefix">"versteckte ereignisse: "</string>
@@ -88,11 +86,11 @@
     <string name="msg_no_access_storage_hint">Kein Zugriff auf externen Speicher. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_welcome_title">Willkommen!</string>
     <string name="msg_welcome_text">Vielen Dank, dass Sie dieses Programm installiert haben. Obwohl die meisten Funktionen so informativ und minimal ärgerlich wie möglich konfiguriert sind, wird empfohlen, die Anwendungseinstellungen zu überprüfen. Dort können Sie beispielsweise Benachrichtigungen über bevorstehende Ereignisse aktivieren oder Parameter für Widgets festlegen. Viel Spaß beim Gebrauch!</string>
-    <string name="msg_newversion_title">"Änderungen in der Version %1$s:"</string>
-    <string name="msg_not_implemented">Noch nicht implementiert!</string>
+    <string name="msg_new_version_title">"Änderungen in der Version %1$s:"</string>
     <string name="msg_snoozed_until">"Bis zum %1$s geschlafen"</string>
     <string name="msg_notify_time">"Die Kündigung erfolgt um %1$s"</string>
     <string name="msg_filter_clear_confirmation">Alle Filter löschen?</string>
+    <string name="msg_calendar_info">"Kalenderereignis \"%1$s\""</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -108,11 +106,10 @@
     <string name="hint_AlertDialog">Warndialog</string>
 
     <string name="button_ok">OK</string>
-    <string name="button_clear">Klar</string>
     <string name="button_cancel">Abbrechen</string>
     <string name="button_rate">Bewerten</string>
     <string name="button_mail">Schreiben</string>
-    <string name="button_open_addresbook">Adressbuch öffnen…</string>
+    <string name="button_open_addressbook">Adressbuch öffnen…</string>
     <string name="button_open_app_settings">Einstellungen öffnen…</string>
     <string name="button_open_version_history">Versionsverlauf</string>
     <string name="button_all">Alle</string>
@@ -120,6 +117,7 @@
     <string name="button_hide">Ausblenden</string>
     <string name="button_silent">Ausschließen</string>
     <string name="button_dial">Telefonieren</string>
+    <string name="button_question">Neue Frage mailen</string>
 
     <string name="events_scope_not_hidden">Alles aufgedeckt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -183,6 +181,12 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Verwenden Sie Standardnamen, um Geburtstage zu bestimmen</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Namen</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Kontaktereignisse mit diesem Tag werden als Geburtstage gekennzeichnet (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln zum Importieren von Kalenderereignissen an Geburtstagen</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss das Tag [name] enthalten, das von anderem Text umgeben ist (optional):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardnamen</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Verwenden Sie Standardnamen, um Hochzeitstage zu bestimmen</string>
@@ -208,9 +212,8 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Eigene Namen</string>
     <string name="pref_CustomEvents_Other_Labels_description">Kontaktereignisse mit diesem Tag werden als Andere Ereignisse (durch Kommas getrennt) gekennzeichnet</string>
-    <string name="pref_CustomEvents_Other_Calendars_title">Kalender</string>
-    <string name="pref_CustomEvents_Other_Calendars_description">Importieren Sie Ereignisse aus ausgewählten Kalendern</string>
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
+    <string name="pref_CustomEvents_Calendars_description">Importieren Sie Ereignisse aus ausgewählten Kalendern</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Titel der Veranstaltung</string>
@@ -417,6 +420,8 @@
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Testbenachrichtigung anzuzeigen</string>
 
+    <string name="pref_FAQ_title">Fragen und Antworten</string>
+    <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, befinden Sie sich in diesem Abschnitt</string>
     <string name="pref_Help_title">Hilfe</string>
     <string name="pref_Debug_On_title">Debug-Meldungen</string>
     <string name="pref_Debug_On_description">Meldungen für das Debug anzeigen</string>
@@ -424,80 +429,81 @@
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
 
-    <string name="debuglog_body"><![CDATA[
-<h1>Statistik:</h1>
-<h2>Download-Geschwindigkeit:</h2><ul>
-    <li>Kontaktscan: %1$s msec
-    <li>Datumsanzahl: %2$s msec
-</ul>
-<h2>Kontaktdaten:</h2><ul>
-    <li>ursprüngliche Ereignisse: %3$d
-    <li>Beiträge: %4$d
-    <li>Organisationen: %5$d
-    <li>Aliase: %6$d
-</ul>
-<h2>Ereignisse nach Konten:</h2><ul>
-]]></string>
+    <string name="stats_title"><![CDATA[<h1>Statistik:</h1>]]></string>
+
+    <string name="stats_speed_title"><![CDATA[<h2>Ladegeschwindigkeit:</h2><ul>]]></string>
+    <string name="stats_speed_contacts"><![CDATA[<li>Kontaktscan: %1$s msec]]></string>
+    <string name="stats_speed_calendar"><![CDATA[<li>Kalender scannen: %1$s msec]]></string>
+    <string name="stats_speed_dates"><![CDATA[<li>Datumsanzahl: %1$s msec]]></string>
+
+    <string name="stats_counters_title"><![CDATA[<h2>Zähler:</h2><ul>]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>Ursprüngliche Ereignisse: %1$d]]></string>
+    <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
+    <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
+    <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>
+    <string name="stats_counters_nicknames"><![CDATA[<li>Aliase: %1$d]]></string>
+
+    <string name="stats_counters_events_title"><![CDATA[<h2>Ereignisse nach Konten:</h2><ul>]]></string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
-    <string name="event_type_wedding_1">Papierne</string>
-    <string name="event_type_wedding_2">Baumwollne</string>
-    <string name="event_type_wedding_3">Lederne</string>
-    <string name="event_type_wedding_4">Seidene</string>
-    <string name="event_type_wedding_5">Hölzerne</string>
-    <string name="event_type_wedding_6">Zucker</string>
-    <string name="event_type_wedding_7">Kupferne</string>
-    <string name="event_type_wedding_8">Bronze</string>
-    <string name="event_type_wedding_9">Fayence</string>
-    <string name="event_type_wedding_10">Rosen</string>
-    <string name="event_type_wedding_11">Stahl</string>
-    <string name="event_type_wedding_12">Nickel</string>
-    <string name="event_type_wedding_13">Spitzen oder Maiglöckchen</string>
-    <string name="event_type_wedding_14">Achat</string>
-    <string name="event_type_wedding_15">Kristall</string>
-    <string name="event_type_wedding_16">""</string>
-    <string name="event_type_wedding_17">""</string>
-    <string name="event_type_wedding_18">""</string>
-    <string name="event_type_wedding_19">""</string>
-    <string name="event_type_wedding_20">Porzellan</string>
-    <string name="event_type_wedding_21">""</string>
-    <string name="event_type_wedding_22">""</string>
-    <string name="event_type_wedding_23">""</string>
-    <string name="event_type_wedding_24">""</string>
-    <string name="event_type_wedding_25">Silberne</string>
-    <string name="event_type_wedding_26">""</string>
-    <string name="event_type_wedding_27">""</string>
-    <string name="event_type_wedding_28">""</string>
-    <string name="event_type_wedding_29">""</string>
-    <string name="event_type_wedding_30">Perlen</string>
-    <string name="event_type_wedding_31">""</string>
-    <string name="event_type_wedding_32">""</string>
-    <string name="event_type_wedding_33">Zinn</string>
-    <string name="event_type_wedding_34">""</string>
-    <string name="event_type_wedding_35">Leinen</string>
-    <string name="event_type_wedding_36">""</string>
+    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierne</string>
+    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Baumwollne</string>
+    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Lederne</string>
+    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Seidene</string>
+    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Hölzerne</string>
+    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Zucker</string>
+    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Kupferne</string>
+    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Bronze</string>
+    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Fayence</string>
+    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Rosen</string>
+    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Stahl</string>
+    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Nickel</string>
+    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Spitzen oder Maiglöckchen</string>
+    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Achat</string>
+    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Kristall</string>
+    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">""</string>
+    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">""</string>
+    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">""</string>
+    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">""</string>
+    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">Porzellan</string>
+    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">""</string>
+    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">""</string>
+    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">""</string>
+    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">""</string>
+    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Silberne</string>
+    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">""</string>
+    <string name="event_type_wedding_27" tools:keep="@string/event_type_wedding_27">""</string>
+    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">""</string>
+    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">""</string>
+    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Perlen</string>
+    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">""</string>
+    <string name="event_type_wedding_32" tools:keep="@string/event_type_wedding_32">""</string>
+    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">Zinn</string>
+    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">""</string>
+    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Leinen</string>
+    <string name="event_type_wedding_36" tools:keep="@string/event_type_wedding_36">""</string>
     <!-- Aluminium 37 1⁄2 -->
-    <string name="event_type_wedding_37">""</string>
-    <string name="event_type_wedding_38">""</string>
-    <string name="event_type_wedding_39">""</string>
-    <string name="event_type_wedding_40">Rubin</string>
-    <string name="event_type_wedding_41">""</string>
-    <string name="event_type_wedding_42">""</string>
-    <string name="event_type_wedding_43">""</string>
-    <string name="event_type_wedding_44">""</string>
-    <string name="event_type_wedding_45">Messing</string>
-    <string name="event_type_wedding_46">""</string>
-    <string name="event_type_wedding_47">""</string>
-    <string name="event_type_wedding_48">""</string>
-    <string name="event_type_wedding_49">""</string>
-    <string name="event_type_wedding_50">Goldene</string>
-    <string name="event_type_wedding_55">Platin</string>
-    <string name="event_type_wedding_60">Diamant</string>
-    <string name="event_type_wedding_65">Eiserne</string>
-    <string name="event_type_wedding_70">Gnaden</string>
-    <string name="event_type_wedding_75">Kronjuwelen</string>
-    <string name="event_type_wedding_80">Eichen</string>
-    <string name="event_type_wedding_85">Engels</string>
-    <string name="event_type_wedding_90">Marmor</string>
-    <string name="event_type_wedding_100">Himmels</string>
+    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">""</string>
+    <string name="event_type_wedding_38" tools:keep="@string/event_type_wedding_38">""</string>
+    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">""</string>
+    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Rubin</string>
+    <string name="event_type_wedding_41" tools:keep="@string/event_type_wedding_41">""</string>
+    <string name="event_type_wedding_42" tools:keep="@string/event_type_wedding_42">""</string>
+    <string name="event_type_wedding_43" tools:keep="@string/event_type_wedding_43">""</string>
+    <string name="event_type_wedding_44" tools:keep="@string/event_type_wedding_44">""</string>
+    <string name="event_type_wedding_45" tools:keep="@string/event_type_wedding_45">Messing</string>
+    <string name="event_type_wedding_46" tools:keep="@string/event_type_wedding_46">""</string>
+    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">""</string>
+    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">""</string>
+    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">""</string>
+    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Goldene</string>
+    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Platin</string>
+    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Diamant</string>
+    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Eiserne</string>
+    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Gnaden</string>
+    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Kronjuwelen</string>
+    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Eichen</string>
+    <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">Engels</string>
+    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Marmor</string>
+    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Himmels</string>
 </resources>

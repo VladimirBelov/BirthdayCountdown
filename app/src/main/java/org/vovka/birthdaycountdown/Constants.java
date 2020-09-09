@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 19.07.20 17:12
+ *  * Last modified 03.09.20 14:15
  *
  */
 
@@ -42,11 +42,14 @@ class Constants {
     static final String DATETIME_RUS = "dd MMMMM yyyy г.";
     static final String DATETIME_US = "MMM dd, yyyy";
     static final String DATE_JAVA = "yyyy-MM-dd";
+    static final String DATE_JAVA_NO_YEAR = "--MM-dd";
 
     static final String STRING_ID = "id";
     static final String STRING_TEXT_VIEW = "textView";
     static final String STRING_EVENT_INFO = "eventInfo";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
+    static final String STRING_STORAGE_CONTACTS = "contacts";
+    static final String STRING_STORAGE_CALENDAR = "calendar";
 
     static final Integer Type_BirthDay = 0;
     static final Integer Type_Anniversary = 1;
@@ -80,7 +83,6 @@ class Constants {
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";
     static final String ColumnNames_ACCOUNT_NAME = "account_name";
-    static final String ColumnNames_PHOTO_URI = "photo_uri";
 
     final static int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     final static int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
@@ -110,6 +112,12 @@ class Constants {
     static final String HTML_LI = "<li>";
     static final String HTML_UL_END = "</ul>";
     static final String HTML_FONT_END = "</font>";
+    static final String HTML_H1_START = "<h1>";
+    static final String HTML_H1_END = "</h1>";
+    static final String HTML_H2_START = "<h2>";
+    static final String HTML_H2_END = "</h2>";
+    static final String HTML_H3_START = "<h3>";
+    static final String HTML_H3_END = "</h3>";
 
     static final String Broadcast_ANDROID_INTENT_ACTION_TIME_SET = "android.intent.action.TIME_SET";
     static final String Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED = "android.intent.action.DATE_CHANGED";
@@ -133,6 +141,7 @@ class Constants {
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
     static final int WIDGET_EVENTS_MAX = 7;
+    static final int SPEED_LOAD_CRITICAL = 700;
 
     //Сообщения
 
@@ -147,6 +156,9 @@ class Constants {
     static final String MSG_SENT_WIDGETS_UPDATE_REQUEST = "Sent widgets update request";
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
 
+    static final String RULE_TAG_NAME = "[name]";
+    static final String RULE_TAG_ALIAS = "[alias]";
+
     //Ошибки
 
     static final String ALARM_RECEIVER_ON_RECEIVE_ERROR = "AlarmReceiver->onReceive error:\n";
@@ -156,8 +168,11 @@ class Constants {
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
+    static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
+    static final String CONTACTS_EVENTS_GET_CALENDARS_ERROR = "ContactsEvents->getCalendars error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
+    static final String CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR = "ContactsEvents->getContactData error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR = "ContactsEvents->getContactFirstName error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR = "ContactsEvents->getContactPhone error:\n";
     static final String CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR = "ContactsEvents->getEventDistanceText error:\n";
@@ -206,6 +221,7 @@ class Constants {
     static final String MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR = "MainActivity->onCreateContextMenu error:\n";
     static final String MAIN_ACTIVITY_ON_CREATE_ERROR = "MainActivity->onCreate error:\n";
     static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
+    static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
     static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
     static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
     static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
@@ -226,6 +242,7 @@ class Constants {
     static final String SETTINGS_ACTIVITY_ON_STOP_ERROR = "SettingsActivity->onStop error:\n";
     static final String SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR = "SettingsActivity->getAccounts error:\n";
     static final String SETTINGS_ACTIVITY_GET_CALENDARS_ERROR = "SettingsActivity->getCalendars error:\n";
+    static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
 

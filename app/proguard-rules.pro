@@ -21,3 +21,11 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class androidx.core.app.CoreComponentFactory { *; }
+
+#section for local images
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+-keep class **.R$*
+#end

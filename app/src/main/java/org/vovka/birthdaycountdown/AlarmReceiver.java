@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 07.07.20 8:59
+ *  * Last modified 26.08.20 23:48
  *
  */
 
@@ -20,7 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -114,7 +114,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-                String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[Position_contact_id]));
+                String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[Position_id]));
                 if (!phone.equals(STRING_EMPTY)) {
 
                     //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android

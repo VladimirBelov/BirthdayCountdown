@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 20.07.20 0:30
+ *  * Last modified 31.08.20 20:44
  *
  */
 
@@ -22,7 +22,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
@@ -31,17 +30,21 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.provider.CalendarContract;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,19 +61,23 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
+import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.Type_Other;
 
+@SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
-    private String testChannelId = Constants.STRING_EMPTY;
+    private String testChannelId = STRING_EMPTY;
     private TypedArray ta;
     private ContactsEvents eventsData;
 
@@ -182,11 +189,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             eventsData.getPreferences();
-            updateTitles();
-            if (eventsData.preferences_notifications_days == -1) {
-                updateVisibility();
-            }
 
+            updateTitles();
+            updateVisibility();
         }
     }
 
@@ -240,16 +245,57 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void updateVisibility() {
         try {
 
-            PreferenceCategory prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
+            PreferenceCategory prefCat;
+            Preference pref;
 
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
             if (prefCat != null && eventsData.preferences_notifications_days == -1) {
 
-                if (findPreference(getString(R.string.pref_Notifications_Type_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Type_key)));
-                if (findPreference(getString(R.string.pref_Notifications_Events_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Events_key)));
-                if (findPreference(getString(R.string.pref_Notifications_AlarmHour_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_AlarmHour_key)));
-                if (findPreference(getString(R.string.pref_Notifications_QuickActions_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_QuickActions_key)));
-                if (findPreference(getString(R.string.pref_Notifications_Ringtone_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_Ringtone_key)));
-                if (findPreference(getString(R.string.pref_Notifications_NotifyTest_key)) != null) prefCat.removePreference(findPreference(getString(R.string.pref_Notifications_NotifyTest_key)));
+                pref = findPreference(getString(R.string.pref_Notifications_Type_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_Events_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+            }
+
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Birthday_key));
+            if (prefCat != null) {
+
+                if (eventsData.preferences_Calendars_BirthDay.size() == 0) {
+
+                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
+                    if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                } else {
+
+                    pref = new Preference(eventsData.context);
+                    pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
+                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
+                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
+                    prefCat.addPreference(pref);
+
+                    pref = new SwitchPreference(eventsData.context);
+                    pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_title));
+                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_description));
+                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
+                    prefCat.addPreference(pref);
+
+                }
 
             }
 
@@ -292,6 +338,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 testNotify();
 
+            } else if (getString(R.string.pref_FAQActivity_key).equals(key)) { //FAQ
+
+                Intent intent = new Intent(this, FAQActivity.class);
+                startActivity(intent);
+
             } else if (getString(R.string.pref_AboutActivity_key).equals(key)) { //О приложении
 
                 Intent intent = new Intent(this, AboutActivity.class);
@@ -311,6 +362,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.showAnniversaryList(this);
                 return true;
 
+            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
+                    return true;
+                }
+
+                selectCalendars(ContactsEvents.eventTypesIDs.get(Type_BirthDay));
+
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -318,7 +378,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     return true;
                 }
 
-                selectCalendars(eventsData.eventTypesIDs.get(Type_Other));
+                selectCalendars(ContactsEvents.eventTypesIDs.get(Type_Other));
+
+            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key).equals(key)) {
+
+                editRules();
+                return true;
+
             }
 
         } catch (Exception e) {
@@ -334,7 +400,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
             //удаляем временный канал оповещений
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals(Constants.STRING_EMPTY)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals(STRING_EMPTY)) {
                 NotificationManager notificationManager = getSystemService(NotificationManager.class);
                 if (notificationManager != null && notificationManager.getNotificationChannel(testChannelId) != null) {
                     notificationManager.deleteNotificationChannel(testChannelId);
@@ -377,6 +443,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.recreate();
+            //todo: созданные программно настройки не подхватывают стиль
 
         } else if (key.equals(getString(R.string.pref_CustomEvents_Custom1_Caption_key)) ||
                 key.equals(getString(R.string.pref_CustomEvents_Custom2_Caption_key)) ||
@@ -393,6 +460,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else {
                 this.recreate();
             }
+
+        } else if (key.equals(getString(R.string.pref_CustomEvents_Birthday_Calendars_key))) {
+
+            // if (eventsData.preferences_Calendars_BirthDay.size() == 0) {
+            updateVisibility();
+            //     } else {
+            //       this.recreate();
+            //       setUpNestedScreen((PreferenceScreen) findPreference(getString(R.string.pref_CustomEvents_Birthday_key)));
+            //    }
 
         }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
@@ -477,7 +553,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (notificationManager != null) {
 
                     //если был предыдущий тест
-                    if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
+                    if (!testChannelId.equals(STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
                         notificationManager.deleteNotificationChannel(testChannelId);
                     }
 
@@ -524,7 +600,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                     if (accountNames.size() != accountIcons.size()) { //Не нашли иконку, что ОЧЕНЬ странно
                         accountIcons.add(0);
-                        accountPackages.add(Constants.STRING_EMPTY);
+                        accountPackages.add(STRING_EMPTY);
                     }
                 }
             }
@@ -611,79 +687,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void selectCalendars(String eventType) {
-        Cursor cursor = null;
+
         try {
 
-            ArrayList<String> calIDs = new ArrayList<>();
-            ArrayList<String> calTitles = new ArrayList<>();
-            ArrayList<Boolean> calSelected = new ArrayList<>();
+            eventsData.map_calendars = eventsData.getCalendars();
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-
-                Uri uri = CalendarContract.Calendars.CONTENT_URI;
-                cursor = getContentResolver().query(
-                        uri,
-                        new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.VISIBLE, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CalendarContract.Calendars.ACCOUNT_NAME},
-                        null,
-                        null,
-                        null
-                );
-
-                if (cursor != null) {
-
-                    Set<String> preferences_calendars = eventsData.getPreferences_Calendars(eventType);
-
-                    if (cursor.getCount() > 0) {
-                        cursor.moveToFirst();
-                        for (int i = 0; i < cursor.getCount(); i++) {
-                            if (cursor.getInt(1) == 1) {
-                                String strID = cursor.getInt(0) + STRING_EMPTY;
-                                calIDs.add(strID);
-                                calTitles.add(cursor.getString(2).concat(STRING_PARENTHESIS_OPEN).concat(cursor.getString(3)).concat(STRING_PARENTHESIS_CLOSE));
-                                calSelected.add(preferences_calendars.contains(strID));
-                            }
-                            cursor.moveToNext();
-                        }
-                    }
-                    cursor.close();
-                }
-            }
-
-            if (calIDs.size() > 0) {
-                boolean[] sel = new boolean[calSelected.size()];
-                for (int i = 0; i < calSelected.size(); i++) {
-                    sel[i] = calSelected.get(i);
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.pref_CustomEvents_Calendars_title)
-                        .setIcon(android.R.drawable.ic_menu_month)
-                        .setMultiChoiceItems(calTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> calSelected.set(which, isChecked))
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-
-                            Set<String> toStore = new HashSet<>();
-                            for (int i = 0; i < calSelected.size(); i++) {
-                                if (calSelected.get(i)) toStore.add(calIDs.get(i));
-                            }
-                            eventsData.setPreferences_Calendars(eventType, toStore);
-                            eventsData.setPreferences();
-
-                            dialog.cancel();
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
-
-
-                AlertDialog alertToShow = builder.create();
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-
-            } else {
+            if (eventsData.map_calendars.size() == 0) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_CustomEvents_Calendars_title)
@@ -695,14 +704,125 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 alertToShow.show();
-
+                return;
             }
 
+            ArrayList<String> calIDs = new ArrayList<>();
+            ArrayList<String> calTitles = new ArrayList<>();
+            ArrayList<Boolean> calSelected = new ArrayList<>();
+
+            Set<String> preferences_calendars = eventsData.getPreferences_Calendars(eventType);
+            boolean[] sel = new boolean[eventsData.map_calendars.size()];
+            int ind = 0;
+            for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
+                calIDs.add(entry.getKey());
+                calTitles.add(entry.getValue().replace(STRING_2HASH, STRING_PARENTHESIS_OPEN).concat(STRING_PARENTHESIS_CLOSE));
+                calSelected.add(preferences_calendars.contains(entry.getKey()));
+                sel[ind] = calSelected.get(ind++);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_Calendars_title)
+                    .setIcon(android.R.drawable.ic_menu_month)
+                    .setMultiChoiceItems(calTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> calSelected.set(which, isChecked))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> toStore = new HashSet<>();
+                        for (int i = 0; i < calSelected.size(); i++) {
+                            if (calSelected.get(i)) toStore.add(calIDs.get(i));
+                        }
+                        eventsData.setPreferences_Calendars(eventType, toStore);
+                        eventsData.setPreferences();
+
+                        dialog.cancel();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
         } catch (Exception e) {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
             e.printStackTrace();
             Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void editRules() {
+
+        //todo: https://github.com/VladimirBelov/BirthdayCountdown/blob/97d2f61dd1538384e5595fca46ae0902d99d5183/app/src/main/java/org/vovka/birthdaycountdown/MainActivity.java
+
+        try {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title);
+            builder.setIcon(android.R.drawable.ic_menu_edit);
+            builder.setMessage(R.string.pref_CustomEvents_Birthday_Calendars_Rules_hint);
+
+            //https://stackoverflow.com/questions/10903754/input-text-dialog-android
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setText(eventsData.preferences_birthday_calendars_rules);
+            //input.setHint(R.string.msg_hint_search);
+            input.setSingleLine(false);
+            input.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+            input.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+
+            builder.setView(input);
+
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {/**/});
+            builder.setNegativeButton(R.string.button_cancel, (dialog1, which) -> dialog1.cancel());
+
+            AlertDialog  alertToShow = builder.create();
+
+            //https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                //alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            //https://stackoverflow.com/questions/4054662/displaying-soft-keyboard-whenever-alertdialog-builder-object-is-opened/6123935#6123935
+            //https://stackoverflow.com/questions/5593053/open-soft-keyboard-programmatically
+            input.requestFocus();
+            if (alertToShow.getWindow() != null) alertToShow.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            alertToShow.show();
+
+            //https://stackoverflow.com/questions/15362122/change-font-size-for-an-alertdialog-message
+            TextView textView = alertToShow.findViewById(android.R.id.message);
+            if (textView != null) textView.setTextSize(12);
+
+            //https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+
+                String rules = input.getText().toString().trim();
+
+                if (!rules.isEmpty()) {
+                    if (!rules.toLowerCase().contains(Constants.RULE_TAG_NAME) && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
+                        Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+                eventsData.preferences_birthday_calendars_rules = rules;
+                eventsData.setPreferences();
+                alertToShow.dismiss();
+
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }

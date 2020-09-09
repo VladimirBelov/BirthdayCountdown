@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.07.20 1:05
+  ~  * Last modified 03.08.20 23:51
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.5.1</item>
+                <item>Перевірено працездатність на Android 11</item>
+                <item>Додано розділ \"Питання і Відповіді\" (поки є для англійської та російської мови)</item>
+                <item>Додані окремі календарі для днів народжень + правила розпізнавання імені контакту з календарного події</item>
+                <item>Додано найменування календаря в описі події</item>
+                <item>Результати пошуку не скидаються при відкритті картки контакту і повернення назад</item>
+                <item>Виправлено відображення налаштувань віджета для маленьких екранів</item>
+                <item>Виправлено ігнорування повторюваних календарних подій попередніх років</item>
 
                 <item>#1.5.0</item>
                 <item>Типи подій налаштовуються окремо для списку, повідомлень і кожного віджета</item>

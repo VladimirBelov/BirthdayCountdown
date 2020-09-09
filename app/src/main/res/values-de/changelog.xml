@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.07.20 1:05
+  ~  * Last modified 03.08.20 23:51
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.1</item>
+        <item>Android 11 fertig</item>
+        <item>Abschnitt \"Fragen und Antworten\" hinzugefügt (derzeit verfügbar für Englisch und Russisch)</item>
+        <item>Separate Unterstützung für Geburtstagskalender mit Regeln zur Erkennung von Kontaktnamen hinzugefügt</item>
+        <item>Kalendertitelanzeige in Ereignisdetails hinzugefügt</item>
+        <item>Die Suchergebnisse werden beim Öffnen einer Kontaktkarte und beim Zurückkehren nicht zurückgesetzt</item>
+        <item>Das Dialogfeld zur Einstellung von Widgets ohne Bildlauf für kleine Bildschirme wurde behoben</item>
+        <item>Unterstützung für wiederkehrende Kalenderereignisse behoben</item>
 
         <item>#1.5.0</item>
         <item>Ereignistypen werden für die Liste, Benachrichtigungen und jedes Widget separat konfiguriert</item>

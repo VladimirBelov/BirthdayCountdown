@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 19.07.20 1:55
+  ~  * Last modified 31.08.20 20:11
   ~  */
   -->
 
@@ -61,6 +61,7 @@
             android:icon="@android:drawable/ic_menu_manage">
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Birthday_key"
                 android:title="@string/event_type_birthday"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_birthday">
@@ -78,6 +79,22 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
+                    android:title="@string/pref_CustomEvents_Calendars_title"
+                    android:summary="@string/pref_CustomEvents_Calendars_description"/>
+
+                <!--<Preference
+                    android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
+                    android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
+                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>-->
+
+                <!--<SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Birthday_Calendars_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"
+                    android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>-->
 
             </PreferenceCategory>
 
@@ -194,8 +211,8 @@
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Other_Calendars_key"
-                    android:title="@string/pref_CustomEvents_Other_Calendars_title"
-                    android:summary="@string/pref_CustomEvents_Other_Calendars_description"/>
+                    android:title="@string/pref_CustomEvents_Calendars_title"
+                    android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
             </PreferenceCategory>
 
@@ -367,6 +384,17 @@
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"/>
 
+        <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_List_EventInfo_values_default"
+            android:entries="@array/pref_List_EventInfo_entries"
+            android:entryValues="@array/pref_List_EventInfo_values"
+            android:key="@string/pref_List_EventInfo_key"
+            android:summary="@string/pref_List_EventInfo_description"
+            android:title="@string/pref_List_EventInfo_title"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
+
         <ListPreference
             android:defaultValue="@string/pref_List_PrevEvents_default"
             android:entries="@array/pref_List_PrevEvents_entries"
@@ -387,17 +415,6 @@
             android:summary="@string/pref_List_Caption_description"
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"/>
-
-		<!-- todo: сделать сортировку для деталей под ФИО через DragSortListView https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/ -->
-        <MultiSelectListPreference
-            android:defaultValue="@array/pref_List_EventInfo_values_default"
-            android:entries="@array/pref_List_EventInfo_entries"
-            android:entryValues="@array/pref_List_EventInfo_values"
-            android:key="@string/pref_List_EventInfo_key"
-            android:summary="@string/pref_List_EventInfo_description"
-            android:title="@string/pref_List_EventInfo_title"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
 
     </PreferenceCategory>
 
@@ -552,6 +569,13 @@
     <PreferenceCategory
         android:title="@string/pref_Help_title"
         android:layout="@layout/settings_category">
+
+        <Preference
+            android:id="@+id/pref_FAQActivity"
+            android:key="@string/pref_FAQActivity_key"
+            android:summary="@string/pref_FAQ_description"
+            android:title="@string/pref_FAQ_title"
+            android:icon="@android:drawable/ic_menu_info_details"/>
 
         <SwitchPreference
             android:key="@string/pref_Debug_On_key"

@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 28.04.20 23:21
+  ~  * Last modified 01.09.20 18:10
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.1</item>
+        <item>Android 11 ready</item>
+        <item>Added \"How to\" guide with FAQs</item>
+        <item>Added separate birthday calendar support with contact name recognition rules</item>
+        <item>Added calendar title display in event details</item>
+        <item>Search results are not reset when opening a contact card and returning back</item>
+        <item>Fixed non scrolling widget setting dialog for small screens</item>
+        <item>Fixed recurring calendar events support</item>
 
         <item>#1.5.0</item>
         <item>Event types are configured separately for the list, notifications and each widget</item>

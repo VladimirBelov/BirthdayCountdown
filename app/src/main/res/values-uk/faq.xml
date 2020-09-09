@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 03.09.20 23:07
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+        <string-array name="faq" tools:ignore="InconsistentArrays">
+
+                <item>###Загальна</item>
+                <item>Цей розділ не доступний на обраному в налаштуваннях мовою. Перейдіть на англійську або російську мову інтерфейсу програми та восспользуйтесь Google translate.</item>
+
+                <item>#Мови додатки</item>
+                <item>Якщо Ви хочете допомогти перевести цю програму на якийсь близький Вам мову або знайшли неточність перекладу - пишіть на e-mail (кнопка внизу).</item>
+
+        </string-array>
+
+</resources>

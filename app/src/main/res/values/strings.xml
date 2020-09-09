@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 20.07.20 0:21
+  ~  * Last modified 03.09.20 22:33
   ~  */
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="window_settings">Settings</string>
     <string name="window_widget_settings">Widget settings</string>
     <string name="window_about">About application</string>
+    <string name="window_faq">Frequently Asked Questions</string>
 
-    <string name="activity_title_search">Search</string>
     <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Notifications</string>
@@ -26,7 +26,6 @@
     <string name="menu_filter_events">Filter…</string>
 <!--    <string name="menu_exit">Close app</string>-->
     <string name="menu_context_edit_contact">Edit contact</string>
-    <string name="menu_context_events">All contact events</string>
     <string name="menu_context_event_info">Event data</string>
     <string name="menu_context_hide_event">Hide event</string>
     <string name="menu_context_unhide_event">Unhide event</string>
@@ -40,14 +39,13 @@
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
     <string name="msg_no_events">Events not found</string>
-    <string name="msg_filter">", filter: "</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_today">Today</string>
     <string name="msg_tomorrow">Tomorrow</string>
     <string name="msg_yesterday">Yesterday</string>
-    <string name="msg_beforeyesterday">Day before yesterday</string>
+    <string name="msg_before_yesterday">Day before yesterday</string>
     <string name="msg_day_after_tomorrow">Day after tomorrow</string>
     <string name="msg_stats_prefix">"events: "</string>
     <string name="msg_stats_hidden_prefix">"hidden events: "</string>
@@ -88,11 +86,11 @@
     <string name="msg_no_access_storage_hint">No access to contacts. Check application permissions</string>
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
-    <string name="msg_newversion_title">"What's new in v. %1$s:"</string>
-    <string name="msg_not_implemented">Not implemented yet!</string>
+    <string name="msg_new_version_title">"What's new in v. %1$s:"</string>
     <string name="msg_snoozed_until">"Snoozed until %1$s"</string>
     <string name="msg_notify_time">"Notification is set to %1$s"</string>
     <string name="msg_filter_clear_confirmation">Really clear all filters?</string>
+    <string name="msg_calendar_info">"\"%1$s\" calendar event"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -108,11 +106,10 @@
     <string name="hint_AlertDialog">Alert dialog</string>
 
     <string name="button_ok">OK</string>
-    <string name="button_clear">Clear</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_rate">Rate app</string>
     <string name="button_mail">Mail</string>
-    <string name="button_open_addresbook">Open address book…</string>
+    <string name="button_open_addressbook">Open address book…</string>
     <string name="button_open_app_settings">Open settings…</string>
     <string name="button_open_version_history">Version history</string>
     <string name="button_all">All</string>
@@ -120,6 +117,7 @@
     <string name="button_hide">Hide</string>
     <string name="button_silent">Disable</string>
     <string name="button_dial">Dial</string>
+    <string name="button_question">Mail new question</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -183,6 +181,12 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standard labels to detect birthday events</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this labels will bee identified as birthdays (by comma)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Import rules</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Rules for importing calendar events to birthdays</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Enter contact name recognition rules from calendar event title (several values enter by | ). Rule must contains tag [name] surrounded by other text (optional):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags not found!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standard labels to detect anniversary events</string>
@@ -208,9 +212,8 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Other_Labels_description">Contacts events with this labels will bee identified as other events (by comma)</string>
-    <string name="pref_CustomEvents_Other_Calendars_title">Calendars</string>
-    <string name="pref_CustomEvents_Other_Calendars_description">Import events from chosen calendars</string>
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
+    <string name="pref_CustomEvents_Calendars_description">Import events from chosen calendars</string>
 
     <string name="pref_CustomEvents_Custom_title">User-defined event</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
@@ -363,7 +366,7 @@
         <item>x2.0</item>
     </string-array>
 
-    <string name="widget_config_events_count_label">Custom events count</string>
+    <string name="widget_config_events_count_label">Custom events number</string>
     <string name="widget_config_events_count_description">If there is too \"narrow\" or \"loose\" for events on the widget, adjust the number of events</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
@@ -427,90 +430,94 @@
         <item>Remind in 1 hour</item>
     </string-array>
 
-    <string name="pref_Notifications_NotifyTest_title">Notification example</string>
+    <string name="pref_Notifications_NotifyTest_title">Test notification</string>
     <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
 
+    <string name="pref_FAQ_title">\"How to\" guide</string>
+    <string name="pref_FAQ_description">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
     <string name="pref_Help_title">Help</string>
     <string name="pref_Debug_On_title">Debug notifications</string>
     <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Version history:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Release: %1$s:</h2><ul>]]></string>
-    <string name="debuglog_body"><![CDATA[
-<h1>Statistics:</h1>
-<h2>Load speed:</h2><ul>
-    <li>contacts scanning: %1$s msec
-    <li>dates computing: %2$s msec
-</ul>
-<h2>Contacts info:</h2><ul>
-    <li>original events: %3$d
-    <li>contacts titles: %4$d
-    <li>contacts organizations: %5$d
-    <li>contacts nicknames: %6$d
-</ul>
-<h2>Events by accounts:</h2><ul>
-]]></string>
+
+    <string name="stats_title"><![CDATA[<h1>Statistics:</h1>]]></string>
+
+    <string name="stats_speed_title"><![CDATA[<h2>Load speed:</h2><ul>]]></string>
+    <string name="stats_speed_contacts"><![CDATA[<li>contacts scanning: %1$s msec]]></string>
+    <string name="stats_speed_calendar"><![CDATA[<li>calendar scanning: %1$s msec]]></string>
+    <string name="stats_speed_dates"><![CDATA[<li>dates computing: %1$s msec]]></string>
+
+    <string name="stats_counters_title"><![CDATA[<h2>Counters:</h2><ul>]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>original events: %1$d]]></string>
+    <string name="stats_counters_contacts"><![CDATA[<li>contacts: %1$d]]></string>
+    <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
+    <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
+    <string name="stats_counters_nicknames"><![CDATA[<li>contacts nicknames: %1$d]]></string>
+
+    <string name="stats_counters_events_title"><![CDATA[<h2>Events by accounts:</h2><ul>]]></string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
-    <string name="event_type_wedding_1">Paper</string>
-    <string name="event_type_wedding_2">Cotton</string>
-    <string name="event_type_wedding_3">Leather</string>
-    <string name="event_type_wedding_4">Linen or Silk</string>
-    <string name="event_type_wedding_5">Wood</string>
-    <string name="event_type_wedding_6">Iron</string>
-    <string name="event_type_wedding_7">Copper</string>
-    <string name="event_type_wedding_8">Bronze</string>
-    <string name="event_type_wedding_9">Pottery</string>
-    <string name="event_type_wedding_10">Tin</string>
-    <string name="event_type_wedding_11">Steel</string>
-    <string name="event_type_wedding_12">Silk</string>
-    <string name="event_type_wedding_13">Lace</string>
-    <string name="event_type_wedding_14">Ivory</string>
-    <string name="event_type_wedding_15">Crystal</string>
-    <string name="event_type_wedding_16">""</string>
-    <string name="event_type_wedding_20">China</string>
-    <string name="event_type_wedding_17">""</string>
-    <string name="event_type_wedding_18">""</string>
-    <string name="event_type_wedding_19">""</string>
-    <string name="event_type_wedding_21">""</string>
-    <string name="event_type_wedding_22">""</string>
-    <string name="event_type_wedding_23">""</string>
-    <string name="event_type_wedding_24">Opal</string>
-    <string name="event_type_wedding_25">Silver</string>
-    <string name="event_type_wedding_26">""</string>
-    <string name="event_type_wedding_27">""</string>
-    <string name="event_type_wedding_28">""</string>
-    <string name="event_type_wedding_29">""</string>
-    <string name="event_type_wedding_30">Pearl</string>
-    <string name="event_type_wedding_31">""</string>
-    <string name="event_type_wedding_32">""</string>
-    <string name="event_type_wedding_33">""</string>
-    <string name="event_type_wedding_34">""</string>
-    <string name="event_type_wedding_35">Coral or Jade</string>
-    <string name="event_type_wedding_36">""</string>
-    <string name="event_type_wedding_37">""</string>
-    <string name="event_type_wedding_38">""</string>
-    <string name="event_type_wedding_39">""</string>
-    <string name="event_type_wedding_40">Ruby</string>
-    <string name="event_type_wedding_41">""</string>
-    <string name="event_type_wedding_42">""</string>
-    <string name="event_type_wedding_43">""</string>
-    <string name="event_type_wedding_44">""</string>
-    <string name="event_type_wedding_45">Sapphire</string>
-    <string name="event_type_wedding_46">""</string>
-    <string name="event_type_wedding_47">""</string>
-    <string name="event_type_wedding_48">""</string>
-    <string name="event_type_wedding_49">""</string>
-    <string name="event_type_wedding_50">Gold</string>
-    <string name="event_type_wedding_55">Emerald</string>
-    <string name="event_type_wedding_60">Diamond, yellow</string>
-    <string name="event_type_wedding_65">Blue sapphire</string>
-    <string name="event_type_wedding_70">Platinum</string>
-    <string name="event_type_wedding_75">Diamond, gold</string>
-    <string name="event_type_wedding_80">Diamond, pearl</string>
-    <string name="event_type_wedding_85">""</string>
-    <string name="event_type_wedding_90">Stone</string>
-    <string name="event_type_wedding_100">""</string>
+    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Paper</string>
+    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Cotton</string>
+    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Leather</string>
+    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Linen or Silk</string>
+    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Wood</string>
+    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Iron</string>
+    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Copper</string>
+    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Bronze</string>
+    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Pottery</string>
+    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Tin</string>
+    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Steel</string>
+    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Silk</string>
+    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Lace</string>
+    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Ivory</string>
+    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Crystal</string>
+    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">""</string>
+    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">China</string>
+    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">""</string>
+    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">""</string>
+    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">""</string>
+    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">""</string>
+    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">""</string>
+    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">""</string>
+    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">Opal</string>
+    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Silver</string>
+    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">""</string>
+    <string name="event_type_wedding_27" tools:keep="@string/event_type_wedding_27">""</string>
+    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">""</string>
+    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">""</string>
+    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Pearl</string>
+    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">""</string>
+    <string name="event_type_wedding_32" tools:keep="@string/event_type_wedding_32">""</string>
+    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">""</string>
+    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">""</string>
+    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Coral or Jade</string>
+    <string name="event_type_wedding_36" tools:keep="@string/event_type_wedding_36">""</string>
+    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">""</string>
+    <string name="event_type_wedding_38" tools:keep="@string/event_type_wedding_38">""</string>
+    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">""</string>
+    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Ruby</string>
+    <string name="event_type_wedding_41" tools:keep="@string/event_type_wedding_41">""</string>
+    <string name="event_type_wedding_42" tools:keep="@string/event_type_wedding_42">""</string>
+    <string name="event_type_wedding_43" tools:keep="@string/event_type_wedding_43">""</string>
+    <string name="event_type_wedding_44" tools:keep="@string/event_type_wedding_44">""</string>
+    <string name="event_type_wedding_45" tools:keep="@string/event_type_wedding_45">Sapphire</string>
+    <string name="event_type_wedding_46" tools:keep="@string/event_type_wedding_46">""</string>
+    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">""</string>
+    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">""</string>
+    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">""</string>
+    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Gold</string>
+    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Emerald</string>
+    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Diamond, yellow</string>
+    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Blue sapphire</string>
+    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Platinum</string>
+    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Diamond, gold</string>
+    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Diamond, pearl</string>
+    <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
+    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Stone</string>
+    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">""</string>
 
 <!-- COMMON STRINGS -->
 
@@ -520,6 +527,8 @@
     <string name="account_vk" translatable="false">"com.vkontakte.account"</string>
     <string name="account_exchange" translatable="false">"com.google.android.gm.exchange"</string>
     <string name="account_huawei" translatable="false">"com.android.huawei.phone"</string>
+
+    <string name="pref_FAQActivity_key" translatable="false">FAQActivity</string>
 
     <string name="pref_AboutActivity_key" translatable="false">AboutActivity</string>
 
@@ -582,10 +591,15 @@
         <item>2</item>
     </string-array>
 
-
+    <string name="pref_CustomEvents_Birthday_key" translatable="false">CustomEvents_Birthday</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_key" translatable="false">CustomEvents_Birthday_UseInternal</string>
     <string name="pref_CustomEvents_Birthday_Labels_key" translatable="false">CustomEvents_Birthday_Labels</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_key" translatable="false">CustomEvents_Birthday_Calendars</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_key" translatable="false">CustomEvents_Birthday_Calendars_Rules</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">""</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_key" translatable="false">CustomEvents_Birthday_Calendars_UseYear</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_default" translatable="false">true</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_key" translatable="false">CustomEvents_Anniversary_UseInternal</string>
@@ -771,14 +785,15 @@
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
     <string name="widget_config_defaultPref" translatable="false">1,0,0</string>
 
-    <string name="last_name_comletions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
-    <string name="last_name_comletions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
+    <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
+    <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
 
-    <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,даниэль,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лёня,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,рафаэль,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,henry,jack,jacob,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,herbert,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,noah,oscar,oskar,papa,patrick,paul,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
-    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,аксинья,алевтина,александра,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анна,антонина,анфиса,анфіса,аня,арина,аріна,белла,березня,божена,валентина,валерия,валерія,ванда,варвара,василина,василиса,вера,вероника,вероніка,виктория,виола,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,глафира,глафіра,даниэла,дарья,диана,дина,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,зиновия,злата,зоя,зіновія,иванка,ивонна,изольда,илона,инга,инесса,инна,ирина,ия,капитолина,капітоліна,карина,каролина,катерина,кира,клавдия,клара,клеопатра,кору,кохана,кохання,кристина,ксения,ксенія,лада,лариса,лиана,лидия,лилия,лина,лия,лора,льоха,любава,любимая,любовь,любов,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надія,настасия,настасья,настасія,наталия,наталья,наталя,невістка,нелли,ника,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,олімпіада,парасковія,пекла,пелагея,полина,поля,прасковья,раиса,раїса,рената,римма,роза,роксана,рут,руфь,сарра,свекровь,свекруха,светлана,світла,серафима,сестра,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,таисия,таисья,тамара,татьяна,таїсія,текле,тетяна,тетя,томи,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,фёкла,хаврония,христина,эвелина,эдита,элеонора,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,ядвига,ядвіга,яна,ярослава,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,alexis,alice,amanda,amber,amelie,amy,andrea,angela,ann,anna,anna,ashley,aunt,barbara,betty,beverly,brenda,brittany,carol,carolyn,catherine,charlotte,cheryl,christina,christine,clara,cynthia,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,elizabeth,emilia,emilie,emily,emily,emma,emma,evelyn,frances,gloria,grace,granddaughter,hanna,hannah,hannah,heather,helen,iванка,jacqueline,jane,janet,janice,jean,jennifer,jessica,joan,johanna,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,klara,laura,lauren,lea,leah,lena,leonie,lili,lilly,lina,linda,lisa,lori,louisa,luisa,madison,mama,mammi,margaret,maria,marie,marie,marilyn,martha,mary,megan,melissa,mia,michelle,mila,mom,mother,mutti,nancy,natalie,nicole,olivia,pamela,patricia,rachel,rebecca,rose,ruth,samantha,sandra,sara,sarah,schwester,sharon,shirley,sister,sofia,sofie,sophia,sophie,stephanie,susan,tante,teresa,theresa,tiffany,tochter,victoria,virginia</string>
+    <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,андрюша,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,ваня,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,вова,вован,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,даниэль,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,коля,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лёня,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,миша,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,рафаэль,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,henry,jack,jacob,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,herbert,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,noah,oscar,oskar,papa,patrick,paul,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
 
-    <string name="second_name_comletions_man" translatable="false">ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
-    <string name="second_name_comletions_female" translatable="false">овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
+    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,аксинья,алевтина,александра,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анна,антонина,анфиса,анфіса,аня,арина,аріна,баба,белла,березня,божена,валентина,валерия,валерія,ванда,варвара,василина,василиса,вера,вероника,вероніка,вика,виктория,виола,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,глафира,глафіра,даниэла,дарья,диана,дина,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,зиновия,злата,зося,зоя,зіновія,иванка,ивонна,изольда,илона,инга,инесса,инна,ирина,ия,капитолина,капітоліна,карина,каролина,катерина,катюша,катя,кира,клавдия,клара,клеопатра,кору,кохана,кохання,кристина,ксения,ксенія,лада,лариса,леля,лена,лиана,лидия,лилия,лиза,лина,липа,лия,лора,льоха,любава,любимая,любовь,любов,люда,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,маруся,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,мила,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надя,надія,настасия,настасья,настасія,наталия,наталья,наташа,наталя,невістка,нелли,ника,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,оля,олімпіада,парасковія,пекла,пелагея,полина,поля,прасковья,раиса,раїса,рената,рима,римма,рита,роза,роксана,рут,руфь,сарра,сафина,сафия,свекровь,свекруха,светлана,світла,серафима,сестра,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,таисия,таисья,тамара,татьяна,таїсія,текле,тетяна,тетя,томи,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,фёкла,хаврония,христина,эвелина,эдита,элеонора,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,ядвига,ядвіга,яна,ярослава,яся,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,alexis,alexandra,alice,amanda,amber,amelie,amy,andrea,angela,ann,anna,anna,ashley,aunt,barbara,betty,beverly,brenda,brittany,carol,carolyn,catherine,charlotte,cheryl,christina,christine,clara,cynthia,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,ekaterina,elizabeth,emilia,emilie,emily,emily,emma,emma,evelyn,frances,gloria,grace,granddaughter,hanna,hannah,hannah,heather,helen,iванка,irina,jacqueline,jane,janet,janice,jean,jennifer,jessica,joan,johanna,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,klara,laura,lauren,lea,leah,lena,leonie,lili,lilly,lina,linda,lisa,lissa,lori,louisa,luisa,madison,mama,mammi,margaret,maria,marie,marie,marilyn,martha,mary,megan,melissa,mia,michelle,mila,mom,mother,mutti,nancy,natalie,nicole,olga,olivia,pamela,patricia,rachel,rebecca,rose,ruth,samantha,sandra,sara,sarah,schwester,sharon,shirley,sister,sofia,sofie,sophia,sophie,stephanie,susan,tante,teresa,theresa,tiffany,tochter,victoria,virginia</string>
+
+    <string name="second_name_completions_man" translatable="false">ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
+    <string name="second_name_completions_female" translatable="false">овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
 
     <string name="pref_Notifications_key" translatable="false">Notifications</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
@@ -843,7 +858,9 @@
 
     <string name="pref_Debug_On_key" translatable="false">Debug</string>
 
-    <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); }h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
+    <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
+
+    <string name="faq_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
 
     <integer name="menu_context_id_edit_contact">1</integer>
 <!--    <integer name="menu_context_id_events">2</integer>-->
@@ -856,6 +873,6 @@
     <integer name="menu_context_id_anniversary_list">9</integer>
     <integer name="menu_context_id_silent_event">10</integer>
     <integer name="menu_context_id_unsilent_event">11</integer>
-    <integer name="menu_context_id_edit_event">12</integer>
+<!--    <integer name="menu_context_id_edit_event">12</integer>-->
 
 </resources>

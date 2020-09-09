@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 19.07.20 23:48
+ *  * Last modified 03.09.20 17:32
  *
  */
 
@@ -88,6 +88,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
+import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
 import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
@@ -98,16 +99,16 @@ import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Hidden;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_NotHidden;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Silenced;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_current;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_contact_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_fio;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
 
 //todo: сделать вывод ошибок в стандартный лог
 
-@SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     //UI объекты
@@ -199,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (swipeRefresh != null)
                             swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
-                        //Сообщение для тех, у кого не заведено ни одного события
+                        //Сообщение для тех, у кого не найдено ни одного события
                         if (!triggeredMsgNoEvents && eventsData.isEmptyArray()) {
 
                             /*boolean isTypesOn = false;
@@ -209,15 +210,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     break;
                                 }*/
 
-                            if (!eventsData.getPreferences_Accounts().isEmpty()) {
+                            if (!eventsData.getPreferences_Accounts().isEmpty()) { //... но выбраны конкретные аккаунты
 
                                 showAlertNoEventsWithAccounts();
                                 triggeredMsgNoEvents = true;
 
-                            } else if (eventsData.preferences_list_event_types.isEmpty()) {
+                            } else if (!eventsData.preferences_list_event_types.isEmpty()) { //... используются все аккаунты, но не выбраны типы событий для списка
 
                                 showAlertNoEvents();
                                 triggeredMsgNoEvents = true;
+
                             }
 
                         }
@@ -257,10 +259,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     //https://stackoverflow.com/questions/4275167/how-to-open-a-contact-card-in-android-by-id?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri;
-                    if (!dataArray1[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
-                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, dataArray1[Position_contact_id]);
+                    if (!dataArray1[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, dataArray1[Position_id]);
                     } else {
-                        uri = Uri.parse("content://com.android.calendar/events/" + dataArray1[Position_contact_id]);
+                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, dataArray1[Position_id]);
                     }
                     intent.setData(uri);
                     MainActivity.this.startActivity(intent);
@@ -273,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
 
-            //Контексное меню
+            //Контекстное меню
             registerForContextMenu(listView);
 
             //Приветственное сообщение или описание новой версии
@@ -294,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         builder.setIcon(android.R.drawable.ic_menu_info_details);
         builder.setMessage(getString(R.string.msg_no_events_hint));
         builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-        builder.setNeutralButton(R.string.button_open_addresbook, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://com.android.contacts/contacts"))));
+        builder.setNeutralButton(R.string.button_open_addressbook, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI)));
         AlertDialog alertToShow = builder.create();
         alertToShow.setOnShowListener(arg0 -> {
             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
@@ -332,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) sb.append(HTML_BR);
 
                     String[] arrChangeLog = resources.getStringArray(R.array.changelog);
-                    if (arrChangeLog.length >= 0) {
+                    if (arrChangeLog.length > 0) {
 
                         String currentVersion = STRING_EMPTY;
                         int countChanges = 0;
@@ -341,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             if (strChange.charAt(0) == '#') {
 
-                                if (!currentVersion.equals(STRING_EMPTY)) break;
+                                if (!currentVersion.isEmpty()) break;
                                 currentVersion = strChange.substring(1);
                                 if (!currentVersion.equals(BuildConfig.VERSION_NAME)) break;
                                 sb.append("<ul>");
@@ -364,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             }
 
                             builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                            builder.setTitle(getString(R.string.msg_newversion_title, currentVersion));
+                            builder.setTitle(getString(R.string.msg_new_version_title, currentVersion));
                             builder.setIcon(android.R.drawable.ic_menu_info_details);
                             builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
                             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
@@ -509,77 +511,84 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //https://stackoverflow.com/a/43411336/4928833
-        if (menu instanceof MenuBuilder) {
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        }
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        try {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            MenuItem searchItem = menu.getItem(MENU_MAIN_SEARCH);
-            SearchView searchView = (SearchView) searchItem.getActionView();
-            searchItem.setVisible(true);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+            //https://stackoverflow.com/a/43411336/4928833
+            if (menu instanceof MenuBuilder) {
+                ((MenuBuilder) menu).setOptionalIconsVisible(true);
+            }
+            getMenuInflater().inflate(R.menu.menu_main, menu);
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    adapter.getFilter().filter(newText);
-                    return false;
-                }
-            });
-            searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
-            {
-
-                @Override
-                public boolean onMenuItemActionExpand (MenuItem item){
-                    menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(false);
-                    menu.getItem(MENU_MAIN_REFRESH).setVisible(false);
-                    menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
-                    menu.getItem(MENU_MAIN_FILTER).setVisible(false);
-                    //menu.getItem(MENU_MAIN_EXIT).setVisible(false);
-                    return true;
-                }
-
-                //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
-                @Override
-                public boolean onMenuItemActionCollapse (MenuItem item){
-                    menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(true);
-                    menu.getItem(MENU_MAIN_REFRESH).setVisible(true);
-                    menu.getItem(MENU_MAIN_SETTINGS).setVisible(true);
-                    if (!eventsData.isEmptyArray() && (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)) { //показывать, если есть скрытые или без уведомлений
-                        menu.getItem(MENU_MAIN_FILTER).setVisible(true);
-                    } else {
-                        menu.getItem(MENU_MAIN_FILTER).setVisible(false);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                MenuItem searchItem = menu.getItem(MENU_MAIN_SEARCH);
+                SearchView searchView = (SearchView) searchItem.getActionView();
+                searchItem.setVisible(this.dataList != null && !this.dataList.isEmpty());
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
                     }
-                    //menu.getItem(MENU_MAIN_EXIT).setVisible(true);
-                    prepareList();
-                    return true;
-                }
 
-            });
-            searchView.setQueryHint (getString (R.string.msg_hint_search));
-            searchView.setMaxWidth(Integer.MAX_VALUE);
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+                searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
+                {
 
-            //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                    @Override
+                    public boolean onMenuItemActionExpand (MenuItem item){
+                        menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(false);
+                        menu.getItem(MENU_MAIN_REFRESH).setVisible(false);
+                        menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
+                        menu.getItem(MENU_MAIN_FILTER).setVisible(false);
+                        //menu.getItem(MENU_MAIN_EXIT).setVisible(false);
+                        return true;
+                    }
+
+                    //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
+                    @Override
+                    public boolean onMenuItemActionCollapse (MenuItem item){
+                        menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(true);
+                        menu.getItem(MENU_MAIN_REFRESH).setVisible(true);
+                        menu.getItem(MENU_MAIN_SETTINGS).setVisible(true);
+                        //показывать, если есть скрытые или без уведомлений
+                        menu.getItem(MENU_MAIN_FILTER).setVisible(
+                                eventsData != null &&
+                                !eventsData.isEmptyArray() &&
+                                (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
+                        );
+                        prepareList();
+                        return true;
+                    }
+
+                });
+                searchView.setQueryHint (getString (R.string.msg_hint_search));
+                searchView.setMaxWidth(Integer.MAX_VALUE);
+
+                //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            }
+
+            // https://stackoverflow.com/questions/3721963/how-to-add-calendar-events-in-android
+            // https://developer.android.com/training/contacts-provider/modify-data
+            // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
+            // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
+
+            //показывать, если есть скрытые или без уведомлений
+            menu.getItem(MENU_MAIN_FILTER).setVisible(
+                    eventsData != null &&
+                    !eventsData.isEmptyArray() &&
+                    (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
-
-        // https://stackoverflow.com/questions/3721963/how-to-add-calendar-events-in-android
-        // https://developer.android.com/training/contacts-provider/modify-data
-        // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
-        // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
-
-        if (!eventsData.isEmptyArray() && (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)) { //показывать, если есть скрытые или без уведомлений
-            menu.getItem(MENU_MAIN_FILTER).setVisible(true);
-        } else {
-            menu.getItem(MENU_MAIN_FILTER).setVisible(false);
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -723,10 +732,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case R.id.menu_add_event_to_contact:
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                            showAlertNoAccess();
-                        }
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                        showAlertNoAccess();
                     }
 
                     /*Intent contactPickerIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -740,9 +747,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case R.id.menu_add_event_to_calendar:
 
-                // https://developer.android.com/guide/topics/providers/calendar-provider#java
-                // https://stackoverflow.com/questions/20563476/how-to-add-a-calendar-event-using-intents
-                // https://github.com/roomorama/Caldroid/issues/128
+                    // https://developer.android.com/guide/topics/providers/calendar-provider#java
+                    // https://stackoverflow.com/questions/20563476/how-to-add-a-calendar-event-using-intents
+                    // https://github.com/roomorama/Caldroid/issues/128
 
                     Intent addEventIntent = new Intent(Intent.ACTION_INSERT)
                             .setData(CalendarContract.Events.CONTENT_URI)
@@ -814,9 +821,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         try {
             super.onResume();
+            if (!filterNames.equals(STRING_EMPTY)) return; //чтобы параметра поиска не сбрасывал после просмотра контакта
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext(); //this
+            if (eventsData.context == null) eventsData.context = getApplicationContext();
+
             eventsData.getPreferences();
 
             //Устанавливаем язык приложения
@@ -919,10 +928,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
 
                 //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
-                if (!selectedEvent[Position_eventSubType].equals(eventsData.eventTypesIDs.get(Type_CalendarEvent))) {
+                if (!selectedEvent[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
                     menu.add(Menu.NONE, R.integer.menu_context_id_edit_contact, Menu.NONE, getString(R.string.menu_context_edit_contact));
-                //} else {
-                //    menu.add(Menu.NONE, R.integer.menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
+                    //} else {
+                    //    menu.add(Menu.NONE, R.integer.menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
                 }
                 //menu.add(Menu.NONE, R.integer.menu_context_id_events, Menu.NONE, getString(R.string.menu_context_events));
 
@@ -942,7 +951,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menu.add(Menu.NONE, R.integer.menu_context_id_unsilent_event, Menu.NONE, getString(R.string.menu_context_unsilent_event));
 
                 } else if (!eventsData.checkIsHiddenEvent(eventKey)) {// &&
-                        //!selectedEvent[Position_eventType].equals(eventsData.eventTypesIDs.get(Type_Custom))) { //для кастомных пока подумаю
+                    //!selectedEvent[Position_eventType].equals(eventsData.eventTypesIDs.get(Type_Custom))) { //для кастомных пока подумаю
 
                     menu.add(Menu.NONE, R.integer.menu_context_id_silent_event, Menu.NONE, getString(R.string.menu_context_silent_event));
 
@@ -953,7 +962,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 sub.add(Menu.NONE, R.integer.menu_context_id_remind_1h, Menu.NONE, getString(R.string.menu_context_remind_1h));
                 sub.add(Menu.NONE, R.integer.menu_context_id_remind_morning, Menu.NONE, getString(R.string.menu_context_remind_morning));
 
-                if (selectedEvent[Position_eventType].equals(eventsData.eventTypesIDs.get(Type_Anniversary)) ) {
+                if (selectedEvent[Position_eventType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary)) ) {
                     menu.add(Menu.NONE, R.integer.menu_context_id_anniversary_list , Menu.NONE, getString(R.string.menu_context_anniversary_list));
                 }
 
@@ -977,7 +986,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             switch (item.getItemId()) {
                 case R.integer.menu_context_id_edit_contact:
 
-                    Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[Position_contact_id]);
+                    Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[Position_id]);
 
                     //Intent intent = new Intent(Intent.ACTION_VIEW);
                     //intent.setData(selectedContactUri);
@@ -1019,7 +1028,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     alertToShow.show();
 
                     TextView textView = alertToShow.findViewById(android.R.id.message);
-                    textView.setTextSize(14);
+                    if (textView != null) textView.setTextSize(14);
 
                     return true;
 
@@ -1109,9 +1118,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Проверки
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), HTML_COLOR_RED));
+
             else if (eventsData.isEmptyArray())
+
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW));
+
             else {
 
                 //Обрабатываем скрытые события
@@ -1137,7 +1150,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
                 if (dataList.isEmpty()) {
+
                     setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW));
+
                 } else {
 
                     //Получаем предыдущие события
@@ -1258,13 +1273,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 holder = (ViewHolder) convertView.getTag();
 
-                if (getItem(position) != null) {
-                    event = getItem(position);
-                    singleRowArray = event.split(Constants.STRING_2HASH);
-                    person = new Person(context, getItem(position));
-                } else {
-                    return convertView;
-                }
+                event = getItem(position);
+                if (event == null) return convertView;
+
+                singleRowArray = event.split(Constants.STRING_2HASH);
+                person = new Person(context, event);
 
                 if (tag_Bold_start == null) {
                     //https://stackoverflow.com/questions/5026995/android-get-color-as-string-value
@@ -1337,34 +1350,36 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 String eventCaption = singleRowArray[Position_eventCaption];
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                    if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel) && !eventLabel.equals(STRING_EMPTY)) {
+                    if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel) && !eventLabel.isEmpty()) {
                         eventDetails.append(eventCaption).append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(STRING_PARENTHESIS_CLOSE);
                     } else {
                         eventDetails.append(eventCaption);
                     }
-                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventLabel.equals(STRING_EMPTY)) {
+                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventLabel.isEmpty()) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(eventLabel);
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
                     String eventSubType = singleRowArray[Position_eventSubType];
-                        if (eventSubType.equals(eventsData.eventTypesIDs.get(Type_BirthDay)) && !singleRowArray[Position_age_current].equals(Constants.STRING_SPACE)) { //Если это день рождения
-                            if (eventsData.set_events_deaths.contains(singleRowArray[Position_contact_id])) { //Но есть годовщина смерти
-                                if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                                eventDetails.append(getString(R.string.msg_age_could_be)).append(singleRowArray[Position_age_current]);
-                            } else {
-                                if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                                eventDetails.append(getString(R.string.msg_age_now)).append(singleRowArray[Position_age_current]);
-                            }
-                        } else if (eventSubType.equals(eventsData.eventTypesIDs.get(Type_Death)) && eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contact_id])) { //Если это годовщина смерти
+                    if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) && !singleRowArray[Position_age_current].equals(Constants.STRING_SPACE)) { //Если это день рождения
+                        if (eventsData.set_events_deaths.contains(singleRowArray[Position_id])) { //Но есть годовщина смерти
                             if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
-                            //todo: спрятать в eventsData
-                            Locale locale_en = new Locale(Constants.LANG_EN);
-                            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(singleRowArray[Position_eventDateText]);
-                            eventDetails.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(eventsData.set_events_birthdays.get(singleRowArray[Position_contact_id]), eventDate));
+                            eventDetails.append(getString(R.string.msg_age_could_be)).append(singleRowArray[Position_age_current]);
+                        } else {
+                            if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
+                            eventDetails.append(getString(R.string.msg_age_now)).append(singleRowArray[Position_age_current]);
                         }
+                    } else if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_Death)) && eventsData.set_events_birthdays.containsKey(singleRowArray[Position_id])) { //Если это годовщина смерти
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
+                        Date eventDate = sdfYear.parse(singleRowArray[Position_eventDateText]);
+                        Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_id]);
+                        if (eventDate != null && birthDate != null) {
+                            if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
+                            eventDetails.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate));
+                        }
+                    }
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
@@ -1433,7 +1448,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 convertView.setBackground(null);
                 convertView.setAlpha(1);
-                if (eventsData.preferences_list_prev_events_found > 0 && filterNames.equals(STRING_EMPTY)) {
+                if (eventsData.preferences_list_prev_events_found > 0 && filterNames.isEmpty()) {
 
                     if (position <= eventsData.preferences_list_prev_events_found - 1) convertView.setAlpha((float)0.6);
                     if (position == eventsData.preferences_list_prev_events_found - 1)  convertView.setBackground(context.getDrawable(R.drawable.prev_event_border));
@@ -1475,7 +1490,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } else {
                     //для поиска AND используем <строка1>.*<строка2>
                     filterNames = constraint.toString();
-                    Matcher filter = Pattern.compile(filterNames.replaceAll(REGEX_COMMAS, ",").toUpperCase().replace("Ё", "Е").replace(STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(STRING_EMPTY);
+                    Matcher filter = Pattern.compile(eventsData.normalizeName(filterNames.replaceAll(REGEX_COMMAS, ",")).replace(STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(STRING_EMPTY);
                     for (String listItem : listAll) {
                         if (filter.reset(listItem).find()) {
                             if (!dataList_filtered.contains(listItem)) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 28.04.20 23:21
+ *  * Last modified 03.08.20 23:51
  *
  */
 
@@ -28,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
  * This technique can be used with an {@link android.app.Activity} class, not just
  * {@link android.preference.PreferenceActivity}.
  */
+@SuppressWarnings("ALL")
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.07.20 1:05
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 29.04.20 1:32
+  ~  * Last modified 14.08.20 10:46
   ~  */
   -->
 
@@ -27,6 +27,11 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
         android:fullBackupContent="true">
+
+        <!--todo: подумать про отдельную активность для обновления виджетов
+        https://stackoverflow.com/questions/5476867/updating-app-widget-using-alarmmanager/14319020#14319020
+        https://stackoverflow.com/questions/2078122/android-widget-not-updating
+        -->
 
         <!--Activities-->
         <!-- https://developer.android.com/guide/topics/manifest/activity-element#screen -->
@@ -62,6 +67,12 @@
         </activity>
 
         <activity android:name=".AboutActivity"
+            android:theme="@style/AppTheme.DarkGray.NoActionBar"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".FAQActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"

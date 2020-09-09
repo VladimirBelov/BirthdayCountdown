@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 03.09.20 22:56
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="faq" tools:ignore="InconsistentArrays">
+
+        <item>###Event notifications</item>
+
+        <item>#No notifications appear</item>
+        <item>The first step is to make sure that the setting \"Notification interval\" is any value other than \"None\". After that try to select item \"Test notification\". If after all of the above, the notification still does not appear, then the matter is in the Android settings: either the \"Do not disturb\" mode is turned on, or all notifications are turned off in the notification manager, or the battery saving mode is turned on in the smartphone.</item>
+
+        <item>#Multiple notifications per event</item>
+        <item>The setting \"Notification interval\" in the main application settings implies that if you set the value \"One day\" there will be two notifications: first 1 day before the event and second on the day of the event.</item>
+
+        <item> </item>
+        <item>###Widgets</item>
+
+        <item>#Widget settings</item>
+        <item>To edit the settings of the widget, click on event caption of the rightmost event. Clicking anywhere else in this event will open events list. If no suitable events were found for the widget and the notification \"Events not found\" was displayed, then clicking on this message will also lead to the settings.</item>
+        <item><![CDATA[<img src="pref_widget.png"/ width=100%><br>]]></item>
+
+        <item>#Events don\'t fit or photos are too narrow</item>
+        <item>Go to the widget settings and try to modify \"Custom events number\" setting</item>
+
+        <item>#Widgets are not updating</item>
+        <item tools:ignore="TypographyDashes"><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul><li>for Xiaomi MIUI this is \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)<li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications<nobr>-></nobr>Advanced<nobr>-></nobr>Special app access<nobr>-></nobr>Battery optimization)<li>for Huawei EMUI this is \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
+        <item tools:ignore="TypographyDashes"><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol><li>remove the widget from the screen<li>clear the launcher cache (in Android settings in the list of applications find the launcher and select \"clear cache\" in properties)<li>restart the smartphone<li>re-add the widget to the screen</ol>]]></item>
+
+        <item>###Events</item>
+
+        <item>#Calendar events</item>
+        <item>Any all day calendar events are supported. Sets of calendars can be specified for the event \"Birthday"\ and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
+        <item> </item>
+        <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this. If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
+        <item><![CDATA[<img src="ic_event_other.webp"/ width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
+
+        <item>#Importing events from social networks</item>
+        <item><![CDATA[Facebook friends\' birthdays can be exported to calendar using the fb2cal tool: <a href="https://github.com/mobeigi/fb2cal">link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">video instructions</a>]]></item>
+
+        <item> </item>
+        <item>###Common</item>
+
+        <item>#Application interface language</item>
+        <item>If you want to help translate this application into some language close to you or if you find an inaccuracy in the translation - e-mail me (button is below).</item>
+
+    </string-array>
+
+</resources>

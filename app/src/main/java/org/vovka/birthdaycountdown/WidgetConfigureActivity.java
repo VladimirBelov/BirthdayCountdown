@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 03.09.20 23:07
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 04.07.20 23:05
+ *  * Last modified 03.09.20 22:21
  *
  */
 
@@ -124,7 +124,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 if (widgetPref.size() > 3) eventsArray = widgetPref.get(3).split("\\+");
                 if (eventsArray != null) {
                     for (String item : eventsArray) {
-                        if (eventTypesIDs.indexOf(item) != -1) list.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
+                        if (eventTypesIDs.contains(item)) list.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
                     }
                 }
             } catch (Exception e2) {/**/}
@@ -169,9 +169,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressWarnings("unused")
     public void buttonOkOnClick(View view) {
-
         try {
 
             MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
@@ -230,7 +228,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressWarnings("unused")
     public void buttonCancelOnClick(View view) {
         setResult(RESULT_CANCELED);
         finish();

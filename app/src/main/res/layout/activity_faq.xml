@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 14.08.20 11:05
+  ~  */
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".FAQActivity" >
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?android:attr/colorPrimary"	>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:theme="@style/AppTheme.DarkGray.ActionBar"
+			app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay"
+			app:title="@string/window_faq"/>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="42sp"
+		android:background="?attr/backgroundColor">
+
+		<!-- https://stackoverflow.com/questions/4189883/center-two-buttons-horizontally -->
+		<WebView
+			android:id="@+id/webView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:animateLayoutChanges="true"
+			android:layout_alignParentTop="true"
+			android:layout_above="@id/buttonMail"
+			android:textColor="?android:attr/textColorSecondary" />
+
+		<Button
+			android:id="@+id/buttonMail"
+			style="@style/ButtonWithIcon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:layout_alignParentBottom="true"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="4dp"
+			android:layout_marginBottom="4dp"
+			android:background="?attr/backgroundColor"
+			android:drawableStart="@drawable/ic_mail"
+			android:paddingStart="10dp"
+			android:paddingEnd="10dp"
+			android:singleLine="true"
+			android:text="@string/button_question" />
+
+	</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
