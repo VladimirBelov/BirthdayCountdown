@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 26.08.20 23:48
+ *  * Last modified 21.09.20 21:29
  *
  */
 
@@ -61,12 +61,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.cancel(notificationID);
-
                 //https://stackoverflow.com/questions/5746582/implementing-snooze-in-android-notifications
                 //https://stackoverflow.com/questions/44232699/specific-snooze-functionality-in-notification-button
                 eventsData.snoozeNotification(notificationData, 1, null);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.cancel(notificationID);
 
             } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
 
@@ -76,10 +76,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     return;
                 }
 
+                eventsData.setSilencedEvent(eventKey);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
-
-                eventsData.setSilencedEvent(eventKey);
 
             } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
 
@@ -89,10 +89,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     return;
                 }
 
+                eventsData.setHiddenEvent(eventKey);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
-
-                eventsData.setHiddenEvent(eventKey);
 
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 

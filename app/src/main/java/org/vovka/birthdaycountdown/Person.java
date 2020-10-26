@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 03.09.20 21:24
+ *  * Last modified 14.09.20 0:02
  *
  */
 
@@ -171,18 +171,18 @@ class Person {
 
             int ind = 0;
             if (!this.LastName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_last_name_comletions_man.reset(this.LastName.toLowerCase()).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_last_name_comletions_female.reset(this.LastName.toLowerCase()).find()) {ind--;}
+                if (ContactsEvents.getInstance().preferences_last_name_comletions_man.reset(ContactsEvents.normalizeName(this.LastName)).find()) {ind++;}
+                else if (ContactsEvents.getInstance().preferences_last_name_comletions_female.reset(ContactsEvents.normalizeName(this.LastName)).find()) {ind--;}
             }
 
             if (!this.SecondName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_second_name_comletions_man.reset(this.SecondName.toLowerCase()).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_second_name_comletions_female.reset(this.SecondName.toLowerCase()).find()) {ind--;}
+                if (ContactsEvents.getInstance().preferences_second_name_comletions_man.reset(ContactsEvents.normalizeName(this.SecondName)).find()) {ind++;}
+                else if (ContactsEvents.getInstance().preferences_second_name_comletions_female.reset(ContactsEvents.normalizeName(this.SecondName)).find()) {ind--;}
             }
 
             if (!this.FirstName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_first_names_man.reset(this.FirstName.toLowerCase()).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_first_names_female.reset(this.FirstName.toLowerCase()).find()) {ind--;}
+                if (ContactsEvents.getInstance().preferences_first_names_man.reset(ContactsEvents.normalizeName(this.FirstName)).find()) {ind++;}
+                else if (ContactsEvents.getInstance().preferences_first_names_female.reset(ContactsEvents.normalizeName(this.FirstName)).find()) {ind--;}
             }
 
             if (ind > 0) {Gender = 1;} else if (ind < 0) {Gender = 2;} else {Gender = -1;}

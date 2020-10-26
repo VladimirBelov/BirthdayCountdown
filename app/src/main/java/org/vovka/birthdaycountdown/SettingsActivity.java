@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 31.08.20 20:44
+ *  * Last modified 01.10.20 14:03
  *
  */
 
@@ -71,6 +71,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.Type_Other;
+
 
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -283,17 +284,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 } else {
 
-                    pref = new Preference(eventsData.context);
-                    pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
-                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
-                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
-                    prefCat.addPreference(pref);
+                    if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key)) == null) {
+                        pref = new Preference(eventsData.context);
+                        pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
+                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
+                        pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
+                        prefCat.addPreference(pref);
+                    }
 
-                    pref = new SwitchPreference(eventsData.context);
-                    pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_title));
-                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_description));
-                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
-                    prefCat.addPreference(pref);
+                    if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key)) == null) {
+                        pref = new SwitchPreference(eventsData.context);
+                        pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_title));
+                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_description));
+                        pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
+                        prefCat.addPreference(pref);
+                    }
 
                 }
 

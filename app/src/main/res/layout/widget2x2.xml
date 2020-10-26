@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 03.08.20 23:51
+  ~  * Last modified 07.10.20 22:48
   ~  */
   -->
 
@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/imageView0"
@@ -45,6 +45,55 @@
             android:contentDescription="@string/widget_Photo"
             android:scaleType="centerCrop"
             android:src="@drawable/photo_man01" />
+
+        <LinearLayout
+            android:id="@+id/iconsView0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dip"
+            android:layout_marginTop="4dip"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" >
+
+            <ImageView
+                android:id="@+id/iconEventType0"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/widget_TypeIcon"
+                android:src="@drawable/ic_event_birthday" />
+
+            <TextView
+                android:id="@+id/iconZodiac0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:shadowColor="@color/dark_gray"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="2.0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/widgetDate_fontSize" />
+
+            <TextView
+                android:id="@+id/iconZodiacYear0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:shadowColor="@color/dark_gray"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="2.0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/widgetDate_fontSize" />
+
+            <ImageView
+                android:id="@id/iconFav0"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/widget_FavIcon"
+                android:src="@drawable/fav_star" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView0"
@@ -134,23 +183,13 @@
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
-        <ImageView
-            android:id="@+id/iconEventType0"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="4dip"
-            android:layout_marginTop="5dip"
-            android:contentDescription="@string/widget_TypeIcon"
-            android:src="@drawable/ic_event_birthday" />
-
         <TextView
             android:id="@+id/textViewAge0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
             android:layout_marginStart="2dip"
-            android:layout_toEndOf="@+id/iconEventType0"
+            android:layout_toEndOf="@id/iconsView0"
             android:contentDescription="@string/widget_Age"
             android:gravity="start|top"
             android:shadowColor="@color/dark_gray"
@@ -184,15 +223,6 @@
             android:textStyle="bold"
             tools:ignore="RelativeOverlap" />
 
-        <ImageView
-            android:id="@id/iconFav0"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_below="@id/textViewAge0"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="4dp"
-            android:contentDescription="@string/widget_FavIcon"
-            android:src="@drawable/fav_star" />
     </RelativeLayout>
 
 </RelativeLayout>

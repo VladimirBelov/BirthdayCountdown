@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 03.08.20 23:51
+  ~  * Last modified 07.10.20 22:48
   ~  */
   -->
 
@@ -27,46 +27,82 @@
 
     <RelativeLayout
         android:id="@+id/eventInfo0"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/imageView0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginStart="3dip"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/selection_rectangle"
             android:contentDescription="@string/widget_Photo"
             android:scaleType="centerCrop"
             android:src="@drawable/photo_man01" />
 
-        <ImageView
-            android:id="@id/iconFav0"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_below="@id/textViewAge0"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="4dp"
-            android:contentDescription="@string/widget_FavIcon"
-            android:src="@drawable/fav_star" />
+        <LinearLayout
+            android:id="@+id/iconsView0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dip"
+            android:layout_marginTop="4dip"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" >
+
+            <ImageView
+                android:id="@+id/iconEventType0"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/widget_TypeIcon"
+                android:src="@drawable/ic_event_birthday" />
+
+            <TextView
+                android:id="@+id/iconZodiac0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:gravity="start"
+                android:shadowColor="@color/dark_gray"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="2.0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/widgetDate_fontSize" />
+
+            <TextView
+                android:id="@+id/iconZodiacYear0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:shadowColor="@color/dark_gray"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="2.0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/widgetDate_fontSize" />
+
+            <ImageView
+                android:id="@id/iconFav0"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/widget_FavIcon"
+                android:src="@drawable/fav_star" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView0"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
-            android:layout_marginEnd="2dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/widget_name_shadow"
+            android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
             android:gravity="start"
             android:shadowColor="@color/dark_gray"
@@ -80,12 +116,11 @@
 
         <TextView
             android:id="@+id/textViewCentered0"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="3dip"
             android:layout_marginTop="-9.0dip"
-            android:layout_marginEnd="2dip"
             android:layout_marginBottom="3.0dip"
             android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
@@ -95,18 +130,17 @@
             android:shadowDy="-2"
             android:shadowRadius="2.0"
             android:singleLine="true"
-            android:text="@string/appwidget_text"
+            android:text="@string/widget_Date"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize" />
 
         <TextView
             android:id="@+id/textView2nd0"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/textView0"
             android:layout_marginStart="3dip"
             android:layout_marginBottom="9dip"
-            android:layout_marginEnd="2dip"
             android:background="@color/widget_name_shadow"
             android:contentDescription="@string/widget_FIO"
             android:ellipsize="marquee"
@@ -122,12 +156,11 @@
 
         <TextView
             android:id="@+id/textView2ndCentered0"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/textView0"
             android:layout_marginStart="3dip"
             android:layout_marginBottom="9dip"
-            android:layout_marginEnd="2dip"
             android:background="@color/widget_name_shadow"
             android:ellipsize="marquee"
             android:gravity="center"
@@ -159,16 +192,6 @@
             android:textStyle="bold"
             tools:ignore="RelativeOverlap" />
 
-        <ImageView
-            android:id="@+id/iconEventType0"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="4dip"
-            android:layout_marginTop="4dip"
-            android:contentDescription="@string/widget_TypeIcon"
-            android:src="@drawable/ic_event_birthday" />
-
         <TextView
             android:id="@+id/textViewAge0"
             android:layout_width="match_parent"
@@ -177,7 +200,7 @@
             android:layout_marginTop="1dip"
             android:layout_marginEnd="1dip"
             android:layout_marginBottom="1dip"
-            android:layout_toEndOf="@+id/iconEventType0"
+            android:layout_toEndOf="@id/iconsView0"
             android:paddingTop="1dip"
             android:shadowColor="@color/black"
             android:shadowDx="3"

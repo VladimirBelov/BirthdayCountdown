@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 12.08.20 12:27
+  ~  * Last modified 05.10.20 23:13
   ~  */
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,10 +21,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/AppTheme.DarkGray.ActionBar"
-            app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
+            android:layout_height="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AppTheme.DarkGray.ActionBar"
+            app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,126 +34,126 @@
         android:layout_marginTop="42sp"
         android:background="?attr/backgroundColor">
 
-       <ScrollView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:nestedScrollingEnabled="true"
-           android:fadeScrollbars="true"
-           android:layout_above="@id/widget_hint"
-           android:layout_alignParentTop="true">
-        <LinearLayout
-            android:id="@+id/layout_prefs"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:isScrollContainer="true">
-
-            <TextView
+            android:nestedScrollingEnabled="true"
+            android:fadeScrollbars="true"
+            android:layout_above="@id/widget_hint"
+            android:layout_alignParentTop="true">
+            <LinearLayout
+                android:id="@+id/layout_prefs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/widget_config_event_types_title"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:orientation="vertical"
+                android:isScrollContainer="true">
 
-            <org.vovka.birthdaycountdown.MultiSelectionSpinner
-                android:id="@+id/spinnerEventTypes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_event_types_title"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_event_types_description"
-                android:textColor="?android:attr/textColorSecondary" />
+                <org.vovka.birthdaycountdown.MultiSelectionSpinner
+                    android:id="@+id/spinnerEventTypes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp" />
 
-            <View
-                android:id="@+id/dividerEventTypes"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dip"
-                android:layout_marginBottom="10dip"
-                android:background="?attr/listDividerColor" /> <!--Divider-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_event_types_description"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_index_label"
-                android:textColor="?android:attr/textColorSecondary" />
+                <View
+                    android:id="@+id/dividerEventTypes"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" /> <!--Divider-->
 
-            <Spinner
-                android:id="@+id/spinnerEventShift"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/widget_config_numbers"
-                android:prompt="@string/widget_config_index_label" />
-            <!--            android:popupBackground="?attr/backgroundColor"-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_index_label"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_index_description"
-                android:textColor="?android:attr/textColorSecondary" />
+                <Spinner
+                    android:id="@+id/spinnerEventShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/widget_config_numbers"
+                    android:prompt="@string/widget_config_index_label" />
+                <!--            android:popupBackground="?attr/backgroundColor"-->
 
-            <View
-                android:id="@+id/dividerFontMagnify"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dip"
-                android:layout_marginBottom="10dip"
-                android:background="?attr/listDividerColor" /> <!--Divider-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_index_description"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:id="@+id/spinnerFontMagnifyLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_font_label"
-                android:textColor="?android:attr/textColorSecondary" />
+                <View
+                    android:id="@+id/dividerFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" /> <!--Divider-->
 
-            <Spinner
-                android:id="@+id/spinnerFontMagnify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/widget_config_font"
-                android:prompt="@string/widget_config_font_label" />
+                <TextView
+                    android:id="@+id/spinnerFontMagnifyLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_font_label"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:id="@+id/textViewFontMagnify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_font_description"
-                android:textColor="?android:attr/textColorSecondary" />
+                <Spinner
+                    android:id="@+id/spinnerFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/widget_config_font"
+                    android:prompt="@string/widget_config_font_label" />
 
-            <View
-                android:id="@+id/dividerEventsCount"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dip"
-                android:layout_marginBottom="10dip"
-                android:background="?attr/listDividerColor" /> <!--Divider-->
+                <TextView
+                    android:id="@+id/textViewFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_font_description"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:id="@+id/spinnerEventsCountLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_events_count_label"
-                android:textColor="?android:attr/textColorSecondary" />
+                <View
+                    android:id="@+id/dividerEventsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" /> <!--Divider-->
 
-            <Spinner
-                android:id="@+id/spinnerEventsCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/widget_config_events_count"
-                android:prompt="@string/widget_config_events_count_label" />
+                <TextView
+                    android:id="@+id/spinnerEventsCountLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_events_count_label"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <TextView
-                android:id="@+id/textViewEventsCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_config_events_count_description"
-                android:textColor="?android:attr/textColorSecondary" />
-        </LinearLayout>
-    </ScrollView>
+                <Spinner
+                    android:id="@+id/spinnerEventsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/widget_config_events_count"
+                    android:prompt="@string/widget_config_events_count_label" />
+
+                <TextView
+                    android:id="@+id/textViewEventsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_events_count_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+            </LinearLayout>
+        </ScrollView>
 
         <TextView
             android:id="@+id/widget_hint"

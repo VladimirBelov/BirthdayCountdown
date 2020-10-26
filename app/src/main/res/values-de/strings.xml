@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 01.09.20 17:53
+  ~  * Last modified 08.10.20 12:16
   ~  */
   -->
 
@@ -24,7 +24,6 @@
     <string name="menu_refresh">Aktualisieren</string>
     <string name="menu_search">Suche…</string>
     <string name="menu_filter_events">Filtern…</string>
-<!--    <string name="menu_exit">Schließe</string>-->
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
@@ -159,6 +158,7 @@
         <item>Englisch</item>
         <item>Deutsch</item>
         <item>Russisch</item>
+        <item>Spanisch</item>
         <item>Ukrainisch</item>
     </string-array>
 
@@ -285,6 +285,8 @@
         <item>Ursprünglicher Ereignisname</item>
         <item>Favoriten Symbol</item>
         <item>Alter</item>
+        <item>Sternzeichen</item>
+        <item>Tierkreisjahr</item>
         <item>Kontotyp und Speicherdatum</item>
     </string-array>
 
@@ -294,10 +296,12 @@
     <string name="pref_Widgets_EventInfo_description">Welche Ereignisdetails und Widget-Elemente sollen angezeigt werden</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
+        <item>Einfassung</item>
         <item>Kontaktfoto</item>
         <item>Ereignistyp-Symbol</item>
+        <item>Sternzeichen</item>
+        <item>Tierkreisjahr</item>
         <item>Favoriten Symbol</item>
-        <item>Einfassung</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
@@ -345,6 +349,7 @@
     <string name="widget_config_font_description">Wird beim Skalieren des Widgets verwendet, um die Schriftgröße des Alters, die Entfernung zum Ereignis und die Informationen unter dem Foto zu erhöhen</string>
     <string-array name="widget_config_font">
         <item>Auto</item>
+        <item>x0.5</item>
         <item>x0.75</item>
         <item>x1.0</item>
         <item>x1.2</item>
@@ -497,13 +502,54 @@
     <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">""</string>
     <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">""</string>
     <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Goldene</string>
+    <string name="event_type_wedding_51" tools:keep="@string/event_type_wedding_51">""</string>
+    <string name="event_type_wedding_52" tools:keep="@string/event_type_wedding_52">""</string>
+    <string name="event_type_wedding_53" tools:keep="@string/event_type_wedding_53">""</string>
+    <string name="event_type_wedding_54" tools:keep="@string/event_type_wedding_54">""</string>
     <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Platin</string>
+    <string name="event_type_wedding_56" tools:keep="@string/event_type_wedding_56">""</string>
+    <string name="event_type_wedding_57" tools:keep="@string/event_type_wedding_57">""</string>
+    <string name="event_type_wedding_58" tools:keep="@string/event_type_wedding_58">""</string>
+    <string name="event_type_wedding_59" tools:keep="@string/event_type_wedding_59">""</string>
     <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Diamant</string>
+    <string name="event_type_wedding_61" tools:keep="@string/event_type_wedding_61">""</string>
+    <string name="event_type_wedding_62" tools:keep="@string/event_type_wedding_62">""</string>
+    <string name="event_type_wedding_63" tools:keep="@string/event_type_wedding_63">""</string>
+    <string name="event_type_wedding_64" tools:keep="@string/event_type_wedding_64">""</string>
     <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Eiserne</string>
+    <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
+    <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
     <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Gnaden</string>
     <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Kronjuwelen</string>
     <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Eichen</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">Engels</string>
     <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Marmor</string>
+    <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Himmels</string>
+
+    <string name="zodiac_sign_aries">" Widder"</string>
+    <string name="zodiac_sign_taurus">" Stier"</string>
+    <string name="zodiac_sign_gemini">" Zwillinge"</string>
+    <string name="zodiac_sign_cancer">" Krebs"</string>
+    <string name="zodiac_sign_leo">" Löwe"</string>
+    <string name="zodiac_sign_virgo">" Jungfrau"</string>
+    <string name="zodiac_sign_libra">" Waage"</string>
+    <string name="zodiac_sign_scorpio">" Skorpion"</string>
+    <string name="zodiac_sign_sagittarius">" Schütze"</string>
+    <string name="zodiac_sign_capricorn">" Steinbock"</string>
+    <string name="zodiac_sign_aquarius">" Wassermann"</string>
+    <string name="zodiac_sign_pisces">" Fische"</string>
+
+    <string name="zodiac_year_monkey">" Affe"</string>
+    <string name="zodiac_year_rooster">" Hahn"</string>
+    <string name="zodiac_year_dog">" Hund"</string>
+    <string name="zodiac_year_pig">" Schwein"</string>
+    <string name="zodiac_year_rat">" Ratte"</string>
+    <string name="zodiac_year_ox">" Ochse"</string>
+    <string name="zodiac_year_tiger">" Tiger"</string>
+    <string name="zodiac_year_rabbit">" Hase"</string>
+    <string name="zodiac_year_dragon">" Drachen"</string>
+    <string name="zodiac_year_snake">" Schlange"</string>
+    <string name="zodiac_year_horse">" Pferd"</string>
+    <string name="zodiac_year_sheep">" Schaf"</string>
 </resources>

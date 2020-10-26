@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 03.09.20 22:21
+ *  * Last modified 29.09.20 22:18
  *
  */
 
@@ -34,7 +34,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private ContactsEvents eventsData;
     private List<String> eventTypesIDs;
     private List<String> eventTypesValues;
-
+    private final String APP_WIDGET_ID = "appWidgetId";
 
     public void onCreate(Bundle savedInstanceState) {
         try {
@@ -81,7 +81,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if (extras != null) widgetId = extras.getInt("appWidgetId", 0);
+            if (extras != null) widgetId = extras.getInt(APP_WIDGET_ID, 0);
 
             List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
 
@@ -94,7 +94,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             spinnerIndex.setSelection(prefStartingIndex - 1);
 
-            //Заполняем Коэффициент масштабирования размера шрифта
+            //Заполняем коэффициент масштабирования размера шрифта
             int prefMagnifyIndex = 0;
             try {
                 if (widgetPref.size() > 1) prefMagnifyIndex = Integer.parseInt(widgetPref.get(1));
@@ -214,7 +214,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             );
 
             Intent intent = new Intent();
-            intent.putExtra("appWidgetId", widgetId);
+            intent.putExtra(APP_WIDGET_ID, widgetId);
             setResult(RESULT_OK, intent);
 
             //Посылаем сообщения на обновление виджетов

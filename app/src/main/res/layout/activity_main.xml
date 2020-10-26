@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 03.08.20 23:51
+  ~  * Last modified 05.10.20 23:02
   ~  */
   -->
 
@@ -24,8 +24,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/AppTheme.DarkGray.ActionBar"
-            app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay" />
+            android:theme="@style/AppTheme.Black.ActionBar"
+            app:popupTheme="@style/AppTheme.Black.PopupOverlay" />
 	</com.google.android.material.appbar.AppBarLayout>
 
 	<include layout="@layout/list_main" />

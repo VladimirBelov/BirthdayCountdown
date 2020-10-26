@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 01.09.20 17:49
+  ~  * Last modified 15.10.20 0:48
   ~  */
   -->
 
@@ -24,7 +24,6 @@
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Поиск…</string>
     <string name="menu_filter_events">Фильтр…</string>
-<!--    <string name="menu_exit">Закрыть</string>-->
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
@@ -159,6 +158,7 @@
         <item>Английский</item>
         <item>Немецкий</item>
         <item>Русский</item>
+        <item>Испанский</item>
         <item>Украинский</item>
     </string-array>
 
@@ -285,6 +285,8 @@
         <item>Исходное наименование события</item>
         <item>Иконка избранного контакта</item>
         <item>Возраст</item>
+        <item>Знак зодиака</item>
+        <item>Зодиакальный год</item>
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
@@ -294,10 +296,12 @@
     <string name="pref_Widgets_EventInfo_description">Какие детали события и элементы виджета показывать</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
+        <item>Бордюр виджета</item>
         <item>Фото контакта</item>
         <item>Иконка типа события</item>
+        <item>Знак зодиака</item>
+        <item>Зодиакальный год</item>
         <item>Иконка избранного</item>
-        <item>Бордюр виджета</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Заголовок (нижний ряд)</string>
@@ -338,7 +342,7 @@
     </string-array>
 
     <string name="pref_Widgets_Color_EventToday_title">Цвет для \"Возраст\"</string>
-    <string name="pref_Widgets_Color_EventToday_description">Цвет возраста для события сегодня</string>
+    <string name="pref_Widgets_Color_EventToday_description">Цвет возраста для событий сегодня</string>
 
     <string name="pref_Widgets_Color_EventSoon_title">Цвет для \"Дней до события\"</string>
     <string name="pref_Widgets_Color_EventSoon_description">Цвет счётчика дней для ближайших событий</string>
@@ -351,13 +355,14 @@
 
     <string name="widget_config_event_types_empty">Как в списке событий</string>
 
-    <string name="widget_config_index_label">Стартовый номер события:</string>
+    <string name="widget_config_index_label">Стартовый номер событий:</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>
 
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
     <string name="widget_config_font_description">Используется при масштабировании виджета для увеличения размера шрифта возраста, дистанции до события и информации под фото</string>
     <string-array name="widget_config_font">
         <item>Авто</item>
+        <item>x0.5</item>
         <item>x0.75</item>
         <item>x1.0</item>
         <item>x1.2</item>
@@ -512,14 +517,55 @@
     <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">Аметистовая</string>
     <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">Кедровая</string>
     <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Золотая</string>
+    <string name="event_type_wedding_51" tools:keep="@string/event_type_wedding_51">""</string>
+    <string name="event_type_wedding_52" tools:keep="@string/event_type_wedding_52">""</string>
+    <string name="event_type_wedding_53" tools:keep="@string/event_type_wedding_53">""</string>
+    <string name="event_type_wedding_54" tools:keep="@string/event_type_wedding_54">""</string>
     <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Изумрудная</string>
+    <string name="event_type_wedding_56" tools:keep="@string/event_type_wedding_56">""</string>
+    <string name="event_type_wedding_57" tools:keep="@string/event_type_wedding_57">""</string>
+    <string name="event_type_wedding_58" tools:keep="@string/event_type_wedding_58">""</string>
+    <string name="event_type_wedding_59" tools:keep="@string/event_type_wedding_59">""</string>
     <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Алмазная</string>
+    <string name="event_type_wedding_61" tools:keep="@string/event_type_wedding_61">""</string>
+    <string name="event_type_wedding_62" tools:keep="@string/event_type_wedding_62">""</string>
+    <string name="event_type_wedding_63" tools:keep="@string/event_type_wedding_63">""</string>
+    <string name="event_type_wedding_64" tools:keep="@string/event_type_wedding_64">""</string>
     <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Железная</string>
+    <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
+    <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
     <!-- Каменная свадьба — 67,5 лет -->
     <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Благодатная</string>
     <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Коронная</string>
     <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Дубовая</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
     <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Гранитная</string>
+    <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Красная или платиновая</string>
+
+    <string name="zodiac_sign_aries">" Овен"</string>
+    <string name="zodiac_sign_taurus">" Телец"</string>
+    <string name="zodiac_sign_gemini">" Близнецы"</string>
+    <string name="zodiac_sign_cancer">" Рак"</string>
+    <string name="zodiac_sign_leo">" Лев"</string>
+    <string name="zodiac_sign_virgo">" Дева"</string>
+    <string name="zodiac_sign_libra">" Весы"</string>
+    <string name="zodiac_sign_scorpio">" Скорпион"</string>
+    <string name="zodiac_sign_sagittarius">" Стрелец"</string>
+    <string name="zodiac_sign_capricorn">" Козерог"</string>
+    <string name="zodiac_sign_aquarius">" Водолей"</string>
+    <string name="zodiac_sign_pisces">" Рыбы"</string>
+
+    <string name="zodiac_year_monkey">" Обезьяна"</string>
+    <string name="zodiac_year_rooster">" Петух"</string>
+    <string name="zodiac_year_dog">" Собака"</string>
+    <string name="zodiac_year_pig">" Свинья"</string>
+    <string name="zodiac_year_rat">" Крыса"</string>
+    <string name="zodiac_year_ox">" Бык"</string>
+    <string name="zodiac_year_tiger">" Тигр"</string>
+    <string name="zodiac_year_rabbit">" Кролик"</string>
+    <string name="zodiac_year_dragon">" Дракон"</string>
+    <string name="zodiac_year_snake">" Змея"</string>
+    <string name="zodiac_year_horse">" Лошадь"</string>
+    <string name="zodiac_year_sheep">" Овца"</string>
 </resources>

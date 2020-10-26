@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 01.09.20 18:10
+  ~  * Last modified 15.10.20 1:06
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.2</item>
+        <item>Added Spain translation</item>
+        <item>Added display of zodiac signs</item>
+        <item>Fixed search for several parameters at once (see \"How to\" guide)</item>
+        <item>Fixed some bugs</item>
 
         <item>#1.5.1</item>
         <item>Android 11 ready</item>

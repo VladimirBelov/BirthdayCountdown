@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 03.09.20 14:15
+ *  * Last modified 06.10.20 21:34
  *
  */
 
@@ -28,7 +28,6 @@ class Constants {
     static final String STRING_5 = "5";
     static final String STRING_6 = "6";
     static final String STRING_7 = "7";
-    static final String STRING_10 = "10";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -45,11 +44,23 @@ class Constants {
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
 
     static final String STRING_ID = "id";
-    static final String STRING_TEXT_VIEW = "textView";
-    static final String STRING_EVENT_INFO = "eventInfo";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";
+    static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
+
+    static final String WIDGET_TEXT_VIEW = "textView";
+    static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
+    static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
+    static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
+    static final String WIDGET_EVENT_INFO = "eventInfo";
+    static final String WIDGET_IMAGE_VIEW = "imageView";
+    static final String WIDGET_TEXT_VIEW_AGE = "textViewAge";
+    static final String WIDGET_ICON_EVENT_TYPE = "iconEventType";
+    static final String WIDGET_ICON_ZODIAC = "iconZodiac";
+    static final String WIDGET_ICON_ZODIAC_YEAR = "iconZodiacYear";
+    static final String WIDGET_ICON_FAV = "iconFav";
+    static final String WIDGET_TEXT_VIEW_DISTANCE = "textViewDistance";
 
     static final Integer Type_BirthDay = 0;
     static final Integer Type_Anniversary = 1;
@@ -135,7 +146,6 @@ class Constants {
     static final int MENU_MAIN_REFRESH = 2;
     static final int MENU_MAIN_SETTINGS = 3;
     static final int MENU_MAIN_FILTER = 4;
-    //static final int MENU_MAIN_EXIT = 5;
 
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
@@ -205,7 +215,7 @@ class Constants {
     static final String CONTACTS_EVENTS_GET_AGE_STRING_ERROR = "ContactsEvents->getAgeString error:\n";
     static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
     static final String CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR = "ContactsEvents->showAnniversaryList error:\n";
-    static final String CONTACTS_EVENTS_SET_HTML_COLOR = "ContactsEvents->setHTMLColor error:\n";
+    static final String CONTACTS_EVENTS_SET_HTML_COLOR_ERROR = "ContactsEvents->setHTMLColor error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
 
@@ -261,4 +271,7 @@ class Constants {
     static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invoke error:\n";
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
+    static final String RES_TYPE_COLOR = "color";
+    static final String PARAM_APP_WIDGET_ID = "appWidgetId";
+    static final String REGEX_PLUS = "\\+";
 }

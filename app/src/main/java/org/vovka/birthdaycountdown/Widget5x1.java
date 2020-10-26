@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.20 23:07
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 03.08.20 23:51
+ *  * Last modified 09.10.20 18:38
  *
  */
 
@@ -125,6 +125,9 @@ public class Widget5x1 extends AppWidgetProvider {
                 case 3:
                     prefEventsCountDiff = 1;
                     break;
+                case 4:
+                    prefEventsCountDiff = 2;
+                    break;
             }
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
@@ -157,6 +160,7 @@ public class Widget5x1 extends AppWidgetProvider {
     static private RemoteViews getRemoteViews(@NonNull Context context, int eventsCount) {
 
         switch (eventsCount) {
+            case -1:
             case 0:
             case 1:
                     return new RemoteViews(context.getPackageName(), R.layout.widget1x1);

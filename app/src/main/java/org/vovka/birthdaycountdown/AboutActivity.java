@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.07.20 1:05
+ *  * Created by Vladimir Belov on 27.10.20 0:43
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 28.04.20 23:21
+ *  * Last modified 29.09.20 22:18
  *
  */
 
@@ -37,6 +37,7 @@ import java.util.TimeZone;
 import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
+import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
@@ -97,48 +98,72 @@ public class AboutActivity extends AppCompatActivity {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             TextView txtInfo = findViewById(R.id.textVersionInfo);
             txtInfo.setText(HtmlCompat.fromHtml(STRING_EMPTY +
-                    STRING_DIALOG_TAB + "&nbsp;&nbsp;created by Vladimir Belov" +
-                    STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
-                    "<br>&nbsp;"      +
-                    STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
-                    STRING_DIALOG_TAB + "built: " + formatter.format(BuildConfig.BUILD_TIME)
-            , 0));
+                            STRING_DIALOG_TAB + "&nbsp;&nbsp;created by Vladimir Belov" +
+                            STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
+                            "<br>&nbsp;"      +
+                            STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
+                            STRING_DIALOG_TAB + "built: " + formatter.format(BuildConfig.BUILD_TIME)
+                    , 0));
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 
+            //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
+            //https://stackoverflow.com/questions/39036411/activitymanagercompat-islowramdevice-is-useless-is-always-returns-false
+            //ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+            //if (am.isLowRamDevice()) {
+            //   webView.setVisibility(View.GONE);
+
             StringBuilder sb = new StringBuilder();
-            //todo: на Android 9 и 10 при первом показе грузит дефолтный язык
+            //todo: на Android 9 и 10 при первом показе грузит дефолтный язык, но не всегда
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
-            //Debug information
-            if (eventsData.preferences_debug_on) {
+            //Statistics information
+            sb.append(getString(R.string.stats_title));
 
-                sb.append(getString(R.string.debuglog_body,
-                        eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContacts)), eventsData.statTimeGetContacts > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
-                        eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > 500 ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", ""),
-                        eventsData.statAllEvents,
-                        eventsData.statAllTitles,
-                        eventsData.statAllOrganizations,
-                        eventsData.statAllNicknames
-                        /*String.valueOf(resources.getDisplayMetrics().heightPixels),
-                        String.valueOf(resources.getDisplayMetrics().widthPixels),
-                        String.valueOf(resources.getDisplayMetrics().density)*/
-                ));
+            sb.append(getString(R.string.stats_speed_title));
+            if (eventsData.statTimeGetContactEvents > 0)
+                sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
+            if (eventsData.statTimeGetCalendarEvents > 0)
+                sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
+            sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
+            sb.append(Constants.HTML_UL_END);
 
-                for(Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
+            sb.append(getString(R.string.stats_counters_title));
+            if (eventsData.statAllEvents > 0)
+                sb.append(getString(R.string.stats_counters_events, eventsData.statAllEvents));
+            if (eventsData.statAllContacts > 0)
+                sb.append(getString(R.string.stats_counters_contacts, eventsData.statAllContacts));
+            if (eventsData.statAllTitles > 0)
+                sb.append(getString(R.string.stats_counters_titles, eventsData.statAllTitles));
+            if (eventsData.statAllOrganizations > 0)
+                sb.append(getString(R.string.stats_counters_organizations, eventsData.statAllOrganizations));
+            if (eventsData.statAllNicknames > 0)
+                sb.append(getString(R.string.stats_counters_nicknames, eventsData.statAllNicknames));
+            sb.append(Constants.HTML_UL_END);
+
+            if (eventsData.statEventTypes.entrySet().size() > 0) {
+                sb.append(getString(R.string.stats_counters_events_title));
+                for (Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
                     sb.append(Constants.HTML_LI).append(entry.getKey()).append(STRING_COLON_SPACE).append(entry.getValue());
                 }
                 sb.append(Constants.HTML_UL_END);
             }
 
             //Change log
-            String[] arrChangeLog = resources.getStringArray(R.array.changelog);
+            //todo: когда количество строк превысит 700 - https://stackoverflow.com/questions/3522181/should-i-be-using-something-other-than-getresource-getstringarray-to-populat
+            String[] arrChangeLog;
+            try {
+                arrChangeLog = resources.getStringArray(R.array.changelog);
+            } catch (Resources.NotFoundException e) {
+                arrChangeLog = new String[]{};
+            }
+
             if (arrChangeLog.length > 0) {
 
                 sb.append(getString(R.string.changelog_title));
                 int countRows = 0;
-                for(String strChange: arrChangeLog) {
+                for (String strChange : arrChangeLog) {
 
                     countRows++;
                     if (strChange.charAt(0) == '#') {
@@ -155,13 +180,14 @@ public class AboutActivity extends AppCompatActivity {
                 if (countRows > 0) sb.append(Constants.HTML_UL_END);
 
             }
-
             sb.append("</body></html>");
 
             WebView webView = findViewById(R.id.webView);
-            webView.setVerticalScrollBarEnabled(true);
-            webView.setBackgroundColor(Color.TRANSPARENT);
-            webView.loadData(sb.toString(), "text/html; charset=utf-8", "utf-8");
+            if (webView != null) {
+                webView.setVerticalScrollBarEnabled(true);
+                webView.setBackgroundColor(Color.TRANSPARENT);
+                webView.loadData(sb.toString(), "text/html; charset=utf-8", "utf-8");
+            }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));

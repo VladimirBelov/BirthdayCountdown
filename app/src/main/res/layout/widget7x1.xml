@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.09.20 23:07
+  ~  * Created by Vladimir Belov on 27.10.20 0:43
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 03.08.20 23:51
+  ~  * Last modified 07.10.20 22:48
   ~  */
   -->
 
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView0"
@@ -51,15 +51,54 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav0"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge0"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="4dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType0"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@id/iconFav0"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView0"
@@ -160,16 +199,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType0"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge0"
                 android:layout_width="match_parent"
@@ -178,7 +207,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType0"
+                android:layout_toEndOf="@id/iconsView0"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -196,7 +225,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView1"
@@ -210,15 +239,56 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav1"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge1"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+
+                <ImageView
+                    android:id="@+id/iconEventType1"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@id/iconFav1"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView1"
@@ -315,16 +385,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType1"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge1"
                 android:layout_width="match_parent"
@@ -333,7 +393,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType1"
+                android:layout_toEndOf="@id/iconsView1"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -351,7 +411,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -365,15 +425,55 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav2"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge2"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType2"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@id/iconFav2"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView2"
@@ -470,16 +570,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType2"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge2"
                 android:layout_width="match_parent"
@@ -488,7 +578,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType2"
+                android:layout_toEndOf="@id/iconsView2"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -506,7 +596,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -520,15 +610,55 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav3"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge3"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType3"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@id/iconFav3"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView3"
@@ -625,16 +755,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType3"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge3"
                 android:layout_width="match_parent"
@@ -643,7 +763,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType3"
+                android:layout_toEndOf="@id/iconsView3"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -661,7 +781,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -675,15 +795,55 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav4"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge4"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType4"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@id/iconFav4"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView4"
@@ -780,16 +940,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType4"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge4"
                 android:layout_width="match_parent"
@@ -798,7 +948,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType4"
+                android:layout_toEndOf="@id/iconsView4"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -816,7 +966,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -830,15 +980,55 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@id/iconFav5"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge5"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType5"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@+id/iconFav5"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView5"
@@ -933,17 +1123,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
-
-            <ImageView
-                android:id="@+id/iconEventType5"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
+                tools:ignore="RelativeOverlap,TooManyViews" />
 
             <TextView
                 android:id="@+id/textViewAge5"
@@ -953,7 +1133,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType5"
+                android:layout_toEndOf="@id/iconsView5"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -971,7 +1151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -986,15 +1166,56 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/photo_man01" />
 
-            <ImageView
-                android:id="@+id/iconFav6"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_below="@id/textViewAge6"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
+            <LinearLayout
+                android:id="@+id/iconsView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="4dip"
+                android:orientation="vertical"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/iconEventType6"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_TypeIcon"
+                    android:src="@drawable/ic_event_birthday" />
+
+                <TextView
+                    android:id="@+id/iconZodiac6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="TooManyViews" />
+
+                <TextView
+                    android:id="@+id/iconZodiacYear6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:shadowColor="@color/dark_gray"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <ImageView
+                    android:id="@+id/iconFav6"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/widget_FavIcon"
+                    android:src="@drawable/fav_star" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView6"
@@ -1095,16 +1316,6 @@
                 android:textStyle="bold"
                 tools:ignore="RelativeOverlap" />
 
-            <ImageView
-                android:id="@+id/iconEventType6"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dip"
-                android:layout_marginTop="4dip"
-                android:contentDescription="@string/widget_TypeIcon"
-                android:src="@drawable/ic_event_birthday" />
-
             <TextView
                 android:id="@+id/textViewAge6"
                 android:layout_width="match_parent"
@@ -1113,7 +1324,7 @@
                 android:layout_marginTop="1dip"
                 android:layout_marginEnd="1dip"
                 android:layout_marginBottom="1dip"
-                android:layout_toEndOf="@+id/iconEventType6"
+                android:layout_toEndOf="@id/iconsView6"
                 android:paddingTop="1dip"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
@@ -1122,9 +1333,11 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="TooManyViews" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
 </RelativeLayout>
