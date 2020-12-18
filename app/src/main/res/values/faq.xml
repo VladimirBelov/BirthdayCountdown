@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 15.10.20 1:01
+  ~  * Last modified 17.12.20 12:05
   ~  */
   -->
 
@@ -14,10 +14,10 @@
         <item>###Event notifications</item>
 
         <item>#No notifications appear</item>
-        <item>The first step is to make sure that the setting \"Notification interval\" is any value other than \"None\". After that try to select item \"Test notification\". If after all of the above, the notification still does not appear, then the matter is in the Android settings: either the \"Do not disturb\" mode is turned on, or all notifications are turned off in the notification manager, or the battery saving mode is turned on in the smartphone.</item>
+        <item>The first step is to make sure that the setting \"Notification period\" has any period selected. After that try to select item \"Test notification\". If after all of the above, the notification still does not appear, then the matter is in the Android settings: either the \"Do not disturb\" mode is turned on, or all notifications are turned off in the notification manager, or the battery saving mode is turned on in the smartphone.</item>
 
         <item>#Multiple notifications per event</item>
-        <item>The setting \"Notification interval\" in the main application settings implies that if you set the value \"One day\" there will be two notifications: first 1 day before the event and second on the day of the event.</item>
+        <item>Setting \"Notification period\" in the main application settings allows you to select several separate periods for notification of an event. For example, you can set up receiving notifications for the week and day of the event.</item>
 
         <item> </item>
         <item>###Widgets</item>

@@ -1,16 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 06.10.20 21:34
+ *  * Last modified 10.12.20 11:25
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-class Constants {
-
-    //Константы
+final class Constants {
 
     static final String STRING_EMPTY = "";
     static final String STRING_SPACE = " ";
@@ -28,6 +26,8 @@ class Constants {
     static final String STRING_5 = "5";
     static final String STRING_6 = "6";
     static final String STRING_7 = "7";
+    static final String STRING_8 = "8";
+    static final String STRING_9 = "9";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -242,8 +242,9 @@ class Constants {
     static final String MY_ADAPTER_GET_VIEW_ERROR = "MyAdapter->getView error:\n";
 
     static final String PERSON_CONSTRUCTOR_ERROR = "Person->Constructor error:\n";
-    static final String PERSON_GET_FULL_NAME_ALT_ERROR = "Person->getFullNameAlt error:\n";
-    static final String PERSON_GET_FULL_NAME_ERROR = "Person->getFullName error: ";
+    //static final String PERSON_GET_FULL_NAME_ALT_ERROR = "Person->getFullNameAlt error:\n";
+    //static final String PERSON_GET_FULL_NAME_ERROR = "Person->getFullName error: ";
+    static final String PERSON_GET_FULL_NAME_SHORT_ERROR = "Person->getFullNameShort error: ";
     static final String PERSON_GET_GENDER_ERROR = "Person->getGender error:\n";
 
     static final String SETTINGS_ACTIVITY_ON_CREATE_ERROR = "SettingsActivity->onCreate error:\n";

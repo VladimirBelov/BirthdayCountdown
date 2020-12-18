@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 08.10.20 12:16
+  ~  * Last modified 17.12.20 15:57
   ~  */
   -->
 
@@ -72,10 +72,8 @@
     <string name="msg_age_could_be">"Было бы сейчас: "</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Пошуковий запит</string>
-    <string name="msg_notifications_soon_no_events">Немає подій на найближчі дні</string>
-    <string name="msg_notifications_today_no_events">Немає подій на сьогодні</string>
-    <string name="msg_notifications_soon">"Скоро подій - "</string>
-    <string name="msg_notifications_today">"Подій сьогодні - "</string>
+    <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
+    <string name="msg_notifications_soon">"Подій - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
     <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфон додатками (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
@@ -225,6 +223,7 @@
     <string-array name="pref_Theme_entries">
         <item>Зелена</item>
         <item>Темно-сіра</item>
+        <item>Блакитна</item>
         <item>Чорна</item>
     </string-array>
 
@@ -325,6 +324,8 @@
         <item>Псевдонім</item>
         <item>Прізвище</item>
         <item>Дата події</item>
+        <item>Тип події</item>
+        <item>Найменування події</item>
         <item>Нічого</item>
     </string-array>
 
@@ -386,12 +387,20 @@
     <string name="pref_Notifications_Days_description">За скільки днів повідомляти</string>
 
     <string-array name="pref_Notifications_Days_entries">
-        <item>Чи не повідомляти</item>
         <item>У день події</item>
         <item>За один день</item>
         <item>За два дні</item>
         <item>За три дні</item>
         <item>За тиждень</item>
+    </string-array>
+
+    <string name="pref_Notifications_Priority_title">Пріоритет повідомлень</string>
+    <string name="pref_Notifications_Priority_description">Невідомі сповіщення з високим пріоритетом завжди вгорі. Щоб сховати їх, натисніть на нього</string>
+
+    <string-array name="pref_Notifications_Priority_entries">
+        <item>Стандартний пріоритет</item>
+        <item>Тільки підсумкове сповіщення є пріоритетним</item>
+        <item>Усі сповіщення мають високий пріоритет і їх не можна закрити</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Типи подій</string>
@@ -401,12 +410,13 @@
     <string name="pref_Notifications_AlarmHour_description">В який час повідомляти</string>
 
     <string-array name="pref_Notifications_AlarmHour_entries">
-        <item>В 7 утра</item>
-        <item>В 8 утра</item>
-        <item>В 9 утра</item>
-        <item>В 10 дня</item>
-        <item>В 11 дня</item>
-        <item>В полдень</item>
+        <item>Опівночі</item>
+        <item>О 7 ранку</item>
+        <item>О 8 ранку</item>
+        <item>О 9 ранку</item>
+        <item>У 10 дня</item>
+        <item>У 11 дня</item>
+        <item>Опівдні</item>
     </string-array>
 
     <string name="pref_Notifications_Ringtone_title">Звук сповіщення</string>

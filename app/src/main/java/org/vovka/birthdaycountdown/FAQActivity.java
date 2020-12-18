@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 03.09.20 23:07
+ *  * Last modified 10.11.20 23:00
  *
  */
 
@@ -106,11 +106,11 @@ public class FAQActivity extends AppCompatActivity {
 
             if (arrFAQrows.length > 0) {
                 for (String strRow : arrFAQrows) {
-                    if (strRow.length() >= 3 && strRow.substring(0, 3).equals("###")) {
+                    if (strRow.length() >= 3 && strRow.startsWith("###")) {
                         sb.append(HTML_BR).append(HTML_H1_START).append(strRow.substring(3)).append(HTML_H1_END);
-                    } else if (strRow.length() >= 2 && strRow.substring(0, 2).equals("##")) {
+                    } else if (strRow.length() >= 2 && strRow.startsWith("##")) {
                         sb.append(HTML_BR).append(HTML_H2_START).append(strRow.substring(2)).append(HTML_H2_END);
-                    } else if (strRow.length() >= 1 && strRow.substring(0, 1).equals("#")) {
+                    } else if (strRow.length() >= 1 && strRow.startsWith("#")) {
                         sb.append(HTML_H3_START).append(strRow.substring(1)).append(HTML_H3_END);
                     } else {
                         sb.append(strRow).append(HTML_BR);

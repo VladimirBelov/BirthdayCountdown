@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 15.10.20 13:03
+ *  * Last modified 06.12.20 2:11
  *
  */
 
@@ -107,8 +107,9 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_fio;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
 
@@ -1007,7 +1008,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(selectedEvent[Position_fio])
+                        .setTitle(selectedEvent[Position_personFullName])
                         .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
@@ -1138,13 +1139,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     if (eventsData.preferences_events_scope == pref_Events_Scope_Hidden) {
-                        setHint(resources.getString(R.string.msg_stats_hidden_prefix) + statsHiddenEvents);
+                        setHint(resources.getString(R.string.msg_stats_hidden_prefix) + statsHiddenEvents + STRING_SPACE);
                     } else if (eventsData.preferences_events_scope == pref_Events_Scope_All) {
-                        setHint(resources.getString(R.string.msg_stats_prefix) + statsAllEvents);
+                        setHint(resources.getString(R.string.msg_stats_prefix) + statsAllEvents + STRING_SPACE);
                     } else if (eventsData.preferences_events_scope == pref_Events_Scope_Silenced) {
-                        setHint(resources.getString(R.string.msg_stats_silenced_prefix) + statsSilencedEvents);
+                        setHint(resources.getString(R.string.msg_stats_silenced_prefix) + statsSilencedEvents + STRING_SPACE);
                     } else {
-                        setHint(resources.getString(R.string.msg_stats_prefix) + (statsAllEvents - statsHiddenEvents));
+                        setHint(resources.getString(R.string.msg_stats_prefix) + (statsAllEvents - statsHiddenEvents) + STRING_SPACE);
                     }
 
                 }
@@ -1280,7 +1281,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         break;
 
                     default: //Попозже
-                        holder.DayDistanceTextView.setText(eventDistanceText.toLowerCase());
+                        holder.DayDistanceTextView.setText(eventDistanceText);
                         holder.DayDistanceTextView.setTypeface(null, Typeface.NORMAL);
                         holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(context, R.color.dark_gray)));
 
@@ -1291,11 +1292,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 switch (eventsData.preferences_list_caption) {
                     case 2: //Фамилия Имя Отчество
-                        holder.NameTextView.setText(person.getFullName());
+                        holder.NameTextView.setText(singleRowArray[Position_personFullNameAlt]);
                         break;
                     case 1: //Имя Отчество Фамилия
                     default:
-                        holder.NameTextView.setText(person.getFullNameAlt());
+                        holder.NameTextView.setText(singleRowArray[Position_personFullName]);
                         break;
                 }
 
@@ -1332,14 +1333,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(STRING_PARENTHESIS_CLOSE);
                     }
 
-                    if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
-                        final String strZodiacInfo = singleRowArray[Position_zodiacSign];
-                        final String strZodiacYearInfo = singleRowArray[Position_zodiacYear];
-                        /*final String strZodiacInfo = eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_ZodiacSign) ?
-                                eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleRowArray[Position_eventDateText]) : STRING_EMPTY;
-
+                    if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
+                        final String strZodiacInfo = eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_ZodiacSign) ?
+                                singleRowArray[Position_zodiacSign].trim() : STRING_EMPTY;
                         final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_ZodiacYear) ?
-                                eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleRowArray[Position_eventDateText]) : STRING_EMPTY;*/
+                                singleRowArray[Position_zodiacYear].trim() : STRING_EMPTY;
 
                         if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
                             eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append((strZodiacInfo.concat(STRING_SPACE).concat(strZodiacYearInfo)).trim()).append(STRING_PARENTHESIS_CLOSE);
@@ -1524,16 +1522,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (dataList.size() > 0) {
                         if (eventsData.preferences_events_scope == pref_Events_Scope_Hidden) {
                             setHint(resources.getString(R.string.msg_stats_hidden_prefix)
-                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW)));
+                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW))
+                                    .concat(STRING_SPACE)
+                            );
                         } else if (eventsData.preferences_events_scope == pref_Events_Scope_Silenced) {
                             setHint(resources.getString(R.string.msg_stats_silenced_prefix)
-                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW)));
+                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW))
+                                    .concat(STRING_SPACE)
+                            );
                         } else {
                             setHint(resources.getString(R.string.msg_stats_prefix)
-                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW)));
+                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW))
+                                    .concat(STRING_SPACE)
+                            );
                         }
                     } else {
-                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW));
+                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW).concat(STRING_SPACE));
                     }
                     drawList();
                 }

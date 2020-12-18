@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 21.09.20 21:29
+ *  * Last modified 05.12.20 16:29
  *
  */
 
@@ -129,7 +129,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 if (eventsData.getEvents(context)) {
                     eventsData.computeDates();
-                    if (eventsData.preferences_notifications_days >= 0)
+                    if (eventsData.preferences_notifications_days.size() != 0)
                         eventsData.showNotifications(false, Integer.toString(eventsData.preferences_notification_channel_id));
                     eventsData.updateWidgets(); //может быть, оно здесь и не нужно
                 }

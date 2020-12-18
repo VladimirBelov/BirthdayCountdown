@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 15.10.20 0:48
+  ~  * Last modified 17.12.20 15:55
   ~  */
   -->
 
@@ -38,7 +38,7 @@
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
 <!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
     <string name="msg_no_events">События не найдены</string>
-    <string name="msg_before_event_prefix">"Через "</string>
+    <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
     <string name="msg_today">Сегодня</string>
@@ -72,10 +72,8 @@
     <string name="msg_age_could_be">"Было бы сейчас: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
-    <string name="msg_notifications_soon_no_events">Нет событий на ближайшие дни</string>
-    <string name="msg_notifications_today_no_events">Нет событий на сегодня</string>
-    <string name="msg_notifications_soon">"Скоро событий - "</string>
-    <string name="msg_notifications_today">"Событий сегодня - "</string>
+    <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
+    <string name="msg_notifications_soon">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
     <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполнены в карточках Ваших контактов или импортированы установленными на смартфон приложениями (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
@@ -225,6 +223,7 @@
     <string-array name="pref_Theme_entries">
         <item>Зелёная</item>
         <item>Тёмно-серая</item>
+        <item>Голубая</item>
         <item>Чёрная</item>
     </string-array>
 
@@ -325,6 +324,8 @@
         <item>Псевдоним</item>
         <item>Фамилия</item>
         <item>Дата события</item>
+        <item>Тип события</item>
+        <item>Наименование события</item>
         <item>Ничего</item>
     </string-array>
 
@@ -395,11 +396,19 @@
         <item>Если событий меньше 4 => отдельные, иначе - общее</item>
     </string-array>
 
-    <string name="pref_Notifications_Days_title">Интервал уведомлений</string>
+    <string name="pref_Notifications_Priority_title">Приоритет уведомлений</string>
+    <string name="pref_Notifications_Priority_description">Неудаляемые высокоприоритетные уведомления всегда находятся вверху списка уведомлений. Чтобы скрыть такое уведомление, нажмите на него</string>
+
+    <string-array name="pref_Notifications_Priority_entries">
+        <item>Стандартный приоритет</item>
+        <item>Только общее уведомление будет неудаляемым</item>
+        <item>Все уведомления неудаляемые и с высоким приоритетом</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Сроки уведомлений</string>
     <string name="pref_Notifications_Days_description">За сколько дней уведомлять</string>
 
     <string-array name="pref_Notifications_Days_entries">
-        <item>Не уведомлять</item>
         <item>В день события</item>
         <item>За один день</item>
         <item>За два дня</item>
@@ -414,6 +423,7 @@
     <string name="pref_Notifications_AlarmHour_description">В какой час уведомлять</string>
 
     <string-array name="pref_Notifications_AlarmHour_entries">
+        <item>В полночь</item>
         <item>В 7 утра</item>
         <item>В 8 утра</item>
         <item>В 9 утра</item>

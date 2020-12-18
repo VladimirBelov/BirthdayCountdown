@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 14.09.20 0:02
+ *  * Last modified 10.11.20 23:03
  *
  */
 
@@ -15,10 +15,8 @@ import androidx.annotation.NonNull;
 
 import java.util.regex.Pattern;
 
-import static android.text.TextUtils.isEmpty;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
-import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
 
 class Person {
 
@@ -38,7 +36,7 @@ class Person {
     int Age = -1;
     String Age_str;
     String FIO_str;
-    String eventSubType;
+    //String eventSubType;
     private Context context;
     //private String[] eventArray;
     //ContactsEvents eventsData;
@@ -51,7 +49,7 @@ class Person {
             //this.eventsData = ContactsEvents.getInstance();
             //this.eventArray = eventArray;
 
-            FIO_str = eventArray[ContactsEvents.Position_fio];
+            FIO_str = eventArray[ContactsEvents.Position_personFullName];
             int spaceFirst = FIO_str.indexOf(STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 FirstName = FIO_str;
@@ -76,7 +74,7 @@ class Person {
                 //Пусто
             }
             Age_str = eventArray[ContactsEvents.Position_age_caption];
-            eventSubType = eventArray[ContactsEvents.Position_eventSubType];
+            //eventSubType = eventArray[ContactsEvents.Position_eventSubType];
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +86,7 @@ class Person {
         this(context, eventData.split(Constants.STRING_2HASH));
     }
 
-    String getFullName () { //Фамилия Имя Отчество
+/*    String getFullName () { //Фамилия Имя Отчество
 
         try{
             if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
@@ -107,9 +105,9 @@ class Person {
             return STRING_EMPTY;
         }
 
-    }
+    }*/
 
-    String getFullNameAlt () { //Имя Отчество Фамилия
+/*    String getFullNameAlt () { //Имя Отчество Фамилия
 
         try{
             if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
@@ -125,9 +123,9 @@ class Person {
             return STRING_EMPTY;
         }
 
-    }
+    }*/
 
-    /*
+
     String getFullNameShort () { //Фамилия И. О.
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {
@@ -144,7 +142,7 @@ class Person {
             return STRING_EMPTY;
         }
     }
-    */
+
 
     int getGender() { //Определение пола по фамилии, имени, отчеству
         // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён

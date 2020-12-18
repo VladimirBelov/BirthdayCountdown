@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 12.10.20 18:52
+  ~  * Last modified 17.12.20 15:52
   ~  */
   -->
 
@@ -38,7 +38,7 @@
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
     <string name="msg_no_events">Events not found</string>
-    <string name="msg_before_event_prefix">"In "</string>
+    <string name="msg_before_event_prefix">"in "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_today">Today</string>
@@ -72,10 +72,8 @@
     <string name="msg_age_could_be">"Could be now: "</string>
     <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
     <string name="msg_hint_search">Search value</string>
-    <string name="msg_notifications_soon_no_events">No events for nearest days</string>
-    <string name="msg_notifications_today_no_events">No events for today</string>
-    <string name="msg_notifications_soon">"Events coming soon - "</string>
-    <string name="msg_notifications_today">"Events today - "</string>
+    <string name="msg_notifications_soon_no_events">No events for chosen days</string>
+    <string name="msg_notifications_soon">"Events - "</string>
     <string name="msg_notifications_disabled">Notifications disabled</string>
     <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
@@ -225,6 +223,7 @@
     <string-array name="pref_Theme_entries">
         <item>Green</item>
         <item>Dark gray</item>
+        <item>Blue</item>
         <item>Black</item>
     </string-array>
 
@@ -325,6 +324,8 @@
         <item>Nickname</item>
         <item>Surname</item>
         <item>Event date</item>
+        <item>Event type</item>
+        <item>Original event label</item>
         <item>Nothing</item>
     </string-array>
 
@@ -395,16 +396,24 @@
         <item>Events less 4 => separate, otherwise - summary</item>
     </string-array>
 
-    <string name="pref_Notifications_Days_title">Notification interval</string>
-    <string name="pref_Notifications_Days_description">How many days to notify</string>
+    <string name="pref_Notifications_Priority_title">Priority of notifications</string>
+    <string name="pref_Notifications_Priority_description">High priority unclosable notifications are always on the top. To hide them click on it</string>
+
+    <string-array name="pref_Notifications_Priority_entries">
+        <item>Standard</item>
+        <item>Only summary notification is high priority</item>
+        <item>All notifications are high priority and unclosable</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Notification period</string>
+    <string name="pref_Notifications_Days_description">How many days before event to notify</string>
 
     <string-array name="pref_Notifications_Days_entries">
-        <item>None</item>
         <item>On event day</item>
-        <item>One day</item>
-        <item>Two days</item>
-        <item>Three days</item>
-        <item>Week</item>
+        <item>One day before</item>
+        <item>Two days before</item>
+        <item>Three days before</item>
+        <item>Week before</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Event types</string>
@@ -414,6 +423,7 @@
     <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
 
     <string-array name="pref_Notifications_AlarmHour_entries">
+        <item>At midnight</item>
         <item>At 7 am</item>
         <item>At 8 am</item>
         <item>At 9 am</item>
@@ -607,6 +617,7 @@
     <string-array name="pref_Theme_values" translatable="false">
         <item>1</item>
         <item>2</item>
+        <item>4</item>
         <item>3</item>
     </string-array>
 
@@ -796,6 +807,8 @@
         <item>7</item> <!--Псевдоним (Имя)-->
         <item>6</item> <!--Фамилия-->
         <item>2</item> <!--Дата события-->
+        <item>8</item> <!--Тип события-->
+        <item>9</item> <!--Наименование события-->
         <item>99</item> <!--Ничего-->
     </string-array>
 
@@ -857,9 +870,9 @@
 
     <string name="pref_Notifications_key" translatable="false">Notifications</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
+
     <string name="pref_Notifications_Type_key" translatable="false">Notifications_Type</string>
     <string name="pref_Notifications_Type_default" translatable="false">1</string>
-    <string name="pref_Notifications_Events_key" translatable="false">Notifications_EventTypes</string>
 
     <string-array name="pref_Notifications_Type_values" translatable="false">
         <item>0</item>
@@ -868,12 +881,20 @@
         <item>3</item>
     </string-array>
 
+    <string name="pref_Notifications_Priority_key" translatable="false">Notifications_Priority</string>
+    <string name="pref_Notifications_Priority_default" translatable="false">1</string>
+
+    <string-array name="pref_Notifications_Priority_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_Notifications_Events_key" translatable="false">Notifications_EventTypes</string>
+
     <string name="pref_Notifications_Days_key" translatable="false">Notifications_Days</string>
-    <string name="pref_Notifications_Days_default" translatable="false">-1</string>
-    <string name="pref_Notifications_Days_test" translatable="false">7</string>
 
     <string-array name="pref_Notifications_Days_values" translatable="false">
-        <item>-1</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -885,6 +906,7 @@
     <string name="pref_Notifications_AlarmHour_default" translatable="false">9</string>
 
     <string-array name="pref_Notifications_AlarmHour_values">
+        <item>0</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>

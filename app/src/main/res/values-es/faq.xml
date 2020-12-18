@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 27.10.20 0:43
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+        <string-array name="faq" tools:ignore="InconsistentArrays">
+
+                <item>###General</item>
+                <item>Esta sección no está disponible en el idioma seleccionado en la configuración. Cambie a inglés o ruso en la interfaz del programa y use el traductor de Google.</item>
+
+                <item>#Lenguajes de aplicación</item>
+                <item>Si desea obtener ayuda para traducir esta aplicación a un idioma cercano a usted, o si encuentra alguna inexactitud en la traducción, escriba a un correo electrónico (botón a continuación).</item>
+
+        </string-array>
+
+</resources>

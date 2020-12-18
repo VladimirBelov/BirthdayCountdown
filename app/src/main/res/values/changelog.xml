@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 15.10.20 1:06
+  ~  * Last modified 15.12.20 2:32
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.3</item>
+        <item>Notifications can be set ongoing and high priority</item>
+        <item>In \"Alarm hour\" added midnight - congratulate the birthday boy suddenly!</item>
+        <item>Multiple notification periods can be selected</item>
+        <item>Added blue color theme</item>
+        <item>In widget caption added \"Event type\" and \"Original event label\"</item>
+        <item>German translation updated (Thanks, Marko)</item>
+        <item>Fixed some bugs</item>
 
         <item>#1.5.2</item>
         <item>Added Spain translation</item>

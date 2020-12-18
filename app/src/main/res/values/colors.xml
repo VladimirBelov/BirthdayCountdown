@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
   ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 06.10.20 13:03
+  ~  * Last modified 15.12.20 2:32
   ~  */
   -->
 
@@ -19,7 +19,11 @@
     <color name="dark_green">#1B5E20</color>
     <color name="dark_green_transp">#321B5E20</color>
     <color name="darker_green">#164E1B</color>
-<!--    <color name="darker_green_transp">#E6164E1B</color>-->
+    <color name="darker_blue">#1465C0</color>
+    <color name="dark_blue">#1476D2</color>
+    <color name="dark_blue_transp">#331565C0</color>
+    <color name="light_blue_transp">#66D3D5D8</color>
+    <color name="light_blue">#2196F3</color>
 
     <color name="black">#000000</color>
     <color name="dark_gray">#121212</color>
@@ -31,6 +35,5 @@
     <color name="light_gray_trans">#33808080</color>
     <color name="light_gray_darker">#505050</color>
     <color name="lighter_gray">#DDDDDD</color>
-<!--    <color name="lighter_gray_trans">#33D2D2D2</color>-->
     <color name="white">#FFFFFF</color> <!--pref_Widgets_Colors_values-->
 </resources>

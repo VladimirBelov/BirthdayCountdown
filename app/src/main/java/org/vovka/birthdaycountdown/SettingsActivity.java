@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.20 0:43
+ *  * Created by Vladimir Belov on 17.12.20 22:05
  *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 01.10.20 14:03
+ *  * Last modified 13.12.20 21:51
  *
  */
 
@@ -250,9 +250,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Preference pref;
 
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
-            if (prefCat != null && eventsData.preferences_notifications_days == -1) {
+            if (prefCat != null && eventsData.preferences_notifications_days.size() == 0) {
 
                 pref = findPreference(getString(R.string.pref_Notifications_Type_key));
+                if (pref != null) prefCat.removePreference(pref);
+
+                pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
                 if (pref != null) prefCat.removePreference(pref);
 
                 pref = findPreference(getString(R.string.pref_Notifications_Events_key));
@@ -460,7 +463,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
 
-            if (eventsData.preferences_notifications_days == -1) {
+            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add("");}});
+            if (eventsData.preferences_notifications_days.size() == 0) {
                 updateVisibility();
             } else {
                 this.recreate();

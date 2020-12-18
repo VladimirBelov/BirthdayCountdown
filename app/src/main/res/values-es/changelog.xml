@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 17.12.20 22:05
+  ~  * Copyright (c) 2018 - 2020. All rights reserved.
+  ~  * Last modified 15.12.20 2:39
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.5.3</item>
+        <item>Las notificaciones ahora pueden hacerse no removibles y con alta prioridad</item>
+        <item>Se ha añadido la medianoche a la \"Hora de notificación\". ¡Felicita al cumpleañero de repente!</item>
+        <item>Se pueden seleccionar varios períodos de notificación</item>
+        <item>Tema de color azul agregado</item>
+        <item>Se agregó \"Tipo de evento\" y \"Nombre de evento\" al encabezado del evento para el widget</item>
+        <item>Correcciones en la traducción al alemán (gracias Marko)</item>
+        <item>Errores corregidos</item>
+
+        <item>#1.5.2</item>
+        <item>Primer lanzamiento en español</item>
+
+    </string-array>
+
+</resources>
