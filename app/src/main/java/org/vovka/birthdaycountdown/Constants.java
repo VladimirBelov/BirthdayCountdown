@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.20 22:05
- *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 10.12.20 11:25
+ *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Copyright (c) 2018 - 2021. All rights reserved.
+ *  * Last modified 14.03.21 16:57
  *
  */
 
@@ -28,6 +28,7 @@ final class Constants {
     static final String STRING_7 = "7";
     static final String STRING_8 = "8";
     static final String STRING_9 = "9";
+    static final String STRING_10 = "10";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -99,6 +100,8 @@ final class Constants {
     final static int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
     final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
     final static int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
+
+    final static int RESULT_PICK_CONTACT = 200;
 
     static final int defaultNotificationID = 1000;
     static final String ACTION_SNOOZE = "ACTION_SNOOZE";
@@ -199,6 +202,8 @@ final class Constants {
     static final String CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR = "ContactsEvents->unsetHiddenEvent error:\n";
     static final String CONTACTS_EVENTS_SET_SILENT_EVENT_ERROR = "ContactsEvents->setSilentEvent error:\n";
     static final String CONTACTS_EVENTS_UNSET_SILENT_EVENT_ERROR = "ContactsEvents->unsetSilentEvent error:\n";
+    static final String CONTACTS_EVENTS_GET_MERGED_ID_ERROR = "ContactsEvents->getMergedID error:\n";
+    static final String CONTACTS_EVENTS_SET_MERGED_ID_ERROR = "ContactsEvents->setMergedID error:\n";
     static final String CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR = "ContactsEvents->clearUnexistingSilencedEvents error:\n";
     static final String CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR = "ContactsEvents->clearUnexistingHiddenEvents error:\n";
     static final String CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR = "ContactsEvents->setWidgetPreference error:\n";
@@ -208,6 +213,7 @@ final class Constants {
     static final String CONTACTS_EVENTS_SET_PREFERENCES_ERROR = "ContactsEvents->setPreferences error:\n";
     static final String CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR = "ContactsEvents->showNotifications error:\n";
     static final String CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR = "ContactsEvents->SnoozeNotification error:\n";
+    static final String CONTACTS_EVENTS_EVENT_KEY_ERROR = "ContactsEvents->getEventKey error:\n";
     static final String CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR = "ContactsEvents->ShowNotification error:\n";
     static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_ERROR = "ContactsEvents->countDaysDiff error:\n";
     static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_TEXT_ERROR = "ContactsEvents->countDaysDiffText error:\n";
@@ -231,6 +237,7 @@ final class Constants {
     static final String MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR = "MainActivity->onCreateContextMenu error:\n";
     static final String MAIN_ACTIVITY_ON_CREATE_ERROR = "MainActivity->onCreate error:\n";
     static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
+    static final String MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "MainActivity->onActivityResult error:\n";
     static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
     static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
     static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
@@ -272,7 +279,6 @@ final class Constants {
     static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invoke error:\n";
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
-    static final String RES_TYPE_COLOR = "color";
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
     static final String REGEX_PLUS = "\\+";
 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.20 22:05
- *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 05.12.20 16:29
+ *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Copyright (c) 2018 - 2021. All rights reserved.
+ *  * Last modified 14.03.21 16:56
  *
  */
 
@@ -20,7 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -114,15 +114,17 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-                String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[Position_id]));
-                if (!phone.equals(STRING_EMPTY)) {
+                if (!singleEventArray[Position_contactID].isEmpty()) {
+                    String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[Position_contactID]));
+                    if (!phone.equals(STRING_EMPTY)) {
 
-                    //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
-                    Intent intentDial = new Intent(Intent.ACTION_DIAL);
-                    intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));
-                    intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intentDial);
+                        //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
+                        Intent intentDial = new Intent(Intent.ACTION_DIAL);
+                        intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));
+                        intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intentDial);
 
+                    }
                 }
 
             } else {

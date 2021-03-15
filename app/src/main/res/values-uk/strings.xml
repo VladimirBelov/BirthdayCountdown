@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 17.12.20 15:57
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -25,6 +25,7 @@
     <string name="menu_search">Пошук…</string>
     <string name="menu_filter_events">Фільтр…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
+    <string name="menu_context_edit_event">Показати подія в календарі</string>
     <string name="menu_context_event_info">Дані про подію</string>
     <string name="menu_context_hide_event">Приховати подію</string>
     <string name="menu_context_unhide_event">Повернути показ події</string>
@@ -34,6 +35,8 @@
     <string name="menu_context_anniversary_list">Усі назви ювілеїв</string>
     <string name="menu_context_silent_event">Чи не повідомляти</string>
     <string name="menu_context_unsilent_event">Відновити повідомлення</string>
+    <string name="menu_context_merge_event">Посилання на контакт…</string>
+    <string name="menu_context_unmerge_event">Від’єднати контакт</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
 <!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
@@ -309,31 +312,31 @@
     <string name="pref_Widgets_BottomInfo2nd_title">Підпис (верхній ряд)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Що показувати під фотографією</string>
 
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Зелений</item>
-        <item>Червоний</item>
-        <item>Жовтий</item>
-        <item>Білий</item>
-    </string-array>
-
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Прізвище Ім’я По-батькові</item>
         <item>Прізвище І.П.</item>
         <item>Ім’я По-батькові Прізвище</item>
         <item>Ім’я</item>
-        <item>Псевдонім</item>
+        <item>Псевдонім (Ім’я, якщо відсутня)</item>
         <item>Прізвище</item>
         <item>Дата події</item>
         <item>Тип події</item>
         <item>Найменування події</item>
+        <item>Організація</item>
         <item>Нічого</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventToday_title">Колір для \"Вік\"</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Основний колір</string>
+    <string name="pref_Widgets_Color_EventCaption_description">Основний колір елементів віджета (заголовки подій, вік)</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Вік</string>
     <string name="pref_Widgets_Color_EventToday_description">Колір віку для сьогоднішньої події</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Колір для \"Днів до події\"</string>
-    <string name="pref_Widgets_Color_EventSoon_description">Колір лічильника днів до найближчих подій</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Днів до події (близько)</string>
+    <string name="pref_Widgets_Color_EventSoon_description">Колір лічильника днів для найближчих подій</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Днів до події (далеко)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Колір лічильника днів для далеких подій</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">За скільки днів події вважаються найближчими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>

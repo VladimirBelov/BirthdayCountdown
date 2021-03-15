@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 17.12.20 15:57
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -25,6 +25,7 @@
     <string name="menu_search">Buscar…</string>
     <string name="menu_filter_events">Filtrar…</string>
     <string name="menu_context_edit_contact">Editar contacto</string>
+    <string name="menu_context_edit_event">Mostrar evento en calendario</string>
     <string name="menu_context_event_info">Datos de eventos</string>
     <string name="menu_context_hide_event">Ocultar evento</string>
     <string name="menu_context_unhide_event">Mostrar evento de retorno</string>
@@ -34,6 +35,8 @@
     <string name="menu_context_anniversary_list">Aniversario de bodas</string>
     <string name="menu_context_silent_event">No notificar</string>
     <string name="menu_context_unsilent_event">Alerta de regreso</string>
+    <string name="menu_context_merge_event">Enlace al contacto…</string>
+    <string name="menu_context_unmerge_event">Desvincular del contacto</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
@@ -309,23 +312,17 @@
     <string name="pref_Widgets_BottomInfo2nd_title">Título (fila superior)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Qué mostrar debajo de la foto</string>
 
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Verde</item>
-        <item>Rojo</item>
-        <item>Amarillo</item>
-        <item>Blanco</item>
-    </string-array>
-
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Apellido Nombre Patronímico</item>
         <item>Apellido N. P.</item>
         <item>Nombre Patronímico Apellido</item>
         <item>Nombre</item>
-        <item>Alias</item>
+        <item>Alias (Nombre, si está ausente)</item>
         <item>Apellido</item>
         <item>Fecha del evento</item>
         <item>Tipo de evento</item>
         <item>Nombre del evento</item>
+        <item>Organización</item>
         <item>Nada</item>
     </string-array>
 
@@ -342,11 +339,17 @@
         <item>14</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventToday_title">Color para \"Edad\"</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Color primario</string>
+    <string name="pref_Widgets_Color_EventCaption_description">Color primario de los elementos del widget (encabezados de eventos, edad)</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Edad</string>
     <string name="pref_Widgets_Color_EventToday_description">Color de edad para los eventos de hoy</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Color para \"Días antes del evento\"</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Días antes del evento (cerrar)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Color del contador de día para los próximos eventos</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Días antes del evento (lejos)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Color del contador de día para los próximos eventos</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">Por cuántos días se consideran los eventos los más cercanos</string>
     <string name="pref_Widgets_Days_EventSoon_title">Próximos eventos</string>

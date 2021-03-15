@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 14.12.20 10:01
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.5.4</item>
+                <item>Исправления ошибок в отображении данных на виджетах, добавлена возможность отображения организации, переделаны диалоги выбора цвета отображения данных</item>
+                <item>Улучшен алгоритм автоматического поиска контактов для календарного события</item>
+                <item>Добавлена возможность ручного указания контакта для календарного события (День рождения)</item>
 
                 <item>#1.5.3</item>
                 <item>Уведомления теперь можно делать неудаляемыми и с высоким приоритетом</item>

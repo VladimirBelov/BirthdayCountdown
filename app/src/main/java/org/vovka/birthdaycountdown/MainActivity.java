@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.20 22:05
- *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 06.12.20 2:11
+ *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Copyright (c) 2018 - 2021. All rights reserved.
+ *  * Last modified 14.03.21 16:56
  *
  */
 
@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,6 +81,7 @@ import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SEARCH;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SETTINGS;
 import static org.vovka.birthdaycountdown.Constants.REGEX_COMMAS;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
+import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_CONTACT;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
@@ -94,7 +96,6 @@ import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
-import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
 import static org.vovka.birthdaycountdown.Constants.Type_Death;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_All;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Clear;
@@ -102,16 +103,21 @@ import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Hidden;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_NotHidden;
 import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Silenced;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_current;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_contact;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_event;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_merge_event;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_unmerge_event;
 
 //todo: сделать вывод ошибок в стандартный лог
 
@@ -199,15 +205,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener = () -> {
                 //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
                 boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+                swipeRefresh = findViewById(R.id.swiperefresh);
                 if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
                     if (eventsData.getEvents(this)) {
                         eventsData.computeDates();
                         prepareList();
                         drawList();
                         eventsData.updateWidgets();
-                        swipeRefresh = findViewById(R.id.swiperefresh);
-                        if (swipeRefresh != null)
-                            swipeRefresh.setRefreshing(false); // Disables the refresh icon
+                        swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
                         //Сообщение для тех, у кого не найдено ни одного события
                         if (!triggeredMsgNoEvents && eventsData.isEmptyArray()) {
@@ -230,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 triggeredMsgNoEvents = true;
 
                             }
-
                         }
                     }
                 }
+                swipeRefresh.setRefreshing(false);
 
             };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
@@ -267,22 +272,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     //https://stackoverflow.com/questions/4275167/how-to-open-a-contact-card-in-android-by-id?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri;
-                    if (!dataArray1[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
-                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, dataArray1[Position_id]);
-                    } else {
-                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, dataArray1[Position_id]);
+                    Uri uri = null;
+                    if (!dataArray1[Position_contactID].isEmpty()) { //dataArray1[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, dataArray1[Position_contactID]);
+                    } else if (!dataArray1[Position_eventID].isEmpty()) { //dataArray1[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
+                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, dataArray1[Position_eventID]);
                     }
-                    intent.setData(uri);
-                    MainActivity.this.startActivity(intent);
+                    if (uri != null) {
+                        intent.setData(uri);
+                        MainActivity.this.startActivity(intent);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, Constants.MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
-
 
             //Контекстное меню
             registerForContextMenu(listView);
@@ -736,9 +741,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     showAlertNoAccess();
                 }
 
-                    /*Intent contactPickerIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                    contactPickerIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                    startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);*/
                 Intent editIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
                 editIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
                 editIntent.putExtra("finishActivityOnSaveCompleted", true);
@@ -762,25 +764,31 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         return super.onOptionsItemSelected(item);
     }
 
-
-/*    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
 
             if (resultCode == RESULT_OK) {
+
                 if (requestCode == RESULT_PICK_CONTACT) {
-                    Uri uri = data.getData();
-                    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-                    if (cursor != null) {
-                        cursor.moveToFirst();
-                        String contactID = cursor.getString(cursor.getColumnIndex(Constants.ColumnNames_CONTACT_ID));
-                        Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
-                        Intent editIntent = new Intent(Intent.ACTION_EDIT);
-                        editIntent.setDataAndType(selectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
-                        editIntent.putExtra("finishActivityOnSaveCompleted", true);
-                        startActivity(editIntent);
-                        cursor.close();
+                    Uri contactUri = data.getData();
+                    if (contactUri != null) {
+                        String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
+
+                        if (!contactID.isEmpty() && !selectedEvent[Position_eventID].isEmpty()) {
+                            //Toast.makeText(this, "contactID=" + contactID + ", event=" + selectedEvent[Position_eventID], Toast.LENGTH_LONG).show();
+                            if (eventsData.setMergedID(selectedEvent[Position_eventID], contactID)) {
+                                if (eventsData.getEvents(this)) {
+                                    eventsData.computeDates();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets();
+                                }
+                            }
+                        }
                     }
                 }
+
             }
 
         } catch (Exception e) {
@@ -788,7 +796,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
-    }*/
+    }
 
 /*    @Override
     public void onBackPressed() {
@@ -924,10 +932,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
 
                 //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
-                if (!selectedEvent[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
-                    menu.add(Menu.NONE, R.integer.menu_context_id_edit_contact, Menu.NONE, getString(R.string.menu_context_edit_contact));
-                    //} else {
-                    //    menu.add(Menu.NONE, R.integer.menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
+                if (!selectedEvent[Position_contactID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
+                    menu.add(Menu.NONE, menu_context_id_edit_contact, Menu.NONE, getString(R.string.menu_context_edit_contact));
+                }
+                if (!selectedEvent[Position_eventID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
+                    menu.add(Menu.NONE, menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
+
+                    if (selectedEvent[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
+                        if (!eventsData.getMergedID(selectedEvent[Position_eventID]).isEmpty()) {
+                            menu.add(Menu.NONE, menu_context_id_unmerge_event, Menu.NONE, getString(R.string.menu_context_unmerge_event));
+                        } else if (selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) && selectedEvent[Position_contactID].isEmpty()) {
+                            menu.add(Menu.NONE, menu_context_id_merge_event, Menu.NONE, getString(R.string.menu_context_merge_event));
+                        }
+                    }
                 }
                 //menu.add(Menu.NONE, R.integer.menu_context_id_events, Menu.NONE, getString(R.string.menu_context_events));
 
@@ -980,7 +997,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final String eventKey = eventsData.getEventKey(selectedEvent);
             int itemId = item.getItemId();
             if (itemId == R.integer.menu_context_id_edit_contact) {
-                Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[Position_id]);
+
+                Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[Position_contactID]);
 
                 //Intent intent = new Intent(Intent.ACTION_VIEW);
                 //intent.setData(selectedContactUri);
@@ -992,15 +1010,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(editContactIntent);
                 return true;
 
-                //не работает, только просмотр
-                /*case R.integer.menu_context_id_edit_event:
+            } else if (itemId == menu_context_id_edit_event) {
 
-                    Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Long.parseLong(selectedEvent[Position_contact_id]));
-                    Intent editEventIntent = new Intent(Intent.ACTION_EDIT)
-                            .setData(selectedEventUri);
-                    startActivity(editEventIntent);
-                    return true;*/
+                Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[Position_eventID]));
+                Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
+                startActivity(editEventIntent);
+                return true;
+
             } else if (itemId == R.integer.menu_context_id_event_info) {
+
                 StringBuilder eventInfo = new StringBuilder();
 
                 for (int i = 0; i < selectedEvent.length; i++) {
@@ -1023,7 +1041,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (textView != null) textView.setTextSize(14);
 
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_hide_event) {
+
                 if (eventsData.setHiddenEvent(eventKey)) {
                     if (eventsData.checkIsSilencedEvent(eventKey))
                         eventsData.unsetSilencedEvent(eventKey); //Если скрываем - убираем из списка без уведомления
@@ -1033,7 +1053,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventsData.updateWidgets();
                 }
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_unhide_event) {
+
                 if (eventsData.unsetHiddenEvent(eventKey)) {
                     this.invalidateOptionsMenu();
                     prepareList();
@@ -1041,10 +1063,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventsData.updateWidgets();
                 }
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_remind_1h) {
+
                 eventsData.snoozeNotification(selectedEvent_str, 1, null);
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_remind_morning) {
+
                 Calendar now = Calendar.getInstance();
                 now.add(Calendar.DAY_OF_MONTH, 1);
                 now.set(Calendar.HOUR_OF_DAY, 9);
@@ -1054,10 +1080,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 eventsData.snoozeNotification(selectedEvent_str, 0, now.getTime());
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_anniversary_list) {
+
                 eventsData.showAnniversaryList(this);
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_silent_event) {
+
                 if (eventsData.setSilencedEvent(eventKey)) {
                     this.invalidateOptionsMenu();
                     prepareList();
@@ -1065,7 +1095,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     //eventsData.updateWidgets();
                 }
                 return true;
+
             } else if (itemId == R.integer.menu_context_id_unsilent_event) {
+
                 if (eventsData.unsetSilencedEvent(eventKey)) {
                     this.invalidateOptionsMenu();
                     prepareList();
@@ -1073,6 +1105,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     //eventsData.updateWidgets();
                 }
                 return true;
+
+            } else if (itemId == menu_context_id_merge_event) {
+
+                //https://developer.android.com/guide/components/intents-common#PickContact
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                startActivityForResult(intent, RESULT_PICK_CONTACT);
+
+            } else if (itemId == menu_context_id_unmerge_event) {
+
+                if (eventsData.setMergedID(selectedEvent[Position_eventID], null)) {
+                    if (eventsData.getEvents(this)) {
+                        eventsData.computeDates();
+                        prepareList();
+                        drawList();
+                        eventsData.updateWidgets();
+                    }
+                    return true;
+                }
+
             }
             return super.onContextItemSelected(item);
         } catch (Exception e) {
@@ -1351,18 +1403,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
                     if ((eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) && !singleRowArray[Position_age_current].equals(Constants.STRING_SPACE)) { //Если это день рождения или 5K
-                        if (eventsData.set_events_deaths.contains(singleRowArray[Position_id])) { //Но есть годовщина смерти
+                        if (eventsData.set_events_deaths.contains(singleRowArray[Position_contactID])) { //Но есть годовщина смерти
                             if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                             eventDetails.append(getString(R.string.msg_age_could_be)).append(singleRowArray[Position_age_current]);
                         } else {
                             if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                             eventDetails.append(getString(R.string.msg_age_now)).append(singleRowArray[Position_age_current]);
                         }
-                    } else if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_Death)) && eventsData.set_events_birthdays.containsKey(singleRowArray[Position_id])) { //Если это годовщина смерти
+                    } else if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_Death)) && eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contactID])) { //Если это годовщина смерти
                         Locale locale_en = new Locale(Constants.LANG_EN);
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
                         Date eventDate = sdfYear.parse(singleRowArray[Position_eventDateText]);
-                        Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_id]);
+                        Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_contactID]);
                         if (eventDate != null && birthDate != null) {
                             if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                             eventDetails.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate));

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 17.12.20 15:55
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -25,6 +25,7 @@
     <string name="menu_search">Suche…</string>
     <string name="menu_filter_events">Filtern…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
+    <string name="menu_context_edit_event">Ereignis im Kalender anzeigen</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
     <string name="menu_context_unhide_event">Ereignis wieder einblenden</string>
@@ -34,6 +35,8 @@
     <string name="menu_context_anniversary_list">Alle Hochzeitstage</string>
     <string name="menu_context_silent_event">Nicht benachrichtigen</string>
     <string name="menu_context_unsilent_event">Benachrichtigung fortsetzen</string>
+    <string name="menu_context_merge_event">Link zum Kontakt…</string>
+    <string name="menu_context_unmerge_event">Verbindung zum Kontakt trennen</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
@@ -53,19 +56,19 @@
     <string name="msg_label_silenced">Stummgeschaltet</string>
 
     <string name="msg_after_year_prefix_1">" Jahr"</string>
-    <string name="msg_after_year_prefix_2_3_4">" Jahren"</string>
-    <string name="msg_after_year_prefix_1_">" Jahren"</string>
-    <string name="msg_after_year_prefix_4_21">" Jahren"</string>
+    <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
+    <string name="msg_after_year_prefix_1_">" Jahre"</string>
+    <string name="msg_after_year_prefix_4_21">" Jahre"</string>
 
     <string name="msg_after_month_prefix_1">" Monat"</string>
-    <string name="msg_after_month_prefix_2_3_4">" Monaten"</string>
-    <string name="msg_after_month_prefix_1_">" Monaten"</string>
-    <string name="msg_after_month_prefix_4_21">" Monaten"</string>
+    <string name="msg_after_month_prefix_2_3_4">" Monate"</string>
+    <string name="msg_after_month_prefix_1_">" Monate"</string>
+    <string name="msg_after_month_prefix_4_21">" Monate"</string>
 
     <string name="msg_after_day_prefix_1">" Tag"</string>
-    <string name="msg_after_day_prefix_2_3_4">" Tagen"</string>
-    <string name="msg_after_day_prefix_1_">" Tagen"</string>
-    <string name="msg_after_day_prefix_4_21">" Tagen"</string>
+    <string name="msg_after_day_prefix_2_3_4">" Tage"</string>
+    <string name="msg_after_day_prefix_1_">" Tage"</string>
+    <string name="msg_after_day_prefix_4_21">" Tage"</string>
 
     <string name="msg_age_now">"Alter: "</string>
     <string name="msg_age_was">"Todesalter: "</string>
@@ -309,31 +312,31 @@
     <string name="pref_Widgets_BottomInfo2nd_title">Bildunterschrift (obere Reihe)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Was soll unter dem Foto angezeigt werden</string>
 
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Grün</item>
-        <item>Rot</item>
-        <item>Gelb</item>
-        <item>Weiß</item>
-    </string-array>
-
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Nachname Vorname(n)</item>
         <item>Nachname und Initialen</item>
         <item>Vorname(n) Nachname</item>
         <item>Name</item>
-        <item>Pseudonym</item>
+        <item>Pseudonym (Name, wenn abwesend)</item>
         <item>Nachname</item>
         <item>Datum der Ereignis</item>
         <item>Ereignistyp</item>
         <item>Ereignisname</item>
+        <item>Organisation</item>
         <item>Nichts</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventToday_title">Farbe für \"Alter\"</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Primärfarbe</string>
+    <string name="pref_Widgets_Color_EventCaption_description">Primärfarbe für Widget-Elemente (Ereignisbeschriftungen, Alter)</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Alter</string>
     <string name="pref_Widgets_Color_EventToday_description">Farbe des Alters für das heutige Ereignis</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Farbe für \"Tage zu Ereignissen\"</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Tage zu Ereignissen (nah)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Tageszählerfarbe für bevorstehende Ereignisse</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Tage zu Ereignissen (weit)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Tageszählerfarbe für weit Ereignisse</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Kommende Ereignisse</string>

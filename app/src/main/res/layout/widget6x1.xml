@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -188,6 +188,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -374,6 +375,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -559,6 +561,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -744,6 +747,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -929,6 +933,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -1114,6 +1119,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="1.0dip"
                 android:layout_marginEnd="4.0dip"
+                android:paddingRight="1dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="3"
                 android:shadowDy="3"

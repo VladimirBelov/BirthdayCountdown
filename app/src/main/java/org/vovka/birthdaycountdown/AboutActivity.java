@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.20 22:05
- *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 13.12.20 21:51
+ *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Copyright (c) 2018 - 2021. All rights reserved.
+ *  * Last modified 14.03.21 16:56
  *
  */
 
@@ -187,6 +187,10 @@ public class AboutActivity extends AppCompatActivity {
                 webView.setVerticalScrollBarEnabled(true);
                 webView.setBackgroundColor(Color.TRANSPARENT);
                 webView.loadData(sb.toString(), "text/html; charset=utf-8", "utf-8");
+
+                //https://stackoverflow.com/questions/5107651/android-disable-text-selection-in-a-webview
+                webView.setOnLongClickListener(v -> true);
+                webView.setLongClickable(false);
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {

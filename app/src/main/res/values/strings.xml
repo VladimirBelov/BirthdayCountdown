@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 17.12.20 15:52
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -25,6 +25,7 @@
     <string name="menu_search">Search…</string>
     <string name="menu_filter_events">Filter…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
+    <string name="menu_context_edit_event">Show calendar event</string>
     <string name="menu_context_event_info">Event data</string>
     <string name="menu_context_hide_event">Hide event</string>
     <string name="menu_context_unhide_event">Unhide event</string>
@@ -34,6 +35,8 @@
     <string name="menu_context_anniversary_list">All anniversaries titles</string>
     <string name="menu_context_silent_event">Do not notify</string>
     <string name="menu_context_unsilent_event">Resume notify</string>
+    <string name="menu_context_merge_event">Link to contact…</string>
+    <string name="menu_context_unmerge_event">Unlink from contact</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
@@ -309,23 +312,17 @@
     <string name="pref_Widgets_BottomInfo2nd_title">Event caption (upper row)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">What to show bellow photo</string>
 
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Green</item>
-        <item>Red</item>
-        <item>Yellow</item>
-        <item>White</item>
-    </string-array>
-
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Surname Name Patronymic</item>
         <item>Surname N. P.</item>
         <item>Name Patronymic Surname</item>
         <item>Name</item>
-        <item>Nickname</item>
+        <item>Nickname (Name, if absent)</item>
         <item>Surname</item>
         <item>Event date</item>
         <item>Event type</item>
         <item>Original event label</item>
+        <item>Organisation</item>
         <item>Nothing</item>
     </string-array>
 
@@ -342,11 +339,17 @@
         <item>14</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventToday_title">Color for \"Age\"</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Primary color</string>
+    <string name="pref_Widgets_Color_EventCaption_description">Primary color for widget elements (event captions, age)</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Age</string>
     <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Color for \"Days to event\"</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Days to event (near)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Color of days count for near events</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Days to event (far)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Color of days count for far events</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
@@ -600,17 +603,17 @@
     <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa"</string>
 
     <string name="pref_Language_key" translatable="false">Language</string>
+    <string name="pref_Language_default" translatable="false">AUTO</string>
+    <string name="pref_Language_de" translatable="false">de</string>
 
     <string-array name="pref_Language_values" translatable="false">
-        <item>AUTO</item>
+        <item>@string/pref_Language_default</item>
         <item>en</item>
-        <item>de</item>
+        <item>@string/pref_Language_de</item>
         <item>ru</item>
         <item>es</item>
         <item>uk</item>
     </string-array>
-
-    <string name="pref_Language_default" translatable="false">AUTO</string>
 
     <string name="pref_Theme_key" translatable="false">Theme</string>
 
@@ -628,6 +631,7 @@
     <string name="pref_List_Events_key" translatable="false">EventTypes</string>
     <string name="pref_Events_Hidden_key" translatable="false">HiddenEvents</string>
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
+    <string name="pref_MergedID_key" translatable="false">MergedIDs</string>
 
     <string-array name="pref_EventTypes_values_default" translatable="false">
         <item>3</item>
@@ -809,28 +813,27 @@
         <item>2</item> <!--Дата события-->
         <item>8</item> <!--Тип события-->
         <item>9</item> <!--Наименование события-->
+        <item>10</item> <!--Организация-->
         <item>99</item> <!--Ничего-->
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_default" translatable="false">1</string>
     <string name="pref_Widgets_BottomInfo2nd_default" translatable="false">99</string>
 
-    <string name="pref_Widgets_Color_EventToday_key" translatable="false">Widget_Color_EventToday</string>
-    <string name="pref_Widgets_Color_EventToday_default" translatable="false">green</string>
-
-    <string name="pref_Widgets_Color_EventSoon_key" translatable="false">Widget_Color_EventSoon</string>
-    <string name="pref_Widgets_Color_EventSoon_default" translatable="false">yellow</string>
-
     <string name="pref_Widgets_Days_EventSoon_key" translatable="false">Widget_Days_EventSoon</string>
     <string name="pref_Widgets_Days_EventSoon_default" translatable="false">2</string>
 
-    <string-array name="pref_Widgets_Colors_values" translatable="false">
-        <item>green</item>
-        <item>red</item>
-        <item>yellow</item>
-        <item>white</item>
-    </string-array>
+    <string name="pref_Widgets_Color_EventToday_key" translatable="false">Widget_Color_EventToday</string>
+    <color name="pref_Widgets_Color_EventToday_default" translatable="false">@color/green</color>
 
+    <string name="pref_Widgets_Color_EventSoon_key" translatable="false">Widget_Color_EventSoon</string>
+    <color name="pref_Widgets_Color_EventSoon_default" translatable="false">@color/yellow</color>
+
+    <string name="pref_Widgets_Color_EventFar_key" translatable="false">Widget_Color_EventFar</string>
+    <color name="pref_Widgets_Color_EventFar_default" translatable="false">@color/white</color>
+
+    <string name="pref_Widgets_Color_EventCaption_key" translatable="false">Widget_Color_EventCaption</string>
+    <color name="pref_Widgets_Color_EventCaption_default" translatable="false">@color/white</color>
 
     <string-array name="widget_config_numbers" translatable="false">
         <item>1</item>
@@ -863,7 +866,7 @@
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
 
     <string name="first_names_man" translatable="false">абрам,аверьян,авраам,агафон,адам,азар,акакий,аким,аксьонов,аксён,александр,алексей,альберт,анатолий,анатолій,андрей,андрон,андрюша,антипр,антип,антон,аполлон,аристарх,аркадий,аркадій,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,аскольда,аскольд,афанасий,батько,богдан,борислав,борис,брат,бронислав,броніслав,вадим,валентин,валерий,ваня,варлам,василий,василь,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виталий,владилен,владимир,владислав,владлен,внук,вова,вован,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,геннадий,геннадій,георгий,герман,глеб,гнат,григорий,григорій,давид,даниил,данила,данил,даниэль,демьян,денис,димитрий,димитрій,дмитрий,добриня,добрыня,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,захар,иван,игнат,игорь,иларион,илларион,илья,иосиф,йогор,казимир,касьян,кирилл,кирило,коля,кондрат,константин,кузьма,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларіон,лев,леонард,леонид,леонід,лёня,лука,максим,марат,мартин,мартын,матвей,матвій,мефодий,мефодій,микола,мирон,михаил,михайло,миша,моисей,мойсей,назар,насіння,никита,николай,овер\'ян,овсій,олег,олександр,омелян,онук,опанас,осип,остап,отец,павел,павло,панкрат,пантелей,папа,парамон,петро,петр,платон,потап,прохор,пётр,рафаэль,роберт,ростислав,сава,савва,савелий,савелій,семен,семён,сергей,сидор,сидір,син,спартак,сын,тарас,терентий,терентій,тесть,тимофей,тимофій,тимур,тихон,ульян,федор,федот,федір,феликс,фирс,фома,фёдор,фірс,харитон,харлам,харлі,цибулі,эдуард,эммануил,эраст,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,henry,jack,jacob,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,herbert,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,noah,oscar,oskar,papa,patrick,paul,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
-    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,айсылу,аксинья,албена,алевтина,александра,александрина,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анна,антонина,анфиса,анфіса,аня,арина,аріна,баба,белла,белоцвета,березня,берислава,бильяна,бисера,блага,блажена,богдана,богна,божана,божена,божидара,борислава,боряна,бояна,вавилия,валентина,валерия,валерія,ванда,варвара,василика,василина,василиса,василка,васса,вега,веда,вела,вениамина,венцеслава,вера,вероника,вероніка,веселина,ветана,видослава,вика,виктория,виола,виолета,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,гергана,гизела,глафира,глафіра,дана,даниэла,дарена,дарина,дарья,дельфина,демира,десислава,джемила,диана,диляна,дина,донка,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,живка,замфира,заряна,зиновия,злата,зося,зоя,зіновія,ивана,иванка,ива,ивет,ивонна,изольда,илия,илона,ильяна,инга,инесса,инна,ирина,искра,ия,йоана,йорданка,калерия,камелия,капитолина,капітоліна,карина,каролина,катарина,катерина,катюша,катя,кира,клавдия,клара,клеопатра,климентина,кору,кохана,кохання,кристина,ксанта,ксения,ксенія,лада,лала,лариса,леля,лена,леонтина,лея,лиана,лидия,лиза,лилия,лильяна,лина,липа,лия,лора,льоха,любава,любимая,любовь,любов,люда,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,маруся,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,мая,мила,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надя,надія,настасия,настасья,настасія,наталия,наталья,наталя,наташа,невена,невістка,нейдежда,нелли,ника,николина,никомия,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,оля,олімпіада,парасковія,пекла,пелагея,пенка,пина,полина,поля,прасковья,преслава,рада,радка,раиса,райна,рая,раїса,рената,рима,римма,рита,роза,роксана,росица,русана,рут,руфь,сальвина,сарра,сафина,сафия,свекровь,свекруха,светлана,светлозара,светозара,світла,сельвия,серафима,сестра,сидония,силвия,сияна,славена,славяна,смарагда,смила,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,стоянка,таисия,таисья,тамара,татьяна,таїсія,текле,тереза,тетяна,тетя,тодорка,томи,трояна,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,филиппа,филомена,фёкла,хаврония,хрисанда,христина,цветана,цветанка,цвета,эвдокия,эвелина,эдита,элеонора,элизавета,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,юна,ядвига,ядвіга,яна,ярослава,яся,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,abril,adriana,africa,aina,ainara,ainhoa,aitana,alba,alejandra,alexandra,alexia,alexis,alice,alicia,alma,amanda,amber,amelie,amy,ana,andrea,ane,angela,ann,anna,ariadna,arlet,aroa,ashley,aunt,aya,azahara,barbara,berta,betty,beverly,blanca,brenda,brittany,candela,carla,carlota,carmen,carol,carolina,carolyn,catherine,cayetana,celia,charlotte,cheryl,chloe,christina,christine,clara,claudia,cloe,cristina,cynthia,daniela,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,ekaterina,elena,elia,elizabeth,elsa,emilia,emilie,emily,emma,eva,evelyn,frances,gabriela,gloria,grace,granddaughter,hanna,hannah,hannah/hanna,heather,helen,helena,hermana,hermanita,iванка,ines,irene,iria,irina,iris,isabel,jacqueline,jana,jane,janet,janice,jean,jennifer,jessica,jimena,joan,johanna,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,klara,laia,lara,laura,lauren,lea,leah,leire,lena,leonie,leyre,lia,lili,lilly,lina,linda,lisa,lissa,lola,lori,louisa,lucia,luisa,luna,madison,madre,malak,mamá,mama,mammi,manuela,mar,mara,margaret,maria,marie,marilyn,marina,marta,martha,martina,mary,megan,melissa,mia,michelle,mila,mireia,miriam,mom,mother,mutti,nadia,nahia,naia,naiara,nancy,natalia,natalie,nayara,nerea,nicole,noa,noelia,nora,nuria,olga,olivia,ona,pamela,paola,patricia,paula,penelope,rachel,rebecca,rocío,rose,ruth,salma,samantha,sandra,sara,sarah,schwester,sharon,shirley,silvia,sister,sofia,sofia/sophia,sofie,sophia,sophie,stephanie,susan,tante,teresa,theresa,tiffany,tochter,triana,valentina,valeria,vega,vera,victoria,virginia,zoe</string>
+    <string name="first_names_female" translatable="false">авдотья,аврора,агата,агату,агния,агнія,агрипина,агриппина,ада,айсылу,аксинья,албена,алевтина,александра,александрина,алена,алина,алиса,алла,альбина,алёна,аліна,аліса,амалия,амалія,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анна,антонина,анфиса,анфіса,аня,арина,аріна,ася,баба,белла,белоцвета,березня,берислава,бильяна,бисера,блага,блажена,богдана,богна,божана,божена,божидара,борислава,боряна,бояна,вавилия,валентина,валерия,валерія,ванда,варвара,василика,василина,василиса,василка,васса,вега,веда,вела,вениамина,венцеслава,вера,вероника,вероніка,веселина,ветана,видослава,вика,виктория,виола,виолета,виолетта,виталия,вита,владислава,власта,внучка,вікторія,віола,віолетта,віра,віта,галина,ганна,гергана,гизела,глафира,глафіра,дана,даниэла,дарена,дарина,дарья,дельфина,демира,десислава,джемила,диана,диляна,дина,донка,дочка,діана,діна,ева,евгения,евдокия,евеліна,евлампия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,ефросиния,ефросинья,жанна,живка,замфира,заряна,зиновия,злата,зося,зоя,зіновія,ивана,иванка,иванна,ива,ивет,ивонна,изольда,илия,илона,ильяна,инга,инесса,инна,иоанна,ира,ирина,искра,ия,йоана,йорданка,калерия,камелия,капитолина,капітоліна,карина,каролина,катарина,катерина,катюша,катя,кира,клавдия,клара,клеопатра,климентина,кору,кохана,кохання,кристина,ксанта,ксения,ксенія,лада,лала,лариса,леля,лена,леонтина,лея,лиана,лидия,лиза,лилия,лильяна,лина,липа,лия,лора,льоха,любава,любимая,любовь,любов,люда,людмила,ліана,лілія,лія,майя,мама,маргарита,марианна,мариетта,марина,мария,марта,маруся,марфа,марьяна,марья,маріанна,марія,марієтта,мар\'я,мати,матрена,матрона,матрёна,мать,маша,мая,мила,милена,милослава,мирослава,мотрона,муза,мілена,мілослава,надежда,надя,надія,настасия,настасья,настасія,наталия,наталья,наталя,наташа,невена,невістка,нейдежда,нелли,ника,николина,никомия,нина,нинель,нонна,нінель,оксана,олександра,олена,олимпиада,ольга,оля,олімпіада,парасковія,пекла,пелагея,пенка,пина,полина,поля,прасковья,преслава,рада,радка,раиса,райна,рая,раїса,рената,рима,римма,рита,роза,роксана,росица,русана,рут,руфь,сальвина,сарра,сафина,сафия,свекровь,свекруха,светлана,светлозара,светозара,світла,сельвия,серафима,сестра,сидония,силвия,сияна,славена,славяна,смарагда,смила,снежана,сноха,софия,софья,софія,стелла,степанида,стефания,стефанія,стоянка,таисия,таисья,тамара,татьяна,таїсія,текле,тереза,тетяна,тетя,тодорка,томи,трояна,троянда,тётя,тітка,ульяна,уляна,устина,устиния,устинья,устинія,фаина,фаїна,фекла,феодора,филиппа,филомена,фёкла,хаврония,хрисанда,христина,цветана,цветанка,цвета,эвдокия,эвелина,эдита,элеонора,элизавета,элла,эльвира,эмилия,эмма,юдифь,юдіф,юлиана,юлия,юлія,юна,ядвига,ядвіга,яна,янина,янка,ярослава,яся,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,abigail,abril,adriana,africa,aina,ainara,ainhoa,aitana,alba,alejandra,alexandra,alexia,alexis,alice,alicia,alma,amanda,amber,amelie,amy,ana,andrea,ane,angela,ann,anna,ariadna,arlet,aroa,ashley,aunt,aya,azahara,barbara,berta,betty,beverly,blanca,brenda,brittany,candela,carla,carlota,carmen,carol,carolina,carolyn,catherine,cayetana,celia,charlotte,cheryl,chloe,christina,christine,clara,claudia,cloe,cristina,cynthia,daniela,danielle,daughter,deborah,debra,denise,diana,diane,donna,doris,dorothy,ekaterina,elena,elia,elizabeth,elsa,emilia,emilie,emily,emma,eva,evelyn,frances,gabriela,gloria,grace,granddaughter,hanna,hannah,hannah/hanna,heather,helen,helena,hermana,hermanita,iванка,ines,irene,iria,irina,iris,isabel,jacqueline,jana,jane,janet,janice,jean,jennifer,jessica,jimena,joan,johanna,joyce,judith,judy,julia,julie,karen,katherine,kathleen,kathryn,kayla,kelly,kimberly,klara,laia,lara,laura,lauren,lea,leah,leire,lena,leonie,leyre,lia,lili,lilly,lina,linda,lisa,lissa,lola,lori,louisa,lucia,luisa,luna,madison,madre,malak,mamá,mama,mammi,manuela,mar,mara,margaret,maria,marie,marilyn,marina,marta,martha,martina,mary,megan,melissa,mia,michelle,mila,mireia,miriam,mom,mother,mutti,nadia,nahia,naia,naiara,nancy,natalia,natalie,nayara,nerea,nicole,noa,noelia,nora,nuria,olga,olivia,ona,pamela,paola,patricia,paula,penelope,rachel,rebecca,rocío,rose,ruth,salma,samantha,sandra,sara,sarah,schwester,sharon,shirley,silvia,sister,sofia,sofia/sophia,sofie,sophia,sophie,stephanie,susan,tante,teresa,theresa,tiffany,tochter,triana,valentina,valeria,vega,vera,victoria,virginia,zoe</string>
 
     <string name="second_name_completions_man" translatable="false">ев,ов,ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
     <string name="second_name_completions_female" translatable="false">ева,ова,овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
@@ -900,6 +903,9 @@
         <item>2</item>
         <item>3</item>
         <item>7</item>
+    </string-array>
+
+    <string-array name="pref_Notifications_Days_values_default" translatable="false">
     </string-array>
 
     <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>
@@ -955,6 +961,8 @@
     <integer name="menu_context_id_anniversary_list">9</integer>
     <integer name="menu_context_id_silent_event">10</integer>
     <integer name="menu_context_id_unsilent_event">11</integer>
-<!--    <integer name="menu_context_id_edit_event">12</integer>-->
+    <integer name="menu_context_id_edit_event">12</integer>
+    <integer name="menu_context_id_merge_event">13</integer>
+    <integer name="menu_context_id_unmerge_event">14</integer>
 
 </resources>

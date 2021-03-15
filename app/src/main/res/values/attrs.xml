@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 18:03
   ~  */
   -->
 
@@ -23,5 +23,13 @@
         <attr name="dialogTextColor" format="color"/>
         <attr name="dialogHintColor" format="color"/>
         <attr name="dialogButtonColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorPreference">
+        <attr name="itemLayout" format="reference" />
+        <attr name="choices" format="reference" />
+        <attr name="numColumns" format="integer" />
+        <attr name="dialogTitle" format="string" />
+        <attr name="dialogIcon" format="reference" />
     </declare-styleable>
 </resources>

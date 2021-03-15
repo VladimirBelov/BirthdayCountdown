@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 27.10.20 0:43
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -11,11 +11,49 @@
 
         <string-array name="faq" tools:ignore="InconsistentArrays">
 
-                <item>###General</item>
-                <item>Dieser Abschnitt ist in der in den Einstellungen ausgewählten Sprache nicht verfügbar. Wechseln Sie in der Anwendungsoberfläche in die englische oder russische Sprache und verwenden Sie Google Übersetzer.</item>
+                <item>###Benachrichtigungen zu Ereignissen</item>
 
-                <item>#Anwendungssprachen</item>
-                <item>Wenn Sie bei der Übersetzung dieser Anwendung in eine Sprache in Ihrer Nähe helfen möchten oder wenn Sie eine Ungenauigkeit in der Übersetzung feststellen, schreiben Sie an eine E-Mail (Schaltfläche unten).</item>
+                <item>#Es erscheinen keine Benachrichtigungen</item>
+                <item>Der erste Schritt ist sicherzustellen, dass die Einstellung \"Benachrichtigungsintervall\" ein beliebiger Zeitraum ausgewählt ist. Danach versuchen Sie, das Element \"Testbenachrichtigungen\" auszuwählen. Wenn nach all den oben genannten die Benachrichtigung immer noch nicht angezeigt wird, dann ist in den Android-Einstellungen entweder der \"Nicht stören\"-Modus eingeschaltet, alle Benachrichtigungen im Benachrichtigungs-Manager deaktiviert oder der Batteriesparmodus auf dem Smartphone aktiviert.</item>
+
+                <item>#Mehrere Benachrichtigungen pro Ereignis</item>
+                <item>Durch Festlegen von \"Benachrichtigungsintervall\" in den Hauptanwendungseinstellungen können Sie mehrere separate Zeiträume für die Benachrichtigung über ein Ereignis auswählen. Sie können beispielsweise festlegen, dass Benachrichtigungen für die Woche und den Tag des Ereignisses empfangen werden.</item>
+
+                <item> </item>
+                <item>###Widgets</item>
+
+                <item>#Widget-Einstellungen</item>
+                <item>Um die Einstellungen des Widgets zu bearbeiten, klicken Sie unten auf die Beschriftung des rechtsstehenden Ereignisses. Klicken Sie dagegen auf eine beliebige Stelle in diesem (rechtsstehenden) Ereignis, wird die Liste der Ereignisse geöffnet. Wenn für das Widget keine passenden Ereignisse gefunden wurden und die Meldung \"Ereignisse nicht gefunden\" angezeigt wird, dann werden Sie durch Anklicken dieser Nachricht auch zu den Einstellungen geführt.</item>
+                <item><![CDATA[<img src="pref_widget.png"/ width=100%><br>]]></item>
+
+                <item>#Ereignisse passen nicht oder Fotos sind zu schmal</item>
+                <item>Gehen Sie zu den Widget-Einstellungen und versuchen Sie, die Einstellung \"Ereignisse zählen\" zu ändern</item>
+
+                <item>#Widgets werden nicht aktualisiert</item>
+                <item tools:ignore="TypographyDashes"><![CDATA[Sie müssen die Batterieoptimierung für die Anwendung deaktivieren. Es gibt verschiedene Einstellungen für verschiedene Android-Oberflächen: <ul><li>für Xiaomi MIUI ist dies \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)<li>für reines Android 9-11 ist dies \"Akkuoptimierung\" (Apps und Benachrichtigungen<nobr>–></nobr>Erweitert<nobr>–></nobr>Spezieller App-Zugriff<nobr>–></nobr>Akkuoptimierung)<li>für Huawei EMUI ist das \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
+                <item tools:ignore="TypographyDashes"><![CDATA[Manchmal stoppen auf Android 9-10 Widgets die Aktualisierung nach der Installation einer neuen Version der App. Um dies zu beheben:<ol><li>entfernen Sie das Widget vom Bildschirm<li>deaktivieren Sie den Launcher-Cache (in den Android-Einstellungen in der Liste der Anwendungen wählen Sie das Programm aus und löschen in den Eigenschaften den Cache)<li>starten Sie das Smartphone neu<li>fügen Sie das Widget auf dem Bildschirm neu hinzu</ol>]]></item>
+
+                <item>###Ereignisse</item>
+
+                <item>#Kalenderereignisse</item>
+                <item>Alle Kalenderereignisse werden unterstützt. Für die Veranstaltung \"Geburtstag“ und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen
+unterscheidet sich je nach Ereignistyp.</item>
+                <item> </item>
+                <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol><li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)<li>der Kontakt wurde, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt, klicken Sie darauf öffnet sich eine Kontaktkarte im Adressbuch<li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt, klicken Sie darauf öffnet sich eine Kalenderereigniskarte</ol>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp"/ width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den
+Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert. Wenn Sie auf das Ereignis klicken, wird die Kalenderereigniskarte geöffnet.]]></item>
+
+                <item>#Importieren von Ereignissen aus sozialen Netzwerken</item>
+                <item><![CDATA[Die Geburtstage von Facebook-Freunden können mit dem fb2cal-Tool in den Kalender exportiert werden: <a href="https://github.com/mobeigi/fb2cal">Link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">Videoanweisungen</a>]]></item>
+
+                <item> </item>
+                <item>###Allgemein</item>
+
+                <item>#Suche</item>
+                <item><![CDATA[Um nach mehreren Parametern zu suchen, trennen Sie sie mit Kommas (beliebiger Wert) oder \"+\" (alle Werte), zum Beispiel:<ul><li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary<li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge</ul>]]></item>
+
+                <item>#Sprache der Anwendungsoberfläche</item>
+                <item>Wenn Sie helfen wollen, diese Anwendung in eine andere Sprache zu übersetzen oder wenn Sie eine Ungenauigkeit in der Übersetzung feststellen - E-Mail an mich (Schaltfläche ist unten).</item>
 
         </string-array>
 

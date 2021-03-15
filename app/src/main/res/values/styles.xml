@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 15.12.20 3:21
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 18:03
   ~  */
   -->
 
@@ -307,4 +307,5 @@
         <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
         <item name="android:dropDownVerticalOffset">4.0dip</item>
     </style>
+
 </resources>

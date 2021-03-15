@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 06.12.20 0:21
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 18:08
   ~  */
   -->
 
 <!-- https://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-3-ae9793fd31ec -->
 
 <!--suppress DeprecatedClassUsageInspection -->
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="pref_main">
 
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
@@ -456,15 +456,6 @@
             android:dialogIcon="@android:drawable/ic_menu_manage"/>
 
         <!-- todo: сделать цветные переключатели http://0x5453.blogspot.com/2014/06/61214.html -->
-        <ListPreference
-            android:defaultValue="@string/pref_Widgets_Color_EventToday_default"
-            android:entries="@array/pref_Widgets_Color_entries"
-            android:entryValues="@array/pref_Widgets_Colors_values"
-            android:key="@string/pref_Widgets_Color_EventToday_key"
-            android:summary="@string/pref_Widgets_Color_EventToday_description"
-            android:title="@string/pref_Widgets_Color_EventToday_title"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:dialogIcon="@android:drawable/ic_menu_edit"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_Days_EventSoon_default"
@@ -477,20 +468,53 @@
             android:minHeight="48dp"
             android:dialogIcon="@android:drawable/ic_menu_week"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_Widgets_Color_EventSoon_default"
-            android:entries="@array/pref_Widgets_Color_entries"
-            android:entryValues="@array/pref_Widgets_Colors_values"
-            android:key="@string/pref_Widgets_Color_EventSoon_key"
-            android:summary="@string/pref_Widgets_Color_EventSoon_description"
-            android:title="@string/pref_Widgets_Color_EventSoon_title"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:dialogIcon="@android:drawable/ic_menu_edit"/>
-			
-		<!-- todo: добавить цвет далёких событий -->
 
-		<!-- todo: добавить цвет инфо под фото -->
-		
+        <!-- https://habr.com/ru/post/496136/  https://github.com/kristiyanP/colorpicker/tree/master  -->
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_Widgets_Color_EventCaption_key"
+            android:title="@string/pref_Widgets_Color_EventCaption_title"
+            android:summary="@string/pref_Widgets_Color_EventCaption_description"
+            android:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="5"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_Widgets_Color_EventCaption_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_Widgets_Color_EventToday_key"
+            android:title="@string/pref_Widgets_Color_EventToday_title"
+            android:summary="@string/pref_Widgets_Color_EventToday_description"
+            android:defaultValue="@color/pref_Widgets_Color_EventToday_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="5"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_Widgets_Color_EventToday_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_Widgets_Color_EventSoon_key"
+            android:title="@string/pref_Widgets_Color_EventSoon_title"
+            android:summary="@string/pref_Widgets_Color_EventSoon_description"
+            android:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="5"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_Widgets_Color_EventSoon_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_Widgets_Color_EventFar_key"
+            android:title="@string/pref_Widgets_Color_EventFar_title"
+            android:summary="@string/pref_Widgets_Color_EventFar_description"
+            android:defaultValue="@color/pref_Widgets_Color_EventFar_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="5"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -499,6 +523,7 @@
         android:layout="@layout/settings_category">
 
         <MultiSelectListPreference
+            android:defaultValue="@array/pref_Notifications_Days_values_default"
             android:entries="@array/pref_Notifications_Days_entries"
             android:entryValues="@array/pref_Notifications_Days_values"
             android:key="@string/pref_Notifications_Days_key"

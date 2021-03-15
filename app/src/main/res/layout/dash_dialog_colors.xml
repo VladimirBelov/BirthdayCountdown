@@ -1,0 +1,63 @@
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 18:09
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical"
+    android:paddingRight="?android:attr/scrollbarSize"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="6dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="6dip">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingEnd="6dip"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/icon"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:singleLine="false"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?attr/dialogTextColor"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <GridView android:id="@+id/color_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stretchMode="columnWidth" />
+
+    </FrameLayout>
+
+</LinearLayout>
+

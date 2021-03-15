@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 13.12.20 21:57
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -53,7 +53,7 @@
 				android:layout_weight="1"
 				android:contentDescription="@string/hint_EventIcon"
 				android:scaleType="fitCenter"
-				app:srcCompat="@drawable/ic_launcher_snowflake_cap" />
+				app:srcCompat="@drawable/ic_launcher_snowflake" />
 
 			<LinearLayout
 				android:layout_width="match_parent"

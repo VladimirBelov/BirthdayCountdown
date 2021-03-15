@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.12.20 22:05
-  ~  * Copyright (c) 2018 - 2020. All rights reserved.
-  ~  * Last modified 17.12.20 15:55
+  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 14.03.21 16:56
   ~  */
   -->
 
@@ -25,6 +25,7 @@
     <string name="menu_search">Поиск…</string>
     <string name="menu_filter_events">Фильтр…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
+    <string name="menu_context_edit_event">Показать событие в календаре</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
     <string name="menu_context_unhide_event">Вернуть показ события</string>
@@ -34,6 +35,8 @@
     <string name="menu_context_anniversary_list">Все годовщины свадеб</string>
     <string name="menu_context_silent_event">Не уведомлять</string>
     <string name="menu_context_unsilent_event">Вернуть уведомление</string>
+    <string name="menu_context_merge_event">Присоединить к контакту…</string>
+    <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
 <!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
@@ -309,23 +312,17 @@
     <string name="pref_Widgets_BottomInfo2nd_title">Заголовок (верхний ряд)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Что показывать под фотографией</string>
 
-    <string-array name="pref_Widgets_Color_entries">
-        <item>Зелёный</item>
-        <item>Красный</item>
-        <item>Жёлтый</item>
-        <item>Белый</item>
-    </string-array>
-
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Фамилия Имя Отчество</item>
         <item>Фамилия И.О.</item>
         <item>Имя Отчество Фамилия</item>
         <item>Имя</item>
-        <item>Псевдоним</item>
+        <item>Псевдоним (Имя, при отсутствии)</item>
         <item>Фамилия</item>
         <item>Дата события</item>
         <item>Тип события</item>
         <item>Наименование события</item>
+        <item>Организация</item>
         <item>Ничего</item>
     </string-array>
 
@@ -342,11 +339,17 @@
         <item>14</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventToday_title">Цвет для \"Возраст\"</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Основной цвет</string>
+    <string name="pref_Widgets_Color_EventCaption_description">Основной цвет элементов виджета (заголовки событий, возраст)</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Возраст</string>
     <string name="pref_Widgets_Color_EventToday_description">Цвет возраста для событий сегодня</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Цвет для \"Дней до события\"</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Дней до события (близко)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Цвет счётчика дней для ближайших событий</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Дней до события (далеко)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Цвет счётчика дней для далёких событий</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">За сколько дней события считаются ближайшими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Ближайшие события</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.12.20 22:05
- *  * Copyright (c) 2018 - 2020. All rights reserved.
- *  * Last modified 15.12.20 2:26
+ *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Copyright (c) 2018 - 2021. All rights reserved.
+ *  * Last modified 14.03.21 16:56
  *
  */
 
@@ -35,9 +35,9 @@ import java.util.Locale;
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.RES_TYPE_COLOR;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
+import static org.vovka.birthdaycountdown.Constants.STRING_10;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
 import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
@@ -49,7 +49,6 @@ import static org.vovka.birthdaycountdown.Constants.STRING_8;
 import static org.vovka.birthdaycountdown.Constants.STRING_9;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_ID;
-import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CONTACTS;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
@@ -72,14 +71,16 @@ import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_VIEW_CENTERED;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_VIEW_DISTANCE;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_UPDATER_DRAW_EVENT_ERROR;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_UPDATER_INVOKE_ERROR;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventLabel;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_id;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_nickname;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_organization;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
@@ -93,12 +94,14 @@ class WidgetUpdater {
     final private int height;
     private final int widgetId;
     private Resources resources;
-    //private DisplayMetrics displayMetrics;
     private String packageName;
     private double fontMagnify;
+
     private int colorDefault;
     private int colorEventToday;
     private int colorEventSoon;
+    private int colorEventFar;
+
     private int eventsDisplayed;
     private int eventsToShow;
     private int eventsToSkip;
@@ -192,8 +195,8 @@ class WidgetUpdater {
                     fontMagnify = 1 + 1.0 * (cells - 1);
                 }
 
-                colorDefault = resources.getColor(R.color.white);
-                try {
+                colorDefault = eventsData.preferences_widgets_color_default; //resources.getColor(R.color.white);
+                /*try {
                     colorEventToday = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventtoday, RES_TYPE_COLOR, packageName));
                 } catch (Resources.NotFoundException e) {
                     colorEventToday = colorDefault;
@@ -202,7 +205,10 @@ class WidgetUpdater {
                     colorEventSoon = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventsoon, RES_TYPE_COLOR, packageName));
                 } catch (Resources.NotFoundException e) {
                     colorEventSoon = colorDefault;
-                }
+                }*/
+                colorEventToday = eventsData.preferences_widgets_color_eventtoday;
+                colorEventSoon = eventsData.preferences_widgets_color_eventsoon;
+                colorEventFar = eventsData.preferences_widgets_color_eventfar;
 
                 //Отрисовываем информацию о событиях
                 eventsDisplayed = 0;
@@ -277,82 +283,105 @@ class WidgetUpdater {
             Person person = new Person(context, event);
             //if (eventsData.preferences_debug_on) Toast.makeText(context, eventsDisplayed + " " + event, Toast.LENGTH_LONG).show();
             int visibleCell = 1; //2 - top left, 3 - top center, 5 - bottom left, 7 - bottom center
-            
+            String rowValue;
+
             //Под фото
             int id_widget_Caption_left = resources.getIdentifier(WIDGET_TEXT_VIEW + eventsDisplayed, STRING_ID, packageName);
             int id_widget_Caption_centered = resources.getIdentifier(WIDGET_TEXT_VIEW_CENTERED + eventsDisplayed, STRING_ID, packageName);
 
+            views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
+            views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
+
             switch (eventsData.preferences_widgets_bottom_info) {
                 case STRING_1: //Фамилия Имя Отчество
-                    views.setTextViewText(id_widget_Caption_left, singleRowArray[Position_personFullNameAlt]);
-                    views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                    visibleCell*=2;
+                    rowValue = singleRowArray[Position_personFullNameAlt];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        visibleCell *= 2;
+                    }
                     break;
                 case STRING_2: //Дата события
-                    views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_eventDateText]);
-                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
-                    visibleCell*=3;
+                    rowValue = singleRowArray[Position_eventDateText];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
+                    }
                     break;
                 case STRING_3: //Фамилия И.О.
-                    if (singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
-                        views.setTextViewText(id_widget_Caption_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_id])));
-                    } else {
-                        String nameShort = new Person(context, event).getFullNameShort();
-                        if (nameShort != null) views.setTextViewText(id_widget_Caption_left, nameShort);
+                    rowValue =
+                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleRowArray[Position_contactID])) :
+                        person.getFullNameShort();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        visibleCell *= 2;
                     }
-                    views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                    visibleCell*=2;
                     break;
                 case STRING_4: //Имя Отчество Фамилия
-                    views.setTextViewText(id_widget_Caption_left, singleRowArray[Position_personFullName]);
-                    views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                    visibleCell*=2;
+                    rowValue = singleRowArray[Position_personFullName];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        visibleCell *= 2;
+                    }
                     break;
                 case STRING_5: //Имя
-                    views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
-                            person.getFirstName());
-                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
-                    visibleCell*=3;
+                    rowValue =
+                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                        person.getFirstName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
+                    }
                     break;
                 case STRING_6: //Фамилия
-                    views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
-                            person.getSecondName());
-                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
-                    visibleCell*=3;
+                    rowValue =
+                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                        person.getSecondName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
+                    }
                     break;
-                case STRING_7: //Псевдоним (Имя)
-                    views.setTextViewText(id_widget_Caption_centered, singleRowArray[Position_nickname].trim().length() > 0 ?
-                            singleRowArray[Position_nickname] :
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
-                    visibleCell*=3;
+                case STRING_7: //Псевдоним (Имя. если отсутствует)
+                    rowValue =
+                        singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
+                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                        person.getFirstName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
+                    }
                     break;
                 case STRING_8: //Тип события
-                    views.setTextViewText(id_widget_Caption_left, singleRowArray[Position_eventCaption]);
-                    views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                    visibleCell*=2;
+                    rowValue = singleRowArray[Position_eventCaption];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        visibleCell *= 2;
+                    }
                     break;
                 case STRING_9: //Наименование события
-                    views.setTextViewText(id_widget_Caption_left, singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] : singleRowArray[Position_eventLabel]);
-                    views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
-                    visibleCell*=2;
+                    rowValue =
+                        singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] :
+                        singleRowArray[Position_eventLabel];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
+                        visibleCell *= 2;
+                    }
                     break;
-                case "99": //Ничего
-                default:
-                    views.setTextViewText(id_widget_Caption_left, STRING_EMPTY);
-                    views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
+                case STRING_10: //Организация
+                    rowValue = singleRowArray[Position_organization];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
+                    }
                     break;
             }
 
@@ -363,77 +392,102 @@ class WidgetUpdater {
             int id_widget_Caption2nd_left = resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND + eventsDisplayed, STRING_ID, packageName);
             int id_widget_Caption2nd_centered = resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND_CENTERED + eventsDisplayed, STRING_ID, packageName);
 
+            views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
+            views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+
             switch (eventsData.preferences_widgets_bottom_info_2nd) {
                 case STRING_1: //Фамилия Имя Отчество
-                    views.setTextViewText(id_widget_Caption2nd_left, singleRowArray[Position_personFullNameAlt]);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                    visibleCell*=5;
+                    rowValue = singleRowArray[Position_personFullNameAlt];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        visibleCell *= 5;
+                    }
                     break;
                 case STRING_2: //Дата события
-                    views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_eventDateText]);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
-                    visibleCell*=7;
+                    rowValue = singleRowArray[Position_eventDateText];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell *= 7;
+                    }
                     break;
                 case STRING_3: //Фамилия И.О.
-                    if (singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
-                        views.setTextViewText(id_widget_Caption2nd_left, eventsData.getContactFullNameShort(Long.parseLong(singleRowArray[Position_id])));
-                    } else {
-                        String nameShort = new Person(context, event).getFullNameShort();
-                        if (nameShort != null) views.setTextViewText(id_widget_Caption2nd_left, nameShort);
+                    rowValue =
+                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleRowArray[Position_contactID])) :
+                            person.getFullNameShort();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        visibleCell*=5;
                     }
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                    visibleCell*=5;
                     break;
                 case STRING_4: //Имя Отчество Фамилия
-                    views.setTextViewText(id_widget_Caption2nd_left, singleRowArray[Position_personFullName]);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                    visibleCell*=5;
+                    rowValue = singleRowArray[Position_personFullName];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        visibleCell *= 5;
+                    }
                     break;
                 case STRING_5: //Имя
-                    views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
-                            person.getFirstName());
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
-                    visibleCell*=7;
+                    rowValue =
+                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                            eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                            person.getFirstName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell *= 7;
+                    }
                     break;
                 case STRING_6: //Фамилия
-                    views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
-                            person.getSecondName());
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
-                    visibleCell*=7;
+                     rowValue =
+                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                            eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                            person.getSecondName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell *= 7;
+                    }
                     break;
-                case STRING_7: //Псевдоним (Имя)
-                    views.setTextViewText(id_widget_Caption2nd_centered, singleRowArray[Position_nickname].trim().length() > 0 ?
-                            singleRowArray[Position_nickname] :
-                            eventsData.getContactData(Long.parseLong(singleRowArray[Position_id]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
-                    visibleCell*=7;
+                case STRING_7: //Псевдоним (Имя, если отсутствует)
+                    rowValue =
+                            singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
+                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                            person.getFirstName();
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell *= 7;
+                    }
                     break;
                 case STRING_8: //Тип события
-                    views.setTextViewText(id_widget_Caption2nd_left, singleRowArray[Position_eventCaption]);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                    visibleCell*=5;
+                    rowValue = singleRowArray[Position_eventCaption];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        visibleCell *= 5;
+                    }
                     break;
                 case STRING_9: //Наименование события
-                    views.setTextViewText(id_widget_Caption2nd_left, singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] : singleRowArray[Position_eventLabel]);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
-                    visibleCell*=5;
+                    rowValue =
+                            singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] :
+                            singleRowArray[Position_eventLabel];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
+                        visibleCell*=5;
+                    }
                     break;
-                case "99": //Ничего
-                default:
-                    views.setTextViewText(id_widget_Caption2nd_left, STRING_EMPTY);
-                    views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
-                    views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
+                case STRING_10: //Организация
+                    rowValue = singleRowArray[Position_organization];
+                    if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell *= 7;
+                    }
                     break;
             }
 
@@ -516,11 +570,11 @@ class WidgetUpdater {
 
                     strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleRowArray[Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_id])) {
+                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contactID])) {
 
                     Locale locale_en = new Locale(Constants.LANG_EN);
                     SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_id]);
+                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_contactID]);
                     if (birthDate != null) {
                         strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, sdfYear.format(birthDate));
                     }
@@ -549,11 +603,11 @@ class WidgetUpdater {
 
                     strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleRowArray[Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_id])) {
+                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contactID])) {
 
                     Locale locale_en = new Locale(Constants.LANG_EN);
                     SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_id]);
+                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_contactID]);
                     if (birthDate != null) {
                         strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, sdfYear.format(birthDate));
                     }
@@ -585,10 +639,15 @@ class WidgetUpdater {
             views.setTextColor(id_widget_Caption_centered, colorDefault);
             views.setTextColor(id_widget_Caption2nd_left, colorDefault);
             views.setTextColor(id_widget_Caption2nd_centered, colorDefault);
-            //}
+
+            //todo: сделать цвет тени зависымым от цвета текста
+            //https://stackoverflow.com/questions/44417666/change-properties-of-view-inside-remoteview
+            //https://stackoverflow.com/questions/6435648/any-way-to-set-the-text-shadow-for-a-spannablestring - не работает
+            // @android.view.RemotableViewMethod
+            //views.setInt(id_widget_Caption2nd_centered, "setShadowColor", resources.getColor(R.color.white));
 
             //Сколько осталось до события
-            int idViewDistance = resources.getIdentifier(WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, STRING_ID, packageName);
+            int id_widget_Distance = resources.getIdentifier(WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, STRING_ID, packageName);
             String eventDistance = singleRowArray[ContactsEvents.Position_eventDistance];
             int eventDistance_Days;
             try {
@@ -611,19 +670,19 @@ class WidgetUpdater {
                         views.setTextColor(id_widget_Caption2nd_centered, colorEventToday);
                     }
                 }
-                views.setTextViewText(idViewDistance, STRING_EMPTY);
+                views.setTextViewText(id_widget_Distance, STRING_EMPTY);
 
             } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
 
-                if (colorEventSoon != 0) views.setTextColor(idViewDistance, colorEventSoon);
-                views.setTextViewText(idViewDistance, eventDistance);
-                views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_BIG * fontMagnify));
+                views.setTextColor(id_widget_Distance, colorEventSoon);
+                views.setTextViewText(id_widget_Distance, eventDistance);
+                views.setTextViewTextSize(id_widget_Distance, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_BIG * fontMagnify));
 
             } else { //Попозже
 
-                views.setTextColor(idViewDistance, colorDefault);
-                views.setTextViewText(idViewDistance, eventDistance);
-                views.setTextViewTextSize(idViewDistance, TypedValue.COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < WIDGET_TEXT_SIZE_TINY ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+                views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_eventsoon != 0 ? colorEventFar : colorDefault);
+                views.setTextViewText(id_widget_Distance, eventDistance);
+                views.setTextViewTextSize(id_widget_Distance, TypedValue.COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < WIDGET_TEXT_SIZE_TINY ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 
             }
 
@@ -643,14 +702,16 @@ class WidgetUpdater {
             if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
 
                 Intent intentView = new Intent(Intent.ACTION_VIEW);
-                Uri uri;
-                if (!singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
-                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_id]);
-                } else {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleRowArray[Position_id]);
+                Uri uri = null;
+                if (!singleRowArray[Position_contactID].isEmpty()) { //singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contactID]);
+                } else if (!singleRowArray[Position_eventID].isEmpty()) { //singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleRowArray[Position_eventID]);
                 }
-                intentView.setData(uri);
-                views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
+                if (uri != null) {
+                    intentView.setData(uri);
+                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
+                }
 
             } else {
 
