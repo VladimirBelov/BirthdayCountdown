@@ -577,4 +577,7 @@
     <string name="zodiac_year_snake">" Snake"</string>
     <string name="zodiac_year_horse">" Horse"</string>
     <string name="zodiac_year_sheep">" Sheep"</string>
+
+    <string name="msg_on">: EN</string>
+    <string name="msg_off">: APAGADO</string>
 </resources>

@@ -11,7 +11,7 @@
     <string name="window_settings">Настройки</string>
     <string name="window_widget_settings">Настройки виджета</string>
     <string name="window_about">О приложении</string>
-    <string name="window_faq">Вопросы и  Ответы</string>
+    <string name="window_faq">Вопросы и Ответы</string>
 
     <string name="activity_title_events_scope">Фильтр</string>
 
@@ -581,4 +581,7 @@
     <string name="zodiac_year_snake">" Змея"</string>
     <string name="zodiac_year_horse">" Лошадь"</string>
     <string name="zodiac_year_sheep">" Овца"</string>
+
+    <string name="msg_on">: ВКЛ</string>
+    <string name="msg_off">: ВЫКЛ</string>
 </resources>

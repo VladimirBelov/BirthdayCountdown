@@ -565,4 +565,7 @@
     <string name="zodiac_year_snake">" Schlange"</string>
     <string name="zodiac_year_horse">" Pferd"</string>
     <string name="zodiac_year_sheep">" Schaf"</string>
+
+    <string name="msg_on">: AUF</string>
+    <string name="msg_off">: AUS</string>
 </resources>

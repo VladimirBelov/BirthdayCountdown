@@ -314,6 +314,7 @@ class WidgetUpdater {
                         singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleRowArray[Position_contactID])) :
                         person.getFullNameShort();
                     if (!rowValue.trim().isEmpty()) {
+                        views.setTextViewText(id_widget_Caption_left, rowValue);
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         visibleCell *= 2;
                     }

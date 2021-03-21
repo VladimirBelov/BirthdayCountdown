@@ -568,4 +568,7 @@
     <string name="zodiac_year_snake">" Змея"</string>
     <string name="zodiac_year_horse">" Лошадь"</string>
     <string name="zodiac_year_sheep">" Овца"</string>
+
+    <string name="msg_on">: ВКЛ</string>
+    <string name="msg_off">: ВИКЛ</string>
 </resources>

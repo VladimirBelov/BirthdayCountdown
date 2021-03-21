@@ -265,6 +265,7 @@ final class Constants {
     static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
 
     static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
+    static final String ABOUT_ACTIVITY_SET_DEBUG_ERROR = "AboutActivity->setDebug error:\n";
 
     static final String NOTIFY_ACTIVITY_ON_CREATE_ERROR = "NotifyActivity->onCreate error:\n";
 

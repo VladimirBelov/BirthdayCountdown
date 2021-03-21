@@ -296,7 +296,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!triggeredMsgNoEvents) showWelcomeScreen();
 
             //todo: сделать разные иконки приложения https://github.com/guardianproject/CameraV/commit/98d8c545c1901d03d9d238204bb45d502a623e59#diff-7ab4bf3d594a968a90e0250af33fcb9bR399
-            // https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
+            //https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
+
+            //todo: сделать проверку, что приложение в списке "оптимизация батареи", когда включены уведомления или виджеты
+            //https://stackoverflow.com/questions/32627342/how-to-whitelist-app-in-doze-mode-android-6-0/32627788#32627788
 
         } catch (Exception e) {
             e.printStackTrace();

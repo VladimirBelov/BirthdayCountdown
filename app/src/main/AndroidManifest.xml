@@ -115,9 +115,10 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget5x1_info" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget5x1_info" />
+
+            <!--Samsung One UI https://stackoverflow.com/questions/58574864/enable-widget-setting-button-for-widgets-in-android -->
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -127,9 +128,8 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget2x2_info" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x2_info" />
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -139,9 +139,8 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget4x1bc_info" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1bc_info" />
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
         </receiver>
     </application>
 </manifest>

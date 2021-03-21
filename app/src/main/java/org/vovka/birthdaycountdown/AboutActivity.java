@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -18,6 +19,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -43,6 +45,8 @@ import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
 public class AboutActivity extends AppCompatActivity {
+
+    int counterClicks = 0;
 
     @SuppressLint("PrivateResource")
     public void onCreate(Bundle savedInstanceState) {
@@ -210,6 +214,32 @@ public class AboutActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void setDebug(android.view.View view) {
+
+        try {
+
+            counterClicks++;
+            if (counterClicks > 4) {
+
+                counterClicks = 0;
+                ContactsEvents eventsData = ContactsEvents.getInstance();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                if (eventsData != null && preferences != null) {
+                    eventsData.preferences_debug_on = !eventsData.preferences_debug_on;
+                    preferences
+                            .edit()
+                            .putBoolean(getString(R.string.pref_Debug_On_key), eventsData.preferences_debug_on)
+                            .apply();
+                    Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

@@ -15,6 +15,8 @@
         <item>Fixed errors in displaying data on widgets, added the ability to display contact organization, new color selection dialogs</item>
         <item>Improved algorithm for automatic search for contacts for a calendar event</item>
         <item>Added the ability to manually specify a contact for a calendar event (Birthday)</item>
+        <item>Added button for open widget settings for Samsung devices</item>
+        <item>Updated list of female names</item>
 
         <item>#1.5.3</item>
         <item>Notifications can be set ongoing and high priority</item>

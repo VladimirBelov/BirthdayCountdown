@@ -52,6 +52,7 @@
 				android:layout_height="80dp"
 				android:layout_weight="1"
 				android:contentDescription="@string/hint_EventIcon"
+				android:onClick="setDebug"
 				android:scaleType="fitCenter"
 				app:srcCompat="@drawable/ic_launcher_snowflake" />
 
