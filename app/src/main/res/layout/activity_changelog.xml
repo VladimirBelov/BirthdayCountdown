@@ -54,7 +54,7 @@
 				android:contentDescription="@string/hint_EventIcon"
 				android:onClick="setDebug"
 				android:scaleType="fitCenter"
-				app:srcCompat="@drawable/ic_launcher_snowflake" />
+				app:srcCompat="@drawable/ic_launcher_spring" />
 
 			<LinearLayout
 				android:layout_width="match_parent"

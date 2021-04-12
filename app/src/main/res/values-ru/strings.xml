@@ -16,6 +16,7 @@
     <string name="activity_title_events_scope">Фильтр</string>
 
     <string name="shortcut_notify">Уведомления</string>
+    <string name="shortcut_quiz">Викторина</string>
 
     <string name="menu_add_event">Добавить событие</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
@@ -23,6 +24,7 @@
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Поиск…</string>
+    <string name="menu_quiz">Викторина</string>
     <string name="menu_filter_events">Фильтр…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_edit_event">Показать событие в календаре</string>
@@ -54,6 +56,8 @@
     <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
+
+    <string name="msg_plural_postfix">а</string>
 
     <string name="msg_after_year_prefix_1">" год"</string>
     <string name="msg_after_year_prefix_2_3_4">" года"</string>
@@ -94,6 +98,7 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Викторина</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ФИО</string>
@@ -417,6 +422,7 @@
         <item>За два дня</item>
         <item>За три дня</item>
         <item>За неделю</item>
+        <item>За две недели</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
@@ -451,10 +457,20 @@
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
     <string name="pref_Notifications_NotifyTest_description">Нажмите для показа тестового уведомления за сегодня</string>
 
+    <string name="pref_Quiz_title">Викторина</string>
+    <string name="pref_Quiz_Interface_title">Интерфейс</string>
+    <string name="pref_Quiz_Interface_description">Какой интерфейс использовать для показа вопросов викторины</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Уведомления (в любой момент можно прерваться и пойти поискать правильный ответ)</item>
+        <item>Диалог (можно не спешить с ответом, но нельзя искать подсказки)</item>
+    </string-array>
+
     <string name="pref_FAQ_title">Вопросы и Ответы</string>
     <string name="pref_FAQ_description">Если что-то работает не правильно или Вы не знаете, как настроить ту или иную функцию программы - Вам в этот раздел</string>
     <string name="pref_Help_title">Помощь</string>
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
+    <string name="pref_Debug_On_hint">Нажмите ещё %1$d раз%2$s для %3$s отладочных сообщений</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>
 
     <string name="changelog_title"><![CDATA[<h1>История версий:</h1>]]></string>
@@ -582,6 +598,25 @@
     <string name="zodiac_year_horse">" Лошадь"</string>
     <string name="zodiac_year_sheep">" Овца"</string>
 
-    <string name="msg_on">: ВКЛ</string>
-    <string name="msg_off">: ВЫКЛ</string>
+    <string name="msg_on">ВКЛ</string>
+    <string name="msg_off">ВЫКЛ</string>
+
+    <string name="quiz_msg_error_title">"Ошибка"</string>
+    <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>
+
+    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Ответ: %1$s\nПравильный ответ: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title_male">"В каком месяце родился?"</string>
+    <string name="quiz_month01_title_female">"В каком месяце родилась?"</string>
+
+    <string name="quiz_year01_title_male">"В каком году родился?"</string>
+    <string name="quiz_year01_title_female">"В каком году родилась?"</string>
+
+    <string name="quiz_age01_title_future_male">"Сколько ему исполнится лет?"</string>
+    <string name="quiz_age01_title_future_female">"Сколько ей исполнится лет?"</string>
+    <string name="quiz_age01_title_past_male">"Сколько ему сейчас лет?"</string>
+    <string name="quiz_age01_title_past_female">"Сколько ей сейчас лет?"</string>
+    <string name="quiz_age01_title_dead_male">"Сколько ему было бы сейчас лет?"</string>
+    <string name="quiz_age01_title_dead_female">"Сколько ей было бы сейчас лет?"</string>
 </resources>

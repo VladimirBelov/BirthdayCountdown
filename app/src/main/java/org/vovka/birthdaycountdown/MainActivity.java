@@ -76,6 +76,7 @@ import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
 import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_ADD_EVENT;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_FILTER;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_QUIZ;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_REFRESH;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SEARCH;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SETTINGS;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData = ContactsEvents.getInstance();
             eventsData.setContext(this); //getApplicationContext();
             eventsData.getPreferences();
+            eventsData.isUIopen = true;
 
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
@@ -216,13 +218,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         //Сообщение для тех, у кого не найдено ни одного события
                         if (!triggeredMsgNoEvents && eventsData.isEmptyArray()) {
-
-                            /*boolean isTypesOn = false;
-                            for (boolean t : eventsData.preferences_list_event_types_on)
-                                if (t) {
-                                    isTypesOn = true;
-                                    break;
-                                }*/
 
                             if (!eventsData.getPreferences_Accounts().isEmpty()) { //... но выбраны конкретные аккаунты
 
@@ -522,6 +517,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onDestroy() {
+        if (eventsData != null) eventsData.isUIopen = false;
         super.onDestroy();
     }
 
@@ -560,8 +556,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(false);
                         menu.getItem(MENU_MAIN_REFRESH).setVisible(false);
                         menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
+                        menu.getItem(MENU_MAIN_QUIZ).setVisible(false);
                         menu.getItem(MENU_MAIN_FILTER).setVisible(false);
-                        //menu.getItem(MENU_MAIN_EXIT).setVisible(false);
                         return true;
                     }
 
@@ -571,6 +567,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(true);
                         menu.getItem(MENU_MAIN_REFRESH).setVisible(true);
                         menu.getItem(MENU_MAIN_SETTINGS).setVisible(true);
+                        menu.getItem(MENU_MAIN_QUIZ).setVisible(true);
                         //показывать, если есть скрытые или без уведомлений
                         menu.getItem(MENU_MAIN_FILTER).setVisible(
                                 eventsData != null &&
@@ -618,6 +615,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             int itemId = item.getItemId();
             if (itemId == R.id.menu_refresh) {//Permissions
+
                 if (isNoAccessToContacts()) return true;
 
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
@@ -640,16 +638,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     });
                 }
                 return true;
+
             } else if (itemId == R.id.menu_settings) {
+
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
 
-/*                case R.id.menu_exit:
+            } else if (itemId == R.id.menu_quiz) {
 
-                    finish();
-                    return true;*/
+                Intent intent = new Intent(this, QuizActivity.class);
+                startActivity(intent);
+                return true;
+
             } else if (itemId == R.id.menu_filter_events) {
+
                 ArrayList<String> filterVariants = new ArrayList<String>() {{
                     add(getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents));
                     add(getString(R.string.events_scope_all, statsAllEvents));
@@ -739,7 +742,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 alertToShow.show();
 
                 return true;
+
             } else if (itemId == R.id.menu_add_event_to_contact) {
+
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     showAlertNoAccess();
                 }
@@ -749,7 +754,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 editIntent.putExtra("finishActivityOnSaveCompleted", true);
                 startActivity(editIntent);
                 return true;
-            } else if (itemId == R.id.menu_add_event_to_calendar) {// https://developer.android.com/guide/topics/providers/calendar-provider#java
+
+            } else if (itemId == R.id.menu_add_event_to_calendar) {
+
+                // https://developer.android.com/guide/topics/providers/calendar-provider#java
                 // https://stackoverflow.com/questions/20563476/how-to-add-a-calendar-event-using-intents
                 // https://github.com/roomorama/Caldroid/issues/128
 
@@ -759,6 +767,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .putExtra(CalendarContract.Events.RRULE, "FREQ=YEARLY");
                 startActivity(addEventIntent);
                 return true;
+
             }
         } catch (Exception e) {
             e.printStackTrace();

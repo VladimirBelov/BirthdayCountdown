@@ -49,23 +49,23 @@
         android:title="@string/menu_refresh"
         android:icon="@android:drawable/ic_menu_rotate" />
 
-    <!-- 3 MENU_MAIN_SETTINGS -->
+    <!-- 3 MENU_MAIN_QUIZ -->
+    <item
+        android:id="@+id/menu_quiz"
+        android:title="@string/menu_quiz"
+        android:icon="@android:drawable/ic_menu_help" />
+
+    <!-- 4 MENU_MAIN_SETTINGS -->
     <item
         android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:icon="@android:drawable/ic_menu_week" />
 
-    <!-- 4 MENU_MAIN_FILTER -->
+    <!-- 5 MENU_MAIN_FILTER -->
     <item
         android:id="@+id/menu_filter_events"
         android:title="@string/menu_filter_events"
         android:icon="@android:drawable/ic_menu_view"
         android:visible="false" />
-
-    <!-- 5 MENU_MAIN_EXIT -->
-<!--    <item
-        android:id="@+id/menu_exit"
-        android:title="@string/menu_exit"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />-->
 
 </menu>

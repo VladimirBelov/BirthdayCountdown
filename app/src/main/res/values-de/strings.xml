@@ -16,6 +16,7 @@
     <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Benachrichtigungen</string>
+    <string name="shortcut_quiz">Quiz</string>
 
     <string name="menu_add_event">Ereignis hinzufügen</string>
     <string name="menu_add_event_to_contact">Ereignis zum Kontakt hinzufügen…</string>
@@ -23,6 +24,7 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
     <string name="menu_search">Suche…</string>
+    <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filtern…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_edit_event">Ereignis im Kalender anzeigen</string>
@@ -54,6 +56,8 @@
     <string name="msg_stats_silenced_prefix">"Ereignisse ohne Benachrichtigung: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
+
+    <string name="msg_plural_postfix">e</string>
 
     <string name="msg_after_year_prefix_1">" Jahr"</string>
     <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
@@ -94,6 +98,7 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Quiz</string>
 
     <string name="hint_ContactIcon">Foto</string>
     <string name="hint_Name">Name</string>
@@ -332,11 +337,11 @@
     <string name="pref_Widgets_Color_EventToday_title">Alter</string>
     <string name="pref_Widgets_Color_EventToday_description">Farbe des Alters für das heutige Ereignis</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Tage zu Ereignissen (nah)</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Tage bis zum Ereignis (nah)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Tageszählerfarbe für bevorstehende Ereignisse</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Tage zu Ereignissen (weit)</string>
-    <string name="pref_Widgets_Color_EventFar_description">Tageszählerfarbe für weit Ereignisse</string>
+    <string name="pref_Widgets_Color_EventFar_title">Tage bis zum Ereignis (entfernt)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Tageszählerfarbe für entferntere Ereignisse</string>
 
     <string name="pref_Widgets_Days_EventSoon_description">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Kommende Ereignisse</string>
@@ -395,6 +400,7 @@
         <item>Zwei Tage vorher</item>
         <item>Drei Tage vorher</item>
         <item>Eine Woche vorher</item>
+        <item>Zwei Woche vorher</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priorität der Benachrichtigungen</string>
@@ -438,10 +444,15 @@
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Testbenachrichtigung anzuzeigen</string>
 
+    <string name="pref_Quiz_title">Quiz</string>
+    <string name="pref_Quiz_Interface_title">Interface</string>
+    <string name="pref_Quiz_Interface_description">Welche Schnittstelle für Fragen zu verwenden</string>
+
     <string name="pref_FAQ_title">Fragen und Antworten</string>
     <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
     <string name="pref_Help_title">Hilfe</string>
     <string name="pref_Debug_On_title">Debug-Meldungen</string>
+    <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
     <string name="pref_Debug_On_description">Debug-Meldungen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
@@ -566,6 +577,25 @@
     <string name="zodiac_year_horse">" Pferd"</string>
     <string name="zodiac_year_sheep">" Schaf"</string>
 
-    <string name="msg_on">: AUF</string>
-    <string name="msg_off">: AUS</string>
+    <string name="msg_on">AUF</string>
+    <string name="msg_off">AUS</string>
+
+    <string name="quiz_msg_error_title">"Fehler"</string>
+    <string name="quiz_msg_error_get_question">"Fehler beim Empfang der nächsten Frage"</string>
+
+    <string name="quiz_answer_true">"Richtig, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Antwort: %1$s\nRichtige Antwort: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title_male">"In welchem Monat wurde er geboren?"</string>
+    <string name="quiz_month01_title_female">"In welchem Monat wurde sie geboren?"</string>
+
+    <string name="quiz_year01_title_male">"In welchem Jahr wurde er geboren?"</string>
+    <string name="quiz_year01_title_female">"In welchem Jahr wurde sie geboren?"</string>
+
+    <string name="quiz_age01_title_future_male">"Wie alt wird er sein?"</string>
+    <string name="quiz_age01_title_future_female">"Wie alt wird sie sein?"</string>
+    <string name="quiz_age01_title_past_male">"Wie alt ist er jetzt?"</string>
+    <string name="quiz_age01_title_past_female">"Wie alt ist sie jetzt?"</string>
+    <string name="quiz_age01_title_dead_male">"Wie alt würde er sein?"</string>
+    <string name="quiz_age01_title_dead_female">"Wie alt würde sie sein?"</string>
 </resources>

@@ -7,14 +7,14 @@
   ~  */
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 <!--    <color name="ic_launcher_background">#1B5E20</color>-->
 
     <color name="dark_red">#bb0000</color>
-    <color name="red" tools:ignore="UnusedResources">#ff0000</color> <!--pref_Widgets_Colors_values-->
+    <color name="red">#ff0000</color>
     <color name="brown">#873A07</color>
-    <color name="yellow">#FFEE00</color> <!--pref_Widgets_Color_EventSoon_default pref_Widgets_Colors_values-->
-    <color name="green">#2ED70E</color> <!--pref_Widgets_Color_EventToday_default pref_Widgets_Colors_values widgetMxN.xml-->
+    <color name="yellow">#FFEE00</color>
+    <color name="green">#238A10</color>
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#1B5E20</color>
     <color name="dark_green_transp">#321B5E20</color>

@@ -306,6 +306,7 @@ public class ColorPreference extends Preference {
             colorChoiceDrawable.setColor(color);
             colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, res.getDisplayMetrics()), darkenedColor);
             imageView.setImageDrawable(colorChoiceDrawable);
+            imageView.setContentDescription(Integer.toString(color));
 
         } else if (view instanceof TextView) {
             ((TextView) view).setTextColor(color);

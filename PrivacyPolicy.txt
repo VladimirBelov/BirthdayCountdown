@@ -5,6 +5,7 @@ Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessa
 Permission android.permission.GET_ACCOUNTS is required to obtain data about user accounts. Information is not copied anywhere and does not change in any way.
 Permission android.permission.READ_EXTERNAL_STORAGE is necessary for playing notifications with a melody from external storage.
 Permission android.permission.READ_CALENDAR is required to read calendar events. Information is not copied anywhere else and does not change in any way.
+Permission android.permission.ACCESS_NOTIFICATION_POLICY is required to set high priority to quiz notifications on Android 7 and below.
 
 RU:
 Разрешение android.permission.READ_CONTACTS необходимо для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
@@ -13,6 +14,7 @@ RU:
 Разрешение android.permission.GET_ACCOUNTS необходимо для получения данных о пользовательских учётных записях Android. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.READ_EXTERNAL_STORAGE необходимо для проигрывания уведомлений с мелодией из внешнего хранилища.
 Разрешение android.permission.READ_CALENDAR необходимо для получения календарных событий. Информация больше никуда не копируется и никак не изменяется.
+Разрешение android.permission.ACCESS_NOTIFICATION_POLICY необходимо для выставления высокого приоритета уведомлениям викторины на Android 7 и младше.
 
 DE:
 Die Berechtigungen android.permission.READ_CONTACTS und android.permission.GET_ACCOUNTS sind erforderlich, um Daten aus dem Android-Adressbuch abzurufen. Informationen werden nirgendwo kopiert und ändern sich in keiner Weise.
@@ -21,6 +23,7 @@ Die Berechtigung android.permission.RECEIVE_BOOT_COMPLETED (wird beim Start ausg
 Die Berechtigung android.permission.GET_ACCOUNTS ist erforderlich, um Android-Benutzerkontodaten abzurufen. Informationen werden nirgendwo anders kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.READ_EXTERNAL_STORAGE ist erforderlich, um Benachrichtigungen mit einer Melodie aus einem externen Speicher abzuspielen.
 Die Berechtigung android.permission.READ_CALENDAR ist erforderlich, um Kalenderereignisse zu empfangen. Informationen werden nirgendwo anders kopiert und ändern sich in keiner Weise.
+Die Berechtigung android.permission.ACCESS_NOTIFICATION_POLICY ist erforderlich, um Quizbenachrichtigungen unter Android 7 und niedriger eine hohe Priorität einzuräumen.
 
 UKR:
 Дозвіл android.permission.READ_CONTACTS необхідно для отримання даних з адресної книги Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
@@ -29,6 +32,7 @@ UKR:
 Дозвіл android.permission.GET_ACCOUNTS необхідно для отримання даних про користувача облікових записах Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.READ_EXTERNAL_STORAGE необхідно для програвання повідомлень з мелодією з зовнішнього сховища.
 Дозвіл android.permission.READ_CALENDAR необхідно для отримання календарних подій. Інформація більше нікуди не копіюється і ніяк не змінюється.
+Дозвіл android.permission.ACCESS_NOTIFICATION_POLICY потрібен для встановлення високого пріоритету для повідомлень про вікторини на Android 7 і старіших версіях.
 
 CN:
 从Android通讯录获取数据需要android.permission.READ_CONTACTS和android.permission.GET_ACCOUNTS权限。 信息不会被复制到任何地方，并且不会以任何方式改变。
@@ -36,3 +40,4 @@ CN:
 权限android.permission.RECEIVE_BOOT_COMPLETED（在启动时运行）对于调整即将发生的事件的通知时间是必需的。
 播放来自外部存储器的带有旋律的通知时，需要android.permission.READ_EXTERNAL_STORAGE权限。
 接收日历事件需要android.permission.READ_CALENDAR。 信息不会复制到其他任何地方，并且不会以任何方式更改。
+需要权限android.permission.ACCESS_NOTIFICATION_POLICY才能在Android 7及更低版本上为测验通知设置高优先级。

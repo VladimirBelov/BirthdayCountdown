@@ -16,6 +16,7 @@
     <string name="activity_title_events_scope">Фільтр</string>
 
     <string name="shortcut_notify">Повідомлення</string>
+    <string name="shortcut_quiz">Вікторина</string>
 
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
@@ -23,6 +24,7 @@
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Пошук…</string>
+    <string name="menu_quiz">Вікторина</string>
     <string name="menu_filter_events">Фільтр…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_edit_event">Показати подія в календарі</string>
@@ -54,6 +56,8 @@
     <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
+
+    <string name="msg_plural_postfix">и</string>
 
     <string name="msg_after_year_prefix_1">" рік"</string>
     <string name="msg_after_year_prefix_2_3_4">" роки"</string>
@@ -94,6 +98,7 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Вікторина</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ПІБ</string>
@@ -395,6 +400,7 @@
         <item>За два дні</item>
         <item>За три дні</item>
         <item>За тиждень</item>
+        <item>За два тижні до</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Пріоритет повідомлень</string>
@@ -438,10 +444,15 @@
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
     <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>
 
+    <string name="pref_Quiz_title">Вікторина</string>
+    <string name="pref_Quiz_Interface_title">Інтерфейс</string>
+    <string name="pref_Quiz_Interface_description">Який інтерфейс використовувати для запитань</string>
+
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_description">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>
     <string name="pref_Help_title">Допомога</string>
     <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
+    <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
@@ -569,6 +580,25 @@
     <string name="zodiac_year_horse">" Лошадь"</string>
     <string name="zodiac_year_sheep">" Овца"</string>
 
-    <string name="msg_on">: ВКЛ</string>
-    <string name="msg_off">: ВИКЛ</string>
+    <string name="msg_on">ВКЛ</string>
+    <string name="msg_off">ВИКЛ</string>
+
+    <string name="quiz_msg_error_title">"Ошибка"</string>
+    <string name="quiz_msg_error_get_question">"Помилка отримання наступного питання!"</string>
+
+    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Відповідь: %1$s\nПравільний відповідь: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title_male">"В якому місяці народився?"</string>
+    <string name="quiz_month01_title_female">"В якому місяці народилася?"</string>
+
+    <string name="quiz_year01_title_male">"В якому році народився?"</string>
+    <string name="quiz_year01_title_female">"В якому році народилася?"</string>
+
+    <string name="quiz_age01_title_future_male">"Скільки йому виповниться років?"</string>
+    <string name="quiz_age01_title_future_female">"Скільки їй виповниться років?"</string>
+    <string name="quiz_age01_title_past_male">"Скільки йому зараз років?"</string>
+    <string name="quiz_age01_title_past_female">"Скільки їй зараз років?"</string>
+    <string name="quiz_age01_title_dead_male">"Скільки йому було б зараз років?"</string>
+    <string name="quiz_age01_title_dead_female">"Скільки їй було б зараз років?"</string>
 </resources>

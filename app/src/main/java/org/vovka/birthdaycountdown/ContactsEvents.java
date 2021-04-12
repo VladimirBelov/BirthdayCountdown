@@ -32,6 +32,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
@@ -42,7 +43,9 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -79,10 +83,12 @@ import java.util.regex.Pattern;
 
 import static android.text.TextUtils.isEmpty;
 import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_YEAR;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
 import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static org.vovka.birthdaycountdown.Constants.ACTION_DIAL;
@@ -95,6 +101,8 @@ import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_NAME;
 import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_TYPE;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_QUESTION;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_RESULT;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
@@ -117,6 +125,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_NULL;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_START;
+import static org.vovka.birthdaycountdown.Constants.STRING_PERIOD;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CONTACTS;
@@ -135,6 +144,7 @@ import static org.vovka.birthdaycountdown.Constants.Type_Death;
 import static org.vovka.birthdaycountdown.Constants.Type_NameDay;
 import static org.vovka.birthdaycountdown.Constants.Type_Other;
 import static org.vovka.birthdaycountdown.Constants.defaultNotificationID;
+import static org.vovka.birthdaycountdown.Constants.defaultQuizID;
 
 class ContactsEvents {
     private static final ContactsEvents ourInstance = new ContactsEvents();
@@ -151,7 +161,8 @@ class ContactsEvents {
         this.resources = con.getResources();
     }
 
-    @NonNull private Resources getResources() {return resources != null ? resources : (resources = context.getResources());}
+    @NonNull
+    public Resources getResources() {return this.resources != null ? this.resources : (this.resources = context.getResources());}
 
     //Константы
     final Set<String> prefs_EventTypes_Default = new HashSet<String>() {{
@@ -160,7 +171,6 @@ class ContactsEvents {
         add(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_OTHER));
         add(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM));
     }};
-    //final private boolean[] prefs_EventTypes_DefaultB = {true,true,true,true,false};
 
     static final String pref_List_EventInfo_Photo = "6";
     static final String pref_List_EventInfo_JobTitle = "1";
@@ -238,6 +248,7 @@ class ContactsEvents {
     }};
 
     final List<String> eventList = new ArrayList<>(); //Список всех событий
+    List<String> eventListUnsorted = null; //Несортированный список
 
     private String currentLocale = STRING_EMPTY;
     int currentTheme = 0;
@@ -248,7 +259,8 @@ class ContactsEvents {
     private HashSet<String> set_events_ids; //ID всех найденных событий календаря
     private HashMap<String, String> map_contacts_names; //связка имён контактов с ID
     HashMap<String, String> map_calendars = new HashMap<>(); //список всех календарей
-    private HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset; //индекс события до сортировки
+    private HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset; //индекс события до сортировки (или для eventListUnsorted)
+    final Random generator = new Random();
 
     //Настройки
     boolean preferences_debug_on;
@@ -274,7 +286,6 @@ class ContactsEvents {
     int preferences_widgets_color_eventtoday;
     int preferences_widgets_color_eventsoon;
     int preferences_widgets_color_eventfar;
-
 
     Matcher preferences_last_name_comletions_man;
     Matcher preferences_last_name_comletions_female;
@@ -324,11 +335,12 @@ class ContactsEvents {
      * */
     private int preferences_notifications_type;
     private int preferences_notifications_priority;
-    //boolean[] preferences_notifications_event_types_on;
-    private Set<String> preferences_notifications_event_types; // = new HashSet<>();
-    private Set<String> preferences_notifications_quick_actions; // = new HashSet<>();
+    private Set<String> preferences_notifications_event_types;
+    private Set<String> preferences_notifications_quick_actions;
     private int preferences_notifications_alarm_hour;
     String preferences_notifications_ringtone;
+
+    String preferences_quiz_interface;
 
     static class MyTheme {
         int prefNumber; //Номер в shared preferences
@@ -361,6 +373,7 @@ class ContactsEvents {
     Context context;
     private Resources resources;
     private ContentResolver contentResolver;
+    boolean isUIopen = false;
 
     static class ColumnIndexCache implements AutoCloseable {
         //https://android.jlelse.eu/using-a-cache-to-optimize-data-retrieval-from-cursors-56f9eaa1e0d2
@@ -624,10 +637,27 @@ class ContactsEvents {
     private int countYearsDiff(@NonNull Date date1, @NonNull Date date2) {
         try {
 
-            Calendar c1 = removeTime(from(date1));
-            Calendar c2 = removeTime(from(date2));
+            Calendar c1;
+            Calendar c2;
 
-            return c2.get(YEAR) - c1.get(YEAR);
+            if (date2.after(date1)) {
+                c1 = removeTime(from(date1));
+                c2 = removeTime(from(date2));
+            } else {
+                c1 = removeTime(from(date2));
+                c2 = removeTime(from(date1));
+            }
+
+            int subst = 0;
+
+            if (c1.get(MONTH) > c2.get(MONTH)) {
+                subst = 1;
+            } else if (c1.get(MONTH) == c2.get(MONTH)) {
+                if (c1.get(DATE) > c2.get(DATE)) {
+                    subst = 1;
+                }
+            }
+            return Math.max(c2.get(YEAR) - c1.get(YEAR) - subst, 0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -653,15 +683,18 @@ class ContactsEvents {
         try {
 
             StringBuilder result = new StringBuilder();
-
             String count_str = Long.toString(age);
             String count_end = count_str.substring(count_str.length() - 1);
             boolean isEnd234 = count_end.equals(STRING_2) || count_end.equals(STRING_3) || count_end.equals(Constants.STRING_4);
 
             result.append(age);
-            if (age == 1) { //Единственное число
+
+            long ageMinus100 = age;
+            while (ageMinus100 > 100) {ageMinus100 = ageMinus100 - 100;}
+
+            if (ageMinus100 == 1) { //Единственное число
                 result.append(getResources().getString(id_prefix_1));
-            } else if (age > 4 && age < 21) {
+            } else if (ageMinus100 > 4 && ageMinus100 < 21) {
                 result.append(getResources().getString(id_prefix_4_21));
             } else if (count_end.equals(STRING_1)) { //Если заканчивается на 1, но не между 5-20
                 result.append(getResources().getString(id_prefix_1_));
@@ -790,12 +823,21 @@ class ContactsEvents {
             preferences_events_scope = preferences.getInt(context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
             preferences_notification_channel_id = preferences.getInt(context.getString(R.string.pref_Notifications_ChannelID), defaultNotificationID);
 
+            preferences_quiz_interface = preferences.getString(getResources().getString(R.string.pref_Quiz_Interface_key), STRING_EMPTY);
+            if (preferences_quiz_interface != null && preferences_quiz_interface.isEmpty()) {
+                preferences_quiz_interface = getResources().getString(Build.VERSION.SDK_INT < Build.VERSION_CODES.O ? R.string.pref_Quiz_Interface_Dialog : R.string.pref_Quiz_Interface_Notify);
+                preferences
+                        .edit()
+                        .putString(context.getString(R.string.pref_Quiz_Interface_key), preferences_quiz_interface)
+                        .apply();
+            }
+
+            //Определения событий
+
             boolean useInternal;
             String customLabels;
             final String regex_inter = "|"; //"\\Z|";
             //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
-
-            //Определения событий
 
             //День рождения
             useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_default)));
@@ -2156,11 +2198,11 @@ class ContactsEvents {
                     firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                     secondName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
 
-                    final String secondNameWord = (!isEmpty(secondName) ? STRING_SPACE + secondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
+                    final String secondNameWord = (!isEmpty(secondName) ? STRING_SPACE + secondName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY);
                     if (!isEmpty(lastName)) {
-                        result = lastName + (!isEmpty(firstName) ? STRING_SPACE + firstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY) + secondNameWord;
+                        result = lastName + (!isEmpty(firstName) ? STRING_SPACE + firstName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY) + secondNameWord;
                     } else if (!isEmpty(firstName)) {
-                        result = firstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + secondNameWord;
+                        result = firstName.substring(0, 1).toUpperCase() + STRING_PERIOD + secondNameWord;
                     }
 
                     if (!isEmpty(result)) break;
@@ -2328,9 +2370,10 @@ class ContactsEvents {
                         //com.whatsapp
                         //com.android.huawei.phone
 
-                        if (storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
+                        if (
+                                storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
                                 storedDate.startsWith(Constants.STRING_0000) || //Нет года, формат 0000-MM-dd
-                                (storedDate.startsWith("1604-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
+                                (storedDate.startsWith("1604-") && (accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange)) || accountType.equalsIgnoreCase(resources.getString(R.string.account_google)))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
                                 (storedDate.startsWith("1904-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_huawei))) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
                                 (!isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
                         ) {
@@ -2517,11 +2560,10 @@ class ContactsEvents {
                 magicList.clear();
             }
 
+            eventListUnsorted = new ArrayList<>(eventList);
+
             //Сортируем
             Collections.sort(eventList);
-
-            //Очищаем ненужное
-            map_eventsBySubtypeAndPersonID_offset.clear();
 
             statLastComputeDates = System.currentTimeMillis();
             statTimeComputeDates = statLastComputeDates - statCurrentModuleStart;
@@ -2784,8 +2826,7 @@ class ContactsEvents {
                         notificationManager.deleteNotificationChannel(channel_id);
                         if (preferences_debug_on) log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(STRING_EOF);
 
-                        Random r = new Random();
-                        preferences_notification_channel_id = r.nextInt(1000);
+                        preferences_notification_channel_id = generator.nextInt(1000);
                         channel_id = Integer.toString(preferences_notification_channel_id);
 
                         channel = new NotificationChannel(channel_id, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
@@ -2918,7 +2959,7 @@ class ContactsEvents {
                         if (listNotify.size() >= 50) break; //https://stackoverflow.com/questions/33364368/android-system-notification-limit-per-app
 
                         long countDays = countDaysDiff(currentDay, eventDate);
-                        if (countDays > 7) {
+                        if (countDays > 14) {
                             break;
                         } else if (notifications_days.contains(String.valueOf(countDays))) {
                             listNotify.add(event);
@@ -2930,7 +2971,6 @@ class ContactsEvents {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             //notificationManager.cancelAll(); //todo: пока уберу, надо разобраться - нужно ли оно здесь?
-            Random r = new Random();
 
             String[] dataNotify = listNotify.toArray(new String[0]); //Список уведомлений, подходящих по дням
             StringBuilder textBig;
@@ -2963,7 +3003,7 @@ class ContactsEvents {
                             textBig.append(singleEventArray[Position_eventEmoji])
                                     .append(STRING_SPACE)
                                     .append(eventDay).append(STRING_SPACE)
-                                    .append(singleEventArray[Position_personFullName]);
+                                    .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
                             if (!singleEventArray[Position_age_caption].trim().isEmpty())
                                 textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
                         }
@@ -3019,11 +3059,11 @@ class ContactsEvents {
                                     .append(STRING_SPACE)
                                     .append(eventDay)
                                     .append(STRING_SPACE)
-                                    .append(singleEventArray[Position_personFullName]);
+                                    .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
                             if (!singleEventArray[Position_age_caption].trim().isEmpty())
                                 textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
 
-                        int notificationID = defaultNotificationID + r.nextInt(100);
+                        int notificationID = defaultNotificationID + generator.nextInt(100);
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
                                 .setSmallIcon(R.drawable.ic_birthdaycountdown_icon)
@@ -3035,9 +3075,9 @@ class ContactsEvents {
 
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             Uri uri = null;
-                            if (singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) && !singleEventArray[Position_contactID].isEmpty()) {
+                            if (!singleEventArray[Position_contactID].isEmpty()) { //singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
                                 uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                            } else if (singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) && !singleEventArray[Position_eventID].isEmpty()) {
+                            } else if (!singleEventArray[Position_eventID].isEmpty()) { //singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
                                 uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                             }
                             if (uri != null) {
@@ -3058,7 +3098,7 @@ class ContactsEvents {
                                 intentDial.setAction(ACTION_DIAL);
                                 intentDial.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                                 intentDial.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                                PendingIntent pendingDial = PendingIntent.getBroadcast(context, defaultNotificationID + r.nextInt(100), intentDial, 0);
+                                PendingIntent pendingDial = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentDial, 0);
                                 NotificationCompat.Action actionDial = new NotificationCompat.Action(0, context.getString(R.string.button_dial), pendingDial);
                                 builder.addAction(actionDial);
 
@@ -3069,7 +3109,7 @@ class ContactsEvents {
                                 intentSilent.setAction(ACTION_SILENT);
                                 intentSilent.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                                 intentSilent.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                                PendingIntent pendingSilent = PendingIntent.getBroadcast(context, defaultNotificationID + r.nextInt(100), intentSilent, 0);
+                                PendingIntent pendingSilent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSilent, 0);
                                 NotificationCompat.Action actionSilent = new NotificationCompat.Action(0, context.getString(R.string.button_silent), pendingSilent);
                                 builder.addAction(actionSilent);
                             }
@@ -3079,7 +3119,7 @@ class ContactsEvents {
                                 intentHide.setAction(ACTION_HIDE);
                                 intentHide.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                                 intentHide.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                                PendingIntent pendingHide = PendingIntent.getBroadcast(context, defaultNotificationID + r.nextInt(100), intentHide, 0);
+                                PendingIntent pendingHide = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentHide, 0);
                                 NotificationCompat.Action actionHide = new NotificationCompat.Action(0, context.getString(R.string.button_hide), pendingHide);
                                 builder.addAction(actionHide);
                             }
@@ -3089,7 +3129,7 @@ class ContactsEvents {
                                 intentSnooze.setAction(ACTION_SNOOZE);
                                 intentSnooze.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                                 intentSnooze.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, defaultNotificationID + r.nextInt(100), intentSnooze, 0);
+                                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSnooze, 0);
                                 NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
                                 builder.addAction(actionSnooze);
                             }
@@ -3148,12 +3188,11 @@ class ContactsEvents {
 
             if (isEmpty(dataNotify) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
-            Random r = new Random();
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
             alarmIntent.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, defaultNotificationID + r.nextInt(100), alarmIntent, 0); //PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), alarmIntent, 0); //PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             long currentTimeMillis = System.currentTimeMillis();
@@ -3192,8 +3231,6 @@ class ContactsEvents {
 
             //Toast.makeText(context, "TEST: " + dataNotify, Toast.LENGTH_LONG).show();
 
-            Random r = new Random();
-
             String[] singleEventArray = dataNotify.split(Constants.STRING_2HASH);
             Date eventDate = null;
             String eventDay = null;
@@ -3219,7 +3256,7 @@ class ContactsEvents {
                 if (!singleEventArray[Position_age_caption].trim().isEmpty())
                     textBig.append(": ").append(singleEventArray[Position_age_caption]);
 
-                int notificationID = defaultNotificationID + r.nextInt(100);
+                int notificationID = defaultNotificationID + generator.nextInt(100);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                         .setColor(this.getResources().getColor(R.color.dark_green))
                         .setSmallIcon(R.drawable.ic_birthdaycountdown_icon)
@@ -3493,12 +3530,14 @@ class ContactsEvents {
 
             Set<String> someSets = new HashSet<>();
             int i = 0;
+            StringBuilder sb = new StringBuilder().append("Merged events:\n");
             for (String elementID: preferences_mergedIDs.keySet()) {
                 if (preferences_mergedIDs.get(elementID) != null) {
                     someSets.add(elementID + STRING_COLON_SPACE + preferences_mergedIDs.get(elementID));
-                    if (preferences_debug_on) Toast.makeText(context, (++i) + ". " + elementID + STRING_COLON_SPACE + preferences_mergedIDs.get(elementID), Toast.LENGTH_LONG).show();
+                    sb.append(STRING_EOF).append(++i).append(STRING_PERIOD).append(elementID).append(STRING_COLON_SPACE).append(preferences_mergedIDs.get(elementID));
                 }
             }
+            if (preferences_debug_on) Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG).show();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_MergedID_key), someSets);
@@ -3795,7 +3834,12 @@ class ContactsEvents {
 
             } else if (requestInfo == ZodiacInfo.YEAR || requestInfo == ZodiacInfo.YEAR_TITLE) {
 
-                final int eventYear = Integer.parseInt("0" + strBirthday.substring(6));
+                int eventYear;
+                try {
+                    eventYear = Integer.parseInt("0" + strBirthday.substring(6));
+                } catch (Exception e) {
+                    eventYear = 0;
+                }
                 if (eventYear == 0) return STRING_EMPTY;
 
                 switch (eventYear % 12) {
@@ -3823,6 +3867,584 @@ class ContactsEvents {
         } catch (Exception e) {
             e.printStackTrace();
             return STRING_EMPTY;
+        }
+    }
+
+    private static class QuizQuestion {
+        final String type;
+        final String question;
+        final List<String> actions;
+        String event;
+
+        QuizQuestion(String type, String question) {
+
+            this.type = type;
+            this.question = question;
+            this.actions = new ArrayList<>();
+
+        }
+
+        QuizQuestion(String type, String question, @SuppressWarnings("SameParameterValue") String action) {
+
+           this(type, question);
+           this.actions.add(action);
+
+        }
+
+        @NonNull
+        public String toString() {
+
+            return this.type + STRING_COMMA +
+                    this.question + STRING_COMMA +
+                    this.actions.toString();
+
+        }
+    }
+
+    void quizCheckAndGo(String question, String answer) {
+
+        try {
+
+            final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIopen;
+
+            if (isNotifyInterface && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
+
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                NotificationChannel channel = notificationManager.getNotificationChannel(Integer.toString(defaultQuizID));
+
+                if (channel == null) {
+                    if (preferences_debug_on) Toast.makeText(context, "Create Quiz notification channel", Toast.LENGTH_LONG).show();
+                    notificationManager.deleteNotificationChannel(Integer.toString(defaultQuizID));
+                    channel = new NotificationChannel(Integer.toString(defaultQuizID), context.getString(R.string.pref_Notifications_Quiz_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                    channel.setSound(null, null);
+                    channel.setShowBadge(false);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        channel.setAllowBubbles(true);
+                    }
+                    notificationManager.createNotificationChannel(channel);
+                }
+            }
+
+            //Показываем результаты
+            if (question != null & answer != null) {
+                String[] a = answer.split(STRING_2HASH);
+
+                if (a.length < 2) {
+
+                    Toast.makeText(context, question + "\n\n" + answer, Toast.LENGTH_LONG).show();
+
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { //deprecated in API level 30 https://developer.android.com/reference/android/widget/Toast#getView()
+
+                    @SuppressLint("ShowToast") Toast toast = Toast.makeText(context, (isNotifyInterface ? question + "\n\n" : STRING_EMPTY) + a[2], Toast.LENGTH_LONG);
+                    View toastView = toast.getView();
+                    if (toastView != null) {
+                        //https://stackoverflow.com/questions/11288475/custom-toast-on-android-a-simple-example
+                        TextView toastMessage = toastView.findViewById(android.R.id.message);
+                        toastMessage.setTextColor(getResources().getColor(R.color.white));
+                        toastMessage.setTextSize(15);
+                        toastView.setBackgroundColor(getResources().getColor(a[0].equals("1") ? R.color.dark_green : R.color.dark_red));
+                    }
+                    ToastExpander.showFor(toast, 5000);
+
+                } else {
+
+                    //todo: Snackbar
+                    //https://stackoverflow.com/questions/31428437/how-to-add-snackbars-in-a-broadcastreceiver
+                    //Snackbar snack = Snackbar.make(this, question + "\n\n" + a[2], Snackbar.LENGTH_LONG);
+
+                    //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+                    //https://www.w3schools.com/colors/colors_names.asp
+                    Toast.makeText(context, HtmlCompat.fromHtml((isNotifyInterface ? "<b>" + question.replace("\n", "</b><br>") + "<br><br>" : STRING_EMPTY) + "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>" + a[2].replace("\n", "<br>") + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            //Показываем следующий вопрос
+            final int maxQuizGets = 10;
+            int tryQuiz = 1;
+            QuizQuestion quest = null;
+
+            while (quest == null && tryQuiz <= maxQuizGets) {
+                quest = quizGetQuestion();
+                tryQuiz++;
+            }
+
+            if (quest == null) {
+                Toast.makeText(context, HtmlCompat.fromHtml("<font color='#dd0000'>" + getResources().getString(R.string.quiz_msg_error_get_question) + "</font>", 0), Toast.LENGTH_LONG).show();
+                return;
+            }
+            //if (preferences_debug_on) Toast.makeText(context, quest.toString(), Toast.LENGTH_LONG).show();
+
+            if (isNotifyInterface) {
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Integer.toString(defaultQuizID))
+                        .setColor(getResources().getColor(R.color.dark_green))
+                        .setSmallIcon(R.drawable.quiz_icon)
+                        .setContentTitle(quest.type)
+                        .setContentText(quest.question)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question))
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setWhen(0)
+                        .setAutoCancel(true);
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { //
+                    builder.setSound(Uri.parse("content://media/internal/audio/media/29"));
+                }
+
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                builder.setContentIntent(pendingIntent);
+
+                if (quest.event != null && !quest.event.isEmpty()) {
+                    builder.setLargeIcon(getContactPhoto(quest.event, true, false));
+
+                    String[] eventInfo = quest.event.split(Constants.STRING_2HASH);
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    Uri uri = null;
+                    if (!eventInfo[Position_contactID].isEmpty()) { //singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, eventInfo[Position_contactID]);
+                    } else if (!eventInfo[Position_eventID].isEmpty()) { //singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
+                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventInfo[Position_eventID]);
+                    }
+                    if (uri != null) {
+                        intent.setData(uri);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                        builder.setContentIntent(pendingIntent);
+                    }
+                }
+
+                PendingIntent pendingQuiz;
+                NotificationCompat.Action actionQuiz;
+                Intent intentQuiz;
+
+                for (String action : quest.actions) {
+                    String[] a = action.split(STRING_2HASH);
+
+                    if (a.length > 2 && !a[2].equals(STRING_MINUS)) {
+                        intentQuiz = new Intent(context, QuizReceiver.class);
+                        intentQuiz.setAction(a[2]);
+                        intentQuiz.putExtra(EXTRA_QUIZ_QUESTION, quest.type + "\n" + quest.question);
+                        intentQuiz.putExtra(EXTRA_QUIZ_RESULT, action);
+                        pendingQuiz = PendingIntent.getBroadcast(context, defaultQuizID, intentQuiz, 0);
+                        actionQuiz = new NotificationCompat.Action(0, a[1], pendingQuiz);
+                        builder.addAction(actionQuiz);
+                    }
+                }
+
+                notificationManager.notify(defaultQuizID, builder.build());
+
+            } else {
+
+                AlertDialog.Builder builder;
+                AlertDialog alertToShow;
+                QuizQuestion finalQuest = quest;
+
+                builder = new AlertDialog.Builder(new ContextThemeWrapper(context, preferences_theme.themeDialog));
+                builder.setTitle(quest.type);
+                builder.setMessage(STRING_EOF + quest.question);
+                if (quest.event != null && !quest.event.isEmpty()) {
+                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, false)));
+                }
+
+                for (int i = 0; i < quest.actions.size(); i++) {
+                    String action = quest.actions.get(i);
+                    String[] a = action.split(STRING_2HASH);
+
+                    if (a.length > 2 && !a[2].equals(STRING_MINUS)) {
+                        switch (i) {
+                            case 0:
+                                builder.setNeutralButton(a[1], (dialog, which) -> {
+                                    dialog.dismiss();
+                                    quizCheckAndGo(finalQuest.type + "\n" + finalQuest.question, action);
+                                });
+                                break;
+                            case 1:
+                                builder.setNegativeButton(a[1], (dialog, which) -> {
+                                    dialog.dismiss();
+                                    quizCheckAndGo(finalQuest.type + "\n" + finalQuest.question, action);
+                                });
+                                break;
+                            case 2:
+                                builder.setPositiveButton(a[1], (dialog, which) -> {
+                                    dialog.dismiss();
+                                    quizCheckAndGo(finalQuest.type + "\n" + finalQuest.question, action);
+                                });
+                                break;
+                        }
+                    }
+                }
+
+                alertToShow = builder.create();
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
+
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    QuizQuestion quizGetQuestion() {
+
+        try {
+
+            int seed = generator.nextInt(3);
+            if (seed == 0) {
+
+                return quizGetQuestionMonth01();
+
+            } else if (seed == 1) {
+
+                return quizGetQuestionYear01();
+
+            } else if (seed == 2) {
+
+                return quizGetQuestionAge01();
+
+            } else {
+
+                return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question), Constants.quiz_error_button_OK);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question), Constants.quiz_error_button_OK);
+        }
+    }
+
+    /** Вопрос "В каком месяце родился?" */
+    QuizQuestion quizGetQuestionMonth01() {
+
+        QuizQuestion result;
+
+        try {
+
+            if (set_events_birthdays.size() == 0) return null;
+
+            //Получаем случайный день рождения
+            int tryEvent = 0;
+            boolean isBirthday = false;
+            String event = STRING_EMPTY;
+            String[] eventInfo = null;
+            Integer BMonth = -1;
+            String BMonthLong = STRING_EMPTY;
+            Locale locale_en = new Locale(Constants.LANG_EN);
+            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
+            SimpleDateFormat sdfMonthLong = new SimpleDateFormat( "LLLL", Locale.forLanguageTag(currentLocale));
+            Date BDay;
+
+            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+                tryEvent++;
+                int randomInt = generator.nextInt(eventListUnsorted.size());
+                event = eventListUnsorted.get(randomInt);
+                eventInfo = event.split(Constants.STRING_2HASH);
+                final String eventKey = getEventKey(eventInfo);
+                if (
+                        eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
+                                (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
+                ) {
+                    try {
+                        BDay = sdfYear.parse(eventInfo[Position_eventDate]);
+                        if (BDay != null) {
+                            Calendar cal = from(BDay);
+                            BMonth = cal.get(Calendar.MONTH);
+                            BMonthLong = sdfMonthLong.format(cal.getTime()).toUpperCase();
+                            isBirthday = true;
+                        }
+                    } catch (Exception e) { /**/ }
+                }
+            }
+            if (!isBirthday) return null;
+
+            //Формируем информацию о персоне
+            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
+            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            if (isOrg || isTitle) {
+                personInfo.append(STRING_PARENTHESIS_OPEN);
+                if (isOrg) {
+                    personInfo.append(eventInfo[Position_organization].trim());
+                    if (isTitle) personInfo.append(STRING_COMMA_SPACE).append(eventInfo[Position_title].trim());
+                } else {
+                    personInfo.append(eventInfo[Position_title].trim());
+                }
+                personInfo.append(STRING_PARENTHESIS_CLOSE);
+            }
+
+            Person person = new Person(context, event);
+            result = new QuizQuestion(getResources().getString(person.getGender() == 2 ? R.string.quiz_month01_title_female : R.string.quiz_month01_title_male), personInfo.toString());
+            result.event = event;
+
+            //Заполняем варианты ответов
+            boolean isUnique = false;
+            boolean hasBMonth = false;
+            Integer[] rollMonths = new Integer[3];
+
+            while (!(hasBMonth && isUnique)) {
+                rollMonths[0] = generator.nextInt(12);
+                rollMonths[1] = generator.nextInt(12);
+                rollMonths[2] = generator.nextInt(12);
+
+                hasBMonth = rollMonths[0].equals(BMonth) || rollMonths[1].equals(BMonth) || rollMonths[2].equals(BMonth);
+                isUnique = !rollMonths[0].equals(rollMonths[1]) && !rollMonths[0].equals(rollMonths[2]) && !rollMonths[1].equals(rollMonths[2]);
+            }
+
+            Calendar cal = Calendar.getInstance();
+            for (Integer m: rollMonths) {
+                boolean isBMonth = m.equals(BMonth);
+                StringBuilder sb = new StringBuilder(isBMonth ? STRING_1 : STRING_0).append(STRING_2HASH);
+                cal.set(Calendar.DATE, 1);
+                cal.set(Calendar.MONTH, m);
+                String monthName = sdfMonthLong.format(cal.getTime()).toUpperCase();
+                sb.append(monthName).append(STRING_2HASH);
+                if (isBMonth) {
+                    sb.append(getResources().getString(R.string.quiz_answer_true, BMonthLong, eventInfo[Position_eventDateText]));
+                } else {
+                    sb.append(getResources().getString(R.string.quiz_answer_false, monthName, BMonthLong, eventInfo[Position_eventDateText]));
+                }
+                result.actions.add(sb.toString());
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
+        }
+    }
+
+    /** Вопрос "В каком году родился?" */
+    QuizQuestion quizGetQuestionYear01() {
+
+        QuizQuestion result;
+
+        try {
+
+            if (set_events_birthdays.size() == 0) return null;
+
+            //Получаем случайный день рождения
+            int tryEvent = 0;
+            boolean isBirthday = false;
+            String event = STRING_EMPTY;
+            String[] eventInfo = null;
+            int BYear = -1;
+            String BYearLong = STRING_EMPTY;
+            Locale locale_en = new Locale(Constants.LANG_EN);
+            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
+            Date BDay;
+
+            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+                tryEvent++;
+                int randomInt = generator.nextInt(eventListUnsorted.size());
+                event = eventListUnsorted.get(randomInt);
+                eventInfo = event.split(Constants.STRING_2HASH);
+                final String eventKey = getEventKey(eventInfo);
+                if (
+                        eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
+                                (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
+                ) {
+                    try {
+                        BDay = sdfYear.parse(eventInfo[Position_eventDateText]);
+                        if (BDay != null) {
+                            Calendar cal = from(BDay);
+                            BYear = cal.get(Calendar.YEAR);
+                            BYearLong = Integer.toString(BYear);
+                            if (BYear > 0 && BYear != 1604 && BYear != 1904) isBirthday = true; //наверное, это dead code
+                        }
+                    } catch (Exception e) { /**/ }
+                }
+            }
+            if (!isBirthday) return null;
+
+            //Формируем информацию о персоне
+            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
+            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            if (isOrg || isTitle) {
+                personInfo.append(STRING_PARENTHESIS_OPEN);
+                if (isOrg) {
+                    personInfo.append(eventInfo[Position_organization].trim());
+                    if (isTitle) personInfo.append(STRING_COMMA_SPACE).append(eventInfo[Position_title].trim());
+                } else {
+                    personInfo.append(eventInfo[Position_title].trim());
+                }
+                personInfo.append(STRING_PARENTHESIS_CLOSE);
+            }
+
+            Person person = new Person(context, event);
+            result = new QuizQuestion(getResources().getString(person.getGender() == 2 ? R.string.quiz_year01_title_female : R.string.quiz_year01_title_male), personInfo.toString());
+            result.event = event;
+
+            //Заполняем варианты ответов
+            ArrayList<Integer> rollYears = new ArrayList<>(3);
+            rollYears.add(BYear);
+            rollYears.add(BYear);
+            rollYears.add(BYear);
+
+            boolean isUnique = false;
+            while (!isUnique) {
+                rollYears.set(1, BYear - 10 + generator.nextInt(21));
+                rollYears.set(2, BYear - 10 + generator.nextInt(21));
+                isUnique = !rollYears.get(0).equals(rollYears.get(1)) && !rollYears.get(0).equals(rollYears.get(2)) && !rollYears.get(1).equals(rollYears.get(2));
+            }
+            Collections.shuffle(rollYears, generator);
+
+            for (Integer year: rollYears) {
+                boolean isBYear = year.equals(BYear);
+                StringBuilder sb = new StringBuilder(isBYear ? STRING_1 : STRING_0).append(STRING_2HASH).append(year).append(STRING_2HASH);
+                if (isBYear) {
+                    sb.append(getResources().getString(R.string.quiz_answer_true, BYearLong, eventInfo[Position_eventDateText]));
+                } else {
+                    sb.append(getResources().getString(R.string.quiz_answer_false, Integer.toString(year).toUpperCase(), BYearLong, eventInfo[Position_eventDateText]));
+                }
+                //Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG).show();
+                result.actions.add(sb.toString());
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
+        }
+    }
+
+    /** Вопрос "Сколько лет исполнится?" */
+    QuizQuestion quizGetQuestionAge01() {
+
+        QuizQuestion result;
+
+        try {
+
+            if (set_events_birthdays.size() == 0) return null;
+
+            //Получаем случайный день рождения
+            int tryEvent = 0;
+            boolean isBirthday = false;
+            String event = STRING_EMPTY;
+            String[] eventInfo = null;
+            int BYear;
+            Locale locale_en = new Locale(Constants.LANG_EN);
+            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
+            Date BDay = null;
+            Date eventDay = null;
+
+            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+                tryEvent++;
+                int randomInt = generator.nextInt(eventListUnsorted.size());
+                event = eventListUnsorted.get(randomInt);
+                eventInfo = event.split(Constants.STRING_2HASH);
+                final String eventKey = getEventKey(eventInfo);
+                if (
+                        eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
+                                (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
+                ) {
+                    try {
+                        BDay = sdfYear.parse(eventInfo[Position_eventDateText]);
+                        eventDay = sdfYear.parse(eventInfo[Position_eventDate]);
+                        if (BDay != null) {
+                            Calendar cal = from(BDay);
+                            BYear = cal.get(Calendar.YEAR);
+                            if (BYear > 0 && BYear != 1604 && BYear != 1904) isBirthday = true; //наверное, это dead code
+                        }
+                    } catch (Exception e) { /**/ }
+                }
+            }
+            if (!isBirthday || eventDay == null) return null;
+
+            //Формируем информацию о персоне
+            Person person = new Person(context, event);
+            Date currentDay = removeTime(Calendar.getInstance()).getTime();
+            boolean isDead = set_events_deaths.contains(eventInfo[Position_contactID]); //Но есть годовщина смерти
+            boolean isPassedBDay = (from(eventDay).get(YEAR) != Calendar.getInstance().get(YEAR)) || (eventDay.equals(currentDay));
+            //ToastExpander.showFor(Toast.makeText(context, from(eventDay).get(YEAR) + "!=" + Calendar.getInstance().get(YEAR) + "=" + isPassedBDay, Toast.LENGTH_LONG), 7000);
+
+            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
+            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            if (isOrg || isTitle) {
+                personInfo.append(STRING_PARENTHESIS_OPEN);
+                if (isOrg) {
+                    personInfo.append(eventInfo[Position_organization].trim());
+                    if (isTitle) personInfo.append(STRING_COMMA_SPACE).append(eventInfo[Position_title].trim());
+                } else {
+                    personInfo.append(eventInfo[Position_title].trim());
+                }
+                personInfo.append(STRING_PARENTHESIS_CLOSE);
+            }
+
+            String quizTitle;
+            int Age;
+
+            if (isDead) {
+                quizTitle = getResources().getString(person.getGender() == 2 ? R.string.quiz_age01_title_dead_female : R.string.quiz_age01_title_dead_male);
+                Age = countYearsDiff(BDay, currentDay);
+            } else if (isPassedBDay) {
+                quizTitle = getResources().getString(person.getGender() == 2 ? R.string.quiz_age01_title_past_female : R.string.quiz_age01_title_past_male);
+                Age = countYearsDiff(BDay, currentDay);
+            } else {
+                quizTitle = getResources().getString(person.getGender() == 2 ? R.string.quiz_age01_title_future_female : R.string.quiz_age01_title_future_male);
+                Age = countYearsDiff(BDay, currentDay) + 1;
+            }
+
+            result = new QuizQuestion(quizTitle, personInfo.toString());
+            result.event = event;
+
+            //Заполняем варианты ответов
+            ArrayList<Integer> rollAges = new ArrayList<>(3);
+            rollAges.add(Age);
+            rollAges.add(Age);
+            rollAges.add(Age);
+
+            boolean isUnique = false;
+            while (!isUnique) {
+                rollAges.set(1, Age - Math.min(10, Age) + generator.nextInt(Math.min(10, Age) * 2 + 1));
+                rollAges.set(2, Age - Math.min(10, Age) + generator.nextInt(Math.min(10, Age) * 2 + 1));
+                isUnique = !rollAges.get(0).equals(rollAges.get(1)) && !rollAges.get(0).equals(rollAges.get(2)) && !rollAges.get(1).equals(rollAges.get(2));
+            }
+            Collections.shuffle(rollAges, generator);
+
+            String ageLong = getAgeString(
+                    Age,
+                    R.string.msg_after_year_prefix_1,
+                    R.string.msg_after_year_prefix_1_,
+                    R.string.msg_after_year_prefix_2_3_4,
+                    R.string.msg_after_year_prefix_4_21
+            ).toUpperCase();
+
+            for (Integer age: rollAges) {
+                boolean isAge = age.equals(Age);
+                String ageRollLong = getAgeString(
+                        age,
+                        R.string.msg_after_year_prefix_1,
+                        R.string.msg_after_year_prefix_1_,
+                        R.string.msg_after_year_prefix_2_3_4,
+                        R.string.msg_after_year_prefix_4_21
+                ).toUpperCase();
+                StringBuilder sb = new StringBuilder(isAge ? STRING_1 : STRING_0).append(STRING_2HASH).append(ageRollLong).append(STRING_2HASH);
+                if (isAge) {
+                    sb.append(getResources().getString(R.string.quiz_answer_true, ageLong, eventInfo[Position_eventDateText]));
+                } else {
+                    sb.append(getResources().getString(R.string.quiz_answer_false, ageRollLong, ageLong, eventInfo[Position_eventDateText]));
+                }
+                //Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG).show();
+                result.actions.add(sb.toString());
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
         }
     }
 

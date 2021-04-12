@@ -10,10 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
@@ -26,7 +23,6 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -45,22 +41,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.getPreferences();
             eventsData.setLocale(true);
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 

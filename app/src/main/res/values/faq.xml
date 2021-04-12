@@ -24,7 +24,7 @@
 
         <item>#Widget settings</item>
         <item>To edit the settings of the widget, click on event caption of the rightmost event. Clicking anywhere else in this event will open events list. If no suitable events were found for the widget and the notification \"Events not found\" was displayed, then clicking on this message will also lead to the settings.</item>
-        <item><![CDATA[<img src="pref_widget.png"/ width=100%><br>]]></item>
+        <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
 
         <item>#Events don\'t fit or photos are too narrow</item>
         <item>Go to the widget settings and try to modify \"Custom events number\" setting</item>

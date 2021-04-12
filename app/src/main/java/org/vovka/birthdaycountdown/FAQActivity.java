@@ -10,12 +10,10 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -24,8 +22,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-
-import java.util.Locale;
 
 import static org.vovka.birthdaycountdown.Constants.HTML_BR;
 import static org.vovka.birthdaycountdown.Constants.HTML_H1_END;
@@ -47,22 +43,6 @@ public class FAQActivity extends AppCompatActivity {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             this.setTheme(eventsData.preferences_theme.themeMain);
             eventsData.setLocale(true);
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources resources = getBaseContext().getResources();
-            Configuration applicationConf = resources.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            resources.updateConfiguration(applicationConf, resources.getDisplayMetrics());
 
             setContentView(R.layout.activity_faq);
 

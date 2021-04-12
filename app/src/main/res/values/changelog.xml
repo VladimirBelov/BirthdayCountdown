@@ -11,6 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.6.0</item>
+        <item>Quiz about the events of your contacts. Launch it from app menu or quick action (on app icon). If the question seems tricky, use 🔍 to find answer</item>
+        <item>\"Two weeks before\" was added to \"Notification period\"</item>
+
         <item>#1.5.4</item>
         <item>Fixed errors in displaying data on widgets, added the ability to display contact organization, new color selection dialogs</item>
         <item>Improved algorithm for automatic search for contacts for a calendar event</item>

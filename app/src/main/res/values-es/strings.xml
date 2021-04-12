@@ -16,6 +16,7 @@
     <string name="activity_title_events_scope">Filtrar</string>
 
     <string name="shortcut_notify">Notificaciones</string>
+    <string name="shortcut_quiz">Encuesta</string>
 
     <string name="menu_add_event">Añadir evento</string>
     <string name="menu_add_event_to_contact">Agregar evento al contacto…</string>
@@ -23,6 +24,7 @@
     <string name="menu_settings">Configuraciones</string>
     <string name="menu_refresh">Actualizar</string>
     <string name="menu_search">Buscar…</string>
+    <string name="menu_quiz">Encuesta</string>
     <string name="menu_filter_events">Filtrar…</string>
     <string name="menu_context_edit_contact">Editar contacto</string>
     <string name="menu_context_edit_event">Mostrar evento en calendario</string>
@@ -54,6 +56,8 @@
     <string name="msg_stats_silenced_prefix">"eventos sin notificación: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
+
+    <string name="msg_plural_postfix">es</string>
 
     <string name="msg_after_year_prefix_1">" año"</string>
     <string name="msg_after_year_prefix_2_3_4">" años"</string>
@@ -94,6 +98,7 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Encuesta</string>
 
     <string name="hint_ContactIcon">Foto</string>
     <string name="hint_Name">Nombre completo</string>
@@ -417,6 +422,7 @@
         <item>Dos días antes</item>
         <item>Tres días antes</item>
         <item>Una semana antes</item>
+        <item>Dos semanas antes</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
@@ -451,10 +457,15 @@
     <string name="pref_Notifications_NotifyTest_title">Notificación de prueba</string>
     <string name="pref_Notifications_NotifyTest_description">Haga clic para mostrar la notificación de prueba de hoy</string>
 
+    <string name="pref_Quiz_title">Encuesta</string>
+    <string name="pref_Quiz_Interface_title">Interfaz</string>
+    <string name="pref_Quiz_Interface_description">Qué interfaz usar para las preguntas</string>
+
     <string name="pref_FAQ_title">Preguntas y Respuestas</string>
     <string name="pref_FAQ_description">Si algo no funciona correctamente o no sabe cómo configurar una función particular del programa, está en esta sección</string>
     <string name="pref_Help_title">Ayuda</string>
     <string name="pref_Debug_On_title">Mensajes de depuración</string>
+    <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_description">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Historial de versiones:</h1>]]></string>
@@ -578,6 +589,25 @@
     <string name="zodiac_year_horse">" Horse"</string>
     <string name="zodiac_year_sheep">" Sheep"</string>
 
-    <string name="msg_on">: EN</string>
-    <string name="msg_off">: APAGADO</string>
+    <string name="msg_on">EN</string>
+    <string name="msg_off">APAGADO</string>
+
+    <string name="quiz_msg_error_title">"Error"</string>
+    <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>
+
+    <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Respuesta: %1$s\nRespuesta correcta: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title_male">"¿En qué mes nació?"</string>
+    <string name="quiz_month01_title_female">"¿En qué mes nació?"</string>
+
+    <string name="quiz_year01_title_male">"¿En qué año fue que nació?"</string>
+    <string name="quiz_year01_title_female">"¿En qué año fue que nació?"</string>
+
+    <string name="quiz_age01_title_future_male">"¿Qué edad tendrá?"</string>
+    <string name="quiz_age01_title_future_female">"¿Qué edad tendrá?"</string>
+    <string name="quiz_age01_title_past_male">"¿Cuantos años tiene?"</string>
+    <string name="quiz_age01_title_past_female">"¿Cuantos años tiene?"</string>
+    <string name="quiz_age01_title_dead_male">"¿Qué edad tendría ahora?"</string>
+    <string name="quiz_age01_title_dead_female">"¿Qué edad tendría ahora?"</string>
 </resources>

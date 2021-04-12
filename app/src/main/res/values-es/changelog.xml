@@ -11,6 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.6.0</item>
+        <item>Cuestionario sobre los eventos de sus contactos. Ejecútelo desde el menú de la aplicación o desde la acción rápida (en el icono de la aplicación). Si la pregunta parece complicada, use 🔍 para encontrar la respuesta</item>
+        <item>En \"Intervalo de notificación\" se agregó \"Dos semanas antes\"</item>
+
         <item>#1.5.4</item>
         <item>Se corrigieron errores al mostrar datos en widgets, se agregó la capacidad de mostrar la organización de contactos, nuevos cuadros de diálogo de selección de color</item>
         <item>Algoritmo mejorado para la búsqueda automática de contactos para un evento del calendario</item>

@@ -11,6 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.6.0</item>
+        <item>Quiz über die Ereignisse Ihrer Kontakte. Starten Sie es über das App-Menü oder eine Schnellaktion (auf dem App-Symbol). Wenn die Frage schwierig erscheint, verwenden Sie 🔍, um eine Antwort zu finden</item>
+        <item>\"Zwei Woche vorher\" wurde zu \"Benachrichtigungsintervall\" hinzugefügt</item>
+
         <item>#1.5.4</item>
         <item>Fehler beim Anzeigen von Daten in Widgets behoben, die Möglichkeit zur Anzeige der Kontaktorganisation hinzugefügt, neue Farbauswahldialoge</item>
         <item>Verbesserter Algorithmus für die automatische Suche nach Kontakten für ein Kalenderereignis</item>

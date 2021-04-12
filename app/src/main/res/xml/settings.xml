@@ -605,6 +605,22 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="@string/pref_Quiz_key"
+        android:title="@string/pref_Quiz_title"
+        android:layout="@layout/settings_category">
+
+        <ListPreference
+            android:key="@string/pref_Quiz_Interface_key"
+            android:entries="@array/pref_Quiz_Interface_entries"
+            android:entryValues="@array/pref_Quiz_Interface_values"
+            android:title="@string/pref_Quiz_Interface_title"
+            android:summary="@string/pref_Quiz_Interface_description"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_Help_title"
         android:layout="@layout/settings_category">
 

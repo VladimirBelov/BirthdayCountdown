@@ -12,12 +12,10 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -32,7 +30,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -44,8 +41,13 @@ import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
+//todo: подсветка нововведений в интерфейсе
+// https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
+// https://github.com/apuder/Highlight
+
 public class AboutActivity extends AppCompatActivity {
 
+    ContactsEvents eventsData;
     int counterClicks = 0;
 
     @SuppressLint("PrivateResource")
@@ -55,25 +57,10 @@ public class AboutActivity extends AppCompatActivity {
 
             super.onCreate(savedInstanceState);
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData = ContactsEvents.getInstance();
             this.setTheme(eventsData.preferences_theme.themeMain);
+            eventsData.getPreferences();
             eventsData.setLocale(true);
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources resources = getBaseContext().getResources();
-            Configuration applicationConf = resources.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            resources.updateConfiguration(applicationConf, resources.getDisplayMetrics());
 
             setContentView(R.layout.activity_changelog);
 
@@ -93,7 +80,7 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
             }
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale);
+            SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
             //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
@@ -118,7 +105,7 @@ public class AboutActivity extends AppCompatActivity {
             //   webView.setVisibility(View.GONE);
 
             StringBuilder sb = new StringBuilder();
-            //todo: на Android 9 и 10 при первом показе грузит дефолтный язык, но не всегда
+            //todo: на Android 9+ при первом показе грузит дефолтный язык, но не всегда
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
@@ -158,7 +145,7 @@ public class AboutActivity extends AppCompatActivity {
             //todo: когда количество строк превысит 700 - https://stackoverflow.com/questions/3522181/should-i-be-using-something-other-than-getresource-getstringarray-to-populat
             String[] arrChangeLog;
             try {
-                arrChangeLog = resources.getStringArray(R.array.changelog);
+                arrChangeLog = eventsData.getResources().getStringArray(R.array.changelog);
             } catch (Resources.NotFoundException e) {
                 arrChangeLog = new String[]{};
             }
@@ -222,10 +209,19 @@ public class AboutActivity extends AppCompatActivity {
         try {
 
             counterClicks++;
-            if (counterClicks > 4) {
+            eventsData = ContactsEvents.getInstance();
+
+            if (counterClicks == 3 || counterClicks == 4) {
+
+                Toast.makeText(this, getString(R.string.pref_Debug_On_hint,
+                        5 - counterClicks,
+                        (5 - counterClicks) > 1 ? getString(R.string.msg_plural_postfix) : STRING_EMPTY,
+                        getString(!eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)
+                ), Toast.LENGTH_SHORT).show();
+
+            } else if (counterClicks > 4) {
 
                 counterClicks = 0;
-                ContactsEvents eventsData = ContactsEvents.getInstance();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 if (eventsData != null && preferences != null) {
                     eventsData.preferences_debug_on = !eventsData.preferences_debug_on;
@@ -233,7 +229,7 @@ public class AboutActivity extends AppCompatActivity {
                             .edit()
                             .putBoolean(getString(R.string.pref_Debug_On_key), eventsData.preferences_debug_on)
                             .apply();
-                    Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_LONG).show();
                 }
             }
 

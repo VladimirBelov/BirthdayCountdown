@@ -24,7 +24,7 @@
 
                 <item>#Widget-Einstellungen</item>
                 <item>Um die Einstellungen des Widgets zu bearbeiten, klicken Sie unten auf die Beschriftung des rechtsstehenden Ereignisses. Klicken Sie dagegen auf eine beliebige Stelle in diesem (rechtsstehenden) Ereignis, wird die Liste der Ereignisse geöffnet. Wenn für das Widget keine passenden Ereignisse gefunden wurden und die Meldung \"Ereignisse nicht gefunden\" angezeigt wird, dann werden Sie durch Anklicken dieser Nachricht auch zu den Einstellungen geführt.</item>
-                <item><![CDATA[<img src="pref_widget.png"/ width=100%><br>]]></item>
+                <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
 
                 <item>#Ereignisse passen nicht oder Fotos sind zu schmal</item>
                 <item>Gehen Sie zu den Widget-Einstellungen und versuchen Sie, die Einstellung \"Ereignisse zählen\" zu ändern</item>

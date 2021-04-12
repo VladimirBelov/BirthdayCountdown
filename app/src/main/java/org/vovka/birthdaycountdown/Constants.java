@@ -104,15 +104,19 @@ final class Constants {
     final static int RESULT_PICK_CONTACT = 200;
 
     static final int defaultNotificationID = 1000;
+    static final int defaultQuizID = 2000;
     static final String ACTION_SNOOZE = "ACTION_SNOOZE";
     static final String ACTION_NOTIFY = "ACTION_NOTIFY";
     static final String ACTION_LAUNCH = "LAUNCH_ACTIVITY";
     static final String ACTION_HIDE = "ACTION_HIDE";
     static final String ACTION_SILENT = "ACTION_SILENT";
     static final String ACTION_DIAL = "ACTION_DIAL";
+
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
     static final String EXTRA_FILTER = "filterText";
+    static final String EXTRA_QUIZ_QUESTION = "quizQuestion";
+    static final String EXTRA_QUIZ_RESULT = "quizResult";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -147,8 +151,9 @@ final class Constants {
     static final int MENU_MAIN_SEARCH = 0;
     static final int MENU_MAIN_ADD_EVENT = 1;
     static final int MENU_MAIN_REFRESH = 2;
-    static final int MENU_MAIN_SETTINGS = 3;
-    static final int MENU_MAIN_FILTER = 4;
+    static final int MENU_MAIN_QUIZ = 3;
+    static final int MENU_MAIN_SETTINGS = 4;
+    static final int MENU_MAIN_FILTER = 5;
 
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
@@ -222,6 +227,8 @@ final class Constants {
     static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
     static final String CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR = "ContactsEvents->showAnniversaryList error:\n";
     static final String CONTACTS_EVENTS_SET_HTML_COLOR_ERROR = "ContactsEvents->setHTMLColor error:\n";
+    static final String CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR = "ContactsEvents->quizCheckAndGo error:\n";
+    static final String CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR = "ContactsEvents->quizGetQuestion error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
 
@@ -249,8 +256,6 @@ final class Constants {
     static final String MY_ADAPTER_GET_VIEW_ERROR = "MyAdapter->getView error:\n";
 
     static final String PERSON_CONSTRUCTOR_ERROR = "Person->Constructor error:\n";
-    //static final String PERSON_GET_FULL_NAME_ALT_ERROR = "Person->getFullNameAlt error:\n";
-    //static final String PERSON_GET_FULL_NAME_ERROR = "Person->getFullName error: ";
     static final String PERSON_GET_FULL_NAME_SHORT_ERROR = "Person->getFullNameShort error: ";
     static final String PERSON_GET_GENDER_ERROR = "Person->getGender error:\n";
 
@@ -269,6 +274,9 @@ final class Constants {
 
     static final String NOTIFY_ACTIVITY_ON_CREATE_ERROR = "NotifyActivity->onCreate error:\n";
 
+    static final String QUIZ_ACTIVITY_ON_CREATE_ERROR = "QuizActivity->onCreate error:\n";
+    static final String QUIZ_RECEIVER_ON_RECEIVE_ERROR = "QuizReceiver->onReceive error:\n";
+
     static final String WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget2x2->onAppWidgetOptionsChanged error:\n";
     static final String WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR = "Widget2x2->updateAppWidget error:\n";
     static final String WIDGET_4_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget4x1->onAppWidgetOptionsChanged error:\n";
@@ -282,4 +290,6 @@ final class Constants {
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
     static final String REGEX_PLUS = "\\+";
+
+    static final String quiz_error_button_OK = "-##OK##";
 }
