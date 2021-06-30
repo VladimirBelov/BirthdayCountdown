@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 30.06.2021, 12:42
+  ~  * Copyright (c) 2018 - 2021. All rights reserved.
+  ~  * Last modified 24.06.2021, 23:24
+  ~  */
+  -->
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/eventCaption"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:textColor="@color/white"
+    android:textStyle="normal" />
+<!--    android:background="@drawable/widget_item_background"-->
