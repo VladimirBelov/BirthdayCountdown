@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -62,6 +62,7 @@ public class FAQActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
             }
 
+            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
             WebView webView = findViewById(R.id.webView);
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);

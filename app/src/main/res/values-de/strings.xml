@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -75,7 +75,7 @@
     <string name="msg_after_day_prefix_4_21">" Tage"</string>
 
     <string name="msg_age_now">"Alter: "</string>
-    <string name="msg_age_was">"Todesalter: "</string>
+    <string name="msg_age_was">"Alter bei Tod: "</string>
     <string name="msg_age_could_be">"Könnte jetzt sein: "</string>
     <string name="msg_label_search">Geben Sie einen Teil des Namens, des Kontakttyps, des Arbeitsorts, der Position und des Datums ein (mehrere Werte können durch Kommas getrennt eingegeben werden, unterstützt von regexp):</string>
     <string name="msg_hint_search">Suchanfrage</string>
@@ -123,6 +123,8 @@
     <string name="button_silent">Deaktivieren</string>
     <string name="button_dial">Telefonieren</string>
     <string name="button_question">Neue Frage mailen</string>
+    <string name="button_close">Schließen</string>
+    <string name="button_prefs">Einstellungen</string>
 
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -142,8 +144,9 @@
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_name_1_7">Für 1–7 Ereignisse</string>
-    <string name="appwidget_name_1">Für 1 Ereignisse</string>
+    <string name="appwidget_name_1">Für 1 Ereignis</string>
     <string name="appwidget_name_5">Für 5 Ereignisse</string>
+    <string name="appwidget_name_List">Ereignisliste</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Name</string>
     <string name="widget_Date">Datum</string>
@@ -180,7 +183,7 @@
 
     <string name="pref_CustomEvents_title">Ereigniseinrichtung</string>
     <string name="pref_CustomEvents_summary">Benutzerdefinierte Ereignisdefinitionsoptionen</string>
-    <string name="pref_CustomEvents_hint">Eigene Namen (durch Kommas)</string>
+    <string name="pref_CustomEvents_hint">Eigene Namen (durch Kommas getrennt)</string>
     <string name="pref_CustomEvent_Caption_hint">Ereignisnamen</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardnamen</string>
@@ -280,6 +283,22 @@
         <item>Nachname Vorname(n)</item>
     </string-array>
 
+    <string name="pref_List_DateFormat_title">Datumsformat</string>
+    <string name="pref_List_DateFormat_description">Format der Datumsanzeige in Ereignisliste und Widgets</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>Nach aktueller Sprache</item>
+        <item>TT.MM.JJJJ</item>
+        <item>MM.TT.JJJJ</item>
+        <item>TT/MM/JJJJ</item>
+        <item>MM/TT/JJJJ</item>
+        <item>TT MMM JJJJ</item>
+    </string-array>
+
+    <string name="pref_Female_Names_title">Weibliche Namen</string>
+    <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto</string>
+    <string name="pref_Female_Names_hint">Geben Sie weibliche Namen ein (durch Komma getrennt)</string>
+
     <string name="pref_List_EventInfo_title">Ereignisdetails</string>
     <string name="pref_List_EventInfo_description">Was soll unter dem Namen des Kontakts angezeigt werden</string>
 
@@ -297,6 +316,15 @@
         <item>Kontotyp und Speicherdatum</item>
     </string-array>
 
+    <string name="pref_List_Color_EventToday_title">Heutiges Ereignis</string>
+    <string name="pref_List_Color_EventToday_description">Farbe der Tagesbeschriftung für heutige Ereignisse</string>
+
+    <string name="pref_List_Color_EventSoon_title">Nächste Ereignisse</string>
+    <string name="pref_List_Color_EventSoon_description">Farbe des Tageszählers für die nächstliegenden Ereignisse</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Jubiläum</string>
+    <string name="pref_List_Color_EventJubilee_description">Farbe des Jubiläumsalters</string>
+
     <string name="pref_Widgets_title">Widgets</string>
 
     <string name="pref_Widgets_EventInfo_title">Ereignisdetails</string>
@@ -306,9 +334,10 @@
         <item>Einfassung</item>
         <item>Kontaktfoto</item>
         <item>Ereignistyp-Symbol</item>
+        <item>Favoriten Symbol</item>
+        <item>Stummgeschaltet Ereignis Symbol</item>
         <item>Sternzeichen</item>
         <item>Tierkreisjahr</item>
-        <item>Favoriten Symbol</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
@@ -322,12 +351,12 @@
         <item>Nachname und Initialen</item>
         <item>Vorname(n) Nachname</item>
         <item>Name</item>
-        <item>Pseudonym (Name, wenn abwesend)</item>
+        <item>Pseudonym (Name, wenn Eintrag fehlt)</item>
         <item>Nachname</item>
         <item>Datum der Ereignis</item>
         <item>Ereignistyp</item>
         <item>Ereignisname</item>
-        <item>Organisation</item>
+        <item>Unternehmen (Position, wenn Eintrag fehlt)</item>
         <item>Nichts</item>
     </string-array>
 
@@ -360,6 +389,7 @@
         <item>Auto</item>
         <item>x0.5</item>
         <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
         <item>x1.2</item>
         <item>x1.5</item>
@@ -400,7 +430,7 @@
         <item>Zwei Tage vorher</item>
         <item>Drei Tage vorher</item>
         <item>Eine Woche vorher</item>
-        <item>Zwei Woche vorher</item>
+        <item>Zwei Wochen vorher</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priorität der Benachrichtigungen</string>
@@ -425,20 +455,21 @@
         <item>Um 9:00 Uhr</item>
         <item>Um 10:00 Uhr</item>
         <item>Um 11:00 Uhr</item>
-        <item>Am Mittag</item>
+        <item>Um 12:00 Uhr (mittags)</item>
     </string-array>
 
     <string name="pref_Notifications_Ringtone_title">Benachrichtigungston</string>
     <string name="pref_Notifications_Ringtone_description">Benachrichtigungston für kommende Ereignisse</string>
 
     <string name="pref_Notifications_QuickActions_title">Schnelle Aktionen</string>
-    <string name="pref_Notifications_QuickActions_description">Welche Aktionen für eine einzelne Benachrichtigung angezeigt werden sollen (bis zu 3 Teile)</string>
+    <string name="pref_Notifications_QuickActions_description">Welche Aktionen für eine einzelne Benachrichtigung angezeigt werden sollen (bis zu 3)</string>
 
     <string-array name="pref_Notifications_QuickActions_entries">
         <item>Telefonieren</item>
         <item>Von Benachrichtigungen ausschließen</item>
         <item>Ereignis ausblenden</item>
         <item>Erinnere mich in 1 Stunde</item>
+        <item>Schließen (für Benachrichtigungen mit hoher Priorität)</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
@@ -446,7 +477,12 @@
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_description">Welche Schnittstelle für Fragen zu verwenden</string>
+    <string name="pref_Quiz_Interface_description">Welche Schnittstelle für Fragen verwenden</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Erinnerung (Sie können jederzeit unterbrechen und nach der richtigen Antwort schauen)</item>
+        <item>Dialog (Sie brauchen sich mit dem Antworten nicht beeilen - Sie können aber nicht nach der richtigen Antwort schauen)</item>
+    </string-array>
 
     <string name="pref_FAQ_title">Fragen und Antworten</string>
     <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
@@ -586,16 +622,11 @@
     <string name="quiz_answer_true">"Richtig, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Antwort: %1$s\nRichtige Antwort: %2$s (%3$s)"</string>
 
-    <string name="quiz_month01_title_male">"In welchem Monat wurde er geboren?"</string>
-    <string name="quiz_month01_title_female">"In welchem Monat wurde sie geboren?"</string>
+    <string name="quiz_month01_title">"Welcher ist der Geburtsmonat?"</string>
 
-    <string name="quiz_year01_title_male">"In welchem Jahr wurde er geboren?"</string>
-    <string name="quiz_year01_title_female">"In welchem Jahr wurde sie geboren?"</string>
+    <string name="quiz_year01_title">"Welches ist das Geburtsjahr?"</string>
 
-    <string name="quiz_age01_title_future_male">"Wie alt wird er sein?"</string>
-    <string name="quiz_age01_title_future_female">"Wie alt wird sie sein?"</string>
-    <string name="quiz_age01_title_past_male">"Wie alt ist er jetzt?"</string>
-    <string name="quiz_age01_title_past_female">"Wie alt ist sie jetzt?"</string>
-    <string name="quiz_age01_title_dead_male">"Wie alt würde er sein?"</string>
-    <string name="quiz_age01_title_dead_female">"Wie alt würde sie sein?"</string>
+    <string name="quiz_age01_title_future">"Wie alt wird die Person?"</string>
+    <string name="quiz_age01_title_past">"Wie alt ist die Person jetzt?"</string>
+    <string name="quiz_age01_title_dead">"Wie alt würde die Person jetzt sein?"</string>
 </resources>

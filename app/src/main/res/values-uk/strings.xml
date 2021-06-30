@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -123,6 +123,8 @@
     <string name="button_silent">Виключити</string>
     <string name="button_dial">Дзвонити</string>
     <string name="button_question">Надіслати запитання</string>
+    <string name="button_close">Закрити</string>
+    <string name="button_prefs">Преференції</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -144,6 +146,7 @@
     <string name="appwidget_name_1_7">На 1–7 подій</string>
     <string name="appwidget_name_5">На 5 подій</string>
     <string name="appwidget_name_1">На 1 подію</string>
+    <string name="appwidget_name_List">Список подій</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
     <string name="widget_Date">Дата</string>
@@ -280,6 +283,22 @@
         <item>Прізвище Ім’я По-батькові</item>
     </string-array>
 
+    <string name="pref_List_DateFormat_title">Формат дати</string>
+    <string name="pref_List_DateFormat_description">Формат для дат, що відображаються в списку подій і віджети</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>Відповідно до мовою</item>
+        <item>ДД.ММ.РРРР</item>
+        <item>ММ.ДД.РРРР</item>
+        <item>ДД/ММ/РРРР</item>
+        <item>ММ/ДД/РРРР</item>
+        <item>ДД МММ РРРР</item>
+    </string-array>
+
+    <string name="pref_Female_Names_title">Жіночі імена</string>
+    <string name="pref_Female_Names_description">Додаткові жіночі імена для коректного відображення піктограм контактів без фото</string>
+    <string name="pref_Female_Names_hint">Введіть жіночі імена (через кому)</string>
+
     <string name="pref_List_EventInfo_title">Деталі події</string>
     <string name="pref_List_EventInfo_description">Що показувати під ім\'ям контакту</string>
 
@@ -297,6 +316,15 @@
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
+    <string name="pref_List_Color_EventToday_title">Сьогодні події</string>
+    <string name="pref_List_Color_EventToday_description">Заголовок кольору дня для сьогоднішніх подій</string>
+
+    <string name="pref_List_Color_EventSoon_title">Поруч події</string>
+    <string name="pref_List_Color_EventSoon_description">Колір відстані днів для найближчих подій</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Ювілейний</string>
+    <string name="pref_List_Color_EventJubilee_description">Колір ювілейного віку</string>
+
     <string name="pref_Widgets_title">Віджети</string>
 
     <string name="pref_Widgets_EventInfo_title">Деталі події</string>
@@ -306,9 +334,10 @@
         <item>Рамка</item>
         <item>Фото контакту</item>
         <item>Іконка типу події</item>
+        <item>Іконка обраного контакту</item>
+        <item>Значок приглушеної події</item>
         <item>Знак зодіаку</item>
         <item>Зодіакальний рік</item>
-        <item>Іконка обраного контакту</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Підпис (нижній ряд)</string>
@@ -327,7 +356,7 @@
         <item>Дата події</item>
         <item>Тип події</item>
         <item>Найменування події</item>
-        <item>Організація</item>
+        <item>Організація (Посада, якщо відсутня)</item>
         <item>Нічого</item>
     </string-array>
 
@@ -360,6 +389,7 @@
         <item>Автоматично</item>
         <item>x0.5</item>
         <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
         <item>x1.2</item>
         <item>x1.5</item>
@@ -439,6 +469,7 @@
         <item>Виключити з повідомлень</item>
         <item>Приховати подія</item>
         <item>Нагадати через 1 годину</item>
+        <item>Закрити (для сповіщень із високим пріоритетом)</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
@@ -447,6 +478,11 @@
     <string name="pref_Quiz_title">Вікторина</string>
     <string name="pref_Quiz_Interface_title">Інтерфейс</string>
     <string name="pref_Quiz_Interface_description">Який інтерфейс використовувати для запитань</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Повідомлення (в будь-який момент можна перерватися і піти пошукати правильну відповідь)</item>
+        <item>Діалог (можна не поспішати з відповіддю, але не можна шукати підказки)</item>
+    </string-array>
 
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_description">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>
@@ -570,15 +606,15 @@
     <string name="zodiac_year_monkey">" Мавпа"</string>
     <string name="zodiac_year_rooster">" Півень"</string>
     <string name="zodiac_year_dog">" Собака"</string>
-    <string name="zodiac_year_pig">" Свинья"</string>
-    <string name="zodiac_year_rat">" Крыса"</string>
-    <string name="zodiac_year_ox">" Бык"</string>
+    <string name="zodiac_year_pig">" Свиня"</string>
+    <string name="zodiac_year_rat">" Щур"</string>
+    <string name="zodiac_year_ox">" Бик"</string>
     <string name="zodiac_year_tiger">" Тигр"</string>
     <string name="zodiac_year_rabbit">" Кролик"</string>
     <string name="zodiac_year_dragon">" Дракон"</string>
-    <string name="zodiac_year_snake">" Змея"</string>
-    <string name="zodiac_year_horse">" Лошадь"</string>
-    <string name="zodiac_year_sheep">" Овца"</string>
+    <string name="zodiac_year_snake">" Змія"</string>
+    <string name="zodiac_year_horse">" Кінь"</string>
+    <string name="zodiac_year_sheep">" Коза"</string>
 
     <string name="msg_on">ВКЛ</string>
     <string name="msg_off">ВИКЛ</string>
@@ -589,16 +625,11 @@
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Відповідь: %1$s\nПравільний відповідь: %2$s (%3$s)"</string>
 
-    <string name="quiz_month01_title_male">"В якому місяці народився?"</string>
-    <string name="quiz_month01_title_female">"В якому місяці народилася?"</string>
+    <string name="quiz_month01_title">"Який місяць народження?"</string>
 
-    <string name="quiz_year01_title_male">"В якому році народився?"</string>
-    <string name="quiz_year01_title_female">"В якому році народилася?"</string>
+    <string name="quiz_year01_title">"Який рік народження?"</string>
 
-    <string name="quiz_age01_title_future_male">"Скільки йому виповниться років?"</string>
-    <string name="quiz_age01_title_future_female">"Скільки їй виповниться років?"</string>
-    <string name="quiz_age01_title_past_male">"Скільки йому зараз років?"</string>
-    <string name="quiz_age01_title_past_female">"Скільки їй зараз років?"</string>
-    <string name="quiz_age01_title_dead_male">"Скільки йому було б зараз років?"</string>
-    <string name="quiz_age01_title_dead_female">"Скільки їй було б зараз років?"</string>
+    <string name="quiz_age01_title_future">"Скільки років виповниться?"</string>
+    <string name="quiz_age01_title_past">"Скільки зараз років?"</string>
+    <string name="quiz_age01_title_dead">"Скільки було б зараз років?"</string>
 </resources>

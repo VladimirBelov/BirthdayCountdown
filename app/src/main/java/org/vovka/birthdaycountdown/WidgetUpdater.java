@@ -1,18 +1,16 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,7 +22,6 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -57,6 +54,7 @@ import static org.vovka.birthdaycountdown.Constants.WIDGET_EVENTS_MAX;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_EVENT_INFO;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_EVENT_TYPE;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_FAV;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_SILENCED;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_ZODIAC;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_ZODIAC_YEAR;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_IMAGE_VIEW;
@@ -84,6 +82,7 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_organization;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_title;
 
 class WidgetUpdater {
     final private Context context;
@@ -117,7 +116,7 @@ class WidgetUpdater {
         this.widgetId = widgetId;
     }
 
-    void invoke() {
+    void invokePhotoEventsUpdate() {
         //По нажатию на виджет открываем основное окно
         //http://flowovertop.blogspot.com/2013/04/android-widget-with-button-click-to.html
         Intent intentView = new Intent(context, MainActivity.class);
@@ -125,8 +124,7 @@ class WidgetUpdater {
         views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
 
         //Получаем данные
-        boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000)) {
+        if (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
             eventsData.context = context;
             if (eventsData.getEvents(context)) eventsData.computeDates();
         }
@@ -136,7 +134,6 @@ class WidgetUpdater {
 
             //Скрываем все события
             resources = context.getResources();
-            //displayMetrics = resources.getDisplayMetrics();
             packageName = context.getPackageName();
             for (int e = 0; e < this.eventsCount; e++) {
                 views.setViewVisibility(resources.getIdentifier(WIDGET_EVENT_INFO + e, STRING_ID, packageName), View.INVISIBLE);
@@ -150,52 +147,58 @@ class WidgetUpdater {
                 if (widgetPref.size() > 0) startingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
+            /*boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
             if (!canReadContacts) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access_contacts));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
-            } else if (eventsData.isEmptyArray() || eventsData.eventList.size() < startingIndex) {
+            } else */
+            if (eventsData.isEmptyArray() || eventsData.eventList.size() < startingIndex) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
+                return;
 
-            } else {
+            }
 
-                eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
+            eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
 
-                //Увеличение шрифтов в зависимости от размеров окна
-                fontMagnify = 1;
-                int cells = getCellsForSize(Math.min(width, height));
-                if (widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
-                    switch (widgetPref.get(1)) {
-                        case STRING_1:
-                            fontMagnify = cells * 0.5;
-                            break;
-                        case STRING_2:
-                            fontMagnify = cells * 0.75;
-                            break;
-                        case STRING_3:
-                            fontMagnify = cells * 1.0;
-                            break;
-                        case STRING_4:
-                            fontMagnify = cells * 1.2;
-                            break;
-                        case STRING_5:
-                            fontMagnify = cells * 1.5;
-                            break;
-                        case STRING_6:
-                            fontMagnify = cells * 1.75;
-                            break;
-                        case STRING_7:
-                            fontMagnify = cells * 2.0;
-                            break;
-                    }
-                } else {
-                    fontMagnify = 1 + 1.0 * (cells - 1);
+            //Увеличение шрифтов в зависимости от размеров окна
+            fontMagnify = 1;
+            int cells = getCellsForSize(Math.min(width, height));
+            if (widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
+                switch (widgetPref.get(1)) {
+                    case STRING_1:
+                        fontMagnify = cells * 0.5;
+                        break;
+                    case STRING_2:
+                        fontMagnify = cells * 0.75;
+                        break;
+                    case STRING_3:
+                        fontMagnify = cells * 0.85;
+                        break;
+                    case STRING_4:
+                        fontMagnify = cells * 1.0;
+                        break;
+                    case STRING_5:
+                        fontMagnify = cells * 1.2;
+                        break;
+                    case STRING_6:
+                        fontMagnify = cells * 1.5;
+                        break;
+                    case STRING_7:
+                        fontMagnify = cells * 1.75;
+                        break;
+                    case STRING_8:
+                        fontMagnify = cells * 2.0;
+                        break;
                 }
+            } else {
+                fontMagnify = 1 + 1.0 * (cells - 1);
+            }
 
-                colorDefault = eventsData.preferences_widgets_color_default; //resources.getColor(R.color.white);
+            colorDefault = eventsData.preferences_widgets_color_default; //resources.getColor(R.color.white);
                 /*try {
                     colorEventToday = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventtoday, RES_TYPE_COLOR, packageName));
                 } catch (Resources.NotFoundException e) {
@@ -206,39 +209,37 @@ class WidgetUpdater {
                 } catch (Resources.NotFoundException e) {
                     colorEventSoon = colorDefault;
                 }*/
-                colorEventToday = eventsData.preferences_widgets_color_eventtoday;
-                colorEventSoon = eventsData.preferences_widgets_color_eventsoon;
-                colorEventFar = eventsData.preferences_widgets_color_eventfar;
+            colorEventToday = eventsData.preferences_widgets_color_eventtoday;
+            colorEventSoon = eventsData.preferences_widgets_color_eventsoon;
+            colorEventFar = eventsData.preferences_widgets_color_eventfar;
 
-                //Отрисовываем информацию о событиях
-                eventsDisplayed = 0;
-                eventsToSkip = startingIndex - 1;
+            //Отрисовываем информацию о событиях
+            eventsDisplayed = 0;
+            eventsToSkip = startingIndex - 1;
 
-                int i = 0;
-                while (i < eventsData.eventList.size() & eventsDisplayed <= eventsToShow) {
-                    drawEvent(i++);
-                }
+            int i = 0;
+            while (i < eventsData.eventList.size() & eventsDisplayed <= eventsToShow) {
+                drawPhotoEvent(i++);
+            }
 
-                if (eventsDisplayed == 0) { //вообще ничего не нашли
+            if (eventsDisplayed == 0) { //вообще ничего не нашли
 
-                    views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
-                    views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
-                    Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
-                    intentConfig.setAction(ACTION_LAUNCH);
-                    intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
-                    views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
+                views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
+                Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
+                intentConfig.setAction(ACTION_LAUNCH);
+                intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
+                views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, 0));
 
-                } else {
+            } else {
 
-                    views.setViewVisibility(R.id.appwidget_text, View.GONE);
-
-                }
-
-                //Если события есть - рисуем бордюр, иначе - прозрачность
-                //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
-                views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border) ? R.drawable.layout_bg : 0);
+                views.setViewVisibility(R.id.appwidget_text, View.GONE);
 
             }
+
+            //Если события есть - рисуем бордюр, иначе - прозрачность
+            //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
+            views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border) ? R.drawable.layout_bg : 0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -246,32 +247,34 @@ class WidgetUpdater {
         }
     }
 
-    private void drawEvent(int i) {
+    private void drawPhotoEvent(int i) {
         //Отрисовываем одно событие
         try {
 
             //if ((i + startingIndex) > eventsData.eventList.size()) return eventsHidden; //больше ничего не нашли
 
             String event = eventsData.eventList.get(i);
-            String[] singleRowArray = event.split(STRING_2HASH);
+            String[] singleEventArray = event.split(STRING_2HASH);
 
             boolean isVisibleEvent = false;
             boolean useEventListPrefs = true;
 
-            final String eventSubType = singleRowArray[Position_eventSubType];
-            if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
+            final String eventSubType = singleEventArray[Position_eventSubType];
+            final String eventKey = eventsData.getEventKey(singleEventArray);
+
+            if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) { //пропускаем события календарей
                 useEventListPrefs = false;
                 isVisibleEvent = false;
             } else if (widgetPref.size() > 3) {
                 List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split(REGEX_PLUS));
                 if (eventsPrefList.size() > 0) {
                     useEventListPrefs = false;
-                    isVisibleEvent = eventsPrefList.contains(singleRowArray[Position_eventType]) &&
-                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray)));
+                    isVisibleEvent = eventsPrefList.contains(singleEventArray[Position_eventType]) &&
+                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey));
                 }
             }
-            if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleRowArray[Position_eventType]) &&
-                    (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleRowArray)));
+            if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleEventArray[Position_eventType]) &&
+                    (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey));
 
             if (!isVisibleEvent) {
                 return;
@@ -292,9 +295,12 @@ class WidgetUpdater {
             views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
             views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
 
+            views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+
             switch (eventsData.preferences_widgets_bottom_info) {
                 case STRING_1: //Фамилия Имя Отчество
-                    rowValue = singleRowArray[Position_personFullNameAlt];
+                    rowValue = singleEventArray[Position_personFullNameAlt];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_left, rowValue);
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
@@ -302,7 +308,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_2: //Дата события
-                    rowValue = singleRowArray[Position_eventDateText];
+                    rowValue = eventsData.getDateFormated(singleEventArray[Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -311,7 +317,7 @@ class WidgetUpdater {
                     break;
                 case STRING_3: //Фамилия И.О.
                     rowValue =
-                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleRowArray[Position_contactID])) :
+                        singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[Position_contactID])) :
                         person.getFullNameShort();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_left, rowValue);
@@ -320,7 +326,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_4: //Имя Отчество Фамилия
-                    rowValue = singleRowArray[Position_personFullName];
+                    rowValue = singleEventArray[Position_personFullName];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_left, rowValue);
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
@@ -329,7 +335,7 @@ class WidgetUpdater {
                     break;
                 case STRING_5: //Имя
                     rowValue =
-                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                        singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
                         person.getFirstName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
@@ -339,7 +345,7 @@ class WidgetUpdater {
                     break;
                 case STRING_6: //Фамилия
                     rowValue =
-                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                        singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
                         person.getSecondName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
@@ -347,10 +353,10 @@ class WidgetUpdater {
                         visibleCell *= 3;
                     }
                     break;
-                case STRING_7: //Псевдоним (Имя. если отсутствует)
+                case STRING_7: //Псевдоним (Имя, если отсутствует)
                     rowValue =
-                        singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
-                        singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                        singleEventArray[Position_nickname].trim().length() > 0 ? singleEventArray[Position_nickname] :
+                        singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
                         person.getFirstName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
@@ -359,7 +365,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_8: //Тип события
-                    rowValue = singleRowArray[Position_eventCaption];
+                    rowValue = singleEventArray[Position_eventCaption];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_left, rowValue);
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
@@ -368,16 +374,16 @@ class WidgetUpdater {
                     break;
                 case STRING_9: //Наименование события
                     rowValue =
-                        singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] :
-                        singleRowArray[Position_eventLabel];
+                        singleEventArray[Position_eventLabel].trim().isEmpty() ? singleEventArray[Position_eventCaption] :
+                        singleEventArray[Position_eventLabel];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_left, rowValue);
                         views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
                         visibleCell *= 2;
                     }
                     break;
-                case STRING_10: //Организация
-                    rowValue = singleRowArray[Position_organization];
+                case STRING_10: //Организация (Должность, если отсутствует)
+                    rowValue = singleEventArray[Position_organization].trim().length() > 0 ? singleEventArray[Position_organization] : singleEventArray[Position_title];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -386,9 +392,6 @@ class WidgetUpdater {
                     break;
             }
 
-            views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
-            views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
-
             //Под фото (верхний ряд)
             int id_widget_Caption2nd_left = resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND + eventsDisplayed, STRING_ID, packageName);
             int id_widget_Caption2nd_centered = resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND_CENTERED + eventsDisplayed, STRING_ID, packageName);
@@ -396,9 +399,12 @@ class WidgetUpdater {
             views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
             views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
 
+            views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+
             switch (eventsData.preferences_widgets_bottom_info_2nd) {
                 case STRING_1: //Фамилия Имя Отчество
-                    rowValue = singleRowArray[Position_personFullNameAlt];
+                    rowValue = singleEventArray[Position_personFullNameAlt];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_left, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
@@ -406,7 +412,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_2: //Дата события
-                    rowValue = singleRowArray[Position_eventDateText];
+                    rowValue = eventsData.getDateFormated(singleEventArray[Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
@@ -415,7 +421,7 @@ class WidgetUpdater {
                     break;
                 case STRING_3: //Фамилия И.О.
                     rowValue =
-                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleRowArray[Position_contactID])) :
+                            singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[Position_contactID])) :
                             person.getFullNameShort();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_left, rowValue);
@@ -424,7 +430,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_4: //Имя Отчество Фамилия
-                    rowValue = singleRowArray[Position_personFullName];
+                    rowValue = singleEventArray[Position_personFullName];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_left, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
@@ -433,8 +439,8 @@ class WidgetUpdater {
                     break;
                 case STRING_5: //Имя
                     rowValue =
-                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                            singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                            eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
                             person.getFirstName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
@@ -444,8 +450,8 @@ class WidgetUpdater {
                     break;
                 case STRING_6: //Фамилия
                      rowValue =
-                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
-                            eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
+                            singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ?
+                            eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) :
                             person.getSecondName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
@@ -455,8 +461,8 @@ class WidgetUpdater {
                     break;
                 case STRING_7: //Псевдоним (Имя, если отсутствует)
                     rowValue =
-                            singleRowArray[Position_nickname].trim().length() > 0 ? singleRowArray[Position_nickname] :
-                            singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleRowArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
+                            singleEventArray[Position_nickname].trim().length() > 0 ? singleEventArray[Position_nickname] :
+                            singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactData(ContactsEvents.parseToLong(singleEventArray[Position_contactID]), ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) :
                             person.getFirstName();
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
@@ -465,7 +471,7 @@ class WidgetUpdater {
                     }
                     break;
                 case STRING_8: //Тип события
-                    rowValue = singleRowArray[Position_eventCaption];
+                    rowValue = singleEventArray[Position_eventCaption];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_left, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
@@ -474,16 +480,16 @@ class WidgetUpdater {
                     break;
                 case STRING_9: //Наименование события
                     rowValue =
-                            singleRowArray[Position_eventLabel].trim().isEmpty() ? singleRowArray[Position_eventCaption] :
-                            singleRowArray[Position_eventLabel];
+                            singleEventArray[Position_eventLabel].trim().isEmpty() ? singleEventArray[Position_eventCaption] :
+                            singleEventArray[Position_eventLabel];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_left, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
                         visibleCell*=5;
                     }
                     break;
-                case STRING_10: //Организация
-                    rowValue = singleRowArray[Position_organization];
+                case STRING_10: //Организация (Должность, если отсутствует)
+                    rowValue = singleEventArray[Position_organization].trim().length() > 0 ? singleEventArray[Position_organization] : singleEventArray[Position_title];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
@@ -491,9 +497,6 @@ class WidgetUpdater {
                     }
                     break;
             }
-
-            views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
-            views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
 
             //Фото
             // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -522,12 +525,11 @@ class WidgetUpdater {
             //Иконка события
             int id_widget_EventIcon = resources.getIdentifier(WIDGET_ICON_EVENT_TYPE + eventsDisplayed, STRING_ID, packageName);
 
-
             if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
 
                 int eventIcon;
                 try {
-                    eventIcon = Integer.parseInt(singleRowArray[ContactsEvents.Position_eventIcon]);
+                    eventIcon = Integer.parseInt(singleEventArray[ContactsEvents.Position_eventIcon]);
                 } catch (NumberFormatException e) {
                     eventIcon = 0;
                 }
@@ -539,25 +541,10 @@ class WidgetUpdater {
 
                 views.setViewVisibility(id_widget_EventIcon, View.VISIBLE);
 
-                //todo: это было сделано для какого-то дремучего xiaomi или sony, наверное, можно выбросить
-                    /*//if (width != -1) {//Если это масштабируемый виджет, приходится делать padding
-                    if (eventsCount == 1) {
-                        views.setViewPadding(id_widget_Age, 0, convertDipToPixels(2, displayMetrics), 0, 0);
-                    } else {
-                        views.setViewPadding(id_widget_Age, 0, convertDipToPixels(1, displayMetrics), 0, 0);
-                    }
-                    //}*/
-
             } else {
 
                 views.setViewVisibility(id_widget_EventIcon, View.GONE);
-                    /*//if (width != -1) {//Если это масштабируемый виджет, приходится делать padding
-                    if (eventsCount == 1) {
-                        views.setViewPadding(id_widget_Age, convertDipToPixels(1, displayMetrics), 0, 0, 0);
-                    } else {
-                        views.setViewPadding(id_widget_Age, convertDipToPixels(eventsDisplayed == 0 ? 4 : 2, displayMetrics), 0, 0, 0);
-                    }
-                    //}*/
+
             }
 
             //Иконка знака зодиака
@@ -569,13 +556,13 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
 
-                    strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleRowArray[Position_eventDateText]); //нам нужна только иконка
+                    strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contactID])) {
+                } else if (eventsData.set_events_birthdays.containsKey(singleEventArray[Position_contactID])) {
 
                     Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_contactID]);
+                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                    final Date birthDate = eventsData.set_events_birthdays.get(singleEventArray[Position_contactID]);
                     if (birthDate != null) {
                         strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, sdfYear.format(birthDate));
                     }
@@ -602,13 +589,13 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
 
-                    strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleRowArray[Position_eventDateText]); //нам нужна только иконка
+                    strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleRowArray[Position_contactID])) {
+                } else if (eventsData.set_events_birthdays.containsKey(singleEventArray[Position_contactID])) {
 
                     Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleRowArray[Position_contactID]);
+                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                    final Date birthDate = eventsData.set_events_birthdays.get(singleEventArray[Position_contactID]);
                     if (birthDate != null) {
                         strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, sdfYear.format(birthDate));
                     }
@@ -630,7 +617,20 @@ class WidgetUpdater {
 
             //Иконка фаворита
             int id_widget_FavIcon = resources.getIdentifier(WIDGET_ICON_FAV + eventsDisplayed, STRING_ID, packageName);
-            views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon) && singleRowArray[Position_starred].equals(STRING_1) ? View.VISIBLE : View.GONE);
+            views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon) && singleEventArray[Position_starred].equals(STRING_1) ? View.VISIBLE : View.GONE);
+
+            //Иконка события без уведомления
+            int id_widget_SilencedIcon = resources.getIdentifier(WIDGET_ICON_SILENCED + eventsDisplayed, STRING_ID, packageName);
+            if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon) && eventsData.checkIsSilencedEvent(eventKey)) {
+
+                views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
+                views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
+
+            } else {
+
+                views.setViewVisibility(id_widget_SilencedIcon, View.GONE);
+
+            }
 
             //Цвета по-умолчанию
             int id_widget_Age = resources.getIdentifier(WIDGET_TEXT_VIEW_AGE + eventsDisplayed, STRING_ID, packageName);
@@ -649,12 +649,12 @@ class WidgetUpdater {
 
             //Сколько осталось до события
             int id_widget_Distance = resources.getIdentifier(WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, STRING_ID, packageName);
-            String eventDistance = singleRowArray[ContactsEvents.Position_eventDistance];
+            String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
             int eventDistance_Days;
             try {
                 eventDistance_Days = Integer.parseInt(eventDistance);
             } catch (Exception e) {
-                eventDistance_Days = 999; /* не знаю, почему */
+                eventDistance_Days = 365;
             }
 
             if (eventDistance_Days == 0) { //Сегодня
@@ -689,7 +689,7 @@ class WidgetUpdater {
 
             //Возраст
             if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
-                views.setTextViewText(id_widget_Age, singleRowArray[ContactsEvents.Position_age_caption]);
+                views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
             } else if (person.Age > -1) {
                 views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
             } else {
@@ -704,10 +704,10 @@ class WidgetUpdater {
 
                 Intent intentView = new Intent(Intent.ACTION_VIEW);
                 Uri uri = null;
-                if (!singleRowArray[Position_contactID].isEmpty()) { //singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
-                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleRowArray[Position_contactID]);
-                } else if (!singleRowArray[Position_eventID].isEmpty()) { //singleRowArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleRowArray[Position_eventID]);
+                if (!singleEventArray[Position_contactID].isEmpty()) {
+                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                } else if (!singleEventArray[Position_eventID].isEmpty()) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                 }
                 if (uri != null) {
                     intentView.setData(uri);

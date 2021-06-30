@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -12,10 +12,12 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -30,6 +32,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -62,6 +65,22 @@ public class AboutActivity extends AppCompatActivity {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
             setContentView(R.layout.activity_changelog);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -80,6 +99,7 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
             }
 
+            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
             SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
@@ -105,7 +125,6 @@ public class AboutActivity extends AppCompatActivity {
             //   webView.setVisibility(View.GONE);
 
             StringBuilder sb = new StringBuilder();
-            //todo: на Android 9+ при первом показе грузит дефолтный язык, но не всегда
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
@@ -204,7 +223,7 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
-    public void setDebug(android.view.View view) {
+    public void setDebug(@SuppressWarnings("unused") android.view.View view) {
 
         try {
 

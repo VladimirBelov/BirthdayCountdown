@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -60,7 +60,7 @@ public class Widget5x1 extends AppWidgetProvider {
             }
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
-            new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invoke();
+            new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
@@ -147,7 +147,7 @@ public class Widget5x1 extends AppWidgetProvider {
                 , Toast.LENGTH_LONG).show();
             }
 
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invoke();
+            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:57
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -35,12 +35,20 @@ final class Constants {
     static final String LANG_US = "en_US";
     static final String LANG_UA = "uk_UA";
 
-    static final String DATETIME_DD_MM_YYYY = "dd.MM.yyyy";
-    static final String DATETIME_DD_MM = "dd.MM";
-    static final String DATETIME_DD_MMM_YYYY = "dd MMM yyyy";
+    //https://en.wikipedia.org/wiki/Date_format_by_country
     static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
-    static final String DATETIME_RUS = "dd MMMMM yyyy г.";
-    static final String DATETIME_US = "MMM dd, yyyy";
+    static final String DATE_DD_MM_YYYY = "dd.MM.yyyy";
+    static final String DATE_MM_DD_YYYY = "MM.dd.yyyy";
+    static final String DATE_MM_DD = "MM.dd";
+    static final String DATE_DD_MM = "dd.MM";
+    static final String DATE_DD_MMM_YYYY = "dd MMM yyyy";
+    static final String DATE_DD_MMM = "dd MMM";
+    static final String DATE_RUS = "dd MMMMM yyyy г.";
+    static final String DATE_US = "MMM dd, yyyy";
+    static final String DATE_UK = "dd/MM/yyyy";
+    static final String DATE_UK_NO_YEAR = "dd/MM";
+    static final String DATE_IND = "MM/dd/yyyy";
+    static final String DATE_IND_NO_YEAR = "MM/dd";
     static final String DATE_JAVA = "yyyy-MM-dd";
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
 
@@ -61,6 +69,7 @@ final class Constants {
     static final String WIDGET_ICON_ZODIAC = "iconZodiac";
     static final String WIDGET_ICON_ZODIAC_YEAR = "iconZodiacYear";
     static final String WIDGET_ICON_FAV = "iconFav";
+    static final String WIDGET_ICON_SILENCED = "iconSilenced";
     static final String WIDGET_TEXT_VIEW_DISTANCE = "textViewDistance";
 
     static final Integer Type_BirthDay = 0;
@@ -111,12 +120,15 @@ final class Constants {
     static final String ACTION_HIDE = "ACTION_HIDE";
     static final String ACTION_SILENT = "ACTION_SILENT";
     static final String ACTION_DIAL = "ACTION_DIAL";
+    static final String ACTION_CLOSE = "ACTION_CLOSE";
+    static final String ACTION_CLICK = "ACTION_CLICK";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
     static final String EXTRA_FILTER = "filterText";
     static final String EXTRA_QUIZ_QUESTION = "quizQuestion";
     static final String EXTRA_QUIZ_RESULT = "quizResult";
+    static final String EXTRA_CLICKED_EVENT = "eventDetails";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -127,6 +139,7 @@ final class Constants {
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
     static final String HTML_COLOR = "<font color=\"#%s\">%s</font>"; //https://dzone.com/articles/java-string-format-examples
+    static final String HTML_COLOR_START = "<font color=\"#%s\">";
     static final String HTML_LI = "<li>";
     static final String HTML_UL_END = "</ul>";
     static final String HTML_FONT_END = "</font>";
@@ -186,11 +199,13 @@ final class Constants {
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
+    static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";
     static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDARS_ERROR = "ContactsEvents->getCalendars error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR = "ContactsEvents->getContactData error:\n";
+    static final String CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR = "ContactsEvents->getContactDataMulti error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR = "ContactsEvents->getContactFirstName error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR = "ContactsEvents->getContactPhone error:\n";
     static final String CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR = "ContactsEvents->getEventDistanceText error:\n";
@@ -234,6 +249,9 @@ final class Constants {
 
     static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
 
+    static final String EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventListDataProvider->getViewAt error:\n";
+    static final String EVENT_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventListDataProvider->initData error:\n";
+
     static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "GetAccountsListAdapter->getView error:\n";
 
     static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
@@ -251,6 +269,7 @@ final class Constants {
     static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
     static final String MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR = "MainActivity->checkNewVersion error:\n";
     static final String MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR = "MainActivity->setLastRunVersion error:\n";
+    //static final String MAIN_ACTIVITY_CHECK_BATTERY_OPTIMIZATION_ERROR = "MainActivity->checkBatteryOptimization error:\n";
     static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
 
     static final String MY_ADAPTER_GET_VIEW_ERROR = "MyAdapter->getView error:\n";
@@ -283,9 +302,11 @@ final class Constants {
     static final String WIDGET_4_X_1_UPDATE_APP_WIDGET_ERROR = "Widget4x1->updateAppWidget error:\n";
     static final String WIDGET_5_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget5x1->onAppWidgetOptionsChanged error:\n";
     static final String WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR = "Widget5x1->updateAppWidget error:\n";
+    static final String WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "WidgetList->onAppWidgetOptionsChanged error:\n";
+    static final String WIDGET_LIST_UPDATE_APP_WIDGET_ERROR = "WidgetList->updateAppWidget error:\n";
     static final String WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR = "WidgetConfigureActivity->buttonOkOnClick error:\n";
     static final String WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR = "WidgetConfigureActivity->onCreate error:\n";
-    static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invoke error:\n";
+    static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invokePhotoEventsUpdate error:\n";
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";

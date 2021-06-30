@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.2</item>
+        <item>Added event list widget</item>
+        <item>Added widget icon for silenced evens</item>
+        <item>Added color customising for event list (today, soon, jubilee)</item>
+        <item>Added date format customising</item>
+
+        <item>#1.6.1</item>
+        <item>Added \"Close\" quick action for high priority notifications</item>
+        <item>Added possibility to specify additional female names</item>
+        <item>Added support for dates in dd/mm/yyyy, mm/dd/yyyy, dd/mm formats</item>
+        <item>Fixed some bugs</item>
 
         <item>#1.6.0</item>
         <item>Quiz about the events of your contacts. Launch it from app menu or quick action (on app icon). If the question seems tricky, use 🔍 to find answer</item>

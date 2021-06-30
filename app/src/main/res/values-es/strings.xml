@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -123,6 +123,8 @@
     <string name="button_silent">Excluir</string>
     <string name="button_dial">Llamada</string>
     <string name="button_question">Hacer una pregunta</string>
+    <string name="button_close">Cerrar</string>
+    <string name="button_prefs">Preferencias</string>
 
     <string name="events_scope_not_hidden">Todo no oculto (%1$d)</string>
     <string name="events_scope_all">Todas (%1$d)</string>
@@ -144,6 +146,7 @@
     <string name="appwidget_name_1_7">Para 1–7 eventos</string>
     <string name="appwidget_name_1">Para 1 evento</string>
     <string name="appwidget_name_5">Para 5 eventos</string>
+    <string name="appwidget_name_List">Lista de eventos</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Nombre completo</string>
     <string name="widget_Date">Fecha</string>
@@ -280,6 +283,22 @@
         <item>Apellido Nombre Patronímico</item>
     </string-array>
 
+    <string name="pref_List_DateFormat_title">Formato de fecha</string>
+    <string name="pref_List_DateFormat_description">Formato de las fechas que se muestran en la lista de eventos y los widgets</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>Por idioma actual</item>
+        <item>DD.MM.AAAA</item>
+        <item>MM.DD.AAAA</item>
+        <item>DD/MM/AAAA</item>
+        <item>MM/DD/AAAA</item>
+        <item>DD MMM AAAA</item>
+    </string-array>
+
+    <string name="pref_Female_Names_title">Nombres femeninos</string>
+    <string name="pref_Female_Names_description">Nombres femeninos adicionales para la visualización correcta de los iconos de contacto sin una foto.</string>
+    <string name="pref_Female_Names_hint">Ingrese nombres femeninos (separados por comas)</string>
+
     <string name="pref_List_EventInfo_title">Detalles del evento</string>
     <string name="pref_List_EventInfo_description">Qué detalles adicionales del evento mostrar</string>
 
@@ -297,6 +316,15 @@
         <item>Tipo de cuenta y fecha almacenada</item>
     </string-array>
 
+    <string name="pref_List_Color_EventToday_title">Eventos de hoy</string>
+    <string name="pref_List_Color_EventToday_description">Color de la leyenda del día para los eventos de hoy</string>
+
+    <string name="pref_List_Color_EventSoon_title">Cerca de eventos</string>
+    <string name="pref_List_Color_EventSoon_description">Color de la distancia de los días para eventos cercanos</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Jubileo</string>
+    <string name="pref_List_Color_EventJubilee_description">Color de la edad jubilar</string>
+
     <string name="pref_Widgets_title">Widgets</string>
 
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
@@ -306,9 +334,10 @@
         <item>Borde del widget</item>
         <item>Foto de contacto</item>
         <item>Icono de tipo de evento</item>
+        <item>Icono favorito</item>
+        <item>Icono de evento silenciado</item>
         <item>Signo del zodiaco</item>
         <item>Año del zodiaco</item>
-        <item>Icono favorito</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Título (fila inferior)</string>
@@ -327,7 +356,7 @@
         <item>Fecha del evento</item>
         <item>Tipo de evento</item>
         <item>Nombre del evento</item>
-        <item>Organización</item>
+        <item>Organización (Posición, si está ausente)</item>
         <item>Nada</item>
     </string-array>
 
@@ -373,6 +402,7 @@
         <item>Automáticamente</item>
         <item>x0.5</item>
         <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
         <item>x1.2</item>
         <item>x1.5</item>
@@ -452,6 +482,7 @@
         <item>Excluir de notificaciones</item>
         <item>Ocultar evento</item>
         <item>Recuérdame en 1 hora</item>
+        <item>Cerrar (para notificaciones de alta prioridad)</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Notificación de prueba</string>
@@ -460,6 +491,11 @@
     <string name="pref_Quiz_title">Encuesta</string>
     <string name="pref_Quiz_Interface_title">Interfaz</string>
     <string name="pref_Quiz_Interface_description">Qué interfaz usar para las preguntas</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Notificaciones (en cualquier momento puedes interrumpir e ir a buscar la respuesta correcta)</item>
+        <item>Diálogo (no puedes apresurarte a responder, pero no puedes buscar pistas)</item>
+    </string-array>
 
     <string name="pref_FAQ_title">Preguntas y Respuestas</string>
     <string name="pref_FAQ_description">Si algo no funciona correctamente o no sabe cómo configurar una función particular del programa, está en esta sección</string>
@@ -576,18 +612,18 @@
     <string name="zodiac_sign_aquarius">" Acuario"</string>
     <string name="zodiac_sign_pisces">" Piscis"</string>
 
-    <string name="zodiac_year_monkey">" Monkey"</string>
-    <string name="zodiac_year_rooster">" Rooster"</string>
-    <string name="zodiac_year_dog">" Dog"</string>
-    <string name="zodiac_year_pig">" Pig"</string>
-    <string name="zodiac_year_rat">" Rat"</string>
-    <string name="zodiac_year_ox">" Ox"</string>
-    <string name="zodiac_year_tiger">" Tiger"</string>
-    <string name="zodiac_year_rabbit">" Rabbit"</string>
-    <string name="zodiac_year_dragon">" Dragon"</string>
-    <string name="zodiac_year_snake">" Snake"</string>
-    <string name="zodiac_year_horse">" Horse"</string>
-    <string name="zodiac_year_sheep">" Sheep"</string>
+    <string name="zodiac_year_monkey">" Mono"</string>
+    <string name="zodiac_year_rooster">" Gallo"</string>
+    <string name="zodiac_year_dog">" Perro"</string>
+    <string name="zodiac_year_pig">" Cerdo"</string>
+    <string name="zodiac_year_rat">" Rata"</string>
+    <string name="zodiac_year_ox">" Buey"</string>
+    <string name="zodiac_year_tiger">" Tigre"</string>
+    <string name="zodiac_year_rabbit">" Conejo"</string>
+    <string name="zodiac_year_dragon">" Dragón"</string>
+    <string name="zodiac_year_snake">" Serpiente"</string>
+    <string name="zodiac_year_horse">" Caballo"</string>
+    <string name="zodiac_year_sheep">" Oveja"</string>
 
     <string name="msg_on">EN</string>
     <string name="msg_off">APAGADO</string>
@@ -598,16 +634,11 @@
     <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Respuesta: %1$s\nRespuesta correcta: %2$s (%3$s)"</string>
 
-    <string name="quiz_month01_title_male">"¿En qué mes nació?"</string>
-    <string name="quiz_month01_title_female">"¿En qué mes nació?"</string>
+    <string name="quiz_month01_title">"¿Qué mes de nacimiento?"</string>
 
-    <string name="quiz_year01_title_male">"¿En qué año fue que nació?"</string>
-    <string name="quiz_year01_title_female">"¿En qué año fue que nació?"</string>
+    <string name="quiz_year01_title">"¿Qué año de nacimiento?"</string>
 
-    <string name="quiz_age01_title_future_male">"¿Qué edad tendrá?"</string>
-    <string name="quiz_age01_title_future_female">"¿Qué edad tendrá?"</string>
-    <string name="quiz_age01_title_past_male">"¿Cuantos años tiene?"</string>
-    <string name="quiz_age01_title_past_female">"¿Cuantos años tiene?"</string>
-    <string name="quiz_age01_title_dead_male">"¿Qué edad tendría ahora?"</string>
-    <string name="quiz_age01_title_dead_female">"¿Qué edad tendría ahora?"</string>
+    <string name="quiz_age01_title_future">"¿Qué edad tendrá?"</string>
+    <string name="quiz_age01_title_past">"¿Qué edad tiene ahora?"</string>
+    <string name="quiz_age01_title_dead">"¿Qué edad tendría ahora?"</string>
 </resources>

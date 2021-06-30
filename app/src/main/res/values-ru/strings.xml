@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -123,6 +123,8 @@
     <string name="button_silent">Исключить</string>
     <string name="button_dial">Позвонить</string>
     <string name="button_question">Задать вопрос</string>
+    <string name="button_close">Закрыть</string>
+    <string name="button_prefs">Настройки</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -144,6 +146,7 @@
     <string name="appwidget_name_1_7">На 1–7 событий</string>
     <string name="appwidget_name_1">На 1 событие</string>
     <string name="appwidget_name_5">На 5 событий</string>
+    <string name="appwidget_name_List">Список событий</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ФИО</string>
     <string name="widget_Date">Дата</string>
@@ -273,12 +276,28 @@
     </string-array>
 
     <string name="pref_List_Caption_title">Формат для имени контакта</string>
-    <string name="pref_List_Caption_description">И.О.Ф. или Ф.И.О.</string>
+    <string name="pref_List_Caption_description">Впереди имя или фамилия</string>
 
     <string-array name="pref_List_Caption_entries">
         <item>Имя Отчество Фамилия</item>
         <item>Фамилия Имя Отчество</item>
     </string-array>
+
+    <string name="pref_List_DateFormat_title">Формат даты</string>
+    <string name="pref_List_DateFormat_description">Формат для дат, отображаемых в списке событий и виджетах</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>В соответствии с языком</item>
+        <item>ДД.ММ.ГГГГ</item>
+        <item>ММ.ДД.ГГГГ</item>
+        <item>ДД/ММ/ГГГГ</item>
+        <item>ММ/ДД/ГГГГ</item>
+        <item>ДД МММ ГГГГ</item>
+    </string-array>
+
+    <string name="pref_Female_Names_title">Женские имена</string>
+    <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото</string>
+    <string name="pref_Female_Names_hint">Введите женские имена (через запятую)</string>
 
     <string name="pref_List_EventInfo_title">Детали события</string>
     <string name="pref_List_EventInfo_description">Какие дополнительные детали события показывать</string>
@@ -297,6 +316,15 @@
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
+    <string name="pref_List_Color_EventToday_title">События сегодня</string>
+    <string name="pref_List_Color_EventToday_description">Цвет заголовка дня для событий сегодня</string>
+
+    <string name="pref_List_Color_EventSoon_title">Близкие события</string>
+    <string name="pref_List_Color_EventSoon_description">Цвет для заголовка дня для близких событий</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Юбилей</string>
+    <string name="pref_List_Color_EventJubilee_description">Цвет юбилейного возраста</string>
+
     <string name="pref_Widgets_title">Виджеты</string>
 
     <string name="pref_Widgets_EventInfo_title">Детали события</string>
@@ -306,9 +334,10 @@
         <item>Бордюр виджета</item>
         <item>Фото контакта</item>
         <item>Иконка типа события</item>
+        <item>Иконка избранного контакта</item>
+        <item>Иконка события без уведомления</item>
         <item>Знак зодиака</item>
         <item>Зодиакальный год</item>
-        <item>Иконка избранного</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Заголовок (нижний ряд)</string>
@@ -327,7 +356,7 @@
         <item>Дата события</item>
         <item>Тип события</item>
         <item>Наименование события</item>
-        <item>Организация</item>
+        <item>Организация (Должность, при отсутствии)</item>
         <item>Ничего</item>
     </string-array>
 
@@ -373,6 +402,7 @@
         <item>Авто</item>
         <item>x0.5</item>
         <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
         <item>x1.2</item>
         <item>x1.5</item>
@@ -452,6 +482,7 @@
         <item>Исключить из уведомлений</item>
         <item>Скрыть событие</item>
         <item>Напомнить через 1 час</item>
+        <item>Закрыть (для уведомлений с высоким приоритетом)</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Тестовое уведомление</string>
@@ -607,16 +638,11 @@
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Ответ: %1$s\nПравильный ответ: %2$s (%3$s)"</string>
 
-    <string name="quiz_month01_title_male">"В каком месяце родился?"</string>
-    <string name="quiz_month01_title_female">"В каком месяце родилась?"</string>
+	<string name="quiz_month01_title">"Какой месяц рождения?"</string>
 
-    <string name="quiz_year01_title_male">"В каком году родился?"</string>
-    <string name="quiz_year01_title_female">"В каком году родилась?"</string>
+	<string name="quiz_year01_title">"Какой год рождения?"</string>
 
-    <string name="quiz_age01_title_future_male">"Сколько ему исполнится лет?"</string>
-    <string name="quiz_age01_title_future_female">"Сколько ей исполнится лет?"</string>
-    <string name="quiz_age01_title_past_male">"Сколько ему сейчас лет?"</string>
-    <string name="quiz_age01_title_past_female">"Сколько ей сейчас лет?"</string>
-    <string name="quiz_age01_title_dead_male">"Сколько ему было бы сейчас лет?"</string>
-    <string name="quiz_age01_title_dead_female">"Сколько ей было бы сейчас лет?"</string>
+    <string name="quiz_age01_title_future">"Сколько лет исполнится?"</string>
+    <string name="quiz_age01_title_past">"Сколько сейчас лет?"</string>
+    <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
 </resources>

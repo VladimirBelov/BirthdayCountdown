@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.2</item>
+        <item>Ein Widget mit einer Liste von Ereignissen hinzugefügt</item>
+        <item>Widget-Symbol für stummgeschaltet Ereignissen hinzugefügt</item>
+        <item>Farbanpassung für Ereignisliste hinzugefügt (Heute, bald, Jubiläum)</item>
+        <item>Anpassung des Datumsformats hinzugefügt</item>
+
+        <item>#1.6.1</item>
+        <item>Schnelle Aktion \"Schließen\" für Benachrichtigungen mit hoher Priorität hinzugefügt</item>
+        <item>Möglichkeit hinzugefügt, zusätzliche weibliche Namen anzugeben</item>
+        <item>Unterstützung für Datumsangaben in den Formaten dd/mm/yyyy, mm/dd/yyyy, dd/mm hinzugefügt</item>
+        <item>Fehlerbehebungen</item>
 
         <item>#1.6.0</item>
         <item>Quiz über die Ereignisse Ihrer Kontakte. Starten Sie es über das App-Menü oder eine Schnellaktion (auf dem App-Symbol). Wenn die Frage schwierig erscheint, verwenden Sie 🔍, um eine Antwort zu finden</item>

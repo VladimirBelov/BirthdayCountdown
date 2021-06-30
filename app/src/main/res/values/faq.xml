@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -38,7 +38,7 @@
         <item>#Calendar events</item>
         <item>Any all day calendar events are supported. Sets of calendars can be specified for the event \"Birthday"\ and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
         <item> </item>
-        <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this. If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
+        <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp"/ width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
 
         <item>#Importing events from social networks</item>

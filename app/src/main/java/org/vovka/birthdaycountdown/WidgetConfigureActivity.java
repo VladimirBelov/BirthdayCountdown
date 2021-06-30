@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -10,7 +10,10 @@ package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
@@ -23,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -41,6 +45,22 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.getPreferences();
             eventsData.setLocale(true);
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
@@ -120,9 +140,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 //Скрываем Коэффициент масштабирования размера шрифта
                 findViewById(R.id.dividerFontMagnify).setVisibility(View.GONE);
-                findViewById(R.id.spinnerFontMagnifyLabel).setVisibility(View.GONE);
+                findViewById(R.id.captionFontMagnify).setVisibility(View.GONE);
                 findViewById(R.id.spinnerFontMagnify).setVisibility(View.GONE);
-                findViewById(R.id.textViewFontMagnify).setVisibility(View.GONE);
+                findViewById(R.id.hintFontMagnify).setVisibility(View.GONE);
 
             }
 
@@ -130,13 +150,23 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 //Скрываем количество событий
                 findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
-                findViewById(R.id.spinnerEventsCountLabel).setVisibility(View.GONE);
+                findViewById(R.id.captionEventsCount).setVisibility(View.GONE);
                 findViewById(R.id.spinnerEventsCount).setVisibility(View.GONE);
-                findViewById(R.id.textViewEventsCount).setVisibility(View.GONE);
+                findViewById(R.id.hintEventsCount).setVisibility(View.GONE);
 
             }
 
-            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId)) {
+            if (widgetType.equals(".WidgetList")) {
+
+                //Скрываем стартовый номер
+                findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
+                findViewById(R.id.captionEventShift).setVisibility(View.GONE);
+                findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
+                findViewById(R.id.hintEventShift).setVisibility(View.GONE);
+
+            }
+
+            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(".WidgetList")) {
 
                 //Скрываем подсказку для существующих виджетов
                 findViewById(R.id.widget_hint).setVisibility(View.GONE);

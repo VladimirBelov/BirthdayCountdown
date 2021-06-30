@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 
 import java.util.regex.Pattern;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
@@ -161,7 +162,10 @@ class Person {
                 ContactsEvents.getInstance().preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
                 ContactsEvents.getInstance().preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
                 ContactsEvents.getInstance().preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                ContactsEvents.getInstance().preferences_first_names_female = Pattern.compile(context.getString(R.string.first_names_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                final String names = ContactsEvents.getInstance().preferences_first_names_female_custom.isEmpty() ?
+                        context.getString(R.string.first_names_female) :
+                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(ContactsEvents.getInstance().preferences_first_names_female_custom.toLowerCase().replace(STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+                ContactsEvents.getInstance().preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
                 ContactsEvents.getInstance().preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
                 ContactsEvents.getInstance().preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
 

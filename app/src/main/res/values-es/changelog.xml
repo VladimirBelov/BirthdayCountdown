@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.2</item>
+        <item>Se agregó un nuevo widget con una lista de eventos</item>
+        <item>Icono de widget agregado para eventos silenciados</item>
+        <item>Configuración de color agregada en la lista de eventos (hoy, pronto, jubileo)</item>
+        <item>Configuración de formato de fecha agregada</item>
+
+        <item>#1.6.1</item>
+        <item>Se agregó la acción rápida \"Cerrar\" para notificaciones de alta prioridad</item>
+        <item>Se agregó la posibilidad de especificar nombres femeninos adicionales</item>
+        <item>Se corrigieron algunos errores</item>
 
         <item>#1.6.0</item>
         <item>Cuestionario sobre los eventos de sus contactos. Ejecútelo desde el menú de la aplicación o desde la acción rápida (en el icono de la aplicación). Si la pregunta parece complicada, use 🔍 para encontrar la respuesta</item>

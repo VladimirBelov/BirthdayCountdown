@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 12:42
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 24.06.2021, 23:24
   ~  */
   -->
 
@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- для проигрывания уведомлений из внешнего хранилища https://stackoverflow.com/questions/54120745/android-9-0-notificationmanager-notify-throwing-java-lang-securityexception -->
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/> <!-- для выставления высокого приоритета уведомлениям викторины на младших андроидах https://stackoverflow.com/questions/42597698/android-how-to-allow-enable-floating-notifications-setting-as-default-for-ap -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- без этого на Android 12+ будет появляться SecurityException https://developer.android.com/about/versions/12/behavior-changes-12#exact-alarm-permission -->
+    <!-- <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> позволяет запрашивать игнорирование оптимизации батареи для этого приложения (для обновления виджетов) -->
+
     <supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
     <application
@@ -150,5 +153,18 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1bc_info" />
             <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
         </receiver>
+
+        <receiver
+            android:name=".WidgetList"
+            android:label="@string/appwidget_name_List">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetlist_info" />
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+        </receiver>
+
+        <service android:name=".EventListWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 </manifest>

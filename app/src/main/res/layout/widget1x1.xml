@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -59,6 +59,26 @@
                 android:contentDescription="@string/widget_TypeIcon"
                 android:src="@drawable/ic_event_birthday" />
 
+            <ImageView
+                android:id="@id/iconFav0"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/widget_FavIcon"
+                android:src="@drawable/fav_star" />
+
+            <TextView
+                android:id="@+id/iconSilenced0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:gravity="start"
+                android:shadowColor="@color/dark_gray"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="2.0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/widgetDate_fontSize" />
+
             <TextView
                 android:id="@+id/iconZodiac0"
                 android:layout_width="wrap_content"
@@ -83,13 +103,6 @@
                 android:shadowRadius="2.0"
                 android:textColor="@color/green"
                 android:textSize="@dimen/widgetDate_fontSize" />
-
-            <ImageView
-                android:id="@id/iconFav0"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:contentDescription="@string/widget_FavIcon"
-                android:src="@drawable/fav_star" />
 
         </LinearLayout>
 

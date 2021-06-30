@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.21 8:51
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 14.03.21 16:56
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 
@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
@@ -59,6 +60,7 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -92,6 +94,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (eventsData.context == null) eventsData.context = getApplicationContext();
             eventsData.getPreferences();
             eventsData.setLocale(true);
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             addPreferencesFromResource(R.xml.settings);
 
@@ -422,6 +440,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         ContactsEvents eventsData = ContactsEvents.getInstance();
+        eventsData.statLastPausedForOtherActivity = 0;
         eventsData.getPreferences();
 
         if (key.equals(getString(R.string.pref_Language_key))) {

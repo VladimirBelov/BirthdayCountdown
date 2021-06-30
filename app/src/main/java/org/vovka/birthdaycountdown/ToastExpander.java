@@ -1,11 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.21 12:53
+ *  * Created by Vladimir Belov on 30.06.2021, 13:04
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 02.04.21 12:53
- *
- *  https://stackoverflow.com/questions/2220560/can-an-android-toast-be-longer-than-toast-length-long
- *  https://github.com/vishalTrivedi88/Toast-Expander/blob/master/src/com/thirtymatches/toasted/ToastExpander.java
+ *  * Last modified 30.06.2021, 12:43
  *
  */
 

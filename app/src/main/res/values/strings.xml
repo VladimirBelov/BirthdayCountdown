@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 16:56
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -123,6 +123,8 @@
     <string name="button_silent">Disable</string>
     <string name="button_dial">Dial</string>
     <string name="button_question">Mail new question</string>
+    <string name="button_close">Close</string>
+    <string name="button_prefs">Preferences</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -144,6 +146,7 @@
     <string name="appwidget_name_1_7">For 1–7 events</string>
     <string name="appwidget_name_1">For 1 event</string>
     <string name="appwidget_name_5">For 5 events</string>
+    <string name="appwidget_name_List">Event list</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
     <string name="widget_Date">Date</string>
@@ -241,7 +244,7 @@
     <string-array name="pref_EventTypes_entries">
         <item>Birthdays</item>
         <item>Anniversaries</item>
-        <item>Others events</item>
+        <item>Other events</item>
         <item>Custom events</item>
         <item>Round days count (5K, 10K, 15K days)</item>
     </string-array>
@@ -273,12 +276,28 @@
     </string-array>
 
     <string name="pref_List_Caption_title">Contact name format</string>
-    <string name="pref_List_Caption_description">Format for contact names</string>
+    <string name="pref_List_Caption_description">First or last name at the beginning</string>
 
     <string-array name="pref_List_Caption_entries">
         <item>Name Patronymic Surname</item>
         <item>Surname Name Patronymic</item>
     </string-array>
+
+    <string name="pref_List_DateFormat_title">Date format</string>
+    <string name="pref_List_DateFormat_description">Format of dates displaying in event list and widgets</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>By current language</item>
+        <item>DD.MM.YYYY</item>
+        <item>MM.DD.YYYY</item>
+        <item>DD/MM/YYYY</item>
+        <item>MM/DD/YYYY</item>
+        <item>DD MMM YYYY</item>
+    </string-array>
+
+    <string name="pref_Female_Names_title">Female names</string>
+    <string name="pref_Female_Names_description">Additional female names for the correct display of contact icons without a photo</string>
+    <string name="pref_Female_Names_hint">Enter female names (by comma)</string>
 
     <string name="pref_List_EventInfo_title">Event details</string>
     <string name="pref_List_EventInfo_description">What additional event details to show</string>
@@ -297,6 +316,15 @@
         <item>Event account and raw date</item>
     </string-array>
 
+    <string name="pref_List_Color_EventToday_title">Today events</string>
+    <string name="pref_List_Color_EventToday_description">Color of day caption for today events</string>
+
+    <string name="pref_List_Color_EventSoon_title">Near events</string>
+    <string name="pref_List_Color_EventSoon_description">Color of days distance for near events</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Jubilee</string>
+    <string name="pref_List_Color_EventJubilee_description">Color of jubilee age</string>
+
     <string name="pref_Widgets_title">Widgets</string>
 
     <string name="pref_Widgets_EventInfo_title">Event details</string>
@@ -306,9 +334,10 @@
         <item>Widget border</item>
         <item>Contact photo</item>
         <item>Event type icon</item>
+        <item>Favorites icon</item>
+        <item>Silenced event icon</item>
         <item>Zodiac sign</item>
         <item>Zodiac year</item>
-        <item>Favorites icon</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
@@ -327,7 +356,7 @@
         <item>Event date</item>
         <item>Event type</item>
         <item>Original event label</item>
-        <item>Organisation</item>
+        <item>Organisation (Title, if absent)</item>
         <item>Nothing</item>
     </string-array>
 
@@ -373,6 +402,7 @@
         <item>Auto</item>
         <item>x0.5</item>
         <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
         <item>x1.2</item>
         <item>x1.5</item>
@@ -452,6 +482,7 @@
         <item>Exclude from notifications</item>
         <item>Hide event</item>
         <item>Remind in 1 hour</item>
+        <item>Close (for high priority notifications)</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Test notification</string>
@@ -582,6 +613,7 @@
     <string name="zodiac_sign_aquarius">" Aquarius"</string>
     <string name="zodiac_sign_pisces">" Pisces"</string>
 
+    <!-- https://forum.wordreference.com/threads/12-animals-of-the-chinese-zodiac.554164/ -->
     <string name="zodiac_year_monkey">" Monkey"</string>
     <string name="zodiac_year_rooster">" Rooster"</string>
     <string name="zodiac_year_dog">" Dog"</string>
@@ -604,18 +636,13 @@
     <string name="quiz_answer_true">"Right, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Answer: %1$s\nRight answer: %2$s (%3$s)"</string>
 
-    <string name="quiz_month01_title_male">"What month he was born?"</string>
-    <string name="quiz_month01_title_female">"What month she was born?"</string>
+    <string name="quiz_month01_title">"What is the birth month?"</string>
 
-    <string name="quiz_year01_title_male">"What year he was born?"</string>
-    <string name="quiz_year01_title_female">"What year she was born?"</string>
+    <string name="quiz_year01_title">"What is the year of birth?"</string>
 
-    <string name="quiz_age01_title_future_male">"How old will he be?"</string>
-    <string name="quiz_age01_title_future_female">"How old will she be?"</string>
-    <string name="quiz_age01_title_past_male">"How old is he now?"</string>
-    <string name="quiz_age01_title_past_female">"How old is she now?"</string>
-    <string name="quiz_age01_title_dead_male">"How old would he be?"</string>
-    <string name="quiz_age01_title_dead_female">"How old would she be?"</string>
+    <string name="quiz_age01_title_future">"How old will he/she be?"</string>
+    <string name="quiz_age01_title_past">"How old is he/she?"</string>
+    <string name="quiz_age01_title_dead">"How old would he/she be now?"</string>
 
 <!-- COMMON STRINGS -->
 
@@ -634,6 +661,7 @@
     <string name="pref_Events_Scope" translatable="false">EventsScope</string>
     <string name="pref_Version_LastRun" translatable="false">Version_LastRun</string>
     <string name="pref_VersionCode_LastRun" translatable="false">VersionCode_LastRun</string>
+    <!--<string name="pref_BattOptiCheck" translatable="false">CheckBatteryOptimization</string>-->
 
     <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento"</string>
     <string name="event_type_wedding_labels" translatable="false">"wedding,свадьба,свадьбы,весілля,hochzeitstag,civil"</string>
@@ -699,7 +727,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_key" translatable="false">CustomEvents_Birthday_Labels</string>
     <string name="pref_CustomEvents_Birthday_Calendars_key" translatable="false">CustomEvents_Birthday_Calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_key" translatable="false">CustomEvents_Birthday_Calendars_Rules</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">""</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_key" translatable="false">CustomEvents_Birthday_Calendars_UseYear</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_default" translatable="false">true</string>
 
@@ -723,15 +751,15 @@
     <string name="pref_CustomEvents_Other_Labels_key" translatable="false">CustomEvents_Other_Labels</string>
     <string name="pref_CustomEvents_Other_Calendars_key" translatable="false">CustomEvents_Other_Calendars</string>
 
-    <string name="pref_CustomEvents_Custom1_key" translatable="false">CustomEvents_Custom1</string>
+    <string name="pref_CustomEvents_Custom1_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1</string>
     <string name="pref_CustomEvents_Custom2_key" translatable="false">CustomEvents_Custom2</string>
     <string name="pref_CustomEvents_Custom3_key" translatable="false">CustomEvents_Custom3</string>
     <string name="pref_CustomEvents_Custom4_key" translatable="false">CustomEvents_Custom4</string>
     <string name="pref_CustomEvents_Custom5_key" translatable="false">CustomEvents_Custom5</string>
 
-    <string name="pref_CustomEvents_Custom1_Caption_key" translatable="false">CustomEvents_Custom1_Caption</string>
-    <string name="pref_CustomEvents_Custom1_Labels_key" translatable="false">CustomEvents_Custom1_Labels</string>
-    <string name="pref_CustomEvents_Custom1_UseYear_key" translatable="false">CustomEvents_Custom1_UseYear</string>
+    <string name="pref_CustomEvents_Custom1_Caption_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1_Caption</string>
+    <string name="pref_CustomEvents_Custom1_Labels_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1_Labels</string>
+    <string name="pref_CustomEvents_Custom1_UseYear_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1_UseYear</string>
 
     <string name="pref_CustomEvents_Custom2_Caption_key" translatable="false">CustomEvents_Custom2_Caption</string>
     <string name="pref_CustomEvents_Custom2_Labels_key" translatable="false">CustomEvents_Custom2_Labels</string>
@@ -752,12 +780,36 @@
 
     <string name="pref_List_Caption_key" translatable="false">List_Caption</string>
 
+    <string name="pref_List_DateFormat_key" translatable="false">List_DateFormat</string>
+
     <string-array name="pref_List_Caption_values" translatable="false">
         <item>1</item> <!--Имя Отчество Фамилия-->
         <item>2</item> <!--Фамилия Имя Отчество-->
     </string-array>
 
+    <string-array name="pref_List_DateFormat_values" translatable="false">
+        <item>1</item> <!--Автоматически-->
+        <item>2</item> <!--DD.MM.YYYY-->
+        <item>3</item> <!--MM.DD.YYYY-->
+        <item>4</item> <!--DD/MM/YYYY-->
+        <item>5</item> <!--MM/DD/YYYY-->
+        <item>6</item> <!--DD MMM YYYY-->
+    </string-array>
+
     <string name="pref_List_Caption_default" translatable="false">1</string>
+
+    <string name="pref_List_DateFormat_default" translatable="false">1</string>
+
+    <string name="pref_Female_Names_key" translatable="false">Female_Names</string>
+
+    <string name="pref_List_Color_EventToday_key" translatable="false">List_Color_EventToday</string>
+    <color name="pref_List_Color_EventToday_default" translatable="false">@color/dark_red</color>
+
+    <string name="pref_List_Color_EventSoon_key" translatable="false">List_Color_EventSoon</string>
+    <color name="pref_List_Color_EventSoon_default" translatable="false">@color/dark_green</color>
+
+    <string name="pref_List_Color_EventJubilee_key" translatable="false">List_Color_EventJubilee</string>
+    <color name="pref_List_Color_EventJubilee_default" translatable="false">@color/dark_red</color>
 
     <string name="pref_List_EventInfo_key" translatable="false">List_EventInfo</string>
 
@@ -824,19 +876,21 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_Photo" translatable="false">1</string>
-    <string name="pref_Widgets_EventInfo_Border" translatable="false">10</string>
     <string name="pref_Widgets_EventInfo_EventIcon" translatable="false">2</string>
+    <string name="pref_Widgets_EventInfo_FavIcon" translatable="false">3</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon" translatable="false">4</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear" translatable="false">5</string>
-    <string name="pref_Widgets_EventInfo_FavIcon" translatable="false">3</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon" translatable="false">6</string>
+    <string name="pref_Widgets_EventInfo_Border" translatable="false">10</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
         <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
         <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
@@ -852,7 +906,7 @@
         <item>2</item> <!--Дата события-->
         <item>8</item> <!--Тип события-->
         <item>9</item> <!--Наименование события-->
-        <item>10</item> <!--Организация-->
+        <item>10</item> <!--Организация (Должность)-->
         <item>99</item> <!--Ничего-->
     </string-array>
 
@@ -969,12 +1023,14 @@
     <string name="pref_Notifications_QuickActions_Silent" translatable="false">2</string>
     <string name="pref_Notifications_QuickActions_Hide" translatable="false">3</string>
     <string name="pref_Notifications_QuickActions_Remind" translatable="false">4</string>
+    <string name="pref_Notifications_QuickActions_Close" translatable="false">5</string>
 
     <string-array name="pref_Notifications_QuickActions_values" translatable="false">
         <item>@string/pref_Notifications_QuickActions_Dial</item> <!--Позвонить-->
         <item>@string/pref_Notifications_QuickActions_Silent</item> <!--Не уведомлять-->
         <item>@string/pref_Notifications_QuickActions_Hide</item> <!--Скрыть событие-->
         <item>@string/pref_Notifications_QuickActions_Remind</item> <!--Напомнить-->
+        <item>@string/pref_Notifications_QuickActions_Close</item> <!--Закрыть-->
     </string-array>
 
     <string-array name="pref_Notifications_QuickActions_values_default" translatable="false">

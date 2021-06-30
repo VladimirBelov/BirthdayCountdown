@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.21 8:51
+  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 14.03.21 18:08
+  ~  * Last modified 30.06.2021, 12:43
   ~  */
   -->
 
@@ -419,6 +419,58 @@
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"/>
 
+        <ListPreference
+            android:defaultValue="@string/pref_List_DateFormat_default"
+            android:key="@string/pref_List_DateFormat_key"
+            android:entries="@array/pref_List_DateFormat_entries"
+            android:entryValues="@array/pref_List_DateFormat_values"
+            android:title="@string/pref_List_DateFormat_title"
+            android:summary="@string/pref_List_DateFormat_description"
+            android:icon="@android:drawable/ic_menu_month"
+            android:dialogIcon="@android:drawable/ic_menu_month"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_Female_Names_key"
+            android:summary="@string/pref_Female_Names_description"
+            android:title="@string/pref_Female_Names_title"
+            android:hint="@string/pref_Female_Names_hint"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_List_Color_EventToday_key"
+            android:title="@string/pref_List_Color_EventToday_title"
+            android:summary="@string/pref_List_Color_EventToday_description"
+            android:defaultValue="@color/pref_List_Color_EventToday_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="4"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_List_Color_EventToday_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_List_Color_EventSoon_key"
+            android:title="@string/pref_List_Color_EventSoon_title"
+            android:summary="@string/pref_List_Color_EventSoon_description"
+            android:defaultValue="@color/pref_List_Color_EventSoon_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="4"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_List_Color_EventSoon_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_List_Color_EventJubilee_key"
+            android:title="@string/pref_List_Color_EventJubilee_title"
+            android:summary="@string/pref_List_Color_EventJubilee_description"
+            android:defaultValue="@color/pref_List_Color_EventJubilee_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="4"
+            app:itemLayout="@layout/dash_grid_item_color"
+            app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -477,7 +529,7 @@
             android:summary="@string/pref_Widgets_Color_EventCaption_description"
             android:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="5"
+            app:numColumns="4"
             app:itemLayout="@layout/dash_grid_item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventCaption_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -488,7 +540,7 @@
             android:summary="@string/pref_Widgets_Color_EventToday_description"
             android:defaultValue="@color/pref_Widgets_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="5"
+            app:numColumns="4"
             app:itemLayout="@layout/dash_grid_item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventToday_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -499,7 +551,7 @@
             android:summary="@string/pref_Widgets_Color_EventSoon_description"
             android:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="5"
+            app:numColumns="4"
             app:itemLayout="@layout/dash_grid_item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventSoon_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -510,7 +562,7 @@
             android:summary="@string/pref_Widgets_Color_EventFar_description"
             android:defaultValue="@color/pref_Widgets_Color_EventFar_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="5"
+            app:numColumns="4"
             app:itemLayout="@layout/dash_grid_item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -570,8 +622,8 @@
             android:key="@string/pref_Notifications_AlarmHour_key"
             android:summary="@string/pref_Notifications_AlarmHour_description"
             android:title="@string/pref_Notifications_AlarmHour_title"
-            android:icon="@android:drawable/ic_menu_today"
-            android:dialogIcon="@android:drawable/ic_menu_today"/>
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:dialogIcon="@android:drawable/ic_menu_recent_history"/>
 
         <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
         <RingtonePreference
@@ -592,8 +644,8 @@
             android:key="@string/pref_Notifications_QuickActions_key"
             android:title="@string/pref_Notifications_QuickActions_title"
             android:summary="@string/pref_Notifications_QuickActions_description"
-            android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"/>
 
         <Preference
             android:id="@+id/pref_NotifyTest"
