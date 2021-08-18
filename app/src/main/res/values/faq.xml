@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 11.08.2021, 22:23
   ~  */
   -->
 
@@ -30,7 +30,10 @@
         <item>Go to the widget settings and try to modify \"Custom events number\" setting</item>
 
         <item>#Widgets are not updating</item>
-        <item tools:ignore="TypographyDashes"><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul><li>for Xiaomi MIUI this is \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)<li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications<nobr>-></nobr>Advanced<nobr>-></nobr>Special app access<nobr>-></nobr>Battery optimization)<li>for Huawei EMUI this is \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
+        <item tools:ignore="TypographyDashes"><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
+        <li>for Xiaomi MIUI this is \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)
+        <li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications<nobr>-></nobr>Advanced<nobr>-></nobr>Special app access<nobr>-></nobr>Battery optimization)
+        <li>for Huawei EMUI this is \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
         <item tools:ignore="TypographyDashes"><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol><li>remove the widget from the screen<li>clear the launcher cache (in Android settings in the list of applications find the launcher and select \"clear cache\" in properties)<li>restart the smartphone<li>re-add the widget to the screen</ol>]]></item>
 
         <item>###Events</item>

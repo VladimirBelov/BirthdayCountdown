@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 12.08.2021, 11:10
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.6.3</item>
+                <item>Оптимизации для Android 11 и 12</item>
+                <item>Добавлена настройка принудительного обновления виджетов</item>
+                <item>Добавлено предупреждение о включённой оптимизации батареи</item>
+                <item>Добавлен виджет со списком событий и фотографиями контактов</item>
+                <item>В формат дат добавлен \"Д ММММ ГГГГ\"</item>
 
                 <item>#1.6.2</item>
                 <item>Добавлен виджет со списком событий</item>

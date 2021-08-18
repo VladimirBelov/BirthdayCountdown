@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 11.08.2021, 22:23
   ~  */
   -->
 
@@ -47,6 +47,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:isScrollContainer="true">
+
+
+                <TextView
+                    android:id="@+id/hintBatteryOptimization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:onClick="openBatteryOptimisationsSettings"
+                    android:paddingBottom="20dp"
+                    android:text="@string/widget_config_hint_battery_optimization_title"
+                    android:textColor="@color/dark_red"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/captionEventTypes"

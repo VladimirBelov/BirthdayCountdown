@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
@@ -43,6 +43,8 @@ final class Constants {
     static final String DATE_DD_MM = "dd.MM";
     static final String DATE_DD_MMM_YYYY = "dd MMM yyyy";
     static final String DATE_DD_MMM = "dd MMM";
+    static final String DATE_D_MMMM_YYYY = "d MMMM yyyy";
+    static final String DATE_D_MMMM = "d MMMM";
     static final String DATE_RUS = "dd MMMMM yyyy г.";
     static final String DATE_US = "MMM dd, yyyy";
     static final String DATE_UK = "dd/MM/yyyy";
@@ -186,6 +188,7 @@ final class Constants {
     static final String MSG_CREATED_CHANNEL_ = "Created channel ";
     static final String MSG_SENT_WIDGETS_UPDATE_REQUEST = "Sent widgets update request";
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
+    static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
 
     static final String RULE_TAG_NAME = "[name]";
     static final String RULE_TAG_ALIAS = "[alias]";
@@ -193,9 +196,12 @@ final class Constants {
     //Ошибки
 
     static final String ALARM_RECEIVER_ON_RECEIVE_ERROR = "AlarmReceiver->onReceive error:\n";
+    static final String ACTION_RECEIVER_ON_RECEIVE_ERROR = "ActionReceiver->onReceive error:\n";
+    static final String WIDGETUPDATE_RECEIVER_ON_RECEIVE_ERROR = "WidgetUpdaterReceiver->onReceive error:\n";
 
     static final String CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR = "ContactsEvents->checkIsHiddenEvent error:\n";
     static final String CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR = "ContactsEvents->checkIsSilentEvent error:\n";
+    static final String CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR = "ContactsEvents->checkNoBatteryOptimization error:\n";
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
@@ -216,6 +222,7 @@ final class Constants {
     static final String CONTACTS_EVENTS_GET_PREFERENCES_ERROR = "ContactsEvents->getPreferences error:\n";
     static final String CONTACTS_EVENTS_INIT_BOOT_RECEIVER_ERROR = "ContactsEvents->initBootReceiver error:\n";
     static final String CONTACTS_EVENTS_INIT_NOTIFICATIONS_ERROR = "ContactsEvents->initNotifications error:\n";
+    static final String CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR = "ContactsEvents->initWidgetUpdate error:\n";
     static final String CONTACTS_EVENTS_INIT_NOTIFICATION_CHANNEL_ERROR = "ContactsEvents->initNotificationChannel error:\n";
     static final String CONTACTS_EVENTS_INSERT_PREVIOUS_EVENTS_ERROR = "ContactsEvents->insertPreviousEvents error:\n";
     static final String CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR = "ContactsEvents->setHiddenEvent error:\n";
@@ -251,6 +258,9 @@ final class Constants {
 
     static final String EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventListDataProvider->getViewAt error:\n";
     static final String EVENT_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventListDataProvider->initData error:\n";
+
+    static final String EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventPhotoListDataProvider->getViewAt error:\n";
+    static final String EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventPhotoListDataProvider->initData error:\n";
 
     static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "GetAccountsListAdapter->getView error:\n";
 
@@ -304,6 +314,8 @@ final class Constants {
     static final String WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR = "Widget5x1->updateAppWidget error:\n";
     static final String WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "WidgetList->onAppWidgetOptionsChanged error:\n";
     static final String WIDGET_LIST_UPDATE_APP_WIDGET_ERROR = "WidgetList->updateAppWidget error:\n";
+    static final String WIDGET_PHOTO_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "WidgetPhotoList->onAppWidgetOptionsChanged error:\n";
+    static final String WIDGET_PHOTO_LIST_UPDATE_APP_WIDGET_ERROR = "WidgetPhotoList->updateAppWidget error:\n";
     static final String WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR = "WidgetConfigureActivity->buttonOkOnClick error:\n";
     static final String WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR = "WidgetConfigureActivity->onCreate error:\n";
     static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invokePhotoEventsUpdate error:\n";

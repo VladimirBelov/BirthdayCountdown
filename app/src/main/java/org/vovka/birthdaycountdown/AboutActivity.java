@@ -1,12 +1,20 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
+import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
+import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -35,14 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-
-import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
-import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
 //todo: подсветка нововведений в интерфейсе
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
@@ -246,7 +246,7 @@ public class AboutActivity extends AppCompatActivity {
                     eventsData.preferences_debug_on = !eventsData.preferences_debug_on;
                     preferences
                             .edit()
-                            .putBoolean(getString(R.string.pref_Debug_On_key), eventsData.preferences_debug_on)
+                            .putBoolean(getString(R.string.pref_Help_Debug_On_key), eventsData.preferences_debug_on)
                             .apply();
                     Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_LONG).show();
                 }

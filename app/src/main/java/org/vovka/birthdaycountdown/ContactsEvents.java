@@ -1,96 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 16.08.2021, 0:03
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioAttributes;
-import android.net.Uri;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.provider.CalendarContract;
-import android.provider.ContactsContract;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.text.format.Time;
-import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static android.text.TextUtils.isEmpty;
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.util.Calendar.DATE;
-import static java.util.Calendar.DAY_OF_YEAR;
-import static java.util.Calendar.HOUR_OF_DAY;
-import static java.util.Calendar.MILLISECOND;
-import static java.util.Calendar.MINUTE;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.SECOND;
-import static java.util.Calendar.YEAR;
 import static org.vovka.birthdaycountdown.Constants.ACTION_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.ACTION_DIAL;
 import static org.vovka.birthdaycountdown.Constants.ACTION_HIDE;
@@ -147,6 +65,91 @@ import static org.vovka.birthdaycountdown.Constants.Type_NameDay;
 import static org.vovka.birthdaycountdown.Constants.Type_Other;
 import static org.vovka.birthdaycountdown.Constants.defaultNotificationID;
 import static org.vovka.birthdaycountdown.Constants.defaultQuizID;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.DAY_OF_YEAR;
+import static java.util.Calendar.HOUR_OF_DAY;
+import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.SECOND;
+import static java.util.Calendar.YEAR;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.PowerManager;
+import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.text.format.Time;
+import android.view.View;
+import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class ContactsEvents {
     private static final ContactsEvents ourInstance = new ContactsEvents();
@@ -287,6 +290,7 @@ class ContactsEvents {
     String preferences_birthday_calendars_rules;
     private boolean preferences_birthday_calendars_useyear;
 
+    int preferences_widgets_update_period;
     Set<String> preferences_widgets_event_info;
     String preferences_widgets_bottom_info;
     String preferences_widgets_bottom_info_2nd;
@@ -354,6 +358,10 @@ class ContactsEvents {
     String preferences_notifications_ringtone;
 
     String preferences_quiz_interface;
+
+    //https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
+    final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+    final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
 
     static class MyTheme {
         int prefNumber; //Номер в shared preferences
@@ -738,7 +746,7 @@ class ContactsEvents {
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
             Set<String> someSets;
 
-            preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Debug_On_key), false);
+            preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), false);
             preferences_language = preferences.getString(context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
 
            /* preferences_list_event_types_on = prefs_EventTypes_DefaultB;
@@ -774,6 +782,7 @@ class ContactsEvents {
             preferences_widgets_bottom_info = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
             preferences_widgets_bottom_info_2nd = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
             preferences_widgets_days_eventsoon = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default))));
+            preferences_widgets_update_period = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Widgets_UpdateInterval_key), context.getString(R.string.pref_Widgets_UpdateInterval_default))));
 
             try {
 
@@ -1225,7 +1234,7 @@ class ContactsEvents {
 
     }
 
-    boolean getEvents(Context in_context) {
+    synchronized boolean getEvents(Context in_context) {
 
         context = in_context;
         if (context == null) return false;
@@ -2072,7 +2081,7 @@ class ContactsEvents {
             boolean isDeath = eventSubType.equals(eventTypesIDs.get(Type_Death));
             float offsetWidget = forWidget ? (9 * getResources().getDisplayMetrics().density) : 0;
 
-            if (!singleEventArray[Position_contactID].isEmpty() && !singleEventArray[Position_photo_uri].isEmpty() && showPhotos && !singleEventArray[Position_photo_uri].equalsIgnoreCase(STRING_NULL)) {
+            if (showPhotos && !singleEventArray[Position_contactID].isEmpty() && !singleEventArray[Position_photo_uri].isEmpty() && !singleEventArray[Position_photo_uri].equalsIgnoreCase(STRING_NULL)) {
                 //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                 if (contentResolver == null) contentResolver = context.getContentResolver();
                 Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
@@ -2196,16 +2205,19 @@ class ContactsEvents {
                         new String[]{ ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE},
                         null);
                 if (dataCursor != null) {
-                    while (dataCursor.moveToNext()) {
-                        contactData = dataCursor.getString(dataCursor.getColumnIndex(columnName));
-                        if (contactData != null && !contactData.isEmpty()) {
-                            //исключаем всё, что внутри скобок
-                            int pStart = contactData.indexOf(STRING_PARENTHESIS_OPEN);
-                            int pEnd = contactData.indexOf(STRING_PARENTHESIS_CLOSE);
-                            if (pStart > -1 && pEnd > pStart) {
-                                contactData = contactData.substring(0, pStart);
+                    int columnIndex = dataCursor.getColumnIndex(columnName);
+                    if (columnIndex > 0) {
+                        while (dataCursor.moveToNext()) {
+                            contactData = dataCursor.getString(columnIndex);
+                            if (contactData != null && !contactData.isEmpty()) {
+                                //исключаем всё, что внутри скобок
+                                int pStart = contactData.indexOf(STRING_PARENTHESIS_OPEN);
+                                int pEnd = contactData.indexOf(STRING_PARENTHESIS_CLOSE);
+                                if (pStart > -1 && pEnd > pStart) {
+                                    contactData = contactData.substring(0, pStart);
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
                     dataCursor.close();
@@ -2258,9 +2270,12 @@ class ContactsEvents {
                 while (dataCursor.moveToNext()) {
                     for (String columnName: columnNames) {
                         if (!columnName.equals(ContactsContract.Contacts.PHOTO_URI) && !resultMap.containsKey(columnName)) {
-                            contactData = dataCursor.getString(dataCursor.getColumnIndex(columnName));
-                            if (contactData != null && !contactData.isEmpty()) {
-                                resultMap.put(columnName, contactData);
+                            int columnIndex = dataCursor.getColumnIndex(columnName);
+                            if (columnIndex > 0) {
+                                contactData = dataCursor.getString(columnIndex);
+                                if (contactData != null && !contactData.isEmpty()) {
+                                    resultMap.put(columnName, contactData);
+                                }
                             }
                         }
                     }
@@ -2296,19 +2311,24 @@ class ContactsEvents {
                     new String[]{ ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE },
                     null);
             if (nameCursor != null) {
-                while (nameCursor.moveToNext()) {
-                    lastName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-                    firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                    secondName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
+                int columnIndexFamily = nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME);
+                int columnIndexGiven = nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
+                int columnIndexMiddle = nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME);
+                if (columnIndexFamily > 0 && columnIndexGiven > 0 && columnIndexMiddle > 0) {
+                    while (nameCursor.moveToNext()) {
+                        lastName = nameCursor.getString(columnIndexFamily);
+                        firstName = nameCursor.getString(columnIndexGiven);
+                        secondName = nameCursor.getString(columnIndexMiddle);
 
-                    final String secondNameWord = (!isEmpty(secondName) ? STRING_SPACE + secondName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY);
-                    if (!isEmpty(lastName)) {
-                        result = lastName + (!isEmpty(firstName) ? STRING_SPACE + firstName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY) + secondNameWord;
-                    } else if (!isEmpty(firstName)) {
-                        result = firstName.substring(0, 1).toUpperCase() + STRING_PERIOD + secondNameWord;
+                        final String secondNameWord = (!isEmpty(secondName) ? STRING_SPACE + secondName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY);
+                        if (!isEmpty(lastName)) {
+                            result = lastName + (!isEmpty(firstName) ? STRING_SPACE + firstName.substring(0, 1).toUpperCase() + STRING_PERIOD : STRING_EMPTY) + secondNameWord;
+                        } else if (!isEmpty(firstName)) {
+                            result = firstName.substring(0, 1).toUpperCase() + STRING_PERIOD + secondNameWord;
+                        }
+
+                        if (!isEmpty(result)) break;
                     }
-
-                    if (!isEmpty(result)) break;
                 }
                 nameCursor.close();
             }
@@ -2340,8 +2360,9 @@ class ContactsEvents {
 
             if (phoneCursor != null) {
                 //todo: сделать получение основного телефона
-                if (phoneCursor.moveToFirst()) {
-                    phone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                int columnIndexPhone = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                if (columnIndexPhone > 0 && phoneCursor.moveToFirst()) {
+                    phone = phoneCursor.getString(columnIndexPhone);
                 }
                 phoneCursor.close();
             }
@@ -2354,7 +2375,7 @@ class ContactsEvents {
 
     }
 
-    void computeDates() {
+    synchronized void computeDates() {
         //Вычисляем даты
 
         if (isEmptyArray()) return;
@@ -2596,8 +2617,7 @@ class ContactsEvents {
 
                 } else {
 
-                    singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3); //Для сортировки
-                    singleEventArray[Position_eventDate] = sdfYear.format(BDay); //следующая дата события
+                   singleEventArray[Position_eventDate] = sdfYear.format(BDay); //следующая дата события
                     if (isYear) { //Дата с годом
                         singleEventArray[Position_eventDateText] = sdfYear.format(eventDate); //оригинальное событие
                     } else { //Дата без года
@@ -2638,15 +2658,16 @@ class ContactsEvents {
                         singleEventArray[Position_age_current] = STRING_SPACE;
                     }
                     if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
-                        //if (preferences_list_event_info.contains(pref_List_EventInfo_ZodiacSign)) {
                         final String zodiacSign = getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleEventArray[Position_eventDateText]);
                         singleEventArray[Position_zodiacSign] = zodiacSign.equals(STRING_EMPTY) ? STRING_SPACE : zodiacSign;
-                        //}
-                        //if (preferences_list_event_info.contains(pref_List_EventInfo_ZodiacYear)) {
                         final String zodiacYear = getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleEventArray[Position_eventDateText]);
                         singleEventArray[Position_zodiacYear] = zodiacYear.equals(STRING_EMPTY) ? STRING_SPACE : zodiacYear;
-                        //}
                     }
+
+                    //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
+                    String eventKey = getEventKey(singleEventArray);
+                    String advOffset = checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1";
+                    singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3) + advOffset;
 
                     eventList.set(i, TextUtils.join(Constants.STRING_2HASH, singleEventArray));
 
@@ -2664,8 +2685,7 @@ class ContactsEvents {
                             int magicDayDistance = (int) (365 - mdays);
                             cal5K.add(Calendar.DATE, magicDayDistance);
 
-                            //String[] newDataArray = dataArray[i].split(STRING_2HASH);
-                            singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3);
+                            singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3) + advOffset;
                             singleEventArray[Position_eventType] = eventTypesIDs.get(Type_5K);
                             singleEventArray[Position_eventSubType] = eventTypesIDs.get(Type_5K);
                             singleEventArray[Position_eventCaption] = "5K+";
@@ -2917,7 +2937,7 @@ class ContactsEvents {
         return dataList;
     }
 
-    void updateWidgets() {
+    void updateWidgets(int widgetID) {
 
         if (context == null) return;
 
@@ -2929,30 +2949,36 @@ class ContactsEvents {
         if (ids != null && ids.length > 0 && ids[0] != 0) {
             //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
             Widget2x2 myWidget = new Widget2x2();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 && contains(ids, widgetID) ? new int[] {widgetID} : ids);
         }
 
         ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
         if (ids != null && ids.length > 0 && ids[0] != 0) {
             //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
             Widget5x1 myWidget = new Widget5x1();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 && contains(ids, widgetID) ? new int[] {widgetID} : ids);
         }
 
         ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
         if (ids != null && ids.length > 0 && ids[0] != 0) {
             //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
             Widget4x1 myWidget = new Widget4x1();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 && contains(ids, widgetID) ? new int[] {widgetID} : ids);
         }
 
         ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
         if (ids != null && ids.length > 0 && ids[0] != 0) {
             //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
             WidgetList myWidget = new WidgetList();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 && contains(ids, widgetID) ? new int[] {widgetID} : ids);
         }
 
+        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
+        if (ids != null && ids.length > 0 && ids[0] != 0) {
+            //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+            WidgetPhotoList myWidget = new WidgetPhotoList();
+            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 && contains(ids, widgetID) ? new int[] {widgetID} : ids);
+        }
     }
 
     void initNotificationChannel(StringBuilder log) {
@@ -3033,12 +3059,51 @@ class ContactsEvents {
         }
     }
 
+    void initWidgetUpdate(StringBuilder log) {
+
+        try {
+
+            Intent alarmIntent = new Intent(context, WidgetUpdateReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentMutable);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+            if (preferences_widgets_update_period > 0) {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.add(HOUR_OF_DAY, preferences_widgets_update_period);
+
+                if (alarmManager != null) {
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * preferences_widgets_update_period, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    }
+
+                    if (preferences_debug_on) {
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
+                        log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf.format(calendar.getTime())).append(STRING_EOF);
+                    }
+                }
+
+            } else { //Disable
+                if (PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
+                    alarmManager.cancel(pendingIntent);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     void initNotifications(StringBuilder log) {
 
         try {
 
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentMutable);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             if (preferences_notifications_days.size() > 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
@@ -3066,7 +3131,7 @@ class ContactsEvents {
                 }
 
             } else { //Disable Daily Notifications
-                if (PendingIntent.getBroadcast(context, 0, alarmIntent, 0) != null && alarmManager != null) {
+                if (PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
                     alarmManager.cancel(pendingIntent);
                 }
             }
@@ -3175,7 +3240,7 @@ class ContactsEvents {
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                         .setColor(this.getResources().getColor(R.color.dark_green))
@@ -3250,7 +3315,7 @@ class ContactsEvents {
                         if (uri != null) {
                             intent.setData(uri);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
                             builder.setContentIntent(pendingIntent);
                         }
 
@@ -3261,52 +3326,52 @@ class ContactsEvents {
                                 && !singleEventArray[Position_contactID].isEmpty()
                                 && !getContactPhone(parseToLong(singleEventArray[Position_contactID])).isEmpty()) {
 
-                            Intent intentDial = new Intent(context, AlarmReceiver.class);
+                            Intent intentDial = new Intent(context, ActionReceiver.class);
                             intentDial.setAction(ACTION_DIAL);
                             intentDial.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                             intentDial.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                            PendingIntent pendingDial = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentDial, 0);
+                            PendingIntent pendingDial = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentDial, PendingIntentImmutable);
                             NotificationCompat.Action actionDial = new NotificationCompat.Action(0, context.getString(R.string.button_dial), pendingDial);
                             builder.addAction(actionDial);
 
                         }
 
                         if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
-                            Intent intentSilent = new Intent(context, AlarmReceiver.class);
+                            Intent intentSilent = new Intent(context, ActionReceiver.class);
                             intentSilent.setAction(ACTION_SILENT);
                             intentSilent.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                             intentSilent.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                            PendingIntent pendingSilent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSilent, 0);
+                            PendingIntent pendingSilent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSilent, PendingIntentImmutable);
                             NotificationCompat.Action actionSilent = new NotificationCompat.Action(0, context.getString(R.string.button_silent), pendingSilent);
                             builder.addAction(actionSilent);
                         }
 
                         if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
-                            Intent intentHide = new Intent(context, AlarmReceiver.class);
+                            Intent intentHide = new Intent(context, ActionReceiver.class);
                             intentHide.setAction(ACTION_HIDE);
                             intentHide.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                             intentHide.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                            PendingIntent pendingHide = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentHide, 0);
+                            PendingIntent pendingHide = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentHide, PendingIntentImmutable);
                             NotificationCompat.Action actionHide = new NotificationCompat.Action(0, context.getString(R.string.button_hide), pendingHide);
                             builder.addAction(actionHide);
                         }
 
                         if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Remind))) {
-                            Intent intentSnooze = new Intent(context, AlarmReceiver.class);
+                            Intent intentSnooze = new Intent(context, ActionReceiver.class);
                             intentSnooze.setAction(ACTION_SNOOZE);
                             intentSnooze.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                             intentSnooze.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                            PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSnooze, 0);
+                            PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
                             NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
                             builder.addAction(actionSnooze);
                         }
 
                         if (preferences_notifications_priority > 2 && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                            Intent intentClose = new Intent(context, AlarmReceiver.class);
+                            Intent intentClose = new Intent(context, ActionReceiver.class);
                             intentClose.setAction(ACTION_CLOSE);
                             intentClose.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                             intentClose.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify[i]);
-                            PendingIntent pendingClose = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentClose, 0);
+                            PendingIntent pendingClose = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
                             NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionSnooze);
                         }
@@ -3365,11 +3430,11 @@ class ContactsEvents {
 
             if (isEmpty(dataNotify) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
-            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+            Intent alarmIntent = new Intent(context, ActionReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
             alarmIntent.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), alarmIntent, 0); //PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, defaultNotificationID + generator.nextInt(100), alarmIntent, PendingIntentMutable); //PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             long currentTimeMillis = System.currentTimeMillis();
@@ -3451,15 +3516,15 @@ class ContactsEvents {
                 if (uri != null) {
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
                     builder.setContentIntent(pendingIntent);
                 }
 
-                Intent intentSnooze = new Intent(context, AlarmReceiver.class);
+                Intent intentSnooze = new Intent(context, ActionReceiver.class);
                 intentSnooze.setAction(ACTION_SNOOZE); //todo: добавить все кнопки
                 intentSnooze.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
                 intentSnooze.putExtra(EXTRA_NOTIFICATION_DATA, dataNotify);
-                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, notificationID, intentSnooze, 0);
+                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, notificationID, intentSnooze, PendingIntentImmutable);
                 NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
                 builder.addAction(actionSnooze);
 
@@ -4078,6 +4143,26 @@ class ContactsEvents {
                     }
                     break;
 
+                case 7: // D MMMM YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (format == FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY, locale);
+                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM, locale);
+                        }
+                        if (sdfOut != null) resultString = sdfOut.format(eventDate);
+                    }
+                    break;
+
                 default:
 
                     //https://stackoverflow.com/questions/3790918/format-date-without-year
@@ -4270,7 +4355,12 @@ class ContactsEvents {
 
                     //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
                     //https://www.w3schools.com/colors/colors_names.asp
-                    Toast.makeText(context, HtmlCompat.fromHtml((isNotifyInterface ? "<b>" + question.replace("\n", "</b><br>") + "<br><br>" : STRING_EMPTY) + "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>" + a[2].replace("\n", "<br>") + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+
+                    //todo: https://issuetracker.google.com/190786028 How to check Android 12 API level?
+                    Toast.makeText(context, HtmlCompat.fromHtml(
+                            (isNotifyInterface && Build.VERSION.SDK_INT < Build.VERSION_CODES.S ? "<b>" + question.replace("\n", "</b><br>") + "<br><br>" : STRING_EMPTY) +
+                                    "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>" + a[2].replace("\n", "<br>") + "</font>"
+                            , HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -4309,7 +4399,7 @@ class ContactsEvents {
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
                 builder.setContentIntent(pendingIntent);
 
                 if (quest.event != null && !quest.event.isEmpty()) {
@@ -4326,7 +4416,7 @@ class ContactsEvents {
                     if (uri != null) {
                         intent.setData(uri);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                        pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
                         builder.setContentIntent(pendingIntent);
                     }
                 }
@@ -4343,7 +4433,7 @@ class ContactsEvents {
                         intentQuiz.setAction(a[2]);
                         intentQuiz.putExtra(EXTRA_QUIZ_QUESTION, quest.type + "\n" + quest.question);
                         intentQuiz.putExtra(EXTRA_QUIZ_RESULT, action);
-                        pendingQuiz = PendingIntent.getBroadcast(context, defaultQuizID, intentQuiz, 0);
+                        pendingQuiz = PendingIntent.getBroadcast(context, defaultQuizID, intentQuiz, PendingIntentImmutable);
                         actionQuiz = new NotificationCompat.Action(0, a[1], pendingQuiz);
                         builder.addAction(actionQuiz);
                     }
@@ -4757,13 +4847,13 @@ class ContactsEvents {
         }
     }
 
-    List<String> getFilteredEventList(List<String> eventList, List<String> widgetPref) {
+    synchronized List<String> getFilteredEventList(List<String> eventList, List<String> widgetPref) {
 
         List<String> resultList = new ArrayList<>();
 
         try {
 
-            if (eventList == null || widgetPref == null || eventList.size() == 0) return resultList;
+            if (widgetPref == null || eventList.size() == 0) return resultList;
 
             List<String> eventsPrefList = new ArrayList<>();
             if (widgetPref.size() > 3) {
@@ -4792,10 +4882,40 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (preferences_debug_on) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
+            }
         }
 
         return resultList;
+    }
+
+    boolean checkNoBatteryOptimization() {
+
+        //https://stackoverflow.com/questions/32627342/how-to-whitelist-app-in-doze-mode-android-6-0/32627788#32627788
+
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String packageName = context.getPackageName();
+                PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                return pm.isIgnoringBatteryOptimizations(packageName);
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return true;
+        }
+    }
+
+    public static boolean contains(final int[] arr, final int key) {
+        for (final int i : arr) {
+            if (i == key) return true;
+        }
+        return false;
     }
 
 }

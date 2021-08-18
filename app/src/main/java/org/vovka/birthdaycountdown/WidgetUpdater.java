@@ -1,33 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
 package org.vovka.birthdaycountdown;
-
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.CalendarContract;
-import android.provider.ContactsContract;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.RemoteViews;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
@@ -84,6 +63,28 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_title;
 
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 class WidgetUpdater {
     final private Context context;
     final private ContactsEvents eventsData;
@@ -106,6 +107,8 @@ class WidgetUpdater {
     private int eventsToSkip;
     private List<String> widgetPref;
 
+    final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+
     WidgetUpdater(@NonNull Context context, @NonNull ContactsEvents eventsData, @NonNull RemoteViews views, int eventsCount, int width, int height, int widgetId) {
         this.context = context;
         this.eventsData = eventsData;
@@ -121,7 +124,7 @@ class WidgetUpdater {
         //http://flowovertop.blogspot.com/2013/04/android-widget-with-button-click-to.html
         Intent intentView = new Intent(context, MainActivity.class);
         intentView.setAction(ACTION_LAUNCH);
-        views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
+        views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
 
         //Получаем данные
         if (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
@@ -229,7 +232,7 @@ class WidgetUpdater {
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(ACTION_LAUNCH);
                 intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
-                views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
             } else {
 
@@ -711,7 +714,7 @@ class WidgetUpdater {
                 }
                 if (uri != null) {
                     intentView.setData(uri);
-                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntent.FLAG_UPDATE_CURRENT));
+                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
                 }
 
             } else {
@@ -719,10 +722,10 @@ class WidgetUpdater {
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(ACTION_LAUNCH);
                 intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
-                if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
-                if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_CENTERED + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
-                if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
-                if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND_CENTERED + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, 0));
+                if (visibleCell % 2 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+                if (visibleCell % 3 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_CENTERED + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+                if (visibleCell % 5 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+                if (visibleCell % 7 == 0) views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_TEXT_VIEW_2_ND_CENTERED + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
             }
 

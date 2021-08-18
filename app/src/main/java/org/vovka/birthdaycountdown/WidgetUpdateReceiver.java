@@ -2,7 +2,7 @@
  * *
  *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 13.08.2021, 11:09
  *
  */
 
@@ -13,7 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class WidgetUpdateReceiver extends BroadcastReceiver {
 
     private ContactsEvents eventsData;
 
@@ -27,22 +27,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            if (eventsData.preferences_notifications_days.size() != 0) {
-
-                eventsData.setLocale(true);
-                if (eventsData.getEvents(context)) {
-                    eventsData.computeDates();
-
-                    eventsData.showNotifications(false, Integer.toString(eventsData.preferences_notification_channel_id));
-                    //eventsData.updateWidgets();
-                }
-
+            if (eventsData.getEvents(context)) {
+                eventsData.computeDates();
             }
-
+            eventsData.updateWidgets(0);
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ALARM_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.WIDGETUPDATE_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 }

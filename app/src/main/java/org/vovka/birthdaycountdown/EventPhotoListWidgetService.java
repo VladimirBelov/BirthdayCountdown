@@ -11,11 +11,11 @@ package org.vovka.birthdaycountdown;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-public class EventListWidgetService extends RemoteViewsService {
+public class EventPhotoListWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new EventListDataProvider(this, intent);
+        return new EventPhotoListDataProvider(this, intent);
     }
 
 }

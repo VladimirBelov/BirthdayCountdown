@@ -36,8 +36,8 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Objects;
 
-// Список событий масштабируемый
-public class WidgetList extends AppWidgetProvider {
+// Список событий масштабируемый (с фото)
+public class WidgetPhotoList extends AppWidgetProvider {
 
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
@@ -53,10 +53,14 @@ public class WidgetList extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
 
             //Привязываем адаптер
-            Intent adapter = new Intent(context, EventListWidgetService.class);
+            Intent adapter = new Intent(context, EventPhotoListWidgetService.class);
             adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
+            //Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
+            //adapter.putExtra("intWidgetWidth", options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH));
+            //DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            //adapter.putExtra("floatScreenDensity", displayMetrics.density);
             views.setRemoteAdapter(R.id.widget_list, adapter);
 
             views.setTextViewText(R.id.empty_view, context.getString(R.string.msg_no_events));
@@ -76,7 +80,7 @@ public class WidgetList extends AppWidgetProvider {
             }
 
             //Реакция на нажатие
-            Intent listClickIntent = new Intent(context, WidgetList.class);
+            Intent listClickIntent = new Intent(context, WidgetPhotoList.class);
             listClickIntent.setAction(ACTION_CLICK);
             PendingIntent listClickPIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntentMutable);
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
@@ -86,7 +90,7 @@ public class WidgetList extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_LIST_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_PHOTO_LIST_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -119,13 +123,14 @@ public class WidgetList extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_PHOTO_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+
         if (Objects.requireNonNull(intent.getAction()).equalsIgnoreCase(ACTION_CLICK)) {
             String eventInfo = intent.getStringExtra(EXTRA_CLICKED_EVENT);
             if (eventInfo == null || eventInfo.isEmpty()) return;

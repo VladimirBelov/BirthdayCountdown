@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
@@ -15,10 +15,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -134,6 +136,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventTypes.setSelection(list);
 
             //Скрываем недоступные параметры
+
+            if (eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
+
             String widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
 
             if (widgetType.equals(".Widget4x1")) {
@@ -156,7 +161,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (widgetType.equals(".WidgetList")) {
+            if (widgetType.equals(".WidgetList") || widgetType.equals(".WidgetPhotoList")) {
 
                 //Скрываем стартовый номер
                 findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
@@ -166,7 +171,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(".WidgetList")) {
+            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(".WidgetList") || widgetType.equals(".WidgetPhotoList")) {
 
                 //Скрываем подсказку для существующих виджетов
                 findViewById(R.id.widget_hint).setVisibility(View.GONE);
@@ -227,9 +232,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             intent.putExtra(APP_WIDGET_ID, widgetId);
             setResult(RESULT_OK, intent);
 
-            //Посылаем сообщения на обновление виджетов
+            //Посылаем сообщение на обновление виджета
+            eventsData.updateWidgets(widgetId);
 
-            eventsData.updateWidgets();
+            //RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widgetlist);
+            //AppWidgetManager.getInstance(this).updateAppWidget(widgetId, views);
+            //AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged(widgetId, R.layout.widgetlist);
+
 
             finish();
         } catch (Exception e) {
@@ -241,5 +250,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public void buttonCancelOnClick(View view) {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public  void openBatteryOptimisationsSettings(View view) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+        startActivity(intent);
     }
 }
