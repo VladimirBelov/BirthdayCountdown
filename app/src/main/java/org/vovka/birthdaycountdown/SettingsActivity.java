@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
@@ -81,6 +81,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private String testChannelId = STRING_EMPTY;
     private TypedArray ta;
     private ContactsEvents eventsData;
+    private String eventTypeForSelect;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -306,6 +307,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Help_key));
+            if (prefCat != null) {
+                if (eventsData.checkNoBatteryOptimization()) {
+                    pref = findPreference(getString(R.string.pref_BatteryOptimization_key));
+                    if (pref != null) prefCat.removePreference(pref);
+                }
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e.toString(), Toast.LENGTH_LONG).show();
@@ -358,7 +368,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
                     return true;
                 }
 
@@ -372,25 +382,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
                     return true;
-                }
+                } else {
 
-                selectCalendars(ContactsEvents.eventTypesIDs.get(Type_BirthDay));
+                    selectCalendars(ContactsEvents.eventTypesIDs.get(Type_BirthDay));
+                }
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
                     return true;
-                }
+                } else {
 
-                selectCalendars(ContactsEvents.eventTypesIDs.get(Type_Other));
+                    selectCalendars(ContactsEvents.eventTypesIDs.get(Type_Other));
+                }
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key).equals(key)) {
 
                 editRules();
                 return true;
+
+            } else if (getString(R.string.pref_BatteryOptimization_key).equals(key)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    startActivity(intent);
+                }
 
             }
 
@@ -486,24 +508,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
-    //todo: наверное, убрать - не работает тут: https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
-/*    @Override
+    //https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-//
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                selectAccounts();
-//            }
-//        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            Toast.makeText(this, "TEST", Toast.LENGTH_LONG).show();
+       if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectAccounts();
+            }
+
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
+
+           if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
+           }
+
         }
 
-    }*/
+    }
 
     private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
 
@@ -602,7 +627,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     accountNames.add(account.name + STRING_PARENTHESIS_OPEN + account.type + STRING_PARENTHESIS_CLOSE);
                     for (AuthenticatorDescription desc : descriptions) {
                         if (account.type.equals(desc.type)) {
-                            accountIcons.add(desc.iconId);
+                            accountIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
                             accountPackages.add(desc.packageName);
                             break;
                         }

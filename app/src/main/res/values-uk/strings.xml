@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 15.08.2021, 23:08
   ~  */
   -->
 
@@ -20,20 +20,20 @@
 
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
-    <string name="menu_add_event_to_calendar">Додати подію в календар…</string>
+    <string name="menu_add_event_to_calendar">Додати подію до календаря…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Пошук…</string>
     <string name="menu_quiz">Вікторина</string>
     <string name="menu_filter_events">Фільтр…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
-    <string name="menu_context_edit_event">Показати подія в календарі</string>
+    <string name="menu_context_edit_event">Показати подію у календарі</string>
     <string name="menu_context_event_info">Дані про подію</string>
     <string name="menu_context_hide_event">Приховати подію</string>
     <string name="menu_context_unhide_event">Повернути показ події</string>
     <string name="menu_context_remind">Нагадати…</string>
-    <string name="menu_context_remind_1h">За 1 годину</string>
-    <string name="menu_context_remind_morning">В наступний ранок</string>
+    <string name="menu_context_remind_1h">Через 1 годину</string>
+    <string name="menu_context_remind_morning">На наступний ранок</string>
     <string name="menu_context_anniversary_list">Усі назви ювілеїв</string>
     <string name="menu_context_silent_event">Чи не повідомляти</string>
     <string name="menu_context_unsilent_event">Відновити повідомлення</string>
@@ -76,28 +76,28 @@
 
     <string name="msg_age_now">"Зараз: "</string>
     <string name="msg_age_was">"Було: "</string>
-    <string name="msg_age_could_be">"Было бы сейчас: "</string>
+    <string name="msg_age_could_be">"Було б зараз: "</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
     <string name="msg_notifications_soon">"Подій - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
-    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфон додатками (Google, Skype, VK, …)</string>
+    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфонi додатками (Google, Skype, VK, …)</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
-    <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у програмних настройках пункти \"%1$s\" та \"%2$s\""</string>
-    <string name="msg_no_access_contacts_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>
-    <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте дозволи додатку</string>
+    <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у налаштуваннях програми пунктiв \"%1$s\" та \"%2$s\""</string>
+    <!--<string name="msg_no_access_contacts_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>-->
+    <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте надання дозволiв додатку</string>
     <string name="msg_welcome_title">Ласкаво просимо!</string>
-    <string name="msg_welcome_text">Дякую, що встановили цю програму. Хоча більшість функцій налаштоване максимально інформативно і мінімально набридливо, рекомендується перевірити налаштування програми. Наприклад, там можна включити повідомлення про майбутні події або задати параметри для віджетів. Приємного користування!</string>
-    <string name="msg_new_version_title">"Зміни в версії %1$s:"</string>
+    <string name="msg_welcome_text">Дякую, що Ви встановили цю програму, хоча більшість функцій налаштована максимально інформативно та мінімально набридливо, раджу перевірити всi налаштування програми. (наприклад, там можна вiмкнути повідомлення про майбутні події або задати параметри для віджетів) Приємного Вам користування!</string>
+    <string name="msg_new_version_title">"Зміни поточної версії %1$s:"</string>
     <string name="msg_snoozed_until">"Відкладено до %1$s"</string>
     <string name="msg_notify_time">"Повідомлення встановлено на %1$s"</string>
     <string name="msg_filter_clear_confirmation">Очистити всі фільтри?</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
-    <string name="pref_Notifications_Notification_Channel_Description">Показати сповіщення про майбутні події</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
     <string name="pref_Notifications_Quiz_Channel_Name">Вікторина</string>
 
     <string name="hint_ContactIcon">Фото</string>
@@ -120,7 +120,7 @@
     <string name="button_all">Всі</string>
     <string name="button_snooze">Нагадати через годину</string>
     <string name="button_hide">Приховати</string>
-    <string name="button_silent">Виключити</string>
+    <string name="button_silent">Вимкнути</string>
     <string name="button_dial">Дзвонити</string>
     <string name="button_question">Надіслати запитання</string>
     <string name="button_close">Закрити</string>
@@ -147,6 +147,7 @@
     <string name="appwidget_name_5">На 5 подій</string>
     <string name="appwidget_name_1">На 1 подію</string>
     <string name="appwidget_name_List">Список подій</string>
+    <string name="appwidget_name_PhotoList">Список з фото</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
     <string name="widget_Date">Дата</string>
@@ -160,12 +161,12 @@
     <string name="pref_Theme_title">Тема</string>
     <string name="pref_Theme_description">Кольорова тема інтерфейсу</string>
     <string name="pref_Accounts_title">Облікові записи</string>
-    <string name="pref_Accounts_description">Шукати події тільки в даних облікових записах</string>
+    <string name="pref_Accounts_description">Шукати події тільки в наданих облікових записах</string>
 
     <string-array name="pref_Language_entries">
         <item>Автоматично</item>
         <item>Англійська</item>
-        <item>Німецький</item>
+        <item>Німецька</item>
         <item>Російська</item>
         <item>Іспанська</item>
         <item>Українська</item>
@@ -199,27 +200,27 @@
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Використовувати стандартні найменування для визначення річниць весіль</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Anniversary_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці весіль (через кому)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
     <string name="pref_CustomEvents_Anniversary_List_description">Усі відомі назви ювілеїв (по роках)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_description">Використовувати стандартні найменування для визначення іменин</string>
-    <string name="pref_CustomEvents_NameDay_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як іменини (через кому)</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_description">Використовувати стандартні найменування для визначення вінчань</string>
-    <string name="pref_CustomEvents_Crowning_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як вінчання (через кому)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Death_UseInternal_description">Використовувати стандартні найменування для визначення річниць смерті</string>
-    <string name="pref_CustomEvents_Death_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці смерті (через кому)</string>
 
-    <string name="pref_CustomEvents_Other_Labels_title">Свої найменування</string>
+    <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Other_Labels_description">Події контактів з такою міткою будуть ідентифіковані як інші події (через кому)</string>
     <string name="pref_CustomEvents_Calendars_title">Календарі</string>
     <string name="pref_CustomEvents_Calendars_description">Імпортувати події з обраних календарів</string>
@@ -275,7 +276,7 @@
         <item>Три попередніх події</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Формат для імені контакту</string>
+    <string name="pref_List_Caption_title">Формат вiдображення імені контакту</string>
     <string name="pref_List_Caption_description">І.Б.П. або П.І.Б.</string>
 
     <string-array name="pref_List_Caption_entries">
@@ -284,7 +285,7 @@
     </string-array>
 
     <string name="pref_List_DateFormat_title">Формат дати</string>
-    <string name="pref_List_DateFormat_description">Формат для дат, що відображаються в списку подій і віджети</string>
+    <string name="pref_List_DateFormat_description">Формат для дат, що відображаються в списку подій і віджетiв</string>
 
     <string-array name="pref_List_DateFormat_entries">
         <item>Відповідно до мовою</item>
@@ -293,6 +294,7 @@
         <item>ДД/ММ/РРРР</item>
         <item>ММ/ДД/РРРР</item>
         <item>ДД МММ РРРР</item>
+        <item>Д ММММ РРРР</item>
     </string-array>
 
     <string name="pref_Female_Names_title">Жіночі імена</string>
@@ -312,39 +314,51 @@
         <item>Значок вибраного</item>
         <item>Вік</item>
         <item>Знак зодіаку</item>
-        <item>Зодіакальний рік</item>
+        <item>Східний календар</item>
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
-    <string name="pref_List_Color_EventToday_title">Сьогодні події</string>
+    <string name="pref_List_Color_EventToday_title">Подiя сьогодні</string>
     <string name="pref_List_Color_EventToday_description">Заголовок кольору дня для сьогоднішніх подій</string>
 
-    <string name="pref_List_Color_EventSoon_title">Поруч події</string>
-    <string name="pref_List_Color_EventSoon_description">Колір відстані днів для найближчих подій</string>
+    <string name="pref_List_Color_EventSoon_title">Подiї поруч</string>
+    <string name="pref_List_Color_EventSoon_description">Колір заголовку днів до найближчих подій</string>
 
-    <string name="pref_List_Color_EventJubilee_title">Ювілейний</string>
+    <string name="pref_List_Color_EventJubilee_title">Ювілей</string>
     <string name="pref_List_Color_EventJubilee_description">Колір ювілейного віку</string>
 
     <string name="pref_Widgets_title">Віджети</string>
 
+    <string name="pref_Widgets_UpdateInterval_title">Період оновлення</string>
+    <string name="pref_Widgets_UpdateInterval_description">Інтервал примусового поновлення віджетів</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_entries">
+        <item>Автоматично (керується Android)</item>
+        <item>Кожну 1 годину</item>
+        <item>Кожні 2 години</item>
+        <item>Кожні 4 години</item>
+        <item>Кожні 6 годин</item>
+        <item>Кожні 12 годин</item>
+    </string-array>
+
     <string name="pref_Widgets_EventInfo_title">Деталі події</string>
-    <string name="pref_Widgets_EventInfo_description">Які деталі події і елементи віджету показувати</string>
+    <string name="pref_Widgets_EventInfo_description">Які показувати деталі події та елементи віджету</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>Рамка</item>
+        <item>Рамка вiджету</item>
         <item>Фото контакту</item>
         <item>Іконка типу події</item>
         <item>Іконка обраного контакту</item>
-        <item>Значок приглушеної події</item>
+        <item>Значок події без повiдомлення</item>
         <item>Знак зодіаку</item>
-        <item>Зодіакальний рік</item>
+        <item>Східний календар</item>
     </string-array>
 
-    <string name="pref_Widgets_BottomInfo_title">Підпис (нижній ряд)</string>
+    <string name="pref_Widgets_BottomInfo_title">Надпис (нижній ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Що показувати під фотографією</string>
 
-    <string name="pref_Widgets_BottomInfo2nd_title">Підпис (верхній ряд)</string>
-    <string name="pref_Widgets_BottomInfo2nd_description">Що показувати під фотографією</string>
+    <string name="pref_Widgets_BottomInfo2nd_title">Надпис (верхній ряд)</string>
+    <string name="pref_Widgets_BottomInfo2nd_description">Що показувати під фотографією</string> <!--  непонятно под или над -->
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Прізвище Ім’я По-батькові</item>
@@ -366,25 +380,27 @@
     <string name="pref_Widgets_Color_EventToday_title">Вік</string>
     <string name="pref_Widgets_Color_EventToday_description">Колір віку для сьогоднішньої події</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Днів до події (близько)</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Днів до події (незабаром)</string>
     <string name="pref_Widgets_Color_EventSoon_description">Колір лічильника днів для найближчих подій</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Днів до події (далеко)</string>
-    <string name="pref_Widgets_Color_EventFar_description">Колір лічильника днів для далеких подій</string>
+    <string name="pref_Widgets_Color_EventFar_title">Днів до події (згодом)</string>
+    <string name="pref_Widgets_Color_EventFar_description">Колір лічильника днів для подальших подій</string>
 
-    <string name="pref_Widgets_Days_EventSoon_description">За скільки днів події вважаються найближчими</string>
+    <string name="pref_Widgets_Days_EventSoon_description">Кiлькiсть днів до подій, що вважаються найближчими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>
 
+    <string name="widget_config_hint_battery_optimization_title">Оптимізація батареї для роботи цієї програми ввiмкнена, зважайте, що це може перешкодити оновленню віджетів або появи повідомлень. Вимкнути…</string>
+
     <string name="widget_config_event_types_title">Типи подій</string>
-    <string name="widget_config_event_types_description">Які події відображати на віджеті</string>
+    <string name="widget_config_event_types_description">Які події будуть відображенi на віджеті</string>
 
     <string name="widget_config_event_types_empty">Як в списку подій</string>
 
-    <string name="widget_config_index_label">Стартовий номер події:</string>
-    <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
+    <string name="widget_config_index_label">Початковий номер події:</string>
+    <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додавати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
 
     <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
-    <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, дистанції до події та інформації під фото</string>
+    <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, часу до події та інформації під фото</string>
     <string-array name="widget_config_font">
         <item>Автоматично</item>
         <item>x0.5</item>
@@ -398,7 +414,7 @@
     </string-array>
 
     <string name="widget_config_events_count_label">Кількість подій</string>
-    <string name="widget_config_events_count_description">Якщо подій занадто \"вузько\" або \"широко\" в віджеті, відкоригуйте кількість подій</string>
+    <string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>
     <string-array name="widget_config_events_count">
         <item>Авто</item>
         <item>-2</item>
@@ -407,21 +423,21 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис найправішої події:</string>
+    <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис подiї праворуч:</string>
 
     <string name="pref_Notifications_title">Повідомлення</string>
 
     <string name="pref_Notifications_Type_title">Стиль повідомлень</string>
-    <string name="pref_Notifications_Type_description">Як повідомлення будуть виглядати</string>
+    <string name="pref_Notifications_Type_description">Вигляд вiдображення повідомлень</string>
 
     <string-array name="pref_Notifications_Type_entries">
-        <item>Одне загальне повідомлення</item>
+        <item>Всi повідомлення загалом</item>
         <item>Кожна подія в окремому повідомленні</item>
-        <item>Якщо подію менше 3 => окремі, інакше - загальне</item>
-        <item>Якщо подію менше 4 => окремі, інакше - загальне</item>
+        <item>Якщо подію менше 3 => окремі, інакше - загальнi</item>
+        <item>Якщо подію менше 4 => окремі, інакше - загальнi</item>
     </string-array>
-
-    <string name="pref_Notifications_Days_title">Інтервал повідомлень</string>
+<!-- нет в русской текстовке -->
+    <string name="pref_Notifications_Days_title">Промiжок часу для повідомлень</string>
     <string name="pref_Notifications_Days_description">За скільки днів повідомляти</string>
 
     <string-array name="pref_Notifications_Days_entries">
@@ -434,12 +450,12 @@
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Пріоритет повідомлень</string>
-    <string name="pref_Notifications_Priority_description">Невідомі сповіщення з високим пріоритетом завжди вгорі. Щоб сховати їх, натисніть на нього</string>
+    <string name="pref_Notifications_Priority_description">Повiдомлення з високим пріоритетом, що не можна видалити, завжди вгорі. Щоб їх сховати, натисніть на нього</string>
 
     <string-array name="pref_Notifications_Priority_entries">
         <item>Стандартний пріоритет</item>
-        <item>Тільки підсумкове сповіщення є пріоритетним</item>
-        <item>Усі сповіщення мають високий пріоритет і їх не можна закрити</item>
+        <item>Тільки загальнi повiдомлення не пiдлягають видаленню</item>
+        <item>Всі повiдомлення мають високий прiорiтет з неможливiстю видалення</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Типи подій</string>
@@ -467,7 +483,7 @@
     <string-array name="pref_Notifications_QuickActions_entries">
         <item>Дзвонити</item>
         <item>Виключити з повідомлень</item>
-        <item>Приховати подія</item>
+        <item>Приховати подію</item>
         <item>Нагадати через 1 годину</item>
         <item>Закрити (для сповіщень із високим пріоритетом)</item>
     </string-array>
@@ -480,13 +496,15 @@
     <string name="pref_Quiz_Interface_description">Який інтерфейс використовувати для запитань</string>
 
     <string-array name="pref_Quiz_Interface_entries">
-        <item>Повідомлення (в будь-який момент можна перерватися і піти пошукати правильну відповідь)</item>
+        <item>Повідомлення (в будь-який час можна перерватись та піти пошукати правильну відповідь)</item>
         <item>Діалог (можна не поспішати з відповіддю, але не можна шукати підказки)</item>
     </string-array>
 
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_description">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>
     <string name="pref_Help_title">Допомога</string>
+    <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
+    <string name="pref_BatteryOptimization_description">Відкрити налаштування і вимкнути оптимізацію…</string>
     <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
     <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
@@ -510,98 +528,100 @@
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Події за акаунтів:</h2><ul>]]></string>
 
-    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/ -->
-    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Стеців</string>
-    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Паперова</string>
-    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Шкіряна</string>
-    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Льняна</string>
-    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Дерев\'яна</string>
-    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Чавунна</string>
-    <!-- Цинковая свадьба — 6,5 лет -->
-    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Мідна</string>
-    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Жерстяна</string>
-    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Фаянсова</string>
-    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Олов\'яне</string>
-    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Сталева</string>
-    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Нікелева</string>
-    <!-- Никелевая свадьба — 12,5 лет -->
-    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Конвалієве або Мереживна</string>
-    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Агатова</string>
-    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Кришталева</string>
-    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">Топазовая</string>
-    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">Рожева</string>
-    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">Бірюзова</string>
-    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">Гранатова</string>
-    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">Фарфорова</string>
-    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">Опалова</string>
-    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">Бронзова</string>
-    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">Берилові</string>
-    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">Атласна</string>
-    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Срібна</string>
-    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">Нефритовая</string>
+    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
+ https://kakaya-svadba.ru/
+ https://osoblyva.com/vesilni-richnytsi-ta-yih-nazvy-vid-0-do-100-rokiv/  -->
+    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцеве(Марлеве)</string>
+    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Паперове</string>
+    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Шкіряне(Пшеничне)</string>
+    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Льняне(Воскове)</string>
+    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Дерев\'яне</string>
+    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Чавунне</string>
+    <!-- Цинкове весiлля — 6,5 рокiв -->
+    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Мідне</string>
+    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Жерстяне</string>
+    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Фаянсове(Вербне)</string>
+    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Олов\'яне(Трояндове)</string>
+    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Сталеве</string>
+    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Нікелеве</string>
+    <!-- Шовкове весiлля — 12,5 рокiв -->
+    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Мереживне(Конвалієве)</string>
+    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Кiстяне(Агатове)</string>
+    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Скляне(Кришталеве)</string>
+    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">Топазове</string>
+    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">Рожеве</string>
+    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">Бірюзове</string>
+    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">Криптонове(Гранатове)</string>
+    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">Фарфорове</string>
+    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">Опалове</string>
+    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">Бронзове</string>
+    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">Берилове</string>
+    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">Атласне</string>
+    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Срібне</string>
+    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">Нефритове</string>
     <string name="event_type_wedding_27" tools:keep="@string/event_type_wedding_27">Червоного дерева</string>
-    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">Нікелева</string>
-    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">Оксамитова</string>
-    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Перлова</string>
-    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">Смаглява або Сонячна</string>
+    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">Нікелеве</string>
+    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">Оксамитове</string>
+    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Перлинове</string>
+    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">Смагляве(Сонячне)</string>
     <string name="event_type_wedding_32" tools:keep="@string/event_type_wedding_32">""</string>
-    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">Кам\'яна або Полунична</string>
-    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">Янтарна</string>
-    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Полотняна або Коралове</string>
+    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">Кам\'яне(Полуничне)</string>
+    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">Бурштинове</string>
+    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Полотняне(Коралове)</string>
     <string name="event_type_wedding_36" tools:keep="@string/event_type_wedding_36">""</string>
-    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">Муслінову</string>
-    <!-- Алюминиевая свадьба — 37,5 лет -->
+    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">Муслінове</string>
+    <!-- Алюмiнiєве весiлля — 37,5 рокiв -->
     <string name="event_type_wedding_38" tools:keep="@string/event_type_wedding_38">Ртутна</string>
-    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">Крепова</string>
-    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Рубінова</string>
+    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">Крепове</string>
+    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Рубінове</string>
     <string name="event_type_wedding_41" tools:keep="@string/event_type_wedding_41">Земляна</string> <!-- http://www.grc-eka.ru/svadba/41-god-zemlyanaya.html -->
     <string name="event_type_wedding_42" tools:keep="@string/event_type_wedding_42">Перламутрова</string>
     <string name="event_type_wedding_43" tools:keep="@string/event_type_wedding_43">Фланелева</string>
     <string name="event_type_wedding_44" tools:keep="@string/event_type_wedding_44">Топазовая</string>
     <string name="event_type_wedding_45" tools:keep="@string/event_type_wedding_45">Сапфірове</string>
     <string name="event_type_wedding_46" tools:keep="@string/event_type_wedding_46">Лавандова</string>
-    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">Кашемірова</string>
-    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">Аметистова</string>
-    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">Кедрова</string>
-    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Золота</string>
+    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">Кашемірове(Вовняне)</string>
+    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">Аметистове</string>
+    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">Кедрове</string>
+    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Золоте</string>
     <string name="event_type_wedding_51" tools:keep="@string/event_type_wedding_51">""</string>
     <string name="event_type_wedding_52" tools:keep="@string/event_type_wedding_52">""</string>
     <string name="event_type_wedding_53" tools:keep="@string/event_type_wedding_53">""</string>
     <string name="event_type_wedding_54" tools:keep="@string/event_type_wedding_54">""</string>
-    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Смарагдова</string>
+    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Смарагдове</string>
     <string name="event_type_wedding_56" tools:keep="@string/event_type_wedding_56">""</string>
     <string name="event_type_wedding_57" tools:keep="@string/event_type_wedding_57">""</string>
     <string name="event_type_wedding_58" tools:keep="@string/event_type_wedding_58">""</string>
     <string name="event_type_wedding_59" tools:keep="@string/event_type_wedding_59">""</string>
-    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Алмазна</string>
+    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Дiамантове(Алмазне)</string>
     <string name="event_type_wedding_61" tools:keep="@string/event_type_wedding_61">""</string>
     <string name="event_type_wedding_62" tools:keep="@string/event_type_wedding_62">""</string>
     <string name="event_type_wedding_63" tools:keep="@string/event_type_wedding_63">""</string>
     <string name="event_type_wedding_64" tools:keep="@string/event_type_wedding_64">""</string>
-    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Залізна</string>
+    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Залізне</string>
     <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
     <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
-    <!-- Каменная свадьба — 67,5 лет -->
-    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Благодатна</string>
-    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Коронна</string>
-    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Дубова</string>
+    <!-- Камяне весiлля — 67,5 рокiв -->
+    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Платинове,Вдячне,Благодатне</string>
+    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Коронне</string>
+    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Дубове</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
-    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Гранітна</string>
+    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Гранітне</string>
     <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
-    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Червона або Платіновая</string>
+    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Червоне</string>
 
-    <string name="zodiac_sign_aries">" Овен"</string>
-    <string name="zodiac_sign_taurus">" Телець"</string>
-    <string name="zodiac_sign_gemini">" Близнята"</string>
-    <string name="zodiac_sign_cancer">" Рак"</string>
-    <string name="zodiac_sign_leo">" Лев"</string>
-    <string name="zodiac_sign_virgo">" Діва"</string>
-    <string name="zodiac_sign_libra">" Терези"</string>
-    <string name="zodiac_sign_scorpio">" Скорпіон"</string>
-    <string name="zodiac_sign_sagittarius">" Стрілець"</string>
-    <string name="zodiac_sign_capricorn">" Козеріг"</string>
-    <string name="zodiac_sign_aquarius">" Водолій"</string>
-    <string name="zodiac_sign_pisces">" Риби"</string>
+    <string name="zodiac_sign_aries">" Овен"</string> <!-- Баран -->
+    <string name="zodiac_sign_taurus">" Телець"</string> <!-- Тур -->
+    <string name="zodiac_sign_gemini">" Близнюки"</string> <!-- Ворота -->
+    <string name="zodiac_sign_cancer">" Рак"</string> <!-- Дiд -->
+    <string name="zodiac_sign_leo">" Лев"</string> <!-- Ворон -->
+    <string name="zodiac_sign_virgo">" Діва"</string> <!-- Лада -->
+    <string name="zodiac_sign_libra">" Терези"</string> <!-- Доля -->
+    <string name="zodiac_sign_scorpio">" Скорпіон"</string> <!-- Громовик -->
+    <string name="zodiac_sign_sagittarius">" Стрілець"</string> <!-- Господар -->
+    <string name="zodiac_sign_capricorn">" Козеріг"</string> <!-- Коза -->
+    <string name="zodiac_sign_aquarius">" Водолій"</string> <!-- Водяник -->
+    <string name="zodiac_sign_pisces">" Риби"</string> <!-- Русалка -->
 
     <string name="zodiac_year_monkey">" Мавпа"</string>
     <string name="zodiac_year_rooster">" Півень"</string>
@@ -619,11 +639,11 @@
     <string name="msg_on">ВКЛ</string>
     <string name="msg_off">ВИКЛ</string>
 
-    <string name="quiz_msg_error_title">"Ошибка"</string>
-    <string name="quiz_msg_error_get_question">"Помилка отримання наступного питання!"</string>
+    <string name="quiz_msg_error_title">"Помилка"</string>
+    <string name="quiz_msg_error_get_question">"Помилка отримання наступного запитання!"</string>
 
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Відповідь: %1$s\nПравільний відповідь: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Відповідь: %1$s\nВiрна відповідь: %2$s (%3$s)"</string>
 
     <string name="quiz_month01_title">"Який місяць народження?"</string>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 17.08.2021, 10:49
   ~  */
   -->
 
@@ -86,7 +86,7 @@
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_calendars_hint">Доступные календари не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
-    <string name="msg_no_access_contacts_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>
+    <!--<string name="msg_no_access_contacts_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>-->
     <string name="msg_no_access_storage_hint">Нет доступа к внешнему хранилищу. Проверьте разрешения приложения</string>
     <string name="msg_welcome_title">Добро пожаловать!</string>
     <string name="msg_welcome_text">Спасибо, что установили эту программу. Хотя большинство функций настроено максимально информативно и минимально надоедливо, рекомендуется проверить настройки приложения. Например, там можно включить уведомления о предстоящих событиях или задать параметры для виджетов. Приятного пользования!</string>
@@ -147,6 +147,7 @@
     <string name="appwidget_name_1">На 1 событие</string>
     <string name="appwidget_name_5">На 5 событий</string>
     <string name="appwidget_name_List">Список событий</string>
+    <string name="appwidget_name_PhotoList">Список с фото</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ФИО</string>
     <string name="widget_Date">Дата</string>
@@ -293,6 +294,7 @@
         <item>ДД/ММ/ГГГГ</item>
         <item>ММ/ДД/ГГГГ</item>
         <item>ДД МММ ГГГГ</item>
+        <item>Д ММММ ГГГГ</item>
     </string-array>
 
     <string name="pref_Female_Names_title">Женские имена</string>
@@ -312,7 +314,7 @@
         <item>Иконка избранного контакта</item>
         <item>Возраст</item>
         <item>Знак зодиака</item>
-        <item>Зодиакальный год</item>
+        <item>Животное в восточном календаре</item>
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
@@ -327,6 +329,18 @@
 
     <string name="pref_Widgets_title">Виджеты</string>
 
+    <string name="pref_Widgets_UpdateInterval_title">Период обновления</string>
+    <string name="pref_Widgets_UpdateInterval_description">Интервал принудительного обновления виджетов</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_entries">
+        <item>Автоматически (управляется Android)</item>
+        <item>Каждый час</item>
+        <item>Каждые 2 часа</item>
+        <item>Каждые 4 часа</item>
+        <item>Каждые 6 часов</item>
+        <item>Каждые 12 часов</item>
+    </string-array>
+
     <string name="pref_Widgets_EventInfo_title">Детали события</string>
     <string name="pref_Widgets_EventInfo_description">Какие детали события и элементы виджета показывать</string>
 
@@ -337,13 +351,13 @@
         <item>Иконка избранного контакта</item>
         <item>Иконка события без уведомления</item>
         <item>Знак зодиака</item>
-        <item>Зодиакальный год</item>
+        <item>Животное в восточном календаре</item>
     </string-array>
 
-    <string name="pref_Widgets_BottomInfo_title">Заголовок (нижний ряд)</string>
+    <string name="pref_Widgets_BottomInfo_title">Надпись (нижний ряд)</string>
     <string name="pref_Widgets_BottomInfo_description">Что показывать под фотографией</string>
 
-    <string name="pref_Widgets_BottomInfo2nd_title">Заголовок (верхний ряд)</string>
+    <string name="pref_Widgets_BottomInfo2nd_title">Надпись (верхний ряд)</string>
     <string name="pref_Widgets_BottomInfo2nd_description">Что показывать под фотографией</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
@@ -387,6 +401,8 @@
 
     <string name="pref_Widgets_Days_EventSoon_description">За сколько дней события считаются ближайшими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Ближайшие события</string>
+
+    <string name="widget_config_hint_battery_optimization_title">Включена оптимизация батареи для этого приложения. Это может повлиять на обновление виджетов и работу уведомлений. Выключить оптимизацию…</string>
 
     <string name="widget_config_event_types_title">Типы событий</string>
     <string name="widget_config_event_types_description">Какие события отображать на виджете</string>
@@ -500,6 +516,8 @@
     <string name="pref_FAQ_title">Вопросы и Ответы</string>
     <string name="pref_FAQ_description">Если что-то работает не правильно или Вы не знаете, как настроить ту или иную функцию программы - Вам в этот раздел</string>
     <string name="pref_Help_title">Помощь</string>
+    <string name="pref_BatteryOptimization_title">Оптимизация батареи ВКЛЮЧЕНА</string>
+    <string name="pref_BatteryOptimization_description">Открыть настройку и выключить оптимизацию…</string>
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
     <string name="pref_Debug_On_hint">Нажмите ещё %1$d раз%2$s для %3$s отладочных сообщений</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы)</string>

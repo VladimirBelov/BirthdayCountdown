@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
@@ -58,6 +58,9 @@ class GetAccountsListAdapter extends ArrayAdapter<String> {
             textView.setTextSize(16);
             textView.setMaxLines(5);
 
+            //Context packageContext = this.context.createPackageContext(packages.get(position), 0);
+            //Resources resources = packageContext.getResources();
+            //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
             Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
             if (icon != null) {
                 Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

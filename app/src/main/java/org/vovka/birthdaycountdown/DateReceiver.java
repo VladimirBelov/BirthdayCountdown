@@ -1,19 +1,19 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-
-import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
 
 public class DateReceiver extends BroadcastReceiver {
 
@@ -35,12 +35,16 @@ public class DateReceiver extends BroadcastReceiver {
 
                 if (eventsData.context == null) eventsData.context = context;
                 eventsData.getPreferences();
+                eventsData.setLocale(true);
 
                 //Переинициализируем уведомления
                 eventsData.initNotifications(log);
 
+                //Переинициализируем обновления виджетов
+                eventsData.initWidgetUpdate(log);
+
                 //Посылаем сообщения на обновление виджетов
-                eventsData.updateWidgets();
+                eventsData.updateWidgets(0);
                 log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(STRING_EOF);
 
                 if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();

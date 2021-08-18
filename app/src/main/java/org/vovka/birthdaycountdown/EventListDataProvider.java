@@ -1,28 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
 package org.vovka.birthdaycountdown;
-
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.TypedValue;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-import android.widget.Toast;
-
-import androidx.core.text.HtmlCompat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
@@ -52,6 +36,22 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.TypedValue;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+import android.widget.Toast;
+
+import androidx.core.text.HtmlCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //https://developer.android.com/guide/topics/appwidgets
 //https://www.androidauthority.com/create-an-android-widget-1020839/
 //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/212-urok-121-vidzhety-spisok.html
@@ -70,10 +70,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     }
 
     @Override
-    public void onCreate()
-    {
-        initData();
-    }
+    public void onCreate() {}
 
     @Override
     public void onDataSetChanged() {
@@ -81,8 +78,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     }
 
     @Override
-    public void onDestroy() {
-    }
+    public void onDestroy() {}
 
     @Override
     public int getCount() {
@@ -110,7 +106,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         fontMagnify = fontMagnify * 0.85;
                         break;
                     case STRING_4:
-                        fontMagnify = fontMagnify * 1.0;
+                        //fontMagnify = fontMagnify * 1;
                         break;
                     case STRING_5:
                         fontMagnify = fontMagnify * 1.2;
@@ -200,7 +196,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
         }
 
         return views;
@@ -230,11 +226,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     private void initData() {
 
         try {
-            eventListView.clear();
+
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
             eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
             eventsData.setLocale(true);
 
             //Получаем данные
@@ -244,11 +241,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
 
+            eventListView.clear();
             eventListView.addAll(eventsData.getFilteredEventList(eventsData.eventList, widgetPref));
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
         }
 
     }

@@ -1,29 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 12.08.2021, 9:43
  *
  */
 
 package org.vovka.birthdaycountdown;
-
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.ContactsContract;
-import android.widget.RemoteViews;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import java.util.List;
-import java.util.Objects;
 
 import static org.vovka.birthdaycountdown.Constants.ACTION_CLICK;
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
@@ -35,10 +18,31 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import java.util.List;
+import java.util.Objects;
+
 // Список событий масштабируемый
 public class WidgetList extends AppWidgetProvider {
 
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
+
+        final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+        final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
 
         try {
 
@@ -62,7 +66,7 @@ public class WidgetList extends AppWidgetProvider {
             Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
             intentConfig.setAction(ACTION_LAUNCH);
             intentConfig.putExtra(PARAM_APP_WIDGET_ID, appWidgetId);
-            views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, 0));
+            views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
 
             if (eventsData.preferences_debug_on) {
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
@@ -74,7 +78,7 @@ public class WidgetList extends AppWidgetProvider {
             //Реакция на нажатие
             Intent listClickIntent = new Intent(context, WidgetList.class);
             listClickIntent.setAction(ACTION_CLICK);
-            PendingIntent listClickPIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, 0);
+            PendingIntent listClickPIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntentMutable);
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);

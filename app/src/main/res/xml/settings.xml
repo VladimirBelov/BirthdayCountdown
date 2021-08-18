@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 12.08.2021, 11:44
   ~  */
   -->
 
@@ -477,6 +477,16 @@
         android:title="@string/pref_Widgets_title"
         android:layout="@layout/settings_category">
 
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_UpdateInterval_default"
+            android:entries="@array/pref_Widgets_UpdateInterval_entries"
+            android:entryValues="@array/pref_Widgets_UpdateInterval_values"
+            android:key="@string/pref_Widgets_UpdateInterval_key"
+            android:summary="@string/pref_Widgets_UpdateInterval_description"
+            android:title="@string/pref_Widgets_UpdateInterval_title"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:dialogIcon="@android:drawable/ic_menu_recent_history"/>
+
         <MultiSelectListPreference
             android:defaultValue="@array/pref_Widgets_EventInfo_values_default"
             android:entries="@array/pref_Widgets_EventInfo_entries"
@@ -673,6 +683,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="@string/pref_Help_key"
         android:title="@string/pref_Help_title"
         android:layout="@layout/settings_category">
 
@@ -683,8 +694,16 @@
             android:title="@string/pref_FAQ_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
 
+        <Preference
+            android:id="@+id/pref_BatteryOptimization"
+            android:key="@string/pref_BatteryOptimization_key"
+            android:summary="@string/pref_BatteryOptimization_description"
+            android:title="@string/pref_BatteryOptimization_title"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
         <SwitchPreference
-            android:key="@string/pref_Debug_On_key"
+            android:key="@string/pref_Help_Debug_On_key"
             android:summary="@string/pref_Debug_On_description"
             android:title="@string/pref_Debug_On_title"
             android:icon="@android:drawable/ic_menu_manage"

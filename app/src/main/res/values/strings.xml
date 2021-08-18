@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.06.2021, 13:04
+  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 30.06.2021, 12:43
+  ~  * Last modified 15.08.2021, 23:18
   ~  */
   -->
 
@@ -86,8 +86,8 @@
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
     <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
     <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
-    <string name="msg_no_access_contacts_hint">No access to contacts. Check application permissions</string>
-    <string name="msg_no_access_storage_hint">No access to contacts. Check application permissions</string>
+    <!--<string name="msg_no_access_contacts_hint">No access to contacts. Check application permissions</string>-->
+    <string name="msg_no_access_storage_hint">No access to external storage. Check application permissions</string>
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
     <string name="msg_new_version_title">"What's new in v. %1$s:"</string>
@@ -147,6 +147,7 @@
     <string name="appwidget_name_1">For 1 event</string>
     <string name="appwidget_name_5">For 5 events</string>
     <string name="appwidget_name_List">Event list</string>
+    <string name="appwidget_name_PhotoList">List with photos</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
     <string name="widget_Date">Date</string>
@@ -293,6 +294,7 @@
         <item>DD/MM/YYYY</item>
         <item>MM/DD/YYYY</item>
         <item>DD MMM YYYY</item>
+        <item>D MMMM YYYY</item>
     </string-array>
 
     <string name="pref_Female_Names_title">Female names</string>
@@ -312,7 +314,7 @@
         <item>Favorites icon</item>
         <item>Age</item>
         <item>Zodiac sign</item>
-        <item>Zodiac year</item>
+        <item>Chinese calendar year</item>
         <item>Event account and raw date</item>
     </string-array>
 
@@ -327,6 +329,18 @@
 
     <string name="pref_Widgets_title">Widgets</string>
 
+    <string name="pref_Widgets_UpdateInterval_title">Update interval</string>
+    <string name="pref_Widgets_UpdateInterval_description">Forced widget update interval</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_entries">
+        <item>Automatically (controlled by Android)</item>
+        <item>Every 1 hour</item>
+        <item>Every 2 hours</item>
+        <item>Every 4 hours</item>
+        <item>Every 6 hours</item>
+        <item>Every 12 hours</item>
+    </string-array>
+
     <string name="pref_Widgets_EventInfo_title">Event details</string>
     <string name="pref_Widgets_EventInfo_description">What event details and widget elements to show</string>
 
@@ -337,7 +351,7 @@
         <item>Favorites icon</item>
         <item>Silenced event icon</item>
         <item>Zodiac sign</item>
-        <item>Zodiac year</item>
+        <item>Chinese calendar year</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
@@ -387,6 +401,8 @@
 
     <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
+
+    <string name="widget_config_hint_battery_optimization_title">Battery optimization for this application is ON. This may prevents widgets update or notifications appear. Turn it OFF…</string>
 
     <string name="widget_config_event_types_title">Event types</string>
     <string name="widget_config_event_types_description">What kind of events to display on this widget</string>
@@ -500,6 +516,8 @@
     <string name="pref_FAQ_title">\"How to\" guide</string>
     <string name="pref_FAQ_description">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
     <string name="pref_Help_title">Help</string>
+    <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
+    <string name="pref_BatteryOptimization_description">Open the setting and turn off the optimization…</string>
     <string name="pref_Debug_On_title">Debug notifications</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
     <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
@@ -656,6 +674,8 @@
 
     <string name="pref_FAQActivity_key" translatable="false">FAQActivity</string>
 
+    <string name="pref_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
+
     <string name="pref_AboutActivity_key" translatable="false">AboutActivity</string>
 
     <string name="pref_Events_Scope" translatable="false">EventsScope</string>
@@ -794,6 +814,7 @@
         <item>4</item> <!--DD/MM/YYYY-->
         <item>5</item> <!--MM/DD/YYYY-->
         <item>6</item> <!--DD MMM YYYY-->
+        <item>7</item> <!--D MMMM YYYY-->
     </string-array>
 
     <string name="pref_List_Caption_default" translatable="false">1</string>
@@ -864,6 +885,18 @@
         <item>1e</item>
         <item>2e</item>
         <item>3e</item>
+    </string-array>
+
+    <string name="pref_Widgets_UpdateInterval_key" translatable="false">Widgets_UpdateInterval</string>
+    <string name="pref_Widgets_UpdateInterval_default" translatable="false">0</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_key" translatable="false">Widgets_EventInfo</string>
@@ -1051,7 +1084,8 @@
         <item>@string/pref_Quiz_Interface_Dialog</item>
     </string-array>
 
-    <string name="pref_Debug_On_key" translatable="false">Debug</string>
+    <string name="pref_Help_key" translatable="false">Help</string>
+    <string name="pref_Help_Debug_On_key" translatable="false">Debug</string>
 
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 

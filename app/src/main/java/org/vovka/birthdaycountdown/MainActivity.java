@@ -1,12 +1,67 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static android.text.TextUtils.isEmpty;
+import static org.vovka.birthdaycountdown.Constants.HTML_BR;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
+import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
+import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_UL_END;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_ADD_EVENT;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_FILTER;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_QUIZ;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_REFRESH;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SEARCH;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SETTINGS;
+import static org.vovka.birthdaycountdown.Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR;
+import static org.vovka.birthdaycountdown.Constants.REGEX_COMMAS;
+import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
+import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_CONTACT;
+import static org.vovka.birthdaycountdown.Constants.STRING_0;
+import static org.vovka.birthdaycountdown.Constants.STRING_1;
+import static org.vovka.birthdaycountdown.Constants.STRING_2;
+import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
+import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
+import static org.vovka.birthdaycountdown.Constants.Type_5K;
+import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
+import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
+import static org.vovka.birthdaycountdown.Constants.Type_Death;
+import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_All;
+import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Clear;
+import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Hidden;
+import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_NotHidden;
+import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Silenced;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_current;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_contact;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_event;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_merge_event;
+import static org.vovka.birthdaycountdown.R.integer.menu_context_id_unmerge_event;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,7 +83,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,60 +122,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.text.TextUtils.isEmpty;
-import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
-import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_UL_END;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_ADD_EVENT;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_FILTER;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_QUIZ;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_REFRESH;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SEARCH;
-import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SETTINGS;
-import static org.vovka.birthdaycountdown.Constants.REGEX_COMMAS;
-import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_CONTACT;
-import static org.vovka.birthdaycountdown.Constants.STRING_0;
-import static org.vovka.birthdaycountdown.Constants.STRING_1;
-import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
-import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CALENDAR;
-import static org.vovka.birthdaycountdown.Constants.Type_5K;
-import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
-import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
-import static org.vovka.birthdaycountdown.Constants.Type_Death;
-import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_All;
-import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Clear;
-import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Hidden;
-import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_NotHidden;
-import static org.vovka.birthdaycountdown.Constants.pref_Events_Scope_Silenced;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_current;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_contact;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_event;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_merge_event;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_unmerge_event;
-
 //todo: сделать вывод ошибок в стандартный лог
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ContactsEvents eventsData;
     private String selectedEvent_str;
     private String[] selectedEvent;
-    private List<String> dataList;
-    private List<String> dataListFull;
+    private List<String> dataList = new ArrayList<>();
+    private List<String> dataListFull = new ArrayList<>();
 
     private int statsAllEvents = 0;
     private int statsHiddenEvents = 0;
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventsData.computeDates();
                         prepareList();
                         drawList();
-                        eventsData.updateWidgets();
+                        eventsData.updateWidgets(0);
                         swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
                         //Сообщение для тех, у кого не найдено ни одного события
@@ -232,7 +232,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             }
                         }
+                    } else {
+                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW).concat(STRING_SPACE));
                     }
+                    this.invalidateOptionsMenu();
                 }
                 swipeRefresh.setRefreshing(false);
 
@@ -240,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
             //Доступы
-            if (isNoAccessToContacts()) return;
+            //if (isNoAccessToContacts()) return;
 
             //Уведомления
             initNotifications();
@@ -398,6 +401,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case 0: //при первом запуске показывать welcome screen
 
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                        //https://developer.android.com/training/permissions/requesting.html#java
+                        swipeRefresh.setEnabled(false);
+                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), HTML_COLOR_RED));
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                    }
+
                     builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_welcome_title));
                     builder.setIcon(android.R.drawable.ic_menu_info_details);
@@ -425,44 +435,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
-
-/*    private void checkBatteryOptimization() {
-
-            //todo: сделать проверку, что приложение в списке "оптимизация батареи", когда включены уведомления или виджеты
-            //https://stackoverflow.com/questions/32627342/how-to-whitelist-app-in-doze-mode-android-6-0/32627788#32627788
-
-        try {
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if (!preferences.getBoolean(getString(R.string.pref_BattOptiCheck), true)) return;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                String packageName = this.getPackageName();
-                PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    Intent intent = new Intent();
-                    intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    intent.setData(Uri.parse("package:" + packageName));
-                    this.startActivity(intent);
-                }
-            }
-
-
-
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(getString(R.string.pref_Version_LastRun), BuildConfig.VERSION_NAME);
-            editor.putString(getString(R.string.pref_VersionCode_LastRun), Integer.toString(BuildConfig.VERSION_CODE));
-            editor.apply();
-
-            //if (eventsData.preferences_debug_on) Toast.makeText(this, "Set last run version: " + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_CHECK_BATTERY_OPTIMIZATION_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-        }
-
-    }*/
 
     private void setLastRunVersion() {
 
@@ -514,17 +486,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean isNoAccessToContacts() {
+/*    private boolean isNoAccessToContacts() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             //https://developer.android.com/training/permissions/requesting.html#java
             swipeRefresh.setEnabled(false);
             setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), HTML_COLOR_RED));
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             return true;
         }
         return false;
-    }
+    }*/
 
     private void initNotifications() {
         //https://stackoverflow.com/questions/51343550/how-to-give-notifications-on-android-on-specific-time-in-android-oreo/51645875#51645875
@@ -535,8 +507,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.initNotificationChannel(log); //для Android 8+
             eventsData.initBootReceiver(log);
             eventsData.initNotifications(log);
+            eventsData.initWidgetUpdate(log);
 
-            if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(this, log.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(this, log.deleteCharAt(log.length() - 1).toString(), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
@@ -576,72 +549,68 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             getMenuInflater().inflate(R.menu.menu_main, menu);
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                MenuItem searchItem = menu.getItem(MENU_MAIN_SEARCH);
-                SearchView searchView = (SearchView) searchItem.getActionView();
-                searchItem.setVisible(this.dataList != null && !this.dataList.isEmpty());
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
+            MenuItem searchItem = menu.getItem(MENU_MAIN_SEARCH);
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            searchItem.setVisible(!this.dataList.isEmpty());
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        adapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
-                searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
-                {
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+            searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
+            {
 
-                    @Override
-                    public boolean onMenuItemActionExpand (MenuItem item){
-                        menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(false);
-                        menu.getItem(MENU_MAIN_REFRESH).setVisible(false);
-                        menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
-                        menu.getItem(MENU_MAIN_QUIZ).setVisible(false);
-                        menu.getItem(MENU_MAIN_FILTER).setVisible(false);
-                        return true;
-                    }
+                @Override
+                public boolean onMenuItemActionExpand (MenuItem item){
+                    menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(false);
+                    menu.getItem(MENU_MAIN_REFRESH).setVisible(false);
+                    menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
+                    menu.getItem(MENU_MAIN_QUIZ).setVisible(false);
+                    menu.getItem(MENU_MAIN_FILTER).setVisible(false);
+                    return true;
+                }
 
-                    //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
-                    @Override
-                    public boolean onMenuItemActionCollapse (MenuItem item){
-                        menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(true);
-                        menu.getItem(MENU_MAIN_REFRESH).setVisible(true);
-                        menu.getItem(MENU_MAIN_SETTINGS).setVisible(true);
-                        menu.getItem(MENU_MAIN_QUIZ).setVisible(true);
-                        //показывать, если есть скрытые или без уведомлений
-                        menu.getItem(MENU_MAIN_FILTER).setVisible(
-                                eventsData != null &&
-                                !eventsData.isEmptyArray() &&
-                                (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
-                        );
-                        prepareList();
-                        return true;
-                    }
+                //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
+                @Override
+                public boolean onMenuItemActionCollapse (MenuItem item){
+                    menu.getItem(MENU_MAIN_ADD_EVENT).setVisible(true);
+                    menu.getItem(MENU_MAIN_REFRESH).setVisible(true);
+                    menu.getItem(MENU_MAIN_SETTINGS).setVisible(true);
+                    menu.getItem(MENU_MAIN_QUIZ).setVisible(true);
+                    //показывать, если есть скрытые или без уведомлений
+                    menu.getItem(MENU_MAIN_FILTER).setVisible(
+                            eventsData != null &&
+                                    !eventsData.isEmptyArray() &&
+                                    (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
+                    );
+                    prepareList();
+                    return true;
+                }
 
-                });
-                searchView.setQueryHint (getString (R.string.msg_hint_search));
-                searchView.setMaxWidth(Integer.MAX_VALUE);
+            });
+            searchView.setQueryHint (getString (R.string.msg_hint_search));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
 
-                //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            }
+            //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
             // https://stackoverflow.com/questions/3721963/how-to-add-calendar-events-in-android
             // https://developer.android.com/training/contacts-provider/modify-data
             // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
             // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
 
+            menu.getItem(MENU_MAIN_QUIZ).setVisible(!this.dataList.isEmpty());
+
             //показывать, если есть скрытые или без уведомлений
-            menu.getItem(MENU_MAIN_FILTER).setVisible(
-                    eventsData != null &&
-                    !eventsData.isEmptyArray() &&
-                    (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
-            );
+            menu.getItem(MENU_MAIN_FILTER).setVisible(!this.dataList.isEmpty() && (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -672,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             eventsData.computeDates();
                             prepareList();
                             drawList();
-                            eventsData.updateWidgets();
+                            eventsData.updateWidgets(0);
                         }
 
                         swipeRefresh.setRefreshing(false);
@@ -787,10 +756,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == R.id.menu_add_event_to_contact) {
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                    showAlertNoAccess();
-                }
-
                 Intent editIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
                 editIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
                 editIntent.putExtra("finishActivityOnSaveCompleted", true);
@@ -836,7 +801,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     eventsData.computeDates();
                                     prepareList();
                                     drawList();
-                                    eventsData.updateWidgets();
+                                    eventsData.updateWidgets(0);
                                 }
                             }
                         }
@@ -901,13 +866,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             this.invalidateOptionsMenu();
 
             //Тему не меняли, просто обновляем данные
-            boolean canReadContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-            if (canReadContacts && (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000)) {
+            if (this.dataList.isEmpty() || System.currentTimeMillis() - eventsData.statLastComputeDates > 1000) {
                 if (eventsData.getEvents(this)) {
                     eventsData.computeDates();
                     prepareList();
                     drawList();
-                    eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
 
                 //Уведомления
@@ -926,31 +890,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS || requestCode == MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 registerForContextMenu(findViewById(R.id.mainListView));
                 if (eventsData.getEvents(this)) {
                     eventsData.computeDates();
                     prepareList();
                     drawList();
-                    eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
                 if (swipeRefresh != null) {
                     swipeRefresh.setRefreshing(false); //Disables the refresh icon
                     swipeRefresh.setEnabled(true);
                 }
                 showWelcomeScreen();
+                this.invalidateOptionsMenu();
 
-            } else {
+            //} else {
 
-                showAlertNoAccess();
-                triggeredMsgNoEvents = true;
+            //    showAlertNoAccess();
+            //    triggeredMsgNoEvents = true;
 
             }
         }
     }
 
-    private void showAlertNoAccess() {
+/*    private void showAlertNoAccess() {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
         builder.setTitle(getString(R.string.msg_no_access_contacts));
         builder.setIcon(android.R.drawable.ic_menu_info_details);
@@ -965,7 +930,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
         alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertToShow.show();
-    }
+    }*/
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -1051,13 +1016,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             final String eventKey = eventsData.getEventKey(selectedEvent);
             int itemId = item.getItemId();
+
             if (itemId == R.integer.menu_context_id_edit_contact) {
 
                 Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[Position_contactID]);
 
-                //Intent intent = new Intent(Intent.ACTION_VIEW);
-                //intent.setData(selectedContactUri);
-                //MainActivity.this.startActivity(intent);
+                /*
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(selectedContactUri);
+                MainActivity.this.startActivity(intent);
+                */
 
                 Intent editContactIntent = new Intent(Intent.ACTION_EDIT);
                 editContactIntent.setDataAndType(selectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
@@ -1065,7 +1033,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(editContactIntent);
                 return true;
 
-            } else if (itemId == menu_context_id_edit_event) {
+            } else if (itemId == R.integer.menu_context_id_edit_event) {
 
                 Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[Position_eventID]));
                 Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
@@ -1105,7 +1073,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     prepareList();
                     drawList();
-                    eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
                 return true;
 
@@ -1115,7 +1083,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     prepareList();
                     drawList();
-                    eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
                 return true;
 
@@ -1147,7 +1115,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     prepareList();
                     drawList();
-                    //eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
                 return true;
 
@@ -1157,25 +1125,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     prepareList();
                     drawList();
-                    //eventsData.updateWidgets();
+                    eventsData.updateWidgets(0);
                 }
                 return true;
 
-            } else if (itemId == menu_context_id_merge_event) {
+            } else if (itemId == R.integer.menu_context_id_merge_event) {
 
                 //https://developer.android.com/guide/components/intents-common#PickContact
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 startActivityForResult(intent, RESULT_PICK_CONTACT);
 
-            } else if (itemId == menu_context_id_unmerge_event) {
+            } else if (itemId == R.integer.menu_context_id_unmerge_event) {
 
                 if (eventsData.setMergedID(selectedEvent[Position_eventID], null)) {
                     if (eventsData.getEvents(this)) {
                         eventsData.computeDates();
                         prepareList();
                         drawList();
-                        eventsData.updateWidgets();
+                        eventsData.updateWidgets(0);
                     }
                     return true;
                 }
@@ -1201,15 +1169,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             dataList = new ArrayList<>();
 
             //Проверки
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+            /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), HTML_COLOR_RED));
 
-            else if (eventsData.isEmptyArray())
+            else
+            if (eventsData.isEmptyArray())
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW));
 
-            else {
+            else {*/
 
                 //Обрабатываем скрытые события
                 for (String event : eventsData.eventList) {
@@ -1256,7 +1225,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                 }
-            }
+            //}
             dataListFull = new ArrayList<>(dataList);
 
         } catch (Exception e) {

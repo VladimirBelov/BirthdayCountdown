@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2021, 13:04
+ *  * Created by Vladimir Belov on 17.08.2021, 10:49
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 30.06.2021, 12:43
+ *  * Last modified 11.08.2021, 22:23
  *
  */
 
@@ -27,7 +27,9 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                 StringBuilder log = new StringBuilder();
                 if (eventsData.context == null) eventsData.context = context;
                 eventsData.getPreferences();
+                eventsData.setLocale(true);
                 eventsData.initNotifications(log);
+                eventsData.initWidgetUpdate(log);
 
                 if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
 
