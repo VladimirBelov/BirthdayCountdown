@@ -26,6 +26,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
             eventsData.setLocale(true);
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);

@@ -26,7 +26,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingEnd="2dp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    tools:ignore="SmallSp"
+                    android:alpha="0.7" />
 
                 <ImageView
                     android:id="@+id/config_button"
@@ -36,7 +39,8 @@
                     android:alpha="0.8"
                     android:contentDescription="@string/button_prefs"
                     android:gravity="top|end"
-                    android:src="@drawable/ic_sysbar_quicksettings" />
+                    android:src="@drawable/ic_sysbar_quicksettings"
+                    tools:ignore="ImageContrastCheck" />
 
         </LinearLayout>
 

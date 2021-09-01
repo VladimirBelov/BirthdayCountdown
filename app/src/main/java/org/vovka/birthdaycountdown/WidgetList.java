@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import static org.vovka.birthdaycountdown.Constants.ACTION_CLICK;
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
+import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
@@ -33,6 +34,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,6 +52,7 @@ public class WidgetList extends AppWidgetProvider {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
             eventsData.setLocale(true);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
@@ -70,7 +75,9 @@ public class WidgetList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
-                views.setTextViewText(R.id.info, "Prefs: " + widgetPref + ", events: " + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
+                //views.setTextViewText(R.id.info, "Prefs: " + widgetPref + ", events: " + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
+                views.setTextViewText(R.id.info, "updated: " + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + "\nevents: " + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
             } else {
                 views.setTextViewText(R.id.info, STRING_EMPTY);
             }

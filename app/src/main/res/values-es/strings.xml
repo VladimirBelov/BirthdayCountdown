@@ -519,7 +519,7 @@
     <string name="pref_BatteryOptimization_title">Optimización de batería activada</string>
     <string name="pref_BatteryOptimization_description">Abra la configuración y desactive la optimización…</string>
     <string name="pref_Debug_On_title">Mensajes de depuración</string>
-    <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Presione %1$d veces más para %3$s las mensajes de depuración</string>
+    <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_description">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Historial de versiones:</h1>]]></string>

@@ -1050,7 +1050,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(selectedEvent[Position_personFullName])
-                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false)))
+                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false, true)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
 
@@ -1477,7 +1477,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //todo: подумать вместо фото вставить беджик https://developer.android.com/training/contacts-provider/display-contact-badge
 
                 //Фото
-                holder.PhotoImageView.setImageBitmap(eventsData.getContactPhoto(event, eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_Photo), false));
+                holder.PhotoImageView.setImageBitmap(eventsData.getContactPhoto(event, eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_Photo), true, false));
 
                 if (person.Age > -1 && person.Age % 10 == 0) {
                     holder.CounterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);

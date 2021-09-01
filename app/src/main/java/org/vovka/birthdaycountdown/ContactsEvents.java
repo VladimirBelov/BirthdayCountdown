@@ -2063,7 +2063,7 @@ class ContactsEvents {
         }
     }
 
-    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean forWidget) {
+    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean makeSquared, boolean forWidget) {
 
         Bitmap bm = null;
 
@@ -2088,7 +2088,26 @@ class ContactsEvents {
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
                 if (photo_stream != null) {
                     BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                    bm = BitmapFactory.decodeStream(buf);
+
+                    if (makeSquared) {
+                        Bitmap bmFull = BitmapFactory.decodeStream(buf);
+                        final int bmFullWidth = bmFull.getWidth();
+                        final int bmFullHeight = bmFull.getHeight();
+
+                        if (bmFullHeight > bmFullWidth) {
+                            //noinspection SuspiciousNameCombination
+                            bm = Bitmap.createBitmap(bmFull, 0, (bmFullHeight - bmFullWidth) / 2, bmFullWidth, bmFullWidth);
+                        } else {
+                            //noinspection SuspiciousNameCombination
+                            bm = Bitmap.createBitmap(bmFull, (bmFullWidth - bmFullHeight) / 2, 0, bmFullHeight, bmFullHeight);
+                        }
+
+                    } else {
+
+                        bm = BitmapFactory.decodeStream(buf);
+
+                    }
+
                     buf.close();
                     photo_stream.close();
                 }
@@ -2131,7 +2150,22 @@ class ContactsEvents {
                     idPhoto = R.drawable.photo_woman01;
                 }
 
-                bm = BitmapFactory.decodeResource(getResources(), idPhoto);
+                if (makeSquared) {
+                    Bitmap bmFull = BitmapFactory.decodeResource(getResources(), idPhoto);
+                    final int bmFullWidth = bmFull.getWidth();
+                    final int bmFullHeight = bmFull.getHeight();
+
+                    if (bmFullHeight > bmFullWidth) {
+                        //noinspection SuspiciousNameCombination
+                        bm = Bitmap.createBitmap(bmFull, 0, (bmFullHeight - bmFullWidth) / 2, bmFullWidth, bmFullWidth);
+                    } else {
+                        //noinspection SuspiciousNameCombination
+                        bm = Bitmap.createBitmap(bmFull, (bmFullWidth - bmFullHeight) / 2, 0, bmFullHeight, bmFullHeight);
+                    }
+                    bmFull.recycle();
+                } else {
+                    bm = BitmapFactory.decodeResource(getResources(), idPhoto);
+                }
             }
 
             if (!singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
@@ -3380,7 +3414,7 @@ class ContactsEvents {
                             builder.setSound(Uri.parse(preferences_notifications_ringtone));
                         }
 
-                        builder.setLargeIcon(getContactPhoto(dataNotify[i], true, false));
+                        builder.setLargeIcon(getContactPhoto(dataNotify[i], true, true,false));
 
                         if (preferences_notifications_priority > 2) {
                             builder.setOngoing(true);
@@ -3532,7 +3566,7 @@ class ContactsEvents {
                     builder.setSound(Uri.parse(preferences_notifications_ringtone));
                 }
 
-                builder.setLargeIcon(getContactPhoto(dataNotify, true, false));
+                builder.setLargeIcon(getContactPhoto(dataNotify, true, true,false));
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(notificationID, builder.build());
 
@@ -4403,7 +4437,7 @@ class ContactsEvents {
                 builder.setContentIntent(pendingIntent);
 
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setLargeIcon(getContactPhoto(quest.event, true, false));
+                    builder.setLargeIcon(getContactPhoto(quest.event, true, true,false));
 
                     String[] eventInfo = quest.event.split(Constants.STRING_2HASH);
                     intent = new Intent(Intent.ACTION_VIEW);
@@ -4451,7 +4485,7 @@ class ContactsEvents {
                 builder.setTitle(quest.type);
                 builder.setMessage(STRING_EOF + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, false)));
+                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, true,false)));
                 }
 
                 for (int i = 0; i < quest.actions.size(); i++) {

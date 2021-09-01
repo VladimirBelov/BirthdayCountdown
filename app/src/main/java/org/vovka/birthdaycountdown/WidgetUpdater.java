@@ -201,17 +201,7 @@ class WidgetUpdater {
                 fontMagnify = 1 + 1.0 * (cells - 1);
             }
 
-            colorDefault = eventsData.preferences_widgets_color_default; //resources.getColor(R.color.white);
-                /*try {
-                    colorEventToday = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventtoday, RES_TYPE_COLOR, packageName));
-                } catch (Resources.NotFoundException e) {
-                    colorEventToday = colorDefault;
-                }
-                try {
-                    colorEventSoon = resources.getColor(resources.getIdentifier(eventsData.preferences_widgets_color_eventsoon, RES_TYPE_COLOR, packageName));
-                } catch (Resources.NotFoundException e) {
-                    colorEventSoon = colorDefault;
-                }*/
+            colorDefault = eventsData.preferences_widgets_color_default;
             colorEventToday = eventsData.preferences_widgets_color_eventtoday;
             colorEventSoon = eventsData.preferences_widgets_color_eventsoon;
             colorEventFar = eventsData.preferences_widgets_color_eventfar;
@@ -323,9 +313,9 @@ class WidgetUpdater {
                         singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[Position_contactID])) :
                         person.getFullNameShort();
                     if (!rowValue.trim().isEmpty()) {
-                        views.setTextViewText(id_widget_Caption_left, rowValue);
-                        views.setViewVisibility(id_widget_Caption_left, View.VISIBLE);
-                        visibleCell *= 2;
+                        views.setTextViewText(id_widget_Caption_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
+                        visibleCell *= 3;
                     }
                     break;
                 case STRING_4: //Имя Отчество Фамилия
@@ -427,9 +417,9 @@ class WidgetUpdater {
                             singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[Position_contactID])) :
                             person.getFullNameShort();
                     if (!rowValue.trim().isEmpty()) {
-                        views.setTextViewText(id_widget_Caption2nd_left, rowValue);
-                        views.setViewVisibility(id_widget_Caption2nd_left, View.VISIBLE);
-                        visibleCell*=5;
+                        views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
+                        views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
+                        visibleCell*=7;
                     }
                     break;
                 case STRING_4: //Имя Отчество Фамилия
@@ -503,25 +493,22 @@ class WidgetUpdater {
 
             //Фото
             // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
+            //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
             int id_widget_Photo = resources.getIdentifier(WIDGET_IMAGE_VIEW + eventsDisplayed, STRING_ID, packageName);
 
-            Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), true);
+            Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), false, true);
             if (photo != null) {
-                if (eventsToShow == 1) {
-                    views.setImageViewBitmap(id_widget_Photo, photo);
+                //необходимо уменьшать, потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
+                final int dstWidth = 2 * width / eventsToShow;
+                final int dstHeight = (2 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow);
+                if (dstHeight > 0 && dstWidth > 0) {
+                    Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
+                    views.setImageViewBitmap(id_widget_Photo, photo_small);
                 } else {
-                    //потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
-                    final int dstWidth = 2 * width / eventsToShow;
-                    final int dstHeight = (2 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow);
-                    if (dstHeight > 0 && dstWidth > 0) {
-                        Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
-                        views.setImageViewBitmap(id_widget_Photo, photo_small);
-                    } else {
-                        Bitmap photo_icon = eventsData.getContactPhoto(event, false, true);
-                        views.setImageViewBitmap(id_widget_Photo, photo_icon);
-                    }
-                    //photo.recycle(); //https://stackoverflow.com/questions/38784302/cant-parcel-a-recycled-bitmap
+                    Bitmap photo_icon = eventsData.getContactPhoto(event, false, false, true);
+                    views.setImageViewBitmap(id_widget_Photo, photo_icon);
                 }
+                //photo.recycle(); //https://stackoverflow.com/questions/38784302/cant-parcel-a-recycled-bitmap
             }
             //views.setInt(id_widget_Photo, "setBackgroundResource", R.drawable.selection_rectangle); //не работает
 

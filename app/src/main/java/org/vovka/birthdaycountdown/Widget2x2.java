@@ -30,6 +30,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
             eventsData.setLocale(true);
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);

@@ -218,7 +218,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 Bitmap photo = null;
                 boolean showPhoto = eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo);
                 if (showPhoto || !singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
-                    photo = eventsData.getContactPhoto(eventInfo, showPhoto, true);
+                    photo = eventsData.getContactPhoto(eventInfo, showPhoto, true, true);
                 }
                 if (photo != null) {
                     int outWidth;

@@ -32,7 +32,8 @@
             android:summary="@string/pref_Language_description"
             android:title="@string/pref_Language_title"
             android:icon="@android:drawable/ic_menu_mapmode"
-            android:dialogIcon="@android:drawable/ic_menu_mapmode"/>
+            android:dialogIcon="@android:drawable/ic_menu_mapmode"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Theme_default"
@@ -42,7 +43,8 @@
             android:summary="@string/pref_Theme_description"
             android:title="@string/pref_Theme_title"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:dialogIcon="@android:drawable/ic_menu_gallery"/>
+            android:dialogIcon="@android:drawable/ic_menu_gallery"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_Accounts_key"
@@ -78,7 +80,8 @@
                     android:title="@string/pref_CustomEvents_Birthday_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
@@ -115,7 +118,8 @@
                     android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Anniversary_List_key"
@@ -141,7 +145,8 @@
                     android:title="@string/pref_CustomEvents_NameDay_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
             </PreferenceCategory>
 
@@ -162,7 +167,8 @@
                     android:title="@string/pref_CustomEvents_Crowning_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
             </PreferenceCategory>
 
@@ -183,7 +189,8 @@
                     android:title="@string/pref_CustomEvents_Death_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <ListPreference
                     android:defaultValue="@string/pref_List_SadPhoto_default"
@@ -207,7 +214,8 @@
                     android:title="@string/pref_CustomEvents_Other_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Other_Calendars_key"
@@ -228,7 +236,8 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Labels_key"
@@ -236,7 +245,8 @@
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_UseYear_default"
@@ -258,7 +268,8 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Labels_key"
@@ -266,7 +277,8 @@
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_UseYear_default"
@@ -288,7 +300,8 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Labels_key"
@@ -296,7 +309,8 @@
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_UseYear_default"
@@ -318,7 +332,8 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Labels_key"
@@ -326,7 +341,8 @@
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_UseYear_default"
@@ -348,7 +364,8 @@
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Labels_key"
@@ -356,7 +373,8 @@
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"/>
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_UseYear_default"
@@ -382,7 +400,8 @@
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_description"
             android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:dialogIcon="@android:drawable/ic_menu_more"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView
             https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/
@@ -396,7 +415,8 @@
             android:summary="@string/pref_List_EventInfo_description"
             android:title="@string/pref_List_EventInfo_title"
             android:icon="@android:drawable/ic_menu_agenda"
-            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
+            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_List_PrevEvents_default"
@@ -407,7 +427,8 @@
             android:title="@string/pref_List_PrevEvents_title"
             android:minHeight="48dp"
             android:icon="@android:drawable/ic_menu_revert"
-            android:dialogIcon="@android:drawable/ic_menu_revert"/>
+            android:dialogIcon="@android:drawable/ic_menu_revert"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_List_Caption_default"
@@ -417,7 +438,8 @@
             android:title="@string/pref_List_Caption_title"
             android:summary="@string/pref_List_Caption_description"
             android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_List_DateFormat_default"
@@ -427,7 +449,8 @@
             android:title="@string/pref_List_DateFormat_title"
             android:summary="@string/pref_List_DateFormat_description"
             android:icon="@android:drawable/ic_menu_month"
-            android:dialogIcon="@android:drawable/ic_menu_month"/>
+            android:dialogIcon="@android:drawable/ic_menu_month"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <org.vovka.birthdaycountdown.CustomEditTextPreference
             android:key="@string/pref_Female_Names_key"
@@ -436,7 +459,8 @@
             android:hint="@string/pref_Female_Names_hint"
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
-            android:dialogIcon="@android:drawable/ic_menu_edit"/>
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <org.vovka.birthdaycountdown.ColorPreference
             android:key="@string/pref_List_Color_EventToday_key"
@@ -485,7 +509,8 @@
             android:summary="@string/pref_Widgets_UpdateInterval_description"
             android:title="@string/pref_Widgets_UpdateInterval_title"
             android:icon="@android:drawable/ic_menu_recent_history"
-            android:dialogIcon="@android:drawable/ic_menu_recent_history"/>
+            android:dialogIcon="@android:drawable/ic_menu_recent_history"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_Widgets_EventInfo_values_default"
@@ -495,7 +520,8 @@
             android:summary="@string/pref_Widgets_EventInfo_description"
             android:title="@string/pref_Widgets_EventInfo_title"
             android:icon="@android:drawable/ic_menu_agenda"
-            android:dialogIcon="@android:drawable/ic_menu_agenda"/>
+            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_BottomInfo2nd_default"
@@ -505,7 +531,8 @@
             android:title="@string/pref_Widgets_BottomInfo2nd_title"
             android:summary="@string/pref_Widgets_BottomInfo2nd_description"
             android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_BottomInfo_default"
@@ -515,7 +542,8 @@
             android:title="@string/pref_Widgets_BottomInfo_title"
             android:summary="@string/pref_Widgets_BottomInfo_description"
             android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <!-- todo: сделать цветные переключатели http://0x5453.blogspot.com/2014/06/61214.html -->
 
@@ -528,7 +556,8 @@
             android:title="@string/pref_Widgets_Days_EventSoon_title"
             android:icon="@android:drawable/ic_menu_week"
             android:minHeight="48dp"
-            android:dialogIcon="@android:drawable/ic_menu_week"/>
+            android:dialogIcon="@android:drawable/ic_menu_week"
+            android:negativeButtonText="@string/button_cancel"/>
 
 
         <!-- https://habr.com/ru/post/496136/  https://github.com/kristiyanP/colorpicker/tree/master  -->
@@ -592,8 +621,8 @@
             android:summary="@string/pref_Notifications_Days_description"
             android:title="@string/pref_Notifications_Days_title"
             android:icon="@android:drawable/ic_menu_week"
-            android:dialogIcon="@android:drawable/ic_menu_week"/>
-            <!--android:defaultValue="@array/pref_Notifications_Days_default"-->
+            android:dialogIcon="@android:drawable/ic_menu_week"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Notifications_Type_default"
@@ -603,7 +632,8 @@
             android:summary="@string/pref_Notifications_Type_description"
             android:title="@string/pref_Notifications_Type_title"
             android:icon="@android:drawable/ic_menu_view"
-            android:dialogIcon="@android:drawable/ic_menu_view"/>
+            android:dialogIcon="@android:drawable/ic_menu_view"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Notifications_Priority_default"
@@ -613,7 +643,8 @@
             android:summary="@string/pref_Notifications_Priority_description"
             android:title="@string/pref_Notifications_Priority_title"
             android:icon="@android:drawable/ic_menu_view"
-            android:dialogIcon="@android:drawable/ic_menu_view"/>
+            android:dialogIcon="@android:drawable/ic_menu_view"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_EventTypes_values_default"
@@ -623,7 +654,8 @@
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_description"
             android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:dialogIcon="@android:drawable/ic_menu_more"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
             android:defaultValue="@string/pref_Notifications_AlarmHour_default"
@@ -633,7 +665,8 @@
             android:summary="@string/pref_Notifications_AlarmHour_description"
             android:title="@string/pref_Notifications_AlarmHour_title"
             android:icon="@android:drawable/ic_menu_recent_history"
-            android:dialogIcon="@android:drawable/ic_menu_recent_history"/>
+            android:dialogIcon="@android:drawable/ic_menu_recent_history"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
         <RingtonePreference
@@ -655,7 +688,8 @@
             android:title="@string/pref_Notifications_QuickActions_title"
             android:summary="@string/pref_Notifications_QuickActions_description"
             android:icon="@android:drawable/ic_menu_compass"
-            android:dialogIcon="@android:drawable/ic_menu_compass"/>
+            android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:id="@+id/pref_NotifyTest"
@@ -678,7 +712,8 @@
             android:title="@string/pref_Quiz_Interface_title"
             android:summary="@string/pref_Quiz_Interface_description"
             android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"/>
+            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceCategory>
 

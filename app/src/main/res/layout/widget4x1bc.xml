@@ -23,7 +23,8 @@
         android:text="@string/appwidget_text"
         android:textColor="@color/white"
         android:textSize="18.0sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        tools:ignore="TextContrastCheck" />
 
     <RelativeLayout
         android:id="@id/eventInfo0"
