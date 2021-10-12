@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
@@ -23,14 +23,16 @@ import static org.vovka.birthdaycountdown.Constants.STRING_6;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_MINUS1;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_TINY;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_age;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_caption;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDate;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventEmoji;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
@@ -68,6 +70,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         this.context = context;
         widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {}
@@ -165,7 +169,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     }
                 } catch (Resources.NotFoundException nfe) { /**/ }
-                String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
+                String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDateText], singleEventArray[Position_age].equals(STRING_MINUS1) ?
+                        ContactsEvents.FormatDate.WithoutYear : ContactsEvents.FormatDate.WithYear);
                 sb.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDay) : eventDay).append(STRING_SPACE);
 
                 //Данные события
@@ -196,7 +201,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
         }
 
         return views;
@@ -246,7 +251,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
         }
 
     }

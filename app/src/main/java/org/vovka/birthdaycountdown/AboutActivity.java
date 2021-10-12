@@ -1,14 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
+import static org.vovka.birthdaycountdown.Constants.HTML_BR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
 import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
@@ -29,12 +30,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
@@ -42,7 +46,9 @@ import androidx.core.text.HtmlCompat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TimeZone;
+import java.util.TreeSet;
 
 //todo: подсветка нововведений в интерфейсе
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
@@ -118,7 +124,12 @@ public class AboutActivity extends AppCompatActivity {
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 
-            //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
+            if (eventsData.preferences_debug_on) {
+                TextView tv = findViewById(R.id.centerPoint);
+                tv.setText("ℹ️");
+            }
+
+                //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
             //https://stackoverflow.com/questions/39036411/activitymanagercompat-islowramdevice-is-useless-is-always-returns-false
             //ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             //if (am.isLowRamDevice()) {
@@ -136,6 +147,8 @@ public class AboutActivity extends AppCompatActivity {
                 sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
             if (eventsData.statTimeGetCalendarEvents > 0)
                 sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
+            if (eventsData.statTimeGetFileEvents > 0)
+                sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
             sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
             sb.append(Constants.HTML_UL_END);
 
@@ -219,7 +232,7 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -254,7 +267,37 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void showPreferences (@SuppressWarnings("unused") android.view.View view) {
+
+        try {
+
+            StringBuilder sb = new StringBuilder();
+            Map<String, ?> prefs = PreferenceManager.getDefaultSharedPreferences(this).getAll();
+            SortedSet<String> keys = new TreeSet<>(prefs.keySet());
+            for (String key : keys) {
+                sb.append(key).append(STRING_COLON_SPACE).append(prefs.get(key)).append(HTML_BR);
+            }
+
+            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(R.string.msg_title_settings);
+            builder.setIcon(android.R.drawable.ic_menu_info_details);
+            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+            TextView textView = alertToShow.findViewById(android.R.id.message);
+            if (textView != null) textView.setTextSize(11);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

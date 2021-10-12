@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.6.4</item>
+                <item>Додана підтримка подій із локальних файлів (формат DarkBirthday, не плаваючі події та дні народження)</item>
+                <item>Виправлені події, що сортуються всередині одного дня (за спаданням): дні народження, ювілеї, спеціальні події, інші події. Події з сповіщенням мають вищий пріоритет</item>
+                <item>Події з відображенням року у віджеті списку у повному форматі</item>
 
                 <item>#1.6.3</item>
                 <item>Оптимізації для Android 11 і 12</item>

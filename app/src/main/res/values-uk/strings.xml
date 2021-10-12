@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 15.08.2021, 23:08
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -21,6 +21,7 @@
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
     <string name="menu_add_event_to_calendar">Додати подію до календаря…</string>
+    <string name="menu_open_file_with_events">Відкрийте файл із подіями…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Пошук…</string>
@@ -39,10 +40,14 @@
     <string name="menu_context_unsilent_event">Відновити повідомлення</string>
     <string name="menu_context_merge_event">Посилання на контакт…</string>
     <string name="menu_context_unmerge_event">Від’єднати контакт</string>
+    <string name="menu_context_remerge_event">Посилання на інший контакт…</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
 <!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
     <string name="msg_no_events">Подій не знайдено</string>
+    <string name="msg_no_files_selected">"  - не вибрано -"</string>
+    <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
+    <string name="msg_file_access_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
     <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -61,7 +66,7 @@
 
     <string name="msg_after_year_prefix_1">" рік"</string>
     <string name="msg_after_year_prefix_2_3_4">" роки"</string>
-    <string name="msg_after_year_prefix_1_">" рік"</string>
+    <string name="msg_after_year_prefix_1_">" рік"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_year_prefix_4_21">" років"</string>
 
     <string name="msg_after_month_prefix_1">" місяць"</string>
@@ -94,7 +99,13 @@
     <string name="msg_snoozed_until">"Відкладено до %1$s"</string>
     <string name="msg_notify_time">"Повідомлення встановлено на %1$s"</string>
     <string name="msg_filter_clear_confirmation">Очистити всі фільтри?</string>
+    <string name="msg_filter_clean_confirmation">Очистити всі фільтри від посилань на відсутні контакти чи події календаря?</string>
+    <string name="msg_filter_clean_silenced_result">"Очищено приглушені події для відсутніх контактів та подій календаря: "</string>
+    <string name="msg_filter_clean_hidden_result">"Видалено приховані події для відсутніх контактів та події календаря: "</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
+    <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
+    <string name="msg_title_confirmation">Підтвердження</string>
+    <string name="msg_title_settings">Збережені налаштування</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -112,6 +123,7 @@
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Відміна</string>
+    <string name="button_choose">Виберіть</string>
     <string name="button_rate">Оцінити</string>
     <string name="button_mail">Написати</string>
     <string name="button_open_addressbook">Відкрити адресну книгу…</string>
@@ -133,6 +145,7 @@
     <string name="events_scope_silenced">Без оповіщення (%1$d)</string>
     <string name="events_scope_silenced2">Без оповіщення (%1$d, збережено %2$d)</string>
     <string name="events_scope_clear">Видалити фільтри</string>
+    <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
@@ -141,6 +154,7 @@
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Іменини</string>
     <string name="event_type_calendar">Подія календаря</string>
+    <string name="event_type_file">Подія з файлу</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_name_1_7">На 1–7 подій</string>
@@ -154,6 +168,8 @@
     <string name="widget_Age">РР</string>
     <string name="widget_TypeIcon">Тип</string>
     <string name="widget_Distance">До</string>
+    <string name="widget_msg_updated">"оновлено: "</string>
+    <string name="widget_msg_events">"події: "</string>
 
     <string name="pref_Events_title">Загальні</string>
     <string name="pref_Language_title">Мова</string>
@@ -195,8 +211,10 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила імпорту подій календаря в дні народження</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введіть правила розпізнавання імені контакту з заголовка календарного події (кілька правил поділяються |). Правило повинне містити тег [name], оточений іншим текстом (опціонально):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не знайдені!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Використовувати рік з події календаря для розрахунку річниць (не тільки день і місяць)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показувати події народження з вибраних файлів</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Використовувати стандартні найменування для визначення річниць весіль</string>
@@ -223,7 +241,9 @@
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Other_Labels_description">Події контактів з такою міткою будуть ідентифіковані як інші події (через кому)</string>
     <string name="pref_CustomEvents_Calendars_title">Календарі</string>
-    <string name="pref_CustomEvents_Calendars_description">Імпортувати події з обраних календарів</string>
+    <string name="pref_CustomEvents_Calendars_description">Показати події з обраних календарів</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Показувати події з вибраних файлів</string>
 
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
@@ -374,6 +394,19 @@
         <item>Нічого</item>
     </string-array>
 
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Чи не виділяти</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
     <string name="pref_Widgets_Color_EventCaption_title">Основний колір</string>
     <string name="pref_Widgets_Color_EventCaption_description">Основний колір елементів віджета (заголовки подій, вік)</string>
 
@@ -516,7 +549,8 @@
 
     <string name="stats_speed_title"><![CDATA[<h2>Швидкість завантаження:</h2><ul>]]></string>
     <string name="stats_speed_contacts"><![CDATA[<li>сканування контактів: %1$s мс]]></string>
-    <string name="stats_speed_calendar"><![CDATA[<li>сканування календарів: %1$s msec]]></string>
+    <string name="stats_speed_calendar"><![CDATA[<li>сканування календарів: %1$s мс]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>сканування файлів: %1$s мс]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>підрахунок дат: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Лічильники:</h2><ul>]]></string>

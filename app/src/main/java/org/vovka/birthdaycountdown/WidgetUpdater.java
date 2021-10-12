@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
@@ -29,6 +29,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CONTACTS;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
+import static org.vovka.birthdaycountdown.Constants.Type_FileEvent;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_EVENTS_MAX;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_EVENT_INFO;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_EVENT_TYPE;
@@ -244,8 +245,6 @@ class WidgetUpdater {
         //Отрисовываем одно событие
         try {
 
-            //if ((i + startingIndex) > eventsData.eventList.size()) return eventsHidden; //больше ничего не нашли
-
             String event = eventsData.eventList.get(i);
             String[] singleEventArray = event.split(STRING_2HASH);
 
@@ -255,7 +254,8 @@ class WidgetUpdater {
             final String eventSubType = singleEventArray[Position_eventSubType];
             final String eventKey = eventsData.getEventKey(singleEventArray);
 
-            if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) { //пропускаем события календарей
+            if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent)) ||
+                    eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
                 isVisibleEvent = false;
             } else if (widgetPref.size() > 3) {
@@ -702,6 +702,8 @@ class WidgetUpdater {
                 if (uri != null) {
                     intentView.setData(uri);
                     views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
+                } else { //Ничего не показываем
+                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), null);
                 }
 
             } else {

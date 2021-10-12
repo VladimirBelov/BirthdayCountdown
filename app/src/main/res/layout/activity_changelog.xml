@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -38,6 +38,7 @@
 		android:background="?attr/backgroundColor">
 
 		<!-- https://stackoverflow.com/questions/4189883/center-two-buttons-horizontally -->
+
 		<LinearLayout
 			android:id="@+id/layoutTitle"
 			android:layout_width="match_parent"
@@ -84,10 +85,13 @@
 
 		<TextView
 			android:id="@+id/centerPoint"
-			android:text=""
-			android:layout_width="0dip"
+			android:layout_width="10dip"
 			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true" />
+			android:layout_centerHorizontal="true"
+			android:onClick="showPreferences"
+			android:textSize="8sp"
+			tools:visibility="visible"
+            tools:ignore="SmallSp" />
 
 		<Button
 			android:id="@+id/buttonMail"

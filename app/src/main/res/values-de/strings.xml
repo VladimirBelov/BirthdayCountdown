@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -21,6 +21,7 @@
     <string name="menu_add_event">Ereignis hinzufügen</string>
     <string name="menu_add_event_to_contact">Ereignis zum Kontakt hinzufügen…</string>
     <string name="menu_add_event_to_calendar">Ereignis zum Kalender hinzufügen…</string>
+    <string name="menu_open_file_with_events">Datei mit Ereignissen öffnen…</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
     <string name="menu_search">Suche…</string>
@@ -39,10 +40,14 @@
     <string name="menu_context_unsilent_event">Benachrichtigung fortsetzen</string>
     <string name="menu_context_merge_event">Link zum Kontakt…</string>
     <string name="menu_context_unmerge_event">Verbindung zum Kontakt trennen</string>
+    <string name="menu_context_remerge_event">Link zu anderen Kontakt…</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
     <string name="msg_no_events">Keine Ereignissе gefunden</string>
+    <string name="msg_no_files_selected">"  - nicht ausgewählt -"</string>
+    <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
+    <string name="msg_file_access_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -61,17 +66,17 @@
 
     <string name="msg_after_year_prefix_1">" Jahr"</string>
     <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
-    <string name="msg_after_year_prefix_1_">" Jahr"</string>
+    <string name="msg_after_year_prefix_1_">" Jahre"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_year_prefix_4_21">" Jahre"</string>
 
     <string name="msg_after_month_prefix_1">" Monat"</string>
     <string name="msg_after_month_prefix_2_3_4">" Monate"</string>
-    <string name="msg_after_month_prefix_1_">" Monat"</string>
+    <string name="msg_after_month_prefix_1_">" Monate"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_month_prefix_4_21">" Monate"</string>
 
     <string name="msg_after_day_prefix_1">" Tag"</string>
     <string name="msg_after_day_prefix_2_3_4">" Tage"</string>
-    <string name="msg_after_day_prefix_1_">" Tag"</string>
+    <string name="msg_after_day_prefix_1_">" Tage"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_day_prefix_4_21">" Tage"</string>
 
     <string name="msg_age_now">"Alter: "</string>
@@ -94,7 +99,13 @@
     <string name="msg_snoozed_until">"Stummgeschaltet bis %1$s"</string>
     <string name="msg_notify_time">"Die Benachrichtigung erfolgt um %1$s"</string>
     <string name="msg_filter_clear_confirmation">Alle Filter löschen?</string>
+    <string name="msg_filter_clean_confirmation">Alle Filter von Links zu abwesenden Kontakten oder Kalenderereignissen bereinigen?</string>
+    <string name="msg_filter_clean_silenced_result">"Stillgelegte Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
+    <string name="msg_filter_clean_hidden_result">"Ausgeblendete Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
     <string name="msg_calendar_info">"Kalenderereignis \"%1$s\""</string>
+    <string name="msg_file_info">"Ereignis aus Datei \"%1$s\""</string>
+    <string name="msg_title_confirmation">Bestätigung</string>
+    <string name="msg_title_settings">Gespeicherte Einstellungen</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -112,6 +123,7 @@
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Abbrechen</string>
+    <string name="button_choose">Wählen</string>
     <string name="button_rate">Bewerten</string>
     <string name="button_mail">Schreiben</string>
     <string name="button_open_addressbook">Adressbuch öffnen…</string>
@@ -133,6 +145,7 @@
     <string name="events_scope_silenced">Ohne Benachrichtigung (%1$d)</string>
     <string name="events_scope_silenced2">Ohne Benachrichtigung (%1$d, gesichert %2$d)</string>
     <string name="events_scope_clear">Filter entfernen</string>
+    <string name="events_scope_clean">Filter von toten Links reinigen</string>
 
     <string name="event_type_birthday">Geburtstag</string>
     <string name="event_type_anniversary">Hochzeitstag</string>
@@ -141,6 +154,7 @@
     <string name="event_type_crowning">Kirchlicher Hochzeitstag</string>
     <string name="event_type_nameday">Namenstag</string>
     <string name="event_type_calendar">Kalenderereignis</string>
+    <string name="event_type_file">Dateiereignis</string>
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_name_1_7">Für 1–7 Ereignisse</string>
@@ -154,6 +168,8 @@
     <string name="widget_Age">YY</string>
     <string name="widget_TypeIcon">Typ</string>
     <string name="widget_Distance">BIS</string>
+    <string name="widget_msg_updated">"aktualisierten: "</string>
+    <string name="widget_msg_events">"Ereignisse: "</string>
 
     <string name="pref_Events_title">Allgemein</string>
     <string name="pref_Language_title">Sprache</string>
@@ -195,8 +211,10 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln zum Importieren von Kalenderereignissen bei Geburtstagen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen (Dateiformat beschrieben in Hilfe->\"Fragen und Antworten\")</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Hochzeitstage zu erkennen</string>
@@ -223,7 +241,9 @@
     <string name="pref_CustomEvents_Other_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Other_Labels_description">Kontaktereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt (durch Kommas getrennt)</string>
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
-    <string name="pref_CustomEvents_Calendars_description">Importieren Sie Ereignisse aus ausgewählten Kalendern</string>
+    <string name="pref_CustomEvents_Calendars_description">Ereignisse aus ausgewählten Kalendern anzeigen</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Ereignisse aus ausgewählten Dateien anzeigen (Dateiformat beschrieben in Hilfe->\"Fragen und Antworten\")</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
@@ -329,7 +349,7 @@
 
     <string name="pref_Widgets_title">Widgets</string>
 
-    <string name="pref_Widgets_UpdateInterval_title">Updateintervall</string>
+    <string name="pref_Widgets_UpdateInterval_title">Aktualisierungsintervall</string>
     <string name="pref_Widgets_UpdateInterval_description">Intervall für erzwungene Aktualisierung von Widgets</string>
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
@@ -372,6 +392,19 @@
         <item>Ereignisname</item>
         <item>Unternehmen (Position, wenn Eintrag fehlt)</item>
         <item>Nichts</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Nicht markieren</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Primärfarbe</string>
@@ -517,6 +550,7 @@
     <string name="stats_speed_title"><![CDATA[<h2>Ladegeschwindigkeit:</h2><ul>]]></string>
     <string name="stats_speed_contacts"><![CDATA[<li>Kontaktscan: %1$s msec]]></string>
     <string name="stats_speed_calendar"><![CDATA[<li>Kalender scannen: %1$s msec]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>Dateien scannen: %1$s msec]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>Datumsanzahl: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Zähler:</h2><ul>]]></string>

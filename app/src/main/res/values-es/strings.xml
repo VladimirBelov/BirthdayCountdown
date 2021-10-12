@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -21,6 +21,7 @@
     <string name="menu_add_event">Añadir evento</string>
     <string name="menu_add_event_to_contact">Agregar evento al contacto…</string>
     <string name="menu_add_event_to_calendar">Agregar evento al calendario…</string>
+    <string name="menu_open_file_with_events">Abrir archivo con eventos…</string>
     <string name="menu_settings">Configuraciones</string>
     <string name="menu_refresh">Actualizar</string>
     <string name="menu_search">Buscar…</string>
@@ -39,10 +40,14 @@
     <string name="menu_context_unsilent_event">Alerta de regreso</string>
     <string name="menu_context_merge_event">Enlace al contacto…</string>
     <string name="menu_context_unmerge_event">Desvincular del contacto</string>
+    <string name="menu_context_remerge_event">Enlace a otro contacto…</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
     <string name="msg_no_events">No se encontraron eventos</string>
+    <string name="msg_no_files_selected">"  - no seleccionado -"</string>
+    <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
+    <string name="msg_file_access_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
     <string name="msg_before_event_prefix">"después de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -94,7 +99,13 @@
     <string name="msg_snoozed_until">"Retrasado hasta %1$s"</string>
     <string name="msg_notify_time">"La notificación se establece el %1$s"</string>
     <string name="msg_filter_clear_confirmation">¿Eliminar todos los filtros?</string>
+    <string name="msg_filter_clean_confirmation">¿Limpiar todos los filtros de enlaces a contactos ausentes o eventos de calendario?</string>
+    <string name="msg_filter_clean_silenced_result">"Eventos silenciados borrados para contactos ausentes y eventos del calendario: "</string>
+    <string name="msg_filter_clean_hidden_result">"Eventos ocultos borrados para contactos ausentes y eventos del calendario: "</string>
     <string name="msg_calendar_info">"Evento de calendario \"%1$s\""</string>
+    <string name="msg_file_info">"Evento de archivo \"%1$s\""</string>
+    <string name="msg_title_confirmation">Confirmación</string>
+    <string name="msg_title_settings">Configuraciones guardadas</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -112,6 +123,7 @@
 
     <string name="button_ok">Okay</string>
     <string name="button_cancel">Cancelación</string>
+    <string name="button_choose">Escoger</string>
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
     <string name="button_open_addressbook">Abrir libreta de direcciones…</string>
@@ -133,6 +145,7 @@
     <string name="events_scope_silenced">Sin notificación (%1$d)</string>
     <string name="events_scope_silenced2">Sin notificación (%1$d, salvado %2$d)</string>
     <string name="events_scope_clear">Quitar filtros</string>
+    <string name="events_scope_clean">Limpiar filtros de enlaces muertos</string>
 
     <string name="event_type_birthday">Cumpleaños</string>
     <string name="event_type_anniversary">Aniversario de bodas</string>
@@ -141,6 +154,7 @@
     <string name="event_type_crowning">Boda</string>
     <string name="event_type_nameday">Día del nombre</string>
     <string name="event_type_calendar">Evento de calendario</string>
+    <string name="event_type_file">Evento de archivo</string>
 
     <string name="appwidget_text">Cargando…</string>
     <string name="appwidget_name_1_7">Para 1–7 eventos</string>
@@ -154,6 +168,8 @@
     <string name="widget_Age">AA</string>
     <string name="widget_TypeIcon">Tipo</string>
     <string name="widget_Distance">Antes</string>
+    <string name="widget_msg_updated">"actualizado: "</string>
+    <string name="widget_msg_events">"eventos: "</string>
 
     <string name="pref_Events_title">General</string>
     <string name="pref_Language_title">Lengua</string>
@@ -173,13 +189,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" el domingo"</item>
-        <item>" el lunes"</item>
-        <item>" el martes"</item>
-        <item>" el miércoles"</item>
-        <item>" el jueves"</item>
-        <item>" el viernes"</item>
-        <item>" el sábado"</item>
+        <item>" en el domingo"</item>
+        <item>" en el lunes"</item>
+        <item>" en el martes"</item>
+        <item>" en el miércoles"</item>
+        <item>" en el jueves"</item>
+        <item>" en el viernes"</item>
+        <item>" en el sábado"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Configurar eventos</string>
@@ -195,8 +211,10 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Reglas para importar eventos de calendario en cumpleaños</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Ingrese las reglas para reconocer el nombre del contacto del encabezado del evento del calendario (varias reglas están separadas |). La regla debe contener la etiqueta [name] rodeada de otro texto (opcional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">¡No se encontraron etiquetas!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">¡Formato de regla incorrecto! El separador es el símbolo |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Año de uso</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de cumpleaños de los archivos elegidos</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Utilice convenciones de nomenclatura estándar para aniversarios de bodas civil</string>
@@ -223,7 +241,9 @@
     <string name="pref_CustomEvents_Other_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_description">Los eventos de contacto con esta etiqueta se identificarán como otros eventos (separados por comas)</string>
     <string name="pref_CustomEvents_Calendars_title">Calendarios</string>
-    <string name="pref_CustomEvents_Calendars_description">Importar eventos de calendarios seleccionados</string>
+    <string name="pref_CustomEvents_Calendars_description">Ver eventos de calendarios seleccionados</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Archivos locales</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Mostrar eventos de archivos elegidos</string>
 
     <string name="pref_CustomEvents_Custom_title">Evento personalizado</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Título del evento</string>
@@ -530,6 +550,7 @@
     <string name="stats_speed_title"><![CDATA[<h2>Velocidad de Descarga:</h2><ul>]]></string>
     <string name="stats_speed_contacts"><![CDATA[<li>escaneo de contactos: %1$s ms]]></string>
     <string name="stats_speed_calendar"><![CDATA[<li>escanear calendarios: %1$s ms]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>escaneo de archivos: %1$s ms]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>contando fechas: %1$s ms]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Contadores:</h2><ul>]]></string>

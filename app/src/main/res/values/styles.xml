@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -305,7 +305,7 @@
     <style name="OptionsMenuCustomStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="overlapAnchor">false</item>
         <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
-        <item name="android:dropDownVerticalOffset">4.0dip</item>
+        <item name="android:dropDownVerticalOffset">5dp</item>
     </style>
 
 </resources>

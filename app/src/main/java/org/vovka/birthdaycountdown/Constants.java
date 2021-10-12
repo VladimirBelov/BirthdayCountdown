@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
@@ -17,7 +17,8 @@ final class Constants {
     static final String STRING_MINUS1 = "-1";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
-    static final String STRING_0000 = "0000-";
+    static final String STRING_0000_MINUS = "0000-";
+    static final String STRING_0000 = "0000";
     static final String STRING_EQ = "=?";
     static final String STRING_1 = "1";
     static final String STRING_2 = "2";
@@ -58,7 +59,9 @@ final class Constants {
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";
+    static final String STRING_STORAGE_FILE = "file";
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
+    static final String EVENT_PREFIX_FILE_EVENT = "file event";
 
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
@@ -88,10 +91,12 @@ final class Constants {
     static final Integer Type_Custom4 = 11;
     static final Integer Type_Custom5 = 12;
     static final Integer Type_CalendarEvent = 20;
+    static final Integer Type_FileEvent = 21;
 
     static final String STRING_2HASH = "##"; //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String STRING_2TILDA = "~~";
     static final String STRING_COLON_SPACE = ": ";
+    static final String STRING_COLON = ":";
     static final String STRING_COMMA = ",";
     static final String STRING_COMMA_SPACE = ", ";
     static final String STRING_PERIOD = ".";
@@ -101,6 +106,8 @@ final class Constants {
     static final String STRING_PARENTHESIS_CLOSE = ")";
     static final String STRING_2MINUS = "--";
     static final String STRING_MINUS = "-";
+    static final String STRING_PIPE = "\\|";
+    static final String STRING_BAR = "|";
     static final String STRING_DIALOG_TAB = "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
@@ -113,6 +120,8 @@ final class Constants {
     final static int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
 
     final static int RESULT_PICK_CONTACT = 200;
+    final static int RESULT_PICK_OTHER_CONTACT = 202;
+    final static int RESULT_PICK_FILE = 201;
 
     static final int defaultNotificationID = 1000;
     static final int defaultQuizID = 2000;
@@ -162,6 +171,7 @@ final class Constants {
     static final int pref_Events_Scope_Hidden = 2;
     static final int pref_Events_Scope_Silenced = 3;
     static final int pref_Events_Scope_Clear = 10;
+    static final int pref_Events_Scope_Clean = 11;
 
     static final int MENU_MAIN_SEARCH = 0;
     static final int MENU_MAIN_ADD_EVENT = 1;
@@ -176,7 +186,7 @@ final class Constants {
     static final int WIDGET_EVENTS_MAX = 7;
     static final int SPEED_LOAD_CRITICAL = 700;
 
-    //Сообщения
+    //Отладочные сообщения
 
     static final String MSG_YEAR_MUST_BE_GREATER_0 = "Year must be > 0.";
     static final String MSG_NOTIFICATIONS_WERE_ENABLED = "Notifications were enabled\n";
@@ -191,7 +201,7 @@ final class Constants {
     static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
 
     static final String RULE_TAG_NAME = "[name]";
-    static final String RULE_TAG_ALIAS = "[alias]";
+    //static final String RULE_TAG_ALIAS = "[alias]";
 
     //Ошибки
 
@@ -206,8 +216,10 @@ final class Constants {
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
     static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";
+    static final String CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR = "ContactsEvents->readTextFromUri error:\n";
     static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
+    static final String CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR = "ContactsEvents->getFileEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDARS_ERROR = "ContactsEvents->getCalendars error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR = "ContactsEvents->getContactData error:\n";
@@ -295,11 +307,16 @@ final class Constants {
     static final String SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR = "SettingsActivity->getAccounts error:\n";
     static final String SETTINGS_ACTIVITY_GET_CALENDARS_ERROR = "SettingsActivity->getCalendars error:\n";
     static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_FILES_ERROR = "SettingsActivity->selectFiles error:\n";
+    static final String SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "SettingsActivity->onActivityResult error:\n";
+    static final String SETTINGS_ACTIVITY_GET_PATH_ERROR = "SettingsActivity->getPath error:\n";
+    static final String SETTINGS_ACTIVITY_GET_DATA_COLUMN_ERROR = "SettingsActivity->getDataColumn error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
 
     static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
     static final String ABOUT_ACTIVITY_SET_DEBUG_ERROR = "AboutActivity->setDebug error:\n";
+    static final String ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR = "AboutActivity->showPreferences error:\n";
 
     static final String NOTIFY_ACTIVITY_ON_CREATE_ERROR = "NotifyActivity->onCreate error:\n";
 
@@ -325,4 +342,5 @@ final class Constants {
     static final String REGEX_PLUS = "\\+";
 
     static final String quiz_error_button_OK = "-##OK##";
+    protected static final String FilePrefix_Media = "com.android.providers.media.documents";
 }

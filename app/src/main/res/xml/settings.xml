@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.08.2021, 11:44
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -88,6 +88,7 @@
                     android:title="@string/pref_CustomEvents_Calendars_title"
                     android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
+                <!-- создём динамически, если выбраны календари -->
                 <!--<Preference
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                     android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
@@ -98,6 +99,11 @@
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
                     android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"
                     android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>-->
+
+                <!--<Preference
+                    android:key="@string/pref_CustomEvents_Birthday_LocalFiles_key"
+                    android:title="@string/pref_CustomEvents_LocalFiles_title"
+                    android:summary="@string/pref_CustomEvents_Birthday_LocalFiles_description"/>-->
 
             </PreferenceCategory>
 
@@ -221,6 +227,11 @@
                     android:key="@string/pref_CustomEvents_Other_Calendars_key"
                     android:title="@string/pref_CustomEvents_Calendars_title"
                     android:summary="@string/pref_CustomEvents_Calendars_description"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
+                    android:title="@string/pref_CustomEvents_LocalFiles_title"
+                    android:summary="@string/pref_CustomEvents_Other_LocalFiles_description"/>
 
             </PreferenceCategory>
 

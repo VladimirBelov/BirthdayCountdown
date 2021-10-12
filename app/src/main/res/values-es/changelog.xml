@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.4</item>
+        <item>Se agregó soporte para eventos de archivos locales (formato DarkBirthday, no eventos flotantes y cumpleaños)</item>
+        <item>Clasificación de eventos corregidos dentro de un día (descendente): cumpleaños, aniversarios, eventos personalizados, otros eventos. Los eventos con notificación tienen mayor prioridad</item>
+        <item>Eventos con el año que se muestra en el widget de lista en formato completo</item>
 
         <item>#1.6.3</item>
         <item>Optimizaciones para Android 11 y 12</item>

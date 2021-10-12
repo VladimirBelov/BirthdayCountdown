@@ -1,36 +1,56 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static org.vovka.birthdaycountdown.Constants.FilePrefix_Media;
+import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_FILE;
+import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
+import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
+import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
+import static org.vovka.birthdaycountdown.Constants.STRING_PIPE;
+import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
+import static org.vovka.birthdaycountdown.Constants.Type_Other;
 
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -62,19 +82,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
-import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
-import static org.vovka.birthdaycountdown.Constants.Type_Other;
 
 
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    protected static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
+    protected static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
+    protected static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
 
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
@@ -82,6 +99,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private TypedArray ta;
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
+    private Set<String> filesList;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -176,7 +194,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -239,7 +257,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -305,6 +323,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 }
 
+                if (findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key)) == null) {
+                    pref = new Preference(eventsData.context);
+                    pref.setTitle(getString(R.string.pref_CustomEvents_LocalFiles_title));
+                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_description));
+                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
+                    prefCat.addPreference(pref);
+                }
+
             }
 
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Help_key));
@@ -318,7 +344,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -381,24 +407,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-                    this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
+
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
                     return true;
+
                 } else {
 
-                    selectCalendars(ContactsEvents.eventTypesIDs.get(Type_BirthDay));
+                    selectCalendars(this.eventTypeForSelect);
+
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
+
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-                    this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
+
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
                     return true;
+
                 } else {
 
-                    selectCalendars(ContactsEvents.eventTypesIDs.get(Type_Other));
+                    selectCalendars(this.eventTypeForSelect);
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key).equals(key)) {
@@ -414,11 +446,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     startActivity(intent);
                 }
 
+            } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
+
+                filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_otherevent_files));
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
+                selectFiles(this.eventTypeForSelect);
+                return true;
+
+            } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
+
+                filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_birthday_files));
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
+                selectFiles(this.eventTypeForSelect);
+                return true;
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
         return false;
@@ -440,7 +486,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_STOP_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_STOP_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         } finally {
             super.onStop();
         }
@@ -514,7 +560,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-       if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectAccounts();
@@ -522,9 +568,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
-           if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-               if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
-           }
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
+            }
 
         }
 
@@ -570,7 +616,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -716,7 +762,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -785,13 +831,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
     private void editRules() {
-
-        //todo: https://github.com/VladimirBelov/BirthdayCountdown/blob/97d2f61dd1538384e5595fca46ae0902d99d5183/app/src/main/java/org/vovka/birthdaycountdown/MainActivity.java
 
         try {
 
@@ -840,8 +884,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 String rules = input.getText().toString().trim();
 
                 if (!rules.isEmpty()) {
-                    if (!rules.toLowerCase().contains(Constants.RULE_TAG_NAME) && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
+                    final int rStartIndex = rules.indexOf(RULE_TAG_NAME);
+                    if (rStartIndex == -1) { //todo: && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
                         Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags), Toast.LENGTH_LONG).show();
+                        return;
+                    } else if (rules.indexOf(RULE_TAG_NAME, rStartIndex) > -1 && rules.indexOf(STRING_BAR, rStartIndex) == -1) {
+                        Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error), Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
@@ -854,9 +902,223 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    //https://habr.com/ru/post/203884/
+    private void selectFiles(String eventType) {
+
+        try {
+
+            ArrayList<String> filesPaths = new ArrayList<>(); //Только видимая часть
+            ArrayList<String> filesFullData = new ArrayList<>(); //Вся информация о файле
+            ArrayList<Boolean> filesSelected = new ArrayList<>();
+
+            boolean[] sel = new boolean[filesList.size()];
+            int ind = 0;
+            for (String file: filesList) {
+                filesPaths.add(file.split(STRING_PIPE)[0]);
+                filesFullData.add(file);
+                filesSelected.add(true);
+                sel[ind] = filesSelected.get(ind++);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_LocalFiles_title)
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> toStore = new HashSet<>();
+                        for (int i = 0; i < filesSelected.size(); i++) {
+                            if (filesSelected.get(i)) toStore.add(filesFullData.get(i));
+                        }
+                        eventsData.setPreferences_Files(eventType, toStore);
+                        eventsData.setPreferences();
+
+                        dialog.cancel();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.button_choose, (dialog, which) -> {
+
+                        filesList = new HashSet<>();
+                        for (int i = 0; i < filesSelected.size(); i++) {
+                            if (filesSelected.get(i)) filesList.add(filesFullData.get(i));
+                        }
+
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("*/*");
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        startActivityForResult(intent, RESULT_PICK_FILE);
+                    })
+                    .setCancelable(true);
+
+            if (filesPaths.isEmpty()) {
+                builder.setMessage(R.string.msg_no_files_selected);
+            } else {
+                builder.setMultiChoiceItems(filesPaths.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> filesSelected.set(which, isChecked));
+            }
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_FILES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+
+        try {
+
+            if (requestCode == RESULT_PICK_FILE && resultCode == Activity.RESULT_OK) {
+                if (resultData != null) {
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        if (eventsData.readTextFromUri(uri).length() > 0) {
+                            String filename = getPath(this, uri);
+                            if (filename != null) {
+                                this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                filesList.add(filename.concat(STRING_BAR).concat(uri.toString()));
+                                selectFiles(this.eventTypeForSelect);
+                            }
+                        } else {
+                            Toast.makeText(this, getText(R.string.msg_file_open_error) + uri.getPath(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
+    public String getPath(Context context, Uri uri) {
+
+        try {
+
+            // DocumentProvider
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                // ExternalStorageProvider
+                if (isExternalStorageDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(STRING_COLON);
+                    final String type = split[0];
+
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    } else {
+                        return "/storage/"+split[0]+"/"+split[1];
+                    }
+                }
+                // DownloadsProvider
+                else if (isDownloadsDocument(uri)) {
+                    //final String id = DocumentsContract.getDocumentId(uri);
+                    //final String[] split = id.split(STRING_COLON);
+                    //final Uri contentUri = null; //ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(split[split.length-1]));
+                    //if (contentUri != null) {
+                    //    return getDataColumn(context, contentUri, null, null);
+                    //} else {
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getDataColumn(context, uri, null, null);
+                    //}
+                }
+                // MediaProvider
+                else if (isMediaDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(STRING_COLON);
+                    final String type = split[0];
+                    Uri contentUri = null;
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+                    if (contentUri != null) {
+                        final String selection = "_id=?";
+                        final String[] selectionArgs = new String[]{split[1]};
+                        return getDataColumn(context, contentUri, selection, selectionArgs);
+                    } else {
+                        return getDataColumn(context, uri, null, null);
+                    }
+                }
+            }
+
+            // MediaStore (and general)
+            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                // Return the remote address
+                if (isGooglePhotosUri(uri)) return uri.getLastPathSegment();
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + getDataColumn(context, uri, null, null);
+            }
+            // File
+            else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                return uri.getPath();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        return null;
+
+    }
+
+    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+
+        try {
+
+            try (Cursor cursor = context.getContentResolver().query(uri, null, selection, selectionArgs, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    final int indexName = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (indexName > -1) {
+                        List<String> path = uri.getPathSegments();
+                        return cursor.getString(indexName);
+                    }
+                    final int indexData = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                    if (indexData > -1) {
+                        return cursor.getString(indexData);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_DATA_COLUMN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+        return null;
+
+    }
+
+    private boolean isExternalStorageDocument(Uri uri) {
+        return FilePrefix_ExternalStorage.equals(uri.getAuthority());
+    }
+
+    private boolean isDownloadsDocument(Uri uri) {
+        return FilePrefix_Downloads.equals(uri.getAuthority());
+    }
+
+    private boolean isMediaDocument(Uri uri) {
+        return FilePrefix_Media.equals(uri.getAuthority());
+    }
+
+    private boolean isGooglePhotosUri(Uri uri) {
+        return FilePrefix_GooglePhotos.equals(uri.getAuthority());
     }
 
 }

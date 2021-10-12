@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -27,19 +27,57 @@
                 <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
 
                 <item>#Ereignisse passen nicht oder Fotos sind zu schmal</item>
-                <item>Gehen Sie zu den Widget-Einstellungen und versuchen Sie, die Einstellung \"Benutzerdefinierte Anzahl der Ereignisse\" zu ändern</item>
+                <item>Gehen Sie zu den Widget-Einstellungen und versuchen Sie, die Einstellung \"Benutzerdefinierte Anzahl der Ereignisse\" zu ändern.</item>
 
                 <item>#Widgets werden nicht aktualisiert</item>
-                <item tools:ignore="TypographyDashes"><![CDATA[Sie müssen die Batterieoptimierung für die Anwendung deaktivieren. Es gibt verschiedene Einstellungen für verschiedene Android-Oberflächen: <ul><li>für Xiaomi MIUI ist dies \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)<li>für reines Android 9-11 ist dies \"Akkuoptimierung\" (Apps und Benachrichtigungen<nobr>–></nobr>Erweitert<nobr>–></nobr>Spezieller App-Zugriff<nobr>–></nobr>Akkuoptimierung oder Energiesparfunktion)<li>für Huawei EMUI ist das \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
-                <item tools:ignore="TypographyDashes"><![CDATA[Manchmal stoppen auf Android 9-10 Widgets die Aktualisierung nach der Installation einer neuen Version der App. Um dies zu beheben:<ol><li>entfernen Sie das Widget vom Bildschirm<li>deaktivieren Sie den Launcher-Cache (in den Android-Einstellungen in der Liste der Anwendungen wählen Sie das Programm aus und löschen in den Eigenschaften den Cache)<li>starten Sie das Smartphone neu<li>fügen Sie das Widget auf dem Bildschirm neu hinzu</ol>]]></item>
+                <item><![CDATA[Sie müssen die Batterieoptimierung für die Anwendung deaktivieren. Es gibt verschiedene Einstellungen für verschiedene Android-Oberflächen: <ul>
+                <li>für Xiaomi MIUI ist dies \"Enable Autostart\" (Security–> Permissions–> Autostart)
+                <li>für reines Android 9-11 ist dies \"Akkuoptimierung\" (Apps und Benachrichtigungen–> Erweitert–> Spezieller App-Zugriff–> Akkuoptimierung oder Energiesparfunktion)
+                <li>für Huawei EMUI ist das \"Enable Autostart\" (Settings-> Battery-> Start applications)
+                </ul>]]></item>
+
+                <item>Wenn die Akkuoptimierung aktiviert ist, wird in jedem Widget-Einstellungsbildschirm oben auf dem Bildschirm eine Warnmeldung angezeigt. Eine ähnliche Inschrift befindet sich unten in den Anwendungseinstellungen. Um die Optimierung zu deaktivieren, klicken Sie auf die rote Schrift.</item>
+                <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
+                <item><![CDATA[Manchmal stoppen auf Android 9-10 Widgets die Aktualisierung nach der Installation einer neuen Version der App. Um dies zu beheben:<ol>
+                <li>entfernen Sie das Widget vom Bildschirm
+                <li>deaktivieren Sie den Launcher-Cache (in den Android-Einstellungen in der Liste der Anwendungen wählen Sie das Programm aus und löschen in den Eigenschaften den Cache)
+                <li>starten Sie das Smartphone neu
+                <li>fügen Sie das Widget auf dem Bildschirm neu hinzu
+                </ol>]]></item>
+                <item>Wenn der Standard-Widget-Aktualisierungsmechanismus nicht funktioniert, können Sie das erzwungene Aktualisierungsintervall aktivieren: Einstellungen-> Widgets-> Aktualisierungsintervall</item>
 
                 <item>###Ereignisse</item>
 
                 <item>#Kalenderereignisse</item>
-                <item>Alle Kalenderereignisse werden unterstützt. Für die Veranstaltung \"Geburtstag“ und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
+                <item>Alle Kalenderereignisse werden unterstützt. Für die Veranstaltung \"Geburtstag\" und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
                 <item> </item>
-                <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol><li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)<li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt, klicken Sie darauf öffnet sich eine Kontaktkarte im Adressbuch<li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt, klicken Sie darauf öffnet sich eine Kalenderereigniskarte</ol>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp"/ width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert. Wenn Sie auf das Ereignis klicken, wird die Kalenderereigniskarte geöffnet.]]></item>
+                <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
+                <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
+                <li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt, klicken Sie darauf öffnet sich eine Kontaktkarte im Adressbuch
+                <li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt, klicken Sie darauf öffnet sich eine Kalenderereigniskarte
+                </ol>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert. Wenn Sie auf das Ereignis klicken, wird die Kalenderereigniskarte geöffnet.]]></item>
+                <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
+                <li>Erstellen Sie einen neuen Kalender in ihrer Standardkalender-App oder wählen Sie beispielsweise einen Kalender für Feiertage
+                <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse. Die Ereignisse müssen dabei ganztägig sein
+                <li>Ein Link zu den Anweisungen, wie man Geburtstage von Freunden aus sozialen Netzwerken hochlädt, steht unten
+                <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Anpassung der Ereignisse-> Geburtstag-> Regeln. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
+                <li>Nach dem Erstellen (Aktivieren) des Kalenders, müssen Sie diesen in den Einstellungen auswählen: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Kalender
+                </ol>]]></item>
+
+                <item>#Ereignisse aus lokalen Dateien</item>
+                <item><![CDATA[Ereignisse und Geburtstage vom <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> werden mit einigen Funktionen unterstützt:<ul>
+                <li>Das Ereignisdatum kann ein beliebiges Format ohne Leerzeichen haben (TT.MM.JJJJ, MM/TT/JJJJ usw.)
+                <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein
+                <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
+                </ul>]]></item>
+                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br>&nbsp;<br># KOMMENTAR<br>&lt;DATUM&gt;[,FLAGS]&nbsp;NAME&nbsp;NACHNAME&nbsp;[([ORGANISATION,]TITEL)]<br>&nbsp;<br>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Andere Veranstaltung. Format (in eckigen Klammern - optionale Parameter):<br>&nbsp;<br># KOMMENTAR<br>&lt;DATUM&gt;[,FLAGS]&nbsp;EREIGNISTITEL<br>&nbsp;<br>]]></item>
+                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>]]></item>
+                <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
+                <li>Laden Sie Dateien mit Ereignissen herunter oder erstellen Sie diese
+                <li>Wählen Sie diese Dateien aus: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Lokale Dateien-> WÄHLEN
+                </ol>]]></item>
 
                 <item>#Importieren von Ereignissen aus sozialen Netzwerken</item>
                 <item><![CDATA[Die Geburtstage von Facebook-Freunden können mit dem fb2cal-Tool in den Kalender exportiert werden: <a href="https://github.com/mobeigi/fb2cal">Link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">Videoanweisungen</a>]]></item>
@@ -48,7 +86,10 @@
                 <item>###Allgemein</item>
 
                 <item>#Suche</item>
-                <item><![CDATA[Um nach mehreren Parametern zu suchen, trennen Sie diese mit Kommas (beliebiger Wert) oder \"+\" (alle Werte), zum Beispiel:<ul><li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary<li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge</ul>]]></item>
+                <item><![CDATA[Um nach mehreren Parametern zu suchen, trennen Sie diese mit Kommas (beliebiger Wert) oder \"+\" (alle Werte), zum Beispiel:<ul>
+                <li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary
+                <li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge
+                </ul>]]></item>
 
                 <item>#Sprache der Anwendungsoberfläche</item>
                 <item>Wenn Sie helfen wollen, diese Anwendung in eine andere Sprache zu übersetzen oder wenn Sie eine Ungenauigkeit in der Übersetzung feststellen - E-Mail an mich (Schaltfläche unten).</item>

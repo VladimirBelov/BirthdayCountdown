@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 11.08.2021, 22:23
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -30,19 +30,43 @@
         <item>Go to the widget settings and try to modify \"Custom events number\" setting</item>
 
         <item>#Widgets are not updating</item>
-        <item tools:ignore="TypographyDashes"><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
+        <item><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
         <li>for Xiaomi MIUI this is \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)
         <li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications<nobr>-></nobr>Advanced<nobr>-></nobr>Special app access<nobr>-></nobr>Battery optimization)
         <li>for Huawei EMUI this is \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
-        <item tools:ignore="TypographyDashes"><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol><li>remove the widget from the screen<li>clear the launcher cache (in Android settings in the list of applications find the launcher and select \"clear cache\" in properties)<li>restart the smartphone<li>re-add the widget to the screen</ol>]]></item>
+        <item>When battery optimization is enabled, there will be a warning message at the top of the screen in each widget preference screen. A similar inscription will be at the bottom of the application settings. To turn off optimization, click on the red label</item>
+        <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
+        <item><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol>
+        <li>remove the widget from the screen
+        <li>clear the launcher cache (in Android settings in the list of applications find the launcher and select \"clear cache\" in properties)
+        <li>restart the smartphone
+        <li>re-add the widget to the screen
+        </ol>]]></item>
+        <item>If the standard widget update mechanism does not work, you can turn on the forced update interval: Settings-> Widgets-> Update interval</item>
 
         <item>###Events</item>
 
         <item>#Calendar events</item>
-        <item>Any all day calendar events are supported. Sets of calendars can be specified for the event \"Birthday"\ and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
-        <item> </item>
-        <item><![CDATA[<img src="ic_event_birthday.webp"/ width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
-        <item><![CDATA[<img src="ic_event_other.webp"/ width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
+        <item>Any all day calendar events are supported. Sets of calendars can be specified for the event \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
+        <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
+        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
+        <item><![CDATA[<br>How to setup the display of events:<ol>
+        <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
+        <li>If the calendar is empty, create or import the required events. Events must be for the whole day
+        <li>A link to instructions on how to upload friends\' birthdays from social networks is below
+        <li>If in a birthday calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events customizing-> Birthday-> Rules. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
+        <li>After creating (enabling) calendars, you must select them in Settings-> Event customizing-> Birthday-> Calendars (Settings-> Event customizing-> Other event-> Calendars)
+        </ol>]]></item>
+
+        <item>#Events from local files</item>
+        <item><![CDATA[Events and birthdays from <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> are supported with some features:<ul><li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY etc)<li>if the year is unknown set 0000<li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title</ul>]]></item>
+        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday. Format (in square brackets - optional parameters):<br>&nbsp;<br># COMMENT<br>&lt;DATE&gt;[,FLAGS]&nbsp;NAME&nbsp;LASTNAME&nbsp;[([ORGANIZATION,]TITLE)]<br>&nbsp;<br>]]></item>
+        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br>&nbsp;<br># COMMENT<br>&lt;DATE&gt;[,FLAGS]&nbsp;EVENT TITLE<br>&nbsp;<br>]]></item>
+        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>]]></item>
+        <item><![CDATA[<br>How to setup the display of events:<ol>
+        <li>Download or create files with events
+        <li>Select files in Settings-> Event customizing-> Birthday-> Files-> SELECT (Settings-> Event customizing-> Other event-> Files-> SELECT)
+        </ol>]]></item>
 
         <item>#Importing events from social networks</item>
         <item><![CDATA[Facebook friends\' birthdays can be exported to calendar using the fb2cal tool: <a href="https://github.com/mobeigi/fb2cal">link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">video instructions</a>]]></item>

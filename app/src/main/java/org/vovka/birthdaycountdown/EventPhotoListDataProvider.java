@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 11.08.2021, 22:23
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
@@ -77,6 +77,8 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         //this.widgetWidth = intent.getIntExtra("intWidgetWidth", 0);
         //this.floatDensity = intent.getFloatExtra("floatScreenDensity", 1);
     }
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {}
@@ -253,7 +255,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
         }
 
         return views;
@@ -308,7 +310,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show(), 1000);
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
         }
 
     }

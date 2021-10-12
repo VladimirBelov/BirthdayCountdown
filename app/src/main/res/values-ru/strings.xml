@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 17.08.2021, 10:49
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
@@ -21,6 +21,7 @@
     <string name="menu_add_event">Добавить событие</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
     <string name="menu_add_event_to_calendar">Добавить событие в календарь…</string>
+    <string name="menu_open_file_with_events">Открыть файл с событиями…</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Поиск…</string>
@@ -39,10 +40,14 @@
     <string name="menu_context_unsilent_event">Вернуть уведомление</string>
     <string name="menu_context_merge_event">Присоединить к контакту…</string>
     <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
+    <string name="menu_context_remerge_event">Присоединить к другому контакту…</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
 <!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
     <string name="msg_no_events">События не найдены</string>
+    <string name="msg_no_files_selected">"  - не выбраны -"</string>
+    <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
+    <string name="msg_file_access_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
@@ -94,7 +99,13 @@
     <string name="msg_snoozed_until">"Отложено до %1$s"</string>
     <string name="msg_notify_time">"Уведомление установлено на %1$s"</string>
     <string name="msg_filter_clear_confirmation">Удалить все фильтры?</string>
-    <string name="msg_calendar_info">"Событие календаря \"%1$s\""</string>
+    <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или события?</string>
+    <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
+    <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
+    <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
+    <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
+    <string name="msg_title_confirmation">Подтверждение</string>
+    <string name="msg_title_settings">Сохранённые настроки</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -112,6 +123,7 @@
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Отмена</string>
+    <string name="button_choose">Выбрать</string>
     <string name="button_rate">Оценить</string>
     <string name="button_mail">Написать</string>
     <string name="button_open_addressbook">Открыть адресную книгу…</string>
@@ -133,6 +145,7 @@
     <string name="events_scope_silenced">Без уведомления (%1$d)</string>
     <string name="events_scope_silenced2">Без уведомления (%1$d, сохранено %2$d)</string>
     <string name="events_scope_clear">Удалить фильтры</string>
+    <string name="events_scope_clean">Удалить несуществующие связи в фильтрах</string>
 
     <string name="event_type_birthday">День рождения</string>
     <string name="event_type_anniversary">Годовщина свадьбы</string>
@@ -141,6 +154,7 @@
     <string name="event_type_crowning">Венчание</string>
     <string name="event_type_nameday">Именины</string>
     <string name="event_type_calendar">Событие календаря</string>
+    <string name="event_type_file">Событие из файла</string>
 
     <string name="appwidget_text">Загрузка…</string>
     <string name="appwidget_name_1_7">На 1–7 событий</string>
@@ -154,6 +168,8 @@
     <string name="widget_Age">ГГ</string>
     <string name="widget_TypeIcon">Тип</string>
     <string name="widget_Distance">До</string>
+    <string name="widget_msg_updated">"обновлено: "</string>
+    <string name="widget_msg_events">"событий: "</string>
 
     <string name="pref_Events_title">Общие</string>
     <string name="pref_Language_title">Язык</string>
@@ -161,7 +177,7 @@
     <string name="pref_Theme_title">Цветовая тема</string>
     <string name="pref_Theme_description">Цветовая тема интерфейса</string>
     <string name="pref_Accounts_title">Учётные записи</string>
-    <string name="pref_Accounts_description">Искать события только в этих учётных записях</string>
+    <string name="pref_Accounts_description">Искать события только в этих учётных записях контактов</string>
 
     <string-array name="pref_Language_entries">
         <item>Автоматически</item>
@@ -195,8 +211,10 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила импорта событий календаря в дни рождения</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введите правила распознавания имени контакта из заголовка календарного события (несколько правил разделяются | ). Правило должно содержать тег [name], окруженный другим текстом (опционально):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не найдены!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Использовать год из события календаря для расчёта годовщин (не только день и месяц)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов (описание формата находится в разделе Помощь->Вопросы и Ответы)</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Использовать стандартные наименования для определения годовщин свадеб</string>
@@ -223,7 +241,9 @@
     <string name="pref_CustomEvents_Other_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Other_Labels_description">События контактов с такой меткой будут идентифицированы как другие события (через запятую)</string>
     <string name="pref_CustomEvents_Calendars_title">Календари</string>
-    <string name="pref_CustomEvents_Calendars_description">Импортировать события из выбранных календарей</string>
+    <string name="pref_CustomEvents_Calendars_description">Показывать события из выбранных календарей</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Показывать события из выбранных файлов (описание формата находится в разделе Помощь->Вопросы и Ответы)</string>
 
     <string name="pref_CustomEvents_Custom_title">Пользовательское событие</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
@@ -530,6 +550,7 @@
     <string name="stats_speed_title"><![CDATA[<h2>Скорость загрузки:</h2><ul>]]></string>
     <string name="stats_speed_contacts"><![CDATA[<li>сканирование контактов: %1$s мс]]></string>
     <string name="stats_speed_calendar"><![CDATA[<li>сканирование календарей: %1$s мс]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>сканирование файлов: %1$s мс]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>подсчёт дат: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Счётчики:</h2><ul>]]></string>

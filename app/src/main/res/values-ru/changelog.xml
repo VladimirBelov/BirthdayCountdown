@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.08.2021, 10:49
+  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.08.2021, 11:10
+  ~  * Last modified 12.10.2021, 0:16
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.6.4</item>
+                <item>Добавлена поддержка событий и дней рождений из локальных файлов (формат DarkBirthday, смотрите описание формата в разделе \"Вопросы и Ответы\")</item>
+                <item>Исправлена сортировка событий внутри одного дня (по убыванию): дни рождения, юбилеи, пользовательские события, другие события. События с уведомлением имеют более высокий приоритет</item>
+                <item>Если у события есть определённая дата, на списковом виджете эта дата будет с годом</item>
+                <item>Обновлен раздел \"Вопросы и Ответы\"</item>
 
                 <item>#1.6.3</item>
                 <item>Оптимизации для Android 11 и 12</item>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.08.2021, 10:49
+ *  * Created by Vladimir Belov on 12.10.2021, 0:19
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.08.2021, 9:43
+ *  * Last modified 12.10.2021, 0:16
  *
  */
 
@@ -15,6 +15,7 @@ import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
@@ -79,9 +80,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
-                //views.setTextViewText(R.id.info, "Prefs: " + widgetPref + ", events: " + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
-                views.setTextViewText(R.id.info, "updated: " + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
-                        + "\nevents: " + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
+                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + STRING_EOF + context.getString(R.string.widget_msg_events) + eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size());
             } else {
                 views.setTextViewText(R.id.info, STRING_EMPTY);
             }
