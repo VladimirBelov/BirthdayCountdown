@@ -2,7 +2,7 @@
 
 Android application: Events list and widgets for all your contacts dates: birthdays, weddings etc
 
-##Introduction
+## Introduction
 
 List of your memorable dates and events (free and no ads).
 
@@ -18,7 +18,6 @@ Supported event types (from your contacts):
 	3. Other events
 	4. Custom events (name days, death anniversaries, ...)
 	5. Round days for events (5k, 10k, 15k ... days)
-
 	6. Calendar events (contacts birthdays, holidays, etc)
 	7. Facebook events (via calendar events, see instructions in Settings->"How to" guide)
 	8. Events and birthdays from local files (DarkBirthday Widget syntax, see "How to" guide for file format, file with events can be downloaded from https://4pda.to/forum/index.php?showtopic=939391 )
@@ -58,7 +57,7 @@ Note: standard Android Contacts application may not allow custom event date w/o 
 
 https://play.google.com/store/apps/details?id=org.vovka.birthdaycountdown
 
-##Configuration
+## Configuration
 
 Create keystore.properties with the following info:
 
