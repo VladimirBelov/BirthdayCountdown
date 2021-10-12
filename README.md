@@ -13,14 +13,14 @@ Customizable notifications for upcoming events.
 Quiz about the events of your contacts: when he was born? how old will he be? what month is her birthday?
 
 Supported event types (from your contacts):
-	1. Birthdays
-	2. Wedding anniversaries
-	3. Other events
-	4. Custom events (name days, death anniversaries, ...)
-	5. Round days for events (5k, 10k, 15k ... days)
-	6. Calendar events (contacts birthdays, holidays, etc)
-	7. Facebook events (via calendar events, see instructions in Settings->"How to" guide)
-	8. Events and birthdays from local files (DarkBirthday Widget syntax, see "How to" guide for file format, file with events can be downloaded from https://4pda.to/forum/index.php?showtopic=939391 )
+	* 1. Birthdays
+	* 2. Wedding anniversaries
+	* 3. Other events
+	* 4. Custom events (name days, death anniversaries, ...)
+	* 5. Round days for events (5k, 10k, 15k ... days)
+	* 6. Calendar events (contacts birthdays, holidays, etc)
+	* 7. Facebook events (via calendar events, see instructions in Settings->"How to" guide)
+	* 8. Events and birthdays from local files (DarkBirthday Widget syntax, see "How to" guide for file format, file with events can be downloaded from https://4pda.to/forum/index.php?showtopic=939391 )
 
 Supported accounts for events:
 	1. Google
