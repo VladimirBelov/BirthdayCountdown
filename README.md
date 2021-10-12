@@ -61,8 +61,8 @@ https://play.google.com/store/apps/details?id=org.vovka.birthdaycountdown
 
 Create keystore.properties with the following info:
 
-keyAlias='...'
-keyPassword='...'
-storeFile='...'
-storePassword='...'
+* keyAlias='...'
+* keyPassword='...'
+* storeFile='...'
+* storePassword='...'
 
