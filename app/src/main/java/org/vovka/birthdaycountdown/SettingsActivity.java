@@ -1,19 +1,18 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 13.12.2021, 1:06
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.FilePrefix_Media;
 import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_FILE;
+import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_RINGTONE;
 import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
 import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
@@ -37,29 +36,33 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -89,10 +92,6 @@ import java.util.Set;
 
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
-    protected static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
-    protected static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
-    protected static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
-
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
     private String testChannelId = STRING_EMPTY;
@@ -100,6 +99,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
     private Set<String> filesList;
+    //private String selectedColorPicker = "";
 
     @SuppressLint("PrivateResource")
     @Override
@@ -288,6 +288,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
                 if (pref != null) prefCat.removePreference(pref);
 
+                pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
+                if (pref != null) prefCat.removePreference(pref);
+
                 pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
                 if (pref != null) prefCat.removePreference(pref);
 
@@ -416,6 +419,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
 
                     selectCalendars(this.eventTypeForSelect);
+                    return true;
 
                 }
 
@@ -458,6 +462,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_birthday_files));
                 this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
                 selectFiles(this.eventTypeForSelect);
+                return true;
+
+            } else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
+
+                selectRingtone();
                 return true;
 
             }
@@ -591,7 +600,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
 
                 ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
-                marginParams.setMargins(0, (int) (42 * displayMetrics.density + 0.5f), 0, 0);
+                marginParams.setMargins(0, (int) (48 * displayMetrics.density + 0.5f), 0, 0);
                 list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
                 ViewGroup root = (ViewGroup) list.getParent();
                 Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
@@ -686,7 +695,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
             if (accountNames.size() > 0) {
-                ListAdapter adapter = new GetAccountsListAdapter(this, accountNames, accountIcons, accountPackages, ta);
+                ListAdapter adapter = new AccountsListAdapter(this, accountNames, accountIcons, accountPackages, ta);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
@@ -770,7 +779,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            eventsData.map_calendars = eventsData.getCalendars();
+            eventsData.recieveCalendarList();
 
             if (eventsData.map_calendars.size() == 0) {
 
@@ -831,7 +840,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void selectRingtone() {
+
+        try {
+
+            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+
+            String existingValue = eventsData.preferences_notifications_ringtone;
+            //if (existingValue != null) {
+                if (existingValue.length() == 0) {
+                    // Select "Silent"
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                } else {
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+                }
+           //} else {
+                // No ringtone has been selected, set to the default
+            //    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+            //}
+
+            startActivityForResult(intent, RESULT_PICK_RINGTONE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -888,7 +928,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (rStartIndex == -1) { //todo: && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
                         Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags), Toast.LENGTH_LONG).show();
                         return;
-                    } else if (rules.indexOf(RULE_TAG_NAME, rStartIndex) > -1 && rules.indexOf(STRING_BAR, rStartIndex) == -1) {
+                    } else if (rules.indexOf(RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf(STRING_BAR, rStartIndex) == -1) {
                         Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error), Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -931,8 +971,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
                         Set<String> toStore = new HashSet<>();
+                        String file;
+                        Uri uri = null;
                         for (int i = 0; i < filesSelected.size(); i++) {
-                            if (filesSelected.get(i)) toStore.add(filesFullData.get(i));
+                            file = filesFullData.get(i);
+                            if (filesSelected.get(i)) {
+                                toStore.add(file);
+                            } else {
+                                String[] fileDetails = file.split(STRING_PIPE);
+                                try {
+                                    uri = Uri.parse(fileDetails[1]);
+                                } catch (NullPointerException e) { /**/ }
+                                if (uri != null) getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            }
+
                         }
                         eventsData.setPreferences_Files(eventType, toStore);
                         eventsData.setPreferences();
@@ -943,14 +995,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .setNeutralButton(R.string.button_choose, (dialog, which) -> {
 
                         filesList = new HashSet<>();
+                        String file;
+                        Uri uri = null;
                         for (int i = 0; i < filesSelected.size(); i++) {
-                            if (filesSelected.get(i)) filesList.add(filesFullData.get(i));
+                            file = filesFullData.get(i);
+                            if (filesSelected.get(i)) {
+                                filesList.add(file);
+                            } else {
+                                String[] fileDetails = file.split(STRING_PIPE);
+                                try {
+                                    uri = Uri.parse(fileDetails[1]);
+                                } catch (NullPointerException e) { /**/ }
+                                if (uri != null) getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            }
                         }
 
                         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("*/*");
-                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        //intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                         startActivityForResult(intent, RESULT_PICK_FILE);
                     })
                     .setCancelable(true);
@@ -987,9 +1051,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (resultData != null) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        if (eventsData.readTextFromUri(uri).length() > 0) {
-                            String filename = getPath(this, uri);
-                            if (filename != null) {
+                        if (eventsData.readFileToString(uri, null).length() > 0) {
+                            String filename = eventsData.getPath(this, uri);
+                            if (!filename.isEmpty()) {
+                                this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                                 this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                                 filesList.add(filename.concat(STRING_BAR).concat(uri.toString()));
                                 selectFiles(this.eventTypeForSelect);
@@ -999,6 +1064,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                     }
                 }
+            } else if (requestCode == RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
+                if (resultData != null) {
+                    Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                    if (ringtone != null) {
+                        eventsData.preferences_notifications_ringtone = ringtone.toString();
+                    } else {
+                        eventsData.preferences_notifications_ringtone = ""; //Беззвучный
+                    }
+                    eventsData.setPreferences();
+                }
+            } else {
+
+                super.onActivityResult(requestCode, resultCode, resultData);
+
             }
 
         } catch (Exception e) {
@@ -1007,118 +1086,61 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
-    public String getPath(Context context, Uri uri) {
+    //https://stackoverflow.com/questions/10932832/multiple-choice-alertdialog-with-custom-adapter
+    //https://stackoverflow.com/questions/8533394/icons-in-a-list-dialog
+    //https://stackoverflow.com/questions/16932895/how-to-override-the-style-of-android-r-layout-simple-list-item-multiple-choice
+    //https://stackoverflow.com/questions/7021578/resize-drawable-in-android/23570811
+    //https://stackoverflow.com/questions/50077917/android-graphics-drawable-adaptiveicondrawable-cannot-be-cast-to-android-graphic
+    private static class AccountsListAdapter extends ArrayAdapter<String> {
 
-        try {
+        private final List<Integer> images;
+        private final List<String> packages;
+        private final TypedArray ta;
+        private final PackageManager pm = getContext().getPackageManager();
 
-            // DocumentProvider
-            if (DocumentsContract.isDocumentUri(context, uri)) {
-                // ExternalStorageProvider
-                if (isExternalStorageDocument(uri)) {
-                    final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(STRING_COLON);
-                    final String type = split[0];
-
-                    if ("primary".equalsIgnoreCase(type)) {
-                        return Environment.getExternalStorageDirectory() + "/" + split[1];
-                    } else {
-                        return "/storage/"+split[0]+"/"+split[1];
-                    }
-                }
-                // DownloadsProvider
-                else if (isDownloadsDocument(uri)) {
-                    //final String id = DocumentsContract.getDocumentId(uri);
-                    //final String[] split = id.split(STRING_COLON);
-                    //final Uri contentUri = null; //ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(split[split.length-1]));
-                    //if (contentUri != null) {
-                    //    return getDataColumn(context, contentUri, null, null);
-                    //} else {
-                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getDataColumn(context, uri, null, null);
-                    //}
-                }
-                // MediaProvider
-                else if (isMediaDocument(uri)) {
-                    final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(STRING_COLON);
-                    final String type = split[0];
-                    Uri contentUri = null;
-                    if ("image".equals(type)) {
-                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                    } else if ("video".equals(type)) {
-                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                    } else if ("audio".equals(type)) {
-                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                    }
-                    if (contentUri != null) {
-                        final String selection = "_id=?";
-                        final String[] selectionArgs = new String[]{split[1]};
-                        return getDataColumn(context, contentUri, selection, selectionArgs);
-                    } else {
-                        return getDataColumn(context, uri, null, null);
-                    }
-                }
-            }
-
-            // MediaStore (and general)
-            else if ("content".equalsIgnoreCase(uri.getScheme())) {
-                // Return the remote address
-                if (isGooglePhotosUri(uri)) return uri.getLastPathSegment();
-                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + getDataColumn(context, uri, null, null);
-            }
-            // File
-            else if ("file".equalsIgnoreCase(uri.getScheme())) {
-                return uri.getPath();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+        AccountsListAdapter(Context context, List<String> items, List<Integer> images, List<String> packages, TypedArray theme) {
+            super(context, R.layout.settings_list_item_multiple_choice, items); //simple_list_item_multiple_choice
+            this.images = images;
+            this.packages = packages;
+            this.ta = theme;
         }
-        return null;
 
-    }
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
 
-    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+            try {
 
-        try {
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
 
-            try (Cursor cursor = context.getContentResolver().query(uri, null, selection, selectionArgs, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    final int indexName = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (indexName > -1) {
-                        List<String> path = uri.getPathSegments();
-                        return cursor.getString(indexName);
-                    }
-                    final int indexData = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                    if (indexData > -1) {
-                        return cursor.getString(indexData);
-                    }
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
+
+                //Context packageContext = this.context.createPackageContext(packages.get(position), 0);
+                //Resources resources = packageContext.getResources();
+                //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
+                Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
+                if (icon != null) {
+                    Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bmp);
+                    icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    icon.draw(canvas);
+                    Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
+                    bmp.recycle();
+                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
                 }
+                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), Constants.GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR + e.toString(), Toast.LENGTH_LONG).show();
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_DATA_COLUMN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            return view;
         }
-        return null;
 
-    }
-
-    private boolean isExternalStorageDocument(Uri uri) {
-        return FilePrefix_ExternalStorage.equals(uri.getAuthority());
-    }
-
-    private boolean isDownloadsDocument(Uri uri) {
-        return FilePrefix_Downloads.equals(uri.getAuthority());
-    }
-
-    private boolean isMediaDocument(Uri uri) {
-        return FilePrefix_Media.equals(uri.getAuthority());
-    }
-
-    private boolean isGooglePhotosUri(Uri uri) {
-        return FilePrefix_GooglePhotos.equals(uri.getAuthority());
     }
 
 }

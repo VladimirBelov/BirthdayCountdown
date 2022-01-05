@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 07.12.2021, 20:31
   ~  */
   -->
 
@@ -46,18 +46,17 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/dark_red" />
 
-        <TextView android:id="@android:id/summary"
+        <TextView
+            android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
             android:layout_alignStart="@android:id/title"
+            android:maxLines="4"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary"
-            android:maxLines="4" />
+            android:textColor="?android:attr/textColorSecondary" />
 
     </RelativeLayout>
-
-    <!-- Preference should place its actual preference widget here. -->
 
     <LinearLayout android:id="@android:id/widget_frame"
         android:layout_width="wrap_content"

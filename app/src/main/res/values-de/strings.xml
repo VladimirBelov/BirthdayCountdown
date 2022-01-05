@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 0:58
   ~  */
   -->
 
@@ -12,6 +12,7 @@
     <string name="window_widget_settings">Widget-Einstellungen</string>
     <string name="window_about">Über die Anwendung</string>
     <string name="window_faq">Fragen und Antworten</string>
+    <string name="window_search_hints">Suchhinweise</string>
 
     <string name="activity_title_events_scope">Filter</string>
 
@@ -24,9 +25,10 @@
     <string name="menu_open_file_with_events">Datei mit Ereignissen öffnen…</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
-    <string name="menu_search">Suche…</string>
+    <string name="menu_search">Suche</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filtern…</string>
+    <string name="menu_hints">Suchhinweise…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_edit_event">Ereignis im Kalender anzeigen</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
@@ -41,6 +43,7 @@
     <string name="menu_context_merge_event">Link zum Kontakt…</string>
     <string name="menu_context_unmerge_event">Verbindung zum Kontakt trennen</string>
     <string name="menu_context_remerge_event">Link zu anderen Kontakt…</string>
+    <string name="menu_context_open_url">Weblink öffnen</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
@@ -117,6 +120,7 @@
     <string name="hint_Date">Datum</string>
     <string name="hint_EventDistance">Bis zum Ereignis</string>
     <string name="hint_Description">Einzelheiten</string>
+    <string name="hint_VersionNumberDetails">Details zur Versionsnummer</string>
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Suchfeld</string>
     <string name="hint_AlertDialog">Warndialog</string>
@@ -125,7 +129,8 @@
     <string name="button_cancel">Abbrechen</string>
     <string name="button_choose">Wählen</string>
     <string name="button_rate">Bewerten</string>
-    <string name="button_mail">Schreiben</string>
+    <string name="button_mail">Mail</string>
+    <string name="button_discuss">Diskutieren</string>
     <string name="button_open_addressbook">Adressbuch öffnen…</string>
     <string name="button_open_app_settings">Einstellungen öffnen…</string>
     <string name="button_open_version_history">Versionsverlauf</string>
@@ -168,7 +173,7 @@
     <string name="widget_Age">YY</string>
     <string name="widget_TypeIcon">Typ</string>
     <string name="widget_Distance">BIS</string>
-    <string name="widget_msg_updated">"aktualisierten: "</string>
+    <string name="widget_msg_updated">"aktualisiert: "</string>
     <string name="widget_msg_events">"Ereignisse: "</string>
 
     <string name="pref_Events_title">Allgemein</string>
@@ -181,11 +186,11 @@
 
     <string-array name="pref_Language_entries">
         <item>Automatisch</item>
-        <item>Englisch</item>
-        <item>Deutsch</item>
-        <item>Russisch</item>
-        <item>Spanisch</item>
-        <item>Ukrainisch</item>
+        <item>🇬🇧 Englisch</item>
+        <item>🇩🇪 Deutsch</item>
+        <item>🇷🇺 Russisch</item>
+        <item>🇪🇸 Spanisch</item>
+        <item>🇺🇦 Ukrainisch</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -328,14 +333,27 @@
         <item>Kontaktfoto</item>
         <item>Position</item>
         <item>Organisation</item>
-        <item>Pseudonym</item>
+        <item>Spitzname</item>
         <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
+        <item>Symbol für Ereignistyp</item>
         <item>Favoriten Symbol</item>
         <item>Alter</item>
         <item>Sternzeichen</item>
         <item>Tierkreisjahr</item>
+        <item>Weblink</item>
         <item>Kontotyp und Speicherdatum</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">Ereignisklick</string>
+    <string name="pref_List_OnClick_description">Was tun bei Anklicken des Ereignisses</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
+        <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
+        <item>Weblink öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Kalendertermin</item>
+        <item>Kontakt öffnen, falls nicht vorhanden - Weblink, falls nicht vorhanden - Kalendertermin</item>
+        <item>Kontextmenü öffnen</item>
+        <item>Keine Aktion</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Heutige Ereignisse</string>
@@ -364,14 +382,24 @@
     <string name="pref_Widgets_EventInfo_title">Ereignisdetails</string>
     <string name="pref_Widgets_EventInfo_description">Welche Ereignisdetails und Widget-Elemente angezeigt werden sollen</string>
 
+    <string name="pref_Widgets_EventInfo_None">Keine</string>
+    <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
+    <string name="pref_Widgets_EventInfo_Photo">Kontaktfoto</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">Ereignistyp-Symbol</string>
+    <string name="pref_Widgets_EventInfo_EventCaption">Ereignisdetails</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">Favoriten-Symbol</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">Symbol für stummgeschaltetes Ereignis</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">Sternzeichen</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">Tierkreisjahr</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>Umrahmung</item>
-        <item>Kontaktfoto</item>
-        <item>Ereignistyp-Symbol</item>
-        <item>Favoriten-Symbol</item>
-        <item>Symbol für stummgeschaltetes Ereignis</item>
-        <item>Sternzeichen</item>
-        <item>Tierkreisjahr</item>
+        <item>@string/pref_Widgets_EventInfo_Border</item>
+        <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
@@ -405,6 +433,17 @@
         <item>7</item>
         <item>10</item>
         <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">Ereignisklick</string>
+    <string name="pref_Widgets_OnClick_description">Was tun bei Anklicken des Ereignisses</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
+        <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
+        <item>Weblink öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Kalendertermin</item>
+        <item>Kontakt öffnen, falls nicht vorhanden - Weblink, falls nicht vorhanden - Kalendertermin</item>
+        <item>Ereignisliste öffnen</item>
+        <item>Keine Aktion</item>
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Primärfarbe</string>
@@ -457,6 +496,11 @@
     </string-array>
 
     <string name="widget_hint">Um die Widget-Einstellungen zu ändern, klicken Sie auf die Beschriftung des Ereignisses ganz rechts:</string>
+
+    <string name="widget_config_event_info_empty">Allgemeine Einstellungen verwenden</string>
+
+    <string name="widget_config_color_back_label">Hintergrundfarbe des Widgets</string>
+    <string name="widget_config_color_back_description">Hintergrundfarbe für Widget</string>
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
 
@@ -521,6 +565,17 @@
         <item>Schließen (für Benachrichtigungen mit hoher Priorität)</item>
     </string-array>
 
+    <string name="pref_Notifications_OnClick_title">Benachrichtigungsklick</string>
+    <string name="pref_Notifications_OnClick_description">Was tun bei Anklicken der Benachrichtigung</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
+        <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
+        <item>Weblink öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Kalendertermin</item>
+        <item>Kontakt öffnen, falls nicht vorhanden - Weblink, falls nicht vorhanden - Kalendertermin</item>
+        <item>Ereignisliste öffnen</item>
+        <item>Benachrichtigung schließen</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Benachrichtigung anzuzeigen</string>
 
@@ -538,9 +593,9 @@
     <string name="pref_Help_title">Hilfe</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_description">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
-    <string name="pref_Debug_On_title">Debug-Meldungen</string>
+    <string name="pref_Debug_On_title">Debug &amp; Zusatzfunktionen</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
-    <string name="pref_Debug_On_description">Debug-Meldungen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
+    <string name="pref_Debug_On_description">Debug-Meldungen und Zusatzfunktionen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
 
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
@@ -558,7 +613,8 @@
     <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>
-    <string name="stats_counters_nicknames"><![CDATA[<li>Aliase: %1$d]]></string>
+    <string name="stats_counters_nicknames"><![CDATA[<li>Spitznamen: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>Web-Links: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Ereignisse nach Konten:</h2><ul>]]></string>
 

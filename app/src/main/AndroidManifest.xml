@@ -30,8 +30,8 @@
 
     <application
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher_spring"
-        android:roundIcon="@drawable/ic_launcher_spring"
+        android:icon="@drawable/ic_launcher_snowflake_cap"
+        android:roundIcon="@drawable/ic_launcher_snowflake_cap"
         android:supportsRtl="false"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
@@ -200,5 +200,6 @@
 
         <service android:name=".EventListWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service android:name=".EventPhotoListWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 </manifest>

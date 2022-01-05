@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 12.12.2021, 16:30
   ~  */
   -->
 
@@ -31,5 +31,10 @@
         <attr name="numColumns" format="integer" />
         <attr name="dialogTitle" format="string" />
         <attr name="dialogIcon" format="reference" />
+        <attr name="title" format="string" />
+        <attr name="summary" format="string"/>
+        <attr name="defaultValue" format="string|boolean|integer|reference|float" />
+        <attr name="icon"/>
     </declare-styleable>
+
 </resources>

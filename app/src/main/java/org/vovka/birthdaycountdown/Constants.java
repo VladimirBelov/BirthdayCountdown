@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 26.12.2021, 0:22
  *
  */
 
@@ -13,7 +13,7 @@ final class Constants {
     static final String STRING_EMPTY = "";
     static final String STRING_SPACE = " ";
     static final String STRING_NULL = "null";
-    static final String STRING_EOF = "\n";
+    static final String STRING_EOL = "\n";
     static final String STRING_MINUS1 = "-1";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
@@ -77,21 +77,21 @@ final class Constants {
     static final String WIDGET_ICON_SILENCED = "iconSilenced";
     static final String WIDGET_TEXT_VIEW_DISTANCE = "textViewDistance";
 
-    static final Integer Type_BirthDay = 0;
-    static final Integer Type_Anniversary = 1;
-    static final Integer Type_Other = 2;
-    static final Integer Type_Custom = 3;
-    static final Integer Type_5K = 4;
-    static final Integer Type_Death = 5;
-    static final Integer Type_NameDay = 6;
-    static final Integer Type_Crowning = 7;
-    static final Integer Type_Custom1 = 8;
-    static final Integer Type_Custom2 = 9;
-    static final Integer Type_Custom3 = 10;
-    static final Integer Type_Custom4 = 11;
-    static final Integer Type_Custom5 = 12;
-    static final Integer Type_CalendarEvent = 20;
-    static final Integer Type_FileEvent = 21;
+    static final int Type_BirthDay = 0;
+    static final int Type_Anniversary = 1;
+    static final int Type_Other = 2;
+    static final int Type_Custom = 3;
+    static final int Type_5K = 4;
+    static final int Type_Death = 5;
+    static final int Type_NameDay = 6;
+    static final int Type_Crowning = 7;
+    static final int Type_Custom1 = 8;
+    static final int Type_Custom2 = 9;
+    static final int Type_Custom3 = 10;
+    static final int Type_Custom4 = 11;
+    static final int Type_Custom5 = 12;
+    static final int Type_CalendarEvent = 20;
+    static final int Type_FileEvent = 21;
 
     static final String STRING_2HASH = "##"; //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String STRING_2TILDA = "~~";
@@ -108,20 +108,20 @@ final class Constants {
     static final String STRING_MINUS = "-";
     static final String STRING_PIPE = "\\|";
     static final String STRING_BAR = "|";
-    static final String STRING_DIALOG_TAB = "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";
     static final String ColumnNames_ACCOUNT_NAME = "account_name";
 
-    final static int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    final static int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
-    final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
-    final static int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
+    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    static final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
+    static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
+    static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
 
-    final static int RESULT_PICK_CONTACT = 200;
-    final static int RESULT_PICK_OTHER_CONTACT = 202;
-    final static int RESULT_PICK_FILE = 201;
+    static final int RESULT_PICK_CONTACT = 200;
+    static final int RESULT_PICK_OTHER_CONTACT = 202;
+    static final int RESULT_PICK_FILE = 201;
+    static final int RESULT_PICK_RINGTONE = 203;
 
     static final int defaultNotificationID = 1000;
     static final int defaultQuizID = 2000;
@@ -140,6 +140,7 @@ final class Constants {
     static final String EXTRA_QUIZ_QUESTION = "quizQuestion";
     static final String EXTRA_QUIZ_RESULT = "quizResult";
     static final String EXTRA_CLICKED_EVENT = "eventDetails";
+    static final String EXTRA_CLICKED_PREFS = "actionPreference";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -153,6 +154,7 @@ final class Constants {
     static final String HTML_COLOR_START = "<font color=\"#%s\">";
     static final String HTML_LI = "<li>";
     static final String HTML_UL_END = "</ul>";
+    static final String HTML_UL_START = "<ul>";
     static final String HTML_FONT_END = "</font>";
     static final String HTML_H1_START = "<h1>";
     static final String HTML_H1_END = "</h1>";
@@ -179,6 +181,7 @@ final class Constants {
     static final int MENU_MAIN_QUIZ = 3;
     static final int MENU_MAIN_SETTINGS = 4;
     static final int MENU_MAIN_FILTER = 5;
+    static final int MENU_MAIN_HINTS = 6;
 
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
@@ -216,7 +219,7 @@ final class Constants {
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
     static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";
-    static final String CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR = "ContactsEvents->readTextFromUri error:\n";
+    static final String CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR = "ContactsEvents->readFileToString error:\n";
     static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
     static final String CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR = "ContactsEvents->getFileEvents error:\n";
@@ -263,6 +266,9 @@ final class Constants {
     static final String CONTACTS_EVENTS_SET_HTML_COLOR_ERROR = "ContactsEvents->setHTMLColor error:\n";
     static final String CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR = "ContactsEvents->quizCheckAndGo error:\n";
     static final String CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR = "ContactsEvents->quizGetQuestion error:\n";
+    static final String CONTACT_EVENTS_GET_DATA_COLUMN_ERROR = "ContactsEvents->getDataColumn error:\n";
+    static final String CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR = "ContactsEvents->fillEmptyUserData error:\n";
+    static final String CONTACT_EVENTS_GET_ACTION_INTENT_ERROR = "ContactsEvents->getViewActionIntent error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
 
@@ -274,7 +280,7 @@ final class Constants {
     static final String EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventPhotoListDataProvider->getViewAt error:\n";
     static final String EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventPhotoListDataProvider->initData error:\n";
 
-    static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "GetAccountsListAdapter->getView error:\n";
+    static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "AccountsListAdapter->getView error:\n";
 
     static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
     static final String MAIN_ACTIVITY_PREPARE_LIST_ERROR = "MainActivity->prepareList error:\n";
@@ -305,18 +311,22 @@ final class Constants {
     static final String SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR = "SettingsActivity->setUpNestedScreen error:\n";
     static final String SETTINGS_ACTIVITY_ON_STOP_ERROR = "SettingsActivity->onStop error:\n";
     static final String SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR = "SettingsActivity->getAccounts error:\n";
-    static final String SETTINGS_ACTIVITY_GET_CALENDARS_ERROR = "SettingsActivity->getCalendars error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR = "SettingsActivity->selectCalendars error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR = "SettingsActivity->selectRingtone error:\n";
     static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";
     static final String SETTINGS_ACTIVITY_SELECT_FILES_ERROR = "SettingsActivity->selectFiles error:\n";
     static final String SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "SettingsActivity->onActivityResult error:\n";
     static final String SETTINGS_ACTIVITY_GET_PATH_ERROR = "SettingsActivity->getPath error:\n";
-    static final String SETTINGS_ACTIVITY_GET_DATA_COLUMN_ERROR = "SettingsActivity->getDataColumn error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
 
     static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
     static final String ABOUT_ACTIVITY_SET_DEBUG_ERROR = "AboutActivity->setDebug error:\n";
     static final String ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR = "AboutActivity->showPreferences error:\n";
+
+    static final String COLOR_PICKER_INIT_ATTRS_ERROR = "ColorPicker->initAttrs error:\n";
+    static final String COLOR_PICKER_ON_CLICK_ERROR = "ColorPicker->onClick error:\n";
+    static final String COLOR_PICKER_SET_COLOR_VIEW_VALUE_ERROR = "ColorPicker->setColorViewValue error:\n";
 
     static final String NOTIFY_ACTIVITY_ON_CREATE_ERROR = "NotifyActivity->onCreate error:\n";
 
@@ -342,5 +352,12 @@ final class Constants {
     static final String REGEX_PLUS = "\\+";
 
     static final String quiz_error_button_OK = "-##OK##";
-    protected static final String FilePrefix_Media = "com.android.providers.media.documents";
+    static final String FilePrefix_Media = "com.android.providers.media.documents";
+    static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
+    static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
+    static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
+
+    protected static final String STRING_HTTP = "http://";
+    protected static final String STRING_HTTPS = "https://";
+    protected static final String RES_PACKAGE_ANDROID = "android";
 }

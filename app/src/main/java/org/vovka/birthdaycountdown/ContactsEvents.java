@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 24.12.2021, 19:11
  *
  */
 
@@ -12,6 +12,7 @@ import static android.text.TextUtils.isEmpty;
 import static org.vovka.birthdaycountdown.Constants.ACTION_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.ACTION_DIAL;
 import static org.vovka.birthdaycountdown.Constants.ACTION_HIDE;
+import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
 import static org.vovka.birthdaycountdown.Constants.ACTION_SILENT;
 import static org.vovka.birthdaycountdown.Constants.ACTION_SNOOZE;
 import static org.vovka.birthdaycountdown.Constants.CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR;
@@ -22,6 +23,10 @@ import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_QUESTION;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_RESULT;
+import static org.vovka.birthdaycountdown.Constants.FilePrefix_Downloads;
+import static org.vovka.birthdaycountdown.Constants.FilePrefix_ExternalStorage;
+import static org.vovka.birthdaycountdown.Constants.FilePrefix_GooglePhotos;
+import static org.vovka.birthdaycountdown.Constants.FilePrefix_Media;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
@@ -29,19 +34,23 @@ import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
+import static org.vovka.birthdaycountdown.Constants.STRING_0000;
 import static org.vovka.birthdaycountdown.Constants.STRING_0000_MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
 import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_2MINUS;
+import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
+import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_0000;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
+import static org.vovka.birthdaycountdown.Constants.STRING_HTTP;
+import static org.vovka.birthdaycountdown.Constants.STRING_HTTPS;
 import static org.vovka.birthdaycountdown.Constants.STRING_MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_NULL;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
@@ -108,12 +117,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -186,6 +199,7 @@ class ContactsEvents {
         add(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM));
     }};
 
+    //todo: убрать дублирование тут и в ресурсах (тут вычистить)
     static final String pref_List_EventInfo_Photo = "6";
     static final String pref_List_EventInfo_JobTitle = "1";
     static final String pref_List_EventInfo_Organization = "2";
@@ -208,6 +222,7 @@ class ContactsEvents {
     static final String pref_Widgets_EventInfo_ZodiacSign = "4";
     static final String pref_Widgets_EventInfo_ZodiacYear = "5";
     static final String pref_Widgets_EventInfo_SilencedIcon = "6";
+    static final String pref_Widgets_EventInfo_EventCaption = "7"; //в общих настройках не используется
     static final String pref_Widgets_EventInfo_Border = "10";
 
     final private Set<String> pref_Widgets_EventInfo_Info = new HashSet<String>() {{
@@ -244,7 +259,8 @@ class ContactsEvents {
     static final int Position_eventStorage = 24;
     static final int Position_zodiacSign = 25;
     static final int Position_zodiacYear = 26;
-    static final int Position_attrAmount = 27; //MAX
+    static final int Position_eventURL = 27;
+    static final int Position_attrAmount = 28; //MAX
 
     static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
         put(Type_BirthDay, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY));
@@ -270,33 +286,35 @@ class ContactsEvents {
     private String currentLocale = STRING_EMPTY;
     int currentTheme = 0;
     final String systemLocale = Locale.getDefault().getLanguage();
-    HashSet<String> set_events_deaths; //ID контактов с годовщиной смерти
-    HashMap<String, Date> set_events_birthdays; //дни рождения
-    private HashSet<String> set_contacts_ids; //ID всех контактов в адресной книге
-    private HashSet<String> set_events_ids; //ID всех найденных событий календаря
-    private HashMap<String, String> map_contacts_names; //связка имён контактов с ID
-    HashMap<String, String> map_calendars = new HashMap<>(); //список всех календарей
-    private HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset; //индекс события до сортировки (или для eventListUnsorted)
-    final HashMap<String, String> orgMap = new HashMap<>();
-    final HashMap<String, String> titleMap = new HashMap<>();
-    final HashMap<String, String> nickMap = new HashMap<>();
-    private final HashMap<String, String> contactDataMap = new HashMap<>();
+    final HashSet<String> set_events_deaths = new HashSet<>(); //ID контактов с годовщиной смерти
+    final HashMap<String, Date> set_events_birthdays = new HashMap<>(); //дни рождения
+    final HashSet<String> set_contacts_ids = new HashSet<>(); //ID всех контактов в адресной книге
+    final HashSet<String> set_events_ids = new HashSet<>(); //ID всех найденных событий календаря
+    final HashMap<String, String> map_contacts_names = new HashMap<>(); //связка имён контактов с ID
+    final HashMap<String, String> map_calendars = new HashMap<>(); //список всех календарей
+    final HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset = new HashMap<>(); //индекс события до сортировки (или для eventListUnsorted)
+    final HashMap<String, String> map_organizations = new HashMap<>();
+    final HashMap<String, String> map_contacts_titles = new HashMap<>();
+    final HashMap<String, String> map_contacts_aliases = new HashMap<>();
+    final HashMap<String, String> map_events_weblinks = new HashMap<>();
+    private final HashMap<String, String> map_contacts_data = new HashMap<>(); //кеш данных о контактах
     final Random generator = new Random();
 
     //Настройки
     boolean preferences_debug_on;
     String preferences_language;
-
+    int preferences_list_events_scope;
     Set<String> preferences_list_event_types;
     Set<String> preferences_list_event_info;
     String preferences_list_prev_events;
-    int preferences_list_prev_events_found = 0;
     private int preferences_list_sad_photo;
-    int preferences_events_scope;
-    int preferences_notification_channel_id;
+
     int preferences_list_caption;
     int preferences_list_dateformat;
-    String preferences_first_names_female_custom;
+    int preferences_list_color_eventtoday;
+    int preferences_list_color_eventsoon;
+    int preferences_list_color_eventjubilee;
+    int preferences_list_on_click_action;
 
     int preferences_widgets_update_period;
     Set<String> preferences_widgets_event_info;
@@ -307,10 +325,9 @@ class ContactsEvents {
     int preferences_widgets_color_eventtoday;
     int preferences_widgets_color_eventsoon;
     int preferences_widgets_color_eventfar;
-    int preferences_list_color_eventtoday;
-    int preferences_list_color_eventsoon;
-    int preferences_list_color_eventjubilee;
+    int preferences_widgets_on_click_action;
 
+    String preferences_first_names_female_custom;
     Matcher preferences_last_name_comletions_man;
     Matcher preferences_last_name_comletions_female;
     Matcher preferences_first_names_man;
@@ -353,8 +370,8 @@ class ContactsEvents {
     private Matcher preferences_customevent5_labels;
     private boolean preferences_customevent5_useyear;
 
+    int preferences_notification_channel_id;
     Set<String> preferences_notifications_days;
-
     /* preferences_notifications_type:
      *   0 - Одно общее уведомление
      *   1 - Каждое событие в отдельном уведомлении
@@ -367,6 +384,7 @@ class ContactsEvents {
     private Set<String> preferences_notifications_quick_actions;
     private int preferences_notifications_alarm_hour;
     String preferences_notifications_ringtone;
+    int preferences_notifications_on_click_action;
 
     String preferences_quiz_interface;
 
@@ -400,8 +418,10 @@ class ContactsEvents {
     int statAllOrganizations = 0;
     int statAllNicknames = 0;
     int statAllContacts = 0;
+    int statAllURLs = 0;
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
     long statLastPausedForOtherActivity = 0;
+    int preferences_list_prev_events_found = 0;
 
     //UI объекты
     Context context;
@@ -784,6 +804,7 @@ class ContactsEvents {
             preferences_list_color_eventtoday = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventToday_key), getResources().getColor(R.color.pref_List_Color_EventToday_default));
             preferences_list_color_eventsoon = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventSoon_key), getResources().getColor(R.color.pref_List_Color_EventSoon_default));
             preferences_list_color_eventjubilee = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventJubilee_key), getResources().getColor(R.color.pref_List_Color_EventJubilee_default));
+            preferences_list_on_click_action = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_OnClick_key), context.getString(R.string.pref_List_OnClick_default))));
 
             try {
                 preferences_widgets_event_info = preferences.getStringSet(context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info);
@@ -795,6 +816,7 @@ class ContactsEvents {
             preferences_widgets_bottom_info_2nd = preferences.getString(context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
             preferences_widgets_days_eventsoon = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default))));
             preferences_widgets_update_period = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Widgets_UpdateInterval_key), context.getString(R.string.pref_Widgets_UpdateInterval_default))));
+            preferences_widgets_on_click_action = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Widgets_OnClick_key), context.getString(R.string.pref_Widgets_OnClick_default))));
 
             try {
 
@@ -859,7 +881,7 @@ class ContactsEvents {
             preferences_widgets_color_eventfar = preferences.getInt(getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
             preferences_widgets_color_default = preferences.getInt(getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
 
-            preferences_events_scope = preferences.getInt(context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
+            preferences_list_events_scope = preferences.getInt(context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
             preferences_notification_channel_id = preferences.getInt(context.getString(R.string.pref_Notifications_ChannelID), defaultNotificationID);
 
             preferences_quiz_interface = preferences.getString(getResources().getString(R.string.pref_Quiz_Interface_key), STRING_EMPTY);
@@ -1104,18 +1126,13 @@ class ContactsEvents {
             if (preferences_notifications_alarm_hour < 0) preferences_notifications_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
             preferences_notifications_ringtone = preferences.getString(context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
 
-            /*savedTypes = preferences.getStringSet(context.getString(R.string.pref_Notifications_Events_key), prefs_EventTypes_Default);
-            preferences_notifications_event_types_on = prefs_EventTypes_DefaultB;
-            if (savedTypes != null) {
-                for (int i = 0; i < preferences_notifications_event_types_on.length; i++) {
-                    preferences_notifications_event_types_on[i] = savedTypes.contains(event_types_id[i] + STRING_EMPTY);
-                }
-            }*/
             someSets = preferences.getStringSet(context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
             preferences_notifications_event_types = new HashSet<>(Objects.requireNonNull(someSets));
 
             someSets = preferences.getStringSet(context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
             preferences_notifications_quick_actions = new HashSet<>(Objects.requireNonNull(someSets));
+
+            preferences_notifications_on_click_action = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default))));
 
             preferences_first_names_female_custom = preferences.getString(context.getString(R.string.pref_Female_Names_key), STRING_EMPTY);
 
@@ -1191,8 +1208,9 @@ class ContactsEvents {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
 
-            editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
+            editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
             editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
+            editor.putString(context.getString(R.string.pref_Notifications_Ringtone_key), preferences_notifications_ringtone);
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
@@ -1259,24 +1277,32 @@ class ContactsEvents {
 
             eventList.clear();
             eventListUnsorted.clear();
+            map_organizations.clear();
+            map_contacts_titles.clear();
+            map_contacts_aliases.clear();
+            map_contacts_data.clear();
+            set_contacts_ids.clear();
+            set_events_deaths.clear();
+            set_events_birthdays.clear();
+            map_events_weblinks.clear();
+            set_events_ids.clear();
+            map_contacts_names.clear();
+            map_calendars.clear();
+            map_eventsBySubtypeAndPersonID_offset.clear();
+
             statEventTypes.clear();
-            set_events_deaths = new HashSet<>();
-            set_events_birthdays = new HashMap<>();
-            set_contacts_ids = new HashSet<>();
-            set_events_ids = new HashSet<>();
-            map_contacts_names = new HashMap<>();
-            map_calendars = new HashMap<>();
-            map_eventsBySubtypeAndPersonID_offset = new HashMap<>();
             statAllEvents = 0;
             statAllTitles = 0;
             statAllOrganizations = 0;
             statAllNicknames = 0;
+            statAllURLs = 0;
             statTimeGetContactEvents = 0;
             statTimeGetCalendarEvents = 0;
             statTimeGetFileEvents = 0;
 
             getPreferences();
 
+            //todo: сделать через отдельный thread, но сделать это опциональным
             return getContactsEvents()
                     | getCalendarEvents(eventTypesIDs.get(Type_BirthDay))
                     | getCalendarEvents(eventTypesIDs.get(Type_Other))
@@ -1310,13 +1336,7 @@ class ContactsEvents {
             if (contentResolver == null) contentResolver = context.getContentResolver();
             ColumnIndexCache cache = new ColumnIndexCache();
 
-            //Локальные кеши: организации, должности, ники, запросы по контактам
-            orgMap.clear();
-            titleMap.clear();
-            nickMap.clear();
-            contactDataMap.clear();
-            //https://stackoverflow.com/a/20260606/4928833
-
+            //Организации и должности
             final String[] projectionOrgTitle = new String[] {
                     Constants.ColumnNames_CONTACT_ID,
                     ContactsContract.CommonDataKinds.Organization.COMPANY,
@@ -1336,19 +1356,20 @@ class ContactsEvents {
                         String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
 
                         String organization = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.COMPANY));
-                        if (!orgMap.containsKey(personID) && organization != null && !organization.isEmpty()) orgMap.put(personID, organization);
+                        if (!map_organizations.containsKey(personID) && organization != null && !organization.isEmpty()) map_organizations.put(personID, organization);
 
                         String title = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.TITLE));
-                        if (!titleMap.containsKey(personID) && title != null && !title.isEmpty()) titleMap.put(personID, title);
+                        if (!map_contacts_titles.containsKey(personID) && title != null && !title.isEmpty()) map_contacts_titles.put(personID, title);
 
                     } while (contactData.moveToNext());
                     contactData.close();
                 }
             }
-            statAllOrganizations = orgMap.size();
-            statAllTitles = titleMap.size();
+            statAllOrganizations = map_organizations.size();
+            statAllTitles = map_contacts_titles.size();
+            cache.clear();
 
-            cache = new ColumnIndexCache();
+            //Псевдонимы
             final String[] projectionNick = new String[] {
                     Constants.ColumnNames_CONTACT_ID,
                     ContactsContract.CommonDataKinds.Nickname.NAME
@@ -1367,7 +1388,7 @@ class ContactsEvents {
                         String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
                         String nick = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Nickname.NAME));
                         if (nick != null && !nick.isEmpty()) {
-                            if (!nickMap.containsKey(personID)) nickMap.put(personID, nick);
+                            if (!map_contacts_aliases.containsKey(personID)) map_contacts_aliases.put(personID, nick);
                             //todo: добавлять ники в map_contacts_names
                         }
 
@@ -1375,10 +1396,44 @@ class ContactsEvents {
                     contactData.close();
                 }
             }
-            statAllNicknames = nickMap.size();
+            statAllNicknames = map_contacts_aliases.size();
+            cache.clear();
 
-            //Собираем id всех контактов
-            cache = new ColumnIndexCache();
+            //Web ссылки
+            final String[] projectionURL = new String[] {
+                    ContactsContract.Data.CONTACT_ID,
+                    ContactsContract.CommonDataKinds.Website.URL
+            };
+            contactData = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionURL,
+                    ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE + "'",
+                    null,
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    do {
+
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.CONTACT_ID));
+                        String URL = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Website.URL));
+                        if (URL != null && !URL.isEmpty()) {
+                            if (!map_events_weblinks.containsKey(personID)) {
+                                map_events_weblinks.put(personID, URL);
+                            } else {
+                                String URlstored = checkForNull(map_events_weblinks.get(personID), STRING_EMPTY);
+                                map_events_weblinks.put(personID, URlstored.concat(STRING_2TILDA).concat(URL));
+                            }
+                            statAllURLs++;
+                        }
+
+                    } while (contactData.moveToNext());
+                    contactData.close();
+                }
+            }
+            cache.clear();
+
+            //Контакты
             String[] projectionAllContacts = new String[] {
                     ContactsContract.Contacts._ID,
                     ContactsContract.Data.DISPLAY_NAME,
@@ -1411,6 +1466,7 @@ class ContactsEvents {
                 }
             }
             statAllContacts = set_contacts_ids.size();
+            cache.clear();
 
             //Перебираем все данные и кэшируем заметки
             //пока уберу, нужно только для поиска
@@ -1439,8 +1495,7 @@ class ContactsEvents {
             }
 */
 
-            //Собираем данные о событиях
-            cache = new ColumnIndexCache();
+            //События
             final String[] projectionContactsEvents = new String[] {
                     ContactsContract.CommonDataKinds.Event.DATA,
                     ContactsContract.CommonDataKinds.Event.TYPE,
@@ -1472,16 +1527,16 @@ class ContactsEvents {
                     try {
 
                         statAllEvents++;
-                        eventKey = addContactEventToEventList(cursor, userData, dataList, cache, orgMap, titleMap, nickMap, eventKey);
+                        eventKey = addContactEventToEventList(cursor, userData, dataList, cache, map_organizations, map_contacts_titles, map_contacts_aliases, eventKey);
 
                     } catch (RuntimeException e) {
                         countErrors++;
                         if (preferences_debug_on && countErrors < 3) {
                             StringBuilder sb = new StringBuilder();
-                            sb.append(Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR).append(e.toString()).append(STRING_EOF);
+                            sb.append(Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR).append(e.toString()).append(STRING_EOL);
                             for(String name: cursor.getColumnNames()) {
                                 String data = cursor.getString(cache.getColumnIndex(cursor, name));
-                                if (data != null && !data.equals(STRING_0)) sb.append(name).append(STRING_COLON_SPACE).append(data).append(STRING_EOF);
+                                if (data != null && !data.equals(STRING_0)) sb.append(name).append(STRING_COLON_SPACE).append(data).append(STRING_EOL);
                             }
                             handler.post(() -> Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG).show());
                         }
@@ -1511,6 +1566,7 @@ class ContactsEvents {
 
                 }
             }
+            cache.clear();
             cursor.close();
 
             eventList.addAll(dataList);
@@ -1540,16 +1596,13 @@ class ContactsEvents {
             StringBuilder dataRow;
             eventDate = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
             eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
-            String eventSubType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
+            String eventSubType = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE)), STRING_EMPTY);
             String accountType = cursor.getString(cache.getColumnIndex(cursor, ColumnNames_ACCOUNT_TYPE));
             String accountName = cursor.getString(cache.getColumnIndex(cursor, ColumnNames_ACCOUNT_NAME));
             accountKey = accountName + STRING_PARENTHESIS_OPEN + accountType + STRING_PARENTHESIS_CLOSE;
 
-            //if (countErrors == 0) throw new NullPointerException("test");
             if (eventDate != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
-                //String contactName = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)); //бывает пусто
-                //if (contactName == null) contactName = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME));
                 String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)), STRING_EMPTY);
                 String contactNameAlt = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)), STRING_EMPTY);
                 String eventLabel = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL)), STRING_EMPTY);
@@ -1733,18 +1786,10 @@ class ContactsEvents {
 
                     eventKey = eventKey_next;
 
-                    userData.put(Position_eventDate_sorted, STRING_SPACE);
                     userData.put(Position_personFullName, contactFIO);
                     userData.put(Position_personFullNameAlt, contactNameAlt.replace(STRING_COMMA_SPACE, STRING_SPACE));
                     userData.put(Position_contactID, contactID);
-                    userData.put(Position_eventID, STRING_EMPTY);
                     userData.put(Position_photo_uri, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.PHOTO_URI)));
-                    userData.put(Position_eventDate, STRING_SPACE); //Полная дата события
-                    userData.put(Position_eventDateText, STRING_SPACE); //Дата для отображения
-                    userData.put(Position_eventDistance, STRING_SPACE); //Дней до даты
-                    userData.put(Position_eventDistanceText, STRING_SPACE); //Через сколько событие и какой будет день недели
-                    userData.put(Position_age, STRING_SPACE); //Возраст
-                    userData.put(Position_age_caption, STRING_SPACE); //Подпись для возраста
                     userData.put(Position_eventCaption, eventCaption); //Наименование события
                     //подпорка: почему-то для одиноких Skype событий в eventLabel находится дата события
                     userData.put(Position_eventLabel, !eventLabel.equals(eventCaption) & !newEventDate.contains(eventLabel) ? eventLabel : STRING_EMPTY); //Заголовок пользовательского события
@@ -1757,10 +1802,10 @@ class ContactsEvents {
                     userData.put(Position_eventEmoji, eventEmoji);
                     userData.put(Position_starred, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)));
                     userData.put(Position_nickname, checkForNull(nickMap.get(contactID), STRING_SPACE));
-                    userData.put(Position_age_current, STRING_SPACE); //Возраст текущий
                     userData.put(Position_eventStorage, STRING_STORAGE_CONTACTS); //Где искать событие по ID
-                    userData.put(Position_zodiacSign, STRING_SPACE); //Знак зодиака
-                    userData.put(Position_zodiacYear, STRING_SPACE); //Зодиакальный год
+                    userData.put(Position_eventURL, checkForNull(map_events_weblinks.get(contactID), STRING_SPACE));
+
+                    fillEmptyUserData(userData);
 
                 } else { //Продолжаем добавлять даты контакта
 
@@ -1770,7 +1815,6 @@ class ContactsEvents {
 
                 }
             }
-            return eventKey;
 
         } catch (Exception e) {
             if (preferences_debug_on) {
@@ -1780,12 +1824,14 @@ class ContactsEvents {
                 handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR + e.toString()
                         + "\naccountKey=" + finalAccountKey + ", eventType=" + finalEventType + ", eventDate=" + finalEventDate, Toast.LENGTH_LONG).show());
             }
-            return eventKey;
         }
+        return eventKey;
+
     }
 
     private boolean getCalendarEvents(String eventType) {
-
+        //todo: использовать цвета календарей https://www.javatips.net/api/android.provider.calendarcontract.instances
+        TreeMap<Integer, String> userData = new TreeMap <>();
         try {
 
             long statCurrentModuleStart = System.currentTimeMillis();
@@ -1797,8 +1843,8 @@ class ContactsEvents {
 
             ColumnIndexCache cache = new ColumnIndexCache();
             StringBuilder dataRow;
-            TreeMap<Integer, String> userData = new TreeMap <>();
-            map_calendars = getCalendars();
+
+            recieveCalendarList();
 
             //https://stackoverflow.com/questions/25734285/how-to-get-the-real-time-of-recurring-events
             //https://stackoverflow.com/questions/10133616/reading-all-of-todays-events-using-calendarcontract-android-4-0
@@ -1841,6 +1887,7 @@ class ContactsEvents {
             String[] arrRules;
             ArrayList<Matcher> matcherNames = new ArrayList<>();
             boolean useEventYear = true;
+            final ArrayList<String> eventURLs = new ArrayList<>();
 
             if (eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
 
@@ -1851,7 +1898,7 @@ class ContactsEvents {
                 useEventYear = preferences_birthday_calendars_useyear;
 
                 arrRules = preferences_birthday_calendars_rules.split(STRING_PIPE);
-                if (arrRules.length > 0) {
+                if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
                         if (rule.contains(RULE_TAG_NAME)) {
                             matcherNames.add(Pattern.compile(rule.replace(RULE_TAG_NAME, "(.*)")).matcher(STRING_EMPTY));
@@ -1879,8 +1926,6 @@ class ContactsEvents {
                     + "AND ( " + CalendarContract.Events.CALENDAR_ID + " = " + calIDs.toString() + " )"
                     + ")";
 
-            //CalendarContract.Events.CONTENT_URI
-            //CalendarContract.Instances.CONTENT_URI
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startTime.getTimeInMillis());
             ContentUris.appendId(builder, endTime.getTimeInMillis());
@@ -1901,6 +1946,7 @@ class ContactsEvents {
                         //3. Контакт найден, у него есть такое же событие - добавляем к источникам дат ещё одно значение
                         int importMethod = 0;
                         final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
+                        if (eventTitle == null || eventTitle.trim().isEmpty()) continue;
                         final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
                         set_events_ids.add(eventID);
 
@@ -1908,7 +1954,34 @@ class ContactsEvents {
                         userData.put(Position_personFullName, eventTitle);
                         userData.put(Position_personFullNameAlt, eventTitle);
                         userData.put(Position_eventStorage, STRING_STORAGE_CALENDAR);
-                        // arrRules = preferences_birthday_calendars_rules.split("\\|");
+
+                        eventURLs.clear();
+                        String eventURL;
+                        String eventDescription = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DESCRIPTION));
+                        if (eventDescription != null) {
+                            eventDescription = eventDescription.toLowerCase().replace(STRING_EOL, STRING_SPACE);
+                            int indURL;
+                            int indSpace;
+
+                            for (String prefix: new String[] {STRING_HTTPS, STRING_HTTP}) {
+                                indURL = eventDescription.indexOf(prefix);
+                                while (indURL > -1) {
+                                    indSpace = eventDescription.indexOf(STRING_SPACE, indURL);
+
+                                    if (indSpace == -1) {
+                                        eventURL = eventDescription.substring(indURL);
+                                    } else {
+                                        eventURL = eventDescription.substring(indURL, indSpace);
+                                    }
+
+                                    if (eventURL.isEmpty()) break;
+                                    if (!eventURLs.contains(eventURL)) eventURLs.add(eventURL);
+                                    eventDescription = eventDescription.replace(eventURL, STRING_EMPTY);
+                                    indURL = eventDescription.indexOf(prefix);
+                                }
+                            }
+                        }
+
                         if (importStorage == 1 && !getMergedID(eventID).isEmpty()) {
 
                             contactID = getMergedID(eventID);
@@ -1949,28 +2022,54 @@ class ContactsEvents {
                             //Ищем событие контакта в списке событий и добавляем в него
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_2HASH + contactID);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
-
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_2HASH));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
                                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateFirst) : sdfny.format(date));
+                                boolean needUpdate = false;
 
                                 if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
                                     singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
-                                    if (singleRowList.get(ContactsEvents.Position_eventID).isEmpty()) {
-                                        singleRowList.set(ContactsEvents.Position_eventID, eventID);
-                                    }
-                                    dataRow = new StringBuilder();
-                                    int rNum = 0;
-                                    for (String entry : singleRowList) {
-                                        rNum++;
-                                        if (rNum != 1) {
-                                            dataRow.append(Constants.STRING_2HASH);
-                                        }
-                                        dataRow.append(entry);
-                                    }
-                                    eventList.set(eventIndex, dataRow.toString());
+                                    needUpdate = true;
+                                }
+                                if (singleRowList.get(ContactsEvents.Position_eventID).isEmpty()) {
+                                    singleRowList.set(ContactsEvents.Position_eventID, eventID);
+                                    needUpdate = true;
                                 }
 
+                                if (!eventURLs.isEmpty()) {
+                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL), STRING_EMPTY).trim();
+                                    StringBuilder sb = new StringBuilder(eventURL_stored);
+                                    if (eventURL_stored.isEmpty()) {
+                                        for (String url: eventURLs) {
+                                            sb.append(url).append(STRING_2TILDA);
+                                            statAllURLs++;
+                                        }
+                                        sb.delete(sb.length() - STRING_2TILDA.length(), sb.length());
+                                    } else {
+                                        for (String url: eventURLs) {
+                                            if (!eventURL_stored.contains(url)) {
+                                                sb.append(STRING_2TILDA).append(url);
+                                                statAllURLs++;
+                                            }
+                                        }
+                                    }
+                                    singleRowList.set(ContactsEvents.Position_eventURL, sb.toString());
+                                    map_events_weblinks.put(contactID, sb.toString());
+                                    needUpdate = true;
+                                }
+
+                                if (!needUpdate) continue;
+
+                                dataRow = new StringBuilder();
+                                int rNum = 0;
+                                for (String entry : singleRowList) {
+                                    rNum++;
+                                    if (rNum != 1) {
+                                        dataRow.append(Constants.STRING_2HASH);
+                                    }
+                                    dataRow.append(entry);
+                                }
+                                eventList.set(eventIndex, dataRow.toString());
                                 importMethod = 3;
 
                             } else { //Такого события ещё не было
@@ -1986,7 +2085,7 @@ class ContactsEvents {
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
 
                                 String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME), STRING_EMPTY);
-                                String contactTitle = checkForNull(titleMap.get(contactID), STRING_EMPTY);
+                                String contactTitle = checkForNull(map_contacts_titles.get(contactID), STRING_EMPTY);
                                 if (!contactTitle.isEmpty()) {
                                     //всё, что внутри скобок в имени - в должность
                                     int pStart = contactFIO.indexOf(STRING_PARENTHESIS_START);
@@ -2000,8 +2099,19 @@ class ContactsEvents {
                                 userData.put(Position_personFullName, contactFIO);
                                 userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE), STRING_EMPTY).replace(STRING_COMMA, STRING_EMPTY));
                                 userData.put(Position_title, contactTitle);
-                                userData.put(Position_organization, checkForNull(orgMap.get(contactID), STRING_SPACE));
-                                userData.put(Position_nickname, checkForNull(nickMap.get(contactID), STRING_EMPTY));
+                                userData.put(Position_organization, checkForNull(map_organizations.get(contactID), STRING_SPACE));
+                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID), STRING_SPACE));
+
+                                if (!eventURLs.isEmpty()) {
+                                    StringBuilder sb = new StringBuilder();
+                                    for (String url: eventURLs) {
+                                        sb.append(url).append(STRING_2TILDA);
+                                        statAllURLs++;
+                                    }
+                                    sb.delete(sb.length() - STRING_2TILDA.length(), sb.length());
+                                    userData.put(Position_eventURL, sb.toString());
+                                    map_events_weblinks.put(contactID, sb.toString());
+                                }
 
                                 contactDataMap.clear();
                             }
@@ -2010,37 +2120,36 @@ class ContactsEvents {
                         if (importMethod != 3) {
 
                             if (importMethod != 2) {
-                                userData.put(Position_photo_uri, STRING_EMPTY);
                                 userData.put(Position_eventStorage, STRING_STORAGE_CALENDAR);
-                                userData.put(Position_contactID, STRING_EMPTY);
-                                userData.put(Position_organization, STRING_SPACE);
-                                userData.put(Position_title, STRING_EMPTY);
-                                userData.put(Position_nickname, STRING_EMPTY);
                             }
-
-                            userData.put(Position_eventID, eventID);
-                            userData.put(Position_eventDate, STRING_SPACE); //Полная дата события
-                            userData.put(Position_eventDateText, STRING_SPACE); //Дата для отображения
-                            userData.put(Position_eventDistance, STRING_SPACE); //Дней до даты
-                            userData.put(Position_eventDistanceText, STRING_SPACE); //Через сколько событие и какой будет день недели
-                            userData.put(Position_age, STRING_SPACE); //Возраст
-                            userData.put(Position_age_caption, STRING_SPACE); //Подпись для возраста
 
                             String calendarTitle = map_calendars.get(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID)));
                             userData.put(Position_eventCaption, calendarTitle != null ?
                                     getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0]) :
                                     getResources().getString(R.string.event_type_calendar)
                             ); //Наименование события
-                            userData.put(Position_eventLabel, eventTitle != null ? eventTitle : STRING_EMPTY); //Заголовок пользовательского события
+                            userData.put(Position_eventID, eventID);
+                            userData.put(Position_eventLabel, eventTitle); //Заголовок пользовательского события
                             userData.put(Position_eventType, eventType); //Тип события
                             userData.put(Position_eventSubType, eventSubType); //Подтип события
                             userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateFirst) : sdfny.format(date)));
                             userData.put(Position_eventIcon, Integer.toString(eventIcon));
                             userData.put(Position_eventEmoji, eventEmoji);
-                            userData.put(Position_starred, STRING_EMPTY); //Если вычислять это для importMethod==2 через getContactData, время отрисовки x2
-                            userData.put(Position_age_current, STRING_SPACE);
-                            userData.put(Position_zodiacSign, STRING_SPACE); //Знак зодиака
-                            userData.put(Position_zodiacYear, STRING_SPACE); //Зодиакальный год
+
+                            if (importMethod == 0) {
+                                if (!eventURLs.isEmpty()) {
+                                    StringBuilder sb = new StringBuilder();
+                                    for (String url: eventURLs) {
+                                        sb.append(url).append(STRING_2TILDA);
+                                        statAllURLs++;
+                                    }
+                                    sb.delete(sb.length() - STRING_2TILDA.length(), sb.length());
+                                    userData.put(Position_eventURL, sb.toString());
+                                    map_events_weblinks.put(eventID, sb.toString());
+                                }
+                            }
+
+                            fillEmptyUserData(userData);
 
                             dataRow = new StringBuilder();
                             int rNum = 0;
@@ -2074,20 +2183,30 @@ class ContactsEvents {
         } catch (SecurityException se) {
             return false;
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) {
+                StringBuilder dataRow = new StringBuilder();
+                if (!userData.isEmpty()) {
+                            int rNum = 0;
+                            for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                                rNum++;
+                                dataRow.append(Constants.STRING_EOL);
+                                dataRow.append(entry.getKey()).append("=");
+                                dataRow.append(entry.getValue());
+                            }}
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e.toString() + dataRow.toString(), Toast.LENGTH_LONG).show());
+            }
             return false;
         }
     }
 
-    HashMap<String, String> getCalendars() {
+    void recieveCalendarList() {
 
-        HashMap<String, String> newList = new HashMap<>();
+        map_calendars.clear();
         Cursor cursor = null;
 
         try {
 
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
-                return newList;
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) return;
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
             Uri uri = CalendarContract.Calendars.CONTENT_URI;
@@ -2104,7 +2223,7 @@ class ContactsEvents {
                     cursor.moveToFirst();
                     for (int i = 0; i < cursor.getCount(); i++) {
                         if (cursor.getInt(1) == 1) {
-                            newList.put(cursor.getInt(0) + STRING_EMPTY, cursor.getString(2).concat(STRING_2HASH).concat(cursor.getString(3)));
+                            map_calendars.put(cursor.getInt(0) + STRING_EMPTY, cursor.getString(2).concat(STRING_2HASH).concat(cursor.getString(3)));
                         }
                         cursor.moveToNext();
                     }
@@ -2112,15 +2231,11 @@ class ContactsEvents {
                 cursor.close();
             }
 
-            return newList;
-
         } catch (SecurityException se) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
-            return newList;
         } catch (Exception e) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
             if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
-            return newList;
         }
     }
 
@@ -2170,10 +2285,14 @@ class ContactsEvents {
             for (String file: fileList) {
 
                 String[] fileDetails = file.split(STRING_PIPE);
-                Uri uri = Uri.parse(fileDetails[1]);
-                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String[] eventsArray = readTextFromUri(uri).split(STRING_EOF);
-                if (eventsArray.length == 0) return false;
+                Uri uri = null;
+                String[] eventsArray = null;
+                try {
+                    uri = Uri.parse(fileDetails[1]);
+                } catch (NullPointerException e) { /**/ }
+                if (uri != null) eventsArray = readFileToString(uri, STRING_EOL).split(STRING_EOL);
+                if (eventsArray == null || eventsArray[0].isEmpty()) continue;
+
                 String fileName = fileDetails[0].lastIndexOf("/") > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf("/") + 1) : fileDetails[0];
 
                 for (String line: eventsArray) {
@@ -2187,6 +2306,7 @@ class ContactsEvents {
                     Date dateEvent = null;
                     String eventNewDate = null;
                     String contactID = null;
+                    String eventURL = STRING_EMPTY;
                     userData.clear();
 
                     if (!line.isEmpty()) {
@@ -2241,34 +2361,34 @@ class ContactsEvents {
                             if (dateEvent != null) {
                                 eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateEvent) : sdfny.format(dateEvent));
 
-                                userData.put(Position_eventDate_sorted, STRING_SPACE);
                                 userData.put(Position_eventStorage, STRING_STORAGE_FILE);
-                                userData.put(Position_photo_uri, STRING_EMPTY);
-                                userData.put(Position_contactID, STRING_EMPTY);
-                                userData.put(Position_organization, STRING_SPACE);
-                                userData.put(Position_title, STRING_EMPTY);
-                                userData.put(Position_nickname, STRING_EMPTY);
-                                userData.put(Position_eventID, STRING_EMPTY); //todo: вычислять по md5 имени файла + md5 имени
-                                userData.put(Position_eventDate, STRING_SPACE); //Полная дата события
-                                userData.put(Position_eventDateText, STRING_SPACE); //Дата для отображения
-                                userData.put(Position_eventDistance, STRING_SPACE); //Дней до даты
-                                userData.put(Position_eventDistanceText, STRING_SPACE); //Через сколько событие и какой будет день недели
-                                userData.put(Position_age, STRING_SPACE); //Возраст
-                                userData.put(Position_age_caption, STRING_SPACE); //Подпись для возраста
+                                //userData.put(Position_eventID, STRING_EMPTY); //todo: вычислять по md5 имени файла + md5 имени
                                 userData.put(Position_eventCaption, !fileName.isEmpty() ? //Наименование события
                                         getResources().getString(R.string.msg_file_info, fileName) :
                                         getResources().getString(R.string.event_type_file)
                                 );
-                                userData.put(Position_eventLabel, STRING_EMPTY);
                                 userData.put(Position_eventType, eventType); //Тип события
                                 userData.put(Position_eventSubType, eventSubType); //Подтип события
                                 userData.put(Position_dates, eventNewDate);
                                 userData.put(Position_eventIcon, Integer.toString(eventIcon));
                                 userData.put(Position_eventEmoji, eventEmoji);
-                                userData.put(Position_starred, STRING_EMPTY);
-                                userData.put(Position_age_current, STRING_SPACE);
-                                userData.put(Position_zodiacSign, STRING_SPACE);
-                                userData.put(Position_zodiacYear, STRING_SPACE);
+
+                                String eventTitle_lowered = eventTitle.toLowerCase();
+                                int urlOffset = eventTitle_lowered.indexOf(STRING_HTTP);
+                                if (urlOffset > -1) {
+                                    eventURL = eventTitle.substring(urlOffset);
+                                } else {
+                                    urlOffset = eventTitle_lowered.indexOf(STRING_HTTPS);
+                                    if (urlOffset > -1) {
+                                        eventURL = eventTitle.substring(urlOffset);
+                                    }
+                                }
+                                if (urlOffset > -1) {
+                                    if (eventURL.contains(STRING_SPACE)) eventURL = eventURL.substring(0, eventURL.indexOf(STRING_SPACE));
+                                    userData.put(Position_eventURL, eventURL);
+                                    eventTitle = eventTitle.replace(eventURL, STRING_EMPTY).trim();
+                                    statAllURLs++;
+                                }
 
                                 if (importStorage == 1) { //День рождения
 
@@ -2329,6 +2449,7 @@ class ContactsEvents {
                                     userData.put(Position_personFullNameAlt, eventTitle);
 
                                 }
+
                             }
 
                         //} else if (line.charAt(0) == '|') { //Birthdays Plus
@@ -2341,13 +2462,12 @@ class ContactsEvents {
                         if (contactID != null) {
                             orgNameFile = checkForNull(userData.get(Position_organization), STRING_EMPTY).trim();
                             titleFile = checkForNull(userData.get(Position_title), STRING_EMPTY).trim();
-                            String orgNameContact = checkForNull(orgMap.get(contactID), STRING_EMPTY).trim();
+                            String orgNameContact = checkForNull(map_organizations.get(contactID), STRING_EMPTY).trim();
 
                             if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.equalsIgnoreCase(orgNameFile))
                                 contactID = null;
                         }
 
-                        StringBuilder dataRow;
                         if (contactID != null) {
                             userData.put(Position_contactID, contactID);
 
@@ -2357,26 +2477,45 @@ class ContactsEvents {
 
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_2HASH));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
+                                boolean needUpdate = false;
+
                                 if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
                                     singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
-                                    if (singleRowList.get(ContactsEvents.Position_organization).isEmpty() && !orgNameFile.isEmpty()) {
-                                        singleRowList.set(ContactsEvents.Position_organization, orgNameFile);
-                                    }
-                                    if (singleRowList.get(ContactsEvents.Position_title).isEmpty() && !titleFile.isEmpty()) {
-                                        singleRowList.set(ContactsEvents.Position_title, titleFile);
-                                    }
-
-                                    dataRow = new StringBuilder();
-                                    int rNum = 0;
-                                    for (String entry : singleRowList) {
-                                        rNum++;
-                                        if (rNum != 1) {
-                                            dataRow.append(Constants.STRING_2HASH);
-                                        }
-                                        dataRow.append(entry);
-                                    }
-                                    eventList.set(eventIndex, dataRow.toString());
+                                    needUpdate = true;
                                 }
+
+                                if (singleRowList.get(ContactsEvents.Position_organization).trim().isEmpty() && !orgNameFile.isEmpty()) {
+                                    singleRowList.set(ContactsEvents.Position_organization, orgNameFile);
+                                    needUpdate = true;
+                                }
+
+                                if (singleRowList.get(ContactsEvents.Position_title).trim().isEmpty() && !titleFile.isEmpty()) {
+                                    singleRowList.set(ContactsEvents.Position_title, titleFile);
+                                    needUpdate = true;
+                                }
+
+                                if (!eventURL.isEmpty()) {
+                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL), STRING_EMPTY).trim();
+                                    if (eventURL_stored.isEmpty()) {
+                                        singleRowList.set(ContactsEvents.Position_eventURL, eventURL);
+                                    } else if (!eventURL_stored.contains(eventURL)) {
+                                        singleRowList.set(ContactsEvents.Position_eventURL, eventURL_stored.concat(STRING_2TILDA).concat(eventURL));
+                                    }
+                                    needUpdate = true;
+                                }
+
+                                if (!needUpdate) continue;
+
+                                StringBuilder dataRow = new StringBuilder();
+                                int rNum = 0;
+                                for (String entry : singleRowList) {
+                                    rNum++;
+                                    if (rNum != 1) {
+                                        dataRow.append(Constants.STRING_2HASH);
+                                    }
+                                    dataRow.append(entry);
+                                }
+                                eventList.set(eventIndex, dataRow.toString());
                                 userData.clear();
 
                             } else { //Такого события ещё не было
@@ -2390,11 +2529,11 @@ class ContactsEvents {
 
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
                                 userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE), STRING_EMPTY).replace(STRING_COMMA, STRING_EMPTY));
-                                userData.put(Position_nickname, checkForNull(nickMap.get(contactID), STRING_EMPTY));
+                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID), STRING_EMPTY));
                                 if (isEmpty(userData.get(Position_organization)))
-                                    userData.put(Position_organization, checkForNull(orgMap.get(contactID), STRING_EMPTY));
+                                    userData.put(Position_organization, checkForNull(map_organizations.get(contactID), STRING_EMPTY));
                                 if (isEmpty(userData.get(Position_title)))
-                                    userData.put(Position_title, checkForNull(titleMap.get(contactID), STRING_EMPTY));
+                                    userData.put(Position_title, checkForNull(map_contacts_titles.get(contactID), STRING_EMPTY));
 
                                 contactDataMap.clear();
 
@@ -2402,7 +2541,9 @@ class ContactsEvents {
                         }
 
                         if (!userData.isEmpty()) {
-                            dataRow = new StringBuilder();
+                            fillEmptyUserData(userData);
+
+                            StringBuilder dataRow = new StringBuilder();
                             int rNum = 0;
                             for (Map.Entry<Integer, String> entry : userData.entrySet()) {
                                 rNum++;
@@ -2431,24 +2572,35 @@ class ContactsEvents {
         }
     }
 
-    public String readTextFromUri(Uri uri) {
+    @NonNull
+    public String readFileToString(Uri uri, String delimeter) {
 
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         String line;
+
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         try (
                 InputStream inputStream = contentResolver.openInputStream(uri);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
         ) {
 
             while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append(STRING_EOF);
+                sb.append(line);
+                if (delimeter != null) sb.append(delimeter);
             }
 
+        } catch (java.lang.SecurityException se) {
+            if (preferences_debug_on) {
+                handler.post(() -> Toast.makeText(context, resources.getText(R.string.msg_file_open_error) + getPath(context, uri), Toast.LENGTH_LONG).show());
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) {
+                handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            }
         }
-        return stringBuilder.toString();
+        return sb.toString();
     }
 
     Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean makeSquared, boolean forWidget) {
@@ -2556,7 +2708,6 @@ class ContactsEvents {
             }
 
             if (!singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
-                    set_events_deaths != null &&
                     (preferences_list_sad_photo == 2 || (preferences_list_sad_photo == 1 && isDeath)) &&
                     set_events_deaths.contains(singleEventArray[Position_contactID]))
             {
@@ -2605,8 +2756,8 @@ class ContactsEvents {
             if (contactId == 0) return STRING_EMPTY;
 
             String contactData;
-            if (contactDataMap.containsKey(contactId + columnName)) {
-                contactData = contactDataMap.get(contactId + columnName);
+            if (map_contacts_data.containsKey(contactId + columnName)) {
+                contactData = map_contacts_data.get(contactId + columnName);
                 if (contactData != null) return contactData;
             }
 
@@ -2666,11 +2817,11 @@ class ContactsEvents {
 
             //Собираем собранное ранее
             for (String columnName: columnNames) {
-                if (contactDataMap.containsKey(contactId + columnName)) {
-                    resultMap.put(columnName, contactDataMap.get(contactId + columnName));
+                if (map_contacts_data.containsKey(contactId + columnName)) {
+                    resultMap.put(columnName, map_contacts_data.get(contactId + columnName));
                 }
             }
-            if (Arrays.asList(columnNames).contains(ContactsContract.Contacts.PHOTO_URI) && !contactDataMap.containsKey(contactId + ContactsContract.Contacts.PHOTO_URI)) {
+            if (Arrays.asList(columnNames).contains(ContactsContract.Contacts.PHOTO_URI) && !map_contacts_data.containsKey(contactId + ContactsContract.Contacts.PHOTO_URI)) {
                 Uri dataUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
                 resultMap.put(ContactsContract.Contacts.PHOTO_URI, dataUri != null ? dataUri.toString() : STRING_EMPTY);
             }
@@ -2797,7 +2948,7 @@ class ContactsEvents {
     synchronized void computeDates() {
         //Вычисляем даты
 
-        if (isEmptyArray()) return;
+        if (isEmptyEventList()) return;
 
         long statCurrentModuleStart = System.currentTimeMillis();
         String singleEvent = null;
@@ -3151,16 +3302,17 @@ class ContactsEvents {
 
             eventListUnsorted = new ArrayList<>(eventList);
 
-            //Сортируем
-            Collections.sort(eventList);
-
         } catch (Exception e) {
             e.printStackTrace();
             if (preferences_debug_on) {
                 String finalSingleEvent = singleEvent;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e.toString() + (finalSingleEvent != null ? STRING_EOF + finalSingleEvent : STRING_EMPTY), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e.toString() + (finalSingleEvent != null ? STRING_EOL + finalSingleEvent : STRING_EMPTY), Toast.LENGTH_LONG).show());
             }
         } finally {
+
+            //Сортируем
+            Collections.sort(eventList);
+
             statLastComputeDates = System.currentTimeMillis();
             statTimeComputeDates = statLastComputeDates - statCurrentModuleStart;
         }
@@ -3214,7 +3366,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR + e.toString() + STRING_EOF + dayDiff + STRING_EOF + eventDate, Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR + e.toString() + STRING_EOL + dayDiff + STRING_EOL + eventDate, Toast.LENGTH_LONG).show());
         }
         return  eventDistance.toString();
     }
@@ -3430,7 +3582,7 @@ class ContactsEvents {
                     if (channel == null || !channel.getSound().toString().equals(preferences_notifications_ringtone)) {
 
                         notificationManager.deleteNotificationChannel(channel_id);
-                        if (preferences_debug_on) log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(STRING_EOF);
+                        if (preferences_debug_on) log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(STRING_EOL);
 
                         preferences_notification_channel_id = generator.nextInt(1000);
                         channel_id = Integer.toString(preferences_notification_channel_id);
@@ -3438,11 +3590,11 @@ class ContactsEvents {
                         channel = new NotificationChannel(channel_id, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
                         channel.setSound(Uri.parse(preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                        if (preferences_debug_on) log.append(Constants.MSG_RINGTONE).append(Uri.parse(preferences_notifications_ringtone)).append(STRING_EOF);
+                        if (preferences_debug_on) log.append(Constants.MSG_RINGTONE).append(Uri.parse(preferences_notifications_ringtone)).append(STRING_EOL);
                         channel.enableVibration(true);
 
                         notificationManager.createNotificationChannel(channel);
-                        if (preferences_debug_on) log.append(Constants.MSG_CREATED_CHANNEL_).append(preferences_notification_channel_id).append(STRING_EOF);
+                        if (preferences_debug_on) log.append(Constants.MSG_CREATED_CHANNEL_).append(preferences_notification_channel_id).append(STRING_EOL);
 
                         setPreferences();
                     }
@@ -3450,7 +3602,7 @@ class ContactsEvents {
                 } else if (channel != null) {
 
                     notificationManager.deleteNotificationChannel(channel_id);
-                    if (preferences_debug_on) log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(STRING_EOF);
+                    if (preferences_debug_on) log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(STRING_EOL);
 
                 }
             }
@@ -3472,13 +3624,13 @@ class ContactsEvents {
                 //To enable Boot Receiver class
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    if (preferences_debug_on) log.append(Constants.MSG_NOTIFICATIONS_WERE_ENABLED).append(STRING_EOF);
+                    if (preferences_debug_on) log.append(Constants.MSG_NOTIFICATIONS_WERE_ENABLED).append(STRING_EOL);
                 }
 
             } else { //Disable Daily Notifications
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    if (preferences_debug_on) log.append(Constants.MSG_NOTIFICATIONS_WERE_DISABLED).append(STRING_EOF);
+                    if (preferences_debug_on) log.append(Constants.MSG_NOTIFICATIONS_WERE_DISABLED).append(STRING_EOL);
                 }
             }
 
@@ -3510,7 +3662,7 @@ class ContactsEvents {
 
                     if (preferences_debug_on) {
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
-                        log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf.format(calendar.getTime())).append(STRING_EOF);
+                        if (log != null) log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf.format(calendar.getTime())).append(STRING_EOL);
                     }
                 }
 
@@ -3555,7 +3707,7 @@ class ContactsEvents {
 
                     if (preferences_debug_on) {
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
-                        log.append(Constants.MSG_NEXT_NOTIFICATION).append(sdf.format(calendar.getTime())).append(STRING_EOF);
+                        log.append(Constants.MSG_NEXT_NOTIFICATION).append(sdf.format(calendar.getTime())).append(STRING_EOL);
                     }
                 }
 
@@ -3619,7 +3771,7 @@ class ContactsEvents {
             if (listNotify.size() == 0 && !forceNoEventsMessage) return;
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            //notificationManager.cancelAll(); //todo: пока уберу, надо разобраться - нужно ли оно здесь?
+            notificationManager.cancelAll();
 
             String[] dataNotify = listNotify.toArray(new String[0]); //Список уведомлений, подходящих по дням
             StringBuilder textBig;
@@ -3636,29 +3788,27 @@ class ContactsEvents {
                     textBig.append(textSmall).append(":\n");
                     for (String event : dataNotify) {
                         String[] singleEventArray = event.split(Constants.STRING_2HASH);
-                        if (singleEventArray.length == Position_attrAmount) {
-                            Date eventDate = null;
-                            String eventDay = null;
-                            try {
-                                eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
-                                if (eventDate != null) {
-                                    eventDay = sdfDDMM.format(eventDate);
-                                }
-                            } catch (Exception e) { /**/ }
-
+                        Date eventDate = null;
+                        String eventDay = null;
+                        try {
+                            eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
                             if (eventDate != null) {
-                                if (textBig.length() > 0) textBig.append(Constants.STRING_EOF);
-                                textBig.append(singleEventArray[Position_eventEmoji])
-                                        .append(STRING_SPACE)
-                                        .append(eventDay).append(STRING_SPACE)
-                                        .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
-                                if (!singleEventArray[Position_age_caption].trim().isEmpty())
-                                    textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
-                                if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
-                                    int ind1 = singleEventArray[Position_eventCaption].indexOf(STRING_PARENTHESIS_OPEN);
-                                    if (ind1 > -1) {
-                                        textBig.append(STRING_SPACE).append(singleEventArray[Position_eventCaption].substring(ind1));
-                                    }
+                                eventDay = sdfDDMM.format(eventDate);
+                            }
+                        } catch (Exception e) { /**/ }
+
+                        if (eventDate != null) {
+                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                            textBig.append(singleEventArray[Position_eventEmoji])
+                                    .append(STRING_SPACE)
+                                    .append(eventDay).append(STRING_SPACE)
+                                    .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
+                            if (!singleEventArray[Position_age_caption].trim().isEmpty())
+                                textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
+                            if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
+                                int ind1 = singleEventArray[Position_eventCaption].indexOf(STRING_PARENTHESIS_OPEN);
+                                if (ind1 > -1) {
+                                    textBig.append(STRING_SPACE).append(singleEventArray[Position_eventCaption].substring(ind1));
                                 }
                             }
                         }
@@ -3734,16 +3884,19 @@ class ContactsEvents {
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
 
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        Uri uri = null;
-                        if (!singleEventArray[Position_contactID].isEmpty()) {
-                            uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                        } else if (!singleEventArray[Position_eventID].isEmpty()) {
-                            uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                        Intent intent = null;
+
+                        if (preferences_notifications_on_click_action == 7) { //Основной список событий
+                            intent = new Intent(context, MainActivity.class);
+                            intent.setAction(ACTION_LAUNCH);
+                        } else if (preferences_notifications_on_click_action >= 1 & preferences_notifications_on_click_action <=4) {
+                            intent = ContactsEvents.getViewActionIntent(singleEventArray, preferences_notifications_on_click_action);
+                        } else if (preferences_notifications_on_click_action == 6) { //Закрыть уведомление
+                            intent = new Intent();
                         }
-                        if (uri != null) {
-                            intent.setData(uri);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        if (intent != null) {
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
                             builder.setContentIntent(pendingIntent);
                         }
@@ -3765,7 +3918,8 @@ class ContactsEvents {
 
                         }
 
-                        if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
+                        final String eventKey = getEventKey(singleEventArray);
+                        if (!eventKey.isEmpty() && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
                             Intent intentSilent = new Intent(context, ActionReceiver.class);
                             intentSilent.setAction(ACTION_SILENT);
                             intentSilent.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
@@ -3775,7 +3929,7 @@ class ContactsEvents {
                             builder.addAction(actionSilent);
                         }
 
-                        if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
+                        if (!eventKey.isEmpty() && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
                             Intent intentHide = new Intent(context, ActionReceiver.class);
                             intentHide.setAction(ACTION_HIDE);
                             intentHide.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
@@ -3975,7 +4129,7 @@ class ContactsEvents {
 
     }
 
-    boolean isEmptyArray() {return eventList.isEmpty();}
+    boolean isEmptyEventList() {return eventList.isEmpty();}
 
     @NonNull String checkForNull(String strIn, @NonNull String strDefault) {return strIn != null && !strIn.isEmpty() ? strIn : strDefault;}
 
@@ -4009,7 +4163,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_hiddenEvents != null && preferences_hiddenEvents.contains(key);
+            return !key.isEmpty() && preferences_hiddenEvents != null && preferences_hiddenEvents.contains(key);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -4022,7 +4176,7 @@ class ContactsEvents {
 
         try {
 
-            if (preferences_hiddenEvents == null || !preferences_hiddenEvents.add(key)) return false;
+            if (key.isEmpty() || preferences_hiddenEvents == null || !preferences_hiddenEvents.add(key)) return false;
 
             //clearDeadlinkHiddenEvents();
 
@@ -4054,9 +4208,9 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
 
             //Если удалили последнее событие - скидываем режим на стандартный
-            if (preferences_events_scope == Constants.pref_Events_Scope_Hidden && preferences_hiddenEvents.isEmpty()) {
-                preferences_events_scope = Constants.pref_Events_Scope_NotHidden;
-                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
+            if (preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && preferences_hiddenEvents.isEmpty()) {
+                preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
             }
 
             editor.apply();
@@ -4102,7 +4256,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_silentEvents != null && preferences_silentEvents.contains(key);
+            return !key.isEmpty() && preferences_silentEvents != null && preferences_silentEvents.contains(key);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -4115,7 +4269,7 @@ class ContactsEvents {
 
         try {
 
-            if (preferences_silentEvents == null || !preferences_silentEvents.add(key)) return false;
+            if (key.isEmpty() || preferences_silentEvents == null || !preferences_silentEvents.add(key)) return false;
 
             //clearDeadlinkSilencedEvents();
 
@@ -4147,9 +4301,9 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
 
             //Если удалили последнее событие - скидываем режим на стандартный
-            if (preferences_events_scope == Constants.pref_Events_Scope_Silenced && preferences_silentEvents.isEmpty()) {
-                preferences_events_scope = Constants.pref_Events_Scope_NotHidden;
-                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_events_scope);
+            if (preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && preferences_silentEvents.isEmpty()) {
+                preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
             }
 
             editor.apply();
@@ -4219,10 +4373,14 @@ class ContactsEvents {
 
         try {
 
-            if (getSilencedEventsCount() == 0 || set_contacts_ids == null) return;
+            if (getSilencedEventsCount() == 0) return;
 
             Set<String> toRemove = new HashSet<>();
             for (String event: preferences_silentEvents) {
+                if (event.equals(STRING_EMPTY)) {
+                    toRemove.add(event);
+                    continue;
+                }
                 final String[] keyParts = getKeyParts(event);
                 if (keyParts[1].equals(eventTypesIDs.get(Type_CalendarEvent))) {
                     if (!set_events_ids.contains(keyParts[0])) toRemove.add(event);
@@ -4245,10 +4403,14 @@ class ContactsEvents {
 
         try {
 
-            if (getHiddenEventsCount() == 0 || set_contacts_ids == null) return;
+            if (getHiddenEventsCount() == 0) return;
 
             Set<String> toRemove = new HashSet<>();
             for (String event: preferences_hiddenEvents) {
+                if (event.equals(STRING_EMPTY)) {
+                    toRemove.add(event);
+                    continue;
+                }
                 final String[] keyParts = getKeyParts(event);
                 if (keyParts[1].equals(eventTypesIDs.get(Type_CalendarEvent))) {
                     if (!set_events_ids.contains(keyParts[0])) toRemove.add(event);
@@ -4273,6 +4435,8 @@ class ContactsEvents {
 
         try {
 
+
+
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putString(context.getString(R.string.widget_config_PrefName) + id, value);
             editor.apply();
@@ -4286,7 +4450,7 @@ class ContactsEvents {
 
     }
 
-    List<String> getWidgetPreference(int id) {
+    @NonNull List<String> getWidgetPreference(int id) {
 
         List<String> defaultPref = Arrays.asList(context.getString(R.string.widget_config_defaultPref).split(STRING_COMMA));
         if (context == null) return defaultPref;
@@ -4301,10 +4465,14 @@ class ContactsEvents {
             List<String> prefWidget = new ArrayList<>(Arrays.asList(pref));
             //prefWidget.addAll(Arrays.asList(pref));
 
+            //if (preferences_debug_on) Toast.makeText(context, "def:" + defaultPref.toString() + "\npref:" +  prefWidget.toString(), Toast.LENGTH_LONG).show();
+
             //Добиваем дефолтными значениями
             while (prefWidget.size() < defaultPref.size()) {
-                prefWidget.add(defaultPref.get(prefWidget.size() - 1));
+                prefWidget.add(defaultPref.get(prefWidget.size()));
             }
+
+            //if (preferences_debug_on) Toast.makeText(context, "after:" +  prefWidget.toString(), Toast.LENGTH_LONG).show();
 
             return prefWidget;
 
@@ -4888,7 +5056,7 @@ class ContactsEvents {
 
                 builder = new AlertDialog.Builder(new ContextThemeWrapper(context, preferences_theme.themeDialog));
                 builder.setTitle(quest.type);
-                builder.setMessage(STRING_EOF + quest.question);
+                builder.setMessage(STRING_EOL + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
                     builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, true,false)));
                 }
@@ -5295,7 +5463,7 @@ class ContactsEvents {
             if (widgetPref == null || eventList.size() == 0) return resultList;
 
             List<String> eventsPrefList = new ArrayList<>();
-            if (widgetPref.size() > 3) {
+            if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
                 eventsPrefList = Arrays.asList(widgetPref.get(3).split(REGEX_PLUS));
             }
 
@@ -5354,6 +5522,217 @@ class ContactsEvents {
             if (i == key) return true;
         }
         return false;
+    }
+
+    @NonNull
+    //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
+    public String getPath(Context context, Uri uri) {
+
+        try {
+
+            // DocumentProvider
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                // ExternalStorageProvider
+                if (isExternalStorageDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(STRING_COLON);
+                    final String type = split[0];
+
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    } else {
+                        return "/storage/"+split[0]+"/"+split[1];
+                    }
+                }
+                // DownloadsProvider
+                else if (isDownloadsDocument(uri)) {
+                    //final String id = DocumentsContract.getDocumentId(uri);
+                    //final String[] split = id.split(STRING_COLON);
+                    //final Uri contentUri = null; //ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(split[split.length-1]));
+                    //if (contentUri != null) {
+                    //    return getDataColumn(context, contentUri, null, null);
+                    //} else {
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getDataColumn(context, uri, null, null);
+                    //}
+                }
+                // MediaProvider
+                else if (isMediaDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(STRING_COLON);
+                    final String type = split[0];
+                    Uri contentUri = null;
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+                    if (contentUri != null) {
+                        final String selection = "_id=?";
+                        final String[] selectionArgs = new String[]{split[1]};
+                        return getDataColumn(context, contentUri, selection, selectionArgs);
+                    } else {
+                        return getDataColumn(context, uri, null, null);
+                    }
+                }
+            }
+
+            // MediaStore (and general)
+            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                // Return the remote address
+                if (isGooglePhotosUri(uri)) return uri.getLastPathSegment();
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + getDataColumn(context, uri, null, null);
+            }
+            // File
+            else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                return uri.getPath();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+        }
+        return STRING_EMPTY;
+
+    }
+
+    private boolean isExternalStorageDocument(Uri uri) {
+        return FilePrefix_ExternalStorage.equals(uri.getAuthority());
+    }
+
+    private boolean isDownloadsDocument(Uri uri) {
+        return FilePrefix_Downloads.equals(uri.getAuthority());
+    }
+
+    private boolean isMediaDocument(Uri uri) {
+        return FilePrefix_Media.equals(uri.getAuthority());
+    }
+
+    private boolean isGooglePhotosUri(Uri uri) {
+        return FilePrefix_GooglePhotos.equals(uri.getAuthority());
+    }
+
+
+    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+
+        try {
+
+            try (Cursor cursor = context.getContentResolver().query(uri, null, selection, selectionArgs, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    final int indexName = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (indexName > -1) {
+                        List<String> path = uri.getPathSegments();
+                        return cursor.getString(indexName);
+                    }
+                    final int indexData = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                    if (indexData > -1) {
+                        return cursor.getString(indexData);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_DATA_COLUMN_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+        }
+        return null;
+
+    }
+
+    private void fillEmptyUserData(TreeMap<Integer, String> userData) {
+
+        try {
+
+            if (userData == null) return;
+
+            for(int i = 0; i < Position_attrAmount; i++) {
+                if (!userData.containsKey(i)) {
+                    userData.put(i, (i == Position_contactID || i == Position_eventID || i == Position_photo_uri) ? STRING_EMPTY : STRING_SPACE);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+        }
+    }
+
+    static Intent getViewActionIntent(@NonNull String[] singleEventArray, int prefAction) {
+
+        try {
+
+            if (singleEventArray.length < Position_attrAmount) return null;
+            Uri uri = null;
+
+            if (prefAction == 1) { //Контакт, календарь, ссылка
+                if (!singleEventArray[Position_contactID].isEmpty()) {
+                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                } else if (!singleEventArray[Position_eventID].isEmpty()) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                } else if (!singleEventArray[Position_eventURL].trim().isEmpty()) {
+                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(STRING_2TILDA);
+                    uri = Uri.parse(eventURLs[0].trim());
+                }
+
+            } else if (prefAction == 2) { //Календарь, контакт, ссылка
+
+                if (!singleEventArray[Position_eventID].isEmpty()) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                } else if (!singleEventArray[Position_contactID].isEmpty()) {
+                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                } else if (!singleEventArray[Position_eventURL].trim().isEmpty()) {
+                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(STRING_2TILDA);
+                    uri = Uri.parse(eventURLs[0].trim());
+                }
+
+            } else if (prefAction == 3) { //Ссылка, контакт, календарь
+
+                if (!singleEventArray[Position_eventURL].trim().isEmpty()) {
+                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(STRING_2TILDA);
+                    uri = Uri.parse(eventURLs[0].trim());
+                } else  if (!singleEventArray[Position_contactID].isEmpty()) {
+                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                } else if (!singleEventArray[Position_eventID].isEmpty()) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                }
+
+            } else if (prefAction == 4) { //Контакт, ссылка, календарь
+                if (!singleEventArray[Position_contactID].isEmpty()) {
+                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                } else if (!singleEventArray[Position_eventURL].trim().isEmpty()) {
+                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(STRING_2TILDA);
+                    uri = Uri.parse(eventURLs[0].trim());
+                } else if (!singleEventArray[Position_eventID].isEmpty()) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                }
+            }
+
+            return uri != null ? new Intent(Intent.ACTION_VIEW, uri) : null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_ACTION_INTENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            return null;
+        }
+
+    }
+
+    public static String toARGBString(int color) {
+        // format: #AARRGGBB
+        String alpha = Integer.toHexString(Color.alpha(color));
+        String red = Integer.toHexString(Color.red(color));
+        String green = Integer.toHexString(Color.green(color));
+        String blue = Integer.toHexString(Color.blue(color));
+        if (alpha.length() == 1)
+            alpha = "0" + alpha;
+        if (red.length() == 1)
+            red = "0" + red;
+        if (green.length() == 1)
+            green = "0" + green;
+        if (blue.length() == 1)
+            blue = "0" + blue;
+        return "#" + alpha + red + green + blue;
     }
 
 }

@@ -1,12 +1,16 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 26.12.2021, 0:28
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -14,10 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import java.util.regex.Pattern;
-
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 
 class Person {
 
@@ -33,7 +33,6 @@ class Person {
 
     private String FirstName;
     private String SecondName;
-    private int Gender = 0; // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён
     int Age = -1;
     String Age_str;
     String FIO_str;
@@ -151,44 +150,47 @@ class Person {
         //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
 
         try {
-            if (Gender != 0) return Gender;
+            // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён
 
-            if (ContactsEvents.getInstance().preferences_last_name_comletions_man == null) {//Ищем первый раз
+            final ContactsEvents contactsEvents = ContactsEvents.getInstance();
+            if (contactsEvents.preferences_last_name_comletions_man == null) {//Ищем первый раз
                 //eventsData.preferences_first_names_female = new HashSet<>(Arrays.asList(context.getString(R.string.first_names_female).split(ContactsEvents.STRING_COMMA)));
 
                 final String regex_inter = "\\Z|";
                 final String regex_last = "\\Z";
 
-                ContactsEvents.getInstance().preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                ContactsEvents.getInstance().preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                ContactsEvents.getInstance().preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                final String names = ContactsEvents.getInstance().preferences_first_names_female_custom.isEmpty() ?
+                contactsEvents.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                contactsEvents.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                contactsEvents.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                final String names = contactsEvents.preferences_first_names_female_custom.isEmpty() ?
                         context.getString(R.string.first_names_female) :
-                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(ContactsEvents.getInstance().preferences_first_names_female_custom.toLowerCase().replace(STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
-                ContactsEvents.getInstance().preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                ContactsEvents.getInstance().preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                ContactsEvents.getInstance().preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(contactsEvents.preferences_first_names_female_custom.toLowerCase().replace(STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+                contactsEvents.preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                contactsEvents.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                contactsEvents.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
 
             }
 
             int ind = 0;
             if (!this.LastName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_last_name_comletions_man.reset(ContactsEvents.normalizeName(this.LastName)).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_last_name_comletions_female.reset(ContactsEvents.normalizeName(this.LastName)).find()) {ind--;}
+                final String normalizedLastName = ContactsEvents.normalizeName(this.LastName);
+                if (contactsEvents.preferences_last_name_comletions_man.reset(normalizedLastName).find()) {ind++;}
+                else if (contactsEvents.preferences_last_name_comletions_female.reset(normalizedLastName).find()) {ind--;}
             }
 
             if (!this.SecondName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_second_name_comletions_man.reset(ContactsEvents.normalizeName(this.SecondName)).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_second_name_comletions_female.reset(ContactsEvents.normalizeName(this.SecondName)).find()) {ind--;}
+                final String normalizedSecondName = ContactsEvents.normalizeName(this.SecondName);
+                if (contactsEvents.preferences_second_name_comletions_man.reset(normalizedSecondName).find()) {ind++;}
+                else if (contactsEvents.preferences_second_name_comletions_female.reset(normalizedSecondName).find()) {ind--;}
             }
 
             if (!this.FirstName.isEmpty()) {
-                if (ContactsEvents.getInstance().preferences_first_names_man.reset(ContactsEvents.normalizeName(this.FirstName)).find()) {ind++;}
-                else if (ContactsEvents.getInstance().preferences_first_names_female.reset(ContactsEvents.normalizeName(this.FirstName)).find()) {ind--;}
+                final String normalizedFirstName = ContactsEvents.normalizeName(this.FirstName);
+                if (contactsEvents.preferences_first_names_man.reset(normalizedFirstName).find()) {ind++;}
+                else if (contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {ind--;}
             }
 
-            if (ind > 0) {Gender = 1;} else if (ind < 0) {Gender = 2;} else {Gender = -1;}
-            return Gender;
+            return ind > 0 ? 1 : ind < 0 ? 2 : -1;
 
         } catch (Exception e) {
             e.printStackTrace();

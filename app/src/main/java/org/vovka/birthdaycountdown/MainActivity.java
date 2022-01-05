@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 26.12.2021, 0:17
  *
  */
 
@@ -14,9 +14,12 @@ import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_BROWN;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_YELLOW;
 import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_LI;
 import static org.vovka.birthdaycountdown.Constants.HTML_UL_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_UL_START;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_ADD_EVENT;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_FILTER;
+import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_HINTS;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_QUIZ;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_REFRESH;
 import static org.vovka.birthdaycountdown.Constants.MENU_MAIN_SEARCH;
@@ -29,11 +32,14 @@ import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_OTHER_CONTACT;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
+import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOF;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
+import static org.vovka.birthdaycountdown.Constants.STRING_HTTP;
+import static org.vovka.birthdaycountdown.Constants.STRING_HTTPS;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PIPE;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
@@ -57,15 +63,11 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventType;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventURL;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_contact;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_edit_event;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_merge_event;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_remerge_event;
-import static org.vovka.birthdaycountdown.R.integer.menu_context_id_unmerge_event;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener = () -> {
                 //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
                 swipeRefresh = findViewById(R.id.swiperefresh);
-                if (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 3000) {
+                if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 3000) {
                     if (eventsData.getEvents(this)) {
                         eventsData.computeDates();
                         prepareList();
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         swipeRefresh.setRefreshing(false); // Disables the refresh icon
 
                         //Сообщение для тех, у кого не найдено ни одного события
-                        if (!triggeredMsgNoEvents && eventsData.isEmptyArray()) {
+                        if (!triggeredMsgNoEvents && eventsData.isEmptyEventList()) {
 
                             if (!eventsData.getPreferences_Accounts().isEmpty()) { //... но выбраны конкретные аккаунты
 
@@ -265,19 +267,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             listView.setOnItemClickListener((l, v1, position, id) -> {
                 try {
 
-                    String[] dataArray1 = ((String) l.getItemAtPosition(position)).split(Constants.STRING_2HASH);
-
-                    //https://stackoverflow.com/questions/4275167/how-to-open-a-contact-card-in-android-by-id?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = null;
-                    if (!dataArray1[Position_contactID].isEmpty()) {
-                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, dataArray1[Position_contactID]);
-                    } else if (!dataArray1[Position_eventID].isEmpty()) {
-                        uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, dataArray1[Position_eventID]);
-                    }
-                    if (uri != null) {
-                        intent.setData(uri);
-                        MainActivity.this.startActivity(intent);
+                    if (eventsData.preferences_list_on_click_action == 8) { //Контекстное меню
+                        openContextMenu(v1);
+                    } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <=4) {
+                        Intent intent = ContactsEvents.getViewActionIntent(((String) l.getItemAtPosition(position)).split(Constants.STRING_2HASH), eventsData.preferences_list_on_click_action);
+                        if (intent != null) {
+                            MainActivity.this.startActivity(intent);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -286,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             });
 
-            //Контекстное меню
             registerForContextMenu(listView);
 
             //Приветственное сообщение или описание новой версии
@@ -294,8 +289,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //todo: сделать разные иконки приложения https://github.com/guardianproject/CameraV/commit/98d8c545c1901d03d9d238204bb45d502a623e59#diff-7ab4bf3d594a968a90e0250af33fcb9bR399
             //https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -347,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) sb.append(HTML_BR);
 
                     String[] arrChangeLog = resources.getStringArray(R.array.changelog);
-                    if (arrChangeLog.length > 0) {
+                    if (!arrChangeLog[0].isEmpty()) {
 
                         String currentVersion = STRING_EMPTY;
                         int countChanges = 0;
@@ -359,13 +352,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 if (!currentVersion.isEmpty()) break;
                                 currentVersion = strChange.substring(1);
                                 if (!currentVersion.equals(BuildConfig.VERSION_NAME)) break;
-                                sb.append("<ul>");
+                                sb.append(HTML_UL_START);
 
                             } else {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    sb.append("<li>&nbsp;").append(strChange).append("</li>");
+                                    sb.append("<li>&nbsp;").append(strChange.replace(STRING_EOL, HTML_BR)).append("</li>");
                                 } else {
-                                    sb.append("<br>&nbsp;-&nbsp;").append(strChange);
+                                    sb.append("<br>&nbsp;-&nbsp;").append(strChange.replace(STRING_EOL, HTML_BR));
                                 }
                                 countChanges++;
 
@@ -549,6 +542,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menu.getItem(MENU_MAIN_SETTINGS).setVisible(false);
                     menu.getItem(MENU_MAIN_QUIZ).setVisible(false);
                     menu.getItem(MENU_MAIN_FILTER).setVisible(false);
+                    menu.getItem(MENU_MAIN_HINTS).setVisible(true);
                     return true;
                 }
 
@@ -562,9 +556,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     //показывать, если есть скрытые или без уведомлений
                     menu.getItem(MENU_MAIN_FILTER).setVisible(
                             eventsData != null &&
-                                    !eventsData.isEmptyArray() &&
+                                    !eventsData.isEmptyEventList() &&
                                     (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
                     );
+                    menu.getItem(MENU_MAIN_HINTS).setVisible(false);
                     prepareList();
                     return true;
                 }
@@ -588,6 +583,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //показывать, если есть скрытые или без уведомлений
             menu.getItem(MENU_MAIN_FILTER).setVisible(!this.dataList.isEmpty() && (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0));
+            menu.getItem(MENU_MAIN_HINTS).setVisible(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -681,7 +677,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.activity_title_events_scope)
                         .setIcon(android.R.drawable.ic_menu_sort_by_size)
-                        .setSingleChoiceItems(filterVariants.toArray(new CharSequence[0]), eventsData.preferences_events_scope, (dialog, which) -> {
+                        .setSingleChoiceItems(filterVariants.toArray(new CharSequence[0]), eventsData.preferences_list_events_scope, (dialog, which) -> {
                             final int choice = filterValues.get(((AlertDialog) dialog).getListView().getCheckedItemPosition());
                             if (choice == pref_Events_Scope_Clear) {
 
@@ -693,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
                                             eventsData.clearHiddenEvents();
                                             eventsData.clearSilencedEvents();
-                                            eventsData.preferences_events_scope = pref_Events_Scope_NotHidden;
+                                            eventsData.preferences_list_events_scope = pref_Events_Scope_NotHidden;
                                             eventsData.setPreferences();
                                             this.invalidateOptionsMenu();
                                             prepareList();
@@ -721,7 +717,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
                                             eventsData.clearDeadlinkHiddenEvents();
                                             eventsData.clearDeadlinkSilencedEvents();
-                                            eventsData.preferences_events_scope = pref_Events_Scope_NotHidden;
+                                            eventsData.preferences_list_events_scope = pref_Events_Scope_NotHidden;
                                             eventsData.setPreferences();
                                             this.invalidateOptionsMenu();
                                             prepareList();
@@ -741,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             } else {
 
-                                eventsData.preferences_events_scope = choice;
+                                eventsData.preferences_list_events_scope = choice;
 
                             }
                             eventsData.setPreferences();
@@ -799,14 +795,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ArrayList<String> fileURIs = new ArrayList<>();
                 for (String file: eventsData.preferences_birthday_files) {
                     String[] fileDetails = file.split(STRING_PIPE);
-                    if (fileDetails.length > 0 && !fileURIs.contains(fileDetails[1])) {
+                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);
                         fileURIs.add(fileDetails[1]);
                     }
                 }
                 for (String file: eventsData.preferences_otherevent_files) {
                     String[] fileDetails = file.split(STRING_PIPE);
-                    if (fileDetails.length > 0 && !fileURIs.contains(fileDetails[1])) {
+                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);
                         fileURIs.add(fileDetails[1]);
                     }
@@ -824,7 +820,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     intent.setAction(Intent.ACTION_VIEW);
                                     intent.setDataAndType(uri, "text/plain");
                                     //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                                     dialog.cancel();
                                     startActivity(intent);
                                 } catch (java.lang.SecurityException se) {
@@ -850,6 +846,45 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 alertToShow.show();
 
+            } else if (itemId == R.id.menu_hints) {
+
+                StringBuilder sb = new StringBuilder();
+                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) sb.append(HTML_BR);
+
+                String[] arrFAQ = resources.getStringArray(R.array.faq);
+                if (!arrFAQ[0].isEmpty()) {
+
+                    int countHintLines = 0;
+                    String headerStart = "#".concat(getString(R.string.menu_search));
+
+                    for (String strLine : arrFAQ) {
+
+                        if (countHintLines == 0 && !strLine.equals(headerStart)) continue;
+                        if (strLine.trim().isEmpty()) {
+                            break;
+                        } else if (strLine.equals(headerStart)) {
+                            countHintLines++;
+                        } else {
+
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                strLine = strLine.replaceAll(HTML_LI, "<br>&nbsp;-&nbsp;");
+                            }
+                            sb.append(HTML_BR).append(strLine);
+                            countHintLines++;
+                        }
+                    }
+
+                    builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                    builder.setTitle(getString(R.string.window_search_hints));
+                    builder.setIcon(android.R.drawable.ic_menu_info_details);
+                    builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+                    builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                    alertToShow = builder.create();
+                    alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+                    alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertToShow.show();
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -862,26 +897,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
 
-            if (resultCode == RESULT_OK) {
+            if ((requestCode == RESULT_PICK_CONTACT || requestCode == RESULT_PICK_OTHER_CONTACT) && resultCode == RESULT_OK) {
 
-                if (requestCode == RESULT_PICK_CONTACT || requestCode == RESULT_PICK_OTHER_CONTACT) {
+                Uri contactUri = data.getData();
+                if (contactUri != null) {
+                    String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
 
-                    Uri contactUri = data.getData();
-                    if (contactUri != null) {
-                        String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
-
-                        if (!contactID.isEmpty() && !selectedEvent[Position_eventID].isEmpty()) {
-                            if (eventsData.setMergedID(selectedEvent[Position_eventID], contactID)) {
-                                if (eventsData.getEvents(this)) {
-                                    eventsData.computeDates();
-                                    prepareList();
-                                    drawList();
-                                    eventsData.updateWidgets(0);
-                                }
+                    if (!contactID.isEmpty() && !selectedEvent[Position_eventID].isEmpty()) {
+                        if (eventsData.setMergedID(selectedEvent[Position_eventID], contactID)) {
+                            if (eventsData.getEvents(this)) {
+                                eventsData.computeDates();
+                                prepareList();
+                                drawList();
+                                eventsData.updateWidgets(0);
                             }
                         }
                     }
                 }
+            } else {
+
+                super.onActivityResult(requestCode, resultCode, data);
+
             }
 
         } catch (Exception e) {
@@ -970,6 +1006,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //todo: подсказки про именины на основе имени и даты рождения
         //todo: знаки зодиака и года
         //todo: ссылки с имени и фамилии на web справочник
+        //todo: добавить возможность расшарить событие как картинку https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items https://demonuts.com/android-take-screenshot/
 
         try {
             if (v.getId() == R.id.mainListView) {
@@ -983,21 +1020,34 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
                 if (!selectedEvent[Position_contactID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
-                    menu.add(Menu.NONE, menu_context_id_edit_contact, Menu.NONE, getString(R.string.menu_context_edit_contact));
+                    menu.add(Menu.NONE, R.integer.menu_context_id_edit_contact, Menu.NONE, getString(R.string.menu_context_edit_contact));
                 }
+
                 if (!selectedEvent[Position_eventID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
-                    menu.add(Menu.NONE, menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
+                    menu.add(Menu.NONE, R.integer.menu_context_id_edit_event, Menu.NONE, getString(R.string.menu_context_edit_event));
 
                     if (selectedEvent[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
                         if (!eventsData.getMergedID(selectedEvent[Position_eventID]).isEmpty()) {
-                            menu.add(Menu.NONE, menu_context_id_unmerge_event, Menu.NONE, getString(R.string.menu_context_unmerge_event));
-                            menu.add(Menu.NONE, menu_context_id_remerge_event, Menu.NONE, getString(R.string.menu_context_remerge_event));
+                            menu.add(Menu.NONE, R.integer.menu_context_id_unmerge_event, Menu.NONE, getString(R.string.menu_context_unmerge_event));
+                            menu.add(Menu.NONE, R.integer.menu_context_id_remerge_event, Menu.NONE, getString(R.string.menu_context_remerge_event));
                         } else if (selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) && selectedEvent[Position_contactID].isEmpty()) {
-                            menu.add(Menu.NONE, menu_context_id_merge_event, Menu.NONE, getString(R.string.menu_context_merge_event));
+                            menu.add(Menu.NONE, R.integer.menu_context_id_merge_event, Menu.NONE, getString(R.string.menu_context_merge_event));
                         }
                     }
                 }
-                //menu.add(Menu.NONE, R.integer.menu_context_id_events, Menu.NONE, getString(R.string.menu_context_events));
+
+                String[] eventURLs = selectedEvent[Position_eventURL].trim().split(STRING_2TILDA);
+                if (!eventURLs[0].isEmpty()) {
+                    if (eventURLs.length == 1) {
+                        menu.add(Menu.NONE, R.integer.menu_context_id_open_url, Menu.NONE, getString(R.string.menu_context_open_url));
+                    } else {
+                        SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_open_url));
+                        for (int i = 0, eventURLsLength = eventURLs.length; i < eventURLsLength; i++) {
+                            String url = eventURLs[i];
+                            sub.add(i, R.integer.menu_context_id_open_url, Menu.NONE, url.replace(STRING_HTTP, STRING_EMPTY).replace(STRING_HTTPS, STRING_EMPTY));
+                        }
+                    }
+                }
 
                 final String eventKey = eventsData.getEventKey(selectedEvent);
                 if (!eventKey.isEmpty()) {
@@ -1023,7 +1073,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //https://stackoverflow.com/questions/7042958/android-adding-a-submenu-to-a-menuitem-where-is-addsubmenu
-                SubMenu sub = menu.addSubMenu(Menu.NONE, R.integer.menu_context_id_remind, Menu.NONE, getString(R.string.menu_context_remind));
+                SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_remind));
                 sub.add(Menu.NONE, R.integer.menu_context_id_remind_1h, Menu.NONE, getString(R.string.menu_context_remind_1h));
                 sub.add(Menu.NONE, R.integer.menu_context_id_remind_morning, Menu.NONE, getString(R.string.menu_context_remind_morning));
 
@@ -1073,12 +1123,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(editEventIntent);
                 return true;
 
+            } else if (itemId == R.integer.menu_context_id_open_url) {
+
+                int groupId = item.getGroupId();
+                String[] eventURLs = selectedEvent[Position_eventURL].trim().split(STRING_2TILDA);
+                if (eventURLs.length >= groupId) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(eventURLs[groupId].trim())));
+                }
+
             } else if (itemId == R.integer.menu_context_id_event_info) {
 
                 StringBuilder eventInfo = new StringBuilder();
 
                 for (int i = 0; i < selectedEvent.length; i++) {
-                    eventInfo.append(i).append(STRING_COLON_SPACE).append(selectedEvent[i]).append(STRING_EOF);
+                    eventInfo.append(i).append(STRING_COLON_SPACE).append(selectedEvent[i]).append(STRING_EOL);
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
@@ -1219,10 +1277,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (eventsData.checkIsHiddenEvent(eventKey)) statsHiddenEvents++;
                         if (eventsData.checkIsSilencedEvent(eventKey)) statsSilencedEvents++;
 
-                        if ((eventsData.preferences_events_scope == pref_Events_Scope_NotHidden && !eventsData.checkIsHiddenEvent(eventKey)) || //Показывать нескрытые
-                                (eventsData.preferences_events_scope == pref_Events_Scope_Hidden && eventsData.checkIsHiddenEvent(eventKey)) || //Показывать только скрытые
-                                (eventsData.preferences_events_scope == pref_Events_Scope_Silenced && eventsData.checkIsSilencedEvent(eventKey)) || //Показывать только без уведомлений
-                                eventsData.preferences_events_scope == pref_Events_Scope_All) {
+                        if ((eventsData.preferences_list_events_scope == pref_Events_Scope_NotHidden && !eventsData.checkIsHiddenEvent(eventKey)) || //Показывать нескрытые
+                                (eventsData.preferences_list_events_scope == pref_Events_Scope_Hidden && eventsData.checkIsHiddenEvent(eventKey)) || //Показывать только скрытые
+                                (eventsData.preferences_list_events_scope == pref_Events_Scope_Silenced && eventsData.checkIsSilencedEvent(eventKey)) || //Показывать только без уведомлений
+                                eventsData.preferences_list_events_scope == pref_Events_Scope_All) {
                             dataList.add(event);
                         }
                     }
@@ -1235,16 +1293,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else {
 
                 //Получаем предыдущие события
-                if (!isEmpty(eventsData.preferences_list_prev_events) && eventsData.preferences_events_scope != pref_Events_Scope_Hidden) {
+                if (!isEmpty(eventsData.preferences_list_prev_events) && eventsData.preferences_list_events_scope != pref_Events_Scope_Hidden) {
                     //todo: придумать, как ловить прошедшие 5K+
                     dataList = eventsData.insertPreviousEvents(dataList, eventsData.preferences_list_prev_events);
                 }
 
-                if (eventsData.preferences_events_scope == pref_Events_Scope_Hidden) {
+                if (eventsData.preferences_list_events_scope == pref_Events_Scope_Hidden) {
                     setHint(resources.getString(R.string.msg_stats_hidden_prefix) + statsHiddenEvents + STRING_SPACE);
-                } else if (eventsData.preferences_events_scope == pref_Events_Scope_All) {
+                } else if (eventsData.preferences_list_events_scope == pref_Events_Scope_All) {
                     setHint(resources.getString(R.string.msg_stats_prefix) + statsAllEvents + STRING_SPACE);
-                } else if (eventsData.preferences_events_scope == pref_Events_Scope_Silenced) {
+                } else if (eventsData.preferences_list_events_scope == pref_Events_Scope_Silenced) {
                     setHint(resources.getString(R.string.msg_stats_silenced_prefix) + statsSilencedEvents + STRING_SPACE);
                 } else {
                     setHint(resources.getString(R.string.msg_stats_prefix) + (statsAllEvents - statsHiddenEvents) + STRING_SPACE);
@@ -1426,12 +1484,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 String eventSubType = singleEventArray[Position_eventSubType];
-                String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel];
-                String eventCaption = singleEventArray[Position_eventCaption];
+                String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel].trim();
+                String eventCaption = singleEventArray[Position_eventCaption].trim();
                 if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_EventCaption)) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(eventCaption);
-                    if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel) && !eventLabel.isEmpty()) {
+                    if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel)) {
                         eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(STRING_PARENTHESIS_CLOSE);
                     }
 
@@ -1471,6 +1529,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
                 }
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {
+                    final String eventURL = singleEventArray[ContactsEvents.Position_eventURL].trim();
+                    if (eventURL.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
+                        eventDetails.append(eventURL.replace(STRING_2TILDA, HTML_BR));
+                    }
+                }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
@@ -1478,11 +1543,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 String eventKey = eventsData.getEventKey(singleEventArray);
-                if (eventsData.preferences_events_scope == pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
+                if (eventsData.preferences_list_events_scope == pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), HTML_COLOR_RED));
                 }
-                if (eventsData.preferences_events_scope != pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
+                if (eventsData.preferences_list_events_scope != pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
                     if (eventDetails.length() > 0) eventDetails.append(HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_silenced), HTML_COLOR_BROWN));
                 }
@@ -1519,7 +1584,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (NumberFormatException e) {
                     eventIcon = 0;
                 }
-                if (eventIcon != 0) {
+                if (eventIcon != 0 && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventIcon))) {
                     holder.EventIconImageView.setImageResource(eventIcon);
                 } else {
                     holder.EventIconImageView.setImageDrawable(null);
@@ -1622,12 +1687,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     dataList.addAll((ArrayList<String>) results.values);
 
                     if (dataList.size() > 0) {
-                        if (eventsData.preferences_events_scope == pref_Events_Scope_Hidden) {
+                        if (eventsData.preferences_list_events_scope == pref_Events_Scope_Hidden) {
                             setHint(resources.getString(R.string.msg_stats_hidden_prefix)
                                     .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW))
                                     .concat(STRING_SPACE)
                             );
-                        } else if (eventsData.preferences_events_scope == pref_Events_Scope_Silenced) {
+                        } else if (eventsData.preferences_list_events_scope == pref_Events_Scope_Silenced) {
                             setHint(resources.getString(R.string.msg_stats_silenced_prefix)
                                     .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), HTML_COLOR_YELLOW))
                                     .concat(STRING_SPACE)
@@ -1638,6 +1703,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     .concat(STRING_SPACE)
                             );
                         }
+
                     } else {
                         setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), HTML_COLOR_YELLOW).concat(STRING_SPACE));
                     }

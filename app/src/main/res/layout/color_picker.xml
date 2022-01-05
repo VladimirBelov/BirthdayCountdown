@@ -1,62 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ /**
   ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 22.11.2021, 22:34
+  ~  * Last modified 26.12.2021, 0:28
   ~  */
   -->
-
-<!--suppress AndroidDomInspection -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:baselineAligned="false"
-    android:gravity="center_vertical"
-    android:minHeight="10dip"
-    android:paddingStart="8dip"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="top"
+    android:paddingStart="0dip"
     android:paddingEnd="?android:attr/scrollbarSize">
 
-    <LinearLayout
+    <ImageView
+        android:id="@android:id/icon"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@android:id/icon"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:layout_gravity="center"
-            android:paddingEnd="6dip"
-            android:scaleType="fitStart"
-            tools:ignore="ContentDescription,RtlSymmetry" />
-    </LinearLayout>
-
-    <!-- Preference should place its actual preference widget here. -->
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="48dp"
+        android:paddingEnd="8dip"
+        tools:ignore="ContentDescription" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingTop="6dip"
-        android:paddingEnd="8dip"
-        android:paddingBottom="6dip"
-        tools:ignore="RtlSymmetry">
+        android:layout_marginEnd="4dip"
+        android:layout_marginTop="2dip"
+        android:layout_marginBottom="2dip"
+        android:layout_weight="1">
 
         <TextView
             android:id="@android:id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@android:id/summary"
@@ -67,14 +52,25 @@
             android:maxLines="4"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary" />
+
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@android:id/widget_frame"
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="end"
+        android:paddingEnd="2dp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@android:id/icon1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:minWidth="48dp"
-        android:orientation="vertical" />
+        android:gravity="center_vertical"
+        android:scaleType="fitCenter"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

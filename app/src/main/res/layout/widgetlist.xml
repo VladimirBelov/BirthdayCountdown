@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 16.12.2021, 22:06
   ~  */
   -->
 
@@ -45,16 +45,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="-20dp"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/widget_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:paddingTop="1dp"
+                    android:paddingEnd="1dp"
+                    android:paddingBottom="1dp" />
 
                 <TextView
                     android:id="@+id/empty_view"

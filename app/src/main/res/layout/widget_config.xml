@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 20.12.2021, 22:28
   ~  */
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".WidgetConfigureActivity" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WidgetConfigureActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -24,14 +24,10 @@
             android:layout_height="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/AppTheme.DarkGray.ActionBar"
-            app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay"-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42sp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="?attr/backgroundColor">
 
         <ScrollView
@@ -168,6 +164,66 @@
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_events_count_description"
                     android:textColor="?android:attr/textColorSecondary" />
+
+                <View
+                    android:id="@+id/dividerEventInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" /> <!--Divider-->
+
+                <TextView
+                    android:id="@+id/captionEventInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_Widgets_EventInfo_title"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <org.vovka.birthdaycountdown.MultiSelectionSpinner
+                    android:id="@+id/spinnerEventInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/hintEventInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_Widgets_EventInfo_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <View
+                    android:id="@+id/dividerBackColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" /> <!--Divider-->
+
+                <org.vovka.birthdaycountdown.ColorPicker
+                    android:id="@+id/colorWidgetBackgroundColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="10dp"
+                    app:title="@string/widget_config_color_back_label"
+                    app:summary="@string/widget_config_color_back_description"
+                    app:defaultValue="@color/pref_Widgets_Color_WidgetBackground_default"
+                    app:choices="@array/default_color_background_values"
+                    app:icon="@null"
+                    app:numColumns="4"
+                    app:itemLayout="@layout/dash_grid_item_color"
+                    app:dialogTitle="@string/widget_config_color_back_label"
+                    app:dialogIcon="@drawable/ic_menu_paste" />
+
+                <SeekBar
+                    android:id="@+id/colorWidgetBackgroundAlpha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="255"/>
+
             </LinearLayout>
         </ScrollView>
 

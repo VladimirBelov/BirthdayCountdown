@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 0:57
   ~  */
   -->
 
@@ -12,6 +12,7 @@
     <string name="window_widget_settings">Налаштування віджета</string>
     <string name="window_about">Про програму</string>
     <string name="window_faq">Питання та Відповіді</string>
+    <string name="window_search_hints">Пошукові підказки</string>
 
     <string name="activity_title_events_scope">Фільтр</string>
 
@@ -24,9 +25,10 @@
     <string name="menu_open_file_with_events">Відкрийте файл із подіями…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
-    <string name="menu_search">Пошук…</string>
+    <string name="menu_search">Пошук</string>
     <string name="menu_quiz">Вікторина</string>
     <string name="menu_filter_events">Фільтр…</string>
+    <string name="menu_hints">Пошукові підказки…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_edit_event">Показати подію у календарі</string>
     <string name="menu_context_event_info">Дані про подію</string>
@@ -41,6 +43,7 @@
     <string name="menu_context_merge_event">Посилання на контакт…</string>
     <string name="menu_context_unmerge_event">Від’єднати контакт</string>
     <string name="menu_context_remerge_event">Посилання на інший контакт…</string>
+    <string name="menu_context_open_url">Відкрити веб-посилання</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
 <!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
@@ -117,6 +120,7 @@
     <string name="hint_Date">Дата</string>
     <string name="hint_EventDistance">До події</string>
     <string name="hint_Description">Деталі</string>
+    <string name="hint_VersionNumberDetails">Деталі номера версії</string>
     <string name="hint_EventIcon">Значок</string>
     <string name="hint_SearchPanel">Панель пошуку</string>
     <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
@@ -126,6 +130,7 @@
     <string name="button_choose">Виберіть</string>
     <string name="button_rate">Оцінити</string>
     <string name="button_mail">Написати</string>
+    <string name="button_discuss">Обговоріть</string>
     <string name="button_open_addressbook">Відкрити адресну книгу…</string>
     <string name="button_open_app_settings">Відкрити налаштування…</string>
     <string name="button_open_version_history">Історія версій</string>
@@ -181,11 +186,11 @@
 
     <string-array name="pref_Language_entries">
         <item>Автоматично</item>
-        <item>Англійська</item>
-        <item>Німецька</item>
-        <item>Російська</item>
-        <item>Іспанська</item>
-        <item>Українська</item>
+        <item>🇬🇧 Англійська</item>
+        <item>🇩🇪 Німецька</item>
+        <item>🇷🇺 Російська</item>
+        <item>🇪🇸 Іспанська</item>
+        <item>🇺🇦 Українська</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -331,11 +336,24 @@
         <item>Псевдонім</item>
         <item>Найменування події</item>
         <item>Початкове найменування події</item>
+        <item>Значок типу події</item>
         <item>Значок вибраного</item>
         <item>Вік</item>
         <item>Знак зодіаку</item>
         <item>Східний календар</item>
+        <item>Веб-посилання</item>
         <item>Тип аккаунта і збережена дата</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">Дія при натисканні</string>
+    <string name="pref_List_OnClick_description">Що робити при натисканні на подію</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Відкрийте картку контакту, якщо немає – календарну подію, якщо немає – посилання на веб-сайт</item>
+        <item>Відкрити подію календаря, якщо немає – контактну картку, якщо немає – веб-посилання</item>
+        <item>Відкрити веб-посилання, якщо немає - контактну картку, якщо немає - календарну подію</item>
+        <item>Відкрийте картку контакту, якщо немає - посилання на веб-сайт, якщо немає - календарну подію</item>
+        <item>Відкрити контекстне меню</item>
+        <item>Нічого</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Подiя сьогодні</string>
@@ -364,14 +382,24 @@
     <string name="pref_Widgets_EventInfo_title">Деталі події</string>
     <string name="pref_Widgets_EventInfo_description">Які показувати деталі події та елементи віджету</string>
 
+    <string name="pref_Widgets_EventInfo_None">Жодного</string>
+    <string name="pref_Widgets_EventInfo_Border">Рамка вiджету</string>
+    <string name="pref_Widgets_EventInfo_Photo">Фото контакту</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">Іконка типу події</string>
+    <string name="pref_Widgets_EventInfo_EventCaption">Деталі події</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">Іконка обраного контакту</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">Значок події без повiдомлення</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">Знак зодіаку</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">Східний календар</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>Рамка вiджету</item>
-        <item>Фото контакту</item>
-        <item>Іконка типу події</item>
-        <item>Іконка обраного контакту</item>
-        <item>Значок події без повiдомлення</item>
-        <item>Знак зодіаку</item>
-        <item>Східний календар</item>
+        <item>@string/pref_Widgets_EventInfo_Border</item>
+        <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Надпис (нижній ряд)</string>
@@ -405,6 +433,17 @@
         <item>7</item>
         <item>10</item>
         <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">Дія при натисканні</string>
+    <string name="pref_Widgets_OnClick_description">Що робити при натисканні на подію</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Відкрийте картку контакту, якщо немає – календарну подію, якщо немає – посилання на веб-сайт</item>
+        <item>Відкрити подію календаря, якщо немає – контактну картку, якщо немає – веб-посилання</item>
+        <item>Відкрити веб-посилання, якщо немає - контактну картку, якщо немає - календарну подію</item>
+        <item>Відкрийте картку контакту, якщо немає - посилання на веб-сайт, якщо немає - календарну подію</item>
+        <item>Відкрити список подій</item>
+        <item>Нічого</item>
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Основний колір</string>
@@ -457,6 +496,11 @@
     </string-array>
 
     <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис подiї праворуч:</string>
+
+    <string name="widget_config_event_info_empty">Використовувати загальні налаштування</string>
+
+    <string name="widget_config_color_back_label">Колір фону віджета</string>
+    <string name="widget_config_color_back_description">Колір фону для віджета</string>
 
     <string name="pref_Notifications_title">Повідомлення</string>
 
@@ -521,6 +565,17 @@
         <item>Закрити (для сповіщень із високим пріоритетом)</item>
     </string-array>
 
+    <string name="pref_Notifications_OnClick_title">Дія при натисканні</string>
+    <string name="pref_Notifications_OnClick_description">Що робити при натисканні одного сповіщення</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Відкрийте картку контакту, якщо немає – календарну подію, якщо немає – посилання на веб-сайт</item>
+        <item>Відкрити подію календаря, якщо немає – контактну картку, якщо немає – веб-посилання</item>
+        <item>Відкрити веб-посилання, якщо немає - контактну картку, якщо немає - календарну подію</item>
+        <item>Відкрийте картку контакту, якщо немає - посилання на веб-сайт, якщо немає - календарну подію</item>
+        <item>Відкрити список подій</item>
+        <item>Закрити сповіщення</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
     <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>
 
@@ -559,6 +614,7 @@
     <string name="stats_counters_titles"><![CDATA[<li>посад: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>організацій: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>псевдонімів: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>веб-посилання: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Події за акаунтів:</h2><ul>]]></string>
 

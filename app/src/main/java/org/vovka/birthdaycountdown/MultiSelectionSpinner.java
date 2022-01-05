@@ -1,13 +1,16 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 23.12.2021, 14:16
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
@@ -20,13 +23,13 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-
 // https://trinitytuts.com/tips/multiselect-spinner-item-in-android/
 public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;
     private String zeroSelectedTitle = STRING_EMPTY;
+    private int zeroSelectedIndex = -1;
+    private AlertDialog.Builder dialogBuilder;
 
     final ArrayAdapter<String> simple_adapter;
 
@@ -47,19 +50,38 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
         if (mSelection != null && which < mSelection.length) {
             mSelection[which] = isChecked;
+
+            if (zeroSelectedIndex > -1 && isChecked) {
+                if (which == zeroSelectedIndex) { //выбрали "Ничего"
+                    Arrays.fill(mSelection, false);
+                    mSelection[zeroSelectedIndex] = true;
+                    dialog.dismiss();
+                } else if (mSelection[zeroSelectedIndex]) { //выбрали что-то другое
+                    dialog.dismiss();
+                    mSelection[zeroSelectedIndex] = false;
+                    dialogBuilder.setMultiChoiceItems(_items, mSelection, this);
+                    dialogBuilder.show();
+                }
+
+            }
+
             simple_adapter.clear();
             simple_adapter.add(buildSelectedItemString());
+
+            //todo: добавить выключение взаимоисключающих элементов https://stackoverflow.com/questions/39053333/disable-checkbox-items-in-alertdialog
+            // https://stackoverflow.com/questions/7359685/android-disable-all-other-items-on-dialog-when-clicked-on-another
         //} else {
         //    throw new IllegalArgumentException("Argument 'which' is out of bounds.");
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean performClick() {
-        super.performClick();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMultiChoiceItems(_items, mSelection, this);
-        builder.show();
+        //super.performClick(); если это включить, то фокус уходит за 2 клика
+        dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogBuilder.setMultiChoiceItems(_items, mSelection, this);
+        dialogBuilder.show(); //todo: добавить onDismiss обработчик для пост обработки выбранного (когда будет дерево вариантов)
         return true;
     }
 
@@ -76,12 +98,13 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         Arrays.fill(mSelection, false);
     }*/
 
+    //Первоначальное заполнение, ничего не выбрано
     public void setItems(List<String> items) {
         _items = items.toArray(new String[0]);
         mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        //simple_adapter.add(_items[0]);
         Arrays.fill(mSelection, false);
+
+        simple_adapter.clear();
     }
 
 /*    public void setSelection(String[] selection) {
@@ -94,6 +117,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         }
     }*/
 
+    //Установка выбранных элементов
     public void setSelection(List<String> selection) {
         Arrays.fill(mSelection, false);
         if (selection.size() > 0) {
@@ -180,6 +204,10 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         this.zeroSelectedTitle = zeroSelectedTitle;
     }
 
+    public void setZeroSelectedIndex(int zeroSelectedIndex) {
+        this.zeroSelectedIndex = zeroSelectedIndex;
+    }
+
 /*    public String getSelectedItemsAsString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
@@ -195,4 +223,5 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         }
         return sb.toString();
     }*/
+
 }

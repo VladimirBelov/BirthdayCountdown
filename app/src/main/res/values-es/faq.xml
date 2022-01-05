@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 22.11.2021, 22:34
   ~  */
   -->
 
@@ -13,6 +13,14 @@
 
                 <item>###General</item>
                 <item>Esta sección no está disponible en el idioma seleccionado en la configuración. Cambie a inglés o ruso en la interfaz del programa y use el traductor de Google.</item>
+
+                <item>#Buscar</item>
+                <item><![CDATA[Para buscar varios parámetros, sepárelos con comas (cualquier valor) o \"+\" (todos los valores), por ejemplo:<ul>
+        <li>\"John, Mary\": mostrará los eventos de contacto con los nombres John o Mary
+        <li>\"Juan + Géminis\": mostrará los eventos de contacto con el nombre Juan y el signo zodiacal Géminis
+        </ul>]]></item>
+                <item>La búsqueda usa todos los datos del evento (para verificar: habilite \"Mensajes de depuración\" en la configuración de la aplicación, mantenga presionado el evento, elemento \"Datos de eventos\")</item>
+                <item> </item>
 
                 <item>#Lenguajes de aplicación</item>
                 <item>Si desea obtener ayuda para traducir esta aplicación a un idioma cercano a usted, o si encuentra alguna inexactitud en la traducción, escriba a un correo electrónico (botón a continuación).</item>

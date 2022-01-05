@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 0:57
   ~  */
   -->
 
@@ -12,6 +12,7 @@
     <string name="window_widget_settings">Configuración de widgets</string>
     <string name="window_about">Sobre la aplicación</string>
     <string name="window_faq">Preguntas y respuestas</string>
+    <string name="window_search_hints">Sugerencias de búsqueda</string>
 
     <string name="activity_title_events_scope">Filtrar</string>
 
@@ -24,9 +25,10 @@
     <string name="menu_open_file_with_events">Abrir archivo con eventos…</string>
     <string name="menu_settings">Configuraciones</string>
     <string name="menu_refresh">Actualizar</string>
-    <string name="menu_search">Buscar…</string>
+    <string name="menu_search">Buscar</string>
     <string name="menu_quiz">Encuesta</string>
     <string name="menu_filter_events">Filtrar…</string>
+    <string name="menu_hints">Sugerencias de búsqueda…</string>
     <string name="menu_context_edit_contact">Editar contacto</string>
     <string name="menu_context_edit_event">Mostrar evento en calendario</string>
     <string name="menu_context_event_info">Datos de eventos</string>
@@ -41,6 +43,7 @@
     <string name="menu_context_merge_event">Enlace al contacto…</string>
     <string name="menu_context_unmerge_event">Desvincular del contacto</string>
     <string name="menu_context_remerge_event">Enlace a otro contacto…</string>
+    <string name="menu_context_open_url">Abrir enlace web</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
@@ -117,6 +120,7 @@
     <string name="hint_Date">Fecha</string>
     <string name="hint_EventDistance">Antes del evento</string>
     <string name="hint_Description">Detalles</string>
+    <string name="hint_VersionNumberDetails">Detalles del número de versión</string>
     <string name="hint_EventIcon">Icono</string>
     <string name="hint_SearchPanel">Barra de búsqueda</string>
     <string name="hint_AlertDialog">Diálogo de alerta</string>
@@ -126,6 +130,7 @@
     <string name="button_choose">Escoger</string>
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
+    <string name="button_discuss">Discutir</string>
     <string name="button_open_addressbook">Abrir libreta de direcciones…</string>
     <string name="button_open_app_settings">Abrir configuración…</string>
     <string name="button_open_version_history">Historial de versiones</string>
@@ -181,11 +186,11 @@
 
     <string-array name="pref_Language_entries">
         <item>Automáticamente</item>
-        <item>Inglés</item>
-        <item>Aleman</item>
-        <item>Ruso</item>
-        <item>Español</item>
-        <item>Ucraniano</item>
+        <item>🇬🇧 Inglés</item>
+        <item>🇩🇪 Aleman</item>
+        <item>🇷🇺 Ruso</item>
+        <item>🇪🇸 Español</item>
+        <item>🇺🇦 Ucraniano</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -331,11 +336,24 @@
         <item>Alias</item>
         <item>Nombre del evento</item>
         <item>Nombre original del evento</item>
+        <item>Icono de tipo de evento</item>
         <item>Icono de contacto favorito</item>
         <item>Edad</item>
         <item>Signo del zodiaco</item>
         <item>Año del zodiaco</item>
+        <item>Enlace web</item>
         <item>Tipo de cuenta y fecha almacenada</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">Al hacer clic en la acción</string>
+    <string name="pref_List_OnClick_description">Qué hacer al hacer clic en el evento</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Abra la tarjeta de contacto, si está ausente - evento del calendario, si está ausente - enlace web</item>
+        <item>Evento de calendario abierto, si está ausente - tarjeta de contacto, si está ausente - enlace web</item>
+        <item>Abrir enlace web, si está ausente - tarjeta de contacto, si está ausente - evento del calendario</item>
+        <item>Abra la tarjeta de contacto, si está ausente - enlace web, si está ausente - evento del calendario</item>
+        <item>Abrir menú contextual</item>
+        <item>Nada</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Eventos de hoy</string>
@@ -364,14 +382,24 @@
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
     <string name="pref_Widgets_EventInfo_description">Qué detalles del evento y elementos del widget mostrar</string>
 
+    <string name="pref_Widgets_EventInfo_None">Ninguna</string>
+    <string name="pref_Widgets_EventInfo_Border">Borde del widget</string>
+    <string name="pref_Widgets_EventInfo_Photo">Foto de contacto</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">Icono de tipo de evento</string>
+    <string name="pref_Widgets_EventInfo_EventCaption">Detalles del evento</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">Icono favorito</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">Icono de evento silenciado</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">Signo del zodiaco</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">Año del zodiaco</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>Borde del widget</item>
-        <item>Foto de contacto</item>
-        <item>Icono de tipo de evento</item>
-        <item>Icono favorito</item>
-        <item>Icono de evento silenciado</item>
-        <item>Signo del zodiaco</item>
-        <item>Año del zodiaco</item>
+        <item>@string/pref_Widgets_EventInfo_Border</item>
+        <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Título (fila inferior)</string>
@@ -405,6 +433,17 @@
         <item>7</item>
         <item>10</item>
         <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">Al hacer clic en la acción</string>
+    <string name="pref_Widgets_OnClick_description">Qué hacer al hacer clic en el evento</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Abra la tarjeta de contacto, si está ausente - evento del calendario, si está ausente - enlace web</item>
+        <item>Evento de calendario abierto, si está ausente - tarjeta de contacto, si está ausente - enlace web</item>
+        <item>Abrir enlace web, si está ausente - tarjeta de contacto, si está ausente - evento del calendario</item>
+        <item>Abra la tarjeta de contacto, si está ausente - enlace web, si está ausente - evento del calendario</item>
+        <item>Abrir lista de eventos</item>
+        <item>Nada</item>
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Color primario</string>
@@ -457,6 +496,11 @@
     </string-array>
 
     <string name="widget_hint">Para editar la configuración del widget, haga clic en la firma del evento más a la derecha:</string>
+
+    <string name="widget_config_event_info_empty">Usar configuración general</string>
+
+    <string name="widget_config_color_back_label">Color de fondo del widget</string>
+    <string name="widget_config_color_back_description">Color de fondo para el widget</string>
 
     <string name="pref_Notifications_title">Notificaciones</string>
 
@@ -521,6 +565,17 @@
         <item>Cerrar (para notificaciones de alta prioridad)</item>
     </string-array>
 
+    <string name="pref_Notifications_OnClick_title">Al hacer clic en la acción</string>
+    <string name="pref_Notifications_OnClick_description">Qué hacer con un solo clic de notificación</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Abra la tarjeta de contacto, si está ausente - evento del calendario, si está ausente - enlace web</item>
+        <item>Evento de calendario abierto, si está ausente - tarjeta de contacto, si está ausente - enlace web</item>
+        <item>Abrir enlace web, si está ausente - tarjeta de contacto, si está ausente - evento del calendario</item>
+        <item>Abra la tarjeta de contacto, si está ausente - enlace web, si está ausente - evento del calendario</item>
+        <item>Abrir lista de eventos</item>
+        <item>Cerrar notificación</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_title">Notificación de prueba</string>
     <string name="pref_Notifications_NotifyTest_description">Haga clic para mostrar la notificación de prueba de hoy</string>
 
@@ -559,6 +614,7 @@
     <string name="stats_counters_titles"><![CDATA[<li>publicaciones: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>organizaciones: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>alias: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>enlaces web: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por cuenta:</h2><ul>]]></string>
 

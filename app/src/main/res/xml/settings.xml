@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 29.11.2021, 21:44
   ~  */
   -->
 
@@ -44,7 +44,8 @@
             android:title="@string/pref_Theme_title"
             android:icon="@android:drawable/ic_menu_gallery"
             android:dialogIcon="@android:drawable/ic_menu_gallery"
-            android:negativeButtonText="@string/button_cancel"/>
+            android:negativeButtonText="@string/button_cancel"
+            />
 
         <Preference
             android:key="@string/pref_Accounts_key"
@@ -81,7 +82,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+                    android:negativeButtonText="@string/button_cancel"/>1
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
@@ -257,6 +258,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:importantForAccessibility="no"
                     android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
@@ -289,6 +291,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:importantForAccessibility="no"
                     android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
@@ -321,6 +324,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:importantForAccessibility="no"
                     android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
@@ -353,6 +357,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:importantForAccessibility="no"
                     android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
@@ -385,6 +390,7 @@
                     android:hint="@string/pref_CustomEvents_hint"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:importantForAccessibility="no"
                     android:negativeButtonText="@string/button_cancel"/>
 
                 <SwitchPreference
@@ -471,6 +477,17 @@
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
             android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_OnClick_default"
+            android:key="@string/pref_List_OnClick_key"
+            android:entries="@array/pref_List_OnClick_entries"
+            android:entryValues="@array/pref_List_OnClick_values"
+            android:title="@string/pref_List_OnClick_title"
+            android:summary="@string/pref_List_OnClick_description"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"
             android:negativeButtonText="@string/button_cancel"/>
 
         <org.vovka.birthdaycountdown.ColorPreference
@@ -570,6 +587,16 @@
             android:dialogIcon="@android:drawable/ic_menu_week"
             android:negativeButtonText="@string/button_cancel"/>
 
+        <ListPreference
+            android:defaultValue="@string/pref_Widgets_OnClick_default"
+            android:key="@string/pref_Widgets_OnClick_key"
+            android:entries="@array/pref_Widgets_OnClick_entries"
+            android:entryValues="@array/pref_Widgets_OnClick_values"
+            android:title="@string/pref_Widgets_OnClick_title"
+            android:summary="@string/pref_Widgets_OnClick_description"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
 
         <!-- https://habr.com/ru/post/496136/  https://github.com/kristiyanP/colorpicker/tree/master  -->
 
@@ -680,15 +707,13 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
-        <RingtonePreference
+        <!--No support for RingtonePreference in support library: https://issuetracker.google.com/issues/37057453#comment3-->
+        <Preference
             android:key="@string/pref_Notifications_Ringtone_key"
-            android:ringtoneType="notification|ringtone"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_description"
-            android:showSilent="false"
-            android:showDefault="true"
-            android:defaultValue="content://settings/system/notification_sound"
-            android:icon="@android:drawable/ic_menu_more"/>
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
 
         <!--todo: сделать проверку, что выбрали не больше 3х действий https://stackoverflow.com/questions/11090304/multiselectlistpreference-example -->
         <MultiSelectListPreference
@@ -698,6 +723,17 @@
             android:key="@string/pref_Notifications_QuickActions_key"
             android:title="@string/pref_Notifications_QuickActions_title"
             android:summary="@string/pref_Notifications_QuickActions_description"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_OnClick_default"
+            android:key="@string/pref_Notifications_OnClick_key"
+            android:entries="@array/pref_Notifications_OnClick_entries"
+            android:entryValues="@array/pref_Notifications_OnClick_values"
+            android:title="@string/pref_Notifications_OnClick_title"
+            android:summary="@string/pref_Notifications_OnClick_description"
             android:icon="@android:drawable/ic_menu_compass"
             android:dialogIcon="@android:drawable/ic_menu_compass"
             android:negativeButtonText="@string/button_cancel"/>

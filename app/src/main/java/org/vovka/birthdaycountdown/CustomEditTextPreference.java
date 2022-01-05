@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 01.12.2021, 12:15
  *
  */
 
@@ -14,6 +14,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.EditText;
 
 public class CustomEditTextPreference extends EditTextPreference {
@@ -41,7 +42,6 @@ public class CustomEditTextPreference extends EditTextPreference {
         Toast.makeText(builder.getContext(), Color.red(color) + "," + Color.green(color) + "," + Color.blue(color), Toast.LENGTH_LONG).show();
         //builder.getContext().setTheme(ContactsEvents.getInstance().preferences_theme.themeDialog);
         super.onPrepareDialogBuilder(builder);
-
     }*/
 
     @Override
@@ -56,6 +56,10 @@ public class CustomEditTextPreference extends EditTextPreference {
             //в светлой теме получилось выставить editTextPreference color только таким способом
             editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
             editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+            //editText.setContentDescription(getContext().getString(R.string.widget_EditText));
+            //final float scale = getContext().getResources().getDisplayMetrics().density;
+            //editText.setMinimumHeight((int) (48 * scale + 0.5f));
+            editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getContext().getResources().getDisplayMetrics()));
         }
     }
 }

@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 21.12.2021, 15:35
   ~  */
   -->
 
@@ -34,7 +34,7 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginTop="42sp"
+		android:layout_marginTop="?attr/actionBarSize"
 		android:background="?attr/backgroundColor">
 
 		<!-- https://stackoverflow.com/questions/4189883/center-two-buttons-horizontally -->
@@ -53,9 +53,8 @@
 				android:layout_height="80dp"
 				android:layout_weight="1"
 				android:contentDescription="@string/hint_EventIcon"
-				android:onClick="setDebug"
 				android:scaleType="fitCenter"
-				app:srcCompat="@drawable/ic_launcher_spring" />
+				app:srcCompat="@drawable/ic_launcher_snowflake_cap" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -78,7 +77,11 @@
 					android:id="@+id/textVersionInfo"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColor="?android:attr/textColorSecondary" />
+					android:paddingStart="40dp"
+					android:contentDescription="@string/hint_VersionNumberDetails"
+					android:textColor="?android:attr/textColorSecondary"
+					android:onClick="setDebug" />
+
 			</LinearLayout>
 
 		</LinearLayout>
@@ -88,10 +91,12 @@
 			android:layout_width="10dip"
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
-			android:onClick="showPreferences"
 			android:textSize="8sp"
-			tools:visibility="visible"
-            tools:ignore="SmallSp" />
+			tools:visibility="invisible"
+			android:contentDescription="@null"
+			android:importantForAccessibility="no"
+            tools:ignore="SmallSp"
+			android:onClick="showPreferences" />
 
 		<Button
 			android:id="@+id/buttonMail"
@@ -101,7 +106,7 @@
 			android:layout_below="@id/layoutTitle"
 			android:layout_alignParentStart="true"
 			android:layout_marginStart="20dp"
-			android:layout_marginTop="20dp"
+			android:layout_marginTop="10dp"
 			android:layout_marginBottom="10dp"
 			android:layout_toStartOf="@+id/centerPoint"
 			android:background="?attr/backgroundColor"
@@ -119,7 +124,7 @@
 			android:layout_below="@id/layoutTitle"
 			android:layout_alignParentEnd="true"
 			android:layout_marginStart="10dp"
-			android:layout_marginTop="20dp"
+			android:layout_marginTop="10dp"
 			android:layout_marginEnd="20dp"
 			android:layout_marginBottom="10dp"
 			android:layout_toEndOf="@+id/centerPoint"
@@ -128,16 +133,55 @@
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
 			android:singleLine="true"
-			android:text="@string/button_rate" />
+			android:text="@string/button_rate"
+			tools:ignore="DuplicateSpeakableTextCheck" />
+
+		<Button
+			android:id="@+id/buttonAppGallery"
+			style="@style/ButtonWithIcon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/buttonMail"
+			android:layout_alignParentStart="true"
+			android:layout_marginStart="20dp"
+			android:layout_marginBottom="10dp"
+			android:layout_toStartOf="@+id/centerPoint"
+			android:background="?attr/backgroundColor"
+			android:drawableStart="@drawable/ic_huawei_appgalery"
+			android:paddingStart="10dp"
+			android:paddingEnd="10dp"
+			android:singleLine="true"
+			android:text="@string/button_rate"
+			tools:ignore="DuplicateSpeakableTextCheck" />
+
+		<Button
+			android:id="@+id/button4PDA"
+			style="@style/ButtonWithIcon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/buttonRate"
+			android:layout_alignParentEnd="true"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="20dp"
+			android:layout_marginBottom="10dp"
+			android:layout_toEndOf="@+id/centerPoint"
+			android:background="?attr/backgroundColor"
+			android:drawableStart="@drawable/ic_4pda"
+			android:paddingStart="10dp"
+			android:paddingEnd="10dp"
+			android:singleLine="true"
+			android:text="@string/button_discuss" />
 
 		<WebView
 			android:id="@+id/webView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/buttonRate"
+			android:layout_below="@id/buttonAppGallery"
 			android:layout_alignParentBottom="true"
 			android:layout_gravity="center_horizontal"
 			android:animateLayoutChanges="true"
+			android:contentDescription="@null"
+			android:importantForAccessibility="no"
 			android:textColor="?android:attr/textColorSecondary" />
 
 	</RelativeLayout>

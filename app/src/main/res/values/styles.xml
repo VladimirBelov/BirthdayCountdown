@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 22.11.2021, 22:34
   ~  */
   -->
 
@@ -27,7 +27,7 @@
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="borderWindowColor">@color/dark_green</item>
-        <item name="actionBarSize">42dp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="android:textColorPrimary">@color/medium_gray</item>
         <item name="android:textColorSecondary">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/dark_gray</item>
@@ -43,11 +43,8 @@
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
+        <item name="android:alertDialogTheme">@style/AlertDialog.Light</item>
     </style>
-
-<!--    <style name="PreferencesTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorPrimaryDark">@color/darker_green</item> &lt;!&ndash;todo: не понятно, для чего&ndash;&gt;
-    </style>-->
 
     <style name="itemTextStyle.AppTheme.Light" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
         <item name="android:textColor">@color/dark_gray</item>
@@ -59,18 +56,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
-<!--    <style name="EditTextStyle.AppTheme.Light" parent="android:style/Widget.EditText">-->
-<!--        <item name="android:textColor">@color/dark_gray</item>-->
-<!--        <item name="android:editTextColor">@color/dark_gray</item>-->
-<!--    </style>-->
-
-<!--
-<item name="android:background">@color/greyscale1</item>
-        <item name="android:editTextBackground">@color/greyscale2</item>
-<item name="android:button">@style/DarkButton</item>
-        <item name="android:inputType">number</item>
--->
 
     <!-- Меню главной активности -->
     <style name="AppTheme.Light.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
@@ -90,8 +75,9 @@
         <item name="android:background">@color/white</item>
         <item name="android:textColorPrimary">@color/dark_gray</item>
         <item name="android:textColorSecondary">@color/dark_gray</item>
-        <item name="android:colorAccent">@color/dark_gray</item>
+        <item name="android:colorAccent">@color/light_green</item>
         <item name="textColorAlertDialogListItem">@color/dark_gray</item>
+        <item name="android:textColorAlertDialogListItem">@color/dark_gray</item>
         <item name="listDividerColor">@color/dark_green_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
     </style>
@@ -115,7 +101,7 @@
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="borderWindowColor">@color/medium_gray</item>
-        <item name="actionBarSize">42dp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="android:textColorPrimary">@color/medium_gray</item>
         <item name="android:textColorSecondary">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/lighter_gray</item>
@@ -177,7 +163,7 @@
         <item name="eventDateColor">@color/light_gray</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="borderWindowColor">@color/lighter_gray</item>
-        <item name="actionBarSize">42dp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
         <item name="dialogTextColor">@color/lighter_gray</item>
@@ -244,7 +230,7 @@
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="borderWindowColor">@color/dark_blue</item>
-        <item name="actionBarSize">42dp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="android:textColorPrimary">@color/medium_gray</item>
         <item name="android:textColorSecondary">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/dark_gray</item>

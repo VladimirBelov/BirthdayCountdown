@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 24.11.2021, 12:09
  *
  */
 
@@ -14,8 +14,10 @@ import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
 import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_DIALOG_TAB;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
+import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -58,6 +60,7 @@ public class AboutActivity extends AppCompatActivity {
 
     ContactsEvents eventsData;
     int counterClicks = 0;
+    private Toast mToast = null;
 
     @SuppressLint("PrivateResource")
     public void onCreate(Bundle savedInstanceState) {
@@ -113,20 +116,18 @@ public class AboutActivity extends AppCompatActivity {
             //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
             //https://stackoverflow.com/a/21119027/4928833
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
+            //todo: добавить откуда поставили https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
             TextView txtInfo = findViewById(R.id.textVersionInfo);
-            txtInfo.setText(HtmlCompat.fromHtml(STRING_EMPTY +
-                            STRING_DIALOG_TAB + "&nbsp;&nbsp;created by Vladimir Belov" +
-                            STRING_DIALOG_TAB + "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"mailto:belov.vladimir@mail.ru?subject=" + this.getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")\">belov.vladimir@mail.ru</a>" +
-                            "<br>&nbsp;"      +
-                            STRING_DIALOG_TAB + "version: " + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE +
-                            STRING_DIALOG_TAB + "built: " + formatter.format(BuildConfig.BUILD_TIME)
-                    , 0));
+            txtInfo.setText(HtmlCompat.fromHtml(
+        "version: " + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + STRING_PARENTHESIS_CLOSE +
+                "<br>built: " + formatter.format(BuildConfig.BUILD_TIME)
+                , 0));
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 
             if (eventsData.preferences_debug_on) {
                 TextView tv = findViewById(R.id.centerPoint);
-                tv.setText("ℹ️");
+                tv.setText(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "ℹ️" : "\u2139");
             }
 
                 //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
@@ -163,6 +164,8 @@ public class AboutActivity extends AppCompatActivity {
                 sb.append(getString(R.string.stats_counters_organizations, eventsData.statAllOrganizations));
             if (eventsData.statAllNicknames > 0)
                 sb.append(getString(R.string.stats_counters_nicknames, eventsData.statAllNicknames));
+            if (eventsData.statAllURLs > 0)
+                sb.append(getString(R.string.stats_counters_URLs, eventsData.statAllURLs));
             sb.append(Constants.HTML_UL_END);
 
             if (eventsData.statEventTypes.entrySet().size() > 0) {
@@ -196,7 +199,7 @@ public class AboutActivity extends AppCompatActivity {
 
                     } else {
 
-                        sb.append(Constants.HTML_LI).append(strChange);
+                        sb.append(Constants.HTML_LI).append(strChange.replace(STRING_EOL, HTML_BR));
 
                     }
                 }
@@ -217,7 +220,7 @@ public class AboutActivity extends AppCompatActivity {
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
-                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
                 finish();
             });
 
@@ -227,6 +230,16 @@ public class AboutActivity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
                 }
+                finish();
+            });
+
+            findViewById(R.id.buttonAppGallery).setOnClickListener(view -> {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://appgallery.huawei.com/app/C101143661")));
+                finish();
+            });
+
+            findViewById(R.id.button4PDA).setOnClickListener(view -> {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://4pda.to/forum/index.php?showtopic=939391")));
                 finish();
             });
 
@@ -245,11 +258,13 @@ public class AboutActivity extends AppCompatActivity {
 
             if (counterClicks == 3 || counterClicks == 4) {
 
-                Toast.makeText(this, getString(R.string.pref_Debug_On_hint,
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(this, getString(R.string.pref_Debug_On_hint,
                         5 - counterClicks,
                         (5 - counterClicks) > 1 ? getString(R.string.msg_plural_postfix) : STRING_EMPTY,
                         getString(!eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)
-                ), Toast.LENGTH_SHORT).show();
+                ), Toast.LENGTH_SHORT);
+                mToast.show();
 
             } else if (counterClicks > 4) {
 
@@ -261,7 +276,10 @@ public class AboutActivity extends AppCompatActivity {
                             .edit()
                             .putBoolean(getString(R.string.pref_Help_Debug_On_key), eventsData.preferences_debug_on)
                             .apply();
-                    Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_LONG).show();
+                    this.recreate();
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
             }
 

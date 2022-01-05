@@ -1,17 +1,19 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 24.12.2021, 18:20
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_PREFS;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_START;
 import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
+import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
@@ -52,6 +54,7 @@ import android.widget.Toast;
 import androidx.core.text.HtmlCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //https://developer.android.com/guide/topics/appwidgets
@@ -64,6 +67,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     final Context context;
     final int widgetID;
     List<String> widgetPref;
+    private List<String> widgetPref_eventInfo = new ArrayList<>();
     ContactsEvents eventsData;
 
     public EventListDataProvider(Context context, Intent intent) {
@@ -140,7 +144,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 StringBuilder sb = new StringBuilder();
 
                 //Иконка
-                if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
+                if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
+                        : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
                     sb.append(singleEventArray[Position_eventEmoji]).append(STRING_SPACE);
                 }
 
@@ -197,6 +202,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             Intent clickIntent = new Intent();
             clickIntent.putExtra(EXTRA_CLICKED_EVENT, eventInfo);
+            clickIntent.putExtra(EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
             views.setOnClickFillInIntent(R.id.eventCaption, clickIntent);
 
         } catch (Exception e) {
@@ -241,9 +247,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             //Получаем данные
             widgetPref = eventsData.getWidgetPreference(widgetID);
-            if (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
                 eventsData.context = context;
                 if (eventsData.getEvents(context)) eventsData.computeDates();
+            }
+            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(REGEX_PLUS));
             }
 
             eventListView.clear();

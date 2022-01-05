@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 22.11.2021, 23:30
   ~  */
   -->
 
@@ -49,7 +49,7 @@
                 <item>###Ereignisse</item>
 
                 <item>#Kalenderereignisse</item>
-                <item>Alle Kalenderereignisse werden unterstützt. Für die Veranstaltung \"Geburtstag\" und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
+                <item>Alle Kalenderereignisse werden unterstützt. Für die Ereignisse \"Geburtstag\" und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
                 <item> </item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
                 <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
@@ -71,8 +71,8 @@
                 <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein
                 <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
                 </ul>]]></item>
-                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br>&nbsp;<br># KOMMENTAR<br>&lt;DATUM&gt;[,FLAGS]&nbsp;NAME&nbsp;NACHNAME&nbsp;[([ORGANISATION,]TITEL)]<br>&nbsp;<br>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Andere Veranstaltung. Format (in eckigen Klammern - optionale Parameter):<br>&nbsp;<br># KOMMENTAR<br>&lt;DATUM&gt;[,FLAGS]&nbsp;EREIGNISTITEL<br>&nbsp;<br>]]></item>
+                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME NACHNAME</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>EREIGNISTITEL</b>&gt; [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>]]></item>
                 <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
                 <li>Laden Sie Dateien mit Ereignissen herunter oder erstellen Sie diese
@@ -90,6 +90,8 @@
                 <li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary
                 <li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge
                 </ul>]]></item>
+                <item>Die Suche verwendet alle Ereignisdaten (zur Überprüfung: aktivieren Sie \"Debug &amp; Zusatzfunktionen\" in den App-Einstellungen, drücken Sie lange auf das Ereignis, Punkt \"Ereignisdaten\")</item>
+                <item> </item>
 
                 <item>#Sprache der Anwendungsoberfläche</item>
                 <item>Wenn Sie helfen wollen, diese Anwendung in eine andere Sprache zu übersetzen oder wenn Sie eine Ungenauigkeit in der Übersetzung feststellen - E-Mail an mich (Schaltfläche unten).</item>

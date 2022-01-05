@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:18
+  ~  * Last modified 23.12.2021, 14:28
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.6</item>
+        <item>Added the ability to customize set of elements for each widget</item>
+        <item>Added background color setting for widgets</item>
+        <item>Bug fixes and various optimizations</item>
+
+        <item>#1.6.5</item>
+        <item>Added support for external web links for all types of events (more details in the \"How to\" guide)</item>
+        <item>An icon with hints on the format of queries has been added to the search bar</item>
+        <item>For events list, widgets and notifications on click response settings have been added: open contact card, web link, event list, …</item>
+        <item>Bugs fixing:\n
+                  - fixed forced widget update\n
+                  - returned bright green to adjust event color and age\n
+                  - fixed colors of buttons in dialogs in green theme\n
+                  - fixed merging of several birthdays from different calendars\n
+                  - fixed duplicate notifications\n
+                  - fixed notifications sound changing</item>
 
         <item>#1.6.4</item>
         <item>Added support for events and birthdays from local files (see \"How to\" guide for file format)</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 0:31
   ~  */
   -->
 
@@ -21,12 +21,13 @@
         android:contentDescription="@string/appwidget_text"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold|italic"
         tools:ignore="TextContrastCheck" />
 
     <LinearLayout
+        android:id="@+id/events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
@@ -633,6 +634,24 @@
                 android:textStyle="bold" />
 
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/events"
+        android:layout_marginBottom="-3dp"
+        android:alpha="0.7"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        tools:ignore="SmallSp,TextContrastCheck" />
 
 </RelativeLayout>

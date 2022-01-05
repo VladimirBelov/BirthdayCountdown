@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 17.12.2021, 1:03
   ~  */
   -->
 
 <resources>
-<!--    <color name="ic_launcher_background">#1B5E20</color>-->
 
-    <color name="dark_red">#bb0000</color>
-    <color name="red">#ff0000</color>
-    <color name="brown">#873A07</color>
-    <color name="yellow">#FFEE00</color>
-    <color name="green">#238A10</color>
+    <color name="dark_red">#FFbb0000</color>
+    <color name="red">#FFff0000</color>
+    <color name="brown">#FF873A07</color>
+    <color name="yellow">#FFFFEE00</color>
+    <color name="green">#FF2ED70E</color>
     <color name="light_green">#BE16801C</color>
-    <color name="dark_green">#1B5E20</color>
+    <color name="dark_green">#FF1B5E20</color>
     <color name="dark_green_transp">#321B5E20</color>
-    <color name="darker_green">#164E1B</color>
-    <color name="darker_blue">#1465C0</color>
-    <color name="dark_blue">#1476D2</color>
+    <color name="darker_green">#FF164E1B</color>
+    <color name="darker_blue">#FF1465C0</color>
+    <color name="dark_blue">#FF1476D2</color>
     <color name="dark_blue_transp">#331565C0</color>
     <color name="light_blue_transp">#66D3D5D8</color>
-    <color name="light_blue">#2196F3</color>
+    <color name="light_blue">#FF2196F3</color>
 
-    <color name="black">#000000</color>
-    <color name="dark_gray">#121212</color>
-    <color name="medium_dark_gray">#232323</color>
+    <color name="black">#FF000000</color>
+    <color name="dark_gray">#FF121212</color>
+    <color name="medium_dark_gray">#FF232323</color>
 	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->
 	<color name="medium_dark_gray_trans_25">#40232323</color>
-    <color name="medium_gray">#323232</color>
-    <color name="light_gray">#808080</color>
+    <color name="medium_gray">#FF323232</color>
+    <color name="light_gray">#FF808080</color>
     <color name="light_gray_trans">#33808080</color>
-    <color name="light_gray_darker">#505050</color>
-    <color name="lighter_gray">#DDDDDD</color>
-    <color name="white">#FFFFFF</color> <!--pref_Widgets_Colors_values-->
+    <color name="light_gray_darker">#FF505050</color>
+    <color name="lighter_gray">#FFDDDDDD</color>
+    <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
 
     <string-array name="default_color_choice_values" translatable="false">
         <item>@color/dark_red</item>
@@ -50,6 +49,38 @@
         <item>@color/lighter_gray</item>
         <item>@color/light_gray</item>
         <item>@color/dark_gray</item>
+    </string-array>
+
+    <color name="dark_gray_transp">#00121212</color>
+
+    <color name="back01">#FF8A65</color>
+    <color name="back02">#FFB74D</color>
+    <color name="back03">#FFD54F</color>
+    <color name="back04">#DCE775</color>
+    <color name="back05">#81C784</color>
+    <color name="back06">#4DB6AC</color>
+    <color name="back07">#4FC3F7</color>
+    <color name="back08">#7986CB</color>
+    <color name="back09">#9575CD</color>
+    <color name="back10">#AB47BC</color>
+
+    <string-array name="default_color_background_values" translatable="false">
+        <item>@color/back01</item>
+        <item>@color/back02</item>
+        <item>@color/back03</item>
+        <item>@color/back04</item>
+        <item>@color/back05</item>
+        <item>@color/back06</item>
+        <item>@color/back07</item>
+        <item>@color/dark_blue</item>
+        <item>@color/back08</item>
+        <item>@color/back09</item>
+        <item>@color/back10</item>
+        <item>@color/dark_green</item>
+        <item>@color/brown</item>
+        <item>@color/black</item>
+        <item>@color/white</item>
+        <item>@color/dark_gray_transp</item>
     </string-array>
 
 </resources>

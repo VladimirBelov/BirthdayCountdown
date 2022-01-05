@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 0:55
   ~  */
   -->
 
@@ -12,6 +12,7 @@
     <string name="window_widget_settings">Widget settings</string>
     <string name="window_about">About application</string>
     <string name="window_faq">Frequently Asked Questions</string>
+    <string name="window_search_hints">Search hints</string>
 
     <string name="activity_title_events_scope">Filter</string>
 
@@ -24,9 +25,10 @@
     <string name="menu_open_file_with_events">Open file with events…</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="menu_search">Search…</string>
+    <string name="menu_search">Search</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filter…</string>
+    <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_edit_event">Show calendar event</string>
     <string name="menu_context_event_info">Event data</string>
@@ -41,6 +43,7 @@
     <string name="menu_context_merge_event">Link to contact…</string>
     <string name="menu_context_unmerge_event">Unlink from contact</string>
     <string name="menu_context_remerge_event">Link to other contact…</string>
+    <string name="menu_context_open_url">Open web link</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
@@ -117,6 +120,7 @@
     <string name="hint_Date">Date</string>
     <string name="hint_EventDistance">Before event</string>
     <string name="hint_Description">Details</string>
+    <string name="hint_VersionNumberDetails">Version number details</string>
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Search panel</string>
     <string name="hint_AlertDialog">Alert dialog</string>
@@ -126,6 +130,7 @@
     <string name="button_choose">Choose</string>
     <string name="button_rate">Rate app</string>
     <string name="button_mail">Mail</string>
+    <string name="button_discuss">Discuss</string>
     <string name="button_open_addressbook">Open address book…</string>
     <string name="button_open_app_settings">Open settings…</string>
     <string name="button_open_version_history">Version history</string>
@@ -181,11 +186,11 @@
 
     <string-array name="pref_Language_entries">
         <item>Auto</item>
-        <item>English</item>
-        <item>German</item>
-        <item>Russian</item>
-        <item>Spain</item>
-        <item>Ukrainian</item>
+        <item>🇬🇧 English</item>
+        <item>🇩🇪 German</item>
+        <item>🇷🇺 Russian</item>
+        <item>🇪🇸 Spain</item>
+        <item>🇺🇦 Ukrainian</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -331,11 +336,24 @@
         <item>Nickname</item>
         <item>Event type</item>
         <item>Original event label</item>
+        <item>Event type icon</item>
         <item>Favorites icon</item>
         <item>Age</item>
         <item>Zodiac sign</item>
         <item>Chinese calendar year</item>
+        <item>Web link</item>
         <item>Event account and raw date</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">On click action</string>
+    <string name="pref_List_OnClick_description">What to do on event click</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Open contact card, if absent - calendar event, if absent - web link</item>
+        <item>Open calendar event, if absent - contact card, if absent - web link</item>
+        <item>Open web link, if absent - contact card, if absent - calendar event</item>
+        <item>Open contact card, if absent - web link, if absent - calendar event</item>
+        <item>Open context menu</item>
+        <item>Nothing</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Today events</string>
@@ -364,14 +382,24 @@
     <string name="pref_Widgets_EventInfo_title">Event details</string>
     <string name="pref_Widgets_EventInfo_description">What event details and widget elements to show</string>
 
+    <string name="pref_Widgets_EventInfo_None">None</string>
+    <string name="pref_Widgets_EventInfo_Border">Widget border</string>
+    <string name="pref_Widgets_EventInfo_Photo">Contact photo</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">Event type icon</string>
+    <string name="pref_Widgets_EventInfo_EventCaption">Event details</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">Favorites icon</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">Silenced event icon</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">Zodiac sign</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">Chinese calendar year</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>Widget border</item>
-        <item>Contact photo</item>
-        <item>Event type icon</item>
-        <item>Favorites icon</item>
-        <item>Silenced event icon</item>
-        <item>Zodiac sign</item>
-        <item>Chinese calendar year</item>
+        <item>@string/pref_Widgets_EventInfo_Border</item>
+        <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
@@ -405,6 +433,17 @@
         <item>7</item>
         <item>10</item>
         <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">On click action</string>
+    <string name="pref_Widgets_OnClick_description">What to do on event click</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Open contact card, if absent - calendar event, if absent - web link</item>
+        <item>Open calendar event, if absent - contact card, if absent - web link</item>
+        <item>Open web link, if absent - contact card, if absent - calendar event</item>
+        <item>Open contact card, if absent - web link, if absent - calendar event</item>
+        <item>Open events list</item>
+        <item>Nothing</item>
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Primary color</string>
@@ -457,6 +496,11 @@
     </string-array>
 
     <string name="widget_hint">To modify widget preferences click on caption of the rightmost event:</string>
+
+    <string name="widget_config_event_info_empty">Use common settings</string>
+
+    <string name="widget_config_color_back_label">Widget background color</string>
+    <string name="widget_config_color_back_description">Background color for widget</string>
 
     <string name="pref_Notifications_title">Notifications</string>
 
@@ -521,6 +565,17 @@
         <item>Close (for high priority notifications)</item>
     </string-array>
 
+    <string name="pref_Notifications_OnClick_title">On click action</string>
+    <string name="pref_Notifications_OnClick_description">What to do on single notification click</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Open contact card, if absent - calendar event, if absent - web link</item>
+        <item>Open calendar event, if absent - contact card, if absent - web link</item>
+        <item>Open web link, if absent - contact card, if absent - calendar event</item>
+        <item>Open contact card, if absent - web link, if absent - calendar event</item>
+        <item>Open main event list</item>
+        <item>Close notification</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_title">Test notification</string>
     <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
 
@@ -538,9 +593,9 @@
     <string name="pref_Help_title">Help</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
     <string name="pref_BatteryOptimization_description">Open the setting and turn off the optimization…</string>
-    <string name="pref_Debug_On_title">Debug notifications</string>
+    <string name="pref_Debug_On_title">Debug &amp; Extra features</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
-    <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
+    <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author) and extra application features</string>
 
     <string name="changelog_title"><![CDATA[<h1>Version history:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Release: %1$s:</h2><ul>]]></string>
@@ -559,6 +614,7 @@
     <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>contacts nicknames: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>web links: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Events by accounts:</h2><ul>]]></string>
 
@@ -741,19 +797,25 @@
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
     <string name="pref_MergedID_key" translatable="false">MergedIDs</string>
 
+    <string name="pref_EventTypes_Birthday" translatable="false">3</string>
+    <string name="pref_EventTypes_Anniversary" translatable="false">1</string>
+    <string name="pref_EventTypes_Other" translatable="false">2</string>
+    <string name="pref_EventTypes_Custom" translatable="false">0</string>
+    <string name="pref_EventTypes_RoundDays" translatable="false">11</string>
+
     <string-array name="pref_EventTypes_values_default" translatable="false">
-        <item>3</item>
-        <item>1</item>
-        <item>2</item>
-        <item>0</item>
+        <item>@string/pref_EventTypes_Birthday</item>
+        <item>@string/pref_EventTypes_Anniversary</item>
+        <item>@string/pref_EventTypes_Other</item>
+        <item>@string/pref_EventTypes_Custom</item>
     </string-array>
 
     <string-array name="pref_EventTypes_values" translatable="false">
-        <item>3</item>
-        <item>1</item>
-        <item>2</item>
-        <item>0</item>
-        <item>11</item>
+        <item>@string/pref_EventTypes_Birthday</item>
+        <item>@string/pref_EventTypes_Anniversary</item>
+        <item>@string/pref_EventTypes_Other</item>
+        <item>@string/pref_EventTypes_Custom</item>
+        <item>@string/pref_EventTypes_RoundDays</item>
     </string-array>
 
     <string-array name="pref_List_SadPhoto_values" translatable="false">
@@ -822,14 +884,14 @@
     <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
 
     <string name="pref_List_Caption_key" translatable="false">List_Caption</string>
-
-    <string name="pref_List_DateFormat_key" translatable="false">List_DateFormat</string>
-
-    <string-array name="pref_List_Caption_values" translatable="false">
+    <string name="pref_List_Caption_default" translatable="false">1</string>
+     <string-array name="pref_List_Caption_values" translatable="false">
         <item>1</item> <!--Имя Отчество Фамилия-->
         <item>2</item> <!--Фамилия Имя Отчество-->
     </string-array>
 
+    <string name="pref_List_DateFormat_key" translatable="false">List_DateFormat</string>
+    <string name="pref_List_DateFormat_default" translatable="false">1</string>
     <string-array name="pref_List_DateFormat_values" translatable="false">
         <item>1</item> <!--Автоматически-->
         <item>2</item> <!--DD.MM.YYYY-->
@@ -840,11 +902,18 @@
         <item>7</item> <!--D MMMM YYYY-->
     </string-array>
 
-    <string name="pref_List_Caption_default" translatable="false">1</string>
-
-    <string name="pref_List_DateFormat_default" translatable="false">1</string>
-
     <string name="pref_Female_Names_key" translatable="false">Female_Names</string>
+
+    <string name="pref_List_OnClick_key" translatable="false">List_OnClick</string>
+    <string name="pref_List_OnClick_default" translatable="false">1</string>
+    <string-array name="pref_List_OnClick_values" translatable="false">
+        <item>1</item> <!--Контакт, календарь, ссылка-->
+        <item>2</item> <!--Календарь, контакт, ссылка-->
+        <item>3</item> <!--Ссылка, контакт, календарь-->
+        <item>4</item> <!--Контакт, ссылка, календарь-->
+        <item>8</item> <!--Контекстное меню-->
+        <item>9</item> <!--Ничего-->
+    </string-array>
 
     <string name="pref_List_Color_EventToday_key" translatable="false">List_Color_EventToday</string>
     <color name="pref_List_Color_EventToday_default" translatable="false">@color/dark_red</color>
@@ -867,6 +936,8 @@
     <string name="pref_List_EventInfo_Age" translatable="false">8</string>
     <string name="pref_List_EventInfo_ZodiacIcon" translatable="false">9</string>
     <string name="pref_List_EventInfo_ZodiacYear" translatable="false">10</string>
+    <string name="pref_List_EventInfo_URL" translatable="false">11</string>
+    <string name="pref_List_EventInfo_EventIcon" translatable="false">12</string>
     <string name="pref_List_EventInfo_DebugInfo" translatable="false">91</string>
 
     <string-array name="pref_List_EventInfo_values_default" translatable="false">
@@ -875,6 +946,7 @@
         <item>@string/pref_List_EventInfo_Organization</item>
         <item>@string/pref_List_EventInfo_Nickname</item>
         <item>@string/pref_List_EventInfo_EventCaption</item>
+        <item>@string/pref_List_EventInfo_EventIcon</item>
         <item>@string/pref_List_EventInfo_FavoritesIcon</item>
     </string-array>
 
@@ -885,10 +957,12 @@
         <item>@string/pref_List_EventInfo_Nickname</item> <!--Псевдоним-->
         <item>@string/pref_List_EventInfo_EventCaption</item> <!--Подробности события-->
         <item>@string/pref_List_EventInfo_StoredEventTitle</item> <!--Исходное наименование события-->
+        <item>@string/pref_List_EventInfo_EventIcon</item> <!--Иконка события-->
         <item>@string/pref_List_EventInfo_FavoritesIcon</item> <!--Иконка избранного контакта-->
         <item>@string/pref_List_EventInfo_Age</item> <!--Возраст-->
         <item>@string/pref_List_EventInfo_ZodiacIcon</item> <!--Знак зодиака-->
         <item>@string/pref_List_EventInfo_ZodiacYear</item> <!--Зодиакальный год-->
+        <item>@string/pref_List_EventInfo_URL</item> <!--Ссылка-->
         <item>@string/pref_List_EventInfo_DebugInfo</item> <!--Тип аккаунта и хранимая дата-->
     </string-array>
 
@@ -931,22 +1005,24 @@
         <item>10</item>
     </string-array>
 
-    <string name="pref_Widgets_EventInfo_Photo" translatable="false">1</string>
-    <string name="pref_Widgets_EventInfo_EventIcon" translatable="false">2</string>
-    <string name="pref_Widgets_EventInfo_FavIcon" translatable="false">3</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon" translatable="false">4</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear" translatable="false">5</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon" translatable="false">6</string>
-    <string name="pref_Widgets_EventInfo_Border" translatable="false">10</string>
+    <string name="pref_Widgets_EventInfo_None_ID" translatable="false">0</string>
+    <string name="pref_Widgets_EventInfo_Photo_ID" translatable="false">1</string>
+    <string name="pref_Widgets_EventInfo_EventIcon_ID" translatable="false">2</string>
+    <string name="pref_Widgets_EventInfo_FavIcon_ID" translatable="false">3</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon_ID" translatable="false">4</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear_ID" translatable="false">5</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon_ID" translatable="false">6</string>
+    <string name="pref_Widgets_EventInfo_EventCaption_ID" translatable="false">7</string>
+    <string name="pref_Widgets_EventInfo_Border_ID" translatable="false">10</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
-        <item>@string/pref_Widgets_EventInfo_Border</item>
-        <item>@string/pref_Widgets_EventInfo_Photo</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+        <item>@string/pref_Widgets_EventInfo_Border_ID</item>
+        <item>@string/pref_Widgets_EventInfo_Photo_ID</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon_ID</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon_ID</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon_ID</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear_ID</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
@@ -971,6 +1047,17 @@
 
     <string name="pref_Widgets_Days_EventSoon_key" translatable="false">Widget_Days_EventSoon</string>
     <string name="pref_Widgets_Days_EventSoon_default" translatable="false">2</string>
+
+    <string name="pref_Widgets_OnClick_key" translatable="false">Widgets_OnClick</string>
+    <string name="pref_Widgets_OnClick_default" translatable="false">1</string>
+    <string-array name="pref_Widgets_OnClick_values" translatable="false">
+        <item>1</item> <!--Контакт, календарь, ссылка-->
+        <item>2</item> <!--Календарь, контакт, ссылка-->
+        <item>3</item> <!--Ссылка, контакт, календарь-->
+        <item>4</item> <!--Контакт, ссылка, календарь-->
+        <item>7</item> <!--Открыть список событий-->
+        <item>9</item> <!--Ничего-->
+    </string-array>
 
     <string name="pref_Widgets_Color_EventToday_key" translatable="false">Widget_Color_EventToday</string>
     <color name="pref_Widgets_Color_EventToday_default" translatable="false">@color/green</color>
@@ -1009,12 +1096,23 @@
 
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
-    <string name="widget_config_defaultPref" translatable="false">1,0,0</string>
 
-    <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,ой,цкий,ский,цкой,ской</string>
+    <!--
+        Стартовый номер события
+        Коэффициент масштабирования (позиция в списке выбора)
+        Количество событий (позиция в списке выбора)
+        Типы событий (через +)
+        Детали события (через +)
+        Цвет подложки
+    -->
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,</string>
+
+    <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
+
+    <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
 
-    <string name="first_names_man" translatable="false">абрам,август,аверьян,авраам,агафон,адам,азар,азат,акакий,аким,аксьонов,аксён,алан,александр,алексей,алексий,ален,альберт,альфонс,альфред,анатолий,анатоль,анатолій,андерсен,андрей,андре,андрон,андрюша,антипр,антип,антонин,антонио,антон,аполлон,аристарх,аркадий,аркадій,армен,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,архип,аскольда,аскольд,афанасий,батько,билли,билл,богдан,борислав,борис,брайан,брат,бронислав,броніслав,булат,бьорн,вадим,валентин,валерий,ваня,варлам,василий,василь,вацлав,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виссарион,виталий,витус,владилен,владимир,владислав,владлен,внук,вован,вова,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,гарри,гектор,геннадий,геннадій,генрих,генри,георгий,герман,глеб,глен,гнат,грег,григорий,григорій,гриня,давид,даниил,данила,данил,даниэль,демьян,денис,джанни,джеймс,джек,джим,джон,джо,джузеппе,димитрий,димитрій,дмитрий,добриня,добрыня,доктор,донатос,дэвид,дэйв,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,жак,жерар,жорж,жюль,захар,зигмунд,иван,игнат,игорь,иларион,илларион,илья,имре,иоганнес,иоганн,иосиф,исаак,йогор,казимир,карл,касьян,кирилл,кирило,кирсан,клаус,клод,коля,кондрат,константин,кристиан,кристоф,крис,кузьма,курт,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларс,ларіон,лев,леонард,леонид,леонід,лесли,лион,луи,лука,людвиг,лёня,майк,максим,манфред,мао,марат,мариус,марк,мартин,мартын,матвей,матвій,маттиас,мефодий,мефодій,микола,мик,милий,миллер,мирон,михаил,михайло,миша,моисей,мойсей,морис,мстислав,назар,наполеон,насіння,нестор,никита,николай,нильс,нил,овер\'ян,овсій,олег,олександр,оливер,омелян,онук,опанас,орест,осип,оскар,остап,отец,отто,павел,павло,панкрат,пантелей,папа,парамон,патрик,петро,петр,петька,платон,поль,пол,потап,проспер,прохор,пьер,пьер-жан,пётр,ральф,рафаэль,рейнгольд,рем,рик,рихард,роберт,роджер,рой,роман,ромен,ростислав,рудольф,рэй,сава,савва,савелий,савелій,сальвадор,самуил,святослав,семен,семён,сергей,сидор,сидір,сид,син,спартак,стефан,стивен,стив,стюард,сын,сэмюэл,тарас,тенесси,теодор,терентий,терентій,тесть,тимофей,тимофій,тимур,тим,тихон,том,тэд,уилл,уильям,ульян,фадей,фазиль,федерико,федор,федот,федір,феликс,фил,фирс,фицджеральд,фома,франц,фредди,френк,фёдор,фірс,харитон,харлам,харлі,харрисон,хритофор,хулио,цибулі,чак,чарльз,шарль,эдуард,элтон,эмиль,эммануил,эндри,эраст,эрнесто,ювеналий,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,якоб,яков,яків,ян,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,herbert,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,oscar,oskar,papa,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
+    <string name="first_names_man" translatable="false">абрам,август,аверьян,авраам,агафон,адам,азар,азат,акакий,аким,аксьонов,аксён,алан,александр,алексей,алексий,ален,альберт,альфонс,альфред,анатолий,анатоль,анатолій,андерсен,андрей,андре,андрон,андрюша,антипр,антип,антонин,антонио,антон,аполлон,аристарх,аркадий,аркадій,армен,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,архип,аскольда,аскольд,афанасий,батько,билли,билл,богдан,борислав,борис,брайан,брат,бронислав,броніслав,булат,бьорн,вадим,валентин,валерий,ваня,варлам,василий,василь,вацлав,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виссарион,виталий,витус,владилен,владимир,владислав,владлен,внук,вован,вова,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,гарри,гектор,геннадий,геннадій,генрих,генри,георгий,герман,глеб,глен,гнат,грег,григорий,григорій,гриня,давид,даниил,данила,данил,даниэль,демьян,денис,джанни,джеймс,джек,джим,джон,джо,джузеппе,димитрий,димитрій,дмитрий,добриня,добрыня,доктор,донатос,дэвид,дэйв,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,жак,жерар,жорж,жюль,захар,зигмунд,иван,игнат,игорь,иларион,илларион,илья,имре,иоганнес,иоганн,иосиф,исаак,йогор,казимир,карл,касьян,кирилл,кирило,кирсан,клаус,клод,коля,кондрат,константин,кристиан,кристоф,крис,кузьма,курт,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларс,ларіон,лев,леонард,леонид,леонід,лесли,лион,луи,лука,людвиг,лёня,майк,максим,манфред,мао,марат,мариус,марк,мартин,мартын,матвей,матвій,маттиас,мефодий,мефодій,микола,мик,милий,миллер,мирон,михаил,михайло,миша,моисей,мойсей,морис,мстислав,назар,наполеон,насіння,нестор,никита,николай,нильс,нил,овер\'ян,овсій,олег,олександр,оливер,омелян,онук,опанас,орест,осип,оскар,остап,отец,отто,павел,павло,панкрат,пантелей,папа,парамон,патрик,петро,петр,петька,платон,поль,пол,потап,проспер,прохор,пьер,пьер-жан,пётр,ральф,рафаэль,рейнгольд,рем,рик,рихард,роберт,роджер,рой,роман,ромен,ростислав,рудольф,рэй,сава,савва,савелий,савелій,сальвадор,самуил,святослав,семен,семён,сергей,сидор,сидір,сид,син,спартак,стефан,стивен,стив,стюард,сын,сэмюэл,тарас,тенесси,теодор,терентий,терентій,тесть,тимофей,тимофій,тимур,тим,тихон,том,тэд,уилл,уильям,ульян,фадей,фазиль,федерико,федор,федот,федір,феликс,фил,фирс,фицджеральд,фома,франц,фредди,френк,фёдор,фірс,харитон,харлам,харлі,харрисон,хритофор,хулио,цибулі,чак,чарльз,шарль,эдуард,элтон,эмиль,эммануил,эндри,эраст,эрнесто,ювеналий,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,якоб,яков,яків,ян,януарий,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,​​петро,​​платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,herbert,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,oscar,oskar,papa,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
     <string name="first_names_female" translatable="false">åsa,ève,édith,šejla,ава,августа,августина,авдотья,аврора,агапия,агата,агафья,аглая,агнесса,агния,агнія,агрипина,агриппина,агунда,ада,аделаида,аделина,адель,адиля,адриана,азалия,аза,азиза,аида,аиша,айару,айгерим,айгуль,айлин,айнагуль,айнур,айседора,айсель,айсун,айсылу,ай,акилина,аксинья,акулина,алана,албена,алевтина,александра,александрина,алексия,алена,алеста,алина,алиса,алия,алла,алсу,алтын,альба,альбина,альфия,аля,алёна,аліна,аліса,амалия,амаль,амалія,амина,амира,анабель,анаит,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анисия,анисья,анита,анна,антонина,анфиса,анфіса,аня,аполлинария,арабелла,ариадна,ариана,арианда,арина,ария,арсения,аріна,асель,асия,астрид,ася,аурелия,афина,аэлита,аяна,ая,баба,бажена,беата,беатрис,бела,белинда,белла,белоцвета,березня,берислава,берта,бильяна,бисера,блага,блажена,богдана,богна,божана,божена,божидара,борислава,боряна,бояна,бьянка,бэлла,вавилия,валентина,валерия,валерія,ванга,ванда,ванесса,варвара,василика,василина,василиса,василка,васса,вега,веда,вела,венера,вениамина,венцеслава,вера,вероника,вероніка,веселина,веста,ветана,вета,видослава,вика,викторина,виктория,вилена,виола,виолета,виолетта,виринея,виталина,виталия,вита,владана,влада,владислава,владлена,власта,внучка,вікторія,віола,віолетта,віра,віта,габриэлла,галина,галия,ганна,гаяна,гаянэ,генриетта,гергана,гизела,глафира,глафіра,гликерия,гоар,грета,гузель,гульзира,гульмира,гульназ,гульнара,гульшат,гюзель,далида,дамира,дана,даниэла,дания,дара,дарена,дарина,дарья,даяна,дельфина,демира,десислава,джамиля,джанет,джемила,дженифер,дженна,дженнифер,джессика,джиневра,джулия,джуна,диана,дильназ,дильнара,диляна,дилярам,диля,динара,дина,долорес,доминика,домна,домника,донка,дочка,діана,діна,евангелина,ева,евгения,евдокия,евеліна,евлалия,евлампия,евстолия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,есения,ефросиния,ефросинья,ея,жаклин,жанна,жансая,жасмин,живка,жозефина,жоржина,забава,заира,залина,замира,замфира,зара,зарема,зарина,заряна,земфира,зинаида,зиновия,зита,злата,златослава,зоряна,зося,зоя,зульфия,зухра,зіновія,ивана,иванка,иванна,ива,ивета,иветта,ивет,ивонна,ида,изабелла,изольда,илария,илина,илия,иллирика,илона,ильзира,ильяна,илюза,инара,инга,индира,инесса,инна,иоанна,ирада,ираида,ира,ирина,ирма,искра,ия,йоана,йорданка,калерия,камелия,камила,камилла,капитолина,капітоліна,кара,каре,карима,карина,каролина,катарина,катерина,катюша,катя,кира,кирилла,клавдия,клара,клеопатра,климентина,констанция,кора,корнелия,кору,кохана,кохання,кристина,ксанта,ксения,ксенія,кэт,лада,лала,лана,лара,лариса,лаура,лейла,леля,лена,леона,леонилла,леонтина,лера,леся,лета,лея,лиана,лидия,лиза,лика,лилиана,лилит,лилия,лили,лильяна,лина,линда,лиора,липа,лира,лия,лола,лолита,лора,луиза,лукерья,лукия,луна,льоха,любава,любимая,любовь,любов,люда,людмила,люсиль,люсьена,люция,люче,ляйсан,ляля,ліана,лілія,лія,мавиле,мавлюда,магдалина,магдалeна,магда,мадина,мадлен,мадонна,майя,макария,малика,мама,мара,маргарита,марианна,мариетта,марика,марина,мариэтта,мариям,мария,мари,марта,маруся,марфа,марьям,марьяна,марья,маріанна,марія,марієтта,мар\'я,мата,матильда,мати,матрена,матрона,матрёна,мать,маша,мая,мелания,мелисса,мехри,мика,милада,милана,мила,милена,милен,милица,милослава,мина,мира,мирослава,мирра,михримах,мишель,мия,моника,мотрона,муза,мілена,мілослава,надежда,надя,надія,наиля,наима,нана,наоми,наргиза,настасия,настасья,настасія,наталия,наталья,наталя,наташа,невена,невістка,нейдежда,нелли,неонила,нея,ника,николина,николь,никомия,нина,нинель,номина,нонна,нора,нурия,нінель,одетта,оксана,октябрина,олександра,олена,олеся,оливия,олимпиада,ольга,оля,олімпіада,офелия,павлина,памела,парасковія,патриция,паула,пейтон,пекла,пелагея,пенка,перизат,пина,платонида,полина,поля,прасковья,преслава,присцилла,пульхерия,равшана,рада,радка,радмила,разина,раиля,раиса,раифа,райна,ралина,рамина,рахиль,раяна,рая,раїса,ребекка,регина,резеда,рената,рена,риана,рианна,рикарда,рима,римма,рина,рита,рогнеда,роза,роксана,роксолана,росица,рузалия,рузанна,русалина,русана,руслана,рут,руфина,руфь,сабина,сабрина,сажида,саида,салима,саломея,сальвина,сальма,самира,сандра,сания,сара,сарра,сати,сауле,сафина,сафия,сафура,саяна,свекровь,свекруха,светлана,светлозара,светозара,світла,севара,селена,сельвия,сельма,серафима,сесилия,сестра,сиара,сидония,силвия,сильвия,симона,систер,сияна,славена,славяна,смарагда,смила,снежана,снежанна,сноха,соня,софия,софи,софья,софія,станислава,стелла,степанида,стефания,стефанія,стоянка,сусанна,сюзанна,таисия,таисья,тамара,тамила,тара,татьяна,таяна,тая,таїсія,текле,теона,тереза,тетяна,тетя,тея,тина,тиффани,тодорка,томирис,томи,тора,трояна,троянда,тэмми,тётя,тітка,ульяна,уляна,ума,урсула,устина,устиния,устинья,устинія,фазиля,фаина,фарида,фариза,фатима,фаїна,феврония,федора,фекла,фелисити,фелиция,феодора,феруза,физалия,филиппа,филомена,фируза,флора,флоренс,флорентина,флоренция,флориана,фотиния,фредерика,фрида,фёкла,хаврония,хадия,харита,хилари,хлоя,хрисанда,христина,хюррем,цагана,цветана,цветанка,цвета,цецилия,циара,челси,чеслава,чулпан,шакира,шарлотта,шахина,шейла,шелли,шерил,эвдокия,эвелина,эвита,эдита,эдит,элеонора,элиана,элизавета,элиза,элина,элла,эльвина,эльвира,эльза,эльмира,эльнара,эля,эмилия,эмили,эмма,энже,эрика,эрмина,эсмеральда,эсмира,эстер,этель,этери,юдифь,юдіф,юлиана,юлианна,юлия,юлія,юна,юния,юнна,юнона,юстина,ядвига,ядвіга,яна,янина,янка,ярина,ярослава,ясмина,яся,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,aahna,abba,abcde,abena,abida,abigail,abijah,abou,abril,acey,acie,ada,adalgisa,adama,adame,addie,adee,adeline,adena,adhira,adia,adina,aditi,adora,adria,adriana,adrianne,aesha,afaf,afreen,africa,afsana,agafya,agatha,agboola,aggrey,agnė,agra,agustina,aila,aileen,ailsa,aimone,aina,ainara,ainhoa,ainslie,aitana,aiva,aiyana,ajla,alaina,alanna,alba,alberta,albina,aldona,aleana,aleena,alejandra,aleksa,alena,alene,alessandra,aletta,alevtina,alexa,alexandra,alexia,alexis,alia,alice,alicia,alide,aliette,alima,aline,alisha,aliza,allene,alma,aloma,alondra,althea,alya,alycia,alys,alyson,alyssa,amalia,amalie,amanda,amara,amaya,amber,amelie,amoli,amy,anaïs,ana,anabelle,ananya,anastacia,anastasia,anastasiia,anastasiya,anastassia,anastassiya,ance,anda,andrea,andrijana,ane,aneta,anete,angel,angela,angelica,anika,anisha,anitra,anka,ann,ann-louise,anna,anna-lena,annabella,annabelle,annalena,annalisa,annalise,annastasia,anneke,annette,annika,annot,anthea,anthonia,antonella,antonia,antra,april,arabella,arantxa,ariadna,ariel,ariella,arielle,arleen,arlet,arline,aroa,arya,ashley,aslaug,astou,astrid,athena,attia,aubrey,audra,audrey,augustine,aunt,aurea,aurelia,aurora,ausma,austėja,avice,avie,aviva,aya,ayanna,azahara,azucena,babette,baiba,bailey,barbara,basilia,bea,beatrix,becki,bella,benedicta,berengaria,bernadeta,bernadine,berta,beryl,bess,beth,bethany,bettina,betty,beverly,bhagya,bimala,binny,birte,bita,björg,blanca,blythe,bobbi,bodil,bohumil,bolette,bonita,braden,branka,bree,brenda,brett,bria,brianna,bridgette,briget,brigid,brigita,brilliana,britnee,brittany,brittny,brooklyn,burdine,caden,cady,cairine,calixte,cally,camelia,candace,candela,candida,cara,carina,caris,carla,carlene,carlota,carmen,carol,carola,carolee,carolina,carolyn,carrie,cassidy,cassie,cath,catharine,catherine,cathie,cayetana,caylee,celeste,celestia,celia,celinda,cerys,chahna,chanda,chandrika,chapa,charlene,charlize,charlotta,charlotte,charu,cherine,cheryl,chloe,chrissie,christa,christabelle,christene,christi,christiane,christina,christine,cilla,cindy,clémence,clara,clare,clarice,clarinda,clarine,clarisse,claudia,clemence,cleopatra,cloe,colla,constantine,coralee,cornelia,cosette,courtney,crista,cristina,cristy,crystal,cynthia,cyra,désirée,dagmar,daiga,dainuvīte,dakota,dalal,dalene,damini,dana,danah,daneliya,danie,daniela,danielle,danna,dannah,daphna,darcie,dariga,darlene,daughter,dayna,deb,deborah,debra,debrah,deepa,deidre,delena,delilah,demi,dena,denice,denise,denisse,denyce,denyse,deriba,devon,devya,diamond,diana,diane,dina,dionne,ditte,dobroslav,donna,dorcas,dorina,dorinda,doris,dorothy,dorrie,dorrit,dot,dottie,draginja,drahomíra,drew,dulari,dunja,dzidra,dzintra,ebba,eda,edda,edeltraud,edie,edina,edit,eglė,eivor,eka,ekaterina,elayne,elektra,elena,elfi,elia,elif,elissa,eliza,elizabeth,elke,elle,ellie,eloise,elsa,else,elysia,elza,emelie,emilia,emilie,emily,emma,emmeline,emmy,epp,ericka,erlea,ermengarde,erminia,ernestine,esha,esperanza,esther,eta,etty,eugenia,eula,euphemia,eurydice,eva,evangelina,evelin,evelina,evelyn,evelyne,evi,evie,eyerusalem,ezra,fabia,falguni,fannie,fanny,fathia,fathy,fatuma,fay,felicia,fen,fernande,filomena,fiona,fioralba,flann,fleurette,flora,flore,florrie,frances,francisca,frederica,frederique,freya,friederike,friedl,fritzi,fulki,gabija,gabriela,galenka,gana,gayle,gazala,geena,georgeanna,georgene,georgette,georgina,geraldine,gerri,gerrie,gianina,giedrė,gillian,gina,ginevra,ginny,gisele,giuliana,giva,gladys,glaphyra,gloria,gordana,grażyna,gražina,grace,graciela,granddaughter,gratia,grayce,grazia,greta,gretchen,grete,gretta,grozdana,guðrún,gundega,gunhild,gunta,guntra,habiba,hagar,haima,haizea,hanima,hanna,hannah,hannah/hanna,haydée,hayden,hazel,hazelle,heather,hedvig,heidi,heidrun,helen,helena,helma,helmi,henrietta,hermana,hermanita,hermione,hetty,hilary,hilda,hildegard,hildr,hildur,hilma,hiya,hortense,hulda,humaira,hyacinth,iванка,ibtissam,ida,idina,ilana,ildze,ilene,ilka,ilona,ilze,iman,imanta,ināra,ina,india,indrė,indra,ines,inese,inessa,ineta,inez,ingrīda,ingrid,ingrida,inguna,inta,iqra,irbe,irene,iria,irina,iris,irma,irmela,isabel,isabella,ishita,isidora,isis,isolde,itziar,iveta,ivita,ivone,ivonne,iwona,izaro,izetta,izna,izolda,jacinta,jacqueline,jacquetta,jacquie,jada,jamie,jana,janaki,jane,janee,janet,janica,janice,janiya,jarmila,jasmine,jasna,jay,jaya,jayda,jean,jeana,jeananne,jemma,jen,jenni,jennica,jennifer,jenny,jenya,jerri,jerrie,jessica,jette,jillian,jilly,jimena,jinny,joan,joanie,joanna,joanne,jodie,joelle,joey,johanna,johny,joice,jolanta,jolene,jolie,jordan,jorja,josefa,josepha,josette,jovana,joy,joya,joyce,judi,judie,judith,judy,julia,juliana,julie,julissa,jurgita,justine,jyothi,kärt,kaia,kaiva,kalpana,kamala,kamie,karen,karin,karina,karishma,karla,karolina,kashvi,katalin,katarina,katerina,katey,katherine,kathleen,kathlyn,kathryn,kathy,katia,katja,katrin,katrina,katryna,kaye,kayla,keerthi,kelly,kellyn,kelsey,kerly,kertu,keya,khioniya,kiera,kim,kimberly,kirsi,kirsty,klaartje,klara,kornelia,korneliya,krisha,krista,kristel,kristen,kristi,kristin,kristina,kunigunde,lāsma,laasya,lada,ladli,laia,laimdota,laisa,lan,lanette,lara,laranya,larissa,lark,latanya,latisha,latoya,laura,lauran,lauren,lauretta,laurette,lea,leah,leanne,leida,leire,leisa,leisha,lekha,lelde,lena,leni,lenina,lenka,leonie,leonore,leontina,lepa,lesia,lesli,leticia,letitia,letty,leyna,leyre,lia,lianne,liddy,lidija,lidy,liene,lieselotte,liesl,ligia,liia,lila,lili,lilia,liliane,lilija,lilly,lilo,lina,linda,linnéa,linnie,lisa,liselotte,lissa,livia,logan,lola,loni,loredana,lorelei,lorena,lori,lorinda,lorrie,lottie,louisa,lovisa,lowiena,luana,luce,lucia,ludivine,luisa,luitgard,luna,lya,lynda,lynn,lynnette,lysette,lyubov,máire,märta,māra,maalai,mabel,macy,madalena,maddy,madeleine,madhavi,madhuri,madison,madre,magda,magdalene,magnhild,mahika,mahsa,maia,maila,maite,maja,malak,mallory,malou,malvina,mamá,mama,mammi,mana,mandy,mangala,mangamma,manuéla,manuela,mar,mara,marcela,marcie,maresa,marg,margaret,margarete,margarethe,margarita,margherita,margie,margit,margot,margrethe,marguerite,maria,mariann,marianne,maricel,marie,marieke,mariel,marilu,marilyn,marina,marita,marjana,marji,marjie,marjon,marjory,marlee,marta,martha,martina,martine,mary,mary lou,mason,matilde,maud,maurine,maxine,maya,mayo,meara,meg,megan,mehar,mel,melania,melinda,melissa,melita,mellisa,melly,mena,mendy,mercy,meredith,meri,merike,merilyn,merrilyn,meseret,mette,mia,michaela,michelle,mickey,mietje,mignon,mila,milana,milena,miley,millaray,millia,millie,milly,mimi,mimmi,mindy,minea,minnie,mirabel,mirai,miranda,mirdza,mireia,mirella,miriam,missy,mitzi,modra,molly,mom,mona,monica,montserrat,moonika,mother,mrinalini,mutti,mythri,nabhitha,nabila,nadia,nadja,nadya,nahia,nahla,naia,naiara,naina,naira,naitee,namita,nanci,nancy,nandini,nanette,naomi,nastja,nasya,nata,natalee,natalia,natalie,natallia,nataly,nayara,neela,negin,nell,nella,nelli,nelly,nerea,nerissa,neva,nevena,neysa,nichi,nicole,nidia,nieves,nijolė,nike,nilufar,nira,nisha,nivea,noa,noelia,noella,nonna,nora,norma,nuria,olesya,olga,olimpiada,olita,olivia,omala,ona,oriana,oviya,pablita,padmaja,paige,pallavi,pamela,paola,paoletta,pari,patricia,patty,paula,paulette,paulina,pavla,payton,pearl,peggy,penda,penelope,penny,pernille,persis,peta,petra,petrina,phebe,philippa,philomena,phoebe,phyllida,phyllis,pia,piia,pille,pipaluk,piper,pippa,polly,pooja,poppy,prerna,prisha,priska,prudence,prunella,quasar,queenie,queralt,rachel,rada,rae,raewyn,rajani,rambha,ramya,rebecca,regina,renesmee,renita,renitta,rewan,rhea,rhiannon,rhonda,rianne,rihanna,rimantė,rina,ritva,rocío,rochelle,roda,rosalie,rosamond,rosanna,rose,rosetta,roshni,rosie,rosina,rowan,roxann,roxanne,ruža,ružica,ruby,ruhi,ruth,saachi,sabine,sahana,saidat,saila,salena,sally,salma,salome,saloni,samantha,samara,samia,sandra,sandy,sanita,sanober,sara,sarah,sarina,sarmīte,sarojini,sasha,sasikala,saulcerīte,saule,savannah,scarlett,schwester,serafina,seren,shakuntala,shamma,shanelle,shania,shanique,shanzay,shara,sharna,sharon,shawna,shawnae,shayma,shayna,shefali,shenna,sherry,sheryl,shirley,shriya,shulamith,siân,siana,sidonia,sieglinde,sienna,sierra,sigita,signe,sigríður,silva,silvia,silvija,sinta,sissy,sister,siv,skaidrīte,skyler,smaida,sneha,sniedze,sofia,sofie,sokhna,solvita,sona,sonia,sonika,sophia,sophie,spodra,steffi,stefi,steph,stephanie,stephie,stina,suhanisa,susan,susannah,susanne,susy,suvarna,suzie,suzy,téa,taahira,taara,tabitha,talia,talisa,tamara,tameka,tami,tammie,tammy,tanis,tanisha,tante,tawny,taylor,tea,teegan,tekla,teresa,teresita,teri,terisa,tess,tessa,tessie,thea,theresa,therese,theresia,tiffanie,tiffany,tiia,tillie,tilly,tina,tinashe,tineke,tisha,tochter,tolulope,tonantzin,toni,tonia,traute,trayi,triana,tricia,trina,trish,trisha,trude,tuhina,tulsi,tutta,twyla,udaya,udval,ugnė,uliana,ulla,ulrica,urja,uxue,vahini,valarie,valentina,valeria,vanessa,vanita,varalakshmi,varsha,vasudha,vega,velga,velma,vendela,vendula,vera,vesta,vickie,vicky,victoria,vidya,viera,viive,viktorija,vilina,viola,violet,violeta,violetta,violette,virginia,viti,viviana,vizma,vlasta,vlatka,wanda,whitney,wilma,winnie,xóchitl,yaa,yanet,yuliana,yvette,yvonne,zahira,zaiga,zaina,zanda,zara,zarina,zelia,zena,zenia,zinta,zita,zlata,zoe,zora,zuleika</string>
 
     <string name="second_name_completions_man" translatable="false">ев,ов,ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
@@ -1094,6 +1192,17 @@
         <item>@string/pref_Notifications_QuickActions_Hide</item>
     </string-array>
 
+    <string name="pref_Notifications_OnClick_key" translatable="false">Notifications_OnClick</string>
+    <string name="pref_Notifications_OnClick_default" translatable="false">1</string>
+    <string-array name="pref_Notifications_OnClick_values" translatable="false">
+        <item>1</item> <!--Контакт, календарь, ссылка-->
+        <item>2</item> <!--Календарь, контакт, ссылка-->
+        <item>3</item> <!--Ссылка, контакт, календарь-->
+        <item>4</item> <!--Контакт, ссылка, календарь-->
+        <item>7</item> <!--Открыть список событий-->
+        <item>6</item> <!--Удалить уведомление-->
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>
 
     <string name="pref_Quiz_key" translatable="false">Quiz</string>
@@ -1119,7 +1228,7 @@
     <integer name="menu_context_id_event_info">3</integer>
     <integer name="menu_context_id_hide_event">4</integer>
     <integer name="menu_context_id_unhide_event">5</integer>
-    <integer name="menu_context_id_remind">6</integer>
+    <!--<integer name="menu_context_id_remind">6</integer>-->
     <integer name="menu_context_id_remind_1h">7</integer>
     <integer name="menu_context_id_remind_morning">8</integer>
     <integer name="menu_context_id_anniversary_list">9</integer>
@@ -1129,5 +1238,6 @@
     <integer name="menu_context_id_merge_event">13</integer>
     <integer name="menu_context_id_unmerge_event">14</integer>
     <integer name="menu_context_id_remerge_event">15</integer>
+    <integer name="menu_context_id_open_url">16</integer>
 
 </resources>

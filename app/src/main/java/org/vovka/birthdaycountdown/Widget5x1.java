@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 26.12.2021, 0:35
  *
  */
 
@@ -41,7 +41,7 @@ public class Widget5x1 extends AppWidgetProvider {
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
             int prefEventsCountIndex = 0;
             try {
-                if (widgetPref != null && widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
             } catch (Exception e2) {/**/}
 
             int prefEventsCountDiff = 0;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 13.12.2021, 11:25
  *
  */
 
@@ -37,7 +37,7 @@ public class ColorPreference extends Preference {
     private int[] mColorChoices = {};
     private int mValue = 0;
     private int mItemLayoutId = R.layout.dash_grid_item_color;
-    private int mNumColumns = 5;
+    private int mNumColumns = 4;
     private String mSelectDialogTitle = "";
     private int mSelectDialogIcon;
 
@@ -67,33 +67,8 @@ public class ColorPreference extends Preference {
             mNumColumns = a.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
             int choicesResId = a.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
-                mColorChoices = a.getResources().getIntArray(choicesResId); //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
-                /*
-                int[] choices = a.getResources().getStringArray(choicesResId);
-
-                mColorChoices = new int[choices.length];
-                for (int i = 0; i < choices.length; i++) {
-
-
-                    try {
-                        mColorChoices[i] = Color.parseColor(choices[i]);
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "!" + choices[i], Toast.LENGTH_LONG).show();
-
-                        final String colorTag = "@color/";
-                        int colorIndex = choices[i].toLowerCase().indexOf(colorTag);
-                        if (!choices[i].isEmpty() && colorIndex > -1) {
-                            try {
-                                Toast.makeText(getContext(), choices[i], Toast.LENGTH_LONG).show();
-                                mColorChoices[i] = Color.parseColor(a.getResources().getString(a.getResources().getIdentifier(choices[i].substring(colorIndex + colorTag.length()), RES_TYPE_COLOR, getContext().getPackageName())));
-                            } catch (Exception e1) {
-                                mColorChoices[i] = Color.parseColor("black");
-                            }
-                        } else {
-                            mColorChoices[i] = Color.parseColor("white");
-                        }
-                    }
-                }*/
+                //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
+                mColorChoices = a.getResources().getIntArray(choicesResId);
             }
 
         } finally {
@@ -162,12 +137,12 @@ public class ColorPreference extends Preference {
         return mValue;
     }
 
-    @SuppressWarnings("deprecation")
     public static class ColorDialogFragment extends DialogFragment {
         private ColorPreference mPreference;
         private ColorGridAdapter mAdapter;
         private GridView mColorGrid;
 
+        @SuppressWarnings("deprecation")
         public ColorDialogFragment() {
         }
 
@@ -269,9 +244,7 @@ public class ColorPreference extends Preference {
 
                 int color = getItem(position);
                 setColorViewValue(convertView.findViewById(R.id.color_view), color);
-                convertView.setBackgroundColor(color == mSelectedColor
-                        ? 0x6633b5e5 : 0);
-
+                convertView.setBackgroundColor(color == mSelectedColor ? 0x6633b5e5 : 0);
                 return convertView;
             }
 
@@ -290,7 +263,6 @@ public class ColorPreference extends Preference {
             Drawable currentDrawable = imageView.getDrawable();
             GradientDrawable colorChoiceDrawable;
             if (currentDrawable instanceof GradientDrawable) {
-                // Reuse drawable
                 colorChoiceDrawable = (GradientDrawable) currentDrawable;
             } else {
                 colorChoiceDrawable = new GradientDrawable();

@@ -1,14 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.10.2021, 0:19
+ *  * Created by Vladimir Belov on 26.12.2021, 1:01
  *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 12.10.2021, 0:16
+ *  * Last modified 24.12.2021, 18:40
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
+import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
@@ -52,7 +53,6 @@ import static org.vovka.birthdaycountdown.Constants.WIDGET_UPDATER_INVOKE_ERROR;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventID;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventLabel;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventStorage;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
@@ -69,9 +69,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Build;
-import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.util.TypedValue;
 import android.view.View;
@@ -79,9 +78,12 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -107,6 +109,7 @@ class WidgetUpdater {
     private int eventsToShow;
     private int eventsToSkip;
     private List<String> widgetPref;
+    private List<String> widgetPref_eventInfo = new ArrayList<>();
 
     final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
 
@@ -128,7 +131,7 @@ class WidgetUpdater {
         views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
 
         //Получаем данные
-        if (eventsData.isEmptyArray() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
+        if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
             eventsData.context = context;
             if (eventsData.getEvents(context)) eventsData.computeDates();
         }
@@ -151,14 +154,11 @@ class WidgetUpdater {
                 if (widgetPref.size() > 0) startingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
-            /*boolean canReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-            if (!canReadContacts) {
+            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(REGEX_PLUS));
+            }
 
-                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_access_contacts));
-                views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
-
-            } else */
-            if (eventsData.isEmptyArray() || eventsData.eventList.size() < startingIndex) {
+            if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
@@ -231,9 +231,35 @@ class WidgetUpdater {
 
             }
 
-            //Если события есть - рисуем бордюр, иначе - прозрачность
+            //Цвет подложки
+            int colorWidgetBackground = 0;
+            if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
+                try {
+                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
+                } catch (Exception e) { /* */}
+            }
+            if (colorWidgetBackground == 0) {
+                colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
+            }
+            views.setInt(R.id.events,"setBackgroundColor", colorWidgetBackground);
+
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
-            views.setInt(R.id.appwidget_main,"setBackgroundResource", eventsToShow > 0 && eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border) ? R.drawable.layout_bg : 0);
+            //Если события есть - рисуем бордюр, иначе - прозрачность
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Border))) {
+                views.setInt(R.id.appwidget_main,"setBackgroundResource", R.drawable.layout_bg);
+            } else {
+                views.setInt(R.id.appwidget_main,"setBackgroundResource", 0);
+            }
+
+            if (eventsData.preferences_debug_on) {
+                List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
+                views.setViewVisibility(R.id.info, View.VISIBLE);
+            } else {
+                views.setTextViewText(R.id.info, STRING_EMPTY);
+                views.setViewVisibility(R.id.info, View.INVISIBLE);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -258,7 +284,7 @@ class WidgetUpdater {
                     eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
                 isVisibleEvent = false;
-            } else if (widgetPref.size() > 3) {
+            } else if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
                 List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split(REGEX_PLUS));
                 if (eventsPrefList.size() > 0) {
                     useEventListPrefs = false;
@@ -496,7 +522,8 @@ class WidgetUpdater {
             //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
             int id_widget_Photo = resources.getIdentifier(WIDGET_IMAGE_VIEW + eventsDisplayed, STRING_ID, packageName);
 
-            Bitmap photo = eventsData.getContactPhoto(event, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), false, true);
+            Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), false, true);
             if (photo != null) {
                 //необходимо уменьшать, потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
                 final int dstWidth = 2 * width / eventsToShow;
@@ -510,12 +537,12 @@ class WidgetUpdater {
                 }
                 //photo.recycle(); //https://stackoverflow.com/questions/38784302/cant-parcel-a-recycled-bitmap
             }
-            //views.setInt(id_widget_Photo, "setBackgroundResource", R.drawable.selection_rectangle); //не работает
 
             //Иконка события
             int id_widget_EventIcon = resources.getIdentifier(WIDGET_ICON_EVENT_TYPE + eventsDisplayed, STRING_ID, packageName);
 
-            if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
 
                 int eventIcon;
                 try {
@@ -542,7 +569,8 @@ class WidgetUpdater {
             String strZodiacInfo = STRING_EMPTY;
             int id_widget_ZodiacIcon = resources.getIdentifier(WIDGET_ICON_ZODIAC + eventsDisplayed, STRING_ID, packageName);
 
-            if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)) {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
 
@@ -575,7 +603,10 @@ class WidgetUpdater {
             String strZodiacYearInfo = STRING_EMPTY;
             int id_widget_ZodiacYearIcon = resources.getIdentifier(WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, STRING_ID, packageName);
 
-            if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
+
+            //if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
 
@@ -607,11 +638,21 @@ class WidgetUpdater {
 
             //Иконка фаворита
             int id_widget_FavIcon = resources.getIdentifier(WIDGET_ICON_FAV + eventsDisplayed, STRING_ID, packageName);
-            views.setViewVisibility(id_widget_FavIcon, eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon) && singleEventArray[Position_starred].equals(STRING_1) ? View.VISIBLE : View.GONE);
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon)) && singleEventArray[Position_starred].equals(STRING_1)) {
+
+                views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
+
+            } else {
+
+                views.setViewVisibility(id_widget_FavIcon, View.GONE);
+
+            }
 
             //Иконка события без уведомления
             int id_widget_SilencedIcon = resources.getIdentifier(WIDGET_ICON_SILENCED + eventsDisplayed, STRING_ID, packageName);
-            if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon) && eventsData.checkIsSilencedEvent(eventKey)) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon)) && eventsData.checkIsSilencedEvent(eventKey)) {
 
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
@@ -689,19 +730,21 @@ class WidgetUpdater {
             //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
             views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 
-            //Если не последнее событие - по нажатию на фото открываем карточку контакта
+            //Если не последнее событие - по нажатию на фото открываем событие
             if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
 
-                Intent intentView = new Intent(Intent.ACTION_VIEW);
-                Uri uri = null;
-                if (!singleEventArray[Position_contactID].isEmpty()) {
-                        uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (!singleEventArray[Position_eventID].isEmpty()) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                Intent intent = null;
+
+                if (eventsData.preferences_widgets_on_click_action == 7) { //Основной список событий
+                    intent = new Intent(context, MainActivity.class);
+                    intent.setAction(ACTION_LAUNCH);
+                } else if (eventsData.preferences_widgets_on_click_action >= 1 & eventsData.preferences_widgets_on_click_action <=4) {
+                    intent = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action);
                 }
-                if (uri != null) {
-                    intentView.setData(uri);
-                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
+
+                if (intent != null) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
                 } else { //Ничего не показываем
                     views.setOnClickPendingIntent(resources.getIdentifier(WIDGET_EVENT_INFO + eventsDisplayed, STRING_ID, packageName), null);
                 }

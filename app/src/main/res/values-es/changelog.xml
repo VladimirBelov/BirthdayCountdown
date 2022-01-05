@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.10.2021, 0:19
+  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
   ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 12.10.2021, 0:16
+  ~  * Last modified 26.12.2021, 1:01
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.6</item>
+        <item>Se agregó la capacidad de personalizar un conjunto de elementos para cada widget</item>
+        <item>Configuración de color de fondo agregada para widgets</item>
+        <item>Corrección de errores y varias optimizaciones</item>
+
+        <item>#1.6.5</item>
+        <item>Se agregó soporte para enlaces web externos para todo tipo de eventos (más detalles en la guía \"Preguntas y respuestas\")</item>
+        <item>Se ha añadido un icono con sugerencias sobre el formato de las consultas a la barra de búsqueda</item>
+        <item>Para la lista de eventos, se han agregado widgets y notificaciones en la configuración de respuesta al clic: abrir tarjeta de contacto, enlace web, lista de eventos, …</item>
+        <item>Corrección de errores</item>
 
         <item>#1.6.4</item>
         <item>Se agregó soporte para eventos de archivos locales (formato DarkBirthday, no eventos flotantes y cumpleaños)</item>
