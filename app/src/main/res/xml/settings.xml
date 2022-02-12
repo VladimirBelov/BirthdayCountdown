@@ -7,8 +7,6 @@
   ~  */
   -->
 
-<!-- https://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-3-ae9793fd31ec -->
-
 <!--suppress DeprecatedClassUsageInspection -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -423,7 +421,8 @@
         <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView
             https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/
             https://github.com/JayH5/drag-sort-listview
-             com.mobeta.android.dslv.DragSortListView-->
+            https://github.com/jonathangerbaud/Klyph/blob/master/Klyph/src/android/preference/MultiSelectDragListPreference.javaMultiSelectDragListPreference.java
+            -->
         <MultiSelectListPreference
             android:defaultValue="@array/pref_List_EventInfo_values_default"
             android:entries="@array/pref_List_EventInfo_entries"
@@ -448,12 +447,12 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
-            android:defaultValue="@string/pref_List_Caption_default"
-            android:key="@string/pref_List_Caption_key"
-            android:entries="@array/pref_List_Caption_entries"
-            android:entryValues="@array/pref_List_Caption_values"
-            android:title="@string/pref_List_Caption_title"
-            android:summary="@string/pref_List_Caption_description"
+            android:defaultValue="@string/pref_List_NameFormat_default"
+            android:key="@string/pref_List_NameFormat_key"
+            android:entries="@array/pref_List_NameFormat_entries"
+            android:entryValues="@array/pref_List_NameFormat_values"
+            android:title="@string/pref_List_NameFormat_title"
+            android:summary="@string/pref_List_NameFormat_description"
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
@@ -467,6 +466,16 @@
             android:summary="@string/pref_List_DateFormat_description"
             android:icon="@android:drawable/ic_menu_month"
             android:dialogIcon="@android:drawable/ic_menu_month"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_List_CustomCaption_key"
+            android:summary="@string/pref_List_CustomCaption_description"
+            android:title="@string/pref_List_CustomCaption_title"
+            android:hint="@string/pref_List_CustomCaption_hint"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
             android:negativeButtonText="@string/button_cancel"/>
 
         <org.vovka.birthdaycountdown.CustomEditTextPreference
@@ -497,7 +506,7 @@
             android:defaultValue="@color/pref_List_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventToday_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -508,7 +517,7 @@
             android:defaultValue="@color/pref_List_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventSoon_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -519,7 +528,7 @@
             android:defaultValue="@color/pref_List_Color_EventJubilee_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -607,7 +616,7 @@
             android:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventCaption_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -618,7 +627,7 @@
             android:defaultValue="@color/pref_Widgets_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventToday_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -629,7 +638,7 @@
             android:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventSoon_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
@@ -640,7 +649,7 @@
             android:defaultValue="@color/pref_Widgets_Color_EventFar_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="4"
-            app:itemLayout="@layout/dash_grid_item_color"
+            app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 

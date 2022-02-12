@@ -78,7 +78,7 @@ class Person {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_CONSTRUCTOR_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.PERSON_CONSTRUCTOR_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -138,7 +138,7 @@ class Person {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_SHORT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_SHORT_ERROR + e, Toast.LENGTH_LONG).show();
             return STRING_EMPTY;
         }
     }
@@ -194,7 +194,7 @@ class Person {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_GENDER_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.PERSON_GET_GENDER_ERROR + e, Toast.LENGTH_LONG).show();
             return -1;
         }
 

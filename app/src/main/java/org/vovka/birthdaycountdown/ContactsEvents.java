@@ -43,6 +43,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_2MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
+import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
@@ -77,6 +78,8 @@ import static org.vovka.birthdaycountdown.Constants.Type_Death;
 import static org.vovka.birthdaycountdown.Constants.Type_FileEvent;
 import static org.vovka.birthdaycountdown.Constants.Type_NameDay;
 import static org.vovka.birthdaycountdown.Constants.Type_Other;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_LIST;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_PHOTO_LIST;
 import static org.vovka.birthdaycountdown.Constants.defaultNotificationID;
 import static org.vovka.birthdaycountdown.Constants.defaultQuizID;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -222,8 +225,13 @@ class ContactsEvents {
     static final String pref_Widgets_EventInfo_ZodiacSign = "4";
     static final String pref_Widgets_EventInfo_ZodiacYear = "5";
     static final String pref_Widgets_EventInfo_SilencedIcon = "6";
-    static final String pref_Widgets_EventInfo_EventCaption = "7"; //в общих настройках не используется
     static final String pref_Widgets_EventInfo_Border = "10";
+
+    //в общих настройках не используются
+    static final String pref_Widgets_EventInfo_EventCaption = "7";
+    static final String pref_Widgets_EventInfo_Age = "16";
+    static final String pref_Widgets_EventInfo_DaysBeforeEvent = "18";
+    static final String pref_Widgets_EventInfo_EventDayOfWeek = "19";
 
     final private Set<String> pref_Widgets_EventInfo_Info = new HashSet<String>() {{
         add(pref_Widgets_EventInfo_Photo);
@@ -308,8 +316,9 @@ class ContactsEvents {
     Set<String> preferences_list_event_info;
     String preferences_list_prev_events;
     private int preferences_list_sad_photo;
+    String preferences_list_custom_caption;
 
-    int preferences_list_caption;
+    int preferences_list_nameformat;
     int preferences_list_dateformat;
     int preferences_list_color_eventtoday;
     int preferences_list_color_eventsoon;
@@ -799,8 +808,9 @@ class ContactsEvents {
             }
             preferences_list_prev_events = preferences.getString(context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
             preferences_list_sad_photo = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default))));
-            preferences_list_caption = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_Caption_key), context.getString(R.string.pref_List_Caption_default))));
+            preferences_list_nameformat = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default))));
             preferences_list_dateformat = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default))));
+            preferences_list_custom_caption = preferences.getString(context.getString(R.string.pref_List_CustomCaption_key), STRING_EMPTY);
             preferences_list_color_eventtoday = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventToday_key), getResources().getColor(R.color.pref_List_Color_EventToday_default));
             preferences_list_color_eventsoon = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventSoon_key), getResources().getColor(R.color.pref_List_Color_EventSoon_default));
             preferences_list_color_eventjubilee = preferences.getInt(getResources().getString(R.string.pref_List_Color_EventJubilee_key), getResources().getColor(R.color.pref_List_Color_EventJubilee_default));
@@ -1193,7 +1203,7 @@ class ContactsEvents {
 
         } catch (Exception e){
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_PREFERENCES_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -1224,7 +1234,7 @@ class ContactsEvents {
 
         } catch (Exception e){
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_PREFERENCES_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -1263,7 +1273,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_LOCALE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_LOCALE_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -1310,7 +1320,7 @@ class ContactsEvents {
                     | getFileEvents(eventTypesIDs.get(Type_Other));
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
     }
@@ -1533,7 +1543,7 @@ class ContactsEvents {
                         countErrors++;
                         if (preferences_debug_on && countErrors < 3) {
                             StringBuilder sb = new StringBuilder();
-                            sb.append(Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR).append(e.toString()).append(STRING_EOL);
+                            sb.append(Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR).append(e).append(STRING_EOL);
                             for(String name: cursor.getColumnNames()) {
                                 String data = cursor.getString(cache.getColumnIndex(cursor, name));
                                 if (data != null && !data.equals(STRING_0)) sb.append(name).append(STRING_COLON_SPACE).append(data).append(STRING_EOL);
@@ -1581,7 +1591,7 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR + e, Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -1821,7 +1831,7 @@ class ContactsEvents {
                 String finalAccountKey = accountKey;
                 String finalEventType = eventType;
                 String finalEventDate = eventDate;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR + e.toString()
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR + e
                         + "\naccountKey=" + finalAccountKey + ", eventType=" + finalEventType + ", eventDate=" + finalEventDate, Toast.LENGTH_LONG).show());
             }
         }
@@ -1921,10 +1931,12 @@ class ContactsEvents {
                 calIDs.append(calID);
             }
 
-            String selection = "("
+            String selection = CalendarContract.Events.CALENDAR_ID + " = " + calIDs;
+                    /*"("
                     + " ( " + CalendarContract.Events.ALL_DAY + " = 1 )"
-                    + "AND ( " + CalendarContract.Events.CALENDAR_ID + " = " + calIDs.toString() + " )"
-                    + ")";
+                    + " AND "
+                    + "( " + CalendarContract.Events.CALENDAR_ID + " = " + calIDs + " )"
+                    + ")";*/
 
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startTime.getTimeInMillis());
@@ -2193,7 +2205,7 @@ class ContactsEvents {
                                 dataRow.append(entry.getKey()).append("=");
                                 dataRow.append(entry.getValue());
                             }}
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e.toString() + dataRow.toString(), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e + dataRow, Toast.LENGTH_LONG).show());
             }
             return false;
         }
@@ -2235,7 +2247,7 @@ class ContactsEvents {
             if (cursor != null && !cursor.isClosed()) cursor.close();
         } catch (Exception e) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDARS_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -2419,7 +2431,7 @@ class ContactsEvents {
                                        if (contactTitle != null) {
                                            int cStart = contactTitle.indexOf(STRING_COMMA);
                                            if (cStart > 0) {
-                                               userData.put(Position_organization, contactTitle.substring(0, cStart - 1).trim());
+                                               userData.put(Position_organization, contactTitle.substring(0, cStart).trim());
                                                userData.put(Position_title, contactTitle.substring(cStart + 1).trim());
                                            } else {
                                                userData.put(Position_title, contactTitle.trim());
@@ -2567,7 +2579,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
     }
@@ -2578,26 +2590,29 @@ class ContactsEvents {
         StringBuilder sb = new StringBuilder();
         String line;
 
-        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
 
-        try (
-                InputStream inputStream = contentResolver.openInputStream(uri);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
-        ) {
+            contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                if (delimeter != null) sb.append(delimeter);
-            }
+            try (
+                    InputStream inputStream = contentResolver.openInputStream(uri);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
+            ) {
 
-        } catch (java.lang.SecurityException se) {
-            if (preferences_debug_on) {
-                handler.post(() -> Toast.makeText(context, resources.getText(R.string.msg_file_open_error) + getPath(context, uri), Toast.LENGTH_LONG).show());
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    if (delimeter != null) sb.append(delimeter);
+                }
+
+            } catch (java.lang.SecurityException se) {
+                if (preferences_debug_on) {
+                    handler.post(() -> Toast.makeText(context, resources.getText(R.string.msg_file_open_error) + getPath(context, uri), Toast.LENGTH_LONG).show());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
             if (preferences_debug_on) {
-                handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR + e, Toast.LENGTH_LONG).show());
             }
         }
         return sb.toString();
@@ -2744,7 +2759,7 @@ class ContactsEvents {
             return bm;
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR + e, Toast.LENGTH_LONG).show());
             return null;
         }
     }
@@ -2798,7 +2813,7 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR + e, Toast.LENGTH_LONG).show());
             return STRING_EMPTY;
         }
 
@@ -2854,7 +2869,7 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
         return resultMap;
@@ -2905,7 +2920,7 @@ class ContactsEvents {
             return result != null ? result : STRING_EMPTY;
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e, Toast.LENGTH_LONG).show());
             return STRING_EMPTY;
         }
 
@@ -2939,7 +2954,7 @@ class ContactsEvents {
             return phone != null ? phone : STRING_EMPTY;
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR + e, Toast.LENGTH_LONG).show());
             return STRING_EMPTY;
         }
 
@@ -3306,7 +3321,7 @@ class ContactsEvents {
             e.printStackTrace();
             if (preferences_debug_on) {
                 String finalSingleEvent = singleEvent;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e.toString() + (finalSingleEvent != null ? STRING_EOL + finalSingleEvent : STRING_EMPTY), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e + (finalSingleEvent != null ? STRING_EOL + finalSingleEvent : STRING_EMPTY), Toast.LENGTH_LONG).show());
             }
         } finally {
 
@@ -3319,7 +3334,7 @@ class ContactsEvents {
     }
 
     private String getEventDistanceText(long dayDiff, @NonNull Date eventDate){
-        //Если событие в ближайшие 3 дня, то вернёт "сегодня", "завтра", "послезавтра", если позже, то "через X дней в " + <день недели>
+        //Если событие в ближайшие 3 дня, то вернёт "сегодня", "завтра", "послезавтра", если позже, то "через X дней" + "|в " + <день недели>
 
         StringBuilder eventDistance = new StringBuilder();
         try {
@@ -3343,8 +3358,7 @@ class ContactsEvents {
                                     R.string.msg_after_day_prefix_2_3_4,
                                     R.string.msg_after_day_prefix_4_21
                             ))
-                            .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : "") //для немецкого "in 10 TageN"
-                            .append(getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1]);
+                            .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : ""); //для немецкого "in 10 TageN"
                 } else if (dayDiff == -1) { //Вчера
                     eventDistance.append(getResources().getString(R.string.msg_yesterday));
                 } else if (dayDiff == -2) { //Позавчера
@@ -3359,14 +3373,14 @@ class ContactsEvents {
                                     R.string.msg_after_day_prefix_2_3_4,
                                     R.string.msg_after_day_prefix_4_21
                             ))
-                            .append(getResources().getString(R.string.msg_after_event_postfix))
-                            .append(getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1]);
+                            .append(getResources().getString(R.string.msg_after_event_postfix));
                 }
             }
+            eventDistance.append(STRING_BAR).append(getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1]);
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR + e.toString() + STRING_EOL + dayDiff + STRING_EOL + eventDate, Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR + e + STRING_EOL + dayDiff + STRING_EOL + eventDate, Toast.LENGTH_LONG).show());
         }
         return  eventDistance.toString();
     }
@@ -3513,7 +3527,7 @@ class ContactsEvents {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INSERT_PREVIOUS_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INSERT_PREVIOUS_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return dataList;
     }
@@ -3608,7 +3622,7 @@ class ContactsEvents {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATION_CHANNEL_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATION_CHANNEL_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -3636,7 +3650,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_BOOT_RECEIVER_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_BOOT_RECEIVER_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -3674,7 +3688,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -3719,7 +3733,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -3802,7 +3816,7 @@ class ContactsEvents {
                             textBig.append(singleEventArray[Position_eventEmoji])
                                     .append(STRING_SPACE)
                                     .append(eventDay).append(STRING_SPACE)
-                                    .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
+                                    .append(preferences_list_nameformat == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
                             if (!singleEventArray[Position_age_caption].trim().isEmpty())
                                 textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
                             if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
@@ -3858,13 +3872,13 @@ class ContactsEvents {
                     }
 
                     if (eventDate != null) {
-                        //if (countDaysDiff(currentDay, eventDate) <= notifications_days) {
+
                         textBig = new StringBuilder();
                         textBig.append(singleEventArray[Position_eventEmoji])
                                 .append(STRING_SPACE)
                                 .append(eventDay)
                                 .append(STRING_SPACE)
-                                .append(preferences_list_caption == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
+                                .append(preferences_list_nameformat == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
                         if (!singleEventArray[Position_age_caption].trim().isEmpty())
                             textBig.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
                         if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
@@ -3875,11 +3889,14 @@ class ContactsEvents {
                         }
 
                         int notificationID = defaultNotificationID + generator.nextInt(100);
+                        final String eventDistance = singleEventArray[Position_eventDistanceText];
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
                                 .setSmallIcon(R.drawable.ic_birthdaycountdown_icon)
                                 .setContentText(textBig)
-                                .setContentTitle(singleEventArray[Position_eventDistanceText])
+                                .setContentTitle(!singleEventArray[Position_eventDistance].equals(STRING_0) ?
+                                        eventDistance.replace(STRING_BAR, STRING_SPACE) :
+                                        eventDistance.substring(0, eventDistance.indexOf(STRING_BAR)))
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
@@ -3972,9 +3989,6 @@ class ContactsEvents {
 
                         notificationManager.notify(notificationID, builder.build());
 
-                        // } else {
-                        //     break;
-                        //  }
                     }
                 }
 
@@ -3982,7 +3996,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -3990,15 +4004,17 @@ class ContactsEvents {
 
         try {
 
-            if (singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) && !singleEventArray[Position_contactID].isEmpty()) {
-                return singleEventArray[Position_contactID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
-            } else if (singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) && !singleEventArray[Position_eventID].isEmpty()) {
-                return singleEventArray[Position_eventID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
+            if (!singleEventArray[Position_eventSubType].trim().isEmpty()) {
+                if (!singleEventArray[Position_contactID].trim().isEmpty()) {
+                    return singleEventArray[Position_contactID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
+                } else if (!singleEventArray[Position_eventID].trim().isEmpty()) {
+                    return singleEventArray[Position_eventID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_EVENT_KEY_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_EVENT_KEY_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return STRING_EMPTY;
     }
@@ -4044,7 +4060,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -4085,7 +4101,7 @@ class ContactsEvents {
                         .setColor(this.getResources().getColor(R.color.dark_green))
                         .setSmallIcon(R.drawable.ic_birthdaycountdown_icon)
                         .setContentText(textBig)
-                        .setContentTitle(singleEventArray[Position_eventDistanceText])
+                        .setContentTitle(singleEventArray[Position_eventDistanceText].replace(STRING_BAR, STRING_SPACE))
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setAutoCancel(true);
@@ -4124,7 +4140,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -4141,7 +4157,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -4154,7 +4170,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_HIDDEN_EVENTS_COUNT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_HIDDEN_EVENTS_COUNT_ERROR + e, Toast.LENGTH_LONG).show());
             return 0;
         }
     }
@@ -4167,7 +4183,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
     }
@@ -4189,7 +4205,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
 
@@ -4220,7 +4236,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
 
@@ -4234,7 +4250,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_SILENCED_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_SILENCED_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -4247,7 +4263,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_SILENT_EVENTS_COUNT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_SILENT_EVENTS_COUNT_ERROR + e, Toast.LENGTH_LONG).show());
             return 0;
         }
     }
@@ -4260,7 +4276,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
     }
@@ -4282,7 +4298,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_SILENT_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
 
@@ -4313,7 +4329,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_SILENT_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
             return false;
         }
 
@@ -4328,7 +4344,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_MERGED_ID_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_MERGED_ID_ERROR + e, Toast.LENGTH_LONG).show());
             return STRING_EMPTY;
         }
     }
@@ -4364,7 +4380,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_MERGED_ID_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_MERGED_ID_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return false;
     }
@@ -4395,7 +4411,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -4425,7 +4441,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -4445,40 +4461,45 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
 
-    @NonNull List<String> getWidgetPreference(int id) {
+    @NonNull List<String> getWidgetPreference(int widgetID, String widgetType) {
 
-        List<String> defaultPref = Arrays.asList(context.getString(R.string.widget_config_defaultPref).split(STRING_COMMA));
+        final String defaultPrefString;
+        if (widgetType != null && widgetType.equals(WIDGET_TYPE_LIST)) {
+            defaultPrefString = context.getString(R.string.widget_config_defaultPref_List);
+        } else if (widgetType != null && widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
+            defaultPrefString = context.getString(R.string.widget_config_defaultPref_PhotoList);
+        } else {
+            defaultPrefString = context.getString(R.string.widget_config_defaultPref);
+        }
+
+        List<String> defaultPref = Arrays.asList(defaultPrefString.split(STRING_COMMA, -1));
         if (context == null) return defaultPref;
 
         try {
 
-            //if (preferences_debug_on) Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_DATA, id) + pref, Toast.LENGTH_SHORT).show();
-
-            String strPref = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + id, context.getString(R.string.widget_config_defaultPref));
-            if (strPref == null) strPref = context.getString(R.string.widget_config_defaultPref);
-            String[] pref = strPref.split(STRING_COMMA);
+            String strPref = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + widgetID, defaultPrefString);
+            String[] pref = strPref.split(STRING_COMMA, -1);
             List<String> prefWidget = new ArrayList<>(Arrays.asList(pref));
-            //prefWidget.addAll(Arrays.asList(pref));
 
-            //if (preferences_debug_on) Toast.makeText(context, "def:" + defaultPref.toString() + "\npref:" +  prefWidget.toString(), Toast.LENGTH_LONG).show();
-
-            //Добиваем дефолтными значениями
+            //Заполнение дефолтными значениями
             while (prefWidget.size() < defaultPref.size()) {
                 prefWidget.add(defaultPref.get(prefWidget.size()));
             }
 
-            //if (preferences_debug_on) Toast.makeText(context, "after:" +  prefWidget.toString(), Toast.LENGTH_LONG).show();
+            /*if (preferences_debug_on) new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, widgetType
+                    + STRING_PARENTHESIS_OPEN + widgetID
+                    + STRING_PARENTHESIS_CLOSE + STRING_COLON_SPACE+ prefWidget, Toast.LENGTH_LONG).show());*/
 
             return prefWidget;
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
             return defaultPref;
         }
 
@@ -4497,7 +4518,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_REMOVE_WIDGET_PREFERENCE_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_REMOVE_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -4573,7 +4594,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -4602,7 +4623,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HTML_COLOR_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HTML_COLOR_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return msg;
     }
@@ -4807,6 +4828,11 @@ class ContactsEvents {
 
     @NonNull
     String getZodiacInfo(ZodiacInfo requestInfo, String strBirthday) {
+
+        //todo: сделать вариант получения знака по уточнённым в2016 года датам
+        // https://habr.com/ru/post/397591/
+        // https://habr.com/ru/post/397729/
+        // https://www.stylist.co.uk/astrology/nasa-horoscope-star-sign-zodiac-ophiuchus-personality-astrology-astronomy/248217
 
         try {
 
@@ -5098,7 +5124,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }
@@ -5124,7 +5150,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR + e, Toast.LENGTH_LONG).show());
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question), Constants.quiz_error_button_OK);
         }
@@ -5175,7 +5201,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
             final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
             if (isOrg || isTitle) {
@@ -5226,7 +5252,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
 
@@ -5274,7 +5300,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
             final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
             if (isOrg || isTitle) {
@@ -5321,7 +5347,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
 
@@ -5374,7 +5400,7 @@ class ContactsEvents {
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(YEAR) != Calendar.getInstance().get(YEAR)) || (eventDay.equals(currentDay));
             //ToastExpander.showFor(Toast.makeText(context, getCalendarFromDate(eventDay).get(YEAR) + "!=" + Calendar.getInstance().get(YEAR) + "=" + isPassedBDay, Toast.LENGTH_LONG), 7000);
 
-            StringBuilder personInfo = new StringBuilder(preferences_list_caption == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
             final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
             if (isOrg || isTitle) {
@@ -5450,7 +5476,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e.toString(), Constants.quiz_error_button_OK);
+            return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
 
@@ -5490,7 +5516,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
         return resultList;
@@ -5512,7 +5538,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR + e, Toast.LENGTH_LONG).show());
             return true;
         }
     }
@@ -5591,7 +5617,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return STRING_EMPTY;
 
@@ -5634,7 +5660,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_DATA_COLUMN_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_DATA_COLUMN_ERROR + e, Toast.LENGTH_LONG).show());
         }
         return null;
 
@@ -5654,7 +5680,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR + e, Toast.LENGTH_LONG).show());
         }
     }
 

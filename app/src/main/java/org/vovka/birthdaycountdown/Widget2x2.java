@@ -41,7 +41,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -83,7 +83,8 @@ public class Widget2x2 extends AppWidgetProvider {
             }
 
             if (eventsData.preferences_debug_on) {
-                List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+                String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId).provider.getShortClassName();
+                List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
                 final Resources resources = context.getResources();
                 final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
                 final float density = displayMetrics.density;
@@ -92,7 +93,7 @@ public class Widget2x2 extends AppWidgetProvider {
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref.toString()
+                                "\n widgetPref=" + widgetPref
                         , Toast.LENGTH_LONG).show();
             }
 
@@ -102,7 +103,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

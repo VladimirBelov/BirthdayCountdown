@@ -154,7 +154,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setHomeButtonEnabled(true);
                 bar.setDisplayHomeAsUpEnabled(true);
                 bar.setDisplayShowTitleEnabled(true);
-                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
+                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
                 bar.setTitle(R.string.window_settings);
             }
 
@@ -172,8 +172,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         builder.setIcon(android.R.drawable.ic_menu_info_details);
                         builder.setMessage(getString(R.string.msg_no_access_storage_hint));
                         builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-                        builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) ->
-                                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName()))));
+                        builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
+                            try {
+                                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                            } catch (android.content.ActivityNotFoundException e) { /**/ }
+                        });
                         AlertDialog alertToShow = builder.create();
                         alertToShow.setOnShowListener(arg0 -> {
                             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
@@ -194,7 +197,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -257,7 +260,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -347,7 +350,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -387,12 +390,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_FAQActivity_key).equals(key)) { //FAQ
 
                 Intent intent = new Intent(this, FAQActivity.class);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else if (getString(R.string.pref_AboutActivity_key).equals(key)) { //О приложении
 
                 Intent intent = new Intent(this, AboutActivity.class);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
@@ -447,7 +454,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     Intent intent = new Intent();
                     intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                    startActivity(intent);
+                    try {
+                        startActivity(intent);
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
@@ -473,7 +482,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
         return false;
@@ -495,7 +504,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_STOP_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_STOP_ERROR + e, Toast.LENGTH_LONG).show();
         } finally {
             super.onStop();
         }
@@ -625,7 +634,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -771,7 +780,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -840,7 +849,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -855,23 +864,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
             String existingValue = eventsData.preferences_notifications_ringtone;
-            //if (existingValue != null) {
-                if (existingValue.length() == 0) {
-                    // Select "Silent"
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-                } else {
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
-                }
-           //} else {
-                // No ringtone has been selected, set to the default
-            //    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-            //}
-
-            startActivityForResult(intent, RESULT_PICK_RINGTONE);
+            if (existingValue.length() == 0) {
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+            } else {
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+            }
+            try {
+                startActivityForResult(intent, RESULT_PICK_RINGTONE);
+            } catch (android.content.ActivityNotFoundException e) { /**/ }
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -942,7 +946,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -982,7 +986,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
-                                if (uri != null) getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                if (uri != null) {
+                                    try {
+                                        getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    } catch (RuntimeException e) { /**/ }
+                                }
                             }
 
                         }
@@ -1006,7 +1014,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
-                                if (uri != null) getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                if (uri != null) {
+                                    try {
+                                        getContentResolver().releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    } catch (RuntimeException e) { /**/ }
+                                }
                             }
                         }
 
@@ -1015,7 +1027,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         intent.setType("*/*");
                         //intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                        startActivityForResult(intent, RESULT_PICK_FILE);
+                        try {
+                            startActivityForResult(intent, RESULT_PICK_FILE);
+                        } catch (android.content.ActivityNotFoundException e) { /**/ }
                     })
                     .setCancelable(true);
 
@@ -1037,7 +1051,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_FILES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_FILES_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -1082,7 +1096,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1135,7 +1149,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), Constants.GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), Constants.GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
             }
 
             return view;

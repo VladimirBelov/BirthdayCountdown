@@ -8,6 +8,8 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Cumpleaños y Eventos</string>
     <string name="window_settings">Configuraciones</string>
     <string name="window_widget_settings">Configuración de widgets</string>
     <string name="window_about">Sobre la aplicación</string>
@@ -44,6 +46,7 @@
     <string name="menu_context_unmerge_event">Desvincular del contacto</string>
     <string name="menu_context_remerge_event">Enlace a otro contacto…</string>
     <string name="menu_context_open_url">Abrir enlace web</string>
+    <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
@@ -64,6 +67,7 @@
     <string name="msg_stats_silenced_prefix">"eventos sin notificación: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
+    <string name="msg_color_parse_error">¡Error al analizar el color!</string>
 
     <string name="msg_plural_postfix">es</string>
 
@@ -109,6 +113,7 @@
     <string name="msg_file_info">"Evento de archivo \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmación</string>
     <string name="msg_title_settings">Configuraciones guardadas</string>
+    <string name="msg_no_selection">¡Selección vacía! Necesito seleccionar cualquier cosa</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -124,6 +129,7 @@
     <string name="hint_EventIcon">Icono</string>
     <string name="hint_SearchPanel">Barra de búsqueda</string>
     <string name="hint_AlertDialog">Diálogo de alerta</string>
+    <string name="hint_DragItem">Elemento arrastrable</string>
 
     <string name="button_ok">Okay</string>
     <string name="button_cancel">Cancelación</string>
@@ -194,13 +200,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" en el domingo"</item>
-        <item>" en el lunes"</item>
-        <item>" en el martes"</item>
-        <item>" en el miércoles"</item>
-        <item>" en el jueves"</item>
-        <item>" en el viernes"</item>
-        <item>" en el sábado"</item>
+        <item>"en el domingo"</item>
+        <item>"en el lunes"</item>
+        <item>"en el martes"</item>
+        <item>"en el miércoles"</item>
+        <item>"en el jueves"</item>
+        <item>"en el viernes"</item>
+        <item>"en el sábado"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Configurar eventos</string>
@@ -301,10 +307,10 @@
         <item>Tres eventos anteriores</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Formato para el nombre del contacto</string>
-    <string name="pref_List_Caption_description">Nombre primero o apellido primero</string>
+    <string name="pref_List_NameFormat_title">Formato para el nombre del contacto</string>
+    <string name="pref_List_NameFormat_description">Nombre primero o apellido primero</string>
 
-    <string-array name="pref_List_Caption_entries">
+    <string-array name="pref_List_NameFormat_entries">
         <item>Nombre Patronímico Apellido</item>
         <item>Apellido Nombre Patronímico</item>
     </string-array>
@@ -322,6 +328,10 @@
         <item>D MMMM AAAA</item>
     </string-array>
 
+    <string name="pref_List_CustomCaption_title">Título Personalizado</string>
+    <string name="pref_List_CustomCaption_description">Título personalizado de la lista de eventos principales (se admiten emojis 🎂)</string>
+    <string name="pref_List_CustomCaption_hint">Ingrese el título</string>
+
     <string name="pref_Female_Names_title">Nombres femeninos</string>
     <string name="pref_Female_Names_description">Nombres femeninos adicionales para la visualización correcta de los iconos de contacto sin una foto.</string>
     <string name="pref_Female_Names_hint">Ingrese nombres femeninos (separados por comas)</string>
@@ -330,7 +340,7 @@
     <string name="pref_List_EventInfo_description">Qué detalles adicionales del evento mostrar</string>
 
     <string-array name="pref_List_EventInfo_entries">
-        <item>Foto de contacto</item>
+        <item>Foto</item>
         <item>Posición</item>
         <item>Organización</item>
         <item>Alias</item>
@@ -392,9 +402,20 @@
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Signo del zodiaco</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Año del zodiaco</string>
 
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Fecha original del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Fecha del evento original con año</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Fecha del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Fecha del evento con año</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Título del evento</string>
+    <string name="pref_Widgets_EventInfo_Age">Edad</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">Nombre del aniversario de bodas</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Días antes del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Día de la semana del evento</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
@@ -468,7 +489,7 @@
 
     <string name="widget_config_event_types_empty">Como en la lista de eventos</string>
 
-    <string name="widget_config_index_label">Número de inicio del evento:</string>
+    <string name="widget_config_index_label">Número de inicio del evento</string>
     <string name="widget_config_index_description">Un valor de 1 significa que los eventos se mostrarán desde el principio de la lista, 2 - desde el segundo, y así sucesivamente … Puede agregar varios widgets a la pantalla con diferentes valores en este campo para obtener la configuración deseada</string>
 
     <string name="widget_config_font_label">Factor de escala del tamaño de fuente</string>
@@ -597,6 +618,7 @@
     <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_description">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
 
+    <string name="changelog_version"><![CDATA[versión: %1$s (%2$s)<br>fecha: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Historial de versiones:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Versión: %1$s:</h2><ul>]]></string>
 

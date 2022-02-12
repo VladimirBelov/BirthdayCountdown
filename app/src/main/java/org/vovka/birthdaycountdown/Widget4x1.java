@@ -39,7 +39,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_4_X_1_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_4_X_1_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -80,7 +80,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_4_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_4_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

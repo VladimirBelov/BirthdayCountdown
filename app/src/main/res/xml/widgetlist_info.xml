@@ -10,7 +10,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/widgetlist"
     android:initialLayout="@layout/widgetlist"
-    android:minWidth="320dp"
+    android:minWidth="400dp"
     android:minHeight="110dp"
     android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"

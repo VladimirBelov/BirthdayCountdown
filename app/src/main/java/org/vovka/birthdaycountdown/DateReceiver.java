@@ -51,7 +51,7 @@ public class DateReceiver extends BroadcastReceiver {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.DATE_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+                if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.DATE_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
             }
 
         }

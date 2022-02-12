@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
@@ -28,7 +29,8 @@ import androidx.appcompat.widget.Toolbar;
  * This technique can be used with an {@link android.app.Activity} class, not just
  * {@link android.preference.PreferenceActivity}.
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("deprecation")
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
     @Override

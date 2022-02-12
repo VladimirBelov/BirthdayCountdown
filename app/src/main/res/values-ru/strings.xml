@@ -8,6 +8,8 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Дни рождения и события</string>
     <string name="window_settings">Настройки</string>
     <string name="window_widget_settings">Настройки виджета</string>
     <string name="window_about">О приложении</string>
@@ -44,6 +46,7 @@
     <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
     <string name="menu_context_remerge_event">Присоединить к другому контакту…</string>
     <string name="menu_context_open_url">Открыть web ссылку</string>
+    <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
 <!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
@@ -64,6 +67,7 @@
     <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
+    <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
 
     <string name="msg_plural_postfix">а</string>
 
@@ -109,6 +113,7 @@
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
     <string name="msg_title_confirmation">Подтверждение</string>
     <string name="msg_title_settings">Сохранённые настроки</string>
+    <string name="msg_no_selection">Пустой выбор! Нужно выбрать что-нибудь</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -124,6 +129,11 @@
     <string name="hint_EventIcon">Иконка</string>
     <string name="hint_SearchPanel">Панель поиска</string>
     <string name="hint_AlertDialog">Диалог оповещения</string>
+    <string name="hint_DragItem">Перетаскиваемый элемент</string>
+    <string name="hint_Version_History">История версий</string>
+    <string name="hint_Rate_PlayMarket">Оценить приложение на Play Market</string>
+    <string name="hint_Rate_AppGallery">Оценить приложение на App Gallery</string>
+    <string name="hint_ShowPreferences">Просмотреть все сохранённые настройки</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Отмена</string>
@@ -142,6 +152,7 @@
     <string name="button_question">Задать вопрос</string>
     <string name="button_close">Закрыть</string>
     <string name="button_prefs">Настройки</string>
+    <string name="button_saved_preferences">все сохранённые настройки</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -194,13 +205,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" в воскресенье"</item>
-        <item>" в понедельник"</item>
-        <item>" во вторник"</item>
-        <item>" в среду"</item>
-        <item>" в четверг"</item>
-        <item>" в пятницу"</item>
-        <item>" в субботу"</item>
+        <item>"в воскресенье"</item>
+        <item>"в понедельник"</item>
+        <item>"во вторник"</item>
+        <item>"в среду"</item>
+        <item>"в четверг"</item>
+        <item>"в пятницу"</item>
+        <item>"в субботу"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Настройка событий</string>
@@ -301,10 +312,10 @@
         <item>Три предыдущих события</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Формат для имени контакта</string>
-    <string name="pref_List_Caption_description">Впереди имя или фамилия</string>
+    <string name="pref_List_NameFormat_title">Формат для имени контакта</string>
+    <string name="pref_List_NameFormat_description">Впереди имя или фамилия</string>
 
-    <string-array name="pref_List_Caption_entries">
+    <string-array name="pref_List_NameFormat_entries">
         <item>Имя Отчество Фамилия</item>
         <item>Фамилия Имя Отчество</item>
     </string-array>
@@ -322,6 +333,10 @@
         <item>Д ММММ ГГГГ</item>
     </string-array>
 
+    <string name="pref_List_CustomCaption_title">Свой заголовок</string>
+    <string name="pref_List_CustomCaption_description">Свой собственный заголовок для основного списка событий (Emoji 🎂 поддерживаются)</string>
+    <string name="pref_List_CustomCaption_hint">Введите заголовок</string>
+
     <string name="pref_Female_Names_title">Женские имена</string>
     <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото</string>
     <string name="pref_Female_Names_hint">Введите женские имена (через запятую)</string>
@@ -330,7 +345,7 @@
     <string name="pref_List_EventInfo_description">Какие дополнительные детали события показывать</string>
 
     <string-array name="pref_List_EventInfo_entries">
-        <item>Фото контакта</item>
+        <item>Фото</item>
         <item>Должность</item>
         <item>Организация</item>
         <item>Псевдоним</item>
@@ -392,9 +407,20 @@
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Знак зодиака</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Животное в восточном календаре</string>
 
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Первоначальная дата события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Первоначальная дата события с годом</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Следующая дата события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Следующая дата события с годом</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Заголовок события</string>
+    <string name="pref_Widgets_EventInfo_Age">Возраст (годовщина)</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">Название годовщины свадьбы</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дней до события</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">День недели события</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
@@ -468,7 +494,7 @@
 
     <string name="widget_config_event_types_empty">Как в списке событий</string>
 
-    <string name="widget_config_index_label">Стартовый номер событий:</string>
+    <string name="widget_config_index_label">Стартовый номер событий</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>
 
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
@@ -597,6 +623,7 @@
     <string name="pref_Debug_On_hint">Нажмите ещё %1$d раз%2$s для %3$s отладочных сообщений</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки (рекомендуется включить, если некорректно отображаются виджеты или события, и прислать автору программы) и дополнительные функции приложения</string>
 
+    <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>История версий:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Версия: %1$s:</h2><ul>]]></string>
 

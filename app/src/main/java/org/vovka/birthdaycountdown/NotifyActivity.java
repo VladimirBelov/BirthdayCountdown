@@ -44,7 +44,7 @@ public class NotifyActivity extends Activity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.NOTIFY_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.NOTIFY_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }

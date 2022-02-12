@@ -8,6 +8,14 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.HTML_BR;
+import static org.vovka.birthdaycountdown.Constants.HTML_H1_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_H1_START;
+import static org.vovka.birthdaycountdown.Constants.HTML_H2_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_H2_START;
+import static org.vovka.birthdaycountdown.Constants.HTML_H3_END;
+import static org.vovka.birthdaycountdown.Constants.HTML_H3_START;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -22,14 +30,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-
-import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_H1_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H1_START;
-import static org.vovka.birthdaycountdown.Constants.HTML_H2_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H2_START;
-import static org.vovka.birthdaycountdown.Constants.HTML_H3_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H3_START;
 
 public class FAQActivity extends AppCompatActivity {
 
@@ -59,7 +59,7 @@ public class FAQActivity extends AppCompatActivity {
                 bar.setHomeButtonEnabled(true);
                 bar.setDisplayHomeAsUpEnabled(true);
                 bar.setDisplayShowTitleEnabled(true);
-                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
+                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
             }
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
@@ -70,7 +70,9 @@ public class FAQActivity extends AppCompatActivity {
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
-                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                try {
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
@@ -106,7 +108,7 @@ public class FAQActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

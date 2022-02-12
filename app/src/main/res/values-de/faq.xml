@@ -48,8 +48,13 @@
 
                 <item>###Ereignisse</item>
 
+                <item>#Kontaktereignisse</item>
+                <item>Standardmäßig werden Ereignisse (Geburtstage, Jahrestage, benutzerdefinierte Ereignisse, andere Ereignisse) von allen Konten auf dem Gerät angezeigt.</item>
+                <item>Um die Auswahl der Konten für Scan-Ereignisse einzuschränken, müssen die erforderlichen Konten unter Einstellungen->Konten ausgewählt werden.</item>
+                <item>Um Ereignisse von allen Konten (einschließlich lokaler) anzuzeigen, klicken Sie auf \"Alle\".</item>
+
                 <item>#Kalenderereignisse</item>
-                <item>Alle Kalenderereignisse werden unterstützt. Für die Ereignisse \"Geburtstag\" und \"Sonstiges Ereignis\" können Sets von Kalendern angegeben werden. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
+                <item>Alle Kalenderereignisse aus ausgewählten Kalendern werden unterstützt. Kalendersets werden für die Ereignisse \"Geburtstag\" und \"Sonstiges Ereignis\" separat angegeben. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
                 <item> </item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
                 <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
@@ -90,7 +95,7 @@
                 <li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary
                 <li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge
                 </ul>]]></item>
-                <item>Die Suche verwendet alle Ereignisdaten (zur Überprüfung: aktivieren Sie \"Debug &amp; Zusatzfunktionen\" in den App-Einstellungen, drücken Sie lange auf das Ereignis, Punkt \"Ereignisdaten\")</item>
+                <item>Die Suche verwendet alle Ereignisdaten (zur Überprüfung: aktivieren Sie \"Debug &amp; Zusatzfunktionen\" in den App-Einstellungen, drücken Sie lange auf das Ereignis, Punkt \"Ereignisdaten\").</item>
                 <item> </item>
 
                 <item>#Sprache der Anwendungsoberfläche</item>

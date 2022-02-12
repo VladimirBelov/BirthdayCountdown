@@ -8,17 +8,29 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.EXTRA_CHECKS;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_COLOR;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_COLORED;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_LIST;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_RESULTS;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_TITLE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,24 +39,32 @@ import java.util.List;
 public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;
+    private boolean isSortable = false;
     private String zeroSelectedTitle = STRING_EMPTY;
     private int zeroSelectedIndex = -1;
     private AlertDialog.Builder dialogBuilder;
-
-    final ArrayAdapter<String> simple_adapter;
+    final ArrayAdapter<String> adapter;
+    private ArrayList<String> mColored = new ArrayList<>();
+    private int mColor = 0;
+    private final Context context;
+    FragmentManager fm;
+    Fragment fragment;
+    Menu menu;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
 
-        simple_adapter = new ArrayAdapter<>(context, R.layout.list_item_1);
-        super.setAdapter(simple_adapter);
+        this.context = context;
+        adapter = new ArrayAdapter<>(context, R.layout.list_item_text);
+        super.setAdapter(adapter);
     }
 
     public MultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        simple_adapter = new ArrayAdapter<>(context, R.layout.list_item_1); //simple_spinner_item
-        super.setAdapter(simple_adapter);
+        this.context = context;
+        adapter = new ArrayAdapter<>(context, R.layout.list_item_text);
+        super.setAdapter(adapter);
     }
 
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -65,23 +85,53 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
 
             }
 
-            simple_adapter.clear();
-            simple_adapter.add(buildSelectedItemString());
+            adapter.clear();
+            adapter.add(buildSelectedItemString());
 
             //todo: добавить выключение взаимоисключающих элементов https://stackoverflow.com/questions/39053333/disable-checkbox-items-in-alertdialog
             // https://stackoverflow.com/questions/7359685/android-disable-all-other-items-on-dialog-when-clicked-on-another
-        //} else {
-        //    throw new IllegalArgumentException("Argument 'which' is out of bounds.");
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean performClick() {
-        //super.performClick(); если это включить, то фокус уходит за 2 клика
-        dialogBuilder = new AlertDialog.Builder(getContext());
-        dialogBuilder.setMultiChoiceItems(_items, mSelection, this);
-        dialogBuilder.show(); //todo: добавить onDismiss обработчик для пост обработки выбранного (когда будет дерево вариантов)
+        if (!isSortable || fm == null) {
+
+            //super.performClick(); если это включить, то фокус уходит за 2 клика
+            dialogBuilder = new AlertDialog.Builder(getContext());
+            dialogBuilder.setMultiChoiceItems(_items, mSelection, this);
+            dialogBuilder.show();
+            //todo: добавить onDismiss обработчик для пост обработки выбранного (когда будет дерево вариантов)
+
+        } else {
+
+            fragment = new RecyclerListFragment();
+            Bundle args = new Bundle();
+            ArrayList<String> mItems = new ArrayList<>(Arrays.asList(_items));
+            ArrayList<Integer> mSelected = new ArrayList<>();
+            for (boolean b : mSelection) {
+                mSelected.add(b ? 1 : 0);
+            }
+
+            args.putStringArrayList(EXTRA_LIST, mItems);
+            args.putIntegerArrayList(EXTRA_CHECKS, mSelected);
+            args.putStringArrayList(EXTRA_COLORED, mColored);
+            args.putInt(EXTRA_COLOR, mColor);
+            args.putString(EXTRA_TITLE, getContext().getString(R.string.pref_List_EventInfo_title));
+
+            fragment.setArguments(args);
+
+            if (menu != null) {
+                menu.getItem(0).setVisible(true);
+            }
+
+            fm.beginTransaction()
+                    .replace(R.id.layout_fragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+        }
         return true;
     }
 
@@ -90,34 +140,22 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
     }
 
-/*    public void setItems(String[] items) {
-        _items = items;
-        mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
-    }*/
-
-    //Первоначальное заполнение, ничего не выбрано
+    /**
+     * Set {@link MultiSelectionSpinner} values. Clear selection
+     * @param items String values
+     */
     public void setItems(List<String> items) {
         _items = items.toArray(new String[0]);
         mSelection = new boolean[_items.length];
         Arrays.fill(mSelection, false);
 
-        simple_adapter.clear();
+        adapter.clear();
     }
 
-/*    public void setSelection(String[] selection) {
-        for (String cell : selection) {
-            for (int j = 0; j < _items.length; ++j) {
-                if (_items[j].equals(cell)) {
-                    mSelection[j] = true;
-                }
-            }
-        }
-    }*/
-
-    //Установка выбранных элементов
+    /**
+     * Set {@link MultiSelectionSpinner} selected values
+     * @param selection Selected string values
+     */
     public void setSelection(List<String> selection) {
         Arrays.fill(mSelection, false);
         if (selection.size() > 0) {
@@ -129,39 +167,42 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
                 }
             }
         }
-        simple_adapter.clear();
-        simple_adapter.add(buildSelectedItemString());
+        adapter.clear();
+        adapter.add(buildSelectedItemString());
     }
 
-/*    public void setSelection(int index) {
-  //      Arrays.fill(mSelection, false);
-        *//*for (int i = 0; i < mSelection.length; i++) {
-            mSelection[i] = false;
-        }*//*
-  //      if (index >= 0 && index < mSelection.length) {
-  //          mSelection[index] = true;
-        //} else {
-        //    throw new IllegalArgumentException("Index " + index + " is out of bounds.");
-   //     }
-        simple_adapter.clear();
-        simple_adapter.add(buildSelectedItemString());
-    }*/
-
-/*    public void setSelection(int[] selectedIndicies) {
-        *//*for (int i = 0; i < mSelection.length; i++) {
-            mSelection[i] = false;
-        }*//*
-        for (int index : selectedIndicies) {
-            if (index >= 0 && index < mSelection.length) {
-                mSelection[index] = true;
-            } else {
-                throw new IllegalArgumentException("Index " + index
-                        + " is out of bounds.");
+    /**
+     * Set {@link MultiSelectionSpinner} selection from {@link RecyclerListFragment} and move selected to the beginning
+     */
+    public void setSelectedFromFragmentResults() {
+        Bundle args = fragment.getArguments();
+        if (args != null) {
+            final ArrayList<String> selected = args.getStringArrayList(EXTRA_RESULTS);
+            //Toast.makeText(getContext(), "Selected:\n" + selected.toString() , Toast.LENGTH_LONG).show();
+            if (!selected.isEmpty()) {
+                moveToBeginning(selected);
+                setSelection(selected);
             }
+        } else {
+            Toast.makeText(getContext(), "No results!" , Toast.LENGTH_LONG).show();
         }
-        simple_adapter.clear();
-        simple_adapter.add(buildSelectedItemString());
-    }*/
+    }
+
+    /**
+     * Move elements to beginning of the list and clear selection
+     */
+    public void moveToBeginning(List<String> list) {
+        List<String> itemsA = new ArrayList<>(list);
+        List<String> itemsB = new ArrayList<>();
+
+        for (String item: _items) {
+            if (!list.contains(item)) itemsB.add(item);
+        }
+        if (itemsA.addAll(itemsB)) {
+            setItems(itemsA);
+            Arrays.fill(mSelection, false);
+        }
+    }
 
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<>();
@@ -172,16 +213,6 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         }
         return selection;
     }
-
-/*    public List<Integer> getSelectedIndicies() {
-        List<Integer> selection = new LinkedList<>();
-        for (int i = 0; i < _items.length; ++i) {
-            if (mSelection[i]) {
-                selection.add(i);
-            }
-        }
-        return selection;
-    }*/
 
     private String buildSelectedItemString() {
         StringBuilder sb = new StringBuilder();
@@ -208,20 +239,17 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         this.zeroSelectedIndex = zeroSelectedIndex;
     }
 
-/*    public String getSelectedItemsAsString() {
-        StringBuilder sb = new StringBuilder();
-        boolean foundOne = false;
+    public boolean isSortable() {
+        return isSortable;
+    }
 
-        for (int i = 0; i < _items.length; ++i) {
-            if (mSelection[i]) {
-                if (foundOne) {
-                    sb.append(", ");
-                }
-                foundOne = true;
-                sb.append(_items[i]);
-            }
-        }
-        return sb.toString();
-    }*/
+    public void setSortable(boolean sortable) {
+        isSortable = sortable;
+    }
+
+    public void setColored(ArrayList<String> listColored, int color) {
+        this.mColored = listColored;
+        this.mColor = color;
+    }
 
 }

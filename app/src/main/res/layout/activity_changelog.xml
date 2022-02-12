@@ -19,25 +19,22 @@
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="?android:attr/colorPrimary"	>
+		android:background="?android:attr/colorPrimary">
+
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			app:title="@string/window_about"
 			android:theme="@style/AppTheme.ActionBar" />
-	</com.google.android.material.appbar.AppBarLayout>
 
-	<!--android:theme="@style/AppTheme.DarkGray.ActionBar"
-			app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay"-->
+	</com.google.android.material.appbar.AppBarLayout>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginTop="?attr/actionBarSize"
 		android:background="?attr/backgroundColor">
-
-		<!-- https://stackoverflow.com/questions/4189883/center-two-buttons-horizontally -->
 
 		<LinearLayout
 			android:id="@+id/layoutTitle"
@@ -54,7 +51,7 @@
 				android:layout_weight="1"
 				android:contentDescription="@string/hint_EventIcon"
 				android:scaleType="fitCenter"
-				app:srcCompat="@drawable/ic_launcher_snowflake_cap" />
+				app:srcCompat="@drawable/ic_launcher_snowflake" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -71,7 +68,7 @@
 					android:paddingTop="8dp"
 					android:text="@string/app_name"
 					android:textColor="?android:attr/textColorSecondary"
-					android:textSize="24sp" />
+					android:textSize="22sp" />
 
 				<TextView
 					android:id="@+id/textVersionInfo"
@@ -80,12 +77,27 @@
 					android:paddingStart="40dp"
 					android:contentDescription="@string/hint_VersionNumberDetails"
 					android:textColor="?android:attr/textColorSecondary"
-					android:onClick="setDebug" />
+					android:onClick="setDebug"
+					android:importantForAccessibility="no"
+					tools:ignore="SmallSp" />
+
+				<TextView
+					android:id="@+id/textShowPreferences"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingStart="40dp"
+					android:contentDescription="@string/hint_ShowPreferences"
+					android:textColor="?android:attr/textColorSecondary"
+					android:onClick="showPreferences"
+					android:text="@string/button_saved_preferences"
+					android:importantForAccessibility="no"
+					tools:ignore="SmallSp" />
 
 			</LinearLayout>
 
 		</LinearLayout>
 
+		<!-- https://stackoverflow.com/questions/4189883/center-two-buttons-horizontally -->
 		<TextView
 			android:id="@+id/centerPoint"
 			android:layout_width="10dip"
@@ -95,8 +107,7 @@
 			tools:visibility="invisible"
 			android:contentDescription="@null"
 			android:importantForAccessibility="no"
-            tools:ignore="SmallSp"
-			android:onClick="showPreferences" />
+            tools:ignore="SmallSp" />
 
 		<Button
 			android:id="@+id/buttonMail"
@@ -134,7 +145,7 @@
 			android:paddingEnd="10dp"
 			android:singleLine="true"
 			android:text="@string/button_rate"
-			tools:ignore="DuplicateSpeakableTextCheck" />
+			android:contentDescription="@string/hint_Rate_PlayMarket" />
 
 		<Button
 			android:id="@+id/buttonAppGallery"
@@ -152,7 +163,7 @@
 			android:paddingEnd="10dp"
 			android:singleLine="true"
 			android:text="@string/button_rate"
-			tools:ignore="DuplicateSpeakableTextCheck" />
+			android:contentDescription="@string/hint_Rate_AppGallery" />
 
 		<Button
 			android:id="@+id/button4PDA"
@@ -180,7 +191,7 @@
 			android:layout_alignParentBottom="true"
 			android:layout_gravity="center_horizontal"
 			android:animateLayoutChanges="true"
-			android:contentDescription="@null"
+			android:contentDescription="@string/hint_Version_History"
 			android:importantForAccessibility="no"
 			android:textColor="?android:attr/textColorSecondary" />
 

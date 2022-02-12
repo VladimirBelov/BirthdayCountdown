@@ -8,6 +8,8 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Birthdays &amp; Events</string>
     <string name="window_settings">Settings</string>
     <string name="window_widget_settings">Widget settings</string>
     <string name="window_about">About application</string>
@@ -44,6 +46,7 @@
     <string name="menu_context_unmerge_event">Unlink from contact</string>
     <string name="menu_context_remerge_event">Link to other contact…</string>
     <string name="menu_context_open_url">Open web link</string>
+    <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
@@ -64,6 +67,7 @@
     <string name="msg_stats_silenced_prefix">"silenced events: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
+    <string name="msg_color_parse_error">Error parsing color!</string>
 
     <string name="msg_plural_postfix">s</string>
 
@@ -109,6 +113,7 @@
     <string name="msg_file_info">"Event from file \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
     <string name="msg_title_settings">Saved Settings</string>
+    <string name="msg_no_selection">Empty selection! Need to select anything</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -124,6 +129,11 @@
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Search panel</string>
     <string name="hint_AlertDialog">Alert dialog</string>
+    <string name="hint_DragItem">Draggable item</string>
+    <string name="hint_Version_History">Version history</string>
+    <string name="hint_Rate_PlayMarket">Rate this app on Play Market</string>
+    <string name="hint_Rate_AppGallery">Rate this app on App Gallery</string>
+    <string name="hint_ShowPreferences">View all saved preferences</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
@@ -142,6 +152,7 @@
     <string name="button_question">Mail new question</string>
     <string name="button_close">Close</string>
     <string name="button_prefs">Preferences</string>
+    <string name="button_saved_preferences">all saved preferences</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -194,13 +205,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" on Sunday"</item>
-        <item>" on Monday"</item>
-        <item>" on Tuesday"</item>
-        <item>" on Wednesday"</item>
-        <item>" on Thursday"</item>
-        <item>" on Friday"</item>
-        <item>" on Saturday"</item>
+        <item>"on Sunday"</item>
+        <item>"on Monday"</item>
+        <item>"on Tuesday"</item>
+        <item>"on Wednesday"</item>
+        <item>"on Thursday"</item>
+        <item>"on Friday"</item>
+        <item>"on Saturday"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Events customizing</string>
@@ -301,10 +312,10 @@
         <item>Three previous events</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Contact name format</string>
-    <string name="pref_List_Caption_description">First or last name at the beginning</string>
+    <string name="pref_List_NameFormat_title">Contact name format</string>
+    <string name="pref_List_NameFormat_description">First or last name at the beginning</string>
 
-    <string-array name="pref_List_Caption_entries">
+    <string-array name="pref_List_NameFormat_entries">
         <item>Name Patronymic Surname</item>
         <item>Surname Name Patronymic</item>
     </string-array>
@@ -322,6 +333,10 @@
         <item>D MMMM YYYY</item>
     </string-array>
 
+    <string name="pref_List_CustomCaption_title">Custom caption</string>
+    <string name="pref_List_CustomCaption_description">Custom main event list caption (Emojis are supported 🎂)</string>
+    <string name="pref_List_CustomCaption_hint">Enter custom caption</string>
+
     <string name="pref_Female_Names_title">Female names</string>
     <string name="pref_Female_Names_description">Additional female names for the correct display of contact icons without a photo</string>
     <string name="pref_Female_Names_hint">Enter female names (by comma)</string>
@@ -330,7 +345,7 @@
     <string name="pref_List_EventInfo_description">What additional event details to show</string>
 
     <string-array name="pref_List_EventInfo_entries">
-        <item>Contact photo</item>
+        <item>Photo</item>
         <item>Title</item>
         <item>Job</item>
         <item>Nickname</item>
@@ -365,7 +380,7 @@
     <string name="pref_List_Color_EventJubilee_title">Jubilee</string>
     <string name="pref_List_Color_EventJubilee_description">Color of jubilee age</string>
 
-    <string name="pref_Widgets_title">Widgets</string>
+    <string name="pref_Widgets_title">Widgets (common settings)</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Update interval</string>
     <string name="pref_Widgets_UpdateInterval_description">Forced widget update interval</string>
@@ -391,10 +406,20 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon">Silenced event icon</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Zodiac sign</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Chinese calendar year</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Original event date</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Original event date with year</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Event date</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Event date with year</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Event title</string>
+    <string name="pref_Widgets_EventInfo_Age">Age (anniversary)</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">Wedding anniversary name</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Days before event</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Event day of week</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
@@ -468,7 +493,7 @@
 
     <string name="widget_config_event_types_empty">Same with event list</string>
 
-    <string name="widget_config_index_label">Event start index to display:</string>
+    <string name="widget_config_index_label">Event start index to display</string>
     <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
 
     <string name="widget_config_font_label">Font magnify factor</string>
@@ -597,6 +622,7 @@
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
     <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author) and extra application features</string>
 
+    <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Version history:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Release: %1$s:</h2><ul>]]></string>
 
@@ -741,8 +767,6 @@
 
 <!-- COMMON STRINGS -->
 
-    <string name="app_name" translatable="false">Birthday Countdown</string>
-
     <string name="account_google" translatable="false">"com.google"</string>
     <string name="account_skype" translatable="false">"com.skype."</string>
     <string name="account_vk" translatable="false">"com.vkontakte.account"</string>
@@ -883,9 +907,9 @@
     <string name="pref_CustomEvents_Custom5_UseYear_key" translatable="false">CustomEvents_Custom5_UseYear</string>
     <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
 
-    <string name="pref_List_Caption_key" translatable="false">List_Caption</string>
-    <string name="pref_List_Caption_default" translatable="false">1</string>
-     <string-array name="pref_List_Caption_values" translatable="false">
+    <string name="pref_List_NameFormat_key" translatable="false">List_Caption</string>
+    <string name="pref_List_NameFormat_default" translatable="false">1</string>
+     <string-array name="pref_List_NameFormat_values" translatable="false">
         <item>1</item> <!--Имя Отчество Фамилия-->
         <item>2</item> <!--Фамилия Имя Отчество-->
     </string-array>
@@ -901,6 +925,8 @@
         <item>6</item> <!--DD MMM YYYY-->
         <item>7</item> <!--D MMMM YYYY-->
     </string-array>
+
+    <string name="pref_List_CustomCaption_key" translatable="false">List_CustomCaption</string>
 
     <string name="pref_Female_Names_key" translatable="false">Female_Names</string>
 
@@ -1003,6 +1029,7 @@
         <item>2</item>
         <item>3</item>
         <item>10</item>
+        <item>16</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_None_ID" translatable="false">0</string>
@@ -1014,10 +1041,20 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon_ID" translatable="false">6</string>
     <string name="pref_Widgets_EventInfo_EventCaption_ID" translatable="false">7</string>
     <string name="pref_Widgets_EventInfo_Border_ID" translatable="false">10</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_ID" translatable="false">11</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear_ID" translatable="false">12</string>
+    <string name="pref_Widgets_EventInfo_EventDate_ID" translatable="false">13</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear_ID" translatable="false">14</string>
+    <string name="pref_Widgets_EventInfo_EventTitle_ID" translatable="false">15</string>
+    <string name="pref_Widgets_EventInfo_Age_ID" translatable="false">16</string>
+    <string name="pref_Widgets_EventInfo_WeddingName_ID" translatable="false">17</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent_ID" translatable="false">18</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek_ID" translatable="false">19</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_Widgets_EventInfo_Border_ID</item>
         <item>@string/pref_Widgets_EventInfo_Photo_ID</item>
+        <item>@string/pref_Widgets_EventInfo_Age_ID</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon_ID</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon_ID</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon_ID</item>
@@ -1097,16 +1134,9 @@
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <!--
-        Стартовый номер события
-        Коэффициент масштабирования (позиция в списке выбора)
-        Количество событий (позиция в списке выбора)
-        Типы событий (через +)
-        Детали события (через +)
-        Цвет подложки
-    -->
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,</string>
-
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,</string> <!--10+1+2+3+6+16-->
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>

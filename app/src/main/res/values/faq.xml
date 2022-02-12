@@ -27,7 +27,7 @@
         <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
 
         <item>#Events don\'t fit or photos are too narrow</item>
-        <item>Go to the widget settings and try to modify \"Custom events number\" setting</item>
+        <item>Go to the widget settings and try to modify \"Custom events number\" setting.</item>
 
         <item>#Widgets are not updating</item>
         <item><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
@@ -42,12 +42,17 @@
         <li>restart the smartphone
         <li>re-add the widget to the screen
         </ol>]]></item>
-        <item>If the standard widget update mechanism does not work, you can turn on the forced update interval: Settings-> Widgets-> Update interval</item>
+        <item>If the standard widget update mechanism does not work, you can turn on the forced update interval: Settings-> Widgets-> Update interval.</item>
 
         <item>###Events</item>
 
+        <item>#Contact events</item>
+        <item>By default, events (birthdays, anniversaries, user events, other events) from all accounts on the device are shown.</item>
+        <item>To restrict the choice of accounts for scanning events, it need to select the necessary ones in Settings-> Accounts.</item>
+        <item>To display events from all accounts (including local ones) click \"All\".</item>
+
         <item>#Calendar events</item>
-        <item>Any all day calendar events are supported. Sets of calendars can be specified for the event \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
+        <item>Any events from selected calendars are supported. Calendar sets are specified separately for the events \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
         <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
         <item><![CDATA[<br>How to setup the display of events:<ol>
@@ -79,7 +84,7 @@
         <li>\"John, Mary\"- will display contact events with the names John or Mary
         <li>\"John+Gemini\"- will display contact events with the name John and the zodiac sign Gemini
         </ul>]]></item>
-        <item>The search use all event data (to check: enable \"Debug &amp; Extra features\" in app settings, long press on the event, item \"Event data\")</item>
+        <item>The search use all event data (to check: enable \"Debug &amp; Extra features\" in app settings, long press on the event, item \"Event data\").</item>
         <item> </item>
 
         <item>#Application interface language</item>

@@ -19,17 +19,16 @@
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="?android:attr/colorPrimary"	>
+		android:background="?android:attr/colorPrimary">
+
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			app:title="@string/window_faq"
 			android:theme="@style/AppTheme.ActionBar" />
-	</com.google.android.material.appbar.AppBarLayout>
 
-	<!--android:theme="@style/AppTheme.DarkGray.ActionBar"
-			app:popupTheme="@style/AppTheme.DarkGray.PopupOverlay"-->
+	</com.google.android.material.appbar.AppBarLayout>
 
 	<RelativeLayout
 		android:layout_width="match_parent"

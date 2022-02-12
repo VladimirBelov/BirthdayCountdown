@@ -47,7 +47,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     private int[] mColorChoices = {};
     private int mValue = 0;
-    private int mItemLayoutId = R.layout.dash_grid_item_color;
+    private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 4;
     private String mSelectDialogTitle = "";
     private int mSelectDialogIcon;
@@ -76,7 +76,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 
-        LayoutInflater.from(getContext()).inflate(R.layout.color_picker, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.picker_color, this);
         setOnClickListener(this);
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.ColorPreference, defStyleAttr, defStyleRes);
@@ -138,7 +138,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_INIT_ATTRS_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), Constants.COLOR_PICKER_INIT_ATTRS_ERROR + e, Toast.LENGTH_LONG).show();
         } finally {
             a.recycle();
         }
@@ -179,13 +179,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 .setTitle(mSelectDialogTitle)
                 .setIcon(R.drawable.ic_menu_paste)
                 .setView(textEdit)
-                .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-                    int colorNew;
-                    try {
-                        colorNew = Color.parseColor(textEdit.getText().toString());
-                    } catch (Exception e) { return; }
-                    if (colorNew != 0) setColor(colorNew);
-                })
+                .setPositiveButton(R.string.button_ok, null)
                 .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
 
         AlertDialog alertToShow = builder.create();
@@ -194,6 +188,23 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         alertToShow.setOnShowListener(arg0 -> {
             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
             alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+
+                int colorNew = 0;
+                try {
+                    colorNew = Color.parseColor(textEdit.getText().toString());
+                } catch (Exception e) { /**/ }
+                if (colorNew == 0) {
+                    Toast.makeText(getContext(), getResources().getString(R.string.msg_color_parse_error), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                setColor(colorNew);
+                alertToShow.dismiss();
+
+            });
+
         });
 
         alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -212,7 +223,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         try {
 
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View rootView = layoutInflater.inflate(R.layout.dash_dialog_colors, null);
+            View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
 
             mAdapter = new ColorGridAdapter(getContext());
             mAdapter.setSelectedColor(mValue);
@@ -243,7 +254,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_ON_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), Constants.COLOR_PICKER_ON_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -288,7 +299,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_SET_COLOR_VIEW_VALUE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), Constants.COLOR_PICKER_SET_COLOR_VIEW_VALUE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

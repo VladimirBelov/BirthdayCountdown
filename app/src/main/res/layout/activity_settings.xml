@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ /**
   ~  * Created by Vladimir Belov on 26.12.2021, 1:01
@@ -21,8 +22,6 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/AppTheme.ActionBar" />
-
-    <!--android:theme="@style/AppTheme.DarkGray.ActionBar"-->
 
     <!--suppress AndroidDomInspection -->
     <ListView

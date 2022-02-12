@@ -8,6 +8,8 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Дні народження та події</string>
     <string name="window_settings">Налаштування</string>
     <string name="window_widget_settings">Налаштування віджета</string>
     <string name="window_about">Про програму</string>
@@ -44,6 +46,7 @@
     <string name="menu_context_unmerge_event">Від’єднати контакт</string>
     <string name="menu_context_remerge_event">Посилання на інший контакт…</string>
     <string name="menu_context_open_url">Відкрити веб-посилання</string>
+    <string name="menu_ok">Добре</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
 <!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
@@ -64,6 +67,7 @@
     <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
+    <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
 
     <string name="msg_plural_postfix">и</string>
 
@@ -109,6 +113,7 @@
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
     <string name="msg_title_confirmation">Підтвердження</string>
     <string name="msg_title_settings">Збережені налаштування</string>
+    <string name="msg_no_selection">Вибір порожній! Треба що-небудь вибрати</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -124,6 +129,7 @@
     <string name="hint_EventIcon">Значок</string>
     <string name="hint_SearchPanel">Панель пошуку</string>
     <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
+    <string name="hint_DragItem">Перетягнутий елемент</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Відміна</string>
@@ -194,13 +200,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" у неділю"</item>
-        <item>" у понеділок"</item>
-        <item>" у вівторок"</item>
-        <item>" у середу"</item>
-        <item>" у четвер"</item>
-        <item>" у п\'ятницю"</item>
-        <item>" у суботу"</item>
+        <item>"у неділю"</item>
+        <item>"у понеділок"</item>
+        <item>"у вівторок"</item>
+        <item>"у середу"</item>
+        <item>"у четвер"</item>
+        <item>"у п\'ятницю"</item>
+        <item>"у суботу"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Налаштування подій</string>
@@ -301,10 +307,10 @@
         <item>Три попередніх події</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Формат вiдображення імені контакту</string>
-    <string name="pref_List_Caption_description">І.Б.П. або П.І.Б.</string>
+    <string name="pref_List_NameFormat_title">Формат вiдображення імені контакту</string>
+    <string name="pref_List_NameFormat_description">І.Б.П. або П.І.Б.</string>
 
-    <string-array name="pref_List_Caption_entries">
+    <string-array name="pref_List_NameFormat_entries">
         <item>Ім’я По-батькові Прізвище</item>
         <item>Прізвище Ім’я По-батькові</item>
     </string-array>
@@ -322,6 +328,10 @@
         <item>Д ММММ РРРР</item>
     </string-array>
 
+    <string name="pref_List_CustomCaption_title">Свій заголовок</string>
+    <string name="pref_List_CustomCaption_description">Спеціальний заголовок основного списку подій (підтримуються смайли 🎂)</string>
+    <string name="pref_List_CustomCaption_hint">Введіть свій заголовок</string>
+
     <string name="pref_Female_Names_title">Жіночі імена</string>
     <string name="pref_Female_Names_description">Додаткові жіночі імена для коректного відображення піктограм контактів без фото</string>
     <string name="pref_Female_Names_hint">Введіть жіночі імена (через кому)</string>
@@ -330,7 +340,7 @@
     <string name="pref_List_EventInfo_description">Що показувати під ім\'ям контакту</string>
 
     <string-array name="pref_List_EventInfo_entries">
-        <item>Фото контакту</item>
+        <item>Фото</item>
         <item>Посада</item>
         <item>Організація</item>
         <item>Псевдонім</item>
@@ -392,9 +402,20 @@
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Знак зодіаку</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Східний календар</string>
 
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Оригінальна дата події</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Оригінальна дата події з роком</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Дата події</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата події з роком</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Назва події</string>
+    <string name="pref_Widgets_EventInfo_Age">Вік</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">Назва річниці весілля</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">За дні до події</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Подія день тижня</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
@@ -468,7 +489,7 @@
 
     <string name="widget_config_event_types_empty">Як в списку подій</string>
 
-    <string name="widget_config_index_label">Початковий номер події:</string>
+    <string name="widget_config_index_label">Початковий номер події</string>
     <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додавати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
 
     <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
@@ -597,6 +618,7 @@
     <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
 
+    <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s:</h2><ul>]]></string>
 

@@ -65,6 +65,7 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_starred;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_title;
 
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -147,7 +148,8 @@ class WidgetUpdater {
             }
 
             //Получаем настройки отображения виджета
-            widgetPref = eventsData.getWidgetPreference(widgetId);
+            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId).provider.getShortClassName();
+            widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
 
             int startingIndex = 1;
             try {
@@ -253,7 +255,7 @@ class WidgetUpdater {
             }
 
             if (eventsData.preferences_debug_on) {
-                List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+                List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
@@ -263,7 +265,7 @@ class WidgetUpdater {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_INVOKE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_INVOKE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -719,16 +721,26 @@ class WidgetUpdater {
             }
 
             //Возраст
-            if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
-                views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
-            } else if (person.Age > -1) {
-                views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Age)) {
+
+                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
+                    views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
+                } else if (person.Age > -1) {
+                    views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
+                } else {
+                    views.setTextViewText(id_widget_Age, STRING_EMPTY);
+                }
+                views.setTextColor(resources.getIdentifier(WIDGET_TEXT_VIEW + eventsDisplayed, STRING_ID, packageName), colorDefault);
+                //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
+                views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+                views.setViewVisibility(id_widget_Age, View.VISIBLE);
+
             } else {
-                views.setTextViewText(id_widget_Age, STRING_EMPTY);
+
+                views.setViewVisibility(id_widget_Age, View.GONE);
+
             }
-            views.setTextColor(resources.getIdentifier(WIDGET_TEXT_VIEW + eventsDisplayed, STRING_ID, packageName), colorDefault);
-            //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
-            views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? WIDGET_TEXT_SIZE_BIG : WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 
             //Если не последнее событие - по нажатию на фото открываем событие
             if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
@@ -767,7 +779,7 @@ class WidgetUpdater {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_DRAW_EVENT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, WIDGET_UPDATER_DRAW_EVENT_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -778,10 +790,5 @@ class WidgetUpdater {
         }
         return n - 1;
     }
-
-/*    private static int convertDipToPixels(float dips, @NonNull DisplayMetrics displayMetrics)
-    {
-        return (int) (dips * displayMetrics.density + 0.5f);
-    }*/
 
 }

@@ -8,6 +8,8 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Geburtstage &amp; Ereignisse</string>
     <string name="window_settings">Einstellungen</string>
     <string name="window_widget_settings">Widget-Einstellungen</string>
     <string name="window_about">Über die Anwendung</string>
@@ -44,6 +46,7 @@
     <string name="menu_context_unmerge_event">Verbindung zum Kontakt trennen</string>
     <string name="menu_context_remerge_event">Link zu anderen Kontakt…</string>
     <string name="menu_context_open_url">Weblink öffnen</string>
+    <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
@@ -64,6 +67,7 @@
     <string name="msg_stats_silenced_prefix">"Ereignisse ohne Benachrichtigung: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
+    <string name="msg_color_parse_error">Fehler beim Analysieren der Farbe!</string>
 
     <string name="msg_plural_postfix">e</string>
 
@@ -109,6 +113,7 @@
     <string name="msg_file_info">"Ereignis aus Datei \"%1$s\""</string>
     <string name="msg_title_confirmation">Bestätigung</string>
     <string name="msg_title_settings">Gespeicherte Einstellungen</string>
+    <string name="msg_no_selection">Leere Auswahl! Es muss etwas ausgewählt werden</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -124,6 +129,7 @@
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Suchfeld</string>
     <string name="hint_AlertDialog">Warndialog</string>
+    <string name="hint_DragItem">Ziehbares Element</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Abbrechen</string>
@@ -194,13 +200,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>" am Sonntag"</item>
-        <item>" am Montag"</item>
-        <item>" am Dienstag"</item>
-        <item>" am Mittwoch"</item>
-        <item>" am Donnerstag"</item>
-        <item>" am Freitag"</item>
-        <item>" am Samstag"</item>
+        <item>"am Sonntag"</item>
+        <item>"am Montag"</item>
+        <item>"am Dienstag"</item>
+        <item>"am Mittwoch"</item>
+        <item>"am Donnerstag"</item>
+        <item>"am Freitag"</item>
+        <item>"am Samstag"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Anpassung der Ereignisse</string>
@@ -301,10 +307,10 @@
         <item>Drei frühere Ereignisse</item>
     </string-array>
 
-    <string name="pref_List_Caption_title">Format des Kontaktnamens</string>
-    <string name="pref_List_Caption_description">Vor- oder Nachname am Anfang</string>
+    <string name="pref_List_NameFormat_title">Format des Kontaktnamens</string>
+    <string name="pref_List_NameFormat_description">Vor- oder Nachname am Anfang</string>
 
-    <string-array name="pref_List_Caption_entries">
+    <string-array name="pref_List_NameFormat_entries">
         <item>Vorname(n) Nachname</item>
         <item>Nachname Vorname(n)</item>
     </string-array>
@@ -322,6 +328,10 @@
         <item>T MMMM JJJJ</item>
     </string-array>
 
+    <string name="pref_List_CustomCaption_title">Benutzerdefinierter Titel</string>
+    <string name="pref_List_CustomCaption_description">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
+    <string name="pref_List_CustomCaption_hint">Titel eingeben</string>
+
     <string name="pref_Female_Names_title">Weibliche Namen</string>
     <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto</string>
     <string name="pref_Female_Names_hint">Geben Sie weibliche Namen ein (durch Komma getrennt)</string>
@@ -330,7 +340,7 @@
     <string name="pref_List_EventInfo_description">Was soll unter dem Namen des Kontakts angezeigt werden</string>
 
     <string-array name="pref_List_EventInfo_entries">
-        <item>Kontaktfoto</item>
+        <item>Foto</item>
         <item>Position</item>
         <item>Organisation</item>
         <item>Spitzname</item>
@@ -392,9 +402,20 @@
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Sternzeichen</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Tierkreisjahr</string>
 
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Ereignistitel</string>
+    <string name="pref_Widgets_EventInfo_Age">: Alter (Jahrestag)</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
+
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
         <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
         <item>@string/pref_Widgets_EventInfo_EventIcon</item>
         <item>@string/pref_Widgets_EventInfo_FavIcon</item>
         <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
@@ -468,7 +489,7 @@
 
     <string name="widget_config_event_types_empty">Wie in der Ereignisliste</string>
 
-    <string name="widget_config_index_label">Ereignisstartnummer:</string>
+    <string name="widget_config_index_label">Ereignisstartnummer</string>
     <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>
 
     <string name="widget_config_font_label">Schriftgrößenverhältnis</string>
@@ -597,6 +618,7 @@
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
     <string name="pref_Debug_On_description">Debug-Meldungen und Zusatzfunktionen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
 
+    <string name="changelog_version"><![CDATA[Version: %1$s (%2$s)<br>Datum: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
 

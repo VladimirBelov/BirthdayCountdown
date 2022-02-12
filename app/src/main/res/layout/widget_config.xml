@@ -10,7 +10,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".WidgetConfigureActivity">
 
@@ -25,6 +25,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
@@ -61,7 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_event_types_title"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold" />
 
                 <org.vovka.birthdaycountdown.MultiSelectionSpinner
                     android:id="@+id/spinnerEventTypes"
@@ -90,7 +93,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_index_label"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerEventShift"
@@ -120,7 +125,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_font_label"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
 
                 <Spinner
                     android:id="@+id/spinnerFontMagnify"
@@ -149,7 +156,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_events_count_label"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
 
                 <Spinner
                     android:id="@+id/spinnerEventsCount"
@@ -178,7 +187,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_Widgets_EventInfo_title"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
 
                 <org.vovka.birthdaycountdown.MultiSelectionSpinner
                     android:id="@+id/spinnerEventInfo"
@@ -214,7 +225,7 @@
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
                     app:numColumns="4"
-                    app:itemLayout="@layout/dash_grid_item_color"
+                    app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
 
@@ -266,5 +277,13 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?attr/backgroundColor"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.6.7</item>
+        <item>Nuevo nombre de la aplicación: \"Cumpleaños y Eventos\"</item>
+        <item>Se agregó la capacidad de cambiar el título de la lista de eventos principales</item>
+        <item>Constructor de visualización de eventos agregado para el widget de lista</item>
+        <item>El parámetro \"Lista de eventos->Detalles del evento->Foto\" ahora permite mostrar la lista de eventos sin ninguna foto</item>
+        <item>Se procesan todos los eventos del calendario, no solo los eventos de todo el día</item>
+        <item>Se agregaron más detalles de eventos para habilitar/deshabilitar en la configuración del widget</item>
+
         <item>#1.6.6</item>
         <item>Se agregó la capacidad de personalizar un conjunto de elementos para cada widget</item>
         <item>Configuración de color de fondo agregada para widgets</item>

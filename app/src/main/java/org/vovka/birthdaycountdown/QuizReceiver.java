@@ -8,15 +8,15 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_QUESTION;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_RESULT;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-
-import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_QUESTION;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_RESULT;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 
 public class QuizReceiver extends BroadcastReceiver {
 
@@ -42,7 +42,7 @@ public class QuizReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.QUIZ_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.QUIZ_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 }

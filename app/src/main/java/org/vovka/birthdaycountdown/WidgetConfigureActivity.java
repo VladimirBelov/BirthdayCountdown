@@ -8,8 +8,14 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_4X1;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_5X1;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_LIST;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_PHOTO_LIST;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -20,11 +26,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,7 +52,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventTypesValues;
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
-    private final String APP_WIDGET_ID = "appWidgetId";
 
     public void onCreate(Bundle savedInstanceState) {
         try {
@@ -90,9 +98,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if (extras != null) widgetId = extras.getInt(APP_WIDGET_ID, 0);
+            if (extras != null) widgetId = extras.getInt(PARAM_APP_WIDGET_ID, 0);
+            String widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
 
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
 
             //Заполняем стартовый номер
             int prefStartingIndex = 1;
@@ -142,65 +151,94 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventTypes.setItems(eventTypesValues);
             spinnerEventTypes.setSelection(listEventTypes);
 
-            String widgetType = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.getShortClassName();
-
             //Детали события
-            eventInfoIDs = new ArrayList<String>() {{
-                add(getString(R.string.pref_Widgets_EventInfo_None_ID));
-                add(getString(R.string.pref_Widgets_EventInfo_Border_ID));
-                if (!widgetType.equals(".WidgetList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_Photo_ID));
-                }
-                add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID));
-                if (widgetType.equals(".WidgetPhotoList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_EventCaption_ID));
-                }
-                if (!widgetType.equals(".WidgetList") && !widgetType.equals(".WidgetPhotoList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID));
-                    add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID));
-                }
-                if (!widgetType.equals(".WidgetList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon_ID));
-                    add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID));
-                }
-            }};
-            eventInfoValues = new ArrayList<String>() {{
-                add(getString(R.string.pref_Widgets_EventInfo_None));
-                add(getString(R.string.pref_Widgets_EventInfo_Border));
-                if (!widgetType.equals(".WidgetList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_Photo));
-                }
-                add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
-                if (widgetType.equals(".WidgetPhotoList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_EventCaption));
-                }
-                if (!widgetType.equals(".WidgetList") && !widgetType.equals(".WidgetPhotoList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
-                    add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon));
-                }
-                if (!widgetType.equals(".WidgetList")) {
-                    add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
-                    add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
-                }
-            }};
+            eventInfoIDs = new ArrayList<>();
+            eventInfoValues = new ArrayList<>();
+
+            switch (widgetType) {
+
+                case WIDGET_TYPE_LIST:
+
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventTitle));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_WeddingName));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek));
+                    break;
+
+                case WIDGET_TYPE_PHOTO_LIST:
+
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_None));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Photo));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventCaption));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek));
+
+                    break;
+
+                default:
+
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_None));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Photo));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
+            }
 
             MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-            List<String> listEventInfo = new ArrayList<>();
-
+            List<String> eventInfoSelections = new ArrayList<>();
             String[] infoArray = null;
             try {
-                if (widgetPref.size() > 4) infoArray = widgetPref.get(4).split(REGEX_PLUS);
+                if (widgetPref.size() > 4) {
+                    if (widgetType.equals(WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_Widgets_EventInfo_None_ID)))) {
+                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(STRING_COMMA, -1)[4]);
+                    }
+
+                    infoArray = widgetPref.get(4).split(REGEX_PLUS);
+                }
                 if (infoArray != null) {
                     for (String item : infoArray) {
-                        if (eventInfoIDs.contains(item)) listEventInfo.add(eventInfoValues.get(eventInfoIDs.indexOf(item)));
+                        if (eventInfoIDs.contains(item)) eventInfoSelections.add(eventInfoValues.get(eventInfoIDs.indexOf(item)));
                     }
                 }
             } catch (Exception e2) {/**/}
 
-            spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
-            spinnerEventInfo.setZeroSelectedIndex(0);
-            spinnerEventInfo.setItems(eventInfoValues);
-            spinnerEventInfo.setSelection(listEventInfo);
+            if (widgetType.equals(WIDGET_TYPE_LIST)) {
+                spinnerEventInfo.setSortable(true);
+                spinnerEventInfo.fm = getSupportFragmentManager();
+                spinnerEventInfo.setZeroSelectedIndex(-1);
+
+                spinnerEventInfo.setItems(eventInfoValues);
+                spinnerEventInfo.moveToBeginning(eventInfoSelections); //Двигаем выбранные вперёд
+                spinnerEventInfo.setColored(new ArrayList<String>(){{
+                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original));
+                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear));
+                    add(getString(R.string.pref_Widgets_EventInfo_EventDate));
+                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear));
+                }}, eventsData.preferences_widgets_color_eventtoday);
+
+            } else {
+                spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
+                spinnerEventInfo.setZeroSelectedIndex(0);
+                spinnerEventInfo.setItems(eventInfoValues);
+            }
+            spinnerEventInfo.setSelection(eventInfoSelections);
+
 
             //Цвета
             int colorWidgetBackground = 0;
@@ -245,7 +283,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
 
-            if (widgetType.equals(".Widget4x1")) {
+            if (widgetType.equals(WIDGET_TYPE_4X1)) {
 
                 //Скрываем Коэффициент масштабирования размера шрифта
                 findViewById(R.id.dividerFontMagnify).setVisibility(View.GONE);
@@ -255,7 +293,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (!widgetType.equals(".Widget5x1")) {
+            if (!widgetType.equals(WIDGET_TYPE_5X1)) {
 
                 //Скрываем количество событий
                 findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
@@ -265,7 +303,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (widgetType.equals(".WidgetList") || widgetType.equals(".WidgetPhotoList")) {
+            if (widgetType.equals(WIDGET_TYPE_LIST) || widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
 
                 //Скрываем стартовый номер
                 findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
@@ -275,7 +313,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(".WidgetList") || widgetType.equals(".WidgetPhotoList")) {
+            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(WIDGET_TYPE_LIST) || widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
 
                 //Скрываем подсказку для существующих виджетов
                 findViewById(R.id.widget_hint).setVisibility(View.GONE);
@@ -284,7 +322,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -322,11 +360,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 return;
             }
 
-            /*if (spinnerEventTypes.getSelectedStrings().isEmpty()) {
-                Toast.makeText(this, "Choose at least 1 event type!", Toast.LENGTH_LONG).show();
-                return;
-            }*/
-
             ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
 
@@ -347,7 +380,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             );
 
             Intent intent = new Intent();
-            intent.putExtra(APP_WIDGET_ID, widgetId);
+            intent.putExtra(PARAM_APP_WIDGET_ID, widgetId);
             setResult(RESULT_OK, intent);
 
             //Посылаем сообщение на обновление виджета
@@ -356,7 +389,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             finish();
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -369,6 +402,58 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public  void openBatteryOptimisationsSettings(View view) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) { /**/ }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(PARAM_APP_WIDGET_ID, widgetId);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        widgetId = savedInstanceState.getInt(PARAM_APP_WIDGET_ID);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_widget_config, menu);
+
+        MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
+        spinnerEventInfo.menu = menu;
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_ok) {
+
+            MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
+            final ArrayList<String> allSelectedItems = ((RecyclerListFragment) spinnerEventInfo.fragment).adapter.getAllSelectedItems();
+            allSelectedItems.remove(getString(R.string.pref_Widgets_EventInfo_Border));
+            if (allSelectedItems.isEmpty()) {
+
+                Toast.makeText(getApplicationContext(), getString(R.string.msg_no_selection), Toast.LENGTH_LONG).show();
+
+            } else {
+
+                onBackPressed();
+                spinnerEventInfo.setSelectedFromFragmentResults();
+                item.setVisible(false);
+            }
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

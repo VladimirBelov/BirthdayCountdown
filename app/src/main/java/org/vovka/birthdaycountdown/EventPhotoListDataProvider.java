@@ -24,6 +24,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_5;
 import static org.vovka.birthdaycountdown.Constants.STRING_6;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
+import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
@@ -145,7 +146,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
-            String[] singleEventArray = eventInfo.split(STRING_2HASH);
+            String[] singleEventArray = eventInfo.split(STRING_2HASH, -1);
 
             if (singleEventArray.length < Position_attrAmount) {
 
@@ -153,7 +154,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             } else {
 
-                switch (eventsData.preferences_list_caption) {
+                switch (eventsData.preferences_list_nameformat) {
                     case 2: //Фамилия Имя Отчество
                         views.setTextViewText(R.id.eventCaption, singleEventArray[Position_personFullNameAlt]);
                         break;
@@ -198,12 +199,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
 
                 //Наименование события и возраст
-                if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)
-                        : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) {
+                if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) {
                     sbDetails.append(singleEventArray[Position_eventCaption]);
-                    if (!singleEventArray[Position_age_caption].trim().isEmpty())
-                        sbDetails.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
-                    sbDetails.append(HTML_BR);
+                }
+                if (!singleEventArray[Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
+                        : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Age)) {
+                    if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) sbDetails.append(STRING_COLON_SPACE);
+                    sbDetails.append(singleEventArray[Position_age_caption]);
                 }
 
                 //Знак зодиака и животное в восточном календаре
@@ -224,18 +226,33 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     }
 
                     if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
-                        sbDetails.append((strZodiacInfo.concat(STRING_SPACE).concat(strZodiacYearInfo)).trim()).append(HTML_BR);
+                        if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
+                        sbDetails.append((strZodiacInfo.concat(STRING_SPACE).concat(strZodiacYearInfo)).trim());
                     }
                 }
 
-                //Срок до события
+                //Срок до события и день недели
                 final String eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText];
-                sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText).concat(HTML_FONT_END) : eventDistanceText);
+                final boolean showDistance = widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_DaysBeforeEvent);
+                final boolean showDayOfWeek = widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventDayOfWeek);
+                final int barIndex = eventDistanceText.indexOf(STRING_BAR);
+                if ((showDistance || showDayOfWeek) && barIndex > -1) {
+                    if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
+
+                    if (showDistance && (!showDayOfWeek || singleEventArray[ContactsEvents.Position_eventDistance].equals(STRING_0))) {
+                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.substring(0, barIndex)).concat(HTML_FONT_END) : eventDistanceText);
+                    } else if (showDistance) {
+                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.replace(STRING_BAR, STRING_SPACE)).concat(HTML_FONT_END) : eventDistanceText);
+                    } else {
+                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.substring(barIndex + 1)).concat(HTML_FONT_END) : eventDistanceText);
+                    }
+                }
 
                 views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(sbDetails.toString(), 0));
+
+                //Фото
                 views.setImageViewBitmap(R.id.eventPhoto, null);
                 views.setViewVisibility(R.id.eventPhoto, View.GONE);
-
                 Bitmap photo = null;
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)) {
@@ -273,7 +290,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
         return views;
@@ -317,11 +334,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             eventsData.setLocale(true);
 
             //Получаем данные
-            widgetPref = eventsData.getWidgetPreference(widgetID);
+            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID).provider.getShortClassName();
+            widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
                 eventsData.context = context;
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
+            widgetPref_eventInfo = new ArrayList<>();
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
                 widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(REGEX_PLUS));
             }
@@ -331,7 +350,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e, Toast.LENGTH_LONG).show());
         }
 
     }

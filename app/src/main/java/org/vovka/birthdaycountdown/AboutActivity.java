@@ -16,7 +16,6 @@ import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 
 import android.annotation.SuppressLint;
@@ -32,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -105,7 +105,7 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setHomeButtonEnabled(true);
                 bar.setDisplayHomeAsUpEnabled(true);
                 bar.setDisplayShowTitleEnabled(true);
-                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_material);
+                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
             }
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
@@ -118,19 +118,15 @@ public class AboutActivity extends AppCompatActivity {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             //todo: добавить откуда поставили https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
             TextView txtInfo = findViewById(R.id.textVersionInfo);
-            txtInfo.setText(HtmlCompat.fromHtml(
-        "version: " + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + STRING_PARENTHESIS_CLOSE +
-                "<br>built: " + formatter.format(BuildConfig.BUILD_TIME)
-                , 0));
+            txtInfo.setText(HtmlCompat.fromHtml(getString(R.string.changelog_version,
+                    BuildConfig.VERSION_NAME, Integer.toString(BuildConfig.VERSION_CODE), formatter.format(BuildConfig.BUILD_TIME)), 0));
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 
-            if (eventsData.preferences_debug_on) {
-                TextView tv = findViewById(R.id.centerPoint);
-                tv.setText(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "ℹ️" : "\u2139");
-            }
+            TextView tv = findViewById(R.id.textShowPreferences);
+            tv.setVisibility(eventsData.preferences_debug_on ? View.VISIBLE : View.GONE);
 
-                //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
+            //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
             //https://stackoverflow.com/questions/39036411/activitymanagercompat-islowramdevice-is-useless-is-always-returns-false
             //ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             //if (am.isLowRamDevice()) {
@@ -220,7 +216,9 @@ public class AboutActivity extends AppCompatActivity {
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
-                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                try {
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                } catch (RuntimeException e) { /**/ }
                 finish();
             });
 
@@ -228,24 +226,30 @@ public class AboutActivity extends AppCompatActivity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
                 } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                    } catch (android.content.ActivityNotFoundException e2) { /**/ }
                 }
                 finish();
             });
 
             findViewById(R.id.buttonAppGallery).setOnClickListener(view -> {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://appgallery.huawei.com/app/C101143661")));
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://appgallery.huawei.com/app/C101143661")));
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
             findViewById(R.id.button4PDA).setOnClickListener(view -> {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://4pda.to/forum/index.php?showtopic=939391")));
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://4pda.to/forum/index.php?showtopic=939391")));
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -285,7 +289,7 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -315,7 +319,7 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

@@ -108,6 +108,7 @@ final class Constants {
     static final String STRING_MINUS = "-";
     static final String STRING_PIPE = "\\|";
     static final String STRING_BAR = "|";
+    static final String REGEX_PLUS = "\\+";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";
@@ -141,6 +142,13 @@ final class Constants {
     static final String EXTRA_QUIZ_RESULT = "quizResult";
     static final String EXTRA_CLICKED_EVENT = "eventDetails";
     static final String EXTRA_CLICKED_PREFS = "actionPreference";
+    static final String EXTRA_TITLE = "title";
+    static final String EXTRA_VALUES = "values";
+    static final String EXTRA_RESULTS = "results";
+    static final String EXTRA_LIST = "list";
+    static final String EXTRA_CHECKS = "checks";
+    static final String EXTRA_COLORED = "colored";
+    static final String EXTRA_COLOR = "color";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -274,6 +282,8 @@ final class Constants {
 
     static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
 
+    static final String DRAGLIST_ACTIVITY_ACTIVITY_ON_CREATE_ERROR = "DragListActivity->onCreate error:\n";
+
     static final String EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventListDataProvider->getViewAt error:\n";
     static final String EVENT_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventListDataProvider->initData error:\n";
 
@@ -349,7 +359,10 @@ final class Constants {
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
-    static final String REGEX_PLUS = "\\+";
+    protected static final String WIDGET_TYPE_LIST = ".WidgetList";
+    protected static final String WIDGET_TYPE_PHOTO_LIST = ".WidgetPhotoList";
+    protected static final String WIDGET_TYPE_5X1 = ".Widget5x1";
+    protected static final String WIDGET_TYPE_4X1 = ".Widget4x1";
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String FilePrefix_Media = "com.android.providers.media.documents";
@@ -360,4 +373,5 @@ final class Constants {
     protected static final String STRING_HTTP = "http://";
     protected static final String STRING_HTTPS = "https://";
     protected static final String RES_PACKAGE_ANDROID = "android";
+
 }

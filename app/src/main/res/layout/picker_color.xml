@@ -41,7 +41,9 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textStyle="bold"  />
 
         <TextView
             android:id="@android:id/summary"
@@ -62,7 +64,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="end"
         android:paddingEnd="2dp"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="12sp" />
 
     <ImageView

@@ -38,7 +38,8 @@ public class Widget5x1 extends AppWidgetProvider {
             int eventsCount = Math.min(getCellsForSize(minWidth), Constants.WIDGET_EVENTS_MAX);
 
             //Уточняем количество событий в настройке
-            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId).provider.getShortClassName();
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int prefEventsCountIndex = 0;
             try {
                 if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
@@ -66,7 +67,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -110,7 +111,8 @@ public class Widget5x1 extends AppWidgetProvider {
             int eventsCount = getCellsForSize(minWidth);
 
             //Уточняем количество событий в настройке
-            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId);
+            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId).provider.getShortClassName();
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int prefEventsCountIndex = 0;
             try {
                 if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
@@ -144,7 +146,7 @@ public class Widget5x1 extends AppWidgetProvider {
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref.toString() +
+                                "\n widgetPref=" + widgetPref +
                                 "\n eventsCount=" + eventsCount + ", eventsDiff=" + prefEventsCountDiff
                 , Toast.LENGTH_LONG).show();
             }
@@ -155,7 +157,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_5_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_5_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

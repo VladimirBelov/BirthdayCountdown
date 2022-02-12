@@ -36,7 +36,7 @@ import java.util.List;
 public class ColorPreference extends Preference {
     private int[] mColorChoices = {};
     private int mValue = 0;
-    private int mItemLayoutId = R.layout.dash_grid_item_color;
+    private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 4;
     private String mSelectDialogTitle = "";
     private int mSelectDialogIcon;
@@ -164,7 +164,7 @@ public class ColorPreference extends Preference {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View rootView = layoutInflater.inflate(R.layout.dash_dialog_colors, null);
+            View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
 
             if (mPreference.mSelectDialogTitle.isEmpty()) {
                 View caption = rootView.findViewById(R.id.caption);

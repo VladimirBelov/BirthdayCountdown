@@ -8,6 +8,11 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
+import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
+import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +21,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationManagerCompat;
-
-import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_ID;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_contactID;
 
 public class ActionReceiver extends BroadcastReceiver {
 
@@ -122,8 +122,9 @@ public class ActionReceiver extends BroadcastReceiver {
                         Intent intentDial = new Intent(Intent.ACTION_DIAL);
                         intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));
                         intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intentDial);
-
+                        try {
+                            context.startActivity(intentDial);
+                        } catch (android.content.ActivityNotFoundException e) { /**/ }
                     }
                 }
 
@@ -136,7 +137,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ACTION_RECEIVER_ON_RECEIVE_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ACTION_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 

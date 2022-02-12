@@ -76,7 +76,8 @@ public class WidgetList extends AppWidgetProvider {
             intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
             views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId);
+            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId).provider.getShortClassName();
+            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
             if (eventsData.preferences_debug_on) {
@@ -123,7 +124,7 @@ public class WidgetList extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_LIST_UPDATE_APP_WIDGET_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_LIST_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -156,7 +157,7 @@ public class WidgetList extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, Constants.WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -184,7 +185,9 @@ public class WidgetList extends AppWidgetProvider {
 
                 if (intentView != null) {
                     intentView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.getApplicationContext().startActivity(intentView);
+                    try {
+                        context.getApplicationContext().startActivity(intentView);
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
             }
