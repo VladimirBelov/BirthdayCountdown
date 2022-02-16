@@ -11,7 +11,7 @@ package org.vovka.birthdaycountdown;
 import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_FILE;
 import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_RINGTONE;
 import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
@@ -814,7 +814,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int ind = 0;
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
-                calTitles.add(entry.getValue().replace(STRING_2HASH, STRING_PARENTHESIS_OPEN).concat(STRING_PARENTHESIS_CLOSE));
+                calTitles.add(entry.getValue().replace(STRING_EOT, STRING_PARENTHESIS_OPEN).concat(STRING_PARENTHESIS_CLOSE));
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
                 sel[ind] = calSelected.get(ind++);
             }

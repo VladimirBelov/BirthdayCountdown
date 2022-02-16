@@ -16,7 +16,6 @@ import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_10;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_4;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
@@ -25,6 +24,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
 import static org.vovka.birthdaycountdown.Constants.STRING_9;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CONTACTS;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
@@ -66,6 +66,7 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_title;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -148,7 +149,9 @@ class WidgetUpdater {
             }
 
             //Получаем настройки отображения виджета
-            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId).provider.getShortClassName();
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
 
             int startingIndex = 1;
@@ -274,7 +277,7 @@ class WidgetUpdater {
         try {
 
             String event = eventsData.eventList.get(i);
-            String[] singleEventArray = event.split(STRING_2HASH);
+            String[] singleEventArray = event.split(STRING_EOT, -1);
 
             boolean isVisibleEvent = false;
             boolean useEventListPrefs = true;

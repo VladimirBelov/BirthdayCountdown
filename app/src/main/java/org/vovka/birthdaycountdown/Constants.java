@@ -93,7 +93,8 @@ final class Constants {
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
 
-    static final String STRING_2HASH = "##"; //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
+    //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
+    static final String STRING_EOT = "\u0004";
     static final String STRING_2TILDA = "~~";
     static final String STRING_COLON_SPACE = ": ";
     static final String STRING_COLON = ":";
@@ -224,6 +225,7 @@ final class Constants {
     static final String CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR = "ContactsEvents->checkIsSilentEvent error:\n";
     static final String CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR = "ContactsEvents->checkNoBatteryOptimization error:\n";
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
+    static final String CONTACTS_EVENTS_COMPUTE_DATE_FOR_EVENT_ERROR = "ContactsEvents->computeDateForEvent error:\n";
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
     static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";

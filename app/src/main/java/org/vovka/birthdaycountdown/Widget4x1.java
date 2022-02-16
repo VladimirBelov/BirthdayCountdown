@@ -67,8 +67,12 @@ public class Widget4x1 extends AppWidgetProvider {
 
         try {
 
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
+            eventsData.setLocale(true);
 
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 

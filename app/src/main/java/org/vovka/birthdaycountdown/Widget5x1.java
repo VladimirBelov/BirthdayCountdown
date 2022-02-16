@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -28,11 +29,12 @@ public class Widget5x1 extends AppWidgetProvider {
 
         try {
 
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.context == null) eventsData.context = context;
             eventsData.getPreferences();
             eventsData.setLocale(true);
+
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             int eventsCount = Math.min(getCellsForSize(minWidth), Constants.WIDGET_EVENTS_MAX);
@@ -99,11 +101,9 @@ public class Widget5x1 extends AppWidgetProvider {
         try{
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) {
-                eventsData.context = context;
-                eventsData.getPreferences();
-                eventsData.setLocale(true);
-            }
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
+            eventsData.setLocale(true);
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
@@ -111,7 +111,9 @@ public class Widget5x1 extends AppWidgetProvider {
             int eventsCount = getCellsForSize(minWidth);
 
             //Уточняем количество событий в настройке
-            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId).provider.getShortClassName();
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName();
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int prefEventsCountIndex = 0;
             try {

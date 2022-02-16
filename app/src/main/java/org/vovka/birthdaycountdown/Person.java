@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
@@ -83,7 +84,7 @@ class Person {
     }
 
     Person(@NonNull Context context, @NonNull String eventData) {
-        this(context, eventData.split(Constants.STRING_2HASH));
+        this(context, eventData.split(STRING_EOT, -1));
     }
 
 /*    String getFullName () { //Фамилия Имя Отчество

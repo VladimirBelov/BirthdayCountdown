@@ -17,7 +17,7 @@ import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_4;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
@@ -146,7 +146,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
-            String[] singleEventArray = eventInfo.split(STRING_2HASH, -1);
+            String[] singleEventArray = eventInfo.split(STRING_EOT, -1);
 
             if (singleEventArray.length < Position_attrAmount) {
 
@@ -202,10 +202,14 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) {
                     sbDetails.append(singleEventArray[Position_eventCaption]);
                 }
-                if (!singleEventArray[Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
+                if (!singleEventArray[Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
+                        ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Age)) {
-                    if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) sbDetails.append(STRING_COLON_SPACE);
-                    sbDetails.append(singleEventArray[Position_age_caption]);
+                    if (!singleEventArray[Position_age_caption].trim().isEmpty()) {
+                        if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption))
+                            sbDetails.append(STRING_COLON_SPACE);
+                        sbDetails.append(singleEventArray[Position_age_caption]);
+                    }
                 }
 
                 //Знак зодиака и животное в восточном календаре

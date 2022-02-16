@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class Widget2x2 extends AppWidgetProvider {
             if (eventsData.context == null) eventsData.context = context;
             eventsData.getPreferences();
             eventsData.setLocale(true);
+
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
@@ -70,20 +72,20 @@ public class Widget2x2 extends AppWidgetProvider {
 
         try {
 
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
+            eventsData.setLocale(true);
+
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             RemoteViews views = getRemoteViews(context);
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) {
-                eventsData.context = context;
-                eventsData.getPreferences();
-                eventsData.setLocale(true);
-            }
-
             if (eventsData.preferences_debug_on) {
-                String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId).provider.getShortClassName();
+                final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+                if (appWidgetInfo == null) return;
+                String widgetType = appWidgetInfo.provider.getShortClassName();
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
                 final Resources resources = context.getResources();
                 final DisplayMetrics displayMetrics = resources.getDisplayMetrics();

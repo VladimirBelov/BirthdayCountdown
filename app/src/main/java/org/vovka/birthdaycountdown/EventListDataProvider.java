@@ -15,7 +15,7 @@ import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
 import static org.vovka.birthdaycountdown.Constants.STRING_6;
@@ -117,7 +117,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
-            String[] singleEventArray = eventInfo.split(STRING_2HASH);
+            String[] singleEventArray = eventInfo.split(STRING_EOT, -1);
 
             if (singleEventArray.length < Position_attrAmount) {
 

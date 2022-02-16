@@ -15,7 +15,7 @@ import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_PREFS;
 import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
@@ -23,6 +23,7 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -76,7 +77,9 @@ public class WidgetList extends AppWidgetProvider {
             intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
             views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
-            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId).provider.getShortClassName();
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName();
             List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
@@ -151,6 +154,11 @@ public class WidgetList extends AppWidgetProvider {
 
         try {
 
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.context == null) eventsData.context = context;
+            eventsData.getPreferences();
+            eventsData.setLocale(true);
+
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
             appWidgetManager.updateAppWidget(widgetId, views);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, widgetId, newOptions);
@@ -171,7 +179,7 @@ public class WidgetList extends AppWidgetProvider {
 
             //Toast.makeText(context, "Clicked on item: " + eventInfo, Toast.LENGTH_SHORT).show();
 
-            String[] singleEventArray = eventInfo.split(STRING_2HASH);
+            String[] singleEventArray = eventInfo.split(STRING_EOT, -1);
             if (singleEventArray.length == Position_attrAmount) {
 
                 Intent intentView = null;

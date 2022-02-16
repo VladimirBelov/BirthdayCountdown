@@ -32,6 +32,7 @@ import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_OTHER_CONTACT;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (eventsData.preferences_list_on_click_action == 8) { //Контекстное меню
                         openContextMenu(v1);
                     } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <=4) {
-                        Intent intent = ContactsEvents.getViewActionIntent(((String) l.getItemAtPosition(position)).split(Constants.STRING_2HASH), eventsData.preferences_list_on_click_action);
+                        Intent intent = ContactsEvents.getViewActionIntent(((String) l.getItemAtPosition(position)).split(STRING_EOT), eventsData.preferences_list_on_click_action);
                         if (intent != null) {
                             try {
                                 MainActivity.this.startActivity(intent);
@@ -1057,7 +1058,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ListView l = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 selectedEvent_str = (String)l.getItemAtPosition(acmi.position);
-                selectedEvent = selectedEvent_str.split(Constants.STRING_2HASH);
+                selectedEvent = selectedEvent_str.split(STRING_EOT, -1);
 
                 //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
 
@@ -1319,7 +1320,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             dataList = new ArrayList<>();
 
             for (String event : eventsData.eventList) {
-                String[] singleEventArray = event.split(Constants.STRING_2HASH);
+                String[] singleEventArray = event.split(STRING_EOT, -1);
                 String eventKey = eventsData.getEventKey(singleEventArray);
 
                 if (eventsData.preferences_list_event_types.contains(singleEventArray[Position_eventType])) {
@@ -1464,7 +1465,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 event = getItem(position);
                 if (event == null) return convertView;
-                singleEventArray = event.split(Constants.STRING_2HASH);
+                singleEventArray = event.split(STRING_EOT, -1);
                 if (singleEventArray.length < Position_attrAmount) return convertView;
 
                 person = new Person(eventsData.context, event);

@@ -38,7 +38,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_0000;
 import static org.vovka.birthdaycountdown.Constants.STRING_0000_MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_2MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
@@ -53,6 +53,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
 import static org.vovka.birthdaycountdown.Constants.STRING_HTTP;
 import static org.vovka.birthdaycountdown.Constants.STRING_HTTPS;
 import static org.vovka.birthdaycountdown.Constants.STRING_MINUS;
+import static org.vovka.birthdaycountdown.Constants.STRING_MINUS1;
 import static org.vovka.birthdaycountdown.Constants.STRING_NULL;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
@@ -437,6 +438,25 @@ class ContactsEvents {
     private Resources resources;
     private ContentResolver contentResolver;
     boolean isUIopen = false;
+
+    //Даты
+    final Locale locale_en = new Locale(Constants.LANG_EN); //Все даты Android хранит в этой локали, типа 11 Jan 1991
+    final Locale locale_ru = new Locale(Constants.LANG_RU); //Skype хранит даты в той локале, которая указана в приложении Skype
+    final Locale locale_us = new Locale(Constants.LANG_US); // Jan 11, 1991
+    final Locale locale_ukr = new Locale(Constants.LANG_UA);
+    final SimpleDateFormat sdf_java = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
+    final SimpleDateFormat sdf_java_no_year = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, locale_en);
+    final SimpleDateFormat sdf_skype = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale_en);
+    final SimpleDateFormat sdf_DDMMYYYY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+    final SimpleDateFormat sdf_DDMMYYYYHHMM = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, locale_en);
+    final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, locale_en);
+    final SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
+    final SimpleDateFormat sdf_us = new SimpleDateFormat(Constants.DATE_US, locale_us);
+    final SimpleDateFormat sdf_ukr = new SimpleDateFormat(Constants.DATE_RUS, locale_ukr);
+    final SimpleDateFormat sdf_uk = new SimpleDateFormat(Constants.DATE_UK, locale_en);
+    final SimpleDateFormat sdf_uk_no_year = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale_en);
+    final SimpleDateFormat sdf_india = new SimpleDateFormat(Constants.DATE_IND, locale_en);
+    final SimpleDateFormat sdf_india_no_year = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale_en);
 
     static class ColumnIndexCache implements AutoCloseable {
         //https://android.jlelse.eu/using-a-cache-to-optimize-data-retrieval-from-cursors-56f9eaa1e0d2
@@ -1559,15 +1579,13 @@ class ContactsEvents {
                     int rNum = 0;
                     for (Map.Entry<Integer, String> entry : userData.entrySet()) {
                         rNum++;
-                        if (rNum != 1) {
-                            dataRow.append(Constants.STRING_2HASH);
-                        }
+                        if (rNum != 1) dataRow.append(STRING_EOT);
                         dataRow.append(entry.getValue());
                     }
 
                     if (dataList.add(dataRow.toString())) { //Добавляем для поиска календарных событий (дни рождения)
                         String personID = userData.get(Position_contactID);
-                        if (personID != null && !personID.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + personID, dataList.size() - 1);
+                        if (personID != null && !personID.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_EOT + personID, dataList.size() - 1);
                         //String personNameAlt = userData.get(Position_personFullNameAlt);
                         //if (personNameAlt != null && !personNameAlt.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + normalizeName(personNameAlt), dataList.size() - 1);
                     }
@@ -1741,14 +1759,12 @@ class ContactsEvents {
                         int rNum = 0;
                         for (Map.Entry<Integer, String> entry : userData.entrySet()) {
                             rNum++;
-                            if (rNum != 1) {
-                                dataRow.append(Constants.STRING_2HASH);
-                            }
+                            if (rNum != 1) dataRow.append(STRING_EOT);
                             dataRow.append(entry.getValue());
                         }
                         if (dataList.add(dataRow.toString())) { //Добавляем для поиска календарных событий (дни рожденя)
                             String personID = userData.get(Position_contactID);
-                            if (personID != null && !personID.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + personID, dataList.size() - 1);
+                            if (personID != null && !personID.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_EOT + personID, dataList.size() - 1);
                             //String personNameAlt = userData.get(Position_personFullNameAlt);
                             //if (personNameAlt != null && !personNameAlt.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + normalizeName(personNameAlt), dataList.size() - 1);
                         }
@@ -1859,9 +1875,6 @@ class ContactsEvents {
             //https://stackoverflow.com/questions/25734285/how-to-get-the-real-time-of-recurring-events
             //https://stackoverflow.com/questions/10133616/reading-all-of-todays-events-using-calendarcontract-android-4-0
 
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
-            SimpleDateFormat sdfny = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, locale_en);
             if (contentResolver == null) contentResolver = context.getContentResolver();
             String[] projection = new String[] {
                     CalendarContract.Instances.EVENT_ID,
@@ -2032,11 +2045,11 @@ class ContactsEvents {
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_2HASH + contactID);
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_2HASH));
+                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(STRING_EOT, -1));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
-                                final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateFirst) : sdfny.format(date));
+                                final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date));
                                 boolean needUpdate = false;
 
                                 if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
@@ -2076,9 +2089,7 @@ class ContactsEvents {
                                 int rNum = 0;
                                 for (String entry : singleRowList) {
                                     rNum++;
-                                    if (rNum != 1) {
-                                        dataRow.append(Constants.STRING_2HASH);
-                                    }
+                                    if (rNum != 1) dataRow.append(STRING_EOT);
                                     dataRow.append(entry);
                                 }
                                 eventList.set(eventIndex, dataRow.toString());
@@ -2144,7 +2155,7 @@ class ContactsEvents {
                             userData.put(Position_eventLabel, eventTitle); //Заголовок пользовательского события
                             userData.put(Position_eventType, eventType); //Тип события
                             userData.put(Position_eventSubType, eventSubType); //Подтип события
-                            userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateFirst) : sdfny.format(date)));
+                            userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date)));
                             userData.put(Position_eventIcon, Integer.toString(eventIcon));
                             userData.put(Position_eventEmoji, eventEmoji);
 
@@ -2167,9 +2178,7 @@ class ContactsEvents {
                             int rNum = 0;
                             for (Map.Entry<Integer, String> entry : userData.entrySet()) {
                                 rNum++;
-                                if (rNum != 1) {
-                                    dataRow.append(Constants.STRING_2HASH);
-                                }
+                                if (rNum != 1) dataRow.append(STRING_EOT);
                                 dataRow.append(entry.getValue());
                             }
                             final String eventData = dataRow.toString();
@@ -2177,7 +2186,7 @@ class ContactsEvents {
                                 eventList.add(eventData);
 
                                 if (importMethod == 2) {  //Добавляем событие
-                                    map_eventsBySubtypeAndPersonID_offset.put(eventTypesIDs.get(Type_BirthDay) + STRING_2HASH + contactID, eventList.size() - 1);
+                                    map_eventsBySubtypeAndPersonID_offset.put(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID, eventList.size() - 1);
                                 }
                             }
                         }
@@ -2198,13 +2207,13 @@ class ContactsEvents {
             if (preferences_debug_on) {
                 StringBuilder dataRow = new StringBuilder();
                 if (!userData.isEmpty()) {
-                            int rNum = 0;
-                            for (Map.Entry<Integer, String> entry : userData.entrySet()) {
-                                rNum++;
-                                dataRow.append(Constants.STRING_EOL);
-                                dataRow.append(entry.getKey()).append("=");
-                                dataRow.append(entry.getValue());
-                            }}
+                    int rNum = 0;
+                    for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                        rNum++;
+                        dataRow.append(Constants.STRING_EOL);
+                        dataRow.append(entry.getKey()).append("=");
+                        dataRow.append(entry.getValue());
+                    }}
                 handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e + dataRow, Toast.LENGTH_LONG).show());
             }
             return false;
@@ -2235,7 +2244,7 @@ class ContactsEvents {
                     cursor.moveToFirst();
                     for (int i = 0; i < cursor.getCount(); i++) {
                         if (cursor.getInt(1) == 1) {
-                            map_calendars.put(cursor.getInt(0) + STRING_EMPTY, cursor.getString(2).concat(STRING_2HASH).concat(cursor.getString(3)));
+                            map_calendars.put(cursor.getInt(0) + STRING_EMPTY, cursor.getString(2).concat(STRING_EOT).concat(cursor.getString(3)));
                         }
                         cursor.moveToNext();
                     }
@@ -2287,12 +2296,6 @@ class ContactsEvents {
             }
             if (fileList == null || fileList.size() == 0) return false;
             if (contentResolver == null) contentResolver = context.getContentResolver();
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-            SimpleDateFormat sdf_uk = new SimpleDateFormat(Constants.DATE_UK, locale_en);
-            SimpleDateFormat sdf_india = new SimpleDateFormat(Constants.DATE_IND, locale_en);
-            SimpleDateFormat sdfny = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, locale_en);
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
 
             for (String file: fileList) {
 
@@ -2336,7 +2339,7 @@ class ContactsEvents {
                             if (indexDateNoYear == -1) { //С годом
 
                                 try {
-                                    dateEvent = sdfYear.parse(eventDateOriginal);
+                                    dateEvent = sdf_DDMMYYYY.parse(eventDateOriginal);
                                 } catch (ParseException e1) {
                                     try {
                                         dateEvent = sdf_india.parse(eventDateOriginal);
@@ -2355,7 +2358,7 @@ class ContactsEvents {
                                 useEventYear = false;
                                 final String dateNextEvent = eventDateOriginal.substring(0, indexDateNoYear) + now.get(YEAR);
                                 try {
-                                    dateEvent = sdfYear.parse(dateNextEvent);
+                                    dateEvent = sdf_DDMMYYYY.parse(dateNextEvent);
                                 } catch (ParseException e1) {
                                     try {
                                         dateEvent = sdf_india.parse(dateNextEvent);
@@ -2371,7 +2374,7 @@ class ContactsEvents {
                             }
 
                             if (dateEvent != null) {
-                                eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf.format(dateEvent) : sdfny.format(dateEvent));
+                                eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateEvent) : sdf_java_no_year.format(dateEvent));
 
                                 userData.put(Position_eventStorage, STRING_STORAGE_FILE);
                                 //userData.put(Position_eventID, STRING_EMPTY); //todo: вычислять по md5 имени файла + md5 имени
@@ -2412,31 +2415,31 @@ class ContactsEvents {
                                     String contactTitle = null;
 
                                     if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
-                                       if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
+                                        if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
 
-                                           contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
-                                           eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
+                                            contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
+                                            eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
 
-                                       } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
+                                        } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
 
-                                           contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
-                                           eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
+                                            contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
+                                            eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
 
                                         } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
 
-                                           contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
-                                           eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
+                                            contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
+                                            eventTitle = eventTitle.replace(STRING_PARENTHESIS_START + contactTitle + STRING_PARENTHESIS_CLOSE, STRING_EMPTY).trim();
 
-                                       }
-                                       if (contactTitle != null) {
-                                           int cStart = contactTitle.indexOf(STRING_COMMA);
-                                           if (cStart > 0) {
-                                               userData.put(Position_organization, contactTitle.substring(0, cStart).trim());
-                                               userData.put(Position_title, contactTitle.substring(cStart + 1).trim());
-                                           } else {
-                                               userData.put(Position_title, contactTitle.trim());
-                                           }
-                                       }
+                                        }
+                                        if (contactTitle != null) {
+                                            int cStart = contactTitle.indexOf(STRING_COMMA);
+                                            if (cStart > 0) {
+                                                userData.put(Position_organization, contactTitle.substring(0, cStart).trim());
+                                                userData.put(Position_title, contactTitle.substring(cStart + 1).trim());
+                                            } else {
+                                                userData.put(Position_title, contactTitle.trim());
+                                            }
+                                        }
 
                                     }
 
@@ -2464,7 +2467,7 @@ class ContactsEvents {
 
                             }
 
-                        //} else if (line.charAt(0) == '|') { //Birthdays Plus
+                            //} else if (line.charAt(0) == '|') { //Birthdays Plus
 
                         }
 
@@ -2484,15 +2487,15 @@ class ContactsEvents {
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_2HASH + contactID);
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
 
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_2HASH));
+                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(STRING_EOT, -1));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
                                 boolean needUpdate = false;
 
                                 if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
-                                    singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
+                                    singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(STRING_2TILDA).concat(eventNewDate));
                                     needUpdate = true;
                                 }
 
@@ -2522,9 +2525,7 @@ class ContactsEvents {
                                 int rNum = 0;
                                 for (String entry : singleRowList) {
                                     rNum++;
-                                    if (rNum != 1) {
-                                        dataRow.append(Constants.STRING_2HASH);
-                                    }
+                                    if (rNum != 1) dataRow.append(STRING_EOT);
                                     dataRow.append(entry);
                                 }
                                 eventList.set(eventIndex, dataRow.toString());
@@ -2559,9 +2560,7 @@ class ContactsEvents {
                             int rNum = 0;
                             for (Map.Entry<Integer, String> entry : userData.entrySet()) {
                                 rNum++;
-                                if (rNum != 1) {
-                                    dataRow.append(Constants.STRING_2HASH);
-                                }
+                                if (rNum != 1) dataRow.append(STRING_EOT);
                                 dataRow.append(entry.getValue());
                             }
                             final String eventData = dataRow.toString();
@@ -2626,7 +2625,7 @@ class ContactsEvents {
 
             if (event.isEmpty()) return null;
 
-            String[] singleEventArray = event.split(Constants.STRING_2HASH);
+            String[] singleEventArray = event.split(STRING_EOT, -1);
             String eventSubType = singleEventArray[Position_eventSubType];
 
             if (eventSubType.equals(eventTypesIDs.get(Type_CalendarEvent)) || eventSubType.equals(eventTypesIDs.get(Type_FileEvent))) {
@@ -2675,8 +2674,7 @@ class ContactsEvents {
                 //Если событие - не день рождения, пытаемся достать возраст из дня рождения
                 if (!eventSubType.equals(eventTypesIDs.get(Type_BirthDay))) {
                     final Date birthDate = set_events_birthdays.get(singleEventArray[Position_contactID]);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, new Locale(Constants.LANG_EN));
-                    Date BDay = sdfYear.parse(singleEventArray[Position_eventDate]);
+                    Date BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
 
                     List<String> singleRowList = Arrays.asList(singleEventArray);
                     if (birthDate != null && BDay != null) {
@@ -2966,27 +2964,11 @@ class ContactsEvents {
         if (isEmptyEventList()) return;
 
         long statCurrentModuleStart = System.currentTimeMillis();
-        String singleEvent = null;
+        //String singleEvent = null;
 
         try {
 
             List<String> magicList = new ArrayList<>(); //Для 5k событий
-
-            Locale locale_en = new Locale(Constants.LANG_EN); //Все даты Android хранит в этой локали, типа 11 Jan 1991
-            Locale locale_ru = new Locale(Constants.LANG_RU); //Skype хранит даты в той локале, которая указана в приложении Skype
-            Locale locale_us = new Locale(Constants.LANG_US); // Jan 11, 1991
-            Locale locale_ukr = new Locale(Constants.LANG_UA);
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
-            SimpleDateFormat skypedf = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale_en);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-            SimpleDateFormat sdfNoYear = new SimpleDateFormat(Constants.DATE_DD_MM, locale_en);
-            SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
-            SimpleDateFormat sdf_us = new SimpleDateFormat(Constants.DATE_US, locale_us);
-            SimpleDateFormat sdf_ukr = new SimpleDateFormat(Constants.DATE_RUS, locale_ukr);
-            SimpleDateFormat sdf_uk = new SimpleDateFormat(Constants.DATE_UK, locale_en);
-            SimpleDateFormat sdf_uk_no_year = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale_en);
-            SimpleDateFormat sdf_india = new SimpleDateFormat(Constants.DATE_IND, locale_en);
-            SimpleDateFormat sdf_india_no_year = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale_en);
 
             Calendar now = Calendar.getInstance();
             Date currentDay = new Date(now.getTimeInMillis());
@@ -2995,313 +2977,7 @@ class ContactsEvents {
             final Resources resources = getResources();
 
             for (int i = 0; i < eventList.size(); i++) {
-                long dayDiff = -1;
-                boolean isYear = false;
-                Date eventDate = null; //оригинальная дата события
-                Date BDay = null; //следующая дата события
-                int Age = 0;
-
-                singleEvent = eventList.get(i);
-                String[] singleEventArray = singleEvent.split(Constants.STRING_2HASH);
-                String[] dayArray = singleEventArray[Position_dates].split(Constants.STRING_2TILDA);
-                final String eventCaption = singleEventArray[Position_eventCaption];
-                final String eventType = singleEventArray[Position_eventType];
-                final String eventSubType = singleEventArray[Position_eventSubType];
-
-                //перебираем все даты и находим максимальную
-                for (String dayValue : dayArray) {
-                    String accountType = dayValue.substring(0, dayValue.indexOf(STRING_COLON_SPACE));
-                    String storedDate = dayValue.substring(dayValue.indexOf(STRING_COLON_SPACE) + STRING_COLON_SPACE.length());
-                    Date storedDate_Date = null;
-                    boolean storedDate_isYear = false;
-
-                    if (!statEventTypes.containsKey(accountType)) {
-                        statEventTypes.put(accountType, 1);
-                    } else {
-                        Integer oldCount = statEventTypes.get(accountType);
-                        statEventTypes.put(accountType, (oldCount == null ? 0 : oldCount) + 1);
-                    }
-
-                    if (accountType.toLowerCase().contains(Objects.requireNonNull(resources).getString(R.string.account_skype))) {
-
-                        storedDate_isYear = true;
-                        try {
-                            storedDate_Date = skypedf.parse(storedDate);
-                        } catch (ParseException e) {
-                            try {
-                                storedDate_Date = sdf_ru.parse(storedDate);
-                            } catch (ParseException e2) {
-                                try {
-                                    storedDate_Date = sdf_ukr.parse(storedDate);
-                                } catch (ParseException e3) {
-                                    try {
-                                        storedDate_Date = sdf_us.parse(storedDate);
-                                    } catch (ParseException e4) {
-                                        try {
-                                            storedDate_Date = sdf_uk.parse(storedDate);
-                                        } catch (ParseException e5) {
-                                            try {
-                                                storedDate_Date = sdf_india.parse(storedDate);
-                                            } catch (ParseException e6) {
-                                                try {
-                                                    storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                                } catch (ParseException e7) {
-                                                    try {
-                                                        storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                    } catch (ParseException e8) {
-                                                        //Не получилось распознать
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    } else if (accountType.equalsIgnoreCase(resources.getString(R.string.account_vk))) {
-
-                        if (storedDate.startsWith(STRING_0000_MINUS)) { //Нет года, формат 0000-mm-dd
-
-                            try {
-                                BDay = sdf.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(5));
-                            } catch (ParseException e) {
-                                //Не получилось распознать
-                            }
-                            if (BDay != null) {
-                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
-                                storedDate_Date = BDay;
-                            }
-
-                        } else {
-
-                            storedDate_isYear = true;
-                            try {
-                                storedDate_Date = sdf.parse(storedDate);
-                            } catch (ParseException e) {
-                                try {
-                                    storedDate_Date = skypedf.parse(storedDate);
-                                } catch (ParseException e2) {
-                                    //Не получилось распознать
-                                }
-                            }
-                        }
-
-                    } else {
-                        //Стандартные аккаунты. Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
-                        //com.google
-                        //com.xiaomi
-                        //vnd.sec.contact.phone
-                        //asus.local.phone
-                        //com.google.android.gm.exchange
-                        //com.lotus.sync.notes
-                        //com.whatsapp
-                        //com.android.huawei.phone
-
-                        if (
-                                storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
-                                        storedDate.startsWith(STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
-                                        (storedDate.startsWith("1604-") && (accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange)) || accountType.equalsIgnoreCase(resources.getString(R.string.account_google)))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
-                                        (storedDate.startsWith("1904-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_huawei))) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
-                                        (!isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
-                        ) {
-
-                            try {
-                                BDay = sdf.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(storedDate.startsWith(STRING_2MINUS) ? 2 : 5));
-                            } catch (ParseException e) {
-                                //Не получилось распознать
-                            }
-                            if (BDay != null) {
-                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
-                                storedDate_Date = BDay;
-                            }
-
-                        } else { //Обычный формат yyyy-MM-dd
-
-                            storedDate_isYear = true;
-                            try {
-                                storedDate_Date = sdf.parse(storedDate);
-                            } catch (ParseException e) {
-                                try {
-                                    storedDate_Date = skypedf.parse(storedDate);
-                                } catch (ParseException e2) {
-                                    try {
-                                        storedDate_Date = sdf_ru.parse(storedDate);
-                                    } catch (ParseException e3) {
-                                        try {
-                                            storedDate_Date = sdf_uk.parse(storedDate);
-                                        } catch (ParseException e4) {
-                                            try {
-                                                storedDate_Date = sdf_india.parse(storedDate);
-                                            } catch (ParseException e5) {
-                                                try {
-                                                    storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                                    storedDate_isYear = false;
-                                                } catch (ParseException e6) {
-                                                    try {
-                                                        storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                        storedDate_isYear = false;
-                                                    } catch (ParseException e7) {
-                                                        //Не получилось распознать
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    if (storedDate_Date != null) {
-                        if (eventDate == null) {
-                            eventDate = storedDate_Date;
-                            isYear = storedDate_isYear;
-                        } else if (storedDate_isYear & (!isYear || countDaysDiff(eventDate, storedDate_Date) > 0)) { //Если у пользователя несколько дат, берём наименьший возраст todo: можно вынести в настройку - в какую сторону округлять
-                            eventDate = storedDate_Date;
-                            isYear = true;
-                        }
-                    }
-                }
-
-                if (eventDate != null) {
-
-                    if (isYear) { //в eventDate - оригинальное событие
-
-                        Calendar cal = getCalendarFromDate(eventDate);
-                        try {
-
-                            BDay = sdf.parse(now.get(YEAR) + STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
-                            if (BDay != null) {
-                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
-                            }
-
-                        } catch (ParseException e) {
-                            //Не получилось распознать
-                        }
-
-                    }
-
-                    if (BDay != null) {
-                        dayDiff = countDaysDiff(currentDay, BDay);
-                        Age = countYearsDiff(eventDate, BDay); //Считаем, сколько будет лет
-                        if (eventSubType.equals(eventTypesIDs.get(Type_BirthDay)))
-                            set_events_birthdays.put(singleEventArray[Position_contactID], eventDate);
-                    }
-
-                }
-
-                if (dayDiff == -1) {
-
-                    eventList.set(i, STRING_EMPTY);
-
-                } else {
-
-                   singleEventArray[Position_eventDate] = sdfYear.format(BDay); //следующая дата события
-                    if (isYear) { //Дата с годом
-                        singleEventArray[Position_eventDateText] = sdfYear.format(eventDate); //оригинальное событие
-                    } else { //Дата без года
-                        singleEventArray[Position_eventDateText] = sdfNoYear.format(eventDate); //оригинальное событие без года
-                    }
-
-                    //Если событие в ближайшие 3 дня, то в eventDistance будет <число дней до события>, иначе: "Дней до <тип события>: " +  <число дней до события> + <день недели>
-                    singleEventArray[Position_eventDistance] = Long.toString(dayDiff);
-                    singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDiff, BDay);
-
-                    if (Age > 0) {
-                        singleEventArray[Position_age] = Integer.toString(Age);
-                        singleEventArray[Position_age_caption] = getAgeString(
-                                Age,
-                                R.string.msg_after_year_prefix_1,
-                                R.string.msg_after_year_prefix_1_,
-                                R.string.msg_after_year_prefix_2_3_4,
-                                R.string.msg_after_year_prefix_4_21
-                        );
-
-                        if (!eventSubType.equals(eventTypesIDs.get(Type_Death))) {
-                            singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay);
-                        }
-                        if (eventType.equals(eventTypesIDs.get(Type_Anniversary))) {
-                            String anCaption;
-                            try {
-                                anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + Age, "string", context.getPackageName()));
-                            } catch (Resources.NotFoundException nfe) {
-                                anCaption = null;
-                            }
-                            if (anCaption != null && !isEmpty(anCaption) && !eventCaption.contains(STRING_PARENTHESIS_OPEN)) {
-                                singleEventArray[Position_eventCaption] = eventCaption.concat(STRING_PARENTHESIS_OPEN).concat(anCaption).concat(STRING_PARENTHESIS_CLOSE);
-                            }
-                        }
-                    } else {
-                        singleEventArray[Position_age] = Constants.STRING_MINUS1;
-                        singleEventArray[Position_age_caption] = STRING_SPACE;
-                        singleEventArray[Position_age_current] = STRING_SPACE;
-                    }
-                    if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
-                        final String zodiacSign = getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleEventArray[Position_eventDateText]);
-                        singleEventArray[Position_zodiacSign] = zodiacSign.equals(STRING_EMPTY) ? STRING_SPACE : zodiacSign;
-                        final String zodiacYear = getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleEventArray[Position_eventDateText]);
-                        singleEventArray[Position_zodiacYear] = zodiacYear.equals(STRING_EMPTY) ? STRING_SPACE : zodiacYear;
-                    }
-
-                    //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
-                    String eventKey = getEventKey(singleEventArray);
-
-                    singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
-                            + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
-                            + (eventType.equals(eventTypesIDs.get(Type_BirthDay)) ? "1"
-                                    : eventType.equals(eventTypesIDs.get(Type_Anniversary)) ? "2"
-                                    : eventType.equals(eventTypesIDs.get(Type_Custom)) ? "3"
-                                    : eventType.equals(eventTypesIDs.get(Type_Other)) ? "6"
-                                    : "4");
-
-                    eventList.set(i, TextUtils.join(Constants.STRING_2HASH, singleEventArray));
-
-                    //Вычисляем 5K даты
-                    if (Age > 0 && eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
-
-                        //todo: подумать: надо ли считать 5K для смертей и.т.п.?
-                        long days = countDaysDiff(eventDate, currentDay);
-                        long k = (days + 365) / 5000;
-                        long mdays = (days + 365) % 5000;
-
-                        if (mdays >= 0 && mdays <= 365) {
-                            //Формируем новую запись
-                            Calendar cal5K = Calendar.getInstance();
-                            int magicDayDistance = (int) (365 - mdays);
-                            cal5K.add(Calendar.DATE, magicDayDistance);
-
-                            singleEventArray[Position_eventType] = eventTypesIDs.get(Type_5K);
-                            singleEventArray[Position_eventSubType] = eventTypesIDs.get(Type_5K);
-                            singleEventArray[Position_eventCaption] = "5K+";
-                            singleEventArray[Position_eventLabel] = sdfYear.format(cal5K.getTime());
-                            //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
-                            singleEventArray[Position_eventDate] = sdfYear.format(cal5K.getTime());
-                            singleEventArray[Position_eventDateText] = sdfYear.format(eventDate);
-                            singleEventArray[Position_age] = Integer.toString(Age);
-                            singleEventArray[Position_age_caption] = 5 * k + "K";
-                            singleEventArray[Position_eventDistance] = Integer.toString(magicDayDistance);
-                            singleEventArray[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
-                            singleEventArray[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
-                            singleEventArray[Position_eventEmoji] = "🏆";
-                            singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay); //Возраст текущий
-                            //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
-
-                            eventKey = getEventKey(singleEventArray);
-                            singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
-                                    + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
-                                    + "5";
-
-                            magicList.add(TextUtils.join(Constants.STRING_2HASH, singleEventArray));
-                        }
-
-                    }
-                }
-
+                computeDateForEvent(i, magicList, now, currentDay);
             }
 
             //Удаляем пустые
@@ -3319,10 +2995,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (preferences_debug_on) {
-                String finalSingleEvent = singleEvent;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e + (finalSingleEvent != null ? STRING_EOL + finalSingleEvent : STRING_EMPTY), Toast.LENGTH_LONG).show());
-            }
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e, Toast.LENGTH_LONG).show());
         } finally {
 
             //Сортируем
@@ -3330,6 +3003,329 @@ class ContactsEvents {
 
             statLastComputeDates = System.currentTimeMillis();
             statTimeComputeDates = statLastComputeDates - statCurrentModuleStart;
+        }
+    }
+
+    void computeDateForEvent(int i, @NonNull List<String> magicList, @NonNull Calendar now, @NonNull Date currentDay) {
+
+        String singleEvent = STRING_EMPTY;
+
+        try {
+            long dayDiff = -1;
+            boolean isYear = false;
+            Date eventDate = null; //оригинальная дата события
+            Date BDay = null; //следующая дата события
+            int Age = 0;
+
+            singleEvent = eventList.get(i);
+            if (singleEvent == null) return;
+
+            String[] singleEventArray = singleEvent.split(STRING_EOT, -1);
+            String[] dayArray = singleEventArray[Position_dates].split(STRING_2TILDA, -1);
+            final String eventCaption = singleEventArray[Position_eventCaption];
+            final String eventType = singleEventArray[Position_eventType];
+            final String eventSubType = singleEventArray[Position_eventSubType];
+
+            //перебираем все даты и находим максимальную
+            for (String dayValue : dayArray) {
+                String accountType = dayValue.substring(0, dayValue.indexOf(STRING_COLON_SPACE));
+                String storedDate = dayValue.substring(dayValue.indexOf(STRING_COLON_SPACE) + STRING_COLON_SPACE.length());
+                Date storedDate_Date = null;
+                boolean storedDate_isYear = false;
+
+                if (!statEventTypes.containsKey(accountType)) {
+                    statEventTypes.put(accountType, 1);
+                } else {
+                    Integer oldCount = statEventTypes.get(accountType);
+                    statEventTypes.put(accountType, (oldCount == null ? 0 : oldCount) + 1);
+                }
+
+                if (accountType.toLowerCase().contains(Objects.requireNonNull(resources).getString(R.string.account_skype))) {
+
+                    storedDate_isYear = true;
+                    try {
+                        storedDate_Date = sdf_skype.parse(storedDate);
+                    } catch (ParseException e) {
+                        try {
+                            storedDate_Date = sdf_ru.parse(storedDate);
+                        } catch (ParseException e2) {
+                            try {
+                                storedDate_Date = sdf_ukr.parse(storedDate);
+                            } catch (ParseException e3) {
+                                try {
+                                    storedDate_Date = sdf_us.parse(storedDate);
+                                } catch (ParseException e4) {
+                                    try {
+                                        storedDate_Date = sdf_uk.parse(storedDate);
+                                    } catch (ParseException e5) {
+                                        try {
+                                            storedDate_Date = sdf_india.parse(storedDate);
+                                        } catch (ParseException e6) {
+                                            try {
+                                                storedDate_Date = sdf_uk_no_year.parse(storedDate);
+                                            } catch (ParseException e7) {
+                                                try {
+                                                    storedDate_Date = sdf_india_no_year.parse(storedDate);
+                                                } catch (ParseException e8) {
+                                                    //Не получилось распознать
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } else if (accountType.equalsIgnoreCase(resources.getString(R.string.account_vk))) {
+
+                    if (storedDate.startsWith(STRING_0000_MINUS)) { //Нет года, формат 0000-mm-dd
+
+                        try {
+                            BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(5));
+                        } catch (ParseException e) {
+                            //Не получилось распознать
+                        }
+                        if (BDay != null) {
+                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                            storedDate_Date = BDay;
+                        }
+
+                    } else {
+
+                        storedDate_isYear = true;
+                        try {
+                            storedDate_Date = sdf_java.parse(storedDate);
+                        } catch (ParseException e) {
+                            try {
+                                storedDate_Date = sdf_skype.parse(storedDate);
+                            } catch (ParseException e2) {
+                                //Не получилось распознать
+                            }
+                        }
+                    }
+
+                } else {
+                    //Стандартные аккаунты. Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
+                    //com.google
+                    //com.xiaomi
+                    //vnd.sec.contact.phone
+                    //asus.local.phone
+                    //com.google.android.gm.exchange
+                    //com.lotus.sync.notes
+                    //com.whatsapp
+                    //com.android.huawei.phone
+
+                    if (
+                            storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
+                                    storedDate.startsWith(STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
+                                    (storedDate.startsWith("1604-") && (accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange)) || accountType.equalsIgnoreCase(resources.getString(R.string.account_google)))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
+                                    (storedDate.startsWith("1904-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_huawei))) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
+                                    (!isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
+                    ) {
+
+                        try {
+                            BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(storedDate.startsWith(STRING_2MINUS) ? 2 : 5));
+                        } catch (ParseException e) {
+                            //Не получилось распознать
+                        }
+                        if (BDay != null) {
+                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                            storedDate_Date = BDay;
+                        }
+
+                    } else { //Обычный формат yyyy-MM-dd
+
+                        storedDate_isYear = true;
+                        try {
+                            storedDate_Date = sdf_java.parse(storedDate);
+                        } catch (ParseException e) {
+                            try {
+                                storedDate_Date = sdf_skype.parse(storedDate);
+                            } catch (ParseException e2) {
+                                try {
+                                    storedDate_Date = sdf_ru.parse(storedDate);
+                                } catch (ParseException e3) {
+                                    try {
+                                        storedDate_Date = sdf_uk.parse(storedDate);
+                                    } catch (ParseException e4) {
+                                        try {
+                                            storedDate_Date = sdf_india.parse(storedDate);
+                                        } catch (ParseException e5) {
+                                            try {
+                                                storedDate_Date = sdf_uk_no_year.parse(storedDate);
+                                                storedDate_isYear = false;
+                                            } catch (ParseException e6) {
+                                                try {
+                                                    storedDate_Date = sdf_india_no_year.parse(storedDate);
+                                                    storedDate_isYear = false;
+                                                } catch (ParseException e7) {
+                                                    //Не получилось распознать
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                if (storedDate_Date != null) {
+                    if (eventDate == null) {
+                        eventDate = storedDate_Date;
+                        isYear = storedDate_isYear;
+                    } else if (storedDate_isYear & (!isYear || countDaysDiff(eventDate, storedDate_Date) > 0)) { //Если у пользователя несколько дат, берём наименьший возраст todo: можно вынести в настройку - в какую сторону округлять
+                        eventDate = storedDate_Date;
+                        isYear = true;
+                    }
+                }
+            }
+
+            if (eventDate != null) {
+
+                if (isYear) { //в eventDate - оригинальное событие
+
+                    Calendar cal = getCalendarFromDate(eventDate);
+                    try {
+
+                        BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
+                        if (BDay != null) {
+                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                        }
+
+                    } catch (ParseException e) {
+                        //Не получилось распознать
+                    }
+
+                }
+
+                if (BDay != null) {
+                    dayDiff = countDaysDiff(currentDay, BDay);
+                    Age = countYearsDiff(eventDate, BDay); //Считаем, сколько будет лет
+                    if (eventSubType.equals(eventTypesIDs.get(Type_BirthDay)))
+                        set_events_birthdays.put(singleEventArray[Position_contactID], eventDate);
+                }
+
+            }
+
+            if (dayDiff == -1) {
+
+                eventList.set(i, STRING_EMPTY);
+
+            } else {
+
+                singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(BDay); //следующая дата события
+                if (isYear) { //Дата с годом
+                    singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate); //оригинальное событие
+                } else { //Дата без года
+                    singleEventArray[Position_eventDateText] = sdf_DDMM.format(eventDate); //оригинальное событие без года
+                }
+
+                //Если событие в ближайшие 3 дня, то в eventDistance будет <число дней до события>, иначе: "Дней до <тип события>: " +  <число дней до события> + <день недели>
+                singleEventArray[Position_eventDistance] = Long.toString(dayDiff);
+                singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDiff, BDay);
+
+                if (Age > 0) {
+                    singleEventArray[Position_age] = Integer.toString(Age);
+                    singleEventArray[Position_age_caption] = getAgeString(
+                            Age,
+                            R.string.msg_after_year_prefix_1,
+                            R.string.msg_after_year_prefix_1_,
+                            R.string.msg_after_year_prefix_2_3_4,
+                            R.string.msg_after_year_prefix_4_21
+                    );
+
+                    if (!eventSubType.equals(eventTypesIDs.get(Type_Death))) {
+                        singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay);
+                    }
+                    if (eventType.equals(eventTypesIDs.get(Type_Anniversary))) {
+                        String anCaption;
+                        try {
+                            anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + Age, "string", context.getPackageName()));
+                        } catch (Resources.NotFoundException nfe) {
+                            anCaption = null;
+                        }
+                        if (anCaption != null && !isEmpty(anCaption) && !eventCaption.contains(STRING_PARENTHESIS_OPEN)) {
+                            singleEventArray[Position_eventCaption] = eventCaption.concat(STRING_PARENTHESIS_OPEN).concat(anCaption).concat(STRING_PARENTHESIS_CLOSE);
+                        }
+                    }
+                } else {
+                    singleEventArray[Position_age] = STRING_MINUS1;
+                    singleEventArray[Position_age_caption] = STRING_SPACE;
+                    singleEventArray[Position_age_current] = STRING_SPACE;
+                }
+                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
+                    final String zodiacSign = getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleEventArray[Position_eventDateText]);
+                    singleEventArray[Position_zodiacSign] = zodiacSign.equals(STRING_EMPTY) ? STRING_SPACE : zodiacSign;
+                    final String zodiacYear = getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleEventArray[Position_eventDateText]);
+                    singleEventArray[Position_zodiacYear] = zodiacYear.equals(STRING_EMPTY) ? STRING_SPACE : zodiacYear;
+                }
+
+                //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
+                String eventKey = getEventKey(singleEventArray);
+
+                singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
+                        + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
+                        + (eventType.equals(eventTypesIDs.get(Type_BirthDay)) ? "1"
+                        : eventType.equals(eventTypesIDs.get(Type_Anniversary)) ? "2"
+                        : eventType.equals(eventTypesIDs.get(Type_Custom)) ? "3"
+                        : eventType.equals(eventTypesIDs.get(Type_Other)) ? "6"
+                        : "4");
+
+                eventList.set(i, TextUtils.join(STRING_EOT, singleEventArray));
+
+                //Вычисляем 5K даты
+                if (Age > 0 && eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
+
+                    //todo: подумать: надо ли считать 5K для смертей и.т.п.?
+                    long days = countDaysDiff(eventDate, currentDay);
+                    long k = (days + 365) / 5000;
+                    long mdays = (days + 365) % 5000;
+
+                    if (mdays >= 0 && mdays <= 365) {
+                        //Формируем новую запись
+                        Calendar cal5K = Calendar.getInstance();
+                        int magicDayDistance = (int) (365 - mdays);
+                        cal5K.add(Calendar.DATE, magicDayDistance);
+
+                        singleEventArray[Position_eventType] = eventTypesIDs.get(Type_5K);
+                        singleEventArray[Position_eventSubType] = eventTypesIDs.get(Type_5K);
+                        singleEventArray[Position_eventCaption] = "5K+";
+                        singleEventArray[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
+                        //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
+                        singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(cal5K.getTime());
+                        singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate);
+                        singleEventArray[Position_age] = Integer.toString(Age);
+                        singleEventArray[Position_age_caption] = 5 * k + "K";
+                        singleEventArray[Position_eventDistance] = Integer.toString(magicDayDistance);
+                        singleEventArray[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
+                        singleEventArray[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
+                        singleEventArray[Position_eventEmoji] = "🏆";
+                        singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay); //Возраст текущий
+                        //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
+
+                        eventKey = getEventKey(singleEventArray);
+                        singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
+                                + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
+                                + "5";
+
+                        magicList.add(TextUtils.join(STRING_EOT, singleEventArray));
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) {
+                String finalSingleEvent = singleEvent;
+                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e + STRING_EOL + finalSingleEvent, Toast.LENGTH_LONG).show());
+            }
         }
     }
 
@@ -3425,14 +3421,12 @@ class ContactsEvents {
 
             Calendar now = Calendar.getInstance();
             Date currentDay = new Date(now.getTimeInMillis());
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
 
             List<String> newList = new ArrayList<>();
             preferences_list_prev_events_found = 0;
             for (int i = dataList.size() - 1; i >= 0 && preferences_list_prev_events_found < params_events; i--) {
                 String li = dataList.get(i);
-                String[] singleEventArray = li.split(Constants.STRING_2HASH);
+                String[] singleEventArray = li.split(STRING_EOT, -1);
                 if (!singleEventArray[Position_eventSubType].equals(eventTypesIDs.get(Type_5K)) //пропускаем 5K+
                         && !singleEventArray[Position_eventSubType].equals(eventTypesIDs.get(Type_CalendarEvent)) //пропускаем события календаря
                 ) {
@@ -3442,7 +3436,7 @@ class ContactsEvents {
                     } else {
                         Date eventDate = null;
                         try {
-                            eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                            eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                             if (eventDate != null) {
                                 eventDate = addYear(eventDate, -1);
                             }
@@ -3466,10 +3460,10 @@ class ContactsEvents {
             if (!newList.isEmpty()) {
 
                 for (String li : newList) {
-                    String[] singleEventArray = li.split(Constants.STRING_2HASH);
+                    String[] singleEventArray = li.split(STRING_EOT, -1);
                     Date eventDate = null;
                     try {
-                        eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                        eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                     } catch (Exception e) {
                         //
                     }
@@ -3477,7 +3471,7 @@ class ContactsEvents {
                     if (eventDate != null) {
 
                         eventDate = addYear(eventDate, -1);
-                        singleEventArray[Position_eventDate] = sdfYear.format(eventDate);
+                        singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(eventDate);
                         long dayDistance = countDaysDiff(currentDay, eventDate);
                         singleEventArray[Position_eventDistance] = Long.toString(dayDistance);
                         singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDistance, eventDate);
@@ -3515,12 +3509,12 @@ class ContactsEvents {
                             }
                         } else { //Сейчас идёт первый год жизни
 
-                            singleEventArray[Position_age] = Constants.STRING_MINUS1;
+                            singleEventArray[Position_age] = STRING_MINUS1;
                             singleEventArray[Position_age_caption] = STRING_SPACE;
 
                         }
 
-                        dataList.add(0, TextUtils.join(Constants.STRING_2HASH, singleEventArray));
+                        dataList.add(0, TextUtils.join(STRING_EOT, singleEventArray));
                     }
                 }
 
@@ -3675,8 +3669,7 @@ class ContactsEvents {
                     }
 
                     if (preferences_debug_on) {
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
-                        if (log != null) log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf.format(calendar.getTime())).append(STRING_EOL);
+                        if (log != null) log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf_DDMMYYYYHHMM.format(calendar.getTime())).append(STRING_EOL);
                     }
                 }
 
@@ -3720,8 +3713,7 @@ class ContactsEvents {
                     }
 
                     if (preferences_debug_on) {
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
-                        log.append(Constants.MSG_NEXT_NOTIFICATION).append(sdf.format(calendar.getTime())).append(STRING_EOL);
+                        log.append(Constants.MSG_NEXT_NOTIFICATION).append(sdf_DDMMYYYYHHMM.format(calendar.getTime())).append(STRING_EOL);
                     }
                 }
 
@@ -3750,13 +3742,10 @@ class ContactsEvents {
 
             Calendar now = Calendar.getInstance();
             Date currentDay = new Date(now.getTimeInMillis());
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-            SimpleDateFormat sdfDDMM = new SimpleDateFormat(Constants.DATE_DD_MM, locale_en);
 
             List<String> listNotify = new ArrayList<>();
             for (String event: eventList) {
-                String[] singleEventArray = event.split(Constants.STRING_2HASH);
+                String[] singleEventArray = event.split(STRING_EOT, -1);
                 if (singleEventArray.length == Position_attrAmount) {
 
                     final String eventKey = getEventKey(singleEventArray);
@@ -3765,7 +3754,7 @@ class ContactsEvents {
                             (getSilencedEventsCount() == 0 || !checkIsSilencedEvent(eventKey))) {
                         Date eventDate = null;
                         try {
-                            eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                            eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                         } catch (Exception e) {/**/}
 
                         if (eventDate != null) {
@@ -3801,13 +3790,13 @@ class ContactsEvents {
                     textSmall = context.getString(R.string.msg_notifications_soon) + dataNotify.length;
                     textBig.append(textSmall).append(":\n");
                     for (String event : dataNotify) {
-                        String[] singleEventArray = event.split(Constants.STRING_2HASH);
+                        String[] singleEventArray = event.split(STRING_EOT, -1);
                         Date eventDate = null;
                         String eventDay = null;
                         try {
-                            eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                            eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                             if (eventDate != null) {
-                                eventDay = sdfDDMM.format(eventDate);
+                                eventDay = sdf_DDMM.format(eventDate);
                             }
                         } catch (Exception e) { /**/ }
 
@@ -3859,13 +3848,13 @@ class ContactsEvents {
             } else { //Несколько отдельных уведомлений
 
                 for (int i = dataNotify.length - 1; i >= 0; i--) {
-                    String[] singleEventArray = dataNotify[i].split(Constants.STRING_2HASH);
+                    String[] singleEventArray = dataNotify[i].split(STRING_EOT, -1);
                     Date eventDate = null;
                     String eventDay = null;
                     try {
-                        eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                        eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                         if (eventDate != null) {
-                            eventDay = sdfDDMM.format(eventDate);
+                            eventDay = sdf_DDMM.format(eventDate);
                         }
                     } catch (Exception e) {
                         //
@@ -4006,9 +3995,9 @@ class ContactsEvents {
 
             if (!singleEventArray[Position_eventSubType].trim().isEmpty()) {
                 if (!singleEventArray[Position_contactID].trim().isEmpty()) {
-                    return singleEventArray[Position_contactID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
+                    return singleEventArray[Position_contactID] + STRING_EOT + singleEventArray[Position_eventSubType];
                 } else if (!singleEventArray[Position_eventID].trim().isEmpty()) {
-                    return singleEventArray[Position_eventID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
+                    return singleEventArray[Position_eventID] + STRING_EOT + singleEventArray[Position_eventSubType];
                 }
             }
 
@@ -4020,7 +4009,7 @@ class ContactsEvents {
     }
 
     private String[] getKeyParts(@NonNull String eventKey) {
-        return eventKey.split(Constants.STRING_2HASH);
+        return eventKey.split(STRING_EOT, -1);
     }
 
     void snoozeNotification(@NonNull String dataNotify, int snoozeHours, Date wakeDateTime) {
@@ -4053,9 +4042,8 @@ class ContactsEvents {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
                 }
-                SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.US);
                 boolean finalIsSnoozed = isSnoozed;
-                handler.post(() -> Toast.makeText(context, context.getString(finalIsSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf.format(nextUpdateTimeMillis)), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, context.getString(finalIsSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf_DDMMYYYYHHMM.format(nextUpdateTimeMillis)), Toast.LENGTH_LONG).show());
             }
 
         } catch (Exception e) {
@@ -4073,16 +4061,13 @@ class ContactsEvents {
 
             //Toast.makeText(context, "TEST: " + dataNotify, Toast.LENGTH_LONG).show();
 
-            String[] singleEventArray = dataNotify.split(Constants.STRING_2HASH);
+            String[] singleEventArray = dataNotify.split(STRING_EOT, -1);
             Date eventDate = null;
             String eventDay = null;
             try {
-                Locale locale_en = new Locale(Constants.LANG_EN);
-                SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                SimpleDateFormat sdfDDMM = new SimpleDateFormat(Constants.DATE_DD_MM, locale_en);
-                eventDate = sdfYear.parse(singleEventArray[Position_eventDate]);
+                eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
                 if (eventDate != null) {
-                    eventDay = sdfDDMM.format(eventDate);
+                    eventDay = sdf_DDMM.format(eventDate);
                 }
             } catch (Exception e) { /**/ }
 
@@ -4132,11 +4117,12 @@ class ContactsEvents {
                     builder.setSound(Uri.parse(preferences_notifications_ringtone));
                 }
 
-                builder.setLargeIcon(getContactPhoto(dataNotify, true, true,false));
+                builder.setLargeIcon(getContactPhoto(dataNotify, true, true, false));
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(notificationID, builder.build());
 
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -4961,7 +4947,7 @@ class ContactsEvents {
 
             //Показываем результаты
             if (question != null & answer != null) {
-                String[] a = answer.split(STRING_2HASH);
+                String[] a = answer.split(STRING_EOT, -1);
 
                 if (a.length < 2) {
 
@@ -5038,7 +5024,7 @@ class ContactsEvents {
                 if (quest.event != null && !quest.event.isEmpty()) {
                     builder.setLargeIcon(getContactPhoto(quest.event, true, true,false));
 
-                    String[] eventInfo = quest.event.split(Constants.STRING_2HASH);
+                    String[] eventInfo = quest.event.split(STRING_EOT, -1);
                     intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = null;
                     if (!eventInfo[Position_contactID].isEmpty()) { //singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CONTACTS) &&
@@ -5059,7 +5045,7 @@ class ContactsEvents {
                 Intent intentQuiz;
 
                 for (String action : quest.actions) {
-                    String[] a = action.split(STRING_2HASH);
+                    String[] a = action.split(STRING_EOT, -1);
 
                     if (a.length > 2 && !a[2].equals(STRING_MINUS)) {
                         intentQuiz = new Intent(context, QuizReceiver.class);
@@ -5089,7 +5075,7 @@ class ContactsEvents {
 
                 for (int i = 0; i < quest.actions.size(); i++) {
                     String action = quest.actions.get(i);
-                    String[] a = action.split(STRING_2HASH);
+                    String[] a = action.split(STRING_EOT, -1);
 
                     if (a.length > 2 && !a[2].equals(STRING_MINUS)) {
                         switch (i) {
@@ -5172,8 +5158,6 @@ class ContactsEvents {
             String[] eventInfo = null;
             Integer BMonth = -1;
             String BMonthLong = STRING_EMPTY;
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
             SimpleDateFormat sdfMonthLong = new SimpleDateFormat( "LLLL", Locale.forLanguageTag(currentLocale));
             Date BDay;
 
@@ -5181,14 +5165,14 @@ class ContactsEvents {
                 tryEvent++;
                 int randomInt = generator.nextInt(eventListUnsorted.size());
                 event = eventListUnsorted.get(randomInt);
-                eventInfo = event.split(Constants.STRING_2HASH);
+                eventInfo = event.split(STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 if (
                         eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
                                 (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
                 ) {
                     try {
-                        BDay = sdfYear.parse(eventInfo[Position_eventDate]);
+                        BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDate]);
                         if (BDay != null) {
                             Calendar cal = getCalendarFromDate(BDay);
                             BMonth = cal.get(Calendar.MONTH);
@@ -5235,11 +5219,11 @@ class ContactsEvents {
             Calendar cal = Calendar.getInstance();
             for (Integer m: rollMonths) {
                 boolean isBMonth = m.equals(BMonth);
-                StringBuilder sb = new StringBuilder(isBMonth ? STRING_1 : STRING_0).append(STRING_2HASH);
+                StringBuilder sb = new StringBuilder(isBMonth ? STRING_1 : STRING_0).append(STRING_EOT);
                 cal.set(Calendar.DATE, 1);
                 cal.set(Calendar.MONTH, m);
                 String monthName = sdfMonthLong.format(cal.getTime()).toUpperCase();
-                sb.append(monthName).append(STRING_2HASH);
+                sb.append(monthName).append(STRING_EOT);
                 if (isBMonth) {
                     sb.append(getResources().getString(R.string.quiz_answer_true, BMonthLong, eventInfo[Position_eventDateText]));
                 } else {
@@ -5272,22 +5256,20 @@ class ContactsEvents {
             String[] eventInfo = null;
             int BYear = -1;
             String BYearLong = STRING_EMPTY;
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
             Date BDay;
 
             while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
                 tryEvent++;
                 int randomInt = generator.nextInt(eventListUnsorted.size());
                 event = eventListUnsorted.get(randomInt);
-                eventInfo = event.split(Constants.STRING_2HASH);
+                eventInfo = event.split(STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 if (
                         eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
                                 (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
                 ) {
                     try {
-                        BDay = sdfYear.parse(eventInfo[Position_eventDateText]);
+                        BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateText]);
                         if (BDay != null) {
                             Calendar cal = getCalendarFromDate(BDay);
                             BYear = cal.get(Calendar.YEAR);
@@ -5333,7 +5315,7 @@ class ContactsEvents {
 
             for (Integer year: rollYears) {
                 boolean isBYear = year.equals(BYear);
-                StringBuilder sb = new StringBuilder(isBYear ? STRING_1 : STRING_0).append(STRING_2HASH).append(year).append(STRING_2HASH);
+                StringBuilder sb = new StringBuilder(isBYear ? STRING_1 : STRING_0).append(STRING_EOT).append(year).append(STRING_EOT);
                 if (isBYear) {
                     sb.append(getResources().getString(R.string.quiz_answer_true, BYearLong, eventInfo[Position_eventDateText]));
                 } else {
@@ -5366,8 +5348,6 @@ class ContactsEvents {
             String event = STRING_EMPTY;
             String[] eventInfo = null;
             int BYear;
-            Locale locale_en = new Locale(Constants.LANG_EN);
-            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
             Date BDay = null;
             Date eventDay = null;
 
@@ -5375,15 +5355,15 @@ class ContactsEvents {
                 tryEvent++;
                 int randomInt = generator.nextInt(eventListUnsorted.size());
                 event = eventListUnsorted.get(randomInt);
-                eventInfo = event.split(Constants.STRING_2HASH);
+                eventInfo = event.split(STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 if (
                         eventInfo[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) &&
                                 (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey))
                 ) {
                     try {
-                        BDay = sdfYear.parse(eventInfo[Position_eventDateText]);
-                        eventDay = sdfYear.parse(eventInfo[Position_eventDate]);
+                        BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateText]);
+                        eventDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDate]);
                         if (BDay != null) {
                             Calendar cal = getCalendarFromDate(BDay);
                             BYear = cal.get(Calendar.YEAR);
@@ -5462,7 +5442,7 @@ class ContactsEvents {
                         R.string.msg_after_year_prefix_2_3_4,
                         R.string.msg_after_year_prefix_4_21
                 ).toUpperCase();
-                StringBuilder sb = new StringBuilder(isAge ? STRING_1 : STRING_0).append(STRING_2HASH).append(ageRollLong).append(STRING_2HASH);
+                StringBuilder sb = new StringBuilder(isAge ? STRING_1 : STRING_0).append(STRING_EOT).append(ageRollLong).append(STRING_EOT);
                 if (isAge) {
                     sb.append(getResources().getString(R.string.quiz_answer_true, ageLong, eventInfo[Position_eventDateText]));
                 } else {
@@ -5495,7 +5475,7 @@ class ContactsEvents {
 
             for (String event: eventList) {
 
-                String[] singleEventArray = event.split(STRING_2HASH);
+                String[] singleEventArray = event.split(STRING_EOT, -1);
                 boolean isVisibleEvent = false;
                 boolean useEventListPrefs = true;
 
@@ -5572,14 +5552,7 @@ class ContactsEvents {
                 }
                 // DownloadsProvider
                 else if (isDownloadsDocument(uri)) {
-                    //final String id = DocumentsContract.getDocumentId(uri);
-                    //final String[] split = id.split(STRING_COLON);
-                    //final Uri contentUri = null; //ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(split[split.length-1]));
-                    //if (contentUri != null) {
-                    //    return getDataColumn(context, contentUri, null, null);
-                    //} else {
                     return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getDataColumn(context, uri, null, null);
-                    //}
                 }
                 // MediaProvider
                 else if (isMediaDocument(uri)) {
