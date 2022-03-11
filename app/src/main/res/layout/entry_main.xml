@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 22.11.2021, 22:34
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 04.03.2022, 3:04
   ~  */
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="2dp"
     android:orientation="horizontal"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp">
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/entryPhotoImageView"
@@ -21,8 +20,7 @@
         android:layout_height="@dimen/eventlist_photoSize"
         android:layout_gravity="top"
         android:contentDescription="@string/hint_ContactIcon"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/photo_man01" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -88,8 +86,7 @@
                     android:adjustViewBounds="false"
                     android:contentDescription="@string/hint_EventIcon"
                     android:paddingTop="6dp"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@drawable/ic_event_birthday" />
+                    android:scaleType="fitStart" />
 
                 <TextView
                     android:id="@+id/entryDetailsCounter"

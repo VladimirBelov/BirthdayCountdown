@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 13.12.2021, 1:06
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 06.03.2022, 16:12
  *
  */
 
@@ -11,9 +11,9 @@ package org.vovka.birthdaycountdown;
 import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_FILE;
 import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_RINGTONE;
 import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_PIPE;
@@ -81,6 +81,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -270,6 +271,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             PreferenceCategory prefCat;
             Preference pref;
 
+            this.setTheme(eventsData.preferences_theme.themeMain);
+
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
             if (prefCat != null && eventsData.preferences_notifications_days.size() == 0) {
 
@@ -410,6 +413,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 selectAccounts();
 
+            } else if (getString(R.string.pref_IconPack_key).equals(key)) { //Силуэты
+
+                selectIconPack();
+
             } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
 
                 eventsData.showAnniversaryList(this);
@@ -421,14 +428,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
-                    return true;
 
                 } else {
 
                     selectCalendars(this.eventTypeForSelect);
-                    return true;
 
                 }
+                return true;
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
@@ -528,6 +534,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         ContactsEvents eventsData = ContactsEvents.getInstance();
         eventsData.statLastPausedForOtherActivity = 0;
         eventsData.getPreferences();
+        updateVisibility();
 
         if (key.equals(getString(R.string.pref_Language_key))) {
 
@@ -550,16 +557,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
 
             eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add("");}});
-            if (eventsData.preferences_notifications_days.size() == 0) {
-                updateVisibility();
-            } else {
+            if (eventsData.preferences_notifications_days.size() != 0) {
                 this.recreate();
+            //} else {
+            //    updateVisibility();
             }
 
-        } else if (key.equals(getString(R.string.pref_CustomEvents_Birthday_Calendars_key))) {
+        //} else if (key.equals(getString(R.string.pref_CustomEvents_Birthday_Calendars_key))) {
 
             // if (eventsData.preferences_Calendars_BirthDay.size() == 0) {
-            updateVisibility();
+
             //     } else {
             //       this.recreate();
             //       setUpNestedScreen((PreferenceScreen) findPreference(getString(R.string.pref_CustomEvents_Birthday_key)));
@@ -629,7 +636,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
 
             }
-            list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_trans))));
+            list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_transp))));
             list.setDividerHeight((int) (1 * displayMetrics.density));
 
         } catch (Exception e) {
@@ -780,7 +787,54 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ACCOUNTS_ERROR + e, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void selectIconPack() {
+
+        try {
+
+            List<Integer> packIcons = new ArrayList<>();
+            List<String> packNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
+
+            packIcons.add(R.drawable.ic_pack00_f1);
+            packIcons.add(R.drawable.ic_pack01_f2);
+            packIcons.add(R.drawable.ic_pack02_f2);
+            packIcons.add(R.drawable.ic_pack03_f3);
+
+            ListAdapter adapter = new IconPackListAdapter(this, packNames, packIcons, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_IconPack_title)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                eventsData.setPreferences_IconPackNumber(position);
+                eventsData.setPreferences();
+                eventsData.initIconPack();
+                alertToShow.dismiss();
+            });
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                listView.setItemChecked(eventsData.getPreferences_IconPackNumber(), true);
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ICONPACK_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1150,6 +1204,57 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), Constants.GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
+            }
+
+            return view;
+        }
+
+    }
+
+    private static class IconPackListAdapter extends ArrayAdapter<String> {
+
+        private final List<Integer> images;
+        private final TypedArray ta;
+
+        IconPackListAdapter(Context context, List<String> items, List<Integer> images, TypedArray theme) {
+            super(context, R.layout.settings_list_item_single_choice, items);
+            this.images = images;
+            this.ta = theme;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            try {
+
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
+
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
+
+                //Context packageContext = this.context.createPackageContext(packages.get(position), 0);
+                //Resources resources = packageContext.getResources();
+                //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
+                //Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
+                Bitmap bmp = ContactsEvents.getBitmap(getContext(), images.get(position));
+                if (bmp != null) {
+                    //Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    /*Canvas canvas = new Canvas(bmp);
+                    icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    icon.draw(canvas);*/
+                    //Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 150, false);
+                    Bitmap bitmapResized = Bitmap.createScaledBitmap(Bitmap.createBitmap(bmp, bmp.getWidth() / 3, 0, bmp.getWidth() / 3, bmp.getHeight()), 90, 130, false);
+                    bmp.recycle();
+                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                }
+                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), Constants.GET_ICONPACK_LIST_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
             }
 
             return view;

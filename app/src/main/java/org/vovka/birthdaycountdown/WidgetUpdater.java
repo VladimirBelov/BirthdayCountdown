@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 24.12.2021, 18:40
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 19:16
  *
  */
 
@@ -531,8 +531,8 @@ class WidgetUpdater {
                     : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), false, true);
             if (photo != null) {
                 //необходимо уменьшать, потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
-                final int dstWidth = 2 * width / eventsToShow;
-                final int dstHeight = (2 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow);
+                final int dstWidth = eventsToShow > 1 ? (4 * width / eventsToShow) : (2 * width);
+                final int dstHeight = eventsToShow > 1 ? (4 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow) : (2 * photo.getHeight() * width / photo.getWidth());
                 if (dstHeight > 0 && dstWidth > 0) {
                     Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
                     views.setImageViewBitmap(id_widget_Photo, photo_small);

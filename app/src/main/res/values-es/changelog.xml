@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 26.12.2021, 1:01
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:53
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.9</item>
+        <item>Se agregaron nuevos detalles de eventos al constructor de widgets de lista: nueva línea (3 piezas), días antes del evento, día de la semana</item>
+
+        <item>#1.6.8</item>
+        <item>Nuevo tema de color: Gris azulado</item>
+        <item>Decoraciones añadidas: visualización de eventos en una lista plana o en forma de tarjetas, así como la posibilidad de relleno degradado con color (para más detalles, consulte la configuración de la lista de eventos)</item>
+        <item>Se agregaron 3 conjuntos de íconos adicionales para contactos sin fotos</item>
+        <item>Nueva acción de evento de contexto: Crear contacto (la fecha se inserta en la nota)</item>
+        <item>Se han agregado nuevos detalles de eventos al constructor de widgets de lista: ícono de fuente de eventos y presencia de enlace web</item>
 
         <item>#1.6.7</item>
         <item>Nuevo nombre de la aplicación: \"Cumpleaños y Eventos\"</item>

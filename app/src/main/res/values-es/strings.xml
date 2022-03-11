@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 26.12.2021, 0:57
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:47
   ~  */
   -->
 
@@ -32,6 +32,7 @@
     <string name="menu_filter_events">Filtrar…</string>
     <string name="menu_hints">Sugerencias de búsqueda…</string>
     <string name="menu_context_edit_contact">Editar contacto</string>
+    <string name="menu_context_create_contact">Create contact…</string>
     <string name="menu_context_edit_event">Mostrar evento en calendario</string>
     <string name="menu_context_event_info">Datos de eventos</string>
     <string name="menu_context_hide_event">Ocultar evento</string>
@@ -130,6 +131,10 @@
     <string name="hint_SearchPanel">Barra de búsqueda</string>
     <string name="hint_AlertDialog">Diálogo de alerta</string>
     <string name="hint_DragItem">Elemento arrastrable</string>
+    <string name="hint_Version_History">Historial de versiones</string>
+    <string name="hint_Rate_PlayMarket">Califica esta aplicación en Play Market</string>
+    <string name="hint_Rate_AppGallery">Califique esta aplicación en la App Gallery</string>
+    <string name="hint_ShowPreferences">Ver todas las preferencias guardadas</string>
 
     <string name="button_ok">Okay</string>
     <string name="button_cancel">Cancelación</string>
@@ -148,6 +153,7 @@
     <string name="button_question">Hacer una pregunta</string>
     <string name="button_close">Cerrar</string>
     <string name="button_prefs">Preferencias</string>
+    <string name="button_saved_preferences">todas las preferencias guardadas</string>
 
     <string name="events_scope_not_hidden">Todo no oculto (%1$d)</string>
     <string name="events_scope_all">Todas (%1$d)</string>
@@ -189,6 +195,15 @@
     <string name="pref_Theme_description">Tema de color de la interfaz</string>
     <string name="pref_Accounts_title">Cuentas</string>
     <string name="pref_Accounts_description">Buscar eventos solo en estas cuentas</string>
+    <string name="pref_IconPack_title">Paquete de iconos</string>
+    <string name="pref_IconPack_description">Utilice el paquete de iconos seleccionado para mostrar la silueta de contacto</string>
+
+    <string-array name="pref_IconPack_entries">
+        <item>Estándar</item>
+        <item>De colores</item>
+        <item>En blanco y negro</item>
+        <item>Chacoteros</item>
+    </string-array>
 
     <string-array name="pref_Language_entries">
         <item>Automáticamente</item>
@@ -268,6 +283,7 @@
         <item>Gris oscuro</item>
         <item>Azul</item>
         <item>Negro</item>
+        <item>Gris azulado</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
@@ -305,6 +321,27 @@
         <item>Un evento anterior</item>
         <item>Dos eventos anteriores</item>
         <item>Tres eventos anteriores</item>
+    </string-array>
+
+    <string name="pref_List_Style_title">Estilo de lista de eventos</string>
+    <string name="pref_List_Style_description">Establecer el estilo de la lista de eventos</string>
+
+    <string-array name="pref_List_Style_entries">
+        <item>Plano</item>
+        <item>Tarjetas</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Tipo de relleno</string>
+    <string name="pref_List_Filling_description">Establecer el tipo de relleno para el marcador de posición del evento (degradado)</string>
+
+    <string-array name="pref_List_Filling_entries">
+        <item>Sin relleno</item>
+        <item>De izquierda a derecha</item>
+        <item>De derecha a izquierda</item>
+        <item>De arriba a abajo</item>
+        <item>De abajo a arriba</item>
+        <item>Desde el centro</item>
+        <item>Al centro</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Formato para el nombre del contacto</string>
@@ -401,16 +438,24 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon">Icono de evento silenciado</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Signo del zodiaco</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Año del zodiaco</string>
-
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Fecha original del evento</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Fecha del evento original con año</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Fecha del evento</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Fecha del evento con año</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Fecha original del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Fecha del evento original con año</string>
+    <string name="pref_Widgets_EventInfo_EventDate">📆 Fecha del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Fecha del evento con año</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Título del evento</string>
     <string name="pref_Widgets_EventInfo_Age">Edad</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Nombre del aniversario de bodas</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Días antes del evento</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Días antes del evento (evento lejano)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">Día de la semana del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Día de la semana del evento (evento lejano)</string>
+    <string name="pref_Widgets_EventInfo_Organization">Organización</string>
+    <string name="pref_Widgets_EventInfo_JobTitle">Posición</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Icono de fuente de eventos</string>
+    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Enlace web disponible</string>
+    <string name="pref_Widgets_EventInfo_NewLine1">"- nueva línea -"</string>
+    <string name="pref_Widgets_EventInfo_NewLine2">"- nueva línea - "</string>
+    <string name="pref_Widgets_EventInfo_NewLine3">"- nueva línea -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 17.12.2021, 1:03
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 24.02.2022, 12:48
   ~  */
   -->
 
@@ -14,27 +14,40 @@
     <color name="brown">#FF873A07</color>
     <color name="yellow">#FFFFEE00</color>
     <color name="green">#FF2ED70E</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
+
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#FF1B5E20</color>
     <color name="dark_green_transp">#321B5E20</color>
     <color name="darker_green">#FF164E1B</color>
-    <color name="darker_blue">#FF1465C0</color>
-    <color name="dark_blue">#FF1476D2</color>
-    <color name="dark_blue_transp">#331565C0</color>
-    <color name="light_blue_transp">#66D3D5D8</color>
-    <color name="light_blue">#FF2196F3</color>
 
-    <color name="black">#FF000000</color>
+    <color name="dark_blue">#FF1476D2</color>
+    <color name="dark_blue_transp">#261565C0</color>
+    <color name="darker_blue">#FF1465C0</color>
+    <color name="light_blue">#FF2196F3</color>
+    <color name="light_blue_transp">#66D3D5D8</color>
+
+    <color name="blue_gray">#FF455a64</color>
+    <color name="blue_gray_light">#FF718792</color>
+    <color name="blue_gray_dark">#FF1c313a</color>
+    <color name="blue_gray_dark_transp">#991C313A</color>
+    <color name="blue_gray_transp">#331c313a</color>
+    <color name="blue_gray_gradient1">#B0BEC5</color>
+    <color name="blue_gray_gradient2">#ECEFF1</color>
+    <color name="blue_gray_gradient3">#CFD8DC</color>
+
     <color name="dark_gray">#FF121212</color>
+    <color name="dark_gray_lighter">#FF181818</color>
     <color name="medium_dark_gray">#FF232323</color>
 	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->
 	<color name="medium_dark_gray_trans_25">#40232323</color>
     <color name="medium_gray">#FF323232</color>
     <color name="light_gray">#FF808080</color>
-    <color name="light_gray_trans">#33808080</color>
+    <color name="light_gray_transp">#33808080</color>
     <color name="light_gray_darker">#FF505050</color>
     <color name="lighter_gray">#FFDDDDDD</color>
-    <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
+    <color name="lighter_gray_transp">#33DDDDDD</color>
 
     <string-array name="default_color_choice_values" translatable="false">
         <item>@color/dark_red</item>

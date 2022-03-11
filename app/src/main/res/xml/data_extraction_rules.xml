@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 23.02.2022, 22:26
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 23.02.2022, 22:25
+  ~  */
+  -->
+
+<!--
+   Sample data extraction rules file; uncomment and customize as necessary.
+   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   for details.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="."/>
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="."/>
+    </device-transfer>
+    <full-backup-content>
+        <include domain="sharedpref" path="."/>
+    </full-backup-content>
+</data-extraction-rules>

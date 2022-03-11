@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 23.12.2021, 14:28
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:52
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.6.9</item>
+        <item>New event details have been added to list widget constructor: new line (3pcs), days before event, day of week</item>
+
+        <item>#1.6.8</item>
+        <item>New color theme: blue-grey</item>
+        <item>Decorations added: displaying events in a flat list or in the form of cards, as well as the possibility of gradient filling with color (for more details, see the event list settings)</item>
+        <item>Added 3 additional icon sets for contacts without photos</item>
+        <item>New context event action: Create contact (the date is inserted into the note)</item>
+        <item>New event details have been added to list widget constructor: event source icon and web link presence</item>
 
         <item>#1.6.7</item>
         <item>New application name: \"Birthdays &amp; Events\"</item>
@@ -51,8 +61,8 @@
         <item>#1.6.2</item>
         <item>Added event list widget</item>
         <item>Added widget icon for silenced evens</item>
-        <item>Added color customising for event list (today, soon, jubilee)</item>
-        <item>Added date format customising</item>
+        <item>Added color customizing for event list (today, soon, jubilee)</item>
+        <item>Added date format customizing</item>
 
         <item>#1.6.1</item>
         <item>Added \"Close\" quick action for high priority notifications</item>
@@ -200,7 +210,7 @@
         <item>Minor bugs fixed</item>
 
         <item>#1.3.1</item>
-        <item>Added ukrainian translation</item>
+        <item>Added Ukrainian translation</item>
         <item>Added event details option for list: event type, contact title and organization and so on</item>
         <item>Some theme colors changes and events list elements alignment</item>
         <item>User pics for persons w/o photos choosing by age and gender (4 variants)</item>

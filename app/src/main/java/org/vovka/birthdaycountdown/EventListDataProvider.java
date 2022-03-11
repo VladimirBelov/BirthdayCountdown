@@ -1,21 +1,23 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 24.12.2021, 18:20
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 22:28
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import static org.vovka.birthdaycountdown.Constants.EVENT_PREFIX_CALENDAR_EVENT;
+import static org.vovka.birthdaycountdown.Constants.EVENT_PREFIX_FILE_EVENT;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_PREFS;
+import static org.vovka.birthdaycountdown.Constants.HTML_BR;
 import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
 import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
 import static org.vovka.birthdaycountdown.Constants.STRING_6;
@@ -25,6 +27,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
@@ -36,19 +39,18 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDate;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDateText;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventEmoji;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventURL;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
 
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
 import androidx.core.text.HtmlCompat;
 
@@ -73,8 +75,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         this.context = context;
         widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
-
-    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {}
@@ -161,129 +161,140 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 for (String eventItem: widgetPref_eventInfo) {
                     if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         sb.append(singleEventArray[Position_eventEmoji]).append(STRING_SPACE);
+
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventCaption_ID))) {
+
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
+                        if (!singleEventArray[Position_eventCaption].trim().isEmpty()) {
+                            sb.append(singleEventArray[Position_eventCaption]);
+                        }
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDateText], ContactsEvents.FormatDate.WithoutYear);
                         sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, eventDay) : eventDay);
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                         sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, eventDay) : eventDay);
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
                         sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, eventDay) : eventDay);
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDate], ContactsEvents.FormatDate.WithYear);
                         sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, eventDay) : eventDay);
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventTitle_ID))) {
 
-                        if (sb.length() > 0) sb.append(STRING_SPACE);
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                         sb.append(eventsData.preferences_list_nameformat == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
 
-                        if (!singleEventArray[Position_age_caption].trim().isEmpty()) sb.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
+                        if (!singleEventArray[Position_age_caption].trim().isEmpty()) {
+                            if (sb.length() - sb.lastIndexOf(HTML_BR) != HTML_BR.length()) sb.append(STRING_COLON_SPACE);
+                            sb.append(singleEventArray[Position_age_caption]);
+                        }
 
                     } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_WeddingName_ID))) {
 
                         if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
                             int ind1 = singleEventArray[Position_eventCaption].indexOf(STRING_PARENTHESIS_OPEN);
                             if (ind1 > -1) {
-                                if (sb.length() > 0) sb.append(STRING_SPACE);
+                                if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                                 sb.append(singleEventArray[Position_eventCaption].substring(ind1));
                             }
                         }
 
-                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID))) {
+                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventFar_ID))) {
 
                         String text = singleEventArray[ContactsEvents.Position_eventDistanceText];
                         final int barIndex = text.indexOf(STRING_BAR);
                         if (barIndex > -1) {
-                            if (sb.length() > 0) sb.append(STRING_SPACE);
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                             text = text.substring(0, barIndex);
                             sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, text) : text);
                         }
 
-                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID))) {
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID))) {
 
                         String text = singleEventArray[ContactsEvents.Position_eventDistanceText];
                         final int barIndex = text.indexOf(STRING_BAR);
                         if (barIndex > -1) {
-                            if (sb.length() > 0) sb.append(STRING_SPACE);
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
+                            text = text.substring(0, barIndex);
+                            sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, text) : text);
+                        }
+
+                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar_ID))) {
+
+                        String text = singleEventArray[ContactsEvents.Position_eventDistanceText];
+                        final int barIndex = text.indexOf(STRING_BAR);
+                        if (barIndex > -1) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
                             sb.append(text.substring(barIndex + 1));
                         }
 
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID))) {
+
+                        String text = singleEventArray[ContactsEvents.Position_eventDistanceText];
+                        final int barIndex = text.indexOf(STRING_BAR);
+                        if (barIndex > -1) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
+                            sb.append(text.substring(barIndex + 1));
+                        }
+
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_SourceIcon_ID))) {
+
+                        String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                        if (dates.length > 0) {
+                            boolean[] sources = new boolean[]{false, false, false};
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
+                            for (String date : dates) {
+                                if (date.startsWith(EVENT_PREFIX_CALENDAR_EVENT) && !sources[1]) {
+                                    sb.append("📆");
+                                    sources[1] = true;
+                                } else if (date.startsWith(EVENT_PREFIX_FILE_EVENT) && !sources[2]) {
+                                    sb.append("📁");
+                                    sources[2] = true;
+                                } else if (!sources[0]) {
+                                    sb.append("📖");
+                                    sources[0] = true;
+                                }
+                            }
+                        }
+
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_LinkIcon_ID))) {
+
+                        if (!singleEventArray[Position_eventURL].trim().isEmpty()) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(HTML_BR)) != HTML_BR.length()) sb.append(STRING_SPACE);
+                            sb.append("🔗");
+                        }
+
+                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine1_ID))
+                            || eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine2_ID))
+                            || eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine3_ID))) {
+
+                        sb.append(HTML_BR);
+
                     }
 
                 }
 
-
-
-/*
-                //Иконка
-                if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
-                        : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
-                    sb.append(singleEventArray[Position_eventEmoji]).append(STRING_SPACE);
+                if (sb.length() - sb.lastIndexOf(HTML_BR) == HTML_BR.length()) {
+                    sb.setLength(sb.lastIndexOf(HTML_BR));
                 }
-
-                //Дата события
-                String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
-                int eventDistance_Days;
-                try {
-                    eventDistance_Days = Integer.parseInt(eventDistance);
-                } catch (Exception e) {
-                    eventDistance_Days = 365;
-                }
-
-                String dateColor = null;
-                try {
-                    if (eventDistance_Days == 0) { //Сегодня
-
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventtoday & 0x00ffffff);
-
-                    } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
-
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventsoon & 0x00ffffff);
-
-                    } else { //Попозже
-
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventfar & 0x00ffffff);
-
-                    }
-                } catch (Resources.NotFoundException nfe) { *//**//* }
-                String eventDay = eventsData.getDateFormated(singleEventArray[Position_eventDateText], singleEventArray[Position_age].equals(STRING_MINUS1) ?
-                        ContactsEvents.FormatDate.WithoutYear : ContactsEvents.FormatDate.WithYear);
-                sb.append(dateColor != null ? String.format(HTML_COLOR, dateColor, eventDay) : eventDay).append(STRING_SPACE);
-
-                //Данные события
-                String colorEvent = null;
-                try {
-                    colorEvent = Integer.toHexString(eventsData.preferences_widgets_color_default & 0x00ffffff);
-                } catch (Resources.NotFoundException nfe) { *//**//* }
-
-                if (colorEvent != null) sb.append(String.format(HTML_COLOR_START, colorEvent));
-                sb.append(eventsData.preferences_list_nameformat == 2 ? singleEventArray[Position_personFullNameAlt] : singleEventArray[Position_personFullName]);
-                if (!singleEventArray[Position_age_caption].trim().isEmpty()) sb.append(STRING_COLON_SPACE).append(singleEventArray[Position_age_caption]);
-                if (singleEventArray[Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Type_Anniversary))) {
-                    int ind1 = singleEventArray[Position_eventCaption].indexOf(STRING_PARENTHESIS_OPEN);
-                    if (ind1 > -1) {
-                        sb.append(STRING_SPACE).append(singleEventArray[Position_eventCaption].substring(ind1));
-                    }
-                }
-                if (colorEvent != null) sb.append(HTML_FONT_END);*/
 
                 views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(sb.toString(), 0));
                 views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
@@ -297,7 +308,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e, Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, Constants.EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e);
         }
 
         return views;
@@ -336,7 +347,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             eventsData.setLocale(true);
 
             //Получаем данные
-            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID).provider.getShortClassName();
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
                 eventsData.context = context;
@@ -355,7 +368,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e, Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e);
         }
 
     }

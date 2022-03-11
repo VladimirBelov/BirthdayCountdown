@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 26.12.2021, 0:32
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 04.03.2022, 2:36
   ~  */
   -->
 
@@ -51,8 +51,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView0"
@@ -253,8 +252,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView1"
@@ -453,8 +451,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView2"
@@ -652,8 +649,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView3"
@@ -851,8 +847,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView4"
@@ -1050,8 +1045,7 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_man01" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/iconsView5"

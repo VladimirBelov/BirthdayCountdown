@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 22.11.2021, 22:34
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 20:52
  *
  */
 
@@ -13,10 +13,10 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -43,7 +43,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
+            ToastExpander.showText(context, Constants.WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR + e);
         }
 
     }
@@ -90,13 +90,17 @@ public class Widget2x2 extends AppWidgetProvider {
                 final Resources resources = context.getResources();
                 final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
                 final float density = displayMetrics.density;
-                Toast.makeText(context, this.getClass().getName() +
+
+                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                        this.getClass().getName() +
                                 "\n appWidgetId=" + appWidgetId +
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
                                 "\n widgetPref=" + widgetPref
-                        , Toast.LENGTH_LONG).show();
+                        : "id "+  appWidgetId + ":\n" + widgetPref
+                );
+
             }
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
@@ -105,7 +109,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
+            ToastExpander.showText(context, Constants.WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e);
         }
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 26.12.2021, 0:22
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 04.03.2022, 1:54
  *
  */
 
@@ -10,18 +10,19 @@ package org.vovka.birthdaycountdown;
 
 final class Constants {
 
-    static final String STRING_EMPTY = "";
-    static final String STRING_SPACE = " ";
-    static final String STRING_NULL = "null";
-    static final String STRING_EOL = "\n";
-    static final String STRING_MINUS1 = "-1";
+    //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
+    static final String REGEX_COMMAS = " *, *";
+    static final String REGEX_PLUS = "\\+";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
-    static final String STRING_0000_MINUS = "0000-";
     static final String STRING_0000 = "0000";
-    static final String STRING_EQ = "=?";
+    static final String STRING_0000_MINUS = "0000-";
     static final String STRING_1 = "1";
+    static final String STRING_10 = "10";
     static final String STRING_2 = "2";
+    static final String STRING_2HASH = "##";
+    static final String STRING_2MINUS = "--";
+    static final String STRING_2TILDA = "~~";
     static final String STRING_3 = "3";
     static final String STRING_4 = "4";
     static final String STRING_5 = "5";
@@ -29,7 +30,24 @@ final class Constants {
     static final String STRING_7 = "7";
     static final String STRING_8 = "8";
     static final String STRING_9 = "9";
-    static final String STRING_10 = "10";
+    static final String STRING_BAR = "|";
+    static final String STRING_COLON = ":";
+    static final String STRING_COLON_SPACE = ": ";
+    static final String STRING_COMMA = ",";
+    static final String STRING_COMMA_SPACE = ", ";
+    static final String STRING_EMPTY = "";
+    static final String STRING_EOL = "\n";
+    static final String STRING_EOT = "\u0004";
+    static final String STRING_EQ = "=?";
+    static final String STRING_MINUS = "-";
+    static final String STRING_MINUS1 = "-1";
+    static final String STRING_NULL = "null";
+    static final String STRING_PARENTHESIS_CLOSE = ")";
+    static final String STRING_PARENTHESIS_OPEN = " (";
+    static final String STRING_PARENTHESIS_START = "(";
+    static final String STRING_PERIOD = ".";
+    static final String STRING_PIPE = "\\|";
+    static final String STRING_SPACE = " ";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -92,24 +110,6 @@ final class Constants {
     static final int Type_Custom5 = 12;
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
-
-    //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
-    static final String STRING_EOT = "\u0004";
-    static final String STRING_2TILDA = "~~";
-    static final String STRING_COLON_SPACE = ": ";
-    static final String STRING_COLON = ":";
-    static final String STRING_COMMA = ",";
-    static final String STRING_COMMA_SPACE = ", ";
-    static final String STRING_PERIOD = ".";
-    static final String REGEX_COMMAS = " *, *";
-    static final String STRING_PARENTHESIS_OPEN = " (";
-    static final String STRING_PARENTHESIS_START = "(";
-    static final String STRING_PARENTHESIS_CLOSE = ")";
-    static final String STRING_2MINUS = "--";
-    static final String STRING_MINUS = "-";
-    static final String STRING_PIPE = "\\|";
-    static final String STRING_BAR = "|";
-    static final String REGEX_PLUS = "\\+";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";
@@ -279,6 +279,7 @@ final class Constants {
     static final String CONTACT_EVENTS_GET_DATA_COLUMN_ERROR = "ContactsEvents->getDataColumn error:\n";
     static final String CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR = "ContactsEvents->fillEmptyUserData error:\n";
     static final String CONTACT_EVENTS_GET_ACTION_INTENT_ERROR = "ContactsEvents->getViewActionIntent error:\n";
+    static final String CONTACT_EVENTS_INIT_ICONPACK_ERROR = "ContactsEvents->initIconPack error:\n";
 
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
 
@@ -293,6 +294,7 @@ final class Constants {
     static final String EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventPhotoListDataProvider->initData error:\n";
 
     static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "AccountsListAdapter->getView error:\n";
+    static final String GET_ICONPACK_LIST_ADAPTER_GET_VIEW_ERROR = "IconPackListAdapter->getView error:\n";
 
     static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
     static final String MAIN_ACTIVITY_PREPARE_LIST_ERROR = "MainActivity->prepareList error:\n";
@@ -312,7 +314,7 @@ final class Constants {
     //static final String MAIN_ACTIVITY_CHECK_BATTERY_OPTIMIZATION_ERROR = "MainActivity->checkBatteryOptimization error:\n";
     static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
 
-    static final String MY_ADAPTER_GET_VIEW_ERROR = "MyAdapter->getView error:\n";
+    static final String EVENTS_ADAPTER_GET_VIEW_ERROR = "EventsAdapter->getView error:\n";
 
     static final String PERSON_CONSTRUCTOR_ERROR = "Person->Constructor error:\n";
     static final String PERSON_GET_FULL_NAME_SHORT_ERROR = "Person->getFullNameShort error: ";
@@ -322,7 +324,8 @@ final class Constants {
     static final String SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR = "SettingsActivity->onPreferenceTreeClick error:\n";
     static final String SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR = "SettingsActivity->setUpNestedScreen error:\n";
     static final String SETTINGS_ACTIVITY_ON_STOP_ERROR = "SettingsActivity->onStop error:\n";
-    static final String SETTINGS_ACTIVITY_GET_ACCOUNTS_ERROR = "SettingsActivity->getAccounts error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_ACCOUNTS_ERROR = "SettingsActivity->selectAccounts error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_ICONPACK_ERROR = "SettingsActivity->selectIconPack error:\n";
     static final String SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR = "SettingsActivity->selectCalendars error:\n";
     static final String SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR = "SettingsActivity->selectRingtone error:\n";
     static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 24.12.2021, 19:11
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 19:46
  *
  */
 
@@ -38,7 +38,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_0000;
 import static org.vovka.birthdaycountdown.Constants.STRING_0000_MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
+import static org.vovka.birthdaycountdown.Constants.STRING_2HASH;
 import static org.vovka.birthdaycountdown.Constants.STRING_2MINUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
@@ -50,6 +50,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_HTTP;
 import static org.vovka.birthdaycountdown.Constants.STRING_HTTPS;
 import static org.vovka.birthdaycountdown.Constants.STRING_MINUS;
@@ -118,6 +119,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
@@ -179,7 +182,7 @@ class ContactsEvents {
     private static final ContactsEvents ourInstance = new ContactsEvents();
     private static final String MSG_UPDATED_PREFERENCES = "Updated preferences: ";
 
-    static ContactsEvents getInstance() {
+    @NonNull static ContactsEvents getInstance() {
         return ourInstance;
     }
 
@@ -227,12 +230,12 @@ class ContactsEvents {
     static final String pref_Widgets_EventInfo_ZodiacYear = "5";
     static final String pref_Widgets_EventInfo_SilencedIcon = "6";
     static final String pref_Widgets_EventInfo_Border = "10";
+    static final String pref_Widgets_EventInfo_Organization = "20";
+    static final String pref_Widgets_EventInfo_JobTitle = "21";
 
     //в общих настройках не используются
     static final String pref_Widgets_EventInfo_EventCaption = "7";
     static final String pref_Widgets_EventInfo_Age = "16";
-    static final String pref_Widgets_EventInfo_DaysBeforeEvent = "18";
-    static final String pref_Widgets_EventInfo_EventDayOfWeek = "19";
 
     final private Set<String> pref_Widgets_EventInfo_Info = new HashSet<String>() {{
         add(pref_Widgets_EventInfo_Photo);
@@ -318,6 +321,8 @@ class ContactsEvents {
     String preferences_list_prev_events;
     private int preferences_list_sad_photo;
     String preferences_list_custom_caption;
+    int preferences_list_style;
+    int preferences_list_filling;
 
     int preferences_list_nameformat;
     int preferences_list_dateformat;
@@ -416,6 +421,9 @@ class ContactsEvents {
     private Set<String> preferences_Accounts = new HashSet<>();
     Set<String> preferences_Calendars_BirthDay = new HashSet<>();
     private Set<String> preferences_Calendars_Other = new HashSet<>();
+    private int preferences_IconPackNumber;
+    final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
+    final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -809,15 +817,9 @@ class ContactsEvents {
 
             preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), false);
             preferences_language = preferences.getString(context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
+            preferences_IconPackNumber = preferences.getInt(context.getString(R.string.pref_IconPack_key), 0);
+            initIconPack();
 
-           /* preferences_list_event_types_on = prefs_EventTypes_DefaultB;
-            savedTypes = preferences.getStringSet(context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
-
-            if (savedTypes != null) {
-                for (int i = 0; i < preferences_list_event_types_on.length; i++) {
-                    preferences_list_event_types_on[i] = savedTypes.contains(event_types_id[i] + STRING_EMPTY);
-                }
-            }*/
             someSets = preferences.getStringSet(context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_types = new HashSet<>(Objects.requireNonNull(someSets));
 
@@ -827,6 +829,8 @@ class ContactsEvents {
                 preferences_list_event_info = pref_List_Event_Info;
             }
             preferences_list_prev_events = preferences.getString(context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
+            preferences_list_style = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default))));
+            preferences_list_filling = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default))));
             preferences_list_sad_photo = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default))));
             preferences_list_nameformat = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default))));
             preferences_list_dateformat = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default))));
@@ -916,7 +920,7 @@ class ContactsEvents {
 
             preferences_quiz_interface = preferences.getString(getResources().getString(R.string.pref_Quiz_Interface_key), STRING_EMPTY);
             if (preferences_quiz_interface != null && preferences_quiz_interface.isEmpty()) {
-                preferences_quiz_interface = getResources().getString(Build.VERSION.SDK_INT < Build.VERSION_CODES.O ? R.string.pref_Quiz_Interface_Dialog : R.string.pref_Quiz_Interface_Notify);
+                preferences_quiz_interface = getResources().getString(Build.VERSION.SDK_INT < Build.VERSION_CODES.O || Build.VERSION.SDK_INT > Build.VERSION_CODES.R ? R.string.pref_Quiz_Interface_Dialog : R.string.pref_Quiz_Interface_Notify);
                 preferences
                         .edit()
                         .putString(context.getString(R.string.pref_Quiz_Interface_key), preferences_quiz_interface)
@@ -1169,9 +1173,9 @@ class ContactsEvents {
             //Запоминаем информацию о темах
             preferences_theme = new MyTheme();
             try {
-                preferences_theme.prefNumber = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Theme_key), context.getString(R.string.pref_Theme_default))));
-            } catch (Exception e) {
-                preferences_theme.prefNumber = 1;
+                preferences_theme.prefNumber = Integer.parseInt(preferences.getString(context.getString(R.string.pref_Theme_key), context.getString(R.string.pref_Theme_default)));
+            } catch (ClassCastException e) {
+                preferences_theme.prefNumber = Integer.parseInt(context.getString(R.string.pref_Theme_default));
             }
             switch (preferences_theme.prefNumber) {
                 case 1:
@@ -1193,6 +1197,11 @@ class ContactsEvents {
                     preferences_theme.themeMain = R.style.AppTheme_Blue_NoActionBar;
                     preferences_theme.themePopup = R.style.AppTheme_Blue_PopupOverlay;
                     preferences_theme.themeDialog = R.style.AlertDialog_Blue;
+                    break;
+                case 5:
+                    preferences_theme.themeMain = R.style.AppTheme_BlueGrey_NoActionBar;
+                    preferences_theme.themePopup = R.style.AppTheme_BlueGrey_PopupOverlay;
+                    preferences_theme.themeDialog = R.style.AlertDialog_BlueGrey;
                     break;
             }
 
@@ -1242,6 +1251,7 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
             editor.putString(context.getString(R.string.pref_Notifications_Ringtone_key), preferences_notifications_ringtone);
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
+            editor.putInt(context.getString(R.string.pref_IconPack_key), preferences_IconPackNumber);
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_key), preferences_Calendars_BirthDay);
@@ -2668,27 +2678,61 @@ class ContactsEvents {
             }
 
             if (bm == null) {
-                int growAge = 16;
-                int elderAge = 65;
-
                 //Если событие - не день рождения, пытаемся достать возраст из дня рождения
                 if (!eventSubType.equals(eventTypesIDs.get(Type_BirthDay))) {
                     final Date birthDate = set_events_birthdays.get(singleEventArray[Position_contactID]);
-                    Date BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
+                    Date BDay = null;
+                    try {
+                        BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
+                    } catch (java.text.ParseException e) { /**/ }
 
                     List<String> singleRowList = Arrays.asList(singleEventArray);
                     if (birthDate != null && BDay != null) {
-                        //todo: если день рождения без года - мы об этом никак не узнаем. надо придумать что-то
+                        //todo: если день рождения без года - мы об этом никак не узнаем
                         singleRowList.set(Position_age, String.valueOf(countYearsDiff(birthDate, BDay)));
-                    } else {
-                        singleRowList.set(Position_age, String.valueOf(growAge));
+                        //} else {
+                        //    singleRowList.set(Position_age, String.valueOf(growAge));
+                        //}
+                        singleEventArray = singleRowList.toArray(new String[0]);
                     }
-                    singleEventArray = singleRowList.toArray(new String[0]);
                 }
 
                 //Случайное фото с соответствиии с возрастом и полом
                 Person person = new Person(context, singleEventArray);
-                int idPhoto = R.drawable.photo_man01;
+                int gender = person.getGender();
+
+                //По-умолчанию
+                Integer idPhoto = R.drawable.ic_pack00_m1;
+                if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
+                    idPhoto = preferences_IconPackImages_F.get(0);
+                } else if (preferences_IconPackImages_M.get(0) != null) {
+                    idPhoto = preferences_IconPackImages_M.get(0);
+                }
+
+                //Фото для года
+                if (person.Age >= 0) {
+                    if (gender == 2) {
+                        for (Map.Entry<Integer, Integer> entry: preferences_IconPackImages_F.entrySet()) {
+                            int beforeAge = entry.getKey();
+                            if (beforeAge > 0 && person.Age <= beforeAge) {
+                                idPhoto = preferences_IconPackImages_F.get(beforeAge);
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Map.Entry<Integer, Integer> entry: preferences_IconPackImages_M.entrySet()) {
+                            int beforeAge = entry.getKey();
+                            if (beforeAge > 0 && person.Age <= beforeAge) {
+                                idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (idPhoto == null) return null;
+
+                /*int idPhoto = R.drawable.photo_man01;
 
                 if (person.getGender() == 1 && (person.Age >= 0 && person.Age < growAge) && !isDeath) { //Обойдёмся без силуэтов мёртвых детей
                     idPhoto = R.drawable.photo_boy01;
@@ -2700,10 +2744,11 @@ class ContactsEvents {
                     idPhoto = R.drawable.photo_elderwoman01;
                 } else if (person.getGender() == 2) {
                     idPhoto = R.drawable.photo_woman01;
-                }
+                }*/
 
                 if (makeSquared) {
-                    Bitmap bmFull = BitmapFactory.decodeResource(getResources(), idPhoto);
+                    Bitmap bmFull = getBitmap(context, idPhoto);
+                    if (bmFull == null) return null;
                     final int bmFullWidth = bmFull.getWidth();
                     final int bmFullHeight = bmFull.getHeight();
 
@@ -2714,9 +2759,10 @@ class ContactsEvents {
                         //noinspection SuspiciousNameCombination
                         bm = Bitmap.createBitmap(bmFull, (bmFullWidth - bmFullHeight) / 2, 0, bmFullHeight, bmFullHeight);
                     }
-                    bmFull.recycle();
+                    //bmFull.recycle();
                 } else {
-                    bm = BitmapFactory.decodeResource(getResources(), idPhoto);
+                    bm = getBitmap(context, idPhoto);
+                    if (bm == null) return null;
                 }
             }
 
@@ -3995,9 +4041,9 @@ class ContactsEvents {
 
             if (!singleEventArray[Position_eventSubType].trim().isEmpty()) {
                 if (!singleEventArray[Position_contactID].trim().isEmpty()) {
-                    return singleEventArray[Position_contactID] + STRING_EOT + singleEventArray[Position_eventSubType];
+                    return singleEventArray[Position_contactID] + STRING_2HASH + singleEventArray[Position_eventSubType];
                 } else if (!singleEventArray[Position_eventID].trim().isEmpty()) {
-                    return singleEventArray[Position_eventID] + STRING_EOT + singleEventArray[Position_eventSubType];
+                    return singleEventArray[Position_eventID] + STRING_2HASH + singleEventArray[Position_eventSubType];
                 }
             }
 
@@ -4009,7 +4055,7 @@ class ContactsEvents {
     }
 
     private String[] getKeyParts(@NonNull String eventKey) {
-        return eventKey.split(STRING_EOT, -1);
+        return eventKey.replace(STRING_2HASH, STRING_EOT).split(STRING_EOT, -1);
     }
 
     void snoozeNotification(@NonNull String dataNotify, int snoozeHours, Date wakeDateTime) {
@@ -4546,6 +4592,15 @@ class ContactsEvents {
             this.preferences_otherevent_files = preferences_Files;
         }
 
+    }
+
+
+    public int getPreferences_IconPackNumber() {
+        return preferences_IconPackNumber;
+    }
+
+    void setPreferences_IconPackNumber(int packNumber) {
+        preferences_IconPackNumber = packNumber;
     }
 
     void showAnniversaryList(Context context) {
@@ -5717,6 +5772,102 @@ class ContactsEvents {
 
     }
 
+    void initIconPack() {
+
+        try {
+
+            preferences_IconPackImages_F.clear();
+            preferences_IconPackImages_M.clear();
+
+            switch (preferences_IconPackNumber) {
+
+                case 1:
+
+                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack01_f2);
+                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack01_f0);
+                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack01_f1);
+                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack01_f2);
+                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack01_f3);
+                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack01_f4);
+                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack01_f5);
+                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack01_f6);
+
+                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack01_m2);
+                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack01_m0);
+                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack01_m1);
+                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack01_m2);
+                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack01_m3);
+                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack01_m4);
+                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack01_m5);
+                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack01_m6);
+
+                    break;
+
+                case 2:
+
+                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack02_f2);
+                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack02_f0);
+                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack02_f1);
+                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack02_f2);
+                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack02_f3);
+                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack02_f4);
+                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack02_f5);
+                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack02_f6);
+
+                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack02_m2);
+                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack02_m0);
+                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack02_m1);
+                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack02_m2);
+                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack02_m3);
+                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack02_m4);
+                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack02_m5);
+                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack02_m6);
+
+                    break;
+
+                case 3:
+
+                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack03_f3);
+                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack03_f0);
+                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack03_f1);
+                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack03_f2);
+                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack03_f3);
+                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack03_f4);
+                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack03_f5);
+                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack03_f6);
+
+                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack03_m3);
+                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack03_m0);
+                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack03_m1);
+                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack03_m2);
+                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack03_m3);
+                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack03_m4);
+                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack03_m5);
+                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack03_m6);
+
+                    break;
+            }
+
+            if (preferences_IconPackImages_F.isEmpty()) {
+                preferences_IconPackImages_F.put(0, R.drawable.ic_pack00_f1);
+                preferences_IconPackImages_F.put(15, R.drawable.ic_pack00_f0);
+                preferences_IconPackImages_F.put(60, R.drawable.ic_pack00_f1);
+                preferences_IconPackImages_F.put(150, R.drawable.ic_pack00_f2);
+            }
+
+            if (preferences_IconPackImages_M.isEmpty()) {
+                preferences_IconPackImages_M.put(0, R.drawable.ic_pack00_m1);
+                preferences_IconPackImages_M.put(15, R.drawable.ic_pack00_m0);
+                preferences_IconPackImages_M.put(60, R.drawable.ic_pack00_m1);
+                preferences_IconPackImages_M.put(150, R.drawable.ic_pack00_m2);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_INIT_ICONPACK_ERROR + e, Toast.LENGTH_LONG).show());
+        }
+    }
+
     public static String toARGBString(int color) {
         // format: #AARRGGBB
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -5732,6 +5883,26 @@ class ContactsEvents {
         if (blue.length() == 1)
             blue = "0" + blue;
         return "#" + alpha + red + green + blue;
+    }
+
+    private static Bitmap getBitmap(VectorDrawable vectorDrawable) {
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
+    static Bitmap getBitmap(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (drawable instanceof BitmapDrawable) {
+            return BitmapFactory.decodeResource(context.getResources(), drawableId);
+        } else if (drawable instanceof VectorDrawable) {
+            return getBitmap((VectorDrawable) drawable);
+        } else {
+            return null;
+        }
     }
 
 }

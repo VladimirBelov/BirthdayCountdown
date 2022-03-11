@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 24.12.2021, 19:11
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 20:59
  *
  */
 
@@ -17,7 +17,6 @@ import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
 import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_4;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
@@ -26,7 +25,9 @@ import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
+import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
+import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
@@ -43,19 +44,17 @@ import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
 
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
 import androidx.core.text.HtmlCompat;
 
@@ -82,8 +81,6 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         //this.widgetWidth = intent.getIntExtra("intWidgetWidth", 0);
         //this.floatDensity = intent.getFloatExtra("floatScreenDensity", 1);
     }
-
-    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {}
@@ -192,9 +189,24 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                 StringBuilder sbDetails = new StringBuilder();
 
+                //Организация и должность
+
+                if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Organization)) {
+                    final String contactOrganization = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
+                    if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
+                }
+                if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_JobTitle)) {
+                    final String positionJobTitle = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
+                    if (!positionJobTitle.isEmpty()) {
+                        if (sbDetails.length() > 0) sbDetails.append(STRING_COMMA_SPACE);
+                        sbDetails.append(positionJobTitle);
+                    }
+                }
+
                 //Иконка
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
+                    if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
                     sbDetails.append(singleEventArray[Position_eventEmoji]).append(STRING_SPACE);
                 }
 
@@ -237,8 +249,8 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                 //Срок до события и день недели
                 final String eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText];
-                final boolean showDistance = widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_DaysBeforeEvent);
-                final boolean showDayOfWeek = widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventDayOfWeek);
+                final boolean showDistance = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID));
+                final boolean showDayOfWeek = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID));
                 final int barIndex = eventDistanceText.indexOf(STRING_BAR);
                 if ((showDistance || showDayOfWeek) && barIndex > -1) {
                     if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
@@ -294,7 +306,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e, Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e);
         }
 
         return views;
@@ -338,7 +350,9 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             eventsData.setLocale(true);
 
             //Получаем данные
-            String widgetType = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID).provider.getShortClassName();
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
                 eventsData.context = context;
@@ -354,7 +368,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e, Toast.LENGTH_LONG).show());
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e);
         }
 
     }

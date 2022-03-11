@@ -1,15 +1,20 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 22.11.2021, 22:34
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 07.03.2022, 20:30
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 public class ToastExpander {
 
@@ -37,6 +42,12 @@ public class ToastExpander {
             }
         };
         t.start();
+    }
+
+    public static void showText(@NonNull Context context, @NonNull String text) {
+
+        new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
+
     }
 
 }

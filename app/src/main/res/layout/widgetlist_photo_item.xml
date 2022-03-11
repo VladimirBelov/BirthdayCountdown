@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 22.11.2021, 22:34
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 06.03.2022, 15:04
   ~  */
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventEntry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,8 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:contentDescription="@string/hint_ContactIcon"
-        android:scaleType="fitCenter"
-        tools:srcCompat="@drawable/photo_man01" />
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:layout_width="fill_parent"

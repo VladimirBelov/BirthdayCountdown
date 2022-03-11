@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 26.12.2021, 0:58
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:46
   ~  */
   -->
 
@@ -32,6 +32,7 @@
     <string name="menu_filter_events">Filtern…</string>
     <string name="menu_hints">Suchhinweise…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
+    <string name="menu_context_create_contact">Kontakt erstellen…</string>
     <string name="menu_context_edit_event">Ereignis im Kalender anzeigen</string>
     <string name="menu_context_event_info">Ereignisdaten</string>
     <string name="menu_context_hide_event">Ereignis ausblenden</string>
@@ -130,6 +131,10 @@
     <string name="hint_SearchPanel">Suchfeld</string>
     <string name="hint_AlertDialog">Warndialog</string>
     <string name="hint_DragItem">Ziehbares Element</string>
+    <string name="hint_Version_History">Versionsgeschichte</string>
+    <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Play Market</string>
+    <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der App Gallery</string>
+    <string name="hint_ShowPreferences">Alle gespeicherten Einstellungen anzeigen</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Abbrechen</string>
@@ -148,6 +153,7 @@
     <string name="button_question">Neue Frage mailen</string>
     <string name="button_close">Schließen</string>
     <string name="button_prefs">Einstellungen</string>
+    <string name="button_saved_preferences">alle gespeicherten Einstellungen</string>
 
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -189,6 +195,15 @@
     <string name="pref_Theme_description">Farbschema der Benutzeroberfläche</string>
     <string name="pref_Accounts_title">Konten</string>
     <string name="pref_Accounts_description">Scannen Sie nur diese Konten auf Ereignisse</string>
+    <string name="pref_IconPack_title">Symbolpaket</string>
+    <string name="pref_IconPack_description">Verwenden Sie das ausgewählte Symbolpaket, um die Kontaktsilhouette anzuzeigen</string>
+
+    <string-array name="pref_IconPack_entries">
+        <item>Standard</item>
+        <item>Farbig</item>
+        <item>Schwarz und weiß</item>
+        <item>Schalkhaft</item>
+    </string-array>
 
     <string-array name="pref_Language_entries">
         <item>Automatisch</item>
@@ -268,6 +283,7 @@
         <item>Dunkelgrau</item>
         <item>Blau</item>
         <item>Schwarz</item>
+        <item>Blaugrau</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
@@ -305,6 +321,27 @@
         <item>Ein vorheriges Ereignis</item>
         <item>Zwei frühere Ereignisse</item>
         <item>Drei frühere Ereignisse</item>
+    </string-array>
+
+    <string name="pref_List_Style_title">Stil der Ereignisliste</string>
+    <string name="pref_List_Style_description">Legen Sie den Stil der Ereignisliste fest</string>
+
+    <string-array name="pref_List_Style_entries">
+        <item>Eben</item>
+        <item>Karten</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Füllart</string>
+    <string name="pref_List_Filling_description">Fülltyp für Ereignisplatzhalter festlegen (Farbverlauf)</string>
+
+    <string-array name="pref_List_Filling_entries">
+        <item>Keine Füllung</item>
+        <item>Links nach rechts</item>
+        <item>Rechts nach links</item>
+        <item>Von oben nach unten</item>
+        <item>Von unten nach oben</item>
+        <item>Von der Mitte</item>
+        <item>Zum Zentrum</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Format des Kontaktnamens</string>
@@ -395,22 +432,30 @@
     <string name="pref_Widgets_EventInfo_None">Keine</string>
     <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
     <string name="pref_Widgets_EventInfo_Photo">Kontaktfoto</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">Ereignistyp-Symbol</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Ereignisdetails</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">Favoriten-Symbol</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">Symbol für stummgeschaltetes Ereignis</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">Sternzeichen</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">Tierkreisjahr</string>
-
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Favoriten-Symbol</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Sternzeichen</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Ursprüngliches Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Ursprüngliches Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_EventDate">📆 Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Ereignisdatum mit Jahr</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Ereignistitel</string>
-    <string name="pref_Widgets_EventInfo_Age">: Alter (Jahrestag)</string>
+    <string name="pref_Widgets_EventInfo_Age">Alter (Jahrestag)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (fernes Ereignis)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (fernes Ereignis)</string>
+    <string name="pref_Widgets_EventInfo_Organization">Organisation</string>
+    <string name="pref_Widgets_EventInfo_JobTitle">Position</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Symbol für die Ereignisquelle</string>
+    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
+    <string name="pref_Widgets_EventInfo_NewLine1">"- neue Zeile -"</string>
+    <string name="pref_Widgets_EventInfo_NewLine2">"- neue Zeile - "</string>
+    <string name="pref_Widgets_EventInfo_NewLine3">"- neue Zeile -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>

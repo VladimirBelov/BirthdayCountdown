@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 24.12.2021, 19:56
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:24
   ~  */
   -->
 
@@ -32,6 +32,7 @@
     <string name="menu_filter_events">Фильтр…</string>
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
+    <string name="menu_context_create_contact">Создать контакт…</string>
     <string name="menu_context_edit_event">Показать событие в календаре</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
@@ -194,6 +195,15 @@
     <string name="pref_Theme_description">Цветовая тема интерфейса</string>
     <string name="pref_Accounts_title">Учётные записи</string>
     <string name="pref_Accounts_description">Искать события только в этих учётных записях контактов</string>
+    <string name="pref_IconPack_title">Набор иконок</string>
+    <string name="pref_IconPack_description">Использовать выбранный набор иконок для отображения силуэтов контактов, если у последних нет фото</string>
+
+    <string-array name="pref_IconPack_entries">
+        <item>Стандартные</item>
+        <item>Цветные</item>
+        <item>Чёрно-белые</item>
+        <item>Озорные</item>
+    </string-array>
 
     <string-array name="pref_Language_entries">
         <item>Автоматически</item>
@@ -273,6 +283,7 @@
         <item>Тёмно-серая</item>
         <item>Голубая</item>
         <item>Чёрная</item>
+        <item>Голубо-серая</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Типы событий</string>
@@ -310,6 +321,27 @@
         <item>Одно предыдущее событие</item>
         <item>Два предыдущих события</item>
         <item>Три предыдущих события</item>
+    </string-array>
+
+    <string name="pref_List_Style_title">Стиль отображения списка</string>
+    <string name="pref_List_Style_description">Варианты отображения списка событий</string>
+
+    <string-array name="pref_List_Style_entries">
+        <item>Плоский список</item>
+        <item>Карточки</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Заполнение цветом</string>
+    <string name="pref_List_Filling_description">Вид градиента для заполнения цветом отдельного события</string>
+
+    <string-array name="pref_List_Filling_entries">
+        <item>Без заполнения</item>
+        <item>Слева направо</item>
+        <item>Справо налево</item>
+        <item>Сверху вниз</item>
+        <item>Снизу вверх</item>
+        <item>Из центра</item>
+        <item>В центр</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Формат для имени контакта</string>
@@ -400,22 +432,30 @@
     <string name="pref_Widgets_EventInfo_None">Ничего</string>
     <string name="pref_Widgets_EventInfo_Border">Бордюр виджета</string>
     <string name="pref_Widgets_EventInfo_Photo">Фото контакта</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">Иконка типа события</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Иконка типа события</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Подробности события</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">Иконка избранного контакта</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">Иконка события без уведомления</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">Знак зодиака</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">Животное в восточном календаре</string>
-
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Первоначальная дата события</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Первоначальная дата события с годом</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Следующая дата события</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Следующая дата события с годом</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Иконка избранного контакта</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Иконка события без уведомления</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Знак зодиака</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Животное в восточном календаре</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Первоначальная дата события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Первоначальная дата события с годом</string>
+    <string name="pref_Widgets_EventInfo_EventDate">📆 Следующая дата события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Следующая дата события с годом</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Заголовок события</string>
     <string name="pref_Widgets_EventInfo_Age">Возраст (годовщина)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Название годовщины свадьбы</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дней до события</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Дней до события (если событие не ближайшее)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">День недели события</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">День недели события (если событие не ближайшее)</string>
+    <string name="pref_Widgets_EventInfo_Organization">Организация</string>
+    <string name="pref_Widgets_EventInfo_JobTitle">Должность</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Иконка источника события</string>
+    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
+    <string name="pref_Widgets_EventInfo_NewLine1">"- новая строка -"</string>
+    <string name="pref_Widgets_EventInfo_NewLine2">"- новая строка - "</string>
+    <string name="pref_Widgets_EventInfo_NewLine3">"- новая строка -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>

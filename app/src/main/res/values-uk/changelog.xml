@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 26.12.2021, 1:00
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.03.2022, 22:54
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.6.9</item>
+                <item>До конструктора віджетів списку додано нові деталі події: новий рядок (3 шт.), дні до події, день тижня</item>
+
+                <item>#1.6.8</item>
+                <item>Нова колірна тема: Блакитно-сіра</item>
+                <item>Додані прикраси: відображення подій плоским списком або у вигляді карток, а також можливість градієнтної заливки кольором (докладніше у налаштуваннях списку подій)</item>
+                <item>Додано 3 додаткові набори іконок для контактів без фото</item>
+                <item>Нова дія контекстної події: створити контакт (дата вставлена в нотатку)</item>
+                <item>До конструктора віджетів списку додано нові деталі події: значок джерела події та наявність веб-посилань</item>
 
                 <item>#1.6.7</item>
                 <item>Нова назва програми: \"Дні народження та події\"</item>

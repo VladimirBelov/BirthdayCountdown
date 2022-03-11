@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 29.11.2021, 21:44
+  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 02.03.2022, 23:08
   ~  */
   -->
 
@@ -49,6 +49,13 @@
             android:key="@string/pref_Accounts_key"
             android:title="@string/pref_Accounts_title"
             android:summary="@string/pref_Accounts_description"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
+
+        <Preference
+            android:key="@string/pref_IconPack_key"
+            android:title="@string/pref_IconPack_title"
+            android:summary="@string/pref_IconPack_description"
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
 
@@ -441,9 +448,30 @@
             android:key="@string/pref_List_PrevEvents_key"
             android:summary="@string/pref_List_PrevEvents_description"
             android:title="@string/pref_List_PrevEvents_title"
-            android:minHeight="48dp"
             android:icon="@android:drawable/ic_menu_revert"
             android:dialogIcon="@android:drawable/ic_menu_revert"
+            android:negativeButtonText="@string/button_cancel"/> <!--android:minHeight="48dp"-->
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_Style_default"
+            android:entries="@array/pref_List_Style_entries"
+            android:entryValues="@array/pref_List_Style_values"
+            android:key="@string/pref_List_Style_key"
+            android:summary="@string/pref_List_Style_description"
+            android:title="@string/pref_List_Style_title"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_Filling_default"
+            android:entries="@array/pref_List_Filling_entries"
+            android:entryValues="@array/pref_List_Filling_values"
+            android:key="@string/pref_List_Filling_key"
+            android:summary="@string/pref_List_Filling_description"
+            android:title="@string/pref_List_Filling_title"
+            android:icon="@drawable/ic_menu_paste"
+            android:dialogIcon="@drawable/ic_menu_paste"
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
