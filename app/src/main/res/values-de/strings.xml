@@ -69,6 +69,7 @@
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
     <string name="msg_color_parse_error">Fehler beim Analysieren der Farbe!</string>
+    <string name="msg_jump_to_event_error">Ereignis nicht gefunden! Aktivieren Sie weitere Ereignistypen in den App-Einstellungen</string>
 
     <string name="msg_plural_postfix">e</string>
 
@@ -92,6 +93,7 @@
     <string name="msg_age_could_be">"Könnte jetzt sein: "</string>
     <string name="msg_label_search">Geben Sie einen Teil des Namens, des Kontakttyps, des Arbeitsorts, der Position und des Datums ein (mehrere Werte können durch Kommas getrennt eingegeben werden, unterstützt von regexp):</string>
     <string name="msg_hint_search">Suchanfrage</string>
+    <string name="msg_hint_global_search">Suche nach Ereignissen</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die ausgewählte Tage</string>
     <string name="msg_notifications_soon">"Ereignisse - "</string>
     <string name="msg_notifications_disabled">Benachrichtigungen aus</string>
@@ -153,7 +155,7 @@
     <string name="button_question">Neue Frage mailen</string>
     <string name="button_close">Schließen</string>
     <string name="button_prefs">Einstellungen</string>
-    <string name="button_saved_preferences">alle gespeicherten Einstellungen</string>
+    <string name="button_saved_preferences">[alle gespeicherten Einstellungen]</string>
 
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -606,16 +608,6 @@
 
     <string name="pref_Notifications_AlarmHour_title">Benachrichtigungszeit</string>
     <string name="pref_Notifications_AlarmHour_description">Uhrzeit der Benachrichtigung</string>
-
-    <string-array name="pref_Notifications_AlarmHour_entries">
-        <item>Um Mitternacht</item>
-        <item>Um 7:00 Uhr</item>
-        <item>Um 8:00 Uhr</item>
-        <item>Um 9:00 Uhr</item>
-        <item>Um 10:00 Uhr</item>
-        <item>Um 11:00 Uhr</item>
-        <item>Um 12:00 Uhr (mittags)</item>
-    </string-array>
 
     <string name="pref_Notifications_Ringtone_title">Benachrichtigungston</string>
     <string name="pref_Notifications_Ringtone_description">Benachrichtigungston für bevorstehende Ereignisse</string>

@@ -306,6 +306,7 @@ final class Constants {
     static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
     static final String MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "MainActivity->onActivityResult error:\n";
     static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
+    static final String MAIN_ACTIVITY_ON_START_ERROR = "MainActivity->onStart error:\n";
     static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
     static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
     static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
@@ -330,10 +331,13 @@ final class Constants {
     static final String SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR = "SettingsActivity->selectRingtone error:\n";
     static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";
     static final String SETTINGS_ACTIVITY_SELECT_FILES_ERROR = "SettingsActivity->selectFiles error:\n";
+    static final String SETTINGS_ACTIVITY_SELECT_ALARMTIME_ERROR = "SettingsActivity->selectAlarmTime error:\n";
     static final String SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "SettingsActivity->onActivityResult error:\n";
     static final String SETTINGS_ACTIVITY_GET_PATH_ERROR = "SettingsActivity->getPath error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
     static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
+
+    static final String SUGGESTIONPROVIDER_GETSUGGESTIONS_ERROR = "SuggestionProvider->getSuggestions error:\n";
 
     static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
     static final String ABOUT_ACTIVITY_SET_DEBUG_ERROR = "AboutActivity->setDebug error:\n";

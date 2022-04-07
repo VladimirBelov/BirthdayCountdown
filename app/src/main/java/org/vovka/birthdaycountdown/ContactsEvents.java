@@ -188,7 +188,11 @@ class ContactsEvents {
 
     private ContactsEvents() {}
 
-    void setContext(Context con) {
+    public Context getContext() {
+        return context;
+    }
+
+    void setContext(@NonNull Context con) {
         this.context = con;
         this.resources = con.getResources();
     }
@@ -397,7 +401,8 @@ class ContactsEvents {
     private int preferences_notifications_priority;
     private Set<String> preferences_notifications_event_types;
     private Set<String> preferences_notifications_quick_actions;
-    private int preferences_notifications_alarm_hour;
+    int preferences_notifications_alarm_hour;
+    int preferences_notifications_alarm_minute;
     String preferences_notifications_ringtone;
     int preferences_notifications_on_click_action;
 
@@ -439,10 +444,10 @@ class ContactsEvents {
     int statAllURLs = 0;
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
     long statLastPausedForOtherActivity = 0;
-    int preferences_list_prev_events_found = 0;
+    int statEventsPrevEventsFound = 0;
 
     //UI объекты
-    Context context;
+    private Context context;
     private Resources resources;
     private ContentResolver contentResolver;
     boolean isUIopen = false;
@@ -803,8 +808,9 @@ class ContactsEvents {
         }
     }
 
+    /** Инициализация и считывание настроек из SharedPreferences
+     */
     void getPreferences() {
-        //Инициализация и считывание настроек
 
         if (context == null) return;
 
@@ -1158,6 +1164,8 @@ class ContactsEvents {
             preferences_notifications_priority = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Notifications_Priority_key), context.getString(R.string.pref_Notifications_Priority_default))));
             preferences_notifications_alarm_hour = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Notifications_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default))));
             if (preferences_notifications_alarm_hour < 0) preferences_notifications_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
+            preferences_notifications_alarm_minute = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_Notifications_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default))));
+            if (preferences_notifications_alarm_minute < 0) preferences_notifications_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
             preferences_notifications_ringtone = preferences.getString(context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
 
             someSets = preferences.getStringSet(context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
@@ -1237,8 +1245,9 @@ class ContactsEvents {
 
     }
 
+    /** Сохранение настроек в SharedPreferences
+     */
     void setPreferences() {
-        //Сохранение настроек
 
         if (context == null) return;
 
@@ -1249,6 +1258,8 @@ class ContactsEvents {
 
             editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
             editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
+            editor.putString(context.getString(R.string.pref_Notifications_AlarmHour_key), Integer.toString(preferences_notifications_alarm_hour));
+            editor.putString(context.getString(R.string.pref_Notifications_AlarmMinute_key), Integer.toString(preferences_notifications_alarm_minute));
             editor.putString(context.getString(R.string.pref_Notifications_Ringtone_key), preferences_notifications_ringtone);
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
             editor.putInt(context.getString(R.string.pref_IconPack_key), preferences_IconPackNumber);
@@ -1268,6 +1279,10 @@ class ContactsEvents {
         }
     }
 
+    /** Установка языка (локали) приложению
+     *
+     * @param force Принудительно, даже если этот язык уже устанавливали ранее
+     */
     void setLocale(boolean force) {
 
         if (context == null) return;
@@ -1310,7 +1325,8 @@ class ContactsEvents {
 
     synchronized boolean getEvents(Context in_context) {
 
-        context = in_context;
+        if (in_context != null) context = in_context;
+        if (context == null) context = getContext().getApplicationContext();
         if (context == null) return false;
 
         try {
@@ -1892,7 +1908,8 @@ class ContactsEvents {
                     CalendarContract.Instances.DESCRIPTION, //todo: доделать правила и под это поле
                     CalendarContract.Instances.BEGIN, //начало именно этого события
                     CalendarContract.Instances.CALENDAR_ID,
-                    CalendarContract.Events.DTSTART //начало первоначального события
+                    CalendarContract.Events.DTSTART, //начало первоначального события
+                    CalendarContract.Events.ALL_DAY
             };
 
             Calendar startTime = Calendar.getInstance();
@@ -1930,7 +1947,7 @@ class ContactsEvents {
                 importStorage = 1;
                 useEventYear = preferences_birthday_calendars_useyear;
 
-                arrRules = preferences_birthday_calendars_rules.split(STRING_PIPE);
+                arrRules = preferences_birthday_calendars_rules.split(STRING_PIPE, -1);
                 if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
                         if (rule.contains(RULE_TAG_NAME)) {
@@ -1968,11 +1985,22 @@ class ContactsEvents {
             Cursor cursor = contentResolver.query(builder.build(), projection, selection, null, "dtstart ASC");
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
+                    Calendar c = Calendar.getInstance();
 
                     while (cursor.moveToNext()) {
                         userData.clear();
                         Date date = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))));
                         Date dateFirst = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
+                        if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
+                            if (TimeZone.getDefault().getRawOffset() < 0) { //И для отрицательных зон надо прибавлять день
+                                c.setTime(date);
+                                c.add(DATE, 1);
+                                date = c.getTime();
+                                c.setTime(dateFirst);
+                                c.add(DATE, 1);
+                                dateFirst = c.getTime();
+                            }
+                        }
                         userData.put(Position_eventDate_sorted, STRING_SPACE);
 
                         //0. Календарное событие
@@ -2044,7 +2072,7 @@ class ContactsEvents {
                                         //Ищем контакт
                                         final String foundNameNormalyzed = normalizeName(foundName);
                                         contactID = map_contacts_names.get(foundNameNormalyzed);
-                                        break;
+                                        if (contactID != null) break;
                                     }
                                 }
                             }
@@ -2165,7 +2193,8 @@ class ContactsEvents {
                             userData.put(Position_eventLabel, eventTitle); //Заголовок пользовательского события
                             userData.put(Position_eventType, eventType); //Тип события
                             userData.put(Position_eventSubType, eventSubType); //Подтип события
-                            userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date)));
+                            userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT
+                                    + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date)));
                             userData.put(Position_eventIcon, Integer.toString(eventIcon));
                             userData.put(Position_eventEmoji, eventEmoji);
 
@@ -2455,18 +2484,19 @@ class ContactsEvents {
 
                                     userData.put(Position_personFullName, eventTitle);
 
-                                    //если 2 компонента - просто меняем местами
                                     int spaceFirst = eventTitle.indexOf(STRING_SPACE);
                                     int spaceLast = eventTitle.lastIndexOf(STRING_SPACE);
-
-                                    if (spaceFirst != -1 && spaceFirst == spaceLast) {
-                                        userData.put(Position_personFullNameAlt, eventTitle.substring(spaceFirst + 1).concat(STRING_SPACE).concat(eventTitle.substring(0, spaceFirst)));
-                                    } else {
-                                        userData.put(Position_personFullNameAlt, eventTitle);
+                                    String personFullNameAlt = eventTitle;
+                                    if (spaceFirst != -1 && spaceFirst == spaceLast) { //если 2 компонента - просто меняем местами
+                                        personFullNameAlt = eventTitle.substring(spaceFirst + 1).concat(STRING_SPACE).concat(eventTitle.substring(0, spaceFirst));
                                     }
+                                    userData.put(Position_personFullNameAlt, personFullNameAlt);
 
                                     //Ищем в контактах
                                     contactID = map_contacts_names.get(normalizeName(eventTitle));
+                                    if (contactID == null && !personFullNameAlt.equals(eventTitle)) {
+                                        contactID = map_contacts_names.get(normalizeName(personFullNameAlt));
+                                    }
 
                                 } else { //Событие
 
@@ -2485,11 +2515,11 @@ class ContactsEvents {
                         String orgNameFile = STRING_EMPTY;
                         String titleFile = STRING_EMPTY;
                         if (contactID != null) {
-                            orgNameFile = checkForNull(userData.get(Position_organization), STRING_EMPTY).trim();
+                            orgNameFile = checkForNull(userData.get(Position_organization), STRING_EMPTY).trim().toLowerCase();
                             titleFile = checkForNull(userData.get(Position_title), STRING_EMPTY).trim();
-                            String orgNameContact = checkForNull(map_organizations.get(contactID), STRING_EMPTY).trim();
+                            String orgNameContact = checkForNull(map_organizations.get(contactID), STRING_EMPTY).trim().toLowerCase();
 
-                            if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.equalsIgnoreCase(orgNameFile))
+                            if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile))
                                 contactID = null;
                         }
 
@@ -2688,13 +2718,18 @@ class ContactsEvents {
 
                     List<String> singleRowList = Arrays.asList(singleEventArray);
                     if (birthDate != null && BDay != null) {
-                        //todo: если день рождения без года - мы об этом никак не узнаем
-                        singleRowList.set(Position_age, String.valueOf(countYearsDiff(birthDate, BDay)));
-                        //} else {
-                        //    singleRowList.set(Position_age, String.valueOf(growAge));
-                        //}
+                        final int countYearsDiff = countYearsDiff(birthDate, BDay);
+                        if (countYearsDiff > 0) {
+                            singleRowList.set(Position_age, String.valueOf(countYearsDiff));
+                        } else {
+                            //если день рождения без года - мы об этом никак не узнаем
+                            singleRowList.set(Position_age, STRING_MINUS1);
+                            // ToastExpander.showText(context, Arrays.toString(singleEventArray));
+                        }
                         singleEventArray = singleRowList.toArray(new String[0]);
                     }
+
+
                 }
 
                 //Случайное фото с соответствиии с возрастом и полом
@@ -3469,8 +3504,8 @@ class ContactsEvents {
             Date currentDay = new Date(now.getTimeInMillis());
 
             List<String> newList = new ArrayList<>();
-            preferences_list_prev_events_found = 0;
-            for (int i = dataList.size() - 1; i >= 0 && preferences_list_prev_events_found < params_events; i--) {
+            statEventsPrevEventsFound = 0;
+            for (int i = dataList.size() - 1; i >= 0 && statEventsPrevEventsFound < params_events; i--) {
                 String li = dataList.get(i);
                 String[] singleEventArray = li.split(STRING_EOT, -1);
                 if (!singleEventArray[Position_eventSubType].equals(eventTypesIDs.get(Type_5K)) //пропускаем 5K+
@@ -3478,7 +3513,7 @@ class ContactsEvents {
                 ) {
                     if (params_days == 365) { //нет ограничения по дням
                         newList.add(li);
-                        preferences_list_prev_events_found++;
+                        statEventsPrevEventsFound++;
                     } else {
                         Date eventDate = null;
                         try {
@@ -3493,7 +3528,7 @@ class ContactsEvents {
                         if (eventDate != null) {
                             if (-countDaysDiff(currentDay, eventDate) <= params_days) {
                                 newList.add(li);
-                                preferences_list_prev_events_found++;
+                                statEventsPrevEventsFound++;
                             } else {
                                 i = 0;
                             }
@@ -3745,7 +3780,7 @@ class ContactsEvents {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.HOUR_OF_DAY, preferences_notifications_alarm_hour);
-                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.MINUTE, preferences_notifications_alarm_minute);
                 calendar.set(Calendar.SECOND, 0);
 
                 if (calendar.before(Calendar.getInstance())) {
@@ -4179,7 +4214,7 @@ class ContactsEvents {
 
     boolean isEmptyEventList() {return eventList.isEmpty();}
 
-    @NonNull String checkForNull(String strIn, @NonNull String strDefault) {return strIn != null && !strIn.isEmpty() ? strIn : strDefault;}
+    @NonNull static String checkForNull(String strIn, @NonNull String strDefault) {return strIn != null && !strIn.isEmpty() ? strIn : strDefault;}
 
     void clearHiddenEvents() {
 
@@ -4594,6 +4629,10 @@ class ContactsEvents {
 
     }
 
+    void setPreferences_AlarmTime(int alarmHour, int alarmMinute) {
+        this.preferences_notifications_alarm_hour = alarmHour;
+        this.preferences_notifications_alarm_minute = alarmMinute;
+    }
 
     public int getPreferences_IconPackNumber() {
         return preferences_IconPackNumber;

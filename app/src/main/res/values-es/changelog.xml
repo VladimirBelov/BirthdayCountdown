@@ -13,6 +13,10 @@
 
         <item>#1.6.9</item>
         <item>Se agregaron nuevos detalles de eventos al constructor de widgets de lista: nueva línea (3 piezas), días antes del evento, día de la semana</item>
+        <item>El tiempo de notificación se puede seleccionar hasta un minuto</item>
+        <item>Se agregó la capacidad de buscar eventos a través de la búsqueda global en el dispositivo (QuickSearchBox)</item>
+        <item>Se corrigió el error al calcular las fechas del calendario para las zonas horarias al oeste de UTC</item>
+        <item>Sección actualizada \"Preguntas y respuestas\"</item>
 
         <item>#1.6.8</item>
         <item>Nuevo tema de color: Gris azulado</item>

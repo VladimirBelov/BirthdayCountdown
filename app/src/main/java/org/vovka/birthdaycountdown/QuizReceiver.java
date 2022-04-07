@@ -28,7 +28,7 @@ public class QuizReceiver extends BroadcastReceiver {
         try {
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
 
             Bundle extras = intent.getExtras();
             String quizQuestion = null;

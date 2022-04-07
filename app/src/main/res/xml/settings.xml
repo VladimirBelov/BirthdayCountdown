@@ -732,15 +732,11 @@
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_Notifications_AlarmHour_default"
-            android:entries="@array/pref_Notifications_AlarmHour_entries"
-            android:entryValues="@array/pref_Notifications_AlarmHour_values"
+        <Preference
             android:key="@string/pref_Notifications_AlarmHour_key"
             android:summary="@string/pref_Notifications_AlarmHour_description"
             android:title="@string/pref_Notifications_AlarmHour_title"
             android:icon="@android:drawable/ic_menu_recent_history"
-            android:dialogIcon="@android:drawable/ic_menu_recent_history"
             android:negativeButtonText="@string/button_cancel"/>
 
         <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
@@ -776,7 +772,6 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
-            android:id="@+id/pref_NotifyTest"
             android:key="@string/pref_Notifications_NotifyTest_key"
             android:summary="@string/pref_Notifications_NotifyTest_description"
             android:title="@string/pref_Notifications_NotifyTest_title"
@@ -807,14 +802,12 @@
         android:layout="@layout/settings_category">
 
         <Preference
-            android:id="@+id/pref_FAQActivity"
             android:key="@string/pref_FAQActivity_key"
             android:summary="@string/pref_FAQ_description"
             android:title="@string/pref_FAQ_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
 
         <Preference
-            android:id="@+id/pref_BatteryOptimization"
             android:key="@string/pref_BatteryOptimization_key"
             android:summary="@string/pref_BatteryOptimization_description"
             android:title="@string/pref_BatteryOptimization_title"
@@ -830,7 +823,6 @@
             tools:ignore="UnusedAttribute" />
 
         <Preference
-            android:id="@+id/pref_AboutActivity"
             android:key="@string/pref_AboutActivity_key"
             android:title="@string/window_about"
             android:icon="@android:drawable/ic_menu_info_details"/>

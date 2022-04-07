@@ -33,7 +33,7 @@ public class DateReceiver extends BroadcastReceiver {
 
                 StringBuilder log = new StringBuilder();
 
-                if (eventsData.context == null) eventsData.context = context;
+                if (eventsData.getContext() == null) eventsData.setContext(context);
                 eventsData.getPreferences();
                 eventsData.setLocale(true);
 

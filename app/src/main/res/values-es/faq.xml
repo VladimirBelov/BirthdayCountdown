@@ -11,6 +11,74 @@
 
         <string-array name="faq" tools:ignore="InconsistentArrays">
 
+                <item>###Notificaciones de eventos</item>
+
+                <item>#No aparecen las notificaciones</item>
+                <item>En primer lugar, debe asegurarse de que cualquier período de notificación esté seleccionado en la configuración \"Intervalo de notificación\". Después de eso, seleccione \"Notificación de prueba\". Si después de todo lo anterior, la notificación no apareció, entonces el problema está en la configuración de Android: el modo \"No molestar\" está habilitado, o todas las notificaciones están desactivadas en el administrador de notificaciones, o el modo de ahorro de batería está habilitado en el teléfono inteligente.</item>
+
+                <item>#Múltiples notificaciones por evento</item>
+                <item>Establecer \"Intervalo de notificación\" en la configuración principal de la aplicación le permite seleccionar varios períodos separados para la notificación de un evento. Por ejemplo, puede configurar notificaciones para la semana y el día de un evento.</item>
+
+                <item> </item>
+                <item>###Widgets</item>
+
+                <item>#Configuración de widgets</item>
+                <item>Para editar la configuración del widget de fotos, haga clic en la etiqueta del evento más a la derecha. Al hacer clic en cualquier otro lugar de este evento, se abrirá la ventana principal de la aplicación.</item>
+                <item>Si no se encontraron eventos adecuados para el widget de fotos y se muestra la notificación \"Eventos no encontrados\", al hacer clic en el mensaje se abrirá la configuración de este widget.</item>
+                <item>La reacción al hacer clic en un evento separado en el widget se configura en \"Configuraciones-> Widgets-> Al hacer clic en la acción\"</item>
+                <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
+                <item>Para editar la configuración del widget de lista, haga clic en el botón de alternar en la esquina superior derecha de la lista de eventos.</item>
+
+                <item>#Los eventos no encajan o las fotos son demasiado estrechas</item>
+                <item>Vaya a la configuración del widget de fotos y experimente con la configuración \"Número de eventos\".</item>
+
+                <item>#Los widgets no se actualizan</item>
+                <item><![CDATA[Debe deshabilitar la optimización de la batería para la aplicación. Hay diferentes configuraciones para diferentes shells de Android: <ul>
+        <li>para Xiaomi MIUI esto es \"Habilitar inicio automático\" (Seguridad–> Permisos–> Inicio automático)
+        <li>para Android 9-11 puro, esto es \"Deshabilitar la optimización de la batería\" (Aplicaciones y notificaciones-> Avanzado-> Acceso a aplicaciones especiales-> Optimización de la batería)
+        <li>para Huawei EMUI esto es \"Habilitar inicio automático\" (Configuración-> Batería-> Iniciar aplicaciones)</ul>]]></item>
+                <item>When battery optimization is enabled, there will be a warning message at the top of the screen in each widget preference screen. A similar inscription will be at the bottom of the application settings. To turn off optimization, click on the red label</item>
+                <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
+                <item><![CDATA[A veces, en Android 9-10, los widgets dejan de actualizarse después de instalar una nueva versión de la aplicación. Para corregir las actualizaciones de widgets, debe:<ol>
+        <li>eliminar el widget de la pantalla
+        <li>borre el caché del iniciador (en la configuración de Android en la lista de aplicaciones, busque el iniciador y seleccione \"borrar caché\" en propiedades)
+        <li>reiniciar el teléfono inteligente
+        <li>volver a agregar el widget a la pantalla
+        </ol>]]></item>
+                <item>Si el mecanismo estándar de actualización de widgets no funciona, puede activar el intervalo de actualización forzada: Configuraciones-> Widgets-> Intervalo de actualización.</item>
+
+                <item>###Eventos</item>
+
+                <item>#Eventos de contacto</item>
+                <item>De forma predeterminada, se muestran los eventos (cumpleaños, aniversarios, eventos de usuarios, otros eventos) de todas las cuentas del dispositivo.</item>
+                <item>Para restringir la elección de cuentas para escanear eventos, debe seleccionar las necesarias en Configuraciones-> Cuentas.</item>
+                <item>Para mostrar los eventos de todas las cuentas (incluidas las locales), haga clic en \"Todos\".</item>
+
+                <item>#Eventos del calendario</item>
+                <item>Se admiten todos los eventos de los calendarios seleccionados. Los conjuntos de calendario se especifican por separado para los eventos \"Cumpleaños\" y \"Otro evento\". El mecanismo para trabajar con eventos de calendario difiere según el tipo de evento.</item>
+                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres se usan para esto (de manera predeterminada, se usa el título del evento del calendario como nombre del contacto). Si se encuentra un contacto, los datos de la persona se utilizan para la visualización de eventos. Hay tres opciones: <ol><li>contacto encontrado, pero ya hay datos sobre el cumpleaños: la fecha del calendario se agrega al evento (con o sin año, dependiendo de la configuración)<li>el contacto se encontró, pero no hay información sobre el cumpleaños: se agrega un nuevo evento a la lista, al hacer clic en él se abrirá una tarjeta de contacto en la libreta de direcciones<li>contacto no encontrado: se agrega un nuevo evento, al hacer clic en él se abrirá abrir una tarjeta de evento del calendario</ol>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento: estos eventos del calendario no se muestran en los widgets, solo en la lista de eventos y notificaciones. Se guarda todo el título del evento. Al hacer clic en el evento, se abrirá la tarjeta de eventos del calendario.]]></item>
+                <item><![CDATA[<br>Cómo configurar la visualización de eventos:<ol>
+         <li>En la aplicación de calendario estándar, cree un calendario (o elija mostrar el calendario para días festivos nacionales o religiosos)
+         <li>Si el calendario está vacío, cree o importe los eventos necesarios. Los eventos deben ser para todo el día.
+         <li>A continuación se incluye un enlace a las instrucciones sobre cómo cargar los cumpleaños de amigos de las redes sociales.
+         <li>Si en un evento de calendario de cumpleaños, el nombre del contacto ocupa solo una parte del nombre del evento, puede definir reglas para la recuperación de nombres. Este nombre se utilizará para buscar contactos en la libreta de direcciones para agregar atributos adicionales: foto, organización, título, alias. Las reglas se configuran en Ajustes-> Personalización de eventos-> Cumpleaños-> Reglas. Por ejemplo: título del evento de calendario \"Cumpleaños. John Doe\", regla: \"Cumpleaños. [nombre]\" (sin comillas)
+         <li>Después de crear (habilitar) calendarios, debe seleccionarlos en Configuración-> Personalización de eventos-> Cumpleaños-> Calendarios (Configuraciones-> Personalización de eventos-> Otro evento-> Calendarios)
+        </ol>]]></item>
+
+                <item>#Eventos de archivos locales</item>
+                <item><![CDATA[Los eventos y cumpleaños de <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> son compatibles con algunas características:<ul><li>la fecha del evento puede ser de cualquier formato sin espacios (DD.MM.YYYY, MM/DD/YYYY, etc.)<li>si no se conoce el año, establezca 0000<li>si hay varios pares de corchetes después del nombre, entonces si los pares de corchetes siguen entre sí: el contenido dentro del último par se moverá al título del trabajo de los contactos, si un par está dentro del otro, el contenido dentro de los corchetes exteriores se moverá al título del trabajo de los contactos</ul>]]></item>
+                <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE APELLIDO</b>&gt; [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
+                <item><![CDATA[BANDERAS:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>]]></item>
+                <item><![CDATA[<br>Cómo configurar la visualización de eventos:<ol>
+         <li>Descargar o crear archivos con eventos
+         <li>Seleccione archivos en Configuración-> Personalización de eventos-> Cumpleaños-> Archivos-> SELECCIONAR (Configuraciones-> Personalización de eventos-> Otro evento-> Archivos-> SELECCIONAR)
+         </ol>]]></item>
+
+                <item>#Importación de eventos de redes sociales</item>
+                <item><![CDATA[Los cumpleaños de los amigos de Facebook se pueden exportar al calendario usando la herramienta fb2cal: <a href="https://github.com/mobeigi/fb2cal">enlace</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">instrucciones en video</a>]]></item>
+
                 <item>###General</item>
                 <item>Esta sección no está disponible en el idioma seleccionado en la configuración. Cambie a inglés o ruso en la interfaz del programa y use el traductor de Google.</item>
 

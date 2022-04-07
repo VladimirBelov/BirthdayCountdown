@@ -134,7 +134,7 @@ class WidgetUpdater {
 
         //Получаем данные
         if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
-            eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             if (eventsData.getEvents(context)) eventsData.computeDates();
         }
 
@@ -259,7 +259,7 @@ class WidgetUpdater {
 
             if (eventsData.preferences_debug_on) {
                 List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
-                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
+                views.setTextViewText(R.id.info, (width > 70 ? context.getString(R.string.widget_msg_updated) : STRING_EMPTY) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
                 views.setTextViewText(R.id.info, STRING_EMPTY);
@@ -273,7 +273,7 @@ class WidgetUpdater {
     }
 
     private void drawPhotoEvent(int i) {
-        //Отрисовываем одно событие
+        //Отрисовка одного события
         try {
 
             String event = eventsData.eventList.get(i);

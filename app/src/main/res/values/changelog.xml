@@ -13,6 +13,9 @@
 
         <item>#1.6.9</item>
         <item>New event details have been added to list widget constructor: new line (3pcs), days before event, day of week</item>
+        <item>Notification time can be set up to the minute</item>
+        <item>Added the ability to search for events through device global search (QuickSearchBox)</item>
+        <item>Fixed error calculating calendar dates for timezones west of UTC</item>
 
         <item>#1.6.8</item>
         <item>New color theme: blue-grey</item>

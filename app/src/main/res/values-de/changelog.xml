@@ -13,6 +13,9 @@
 
         <item>#1.6.9</item>
         <item>Dem Listen-Widget-Konstruktor wurden neue Ereignisdetails hinzugefügt: neue Zeile (3 Stück), Tage vor dem Ereignis, Wochentag</item>
+        <item>Die Benachrichtigungszeit kann bis zu einer Minute ausgewählt werden</item>
+        <item>Möglichkeit hinzugefügt, über die globale Suche auf dem Gerät nach Ereignissen zu suchen (QuickSearchBox)</item>
+        <item>Fehler beim Berechnen von Kalenderdaten für Zeitzonen westlich von UTC behoben</item>
 
         <item>#1.6.8</item>
         <item>Neues Farbthema: Blaugrau</item>

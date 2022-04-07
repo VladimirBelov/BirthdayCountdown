@@ -99,6 +99,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         try {
 
+            eventsData.setLocale(false);
+
             //Размер
             double fontMagnify = 1.6;
             if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
@@ -342,7 +344,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -352,7 +354,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
-                eventsData.context = context;
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {

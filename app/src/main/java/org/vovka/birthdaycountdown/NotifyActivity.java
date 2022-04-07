@@ -24,10 +24,10 @@ public class NotifyActivity extends Activity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.setLocale(true);
 
-            if (eventsData.getEvents(eventsData.context)) {
+            if (eventsData.getEvents(null)) {
                 eventsData.computeDates();
                 if (eventsData.preferences_notifications_days.size() != 0) {
 

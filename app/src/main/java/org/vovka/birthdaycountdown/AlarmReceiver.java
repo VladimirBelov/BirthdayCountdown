@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             StringBuilder log = new StringBuilder();
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
 

@@ -23,7 +23,9 @@
         <item>###Widgets</item>
 
         <item>#Widget settings</item>
-        <item>To edit the settings of the widget, click on event caption of the rightmost event. Clicking anywhere else in this event will open events list. If no suitable events were found for the widget and the notification \"Events not found\" was displayed, then clicking on this message will also lead to the settings.</item>
+        <item>To edit the settings of photo widget, click on event caption of the rightmost event. Clicking anywhere else in this event will open events list.</item>
+        <item>If no suitable events were found for the widget and the notification \"Events not found\" was displayed, then clicking on message will open this widget settings.</item>
+        <item>The on event click reaction may be configured in \"Settings-> Widgets (common settings)-> On click action\"</item>
         <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
 
         <item>#Events don\'t fit or photos are too narrow</item>
@@ -31,9 +33,9 @@
 
         <item>#Widgets are not updating</item>
         <item><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
-        <li>for Xiaomi MIUI this is \"Enable Autostart\" (Security<nobr>–></nobr>Permissions<nobr>–></nobr>Autostart)
-        <li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications<nobr>-></nobr>Advanced<nobr>-></nobr>Special app access<nobr>-></nobr>Battery optimization)
-        <li>for Huawei EMUI this is \"Enable Autostart\" (Settings<nobr>-></nobr>Battery<nobr>-></nobr>Start applications)</ul>]]></item>
+        <li>for Xiaomi MIUI this is \"Enable Autostart\" (Security–> Permissions–> Autostart)
+        <li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications-> Advanced-> Special app access-> Battery optimization)
+        <li>for Huawei EMUI this is \"Enable Autostart\" (Settings-> Battery-> Start applications)</ul>]]></item>
         <item>When battery optimization is enabled, there will be a warning message at the top of the screen in each widget preference screen. A similar inscription will be at the bottom of the application settings. To turn off optimization, click on the red label</item>
         <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
         <item><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol>
@@ -53,7 +55,7 @@
 
         <item>#Calendar events</item>
         <item>Any events from selected calendars are supported. Calendar sets are specified separately for the events \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
-        <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
+        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
         <item><![CDATA[<br>How to setup the display of events:<ol>
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)

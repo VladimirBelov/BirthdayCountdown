@@ -92,6 +92,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -111,6 +112,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,6 +136,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData = ContactsEvents.getInstance();
             eventsData.setContext(this); //getApplicationContext();
             eventsData.getPreferences();
-            eventsData.isUIopen = true;
 
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
@@ -276,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     //включаем fast scroll, только когда скроллят
                     if (!listView.isFastScrollEnabled()) {
                         listView.setFastScrollEnabled(true);
-                        listView.postDelayed(() -> listView.setFastScrollEnabled(false),4000);
+                        listView.postDelayed(() -> listView.setFastScrollEnabled(false), 4000);
                     }
                 });
             }
@@ -301,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     if (eventsData.preferences_list_on_click_action == 8) { //Контекстное меню
                         openContextMenu(v1);
-                    } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <=4) {
+                    } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <= 4) {
                         Intent intent = ContactsEvents.getViewActionIntent(((String) l.getItemAtPosition(position)).split(STRING_EOT), eventsData.preferences_list_on_click_action);
                         if (intent != null) {
                             try {
@@ -312,7 +314,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (eventsData.preferences_debug_on) Toast.makeText(MainActivity.this, Constants.MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR + e.getMessage(), Toast.LENGTH_LONG).show();
+                    if (eventsData.preferences_debug_on)
+                        Toast.makeText(MainActivity.this, Constants.MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -326,7 +329,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -387,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         String currentVersion = STRING_EMPTY;
                         int countChanges = 0;
 
-                        for(String strChange: arrChangeLog) {
+                        for (String strChange : arrChangeLog) {
 
                             if (strChange.charAt(0) == '#') {
 
@@ -473,7 +477,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -486,11 +491,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             editor.putString(getString(R.string.pref_VersionCode_LastRun), Integer.toString(BuildConfig.VERSION_CODE));
             editor.apply();
 
-            if (eventsData.preferences_debug_on) Toast.makeText(this, "Set last run version: " + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, "Set last run version: " + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -511,7 +518,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR + e, Toast.LENGTH_LONG).show();
             return -1;
         }
     }
@@ -519,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void initNotifications() {
         //https://stackoverflow.com/questions/51343550/how-to-give-notifications-on-android-on-specific-time-in-android-oreo/51645875#51645875
 
-        try{
+        try {
             StringBuilder log = new StringBuilder();
 
             eventsData.initNotificationChannel(log); //для Android 8+
@@ -527,10 +535,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.initNotifications(log);
             eventsData.initWidgetUpdate(log);
 
-            if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(this, log.deleteCharAt(log.length() - 1).toString(), Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on && log.length() > 0)
+                Toast.makeText(this, log.deleteCharAt(log.length() - 1).toString(), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -540,14 +550,80 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener.onRefresh();
         } catch (Exception e) {
             e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_REFRESH_ERROR + e, Toast.LENGTH_LONG).show();
+            if (eventsData.preferences_debug_on)
+                Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_REFRESH_ERROR + e, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void onDestroy() {
+    public void onStart() {
+
+        try {
+            super.onStart();
+            if (eventsData != null) eventsData.isUIopen = true;
+
+            Intent intent = getIntent();
+            if (intent.getAction() != null && intent.getData() != null && intent.getAction() != null) {
+
+                final String eventInfo = intent.getData().toString();
+
+                //if (eventsData.preferences_debug_on)
+                //    ToastExpander.showText(this, "action: " + intent.getAction() + "\ndata: " + eventInfo);
+
+                if (getString(R.string.content_provider_intent_view).equals(intent.getAction())) {
+
+                    final String eventNum = eventInfo.substring(0, eventInfo.indexOf(STRING_EOT));
+                    final String eventTitle = eventInfo.substring(eventInfo.indexOf(STRING_EOT));
+
+                    AtomicInteger index = new AtomicInteger(-1);
+                    try {
+                        index.set(Integer.parseInt(eventNum));
+                    } catch (NumberFormatException e) { /**/}
+
+                    if (index.get() > -1) {
+                        new Handler().postDelayed(() -> {
+                            ListView listView = findViewById(R.id.mainListView);
+                            int jumpToEvent = index.get() + eventsData.statEventsPrevEventsFound;
+
+                            //Находим в списке (бежим к началу)
+                            ListAdapter adapter = listView.getAdapter();
+                            if (adapter != null && adapter.getCount() > 0) {
+                                boolean isFound = false;
+                                if (index.get() >= adapter.getCount()) index.set(adapter.getCount() - 1);
+                                while (index.get() > 0) {
+                                    if (((String)adapter.getItem(index.get())).contains(eventTitle)) {
+                                        jumpToEvent = index.get();
+                                        isFound = true;
+                                        break;
+                                    }
+                                    index.getAndDecrement();
+                                }
+                                if (!isFound) {
+                                    ToastExpander.showText(this, getString(R.string.msg_jump_to_event_error));
+                                    return;
+                                }
+                            }
+
+                            //if (eventsData.preferences_debug_on)
+                            //    ToastExpander.showText(this, "jump to:\n" + jumpToEvent + " (+" + (listView.getTop() + listView.getPaddingTop()) + "px)");
+
+                            listView.setSelectionFromTop(jumpToEvent, listView.getTop() + listView.getPaddingTop());
+                        }, 200); //https://stackoverflow.com/questions/36426129/recyclerview-scroll-to-position-not-working-every-time
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on)
+                ToastExpander.showText(this, Constants.MAIN_ACTIVITY_ON_START_ERROR + e);
+        }
+    }
+
+
+    @Override
+    public void onStop() {
         if (eventsData != null) eventsData.isUIopen = false;
-        super.onDestroy();
+        super.onStop();
     }
 
     @Override
@@ -1014,7 +1090,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!filterNames.equals(STRING_EMPTY)) return; //чтобы параметра поиска не сбрасывал после просмотра контакта
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             if (eventsData.statLastPausedForOtherActivity > 0 && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < 5000) return; //если "выходили" посмотреть карточку контакта или события на 5 сек
 
             eventsData.getPreferences();
@@ -1069,7 +1145,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 initNotifications();
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.MAIN_ACTIVITY_ON_RESUME_ERROR + e, Toast.LENGTH_LONG).show();
@@ -1112,7 +1187,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //todo: добавить возможность расшарить событие как картинку https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items https://demonuts.com/android-take-screenshot/
 
         try {
-            if (v.getId() != R.id.mainListView) return;
+            if (v == null || v.getId() != R.id.mainListView) return;
 
             ListView l = (ListView) v;
             AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -1267,7 +1342,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .setTitle(selectedEvent[Position_personFullName])
                         .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false, true)))
                         .setMessage(eventInfo.toString())
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
 
                 AlertDialog alertToShow = builder.create();
                 alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0)));
@@ -1389,7 +1464,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsAllEvents = 0;
             statsHiddenEvents = 0;
             statsSilencedEvents = 0;
-            eventsData.preferences_list_prev_events_found = 0;
+            eventsData.statEventsPrevEventsFound = 0;
             statsAllEvents = eventsData.eventList.size();
             dataList = new ArrayList<>();
 
@@ -1537,7 +1612,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             try {
 
                 if (convertView == null) {
-                    LayoutInflater inflater = LayoutInflater.from(eventsData.context);
+                    LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                     convertView = inflater.inflate(R.layout.entry_main, parent, false);
                     holder = createViewHolderFrom(convertView);
                     convertView.setTag(holder);
@@ -1549,7 +1624,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 singleEventArray = event.split(STRING_EOT, -1);
                 if (singleEventArray.length < Position_attrAmount) return convertView;
 
-                person = new Person(eventsData.context, event);
+                person = new Person(eventsData.getContext(), event);
 
                 /*if (tag_Bold_start == null) {
                     //https://stackoverflow.com/questions/5026995/android-get-color-as-string-value
@@ -1578,7 +1653,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     default: //Попозже
                         holder.DayDistanceTextView.setText(eventDistanceText.replace(STRING_BAR, STRING_SPACE));
                         holder.DayDistanceTextView.setTypeface(null, Typeface.NORMAL);
-                        holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(eventsData.context, R.color.dark_gray)));
+                        holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(eventsData.getContext(), R.color.dark_gray)));
 
                 }
 
@@ -1599,11 +1674,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 StringBuilder eventDetails = new StringBuilder();
 
                 if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_JobTitle)) {
-                    final String contactOrganization = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
+                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
                     if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
                 }
                 if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_Organization)) {
-                    final String positionJobTitle = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
+                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(STRING_COMMA_SPACE);
                         eventDetails.append(positionJobTitle);
@@ -1709,7 +1784,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (person.Age > -1 && person.Age % 10 == 0) {
                     holder.CounterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);
                 } else {
-                    holder.CounterTextView.setTextColor(ta.getColor(R.styleable.Theme_eventAgeColor, ContextCompat.getColor(eventsData.context, R.color.medium_gray)));
+                    holder.CounterTextView.setTextColor(ta.getColor(R.styleable.Theme_eventAgeColor, ContextCompat.getColor(eventsData.getContext(), R.color.medium_gray)));
                 }
                 holder.CounterTextView.setText(person.Age_str);
 
@@ -1732,7 +1807,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
 
                     drawableBack.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics),
-                            ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker)));
+                            ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)));
                     drawableBack.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics));
 
                 }
@@ -1742,8 +1817,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
                     drawableBack.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                     drawableBack.setColors(new int[]{
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray)),
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker))
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
                 } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_RightToLeft))) {
@@ -1751,8 +1826,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
                     drawableBack.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                     drawableBack.setColors(new int[] {
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray)),
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker))
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
                 } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_TopToBottom))) {
@@ -1760,9 +1835,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
                     drawableBack.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                     drawableBack.setColors(new int[] {
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray)),
-                            ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_transp)),
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker))
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_transp)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
                 } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_BottomToTop))) {
@@ -1770,9 +1845,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
                     drawableBack.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                     drawableBack.setColors(new int[] {
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray)),
-                            ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_transp)),
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker))
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_transp)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
                 } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_FromCenter))) {
@@ -1780,8 +1855,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.RADIAL_GRADIENT);
                     drawableBack.setGradientRadius((float)parent.getWidth()/2);
                     drawableBack.setColors(new int[] {
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray)),
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker))
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
                 } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_ToCenter))) {
@@ -1789,8 +1864,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setGradientType(GradientDrawable.RADIAL_GRADIENT);
                     drawableBack.setGradientRadius((float)parent.getWidth()/2);
                     drawableBack.setColors(new int[] {
-                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.context, R.color.light_gray_darker)),
-                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.context, R.color.lighter_gray))
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)),
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray))
                     });
 
                 }
@@ -1807,9 +1882,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 holder.PhotoImageView.setImageAlpha(255);
                 holder.EventIconImageView.setImageAlpha(255);
 
-                if (eventsData.preferences_list_prev_events_found > 0 && filterNames.isEmpty()) {
+                if (eventsData.statEventsPrevEventsFound > 0 && filterNames.isEmpty()) {
 
-                    if (position <= eventsData.preferences_list_prev_events_found - 1) {
+                    if (position <= eventsData.statEventsPrevEventsFound - 1) {
                         final float alphaPrev = (float) 0.6;
                         holder.NameTextView.setAlpha(alphaPrev);
                         holder.CounterTextView.setAlpha(alphaPrev);
@@ -1830,11 +1905,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 e.printStackTrace();
                 //todo: исправить IllegalStateException на API28+ https://stackoverflow.com/questions/39689494/unable-to-add-window-android https://geekscompete.blogspot.com/2018/08/unable-to-add-window-token.html
                 //if (Build.VERSION.SDK_INT >= 28) {Toast.cancel();}
-                if (eventsData.preferences_debug_on) Toast.makeText(eventsData.context, Constants.EVENTS_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
+                if (eventsData.preferences_debug_on) Toast.makeText(eventsData.getContext(), Constants.EVENTS_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
             }
 
             if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(eventsData.context);
+                LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                 try {
                     return inflater.inflate(R.layout.entry_main, parent, false);
                 } catch (InflateException e) { /**/ }

@@ -192,11 +192,11 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Организация и должность
 
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Organization)) {
-                    final String contactOrganization = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
+                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
                 }
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_JobTitle)) {
-                    final String positionJobTitle = eventsData.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
+                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (sbDetails.length() > 0) sbDetails.append(STRING_COMMA_SPACE);
                         sbDetails.append(positionJobTitle);
@@ -345,7 +345,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             this.floatDensity = displayMetrics.density;
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -355,7 +355,6 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
-                eventsData.context = context;
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             widgetPref_eventInfo = new ArrayList<>();

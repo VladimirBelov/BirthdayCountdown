@@ -25,12 +25,12 @@ import java.util.List;
 // На 1-7 событий масштабируемый
 public class Widget5x1 extends AppWidgetProvider {
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
 
         try {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -66,6 +66,24 @@ public class Widget5x1 extends AppWidgetProvider {
             }
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
+
+            if (newOptions != null && eventsData.preferences_debug_on) {
+
+                final Resources resources = context.getResources();
+                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+                final float density = displayMetrics.density;
+
+                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                        Widget5x1.class.getName() +
+                                "\n appWidgetId=" + appWidgetId +
+                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
+                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
+                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
+                                "\n widgetPref=" + widgetPref
+                        : "id "+  appWidgetId + ":\n" + widgetPref
+                );
+            }
+
             new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -81,7 +99,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
 
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, appWidgetId, null);
 
         }
     }
@@ -102,63 +120,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         try{
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
-
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
-            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            int eventsCount = getCellsForSize(minWidth);
-
-            //Уточняем количество событий в настройке
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName();
-            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
-            int prefEventsCountIndex = 0;
-            try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e2) {/**/}
-
-            int prefEventsCountDiff = 0;
-            switch (prefEventsCountIndex) {
-                case 1:
-                    prefEventsCountDiff = -2;
-                    break;
-                case 2:
-                    prefEventsCountDiff = -1;
-                    break;
-                case 3:
-                    prefEventsCountDiff = 1;
-                    break;
-                case 4:
-                    prefEventsCountDiff = 2;
-                    break;
-            }
-
-            RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
-
-            if (eventsData.preferences_debug_on) {
-
-                final Resources resources = context.getResources();
-                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                final float density = displayMetrics.density;
-
-                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        this.getClass().getName() +
-                                "\n appWidgetId=" + appWidgetId +
-                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
-                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
-                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref
-                        : "id "+  appWidgetId + ":\n" + widgetPref
-                );
-            }
-
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+            updateAppWidget(context, appWidgetManager, appWidgetId, newOptions);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {
@@ -194,4 +156,3 @@ public class Widget5x1 extends AppWidgetProvider {
     }
 
 }
-

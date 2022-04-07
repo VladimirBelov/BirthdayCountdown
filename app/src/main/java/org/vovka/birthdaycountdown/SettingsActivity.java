@@ -52,6 +52,7 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -68,6 +69,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -111,7 +113,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -315,7 +317,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
 
                     if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key)) == null) {
-                        pref = new Preference(eventsData.context);
+                        pref = new Preference(eventsData.getContext());
                         pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
                         pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
                         pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
@@ -323,7 +325,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
 
                     if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key)) == null) {
-                        pref = new SwitchPreference(eventsData.context);
+                        pref = new SwitchPreference(eventsData.getContext());
                         pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_title));
                         pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_description));
                         pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
@@ -333,7 +335,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
 
                 if (findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key)) == null) {
-                    pref = new Preference(eventsData.context);
+                    pref = new Preference(eventsData.getContext());
                     pref.setTitle(getString(R.string.pref_CustomEvents_LocalFiles_title));
                     pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_description));
                     pref.setKey(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
@@ -389,6 +391,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Уведомления
 
                 testNotify();
+                return true;
 
             } else if (getString(R.string.pref_FAQActivity_key).equals(key)) { //FAQ
 
@@ -416,6 +419,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_IconPack_key).equals(key)) { //Силуэты
 
                 selectIconPack();
+                return true;
 
             } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
 
@@ -482,6 +486,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
 
                 selectRingtone();
+                return true;
+
+            } else if (getString(R.string.pref_Notifications_AlarmHour_key).equals(key)) {
+
+                selectAlarmTime();
                 return true;
 
             }
@@ -1108,6 +1117,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_FILES_ERROR + e, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private  void selectAlarmTime() {
+
+        try {
+
+            final TimePicker timePicker = new TimePicker(this);
+            timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
+            timePicker.setCurrentHour(eventsData.preferences_notifications_alarm_hour);
+            timePicker.setCurrentMinute(eventsData.preferences_notifications_alarm_minute);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.pref_Notifications_AlarmHour_title)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        int hour = Build.VERSION.SDK_INT >= 23 ? timePicker.getHour() : timePicker.getCurrentHour();
+                        int minute = Build.VERSION.SDK_INT >= 23 ? timePicker.getMinute() : timePicker.getCurrentMinute();
+                        eventsData.setPreferences_AlarmTime(hour, minute);
+                        eventsData.setPreferences();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss())
+                    .setView(timePicker)
+                    .show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ALARMTIME_ERROR + e, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

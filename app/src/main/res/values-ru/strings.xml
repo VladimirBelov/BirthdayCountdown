@@ -69,6 +69,7 @@
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
+    <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
 
     <string name="msg_plural_postfix">а</string>
 
@@ -92,6 +93,7 @@
     <string name="msg_age_could_be">"Было бы сейчас: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
+    <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
     <string name="msg_notifications_soon">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
@@ -153,7 +155,7 @@
     <string name="button_question">Задать вопрос</string>
     <string name="button_close">Закрыть</string>
     <string name="button_prefs">Настройки</string>
-    <string name="button_saved_preferences">все сохранённые настройки</string>
+    <string name="button_saved_preferences">[все сохранённые настройки]</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -235,7 +237,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">События контактов с такой меткой будут идентифицированы как дни рождения (через запятую)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила импорта событий календаря в дни рождения</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введите правила распознавания имени контакта из заголовка календарного события (несколько правил разделяются | ). Правило должно содержать тег [name], окруженный другим текстом (опционально):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не найдены!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
@@ -604,18 +606,8 @@
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
     <string name="pref_Notifications_EventTypes_description">Какие события включать в уведомления</string>
 
-    <string name="pref_Notifications_AlarmHour_title">Час уведомления</string>
-    <string name="pref_Notifications_AlarmHour_description">В какой час уведомлять</string>
-
-    <string-array name="pref_Notifications_AlarmHour_entries">
-        <item>В полночь</item>
-        <item>В 7 утра</item>
-        <item>В 8 утра</item>
-        <item>В 9 утра</item>
-        <item>В 10 дня</item>
-        <item>В 11 дня</item>
-        <item>В полдень</item>
-    </string-array>
+    <string name="pref_Notifications_AlarmHour_title">Время уведомления</string>
+    <string name="pref_Notifications_AlarmHour_description">В какое время уведомлять о событиях</string>
 
     <string name="pref_Notifications_Ringtone_title">Звук уведомления</string>
     <string name="pref_Notifications_Ringtone_description">Звук уведомления о предстоящих событиях</string>

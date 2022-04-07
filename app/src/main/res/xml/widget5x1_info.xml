@@ -8,7 +8,6 @@
   -->
 
 <!-- minWidth: 70 * n - 30 -->
-<!-- 21600000 - обновлять 1 раз в 6 часов -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/widget5x1"
     android:initialLayout="@layout/widget5x1"

@@ -60,7 +60,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -265,7 +265,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 } catch (Exception e) { /* */}
             }
             if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(eventsData.context, R.color.pref_Widgets_Color_WidgetBackground_default);
+                colorWidgetBackground = ContextCompat.getColor(eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
             }
             ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             colorWidgetBackgroundPicker.setColor(colorWidgetBackground);

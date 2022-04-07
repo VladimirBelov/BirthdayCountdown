@@ -24,7 +24,7 @@ public class Widget4x1 extends AppWidgetProvider {
         try {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
@@ -46,7 +46,9 @@ public class Widget4x1 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for (int appWidgetId : appWidgetIds) {
+
             updateAppWidget(context, appWidgetManager, appWidgetId);
+
         }
     }
 
@@ -66,19 +68,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
-
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
-            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget4x1bc);
-
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, getCellsForSize(minWidth), minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {

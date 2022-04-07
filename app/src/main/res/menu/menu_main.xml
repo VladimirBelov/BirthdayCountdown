@@ -13,7 +13,6 @@
 
     <!-- 0 MENU_MAIN_SEARCH -->
     <item
-        android:id="@+id/menu_search"
         android:title="@string/menu_search"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always|collapseActionView"
@@ -23,7 +22,6 @@
 
     <!-- 1 MENU_MAIN_ADD_EVENT -->
     <item
-        android:id="@+id/menu_add_event"
         android:title="@string/menu_add_event"
         app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_add"

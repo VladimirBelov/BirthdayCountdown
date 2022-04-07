@@ -39,7 +39,6 @@
             android:layout_above="@id/widget_hint"
             android:layout_alignParentTop="true">
             <LinearLayout
-                android:id="@+id/layout_prefs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -58,7 +57,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/captionEventTypes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_event_types_title"
@@ -74,7 +72,6 @@
                     android:paddingEnd="8dp" />
 
                 <TextView
-                    android:id="@+id/hintEventTypes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_event_types_description"
@@ -175,7 +172,6 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
-                    android:id="@+id/dividerEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
@@ -183,7 +179,6 @@
                     android:background="?attr/listDividerColor" /> <!--Divider-->
 
                 <TextView
-                    android:id="@+id/captionEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_Widgets_EventInfo_title"
@@ -199,14 +194,12 @@
                     android:paddingEnd="8dp" />
 
                 <TextView
-                    android:id="@+id/hintEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_Widgets_EventInfo_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
-                    android:id="@+id/dividerBackColor"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"

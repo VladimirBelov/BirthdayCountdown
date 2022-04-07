@@ -24,11 +24,11 @@ public class QuizActivity extends Activity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = getApplicationContext();
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            if (eventsData.getEvents(eventsData.context)) {
+            if (eventsData.getEvents(null)) {
                 eventsData.computeDates();
                 eventsData.quizCheckAndGo(null, null);
             }

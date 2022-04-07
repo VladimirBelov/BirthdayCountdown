@@ -38,7 +38,7 @@
     <string name="menu_context_hide_event">Ocultar evento</string>
     <string name="menu_context_unhide_event">Mostrar evento de retorno</string>
     <string name="menu_context_remind">Recordar…</string>
-    <string name="menu_context_remind_1h">Después de 1 hora</string>
+    <string name="menu_context_remind_1h">Dentro de 1 hora</string>
     <string name="menu_context_remind_morning">Mañana</string>
     <string name="menu_context_anniversary_list">Aniversario de bodas</string>
     <string name="menu_context_silent_event">No notificar</string>
@@ -55,7 +55,7 @@
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
     <string name="msg_file_access_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
-    <string name="msg_before_event_prefix">"después de "</string>
+    <string name="msg_before_event_prefix">"dentro de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_today">Hoy</string>
@@ -69,6 +69,7 @@
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
+    <string name="msg_jump_to_event_error">¡Evento no encontrado! Habilite más tipos de eventos en la configuración de la aplicación</string>
 
     <string name="msg_plural_postfix">es</string>
 
@@ -92,6 +93,7 @@
     <string name="msg_age_could_be">"Sería ahora: "</string>
     <string name="msg_label_search">Ingrese parte del nombre completo, tipo de contacto, lugar de trabajo, puesto, fechas (se pueden ingresar múltiples valores separados por comas, se admite regexp):</string>
     <string name="msg_hint_search">Consulta de busqueda</string>
+    <string name="msg_hint_global_search">Buscar eventos</string>
     <string name="msg_notifications_soon_no_events">No hay eventos para los días elegidos</string>
     <string name="msg_notifications_soon">"Eventos - "</string>
     <string name="msg_notifications_disabled">Notificaciones desactivadas</string>
@@ -153,7 +155,7 @@
     <string name="button_question">Hacer una pregunta</string>
     <string name="button_close">Cerrar</string>
     <string name="button_prefs">Preferencias</string>
-    <string name="button_saved_preferences">todas las preferencias guardadas</string>
+    <string name="button_saved_preferences">[todas las preferencias guardadas]</string>
 
     <string name="events_scope_not_hidden">Todo no oculto (%1$d)</string>
     <string name="events_scope_all">Todas (%1$d)</string>
@@ -604,18 +606,8 @@
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_description">Qué eventos incluir en las notificaciones</string>
 
-    <string name="pref_Notifications_AlarmHour_title">Hora de notificación</string>
-    <string name="pref_Notifications_AlarmHour_description">A que hora notificar</string>
-
-    <string-array name="pref_Notifications_AlarmHour_entries">
-        <item>A la medianoche</item>
-        <item>A las 7 am</item>
-        <item>A las 8 am</item>
-        <item>A las 9 am</item>
-        <item>A los 10 días</item>
-        <item>A los 11 días</item>
-        <item>Al mediodía</item>
-    </string-array>
+    <string name="pref_Notifications_AlarmHour_title">Tiempo de notificación</string>
+    <string name="pref_Notifications_AlarmHour_description">Cuándo notificar sobre eventos</string>
 
     <string name="pref_Notifications_Ringtone_title">Sonido de notificación</string>
     <string name="pref_Notifications_Ringtone_description">Sonido de notificación para próximos eventos</string>
