@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 22.11.2021, 22:34
+ *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 14.02.2022, 20:09
  *
  */
 
@@ -33,7 +33,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
             final String action = intent.getAction();
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.context == null) eventsData.context = context;
+            if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.setLocale(true);
 
             //Получаем входные параметры
@@ -48,7 +48,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 notificationData = extras.getString(EXTRA_NOTIFICATION_DATA, STRING_EMPTY);
 
                 if (!notificationData.equals(STRING_EMPTY)) {
-                    singleEventArray = notificationData.split(Constants.STRING_2HASH);
+                    singleEventArray = notificationData.split(Constants.STRING_EOT, -1);
                     eventKey = eventsData.getEventKey(singleEventArray);
                 }
             }

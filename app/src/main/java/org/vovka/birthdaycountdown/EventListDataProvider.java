@@ -19,10 +19,12 @@ import static org.vovka.birthdaycountdown.Constants.STRING_0;
 import static org.vovka.birthdaycountdown.Constants.STRING_1;
 import static org.vovka.birthdaycountdown.Constants.STRING_2;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
+import static org.vovka.birthdaycountdown.Constants.STRING_4;
 import static org.vovka.birthdaycountdown.Constants.STRING_5;
 import static org.vovka.birthdaycountdown.Constants.STRING_6;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
+import static org.vovka.birthdaycountdown.Constants.STRING_9;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
@@ -30,6 +32,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
+import static org.vovka.birthdaycountdown.Constants.TIME_FORCE_UPDATE;
 import static org.vovka.birthdaycountdown.Constants.Type_Anniversary;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_TINY;
 import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_caption;
@@ -106,13 +109,14 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
                 switch (widgetPref.get(1)) {
                     case STRING_1: fontMagnify = fontMagnify * 0.5; break;
-                    case STRING_2: fontMagnify = fontMagnify * 0.75; break;
-                    case STRING_3: fontMagnify = fontMagnify * 0.85; break;
-                    case STRING_5: fontMagnify = fontMagnify * 1.2; break;
-                    case STRING_6: fontMagnify = fontMagnify * 1.5; break;
-                    case STRING_7: fontMagnify = fontMagnify * 1.75; break;
-                    case STRING_8: fontMagnify = fontMagnify * 2.0;  break;
-                    default: //STRING_4: fontMagnify = fontMagnify * 1;
+                    case STRING_2: fontMagnify = fontMagnify * 0.65; break;
+                    case STRING_3: fontMagnify = fontMagnify * 0.75; break;
+                    case STRING_4: fontMagnify = fontMagnify * 0.85; break;
+                    case STRING_5: fontMagnify = fontMagnify * 1; break;
+                    case STRING_6: fontMagnify = fontMagnify * 1.2; break;
+                    case STRING_7: fontMagnify = fontMagnify * 1.5; break;
+                    case STRING_8: fontMagnify = fontMagnify * 1.75; break;
+                    case STRING_9: fontMagnify = fontMagnify * 2.0;  break;
                 }
             }
             views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
@@ -353,7 +357,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
-            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {

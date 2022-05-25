@@ -77,6 +77,7 @@
     <string name="msg_after_year_prefix_2_3_4">" años"</string>
     <string name="msg_after_year_prefix_1_">" años"</string>
     <string name="msg_after_year_prefix_4_21">" años"</string>
+    <string name="msg_after_year_bc">" aC"</string>
 
     <string name="msg_after_month_prefix_1">" mes"</string>
     <string name="msg_after_month_prefix_2_3_4">" meses"</string>
@@ -333,6 +334,17 @@
         <item>Tarjetas</item>
     </string-array>
 
+    <string name="pref_List_PhotoStyle_title">Estilo de fotos</string>
+    <string name="pref_List_PhotoStyle_description">Estilo de fotos de contactos en la lista de eventos</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Original</item>
+        <item>Ligeramente redondeado</item>
+        <item>Medio redondeado</item>
+        <item>Fuertemente redondeado</item>
+        <item>Círculo</item>
+    </string-array>
+
     <string name="pref_List_Filling_title">Tipo de relleno</string>
     <string name="pref_List_Filling_description">Establecer el tipo de relleno para el marcador de posición del evento (degradado)</string>
 
@@ -544,6 +556,7 @@
     <string-array name="widget_config_font">
         <item>Automáticamente</item>
         <item>x0.5</item>
+        <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
@@ -551,6 +564,17 @@
         <item>x1.5</item>
         <item>x1.75</item>
         <item>x2.0</item>
+    </string-array>
+
+    <string name="widget_config_photostyle_label">Estilo de fotos</string>
+    <string name="widget_config_photostyle_description">Estilo de fotos de contacto</string>
+    <string name="widget_config_photostyle_with_align_description">Estilo de fotos de contactos. Alineación: original: llenar toda la celda, redondeado: alineado verticalmente hacia arriba, círculo: centrado verticalmente</string>
+    <string-array name="widget_config_photostyle">
+        <item>Original</item>
+        <item>Ligeramente redondeado</item>
+        <item>Medio redondeado</item>
+        <item>Fuertemente redondeado</item>
+        <item>Círculo</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Numero de eventos</string>

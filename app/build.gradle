@@ -42,8 +42,8 @@ android {
         }
     }
 
-    compileSdkVersion 31
-    buildToolsVersion '33.0.0 rc2'
+    compileSdkVersion 32
+    buildToolsVersion '33.0.0 rc4'
     //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
     def versionPropsFile = rootProject.file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -62,11 +62,10 @@ android {
             minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
             //https://stackoverflow.com/questions/26694108/what-is-the-difference-between-compilesdkversion-and-targetsdkversion
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
-            //noinspection OldTargetApi
-            targetSdkVersion 31
+            targetSdkVersion 32
             //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.6.9"
+            versionName "1.7.0"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
@@ -134,5 +133,4 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
-
 }

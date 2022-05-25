@@ -27,6 +27,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_ID;
 import static org.vovka.birthdaycountdown.Constants.STRING_STORAGE_CONTACTS;
+import static org.vovka.birthdaycountdown.Constants.TIME_FORCE_UPDATE;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.Type_CalendarEvent;
@@ -39,6 +40,8 @@ import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_SILENCED;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_ZODIAC;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_ICON_ZODIAC_YEAR;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_IMAGE_VIEW;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_IMAGE_VIEW_CENTERED;
+import static org.vovka.birthdaycountdown.Constants.WIDGET_IMAGE_VIEW_START;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_BIG;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_SMALL;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_TINY;
@@ -133,7 +136,7 @@ class WidgetUpdater {
         views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
 
         //Получаем данные
-        if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
+        if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
             if (eventsData.getContext() == null) eventsData.setContext(context);
             if (eventsData.getEvents(context)) eventsData.computeDates();
         }
@@ -182,24 +185,27 @@ class WidgetUpdater {
                         fontMagnify = cells * 0.5;
                         break;
                     case STRING_2:
-                        fontMagnify = cells * 0.75;
+                        fontMagnify = cells * 0.65;
                         break;
                     case STRING_3:
-                        fontMagnify = cells * 0.85;
+                        fontMagnify = cells * 0.75;
                         break;
                     case STRING_4:
-                        fontMagnify = cells * 1.0;
+                        fontMagnify = cells * 0.85;
                         break;
                     case STRING_5:
-                        fontMagnify = cells * 1.2;
+                        fontMagnify = cells * 1.0;
                         break;
                     case STRING_6:
-                        fontMagnify = cells * 1.5;
+                        fontMagnify = cells * 1.2;
                         break;
                     case STRING_7:
-                        fontMagnify = cells * 1.75;
+                        fontMagnify = cells * 1.5;
                         break;
                     case STRING_8:
+                        fontMagnify = cells * 1.75;
+                        break;
+                    case STRING_9:
                         fontMagnify = cells * 2.0;
                         break;
                 }
@@ -288,7 +294,6 @@ class WidgetUpdater {
             if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent)) ||
                     eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
-                isVisibleEvent = false;
             } else if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
                 List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split(REGEX_PLUS));
                 if (eventsPrefList.size() > 0) {
@@ -523,24 +528,58 @@ class WidgetUpdater {
             }
 
             //Фото
-            // todo: сделать закругления углов фото https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
-            //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
-            int id_widget_Photo = resources.getIdentifier(WIDGET_IMAGE_VIEW + eventsDisplayed, STRING_ID, packageName);
 
+            int roundingFactor = 0;
+            if (widgetPref != null && widgetPref.size() > 6) {
+                switch (widgetPref.get(6)) {
+                    case STRING_1: roundingFactor = 2; break;
+                    case STRING_2: roundingFactor = 3; break;
+                    case STRING_3: roundingFactor = 4; break;
+                    case STRING_4: roundingFactor = 9; break;
+                }
+            }
+
+            //eventsData.temp_int = roundingFactor;
             Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), false, true);
+                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), true, true, roundingFactor);
             if (photo != null) {
+
+                //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
+                //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
+                int id_widget_Photo = resources.getIdentifier(WIDGET_IMAGE_VIEW + eventsDisplayed, STRING_ID, packageName);
+                int id_widget_Photo_Centered = resources.getIdentifier(WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, STRING_ID, packageName);
+                int id_widget_Photo_Start = resources.getIdentifier(WIDGET_IMAGE_VIEW_START + eventsDisplayed, STRING_ID, packageName);
+                int id_Photo;
+                if (roundingFactor < 1) {
+                    views.setViewVisibility(id_widget_Photo, View.VISIBLE);
+                    views.setViewVisibility(id_widget_Photo_Centered, View.GONE);
+                    views.setViewVisibility(id_widget_Photo_Start, View.GONE);
+                    id_Photo = id_widget_Photo;
+                } else if (roundingFactor > 8) {
+                    views.setViewVisibility(id_widget_Photo, View.GONE);
+                    views.setViewVisibility(id_widget_Photo_Centered, View.VISIBLE);
+                    views.setViewVisibility(id_widget_Photo_Start, View.GONE);
+                    id_Photo = id_widget_Photo_Centered;
+                } else {
+                    views.setViewVisibility(id_widget_Photo, View.GONE);
+                    views.setViewVisibility(id_widget_Photo_Centered, View.GONE);
+                    views.setViewVisibility(id_widget_Photo_Start, View.VISIBLE);
+                    id_Photo = id_widget_Photo_Start;
+                }
+
                 //необходимо уменьшать, потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
                 final int dstWidth = eventsToShow > 1 ? (4 * width / eventsToShow) : (2 * width);
                 final int dstHeight = eventsToShow > 1 ? (4 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow) : (2 * photo.getHeight() * width / photo.getWidth());
                 if (dstHeight > 0 && dstWidth > 0) {
                     Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
-                    views.setImageViewBitmap(id_widget_Photo, photo_small);
+                    views.setImageViewBitmap(id_Photo, photo_small);
                 } else {
-                    Bitmap photo_icon = eventsData.getContactPhoto(event, false, false, true);
-                    views.setImageViewBitmap(id_widget_Photo, photo_icon);
+                    Bitmap photo_icon = eventsData.getContactPhoto(event, false, true, true, roundingFactor);
+                    views.setImageViewBitmap(id_Photo, photo_icon);
+
                 }
                 //photo.recycle(); //https://stackoverflow.com/questions/38784302/cant-parcel-a-recycled-bitmap
+
             }
 
             //Иконка события

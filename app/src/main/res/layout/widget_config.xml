@@ -56,6 +56,8 @@
                     android:textColor="@color/dark_red"
                     android:textStyle="bold" />
 
+                <!---->
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,13 +79,15 @@
                     android:text="@string/widget_config_event_types_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!---->
+
                 <View
                     android:id="@+id/dividerEventShift"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" /> <!--Divider-->
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:id="@+id/captionEventShift"
@@ -100,7 +104,6 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/widget_config_numbers"
                     android:prompt="@string/widget_config_index_label" />
-                <!--            android:popupBackground="?attr/backgroundColor"-->
 
                 <TextView
                     android:id="@+id/hintEventShift"
@@ -109,13 +112,15 @@
                     android:text="@string/widget_config_index_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!---->
+
                 <View
                     android:id="@+id/dividerFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" /> <!--Divider-->
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:id="@+id/captionFontMagnify"
@@ -140,13 +145,48 @@
                     android:text="@string/widget_config_font_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!---->
+
+                <View
+                    android:id="@+id/dividerPhotoStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionPhotoStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_photostyle_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
+
+                <Spinner
+                    android:id="@+id/spinnerPhotoStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/widget_config_photostyle"
+                    android:prompt="@string/widget_config_photostyle_label" />
+
+                <TextView
+                    android:id="@+id/hintPhotoStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_photostyle_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <!---->
+
                 <View
                     android:id="@+id/dividerEventsCount"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" /> <!--Divider-->
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:id="@+id/captionEventsCount"
@@ -171,12 +211,14 @@
                     android:text="@string/widget_config_events_count_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!---->
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" /> <!--Divider-->
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -199,12 +241,14 @@
                     android:text="@string/pref_Widgets_EventInfo_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!---->
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" /> <!--Divider-->
+                    android:background="?attr/listDividerColor" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWidgetBackgroundColor"

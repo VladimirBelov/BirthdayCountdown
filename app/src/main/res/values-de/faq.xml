@@ -60,10 +60,10 @@
                 <item> </item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
                 <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
-                <li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt, klicken Sie darauf öffnet sich eine Kontaktkarte im Adressbuch
-                <li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt, klicken Sie darauf öffnet sich eine Kalenderereigniskarte
+                <li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt
+                <li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt
                 </ol>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert. Wenn Sie auf das Ereignis klicken, wird die Kalenderereigniskarte geöffnet.]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert.]]></item>
                 <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
                 <li>Erstellen Sie einen neuen Kalender in ihrer Standardkalender-App oder wählen Sie beispielsweise einen Kalender für Feiertage
                 <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse. Die Ereignisse müssen dabei ganztägig sein
@@ -80,7 +80,7 @@
                 </ul>]]></item>
                 <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME NACHNAME</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>EREIGNISTITEL</b>&gt; [WEBLINK]<br><br>]]></item>
-                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>]]></item>
+                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>]]></item>
                 <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
                 <li>Laden Sie Dateien mit Ereignissen herunter oder erstellen Sie diese
                 <li>Wählen Sie diese Dateien aus: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Lokale Dateien-> WÄHLEN

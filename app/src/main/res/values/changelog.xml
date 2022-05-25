@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.0</item>
+        <item>Added contacts photo style parameters: oval, circle</item>
+        <item>File events now support Before the Common Era dates (more details in the \"How to\" guide)</item>
+        <item>Added support for highly recurring calendar events (once a month, once a week, or more often)</item>
+        <item>If age is less than 1 year, days and months are displayed</item>
+        <item>Large events number processing optimizations (> 5000)</item>
+
         <item>#1.6.9</item>
         <item>New event details have been added to list widget constructor: new line (3pcs), days before event, day of week</item>
         <item>Notification time can be set up to the minute</item>

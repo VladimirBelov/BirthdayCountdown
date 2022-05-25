@@ -48,6 +48,7 @@ final class Constants {
     static final String STRING_PERIOD = ".";
     static final String STRING_PIPE = "\\|";
     static final String STRING_SPACE = " ";
+    static final String STRING_BC = "BC";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -56,7 +57,9 @@ final class Constants {
 
     //https://en.wikipedia.org/wiki/Date_format_by_country
     static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
+    static final String DATE_DD_MM_Y = "dd.MM.y";
     static final String DATE_DD_MM_YYYY = "dd.MM.yyyy";
+    static final String DATE_DD_MM_YYYY_G = "dd.MM.yyyy G";
     static final String DATE_MM_DD_YYYY = "MM.dd.yyyy";
     static final String DATE_MM_DD = "MM.dd";
     static final String DATE_DD_MM = "dd.MM";
@@ -67,10 +70,13 @@ final class Constants {
     static final String DATE_RUS = "dd MMMMM yyyy г.";
     static final String DATE_US = "MMM dd, yyyy";
     static final String DATE_UK = "dd/MM/yyyy";
+    static final String DATE_UK_G = "dd/MM/yyyy G";
     static final String DATE_UK_NO_YEAR = "dd/MM";
     static final String DATE_IND = "MM/dd/yyyy";
+    static final String DATE_IND_G = "MM/dd/yyyy G";
     static final String DATE_IND_NO_YEAR = "MM/dd";
     static final String DATE_JAVA = "yyyy-MM-dd";
+    static final String DATE_JAVA_G = "yyyy-MM-dd G";
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
 
     static final String STRING_ID = "id";
@@ -87,6 +93,8 @@ final class Constants {
     static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
     static final String WIDGET_EVENT_INFO = "eventInfo";
     static final String WIDGET_IMAGE_VIEW = "imageView";
+    static final String WIDGET_IMAGE_VIEW_CENTERED = "imageViewCentered";
+    static final String WIDGET_IMAGE_VIEW_START = "imageViewStart";
     static final String WIDGET_TEXT_VIEW_AGE = "textViewAge";
     static final String WIDGET_ICON_EVENT_TYPE = "iconEventType";
     static final String WIDGET_ICON_ZODIAC = "iconZodiac";
@@ -196,11 +204,12 @@ final class Constants {
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
     static final int WIDGET_EVENTS_MAX = 7;
-    static final int SPEED_LOAD_CRITICAL = 700;
+    static final int TIME_SPEED_LOAD_CRITICAL = 700;
+    static final int TIME_SPEED_LOAD_OVERTIME = 3000;
+    static final int TIME_FORCE_UPDATE = 5000;
 
     //Отладочные сообщения
 
-    static final String MSG_YEAR_MUST_BE_GREATER_0 = "Year must be > 0.";
     static final String MSG_NOTIFICATIONS_WERE_ENABLED = "Notifications were enabled\n";
     static final String MSG_NOTIFICATIONS_WERE_DISABLED = "Notifications were disabled\n";
     static final String MSG_WIDGET_PREFS_REMOVED = "Preferences for widget #%s has been removed";
@@ -211,6 +220,7 @@ final class Constants {
     static final String MSG_SENT_WIDGETS_UPDATE_REQUEST = "Sent widgets update request";
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
     static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
+    static final String MSG_NO_ACTION = "No action for event";
 
     static final String RULE_TAG_NAME = "[name]";
     //static final String RULE_TAG_ALIAS = "[alias]";
@@ -221,20 +231,22 @@ final class Constants {
     static final String ACTION_RECEIVER_ON_RECEIVE_ERROR = "ActionReceiver->onReceive error:\n";
     static final String WIDGETUPDATE_RECEIVER_ON_RECEIVE_ERROR = "WidgetUpdaterReceiver->onReceive error:\n";
 
-    static final String CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR = "ContactsEvents->checkIsHiddenEvent error:\n";
+    static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
+
+    /*static final String CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR = "ContactsEvents->checkIsHiddenEvent error:\n";
     static final String CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR = "ContactsEvents->checkIsSilentEvent error:\n";
     static final String CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR = "ContactsEvents->checkNoBatteryOptimization error:\n";
     static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
     static final String CONTACTS_EVENTS_COMPUTE_DATE_FOR_EVENT_ERROR = "ContactsEvents->computeDateForEvent error:\n";
     static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
+
     static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";
     static final String CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR = "ContactsEvents->readFileToString error:\n";
     static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
     static final String CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR = "ContactsEvents->getFileEvents error:\n";
     static final String CONTACTS_EVENTS_GET_CALENDARS_ERROR = "ContactsEvents->getCalendars error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
+    //static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR = "ContactsEvents->getContactData error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR = "ContactsEvents->getContactDataMulti error:\n";
     static final String CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR = "ContactsEvents->getContactFirstName error:\n";
@@ -280,7 +292,7 @@ final class Constants {
     static final String CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR = "ContactsEvents->fillEmptyUserData error:\n";
     static final String CONTACT_EVENTS_GET_ACTION_INTENT_ERROR = "ContactsEvents->getViewActionIntent error:\n";
     static final String CONTACT_EVENTS_INIT_ICONPACK_ERROR = "ContactsEvents->initIconPack error:\n";
-
+*/
     static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
 
     static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
@@ -296,24 +308,25 @@ final class Constants {
     static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "AccountsListAdapter->getView error:\n";
     static final String GET_ICONPACK_LIST_ADAPTER_GET_VIEW_ERROR = "IconPackListAdapter->getView error:\n";
 
-    static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
-    static final String MAIN_ACTIVITY_PREPARE_LIST_ERROR = "MainActivity->prepareList error:\n";
-    static final String MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR = "MainActivity->drawList->onItemClick error:\n";
-    static final String MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR = "MainActivity->initNotifications error:\n";
-    static final String MAIN_ACTIVITY_ON_CONTEXT_ITEM_SELECTED_ERROR = "MainActivity->onContextItemSelected error:\n";
-    static final String MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR = "MainActivity->onCreateContextMenu error:\n";
-    static final String MAIN_ACTIVITY_ON_CREATE_ERROR = "MainActivity->onCreate error:\n";
-    static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
-    static final String MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "MainActivity->onActivityResult error:\n";
-    static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
-    static final String MAIN_ACTIVITY_ON_START_ERROR = "MainActivity->onStart error:\n";
-    static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
-    static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
-    static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
-    static final String MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR = "MainActivity->checkNewVersion error:\n";
-    static final String MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR = "MainActivity->setLastRunVersion error:\n";
+    //static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
+    //static final String MAIN_ACTIVITY_PREPARE_LIST_ERROR = "MainActivity->prepareList error:\n";
+    //static final String MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR = "MainActivity->drawList->onItemClick error:\n";
+    //static final String MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR = "MainActivity->initNotifications error:\n";
+    //static final String MAIN_ACTIVITY_ON_CONTEXT_ITEM_SELECTED_ERROR = "MainActivity->onContextItemSelected error:\n";
+    //static final String MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR = "MainActivity->onCreateContextMenu error:\n";
+    //static final String MAIN_ACTIVITY_ON_CREATE_ERROR = "MainActivity->onCreate error:\n";
+    //static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
+    //static final String MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "MainActivity->onActivityResult error:\n";
+    //static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
+    //static final String MAIN_ACTIVITY_ON_START_ERROR = "MainActivity->onStart error:\n";
+    //static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
+    //static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
+    //static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
+    //static final String MAIN_ACTIVITY_UPDATE_LIST_ERROR = "MainActivity->updateList error:\n";
+    //static final String MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR = "MainActivity->checkNewVersion error:\n";
+    //static final String MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR = "MainActivity->setLastRunVersion error:\n";
     //static final String MAIN_ACTIVITY_CHECK_BATTERY_OPTIMIZATION_ERROR = "MainActivity->checkBatteryOptimization error:\n";
-    static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
+    //static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
 
     static final String EVENTS_ADAPTER_GET_VIEW_ERROR = "EventsAdapter->getView error:\n";
 
@@ -368,10 +381,10 @@ final class Constants {
     static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
-    protected static final String WIDGET_TYPE_LIST = ".WidgetList";
-    protected static final String WIDGET_TYPE_PHOTO_LIST = ".WidgetPhotoList";
-    protected static final String WIDGET_TYPE_5X1 = ".Widget5x1";
-    protected static final String WIDGET_TYPE_4X1 = ".Widget4x1";
+    static final String WIDGET_TYPE_LIST = ".WidgetList";
+    static final String WIDGET_TYPE_PHOTO_LIST = ".WidgetPhotoList";
+    static final String WIDGET_TYPE_5X1 = ".Widget5x1";
+    static final String WIDGET_TYPE_4X1 = ".Widget4x1";
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String FilePrefix_Media = "com.android.providers.media.documents";
@@ -379,8 +392,8 @@ final class Constants {
     static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
     static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
 
-    protected static final String STRING_HTTP = "http://";
-    protected static final String STRING_HTTPS = "https://";
-    protected static final String RES_PACKAGE_ANDROID = "android";
+    static final String STRING_HTTP = "http://";
+    static final String STRING_HTTPS = "https://";
+    static final String RES_PACKAGE_ANDROID = "android";
 
 }

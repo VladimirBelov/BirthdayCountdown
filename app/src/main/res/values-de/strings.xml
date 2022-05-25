@@ -77,6 +77,7 @@
     <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
     <string name="msg_after_year_prefix_1_">" Jahre"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_year_prefix_4_21">" Jahre"</string>
+    <string name="msg_after_year_bc">" v"</string>
 
     <string name="msg_after_month_prefix_1">" Monat"</string>
     <string name="msg_after_month_prefix_2_3_4">" Monate"</string>
@@ -333,6 +334,17 @@
         <item>Karten</item>
     </string-array>
 
+    <string name="pref_List_PhotoStyle_title">Fotostil</string>
+    <string name="pref_List_PhotoStyle_description">Stil von Kontaktfotos in der Ereignisliste</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Original</item>
+        <item>Leicht abgerundet</item>
+        <item>Mittelrund</item>
+        <item>Stark abgerundet</item>
+        <item>Kreis</item>
+    </string-array>
+
     <string name="pref_List_Filling_title">Füllart</string>
     <string name="pref_List_Filling_description">Fülltyp für Ereignisplatzhalter festlegen (Farbverlauf)</string>
 
@@ -544,6 +556,7 @@
     <string-array name="widget_config_font">
         <item>Auto</item>
         <item>x0.5</item>
+        <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
@@ -551,6 +564,17 @@
         <item>x1.5</item>
         <item>x1.75</item>
         <item>x2.0</item>
+    </string-array>
+
+    <string name="widget_config_photostyle_label">Fotostil</string>
+    <string name="widget_config_photostyle_description">Kontakt fotos stil</string>
+    <string name="widget_config_photostyle_with_align_description">Kontakte Fotos Stil. Ausrichtung: Original - ganze Zelle ausfüllen, gerundet - vertikal nach oben ausgerichtet, Kreis - vertikal zentriert</string>
+    <string-array name="widget_config_photostyle">
+        <item>Original</item>
+        <item>Leicht abgerundet</item>
+        <item>Mittelrund</item>
+        <item>Stark abgerundet</item>
+        <item>Kreis</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Benutzerdefinierte Anzahl der Ereignisse</string>

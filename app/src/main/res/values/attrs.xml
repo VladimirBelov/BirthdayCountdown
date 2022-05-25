@@ -27,6 +27,7 @@
         <attr name="gradientEndColor" format="color"/>
         <attr name="gradientCenterColor" format="color"/>
         <attr name="borderCardColor" format="color"/>
+        <attr name="colorPrimary" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="ColorPreference">

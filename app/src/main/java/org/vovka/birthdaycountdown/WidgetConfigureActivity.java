@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -114,7 +115,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             int prefStartingIndex = 1;
             try {
                 if (widgetPref.size() > 0) prefStartingIndex = Integer.parseInt(widgetPref.get(0));
-            } catch (Exception e1) {/**/}
+            } catch (Exception e) {/**/}
 
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             spinnerIndex.setSelection(prefStartingIndex - 1);
@@ -123,16 +124,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             int prefMagnifyIndex = 0;
             try {
                 if (widgetPref.size() > 1) prefMagnifyIndex = Integer.parseInt(widgetPref.get(1));
-            } catch (Exception e2) {/**/}
+            } catch (Exception e) {/**/}
 
             Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
             spinnerMagnify.setSelection(prefMagnifyIndex);
+
+            //Заполняем стиль фото
+            int prefPhotoStyle = 0;
+            try {
+                if (widgetPref.size() > 6) prefPhotoStyle = Integer.parseInt(widgetPref.get(6));
+            } catch (Exception e) {/**/}
+
+            Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
+            spinnerPhotoStyle.setSelection(prefPhotoStyle);
 
             //Заполняем количество событий
             int prefEventsCountIndex = 0;
             try {
                 if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e2) {/**/}
+            } catch (Exception e) {/**/}
 
             Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             spinnerEventsCount.setSelection(prefEventsCountIndex);
@@ -152,7 +162,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         if (eventTypesIDs.contains(item)) listEventTypes.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
                     }
                 }
-            } catch (Exception e2) {/**/}
+            } catch (Exception e) {/**/}
 
             spinnerEventTypes.setZeroSelectedTitle(getString(R.string.widget_config_event_types_empty));
             spinnerEventTypes.setItems(eventTypesValues);
@@ -232,7 +242,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         if (eventInfoIDs.contains(item)) eventInfoSelections.add(eventInfoValues.get(eventInfoIDs.indexOf(item)));
                     }
                 }
-            } catch (Exception e2) {/**/}
+            } catch (Exception e) {/**/}
 
             if (widgetType.equals(WIDGET_TYPE_LIST)) {
                 spinnerEventInfo.setSortable(true);
@@ -328,6 +338,21 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
                 findViewById(R.id.hintEventShift).setVisibility(View.GONE);
 
+            } else {
+
+                TextView tv = findViewById(R.id.hintPhotoStyle);
+                if (tv != null) tv.setText(R.string.widget_config_photostyle_with_align_description);
+
+            }
+
+            if (widgetType.equals(WIDGET_TYPE_LIST)) {
+
+                //Скрываем стиль фото
+                findViewById(R.id.dividerPhotoStyle).setVisibility(View.GONE);
+                findViewById(R.id.captionPhotoStyle).setVisibility(View.GONE);
+                findViewById(R.id.spinnerPhotoStyle).setVisibility(View.GONE);
+                findViewById(R.id.hintPhotoStyle).setVisibility(View.GONE);
+
             }
 
             if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(WIDGET_TYPE_LIST) || widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
@@ -351,6 +376,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
             Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
+            Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
             int selectedItemPosition = spinnerIndex.getSelectedItemPosition();
 
             StringBuilder eventTypes = new StringBuilder();
@@ -394,6 +420,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .concat(eventInfo.toString()) //Детали события (через +)
                     .concat(Constants.STRING_COMMA)
                     .concat(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : STRING_EMPTY) //Цвет подложки
+                    .concat(Constants.STRING_COMMA)
+                    .concat(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())) //Стиль фото
             );
 
             Intent intent = new Intent();

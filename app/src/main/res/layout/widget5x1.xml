@@ -24,7 +24,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"/>
 
     <LinearLayout
         android:id="@+id/events"
@@ -50,7 +50,27 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView0"
@@ -66,14 +86,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav0"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced0"
@@ -86,7 +106,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac0"
@@ -98,7 +118,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear0"
@@ -110,7 +130,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -133,7 +153,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewCentered0"
@@ -153,7 +173,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2nd0"
@@ -173,7 +193,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2ndCentered0"
@@ -192,7 +212,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewDistance0"
@@ -212,7 +232,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
             <TextView
                 android:id="@+id/textViewAge0"
@@ -231,7 +251,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -251,7 +271,27 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView1"
@@ -268,14 +308,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav1"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced1"
@@ -288,7 +328,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac1"
@@ -301,7 +341,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear1"
@@ -313,7 +353,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -335,7 +375,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewCentered1"
@@ -354,7 +394,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2nd1"
@@ -373,7 +413,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2ndCentered1"
@@ -391,7 +431,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewDistance1"
@@ -411,7 +451,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
             <TextView
                 android:id="@+id/textViewAge1"
@@ -430,7 +470,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -450,7 +490,27 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView2"
@@ -466,14 +526,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav2"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced2"
@@ -486,7 +546,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac2"
@@ -499,7 +559,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear2"
@@ -511,7 +571,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -533,7 +593,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewCentered2"
@@ -552,7 +612,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2nd2"
@@ -571,7 +631,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2ndCentered2"
@@ -589,7 +649,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewDistance2"
@@ -609,7 +669,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
             <TextView
                 android:id="@+id/textViewAge2"
@@ -628,7 +688,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -648,7 +708,27 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView3"
@@ -664,14 +744,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav3"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced3"
@@ -684,7 +764,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac3"
@@ -697,7 +777,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear3"
@@ -709,7 +789,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -731,7 +811,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewCentered3"
@@ -750,7 +830,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2nd3"
@@ -769,7 +849,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2ndCentered3"
@@ -787,7 +867,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewDistance3"
@@ -807,7 +887,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
             <TextView
                 android:id="@+id/textViewAge3"
@@ -826,7 +906,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -846,7 +926,27 @@
                 android:layout_marginBottom="3dip"
                 android:background="@drawable/selection_rectangle"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:background="@drawable/selection_rectangle"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView4"
@@ -862,14 +962,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav4"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced4"
@@ -882,7 +982,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac4"
@@ -895,7 +995,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear4"
@@ -907,7 +1007,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -929,7 +1029,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewCentered4"
@@ -948,7 +1048,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2nd4"
@@ -967,7 +1067,8 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"
+                tools:ignore="TooManyViews" />
 
             <TextView
                 android:id="@+id/textView2ndCentered4"
@@ -985,7 +1086,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewDistance4"
@@ -1005,7 +1106,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="@dimen/widgetDaysX_fontSize"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
             <TextView
                 android:id="@+id/textViewAge4"
@@ -1024,13 +1125,13 @@
                 android:singleLine="true"
                 android:text="@string/widget_Age"
                 android:textSize="@dimen/widgetMarks_fontSize"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="3dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -1044,6 +1145,6 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="6sp"
-        tools:ignore="SmallSp,TextContrastCheck" />
+        tools:ignore="SmallSp,TextContrastCheck,TooManyViews"/>
 
 </RelativeLayout>

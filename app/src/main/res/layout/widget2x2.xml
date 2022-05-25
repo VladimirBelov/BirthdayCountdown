@@ -24,7 +24,7 @@
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:textStyle="bold|italic"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"/>
 
     <LinearLayout
         android:id="@+id/events"
@@ -54,7 +54,29 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
                 android:contentDescription="@string/widget_Photo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageViewCentered0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="centerInside"/>
+            <ImageView
+                android:id="@+id/imageViewStart0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:contentDescription="@string/widget_Photo"
+                android:scaleType="fitStart"/>
 
             <LinearLayout
                 android:id="@+id/iconsView0"
@@ -70,14 +92,14 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_TypeIcon"
-                    android:src="@drawable/ic_event_birthday" />
+                    android:src="@drawable/ic_event_birthday"/>
 
                 <ImageView
                     android:id="@id/iconFav0"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:contentDescription="@string/widget_FavIcon"
-                    android:src="@drawable/fav_star" />
+                    android:src="@drawable/fav_star"/>
 
                 <TextView
                     android:id="@+id/iconSilenced0"
@@ -90,7 +112,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiac0"
@@ -102,7 +124,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
                 <TextView
                     android:id="@+id/iconZodiacYear0"
@@ -114,7 +136,7 @@
                     android:shadowDy="-2"
                     android:shadowRadius="2.0"
                     android:textColor="@color/green"
-                    android:textSize="@dimen/widgetDate_fontSize" />
+                    android:textSize="@dimen/widgetDate_fontSize"/>
 
             </LinearLayout>
 
@@ -140,7 +162,7 @@
                 android:text="@string/widget_FIO"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"/>
 
             <TextView
                 android:id="@+id/textViewCentered0"
@@ -165,7 +187,7 @@
                 android:text="@string/widget_Date"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"/>
 
             <TextView
                 android:id="@+id/textView2nd0"
@@ -184,7 +206,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_FIO"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textView2ndCentered0"
@@ -202,7 +224,7 @@
                 android:singleLine="true"
                 android:text="@string/widget_Date"
                 android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize" />
+                android:textSize="@dimen/widgetDate_fontSize"/>
 
             <TextView
                 android:id="@+id/textViewAge0"
@@ -221,7 +243,7 @@
                 android:text="@string/widget_Age"
                 android:textColor="@color/yellow"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/textViewDistance0"
@@ -243,7 +265,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"/>
 
         </RelativeLayout>
 
@@ -259,6 +281,6 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="6sp"
-        tools:ignore="SmallSp,TextContrastCheck" />
+        tools:ignore="SmallSp,TextContrastCheck"/>
 
 </RelativeLayout>

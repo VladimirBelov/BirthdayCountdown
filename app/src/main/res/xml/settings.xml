@@ -94,7 +94,7 @@
                     android:title="@string/pref_CustomEvents_Calendars_title"
                     android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
-                <!-- создём динамически, если выбраны календари -->
+                <!-- создаём динамически, если выбраны календари -->
                 <!--<Preference
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                     android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
@@ -461,6 +461,17 @@
             android:title="@string/pref_List_Style_title"
             android:icon="@android:drawable/ic_menu_agenda"
             android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_PhotoStyle_default"
+            android:entries="@array/pref_List_PhotoStyle_entries"
+            android:entryValues="@array/pref_List_PhotoStyle_values"
+            android:key="@string/pref_List_PhotoStyle_key"
+            android:summary="@string/pref_List_PhotoStyle_description"
+            android:title="@string/pref_List_PhotoStyle_title"
+            android:icon="@android:drawable/ic_menu_crop"
+            android:dialogIcon="@android:drawable/ic_menu_crop"
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference

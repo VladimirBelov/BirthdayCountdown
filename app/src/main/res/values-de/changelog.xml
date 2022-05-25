@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.0</item>
+        <item>Parameter für den Fotostil von Kontakten hinzugefügt: Oval, Kreis</item>
+        <item>Datei-Ereignisse unterstützen jetzt Before the Common Era-Daten (weitere Einzelheiten in der \"Fragen und Antworten\"-Anleitung)</item>
+        <item>Unterstützung für häufig wiederkehrende Kalenderereignisse hinzugefügt (einmal im Monat, einmal pro Woche oder öfter)</item>
+        <item>Wenn das Alter weniger als 1 Jahr beträgt, werden Tage und Monate angezeigt</item>
+        <item>Optimierung der Verarbeitung großer Ereigniszahlen (> 5000)</item>
+
         <item>#1.6.9</item>
         <item>Dem Listen-Widget-Konstruktor wurden neue Ereignisdetails hinzugefügt: neue Zeile (3 Stück), Tage vor dem Ereignis, Wochentag</item>
         <item>Die Benachrichtigungszeit kann bis zu einer Minute ausgewählt werden</item>

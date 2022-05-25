@@ -77,6 +77,7 @@
     <string name="msg_after_year_prefix_2_3_4">" года"</string>
     <string name="msg_after_year_prefix_1_">" год"</string>
     <string name="msg_after_year_prefix_4_21">" лет"</string>
+    <string name="msg_after_year_bc">" до н.э."</string>
 
     <string name="msg_after_month_prefix_1">" месяц"</string>
     <string name="msg_after_month_prefix_2_3_4">" месяца"</string>
@@ -333,7 +334,18 @@
         <item>Карточки</item>
     </string-array>
 
-    <string name="pref_List_Filling_title">Заполнение цветом</string>
+    <string name="pref_List_PhotoStyle_title">Стиль фото</string>
+    <string name="pref_List_PhotoStyle_description">Стиль фотографий контактов в списке событий</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Оригинал</item>
+        <item>Немного закруглённое</item>
+        <item>Средне закруглённое</item>
+        <item>Сильно закруглённое</item>
+        <item>Круг</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Заполнение цветом (фон)</string>
     <string name="pref_List_Filling_description">Вид градиента для заполнения цветом отдельного события</string>
 
     <string-array name="pref_List_Filling_entries">
@@ -544,6 +556,7 @@
     <string-array name="widget_config_font">
         <item>Авто</item>
         <item>x0.5</item>
+        <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
@@ -551,6 +564,18 @@
         <item>x1.5</item>
         <item>x1.75</item>
         <item>x2.0</item>
+    </string-array>
+
+
+    <string name="widget_config_photostyle_label">Стиль фото</string>
+    <string name="widget_config_photostyle_description">Стиль фотографий контактов</string>
+    <string name="widget_config_photostyle_with_align_description">Стиль фотографий контактов. Выравнивание: оригинал - фото заполняет всю ячейку, закругленное - по верхнему краю, круг - по центру</string>
+    <string-array name="widget_config_photostyle">
+        <item>Оригинал</item>
+        <item>Немного закруглённое</item>
+        <item>Средне закруглённое</item>
+        <item>Сильно закруглённое</item>
+        <item>Круг</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Количество событий</string>

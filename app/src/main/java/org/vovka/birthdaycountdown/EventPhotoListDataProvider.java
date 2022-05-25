@@ -23,12 +23,14 @@ import static org.vovka.birthdaycountdown.Constants.STRING_5;
 import static org.vovka.birthdaycountdown.Constants.STRING_6;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_8;
+import static org.vovka.birthdaycountdown.Constants.STRING_9;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
 import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
 import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
+import static org.vovka.birthdaycountdown.Constants.TIME_FORCE_UPDATE;
 import static org.vovka.birthdaycountdown.Constants.Type_5K;
 import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
 import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_SMALL;
@@ -113,24 +115,27 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         fontMagnify = fontMagnify * 0.5;
                         break;
                     case STRING_2:
-                        fontMagnify = fontMagnify * 0.75;
+                        fontMagnify = fontMagnify * 0.65;
                         break;
                     case STRING_3:
-                        fontMagnify = fontMagnify * 0.85;
+                        fontMagnify = fontMagnify * 0.75;
                         break;
                     case STRING_4:
-                        //fontMagnify = fontMagnify * 1;
+                        fontMagnify = fontMagnify * 0.85;
                         break;
                     case STRING_5:
-                        fontMagnify = fontMagnify * 1.2;
+                        fontMagnify = fontMagnify * 1;
                         break;
                     case STRING_6:
-                        fontMagnify = fontMagnify * 1.5;
+                        fontMagnify = fontMagnify * 1.2;
                         break;
                     case STRING_7:
-                        fontMagnify = fontMagnify * 1.75;
+                        fontMagnify = fontMagnify * 1.5;
                         break;
                     case STRING_8:
+                        fontMagnify = fontMagnify * 1.75;
+                        break;
+                    case STRING_9:
                         fontMagnify = fontMagnify * 2.0;
                         break;
                 }
@@ -192,11 +197,11 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Организация и должность
 
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Organization)) {
-                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization], STRING_EMPTY).trim();
+                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
                 }
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_JobTitle)) {
-                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title], STRING_EMPTY).trim();
+                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (sbDetails.length() > 0) sbDetails.append(STRING_COMMA_SPACE);
                         sbDetails.append(positionJobTitle);
@@ -272,7 +277,17 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 Bitmap photo = null;
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)) {
-                    photo = eventsData.getContactPhoto(eventInfo, true, true, true);
+                    int roundingFactor = 1;
+                    if (widgetPref != null && widgetPref.size() > 6) {
+                        switch (widgetPref.get(6)) {
+                            case STRING_1: roundingFactor = 2; break;
+                            case STRING_2: roundingFactor = 3; break;
+                            case STRING_3: roundingFactor = 4; break;
+                            case STRING_4: roundingFactor = 9; break;
+                        }
+                    }
+
+                    photo = eventsData.getContactPhoto(eventInfo, true, true, true, roundingFactor);
                 }
                 if (photo != null) {
                     int outWidth;
@@ -291,6 +306,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         int outHeight = inHeight * outWidth / inWidth;
 
                         if (outHeight > 0 && outWidth > 0) {
+
                             Bitmap photo_small = Bitmap.createScaledBitmap(photo, outWidth, outHeight, true);
                             views.setImageViewBitmap(R.id.eventPhoto, photo_small);
                             views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
@@ -354,7 +370,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
-            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > 5000) {
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             widgetPref_eventInfo = new ArrayList<>();

@@ -15,8 +15,6 @@ import static org.vovka.birthdaycountdown.Constants.ACTION_HIDE;
 import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
 import static org.vovka.birthdaycountdown.Constants.ACTION_SILENT;
 import static org.vovka.birthdaycountdown.Constants.ACTION_SNOOZE;
-import static org.vovka.birthdaycountdown.Constants.CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR;
-import static org.vovka.birthdaycountdown.Constants.CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR;
 import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_NAME;
 import static org.vovka.birthdaycountdown.Constants.ColumnNames_ACCOUNT_TYPE;
 import static org.vovka.birthdaycountdown.Constants.EXTRA_NOTIFICATION_DATA;
@@ -44,6 +42,7 @@ import static org.vovka.birthdaycountdown.Constants.STRING_2TILDA;
 import static org.vovka.birthdaycountdown.Constants.STRING_3;
 import static org.vovka.birthdaycountdown.Constants.STRING_7;
 import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
+import static org.vovka.birthdaycountdown.Constants.STRING_BC;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
 import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
 import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
@@ -87,6 +86,7 @@ import static org.vovka.birthdaycountdown.Constants.defaultQuizID;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_YEAR;
+import static java.util.Calendar.ERA;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
@@ -118,6 +118,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
@@ -138,6 +142,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -165,6 +170,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -179,6 +185,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class ContactsEvents {
+
+    private static final String TAG = "ContactsEvents";
     private static final ContactsEvents ourInstance = new ContactsEvents();
     private static final String MSG_UPDATED_PREFERENCES = "Updated preferences: ";
 
@@ -215,6 +223,7 @@ class ContactsEvents {
     static final String pref_List_EventInfo_JobTitle = "1";
     static final String pref_List_EventInfo_Organization = "2";
     static final String pref_List_EventInfo_EventCaption = "3";
+    static final String pref_List_EventInfo_EventIcon = "12";
     static final String pref_List_EventInfo_FavoritesIcon = "5";
     static final String pref_List_EventInfo_ZodiacSign = "9";
     static final String pref_List_EventInfo_ZodiacYear = "10";
@@ -224,6 +233,7 @@ class ContactsEvents {
         add(pref_List_EventInfo_JobTitle);
         add(pref_List_EventInfo_Organization);
         add(pref_List_EventInfo_EventCaption);
+        add(pref_List_EventInfo_EventIcon);
         add(pref_List_EventInfo_FavoritesIcon);
     }};
 
@@ -326,6 +336,7 @@ class ContactsEvents {
     private int preferences_list_sad_photo;
     String preferences_list_custom_caption;
     int preferences_list_style;
+    int preferences_list_photostyle;
     int preferences_list_filling;
 
     int preferences_list_nameformat;
@@ -445,6 +456,7 @@ class ContactsEvents {
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
     long statLastPausedForOtherActivity = 0;
     int statEventsPrevEventsFound = 0;
+    //int temp_int = 0;
 
     //UI объекты
     private Context context;
@@ -458,17 +470,22 @@ class ContactsEvents {
     final Locale locale_us = new Locale(Constants.LANG_US); // Jan 11, 1991
     final Locale locale_ukr = new Locale(Constants.LANG_UA);
     final SimpleDateFormat sdf_java = new SimpleDateFormat(Constants.DATE_JAVA, locale_en);
+    final SimpleDateFormat sdf_java_G = new SimpleDateFormat(Constants.DATE_JAVA_G, locale_en);
     final SimpleDateFormat sdf_java_no_year = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, locale_en);
     final SimpleDateFormat sdf_skype = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale_en);
+    final SimpleDateFormat sdf_DDMMY = new SimpleDateFormat(Constants.DATE_DD_MM_Y, locale_en);
     final SimpleDateFormat sdf_DDMMYYYY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+    final SimpleDateFormat sdf_DDMMYYYY_G = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, locale_en);
     final SimpleDateFormat sdf_DDMMYYYYHHMM = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, locale_en);
     final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, locale_en);
     final SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
     final SimpleDateFormat sdf_us = new SimpleDateFormat(Constants.DATE_US, locale_us);
     final SimpleDateFormat sdf_ukr = new SimpleDateFormat(Constants.DATE_RUS, locale_ukr);
     final SimpleDateFormat sdf_uk = new SimpleDateFormat(Constants.DATE_UK, locale_en);
+    final SimpleDateFormat sdf_uk_G = new SimpleDateFormat(Constants.DATE_UK_G, locale_en);
     final SimpleDateFormat sdf_uk_no_year = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale_en);
     final SimpleDateFormat sdf_india = new SimpleDateFormat(Constants.DATE_IND, locale_en);
+    final SimpleDateFormat sdf_india_G = new SimpleDateFormat(Constants.DATE_IND_G, locale_en);
     final SimpleDateFormat sdf_india_no_year = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale_en);
 
     static class ColumnIndexCache implements AutoCloseable {
@@ -495,9 +512,6 @@ class ContactsEvents {
 
     private static int countLeapYearsBetween(int y1, int y2) {
 
-        if (y1 < 1 || y2 < 1) {
-            throw new IllegalArgumentException(Constants.MSG_YEAR_MUST_BE_GREATER_0);
-        }
         // ensure y1 <= y2
         if (y1 > y2) {
             int i = y1;
@@ -573,159 +587,183 @@ class ContactsEvents {
             int d1 = c1.get(DAY_OF_YEAR);
             int d2 = c2.get(DAY_OF_YEAR);
 
-            int resD = d2 + ((y2 - y1) * 365) - d1;
+            int minorYearSign = c1.get(ERA) == GregorianCalendar.AD ? 1 : -1;
+
+            int resD = d2 + ((y2 - minorYearSign*y1) * 365) - d1;
             if (isNegative) {
-                return -(resD + countLeapYearsBetween(y1, y2));
+                return -(resD + countLeapYearsBetween(minorYearSign*y1, y2));
             } else {
-                return resD + countLeapYearsBetween(y1, y2);
+                return resD + countLeapYearsBetween(minorYearSign*y1, y2);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COUNT_DAYS_DIFF_ERROR + e.getMessage(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return 0;
         }
     }
 
-    String countDaysDiffText(@NonNull Date date1, @NonNull Date date2) {
+    /**
+     *
+     * @param dateFrom date from
+     * @param dateTo date to
+     * @param components 1 - only DMY, 2 - only days count, 3 - "DMY (days count)"
+     * @return distance between two days in locale text format
+     */
+    String countDaysDiffText(@NonNull Date dateFrom, @NonNull Date dateTo, int components) {
+
         try {
 
             StringBuilder eventDistance = new StringBuilder();
-            long dayDiff;
+            long dayDiff = 0;
 
             //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s то размер приложения +200К
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                 //https://stackoverflow.com/questions/4710206/calculate-age-in-years-months-days-hours-minutes-and-seconds
-                LocalDate dateStart = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate dateEnd = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dateStart = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dateEnd = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 Period p;
                 if (dateStart.isBefore(dateEnd)) {
                     p = Period.between(dateStart, dateEnd);
-                    dayDiff = DAYS.between(dateStart, dateEnd);
                 } else {
                     p = Period.between(dateEnd, dateStart);
-                    dayDiff = DAYS.between(dateEnd, dateStart);
                 }
 
-                if (p.getYears() > 0 ) {
-                    eventDistance
-                            .append(getAgeString(
-                                    p.getYears(),
-                                    R.string.msg_after_year_prefix_1,
-                                    R.string.msg_after_year_prefix_1_,
-                                    R.string.msg_after_year_prefix_2_3_4,
-                                    R.string.msg_after_year_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
-                }
-                if (p.getMonths() > 0) {
-                    eventDistance
-                            .append(getAgeString(
-                                    p.getMonths(),
-                                    R.string.msg_after_month_prefix_1,
-                                    R.string.msg_after_month_prefix_1_,
-                                    R.string.msg_after_month_prefix_2_3_4,
-                                    R.string.msg_after_month_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
-                }
-                if (p.getDays() > 0) {
-                    eventDistance
-                            .append(getAgeString(
-                                    p.getDays(),
-                                    R.string.msg_after_day_prefix_1,
-                                    R.string.msg_after_day_prefix_1_,
-                                    R.string.msg_after_day_prefix_2_3_4,
-                                    R.string.msg_after_day_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
+                if (components == 1 || components == 3) {
+                    if (dateStart.isBefore(dateEnd)) {
+                        dayDiff = DAYS.between(dateStart, dateEnd);
+                    } else {
+                        dayDiff = DAYS.between(dateEnd, dateStart);
+                    }
+
+                    if (p.getYears() > 0) {
+                        eventDistance
+                                .append(getAgeString(
+                                        p.getYears(),
+                                        R.string.msg_after_year_prefix_1,
+                                        R.string.msg_after_year_prefix_1_,
+                                        R.string.msg_after_year_prefix_2_3_4,
+                                        R.string.msg_after_year_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                    }
+                    if (p.getMonths() > 0) {
+                        eventDistance
+                                .append(getAgeString(
+                                        p.getMonths(),
+                                        R.string.msg_after_month_prefix_1,
+                                        R.string.msg_after_month_prefix_1_,
+                                        R.string.msg_after_month_prefix_2_3_4,
+                                        R.string.msg_after_month_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                    }
+                    if (p.getDays() > 0) {
+                        eventDistance
+                                .append(getAgeString(
+                                        p.getDays(),
+                                        R.string.msg_after_day_prefix_1,
+                                        R.string.msg_after_day_prefix_1_,
+                                        R.string.msg_after_day_prefix_2_3_4,
+                                        R.string.msg_after_day_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                    }
                 }
 
             } else {
 
                 //todo: считать точнее годы и месяцы
 
-                boolean isNegative = false;
-                Calendar c1 = removeTime(getCalendarFromDate(date1));
-                Calendar c2 = removeTime(getCalendarFromDate(date2));
+                if (components == 1 || components == 3) {
+                    boolean isNegative = false;
+                    Calendar c1 = removeTime(getCalendarFromDate(dateFrom));
+                    Calendar c2 = removeTime(getCalendarFromDate(dateTo));
 
-                if (c1.get(YEAR) == c2.get(YEAR)) {
-                    dayDiff = c2.get(DAY_OF_YEAR) - c1.get(DAY_OF_YEAR);
-                } else {
-                    // ensure c1 <= c2
-                    if (c1.get(YEAR) > c2.get(YEAR)) {
-                        isNegative = true;
-                        Calendar c = c1;
-                        c1 = c2;
-                        c2 = c;
-                    }
-                    int y1 = c1.get(YEAR);
-                    int y2 = c2.get(YEAR);
-                    int d1 = c1.get(DAY_OF_YEAR);
-                    int d2 = c2.get(DAY_OF_YEAR);
-
-                    int resD = d2 + ((y2 - y1) * 365) - d1;
-                    if (isNegative) {
-                        dayDiff = -(resD + countLeapYearsBetween(y1, y2));
+                    if (c1.get(YEAR) == c2.get(YEAR)) {
+                        dayDiff = c2.get(DAY_OF_YEAR) - c1.get(DAY_OF_YEAR);
                     } else {
-                        dayDiff = resD + countLeapYearsBetween(y1, y2);
-                    }
-                }
+                        // ensure c1 <= c2
+                        if (c1.get(YEAR) > c2.get(YEAR)) {
+                            isNegative = true;
+                            Calendar c = c1;
+                            c1 = c2;
+                            c2 = c;
+                        }
+                        int y1 = c1.get(YEAR);
+                        int y2 = c2.get(YEAR);
+                        int d1 = c1.get(DAY_OF_YEAR);
+                        int d2 = c2.get(DAY_OF_YEAR);
 
-                long delta = dayDiff;
-                if (delta > 365) {
-                    eventDistance
-                            .append(getAgeString(
-                                    delta / 365,
-                                    R.string.msg_after_year_prefix_1,
-                                    R.string.msg_after_year_prefix_1_,
-                                    R.string.msg_after_year_prefix_2_3_4,
-                                    R.string.msg_after_year_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
-                    delta %= 365;
-                }
-                if (delta > 30) {
-                    eventDistance
-                            .append(getAgeString(
-                                    delta / 30,
-                                    R.string.msg_after_month_prefix_1,
-                                    R.string.msg_after_month_prefix_1_,
-                                    R.string.msg_after_month_prefix_2_3_4,
-                                    R.string.msg_after_month_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
-                    delta %= 30;
-                }
-                if (delta > 0) {
-                    eventDistance
-                            .append(getAgeString(
-                                    delta,
-                                    R.string.msg_after_day_prefix_1,
-                                    R.string.msg_after_day_prefix_1_,
-                                    R.string.msg_after_day_prefix_2_3_4,
-                                    R.string.msg_after_day_prefix_4_21
-                            ))
-                            .append(STRING_SPACE);
+                        int resD = d2 + ((y2 - y1) * 365) - d1;
+                        if (isNegative) {
+                            dayDiff = -(resD + countLeapYearsBetween(y1, y2));
+                        } else {
+                            dayDiff = resD + countLeapYearsBetween(y1, y2);
+                        }
+                    }
+
+                    long delta = dayDiff;
+                    if (delta > 365) {
+                        eventDistance
+                                .append(getAgeString(
+                                        delta / 365,
+                                        R.string.msg_after_year_prefix_1,
+                                        R.string.msg_after_year_prefix_1_,
+                                        R.string.msg_after_year_prefix_2_3_4,
+                                        R.string.msg_after_year_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                        delta %= 365;
+                    }
+                    if (delta > 30) {
+                        eventDistance
+                                .append(getAgeString(
+                                        delta / 30,
+                                        R.string.msg_after_month_prefix_1,
+                                        R.string.msg_after_month_prefix_1_,
+                                        R.string.msg_after_month_prefix_2_3_4,
+                                        R.string.msg_after_month_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                        delta %= 30;
+                    }
+                    if (delta > 0) {
+                        eventDistance
+                                .append(getAgeString(
+                                        delta,
+                                        R.string.msg_after_day_prefix_1,
+                                        R.string.msg_after_day_prefix_1_,
+                                        R.string.msg_after_day_prefix_2_3_4,
+                                        R.string.msg_after_day_prefix_4_21
+                                ))
+                                .append(STRING_SPACE);
+                    }
                 }
             }
 
-            return eventDistance
-                    .append(STRING_PARENTHESIS_START)
-                    .append(getAgeString(
-                            dayDiff,
-                            R.string.msg_after_day_prefix_1,
-                            R.string.msg_after_day_prefix_1_,
-                            R.string.msg_after_day_prefix_2_3_4,
-                            R.string.msg_after_day_prefix_4_21
-                    ))
-                    .append(STRING_PARENTHESIS_CLOSE)
-                    .toString();
+            if (components == 3) {
+                eventDistance.append(STRING_PARENTHESIS_START);
+            }
+            if (components == 2 || components == 3) {
+                eventDistance.append(getAgeString(
+                        dayDiff,
+                        R.string.msg_after_day_prefix_1,
+                        R.string.msg_after_day_prefix_1_,
+                        R.string.msg_after_day_prefix_2_3_4,
+                        R.string.msg_after_day_prefix_4_21
+                ));
+            }
+            if (components == 3) {
+                eventDistance.append(STRING_PARENTHESIS_CLOSE);
+            }
+
+            return eventDistance.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COUNT_DAYS_DIFF_TEXT_ERROR + e.getMessage(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
     }
@@ -745,6 +783,7 @@ class ContactsEvents {
             }
 
             int subst = 0;
+            int minorYearSign = c1.get(ERA) == GregorianCalendar.AD ? 1 : -1;
 
             if (c1.get(MONTH) > c2.get(MONTH)) {
                 subst = 1;
@@ -753,11 +792,11 @@ class ContactsEvents {
                     subst = 1;
                 }
             }
-            return Math.max(c2.get(YEAR) - c1.get(YEAR) - subst, 0);
+            return Math.max(c2.get(YEAR) - minorYearSign * c1.get(YEAR) - subst, 0);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR + e.getMessage(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -768,14 +807,15 @@ class ContactsEvents {
             c.add(Calendar.YEAR, year);
             return c.getTime();
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_ADD_YEAR_ERROR + e.getMessage(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return date;
         }
     }
 
     @NonNull
     private String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_4_21) {
+
         try {
 
             StringBuilder result = new StringBuilder();
@@ -802,8 +842,8 @@ class ContactsEvents {
             return result.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_AGE_STRING_ERROR + e.getMessage(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
     }
@@ -836,6 +876,7 @@ class ContactsEvents {
             }
             preferences_list_prev_events = preferences.getString(context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
             preferences_list_style = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default))));
+            preferences_list_photostyle = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default))));
             preferences_list_filling = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default))));
             preferences_list_sad_photo = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default))));
             preferences_list_nameformat = Integer.parseInt(Objects.requireNonNull(preferences.getString(context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default))));
@@ -1239,8 +1280,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e){
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -1274,8 +1315,8 @@ class ContactsEvents {
             editor.apply();
 
         } catch (Exception e){
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -1291,7 +1332,6 @@ class ContactsEvents {
         //для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
         //посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
         try {
-            //getPreferences();
 
             // http://developer.alexanderklimov.ru/android/locale.php
             if (force || !preferences_language.equals(currentLocale)) {
@@ -1317,8 +1357,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_LOCALE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -1359,6 +1399,9 @@ class ContactsEvents {
             getPreferences();
 
             //todo: сделать через отдельный thread, но сделать это опциональным
+            //https://stackoverflow.com/questions/61252550/android-how-to-use-kotlin-coroutine-in-java
+            //https://stackoverflow.com/questions/58767733/the-asynctask-api-is-deprecated-in-android-11-what-are-the-alternatives
+
             return getContactsEvents()
                     | getCalendarEvents(eventTypesIDs.get(Type_BirthDay))
                     | getCalendarEvents(eventTypesIDs.get(Type_Other))
@@ -1366,7 +1409,8 @@ class ContactsEvents {
                     | getFileEvents(eventTypesIDs.get(Type_Other));
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -1477,7 +1521,7 @@ class ContactsEvents {
                             if (!map_events_weblinks.containsKey(personID)) {
                                 map_events_weblinks.put(personID, URL);
                             } else {
-                                String URlstored = checkForNull(map_events_weblinks.get(personID), STRING_EMPTY);
+                                String URlstored = checkForNull(map_events_weblinks.get(personID));
                                 map_events_weblinks.put(personID, URlstored.concat(STRING_2TILDA).concat(URL));
                             }
                             statAllURLs++;
@@ -1629,13 +1673,15 @@ class ContactsEvents {
 
             if (preferences_debug_on && countErrors > 1) {
                 int finalCountErrors = countErrors;
+
                 handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR + "Total errors: " + finalCountErrors, Toast.LENGTH_LONG).show());
             }
 
             return true;
 
         } catch (Exception e) {
-            if (preferences_debug_on) Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -1650,16 +1696,16 @@ class ContactsEvents {
             StringBuilder dataRow;
             eventDate = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
             eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
-            String eventSubType = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE)), STRING_EMPTY);
+            String eventSubType = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE)));
             String accountType = cursor.getString(cache.getColumnIndex(cursor, ColumnNames_ACCOUNT_TYPE));
             String accountName = cursor.getString(cache.getColumnIndex(cursor, ColumnNames_ACCOUNT_NAME));
             accountKey = accountName + STRING_PARENTHESIS_OPEN + accountType + STRING_PARENTHESIS_CLOSE;
 
             if (eventDate != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
-                String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)), STRING_EMPTY);
-                String contactNameAlt = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)), STRING_EMPTY);
-                String eventLabel = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL)), STRING_EMPTY);
+                String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)));
+                String contactNameAlt = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)));
+                String eventLabel = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL)));
                 boolean nonemptyEventLabel = !isEmpty(eventLabel);
                 String eventCaption = STRING_EMPTY;
                 int eventIcon = 0;
@@ -1847,15 +1893,15 @@ class ContactsEvents {
                     userData.put(Position_eventLabel, !eventLabel.equals(eventCaption) & !newEventDate.contains(eventLabel) ? eventLabel : STRING_EMPTY); //Заголовок пользовательского события
                     userData.put(Position_eventType, eventType); //Тип события
                     userData.put(Position_eventSubType, eventSubType); //Подтип события
-                    userData.put(Position_organization, checkForNull(orgMap.get(contactID), STRING_SPACE));
+                    userData.put(Position_organization, checkForNull(orgMap.get(contactID)));
                     userData.put(Position_title, contactTitle);
                     userData.put(Position_dates, newEventDate);
                     userData.put(Position_eventIcon, Integer.toString(eventIcon));
                     userData.put(Position_eventEmoji, eventEmoji);
                     userData.put(Position_starred, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)));
-                    userData.put(Position_nickname, checkForNull(nickMap.get(contactID), STRING_SPACE));
+                    userData.put(Position_nickname, checkForNull(nickMap.get(contactID)));
                     userData.put(Position_eventStorage, STRING_STORAGE_CONTACTS); //Где искать событие по ID
-                    userData.put(Position_eventURL, checkForNull(map_events_weblinks.get(contactID), STRING_SPACE));
+                    userData.put(Position_eventURL, checkForNull(map_events_weblinks.get(contactID)));
 
                     fillEmptyUserData(userData);
 
@@ -1870,11 +1916,9 @@ class ContactsEvents {
 
         } catch (Exception e) {
             if (preferences_debug_on) {
-                String finalAccountKey = accountKey;
-                String finalEventType = eventType;
-                String finalEventDate = eventDate;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR + e
-                        + "\naccountKey=" + finalAccountKey + ", eventType=" + finalEventType + ", eventDate=" + finalEventDate, Toast.LENGTH_LONG).show());
+                Log.e(TAG, e.getMessage(), e);
+                if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e
+                        + "\naccountKey=" + accountKey + ", eventType=" + eventType + ", eventDate=" + eventDate);
             }
         }
         return eventKey;
@@ -1936,7 +1980,7 @@ class ContactsEvents {
             int importStorage;
             String[] arrRules;
             ArrayList<Matcher> matcherNames = new ArrayList<>();
-            boolean useEventYear = true;
+            boolean useEventYear = false;
             final ArrayList<String> eventURLs = new ArrayList<>();
 
             if (eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
@@ -1985,29 +2029,31 @@ class ContactsEvents {
             Cursor cursor = contentResolver.query(builder.build(), projection, selection, null, "dtstart ASC");
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
-                    Calendar c = Calendar.getInstance();
+                    //Calendar c = Calendar.getInstance();
+
+                    int importMethod_Standalone = 0; //Календарное событие без контакта
+                    int importMethod_NewContactEvent = 1; //Контакт найден, но у него нет данных о cобытии этого типа - обновляем событие по карточке контакта
+                    int importMethod_AdditionalDateToContactEvent = 2; //Контакт найден, у него есть такое же событие - добавляем к источникам дат ещё одно значение
 
                     while (cursor.moveToNext()) {
                         userData.clear();
                         Date date = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))));
+                        Calendar dateCal = getCalendarFromDate(date);
                         Date dateFirst = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
+                        Calendar dateFirstCal = getCalendarFromDate(dateFirst);
+
                         if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
-                            if (TimeZone.getDefault().getRawOffset() < 0) { //И для отрицательных зон надо прибавлять день
-                                c.setTime(date);
-                                c.add(DATE, 1);
-                                date = c.getTime();
-                                c.setTime(dateFirst);
-                                c.add(DATE, 1);
-                                dateFirst = c.getTime();
+                            if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
+                                dateCal.add(DATE, 1);
+                                date = dateCal.getTime();
+                                dateFirstCal.add(DATE, 1);
+                                dateFirst = dateFirstCal.getTime();
                             }
                         }
-                        userData.put(Position_eventDate_sorted, STRING_SPACE);
+                        boolean isInstance = dateCal.get(Calendar.DAY_OF_MONTH) != dateFirstCal.get(Calendar.DAY_OF_MONTH)
+                                || dateCal.get(Calendar.MONTH) != dateFirstCal.get(Calendar.MONTH);
 
-                        //0. Календарное событие
-                        //1. Контакт не найден - это новое событие
-                        //2. Контакт найден, но у него нет данных о дне рождении - обновляем событие по карточке контакта
-                        //3. Контакт найден, у него есть такое же событие - добавляем к источникам дат ещё одно значение
-                        int importMethod = 0;
+                        int importMethod = importMethod_Standalone;
                         final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
                         if (eventTitle == null || eventTitle.trim().isEmpty()) continue;
                         final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
@@ -2079,12 +2125,12 @@ class ContactsEvents {
                         }
 
                         if (contactID != null) {
-                            importMethod = 2;
+                            importMethod = importMethod_NewContactEvent;
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID);
-                            if (eventIndex != null && eventIndex <= eventList.size()) {
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventSubType + STRING_EOT + contactID);
+                            if (eventIndex != null && eventIndex <= eventList.size() && !isInstance) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(STRING_EOT, -1));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
                                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date));
@@ -2100,7 +2146,7 @@ class ContactsEvents {
                                 }
 
                                 if (!eventURLs.isEmpty()) {
-                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL), STRING_EMPTY).trim();
+                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL)).trim();
                                     StringBuilder sb = new StringBuilder(eventURL_stored);
                                     if (eventURL_stored.isEmpty()) {
                                         for (String url: eventURLs) {
@@ -2131,7 +2177,7 @@ class ContactsEvents {
                                     dataRow.append(entry);
                                 }
                                 eventList.set(eventIndex, dataRow.toString());
-                                importMethod = 3;
+                                importMethod = importMethod_AdditionalDateToContactEvent;
 
                             } else { //Такого события ещё не было
 
@@ -2145,8 +2191,8 @@ class ContactsEvents {
 
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
 
-                                String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME), STRING_EMPTY);
-                                String contactTitle = checkForNull(map_contacts_titles.get(contactID), STRING_EMPTY);
+                                String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME));
+                                String contactTitle = checkForNull(map_contacts_titles.get(contactID));
                                 if (!contactTitle.isEmpty()) {
                                     //всё, что внутри скобок в имени - в должность
                                     int pStart = contactFIO.indexOf(STRING_PARENTHESIS_START);
@@ -2158,10 +2204,10 @@ class ContactsEvents {
                                 }
 
                                 userData.put(Position_personFullName, contactFIO);
-                                userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE), STRING_EMPTY).replace(STRING_COMMA, STRING_EMPTY));
+                                userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(STRING_COMMA, STRING_EMPTY));
                                 userData.put(Position_title, contactTitle);
-                                userData.put(Position_organization, checkForNull(map_organizations.get(contactID), STRING_SPACE));
-                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID), STRING_SPACE));
+                                userData.put(Position_organization, checkForNull(map_organizations.get(contactID)));
+                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
 
                                 if (!eventURLs.isEmpty()) {
                                     StringBuilder sb = new StringBuilder();
@@ -2178,9 +2224,9 @@ class ContactsEvents {
                             }
                         }
 
-                        if (importMethod != 3) {
+                        if (importMethod != importMethod_AdditionalDateToContactEvent) {
 
-                            if (importMethod != 2) {
+                            if (importMethod != importMethod_NewContactEvent) {
                                 userData.put(Position_eventStorage, STRING_STORAGE_CALENDAR);
                             }
 
@@ -2194,11 +2240,15 @@ class ContactsEvents {
                             userData.put(Position_eventType, eventType); //Тип события
                             userData.put(Position_eventSubType, eventSubType); //Подтип события
                             userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT
-                                    + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(date)));
+                                    + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(dateFirst)));
                             userData.put(Position_eventIcon, Integer.toString(eventIcon));
                             userData.put(Position_eventEmoji, eventEmoji);
+                            if (isInstance) { //Уже известна дата следующего события
+                                userData.put(Position_eventDate, sdf_DDMMYYYY.format(date));
+                                userData.put(Position_eventDateText, sdf_DDMMYYYY.format(dateFirst));
+                            }
 
-                            if (importMethod == 0) {
+                            if (importMethod == importMethod_Standalone) {
                                 if (!eventURLs.isEmpty()) {
                                     StringBuilder sb = new StringBuilder();
                                     for (String url: eventURLs) {
@@ -2224,8 +2274,9 @@ class ContactsEvents {
                             if (!eventList.contains(eventData)) {
                                 eventList.add(eventData);
 
-                                if (importMethod == 2) {  //Добавляем событие
-                                    map_eventsBySubtypeAndPersonID_offset.put(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID, eventList.size() - 1);
+                                if (importMethod == importMethod_NewContactEvent & !isInstance) {  //Добавляем событие
+                                    //map_eventsBySubtypeAndPersonID_offset.put(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID, eventList.size() - 1);
+                                    map_eventsBySubtypeAndPersonID_offset.put(eventSubType + STRING_EOT + contactID, eventList.size() - 1);
                                 }
                             }
                         }
@@ -2244,6 +2295,7 @@ class ContactsEvents {
             return false;
         } catch (Exception e) {
             if (preferences_debug_on) {
+                Log.e(TAG, e.getMessage(), e);
                 StringBuilder dataRow = new StringBuilder();
                 if (!userData.isEmpty()) {
                     int rNum = 0;
@@ -2253,7 +2305,8 @@ class ContactsEvents {
                         dataRow.append(entry.getKey()).append("=");
                         dataRow.append(entry.getValue());
                     }}
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR + e + dataRow, Toast.LENGTH_LONG).show());
+
+                if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e + dataRow);
             }
             return false;
         }
@@ -2295,7 +2348,8 @@ class ContactsEvents {
             if (cursor != null && !cursor.isClosed()) cursor.close();
         } catch (Exception e) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CALENDARS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -2369,8 +2423,11 @@ class ContactsEvents {
                             eventTitle = line.substring(indexDateEnd + 1).trim();
                             eventDateOriginal = line.substring(0, indexDateEnd);
                             boolean isEndless = true;
+                            boolean isAD = true;
+                            //todo: сделать поддержку дат до 1900 http://rsdn.org/forum/java/981164.all
                             if (eventDateOriginal.contains(STRING_COMMA)) { //Флаги события
                                 if (eventDateOriginal.substring(eventDateOriginal.indexOf(STRING_COMMA) + 1).contains(STRING_1)) isEndless = false;
+                                if (eventDateOriginal.substring(eventDateOriginal.indexOf(STRING_COMMA) + 1).contains(STRING_BC)) isAD = false;
                                 eventDateOriginal = eventDateOriginal.substring(0, eventDateOriginal.indexOf(STRING_COMMA));
                             }
 
@@ -2378,13 +2435,25 @@ class ContactsEvents {
                             if (indexDateNoYear == -1) { //С годом
 
                                 try {
-                                    dateEvent = sdf_DDMMYYYY.parse(eventDateOriginal);
+                                    if (isAD) {
+                                        dateEvent = sdf_DDMMYYYY.parse(eventDateOriginal);
+                                    } else {
+                                        dateEvent = sdf_DDMMYYYY_G.parse(eventDateOriginal.concat(STRING_SPACE).concat(STRING_BC));
+                                    }
                                 } catch (ParseException e1) {
                                     try {
-                                        dateEvent = sdf_india.parse(eventDateOriginal);
+                                        if (isAD) {
+                                            dateEvent = sdf_india.parse(eventDateOriginal);
+                                        } else {
+                                            dateEvent = sdf_india_G.parse(eventDateOriginal.concat(STRING_SPACE).concat(STRING_BC));
+                                        }
                                     } catch (ParseException e2) {
                                         try {
-                                            dateEvent = sdf_uk.parse(eventDateOriginal);
+                                            if (isAD) {
+                                                dateEvent = sdf_uk.parse(eventDateOriginal);
+                                            } else {
+                                                dateEvent = sdf_uk_G.parse(eventDateOriginal.concat(STRING_SPACE).concat(STRING_BC));
+                                            }
                                         } catch (ParseException e3) {
                                             //Не получилось распознать
                                         }
@@ -2413,7 +2482,7 @@ class ContactsEvents {
                             }
 
                             if (dateEvent != null) {
-                                eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateEvent) : sdf_java_no_year.format(dateEvent));
+                                eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + STRING_COLON_SPACE + (useEventYear ? isAD ? sdf_java.format(dateEvent) : sdf_java_G.format(dateEvent) : sdf_java_no_year.format(dateEvent));
 
                                 userData.put(Position_eventStorage, STRING_STORAGE_FILE);
                                 //userData.put(Position_eventID, STRING_EMPTY); //todo: вычислять по md5 имени файла + md5 имени
@@ -2515,9 +2584,9 @@ class ContactsEvents {
                         String orgNameFile = STRING_EMPTY;
                         String titleFile = STRING_EMPTY;
                         if (contactID != null) {
-                            orgNameFile = checkForNull(userData.get(Position_organization), STRING_EMPTY).trim().toLowerCase();
-                            titleFile = checkForNull(userData.get(Position_title), STRING_EMPTY).trim();
-                            String orgNameContact = checkForNull(map_organizations.get(contactID), STRING_EMPTY).trim().toLowerCase();
+                            orgNameFile = checkForNull(userData.get(Position_organization)).trim().toLowerCase();
+                            titleFile = checkForNull(userData.get(Position_title)).trim();
+                            String orgNameContact = checkForNull(map_organizations.get(contactID)).trim().toLowerCase();
 
                             if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile))
                                 contactID = null;
@@ -2527,7 +2596,8 @@ class ContactsEvents {
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID);
+                            //Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID);
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventSubType + STRING_EOT + contactID);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
 
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(STRING_EOT, -1));
@@ -2550,7 +2620,7 @@ class ContactsEvents {
                                 }
 
                                 if (!eventURL.isEmpty()) {
-                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL), STRING_EMPTY).trim();
+                                    String eventURL_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventURL)).trim();
                                     if (eventURL_stored.isEmpty()) {
                                         singleRowList.set(ContactsEvents.Position_eventURL, eventURL);
                                     } else if (!eventURL_stored.contains(eventURL)) {
@@ -2581,12 +2651,12 @@ class ContactsEvents {
                                 });
 
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                                userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE), STRING_EMPTY).replace(STRING_COMMA, STRING_EMPTY));
-                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID), STRING_EMPTY));
+                                userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(STRING_COMMA, STRING_EMPTY));
+                                userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
                                 if (isEmpty(userData.get(Position_organization)))
-                                    userData.put(Position_organization, checkForNull(map_organizations.get(contactID), STRING_EMPTY));
+                                    userData.put(Position_organization, checkForNull(map_organizations.get(contactID)));
                                 if (isEmpty(userData.get(Position_title)))
-                                    userData.put(Position_title, checkForNull(map_contacts_titles.get(contactID), STRING_EMPTY));
+                                    userData.put(Position_title, checkForNull(map_contacts_titles.get(contactID)));
 
                                 contactDataMap.clear();
 
@@ -2617,8 +2687,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -2649,15 +2719,13 @@ class ContactsEvents {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) {
-                handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR + e, Toast.LENGTH_LONG).show());
-            }
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return sb.toString();
     }
 
-    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean makeSquared, boolean forWidget) {
+    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean makeSquared, boolean forWidget, int roundingFactor) {
 
         Bitmap bm = null;
 
@@ -2682,26 +2750,7 @@ class ContactsEvents {
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
                 if (photo_stream != null) {
                     BufferedInputStream buf = new BufferedInputStream(photo_stream);
-
-                    if (makeSquared) {
-                        Bitmap bmFull = BitmapFactory.decodeStream(buf);
-                        final int bmFullWidth = bmFull.getWidth();
-                        final int bmFullHeight = bmFull.getHeight();
-
-                        if (bmFullHeight > bmFullWidth) {
-                            //noinspection SuspiciousNameCombination
-                            bm = Bitmap.createBitmap(bmFull, 0, (bmFullHeight - bmFullWidth) / 2, bmFullWidth, bmFullWidth);
-                        } else {
-                            //noinspection SuspiciousNameCombination
-                            bm = Bitmap.createBitmap(bmFull, (bmFullWidth - bmFullHeight) / 2, 0, bmFullHeight, bmFullHeight);
-                        }
-
-                    } else {
-
-                        bm = BitmapFactory.decodeStream(buf);
-
-                    }
-
+                    bm = BitmapFactory.decodeStream(buf);
                     buf.close();
                     photo_stream.close();
                 }
@@ -2764,41 +2813,48 @@ class ContactsEvents {
                         }
                     }
                 }
-
                 if (idPhoto == null) return null;
+                bm = getBitmap(context, idPhoto);
+                if (bm == null) return null;
 
-                /*int idPhoto = R.drawable.photo_man01;
+            }
 
-                if (person.getGender() == 1 && (person.Age >= 0 && person.Age < growAge) && !isDeath) { //Обойдёмся без силуэтов мёртвых детей
-                    idPhoto = R.drawable.photo_boy01;
-                } else if (person.getGender() == 1 && person.Age >= 0 && person.Age >= elderAge) {
-                    idPhoto = R.drawable.photo_elderman01;
-                } else if (person.getGender() == 2 && (person.Age >= 0 && person.Age < growAge) && !isDeath) {
-                    idPhoto = R.drawable.photo_girl01;
-                } else if (person.getGender() == 2 && person.Age >= 0 && person.Age >= elderAge) {
-                    idPhoto = R.drawable.photo_elderwoman01;
-                } else if (person.getGender() == 2) {
-                    idPhoto = R.drawable.photo_woman01;
-                }*/
+            int roundingRadiusX = 0;
+            int roundingRadiusY = 0;
+            if (roundingFactor > 1) {
 
-                if (makeSquared) {
-                    Bitmap bmFull = getBitmap(context, idPhoto);
-                    if (bmFull == null) return null;
-                    final int bmFullWidth = bmFull.getWidth();
-                    final int bmFullHeight = bmFull.getHeight();
-
-                    if (bmFullHeight > bmFullWidth) {
-                        //noinspection SuspiciousNameCombination
-                        bm = Bitmap.createBitmap(bmFull, 0, (bmFullHeight - bmFullWidth) / 2, bmFullWidth, bmFullWidth);
-                    } else {
-                        //noinspection SuspiciousNameCombination
-                        bm = Bitmap.createBitmap(bmFull, (bmFullWidth - bmFullHeight) / 2, 0, bmFullHeight, bmFullHeight);
-                    }
-                    //bmFull.recycle();
-                } else {
-                    bm = getBitmap(context, idPhoto);
-                    if (bm == null) return null;
+                final int width = bm.getWidth();
+                final int height = bm.getHeight();
+                final String roundingFactorStr = String.valueOf(roundingFactor);
+                if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded1))) {
+                    roundingRadiusX = width / 12;
+                    roundingRadiusY = height / 12;
+                } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded2))) {
+                    roundingRadiusX = width / 8;
+                    roundingRadiusY = height / 8;
+                } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded3))) {
+                    roundingRadiusX = width / 4;
+                    roundingRadiusY = height / 4;
+                } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Circle))) {
+                    roundingRadiusX = width / 2;
+                    roundingRadiusY = height / 2;
+                    makeSquared = true;
                 }
+
+            }
+
+            if (makeSquared) {
+                final int bmWidth = bm.getWidth();
+                final int bmHeight = bm.getHeight();
+
+                if (bmHeight > bmWidth) {
+                    //noinspection SuspiciousNameCombination
+                    bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
+                } else {
+                    //noinspection SuspiciousNameCombination
+                    bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+                }
+
             }
 
             if (!singleEventArray[Position_eventStorage].equals(STRING_STORAGE_CALENDAR) &&
@@ -2819,7 +2875,7 @@ class ContactsEvents {
                 bm = bmOverlay;
             }
 
-            //Добавление иконки внутрь фото
+            //Добавление иконки избранного
             if (!forWidget &&
                     preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_FavoritesIcon) &&
                     singleEventArray[Position_starred].equals(STRING_1)) {
@@ -2829,16 +2885,38 @@ class ContactsEvents {
                 canvas.drawBitmap(bm, new Matrix(), null);
                 bm.recycle();
                 Bitmap bmStar = BitmapFactory.decodeResource(getResources(), R.drawable.fav_star);
-                canvas.drawBitmap(Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4, bmOverlay.getHeight() / 4, true), 2 + offsetWidget, bmOverlay.getHeight() - (float)(bmOverlay.getHeight() / 4) - 2 - offsetWidget, null);
+                final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4, bmOverlay.getHeight() / 4, true);
+
+                if (roundingFactor < 9) { //Не круг - рисуем в левом нижнем углу
+
+                    canvas.drawBitmap(
+                            bmStarScaled,
+                            2,
+                            (float) (bmOverlay.getHeight() * 3 / 4) - 2,
+                            null
+                    );
+
+                } else { //Круг - рисуем внизу по центру
+
+                    canvas.drawBitmap(
+                            bmStarScaled,
+                            (float) (bmOverlay.getWidth() * 3 / 4) / 2,
+                            (float) (bmOverlay.getHeight() * 3 / 4) - 2,
+                            null
+                    );
+
+                }
                 bmStar.recycle();
+                bmStarScaled.recycle();
                 bm = bmOverlay;
 
             }
 
-            return bm;
+            return toRoundCorner(bm, roundingRadiusX, roundingRadiusY);
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return null;
         }
     }
@@ -2892,7 +2970,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
 
@@ -2948,7 +3027,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
         return resultMap;
@@ -2999,7 +3079,8 @@ class ContactsEvents {
             return result != null ? result : STRING_EMPTY;
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
 
@@ -3033,7 +3114,8 @@ class ContactsEvents {
             return phone != null ? phone : STRING_EMPTY;
 
         } catch (Exception e) {
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
 
@@ -3042,12 +3124,11 @@ class ContactsEvents {
     synchronized void computeDates() {
         //Вычисляем даты
 
-        if (isEmptyEventList()) return;
-
         long statCurrentModuleStart = System.currentTimeMillis();
-        //String singleEvent = null;
 
         try {
+
+            if (isEmptyEventList()) return;
 
             List<String> magicList = new ArrayList<>(); //Для 5k событий
 
@@ -3075,8 +3156,8 @@ class ContactsEvents {
             eventListUnsorted = new ArrayList<>(eventList);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         } finally {
 
             //Сортируем
@@ -3094,6 +3175,7 @@ class ContactsEvents {
         try {
             long dayDiff = -1;
             boolean isYear = false;
+            boolean isAD = true;
             Date eventDate = null; //оригинальная дата события
             Date BDay = null; //следующая дата события
             int Age = 0;
@@ -3102,53 +3184,55 @@ class ContactsEvents {
             if (singleEvent == null) return;
 
             String[] singleEventArray = singleEvent.split(STRING_EOT, -1);
+            if (singleEventArray.length < Position_attrAmount) {
+                eventList.set(i, STRING_EMPTY);
+                return;
+            }
+
             String[] dayArray = singleEventArray[Position_dates].split(STRING_2TILDA, -1);
             final String eventCaption = singleEventArray[Position_eventCaption];
             final String eventType = singleEventArray[Position_eventType];
             final String eventSubType = singleEventArray[Position_eventSubType];
 
-            //перебираем все даты и находим максимальную
-            for (String dayValue : dayArray) {
-                String accountType = dayValue.substring(0, dayValue.indexOf(STRING_COLON_SPACE));
-                String storedDate = dayValue.substring(dayValue.indexOf(STRING_COLON_SPACE) + STRING_COLON_SPACE.length());
-                Date storedDate_Date = null;
-                boolean storedDate_isYear = false;
+            if (singleEventArray[Position_eventDate].isEmpty()) {
+                //перебираем все даты и находим максимальную
+                for (String dayValue : dayArray) {
+                    String accountType = dayValue.substring(0, dayValue.indexOf(STRING_COLON_SPACE));
+                    String storedDate = dayValue.substring(dayValue.indexOf(STRING_COLON_SPACE) + STRING_COLON_SPACE.length());
+                    Date storedDate_Date = null;
+                    boolean storedDate_isYear = false;
 
-                if (!statEventTypes.containsKey(accountType)) {
-                    statEventTypes.put(accountType, 1);
-                } else {
-                    Integer oldCount = statEventTypes.get(accountType);
-                    statEventTypes.put(accountType, (oldCount == null ? 0 : oldCount) + 1);
-                }
+                    increaseStatForAccountType(accountType);
 
-                if (accountType.toLowerCase().contains(Objects.requireNonNull(resources).getString(R.string.account_skype))) {
+                    if (accountType.toLowerCase().contains(Objects.requireNonNull(resources).getString(R.string.account_skype))) {
 
-                    storedDate_isYear = true;
-                    try {
-                        storedDate_Date = sdf_skype.parse(storedDate);
-                    } catch (ParseException e) {
+                        storedDate_isYear = true;
                         try {
-                            storedDate_Date = sdf_ru.parse(storedDate);
-                        } catch (ParseException e2) {
+                            storedDate_Date = sdf_skype.parse(storedDate);
+                        } catch (ParseException e) {
                             try {
-                                storedDate_Date = sdf_ukr.parse(storedDate);
-                            } catch (ParseException e3) {
+                                storedDate_Date = sdf_ru.parse(storedDate);
+                            } catch (ParseException e2) {
                                 try {
-                                    storedDate_Date = sdf_us.parse(storedDate);
-                                } catch (ParseException e4) {
+                                    storedDate_Date = sdf_ukr.parse(storedDate);
+                                } catch (ParseException e3) {
                                     try {
-                                        storedDate_Date = sdf_uk.parse(storedDate);
-                                    } catch (ParseException e5) {
+                                        storedDate_Date = sdf_us.parse(storedDate);
+                                    } catch (ParseException e4) {
                                         try {
-                                            storedDate_Date = sdf_india.parse(storedDate);
-                                        } catch (ParseException e6) {
+                                            storedDate_Date = sdf_uk.parse(storedDate);
+                                        } catch (ParseException e5) {
                                             try {
-                                                storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                            } catch (ParseException e7) {
+                                                storedDate_Date = sdf_india.parse(storedDate);
+                                            } catch (ParseException e6) {
                                                 try {
-                                                    storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                } catch (ParseException e8) {
-                                                    //Не получилось распознать
+                                                    storedDate_Date = sdf_uk_no_year.parse(storedDate);
+                                                } catch (ParseException e7) {
+                                                    try {
+                                                        storedDate_Date = sdf_india_no_year.parse(storedDate);
+                                                    } catch (ParseException e8) {
+                                                        //Не получилось распознать
+                                                    }
                                                 }
                                             }
                                         }
@@ -3156,94 +3240,99 @@ class ContactsEvents {
                                 }
                             }
                         }
-                    }
 
-                } else if (accountType.equalsIgnoreCase(resources.getString(R.string.account_vk))) {
+                    } else if (accountType.equalsIgnoreCase(resources.getString(R.string.account_vk))) {
 
-                    if (storedDate.startsWith(STRING_0000_MINUS)) { //Нет года, формат 0000-mm-dd
+                        if (storedDate.startsWith(STRING_0000_MINUS)) { //Нет года, формат 0000-mm-dd
 
-                        try {
-                            BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(5));
-                        } catch (ParseException e) {
-                            //Не получилось распознать
-                        }
-                        if (BDay != null) {
-                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
-                            storedDate_Date = BDay;
+                            try {
+                                BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(5));
+                            } catch (ParseException e) {
+                                //Не получилось распознать
+                            }
+                            if (BDay != null) {
+                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                                storedDate_Date = BDay;
+                            }
+
+                        } else {
+
+                            storedDate_isYear = true;
+                            try {
+                                storedDate_Date = sdf_java.parse(storedDate);
+                            } catch (ParseException e) {
+                                try {
+                                    storedDate_Date = sdf_skype.parse(storedDate);
+                                } catch (ParseException e2) {
+                                    //Не получилось распознать
+                                }
+                            }
                         }
 
                     } else {
+                        //Стандартные аккаунты. Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
+                        //com.google
+                        //com.xiaomi
+                        //vnd.sec.contact.phone
+                        //asus.local.phone
+                        //com.google.android.gm.exchange
+                        //com.lotus.sync.notes
+                        //com.whatsapp
+                        //com.android.huawei.phone
 
-                        storedDate_isYear = true;
-                        try {
-                            storedDate_Date = sdf_java.parse(storedDate);
-                        } catch (ParseException e) {
+                        if (
+                                storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
+                                        storedDate.startsWith(STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
+                                        (storedDate.startsWith("1604-") && (accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange)) || accountType.equalsIgnoreCase(resources.getString(R.string.account_google)))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
+                                        (storedDate.startsWith("1904-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_huawei))) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
+                                        (!isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
+                        ) {
+
                             try {
-                                storedDate_Date = sdf_skype.parse(storedDate);
-                            } catch (ParseException e2) {
+                                BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(storedDate.startsWith(STRING_2MINUS) ? 2 : 5));
+                            } catch (ParseException e) {
                                 //Не получилось распознать
                             }
-                        }
-                    }
+                            if (BDay != null) {
+                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                                storedDate_Date = BDay;
+                            }
 
-                } else {
-                    //Стандартные аккаунты. Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
-                    //com.google
-                    //com.xiaomi
-                    //vnd.sec.contact.phone
-                    //asus.local.phone
-                    //com.google.android.gm.exchange
-                    //com.lotus.sync.notes
-                    //com.whatsapp
-                    //com.android.huawei.phone
+                        } else { //Обычный формат yyyy-MM-dd
 
-                    if (
-                            storedDate.startsWith(STRING_2MINUS) || //Нет года, формат --MM-dd
-                                    storedDate.startsWith(STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
-                                    (storedDate.startsWith("1604-") && (accountType.equalsIgnoreCase(resources.getString(R.string.account_exchange)) || accountType.equalsIgnoreCase(resources.getString(R.string.account_google)))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
-                                    (storedDate.startsWith("1904-") && accountType.equalsIgnoreCase(resources.getString(R.string.account_huawei))) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
-                                    (!isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
-                    ) {
-
-                        try {
-                            BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + storedDate.substring(storedDate.startsWith(STRING_2MINUS) ? 2 : 5));
-                        } catch (ParseException e) {
-                            //Не получилось распознать
-                        }
-                        if (BDay != null) {
-                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
-                            storedDate_Date = BDay;
-                        }
-
-                    } else { //Обычный формат yyyy-MM-dd
-
-                        storedDate_isYear = true;
-                        try {
-                            storedDate_Date = sdf_java.parse(storedDate);
-                        } catch (ParseException e) {
+                            storedDate_isYear = true;
                             try {
-                                storedDate_Date = sdf_skype.parse(storedDate);
-                            } catch (ParseException e2) {
+                                storedDate_Date = sdf_java_G.parse(storedDate);
+                                isAD = false;
+                            } catch (ParseException e0) {
                                 try {
-                                    storedDate_Date = sdf_ru.parse(storedDate);
-                                } catch (ParseException e3) {
+                                    storedDate_Date = sdf_java.parse(storedDate);
+                                } catch (ParseException e) {
                                     try {
-                                        storedDate_Date = sdf_uk.parse(storedDate);
-                                    } catch (ParseException e4) {
+                                        storedDate_Date = sdf_skype.parse(storedDate);
+                                    } catch (ParseException e2) {
                                         try {
-                                            storedDate_Date = sdf_india.parse(storedDate);
-                                        } catch (ParseException e5) {
+                                            storedDate_Date = sdf_ru.parse(storedDate);
+                                        } catch (ParseException e3) {
                                             try {
-                                                storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                                storedDate_isYear = false;
-                                            } catch (ParseException e6) {
+                                                storedDate_Date = sdf_uk.parse(storedDate);
+                                            } catch (ParseException e4) {
                                                 try {
-                                                    storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                    storedDate_isYear = false;
-                                                } catch (ParseException e7) {
-                                                    //Не получилось распознать
+                                                    storedDate_Date = sdf_india.parse(storedDate);
+                                                } catch (ParseException e5) {
+                                                    try {
+                                                        storedDate_Date = sdf_uk_no_year.parse(storedDate);
+                                                        storedDate_isYear = false;
+                                                    } catch (ParseException e6) {
+                                                        try {
+                                                            storedDate_Date = sdf_india_no_year.parse(storedDate);
+                                                            storedDate_isYear = false;
+                                                        } catch (ParseException e7) {
+                                                            //Не получилось распознать
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -3251,162 +3340,191 @@ class ContactsEvents {
                                 }
                             }
                         }
+
                     }
 
-                }
-
-                if (storedDate_Date != null) {
-                    if (eventDate == null) {
-                        eventDate = storedDate_Date;
-                        isYear = storedDate_isYear;
-                    } else if (storedDate_isYear & (!isYear || countDaysDiff(eventDate, storedDate_Date) > 0)) { //Если у пользователя несколько дат, берём наименьший возраст todo: можно вынести в настройку - в какую сторону округлять
-                        eventDate = storedDate_Date;
-                        isYear = true;
-                    }
-                }
-            }
-
-            if (eventDate != null) {
-
-                if (isYear) { //в eventDate - оригинальное событие
-
-                    Calendar cal = getCalendarFromDate(eventDate);
-                    try {
-
-                        BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
-                        if (BDay != null) {
-                            long dayDiff_tmp = countDaysDiff(currentDay, BDay);
-                            if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                    if (storedDate_Date != null) {
+                        if (eventDate == null) {
+                            eventDate = storedDate_Date;
+                            isYear = storedDate_isYear;
+                        } else if (storedDate_isYear & (!isYear || countDaysDiff(eventDate, storedDate_Date) > 0)) { //Если у пользователя несколько дат, берём наименьший возраст todo: можно вынести в настройку - в какую сторону округлять
+                            eventDate = storedDate_Date;
+                            isYear = true;
                         }
+                    }
+                }
 
-                    } catch (ParseException e) {
-                        //Не получилось распознать
+                if (eventDate != null) {
+
+                    if (isYear) { //Дата с годом
+                        if (isAD) {
+                            singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate); //оригинальное событие
+                        } else {
+                            singleEventArray[Position_eventDateText] = sdf_DDMMY.format(eventDate) + resources.getString(R.string.msg_after_year_bc); //до н.э.
+                        }
+                    } else { //Дата без года
+                        singleEventArray[Position_eventDateText] = sdf_DDMM.format(eventDate); //оригинальное событие без года
+                    }
+
+                    if (isYear) { //в eventDate - оригинальное событие
+
+                        Calendar cal = getCalendarFromDate(eventDate);
+                        try {
+
+                            BDay = sdf_java.parse(now.get(YEAR) + STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
+                            if (BDay != null) {
+                                long dayDiff_tmp = countDaysDiff(currentDay, BDay);
+                                if (dayDiff_tmp < 0) BDay = addYear(BDay, 1);
+                            }
+
+                        } catch (ParseException e) { /**/ }
                     }
 
                 }
 
                 if (BDay != null) {
-                    dayDiff = countDaysDiff(currentDay, BDay);
-                    Age = countYearsDiff(eventDate, BDay); //Считаем, сколько будет лет
-                    if (eventSubType.equals(eventTypesIDs.get(Type_BirthDay)))
-                        set_events_birthdays.put(singleEventArray[Position_contactID], eventDate);
+                    if (singleEventArray[Position_eventDate].isEmpty()) singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(BDay); //следующая дата события
                 }
 
+            } else {
+                try {
+                    eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateText]);
+                } catch (ParseException e) { /**/ }
+                try {
+                    BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
+                } catch (ParseException e) { /**/ }
+
+                String dayValue = dayArray[0];
+                if (!dayValue.isEmpty()) {
+                    String accountType = dayValue.substring(0, dayValue.indexOf(STRING_COLON_SPACE));
+                    increaseStatForAccountType(accountType);
+                }
+
+            }
+
+            if (eventDate != null && BDay != null) {
+                dayDiff = countDaysDiff(currentDay, BDay);
+                Age = countYearsDiff(eventDate, BDay); //Считаем, сколько будет лет
+                if (eventSubType.equals(eventTypesIDs.get(Type_BirthDay)) && !set_events_birthdays.containsKey(singleEventArray[Position_contactID]))
+                    set_events_birthdays.put(singleEventArray[Position_contactID], eventDate);
             }
 
             if (dayDiff == -1) {
 
                 eventList.set(i, STRING_EMPTY);
+                return;
 
+            }
+
+            //Если событие в ближайшие 3 дня, то в eventDistance будет <число дней до события>, иначе: "Дней до <тип события>: " +  <число дней до события> + <день недели>
+            singleEventArray[Position_eventDistance] = Long.toString(dayDiff);
+            singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDiff, BDay);
+
+            if (Age > 0) { //Возраст больше 1 года
+                singleEventArray[Position_age] = Integer.toString(Age);
+                singleEventArray[Position_age_caption] = getAgeString(
+                        Age,
+                        R.string.msg_after_year_prefix_1,
+                        R.string.msg_after_year_prefix_1_,
+                        R.string.msg_after_year_prefix_2_3_4,
+                        R.string.msg_after_year_prefix_4_21
+                );
+
+                if (eventType.equals(eventTypesIDs.get(Type_Anniversary))) {
+                    String anCaption;
+                    try {
+                        anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + Age, "string", context.getPackageName()));
+                    } catch (Resources.NotFoundException nfe) {
+                        anCaption = null;
+                    }
+                    if (anCaption != null && !isEmpty(anCaption) && !eventCaption.contains(STRING_PARENTHESIS_OPEN)) {
+                        singleEventArray[Position_eventCaption] = eventCaption.concat(STRING_PARENTHESIS_OPEN).concat(anCaption).concat(STRING_PARENTHESIS_CLOSE);
+                    }
+                }
+            } else if (countDaysDiff(eventDate, BDay) > 0) { //Возраст до года
+                singleEventArray[Position_age_caption] = countDaysDiffText(eventDate, BDay, 1);
             } else {
+                singleEventArray[Position_age] = STRING_MINUS1;
+                singleEventArray[Position_age_caption] = STRING_EMPTY;
+            }
+            if (!eventSubType.equals(eventTypesIDs.get(Type_Death)) && isYear) {
+                singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay, 3);
+            } else {
+                singleEventArray[Position_age_current] = STRING_EMPTY;
+            }
 
-                singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(BDay); //следующая дата события
-                if (isYear) { //Дата с годом
-                    singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate); //оригинальное событие
-                } else { //Дата без года
-                    singleEventArray[Position_eventDateText] = sdf_DDMM.format(eventDate); //оригинальное событие без года
-                }
+            if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
+                final String zodiacSign = getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleEventArray[Position_eventDateText]);
+                singleEventArray[Position_zodiacSign] = zodiacSign.equals(STRING_EMPTY) ? STRING_EMPTY : zodiacSign;
+                final String zodiacYear = getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleEventArray[Position_eventDateText]);
+                singleEventArray[Position_zodiacYear] = zodiacYear.equals(STRING_EMPTY) ? STRING_EMPTY : zodiacYear;
+            }
 
-                //Если событие в ближайшие 3 дня, то в eventDistance будет <число дней до события>, иначе: "Дней до <тип события>: " +  <число дней до события> + <день недели>
-                singleEventArray[Position_eventDistance] = Long.toString(dayDiff);
-                singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDiff, BDay);
+            //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
+            String eventKey = getEventKey(singleEventArray);
 
-                if (Age > 0) {
+            singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
+                    + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
+                    + (eventType.equals(eventTypesIDs.get(Type_BirthDay)) ? "1"
+                    : eventType.equals(eventTypesIDs.get(Type_Anniversary)) ? "2"
+                    : eventType.equals(eventTypesIDs.get(Type_Custom)) ? "3"
+                    : eventType.equals(eventTypesIDs.get(Type_Other)) ? "6"
+                    : "4");
+
+            eventList.set(i, TextUtils.join(STRING_EOT, singleEventArray));
+
+            //Вычисляем 5K даты
+            if (Age > 0 && eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
+
+                //todo: подумать: надо ли считать 5K для смертей и.т.п.?
+                long days = countDaysDiff(eventDate, currentDay);
+                long k = (days + 365) / 5000;
+                long mdays = (days + 365) % 5000;
+
+                if (mdays >= 0 && mdays <= 365) {
+                    //Формируем новую запись
+                    Calendar cal5K = Calendar.getInstance();
+                    int magicDayDistance = (int) (365 - mdays);
+                    cal5K.add(Calendar.DATE, magicDayDistance);
+
+                    singleEventArray[Position_eventType] = eventTypesIDs.get(Type_5K);
+                    singleEventArray[Position_eventSubType] = eventTypesIDs.get(Type_5K);
+                    singleEventArray[Position_eventCaption] = "5K+";
+                    singleEventArray[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
+                    //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
+                    singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(cal5K.getTime());
+                    singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate);
                     singleEventArray[Position_age] = Integer.toString(Age);
-                    singleEventArray[Position_age_caption] = getAgeString(
-                            Age,
-                            R.string.msg_after_year_prefix_1,
-                            R.string.msg_after_year_prefix_1_,
-                            R.string.msg_after_year_prefix_2_3_4,
-                            R.string.msg_after_year_prefix_4_21
-                    );
+                    singleEventArray[Position_age_caption] = 5 * k + "K";
+                    singleEventArray[Position_eventDistance] = Integer.toString(magicDayDistance);
+                    singleEventArray[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
+                    singleEventArray[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
+                    singleEventArray[Position_eventEmoji] = "🏆";
+                    singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay, 3); //Возраст текущий
+                    //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
 
-                    if (!eventSubType.equals(eventTypesIDs.get(Type_Death))) {
-                        singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay);
-                    }
-                    if (eventType.equals(eventTypesIDs.get(Type_Anniversary))) {
-                        String anCaption;
-                        try {
-                            anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + Age, "string", context.getPackageName()));
-                        } catch (Resources.NotFoundException nfe) {
-                            anCaption = null;
-                        }
-                        if (anCaption != null && !isEmpty(anCaption) && !eventCaption.contains(STRING_PARENTHESIS_OPEN)) {
-                            singleEventArray[Position_eventCaption] = eventCaption.concat(STRING_PARENTHESIS_OPEN).concat(anCaption).concat(STRING_PARENTHESIS_CLOSE);
-                        }
-                    }
-                } else {
-                    singleEventArray[Position_age] = STRING_MINUS1;
-                    singleEventArray[Position_age_caption] = STRING_SPACE;
-                    singleEventArray[Position_age_current] = STRING_SPACE;
-                }
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay))) {
-                    final String zodiacSign = getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN_TITLE, singleEventArray[Position_eventDateText]);
-                    singleEventArray[Position_zodiacSign] = zodiacSign.equals(STRING_EMPTY) ? STRING_SPACE : zodiacSign;
-                    final String zodiacYear = getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR_TITLE, singleEventArray[Position_eventDateText]);
-                    singleEventArray[Position_zodiacYear] = zodiacYear.equals(STRING_EMPTY) ? STRING_SPACE : zodiacYear;
+                    eventKey = getEventKey(singleEventArray);
+                    singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
+                            + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
+                            + "5";
+
+                    magicList.add(TextUtils.join(STRING_EOT, singleEventArray));
                 }
 
-                //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
-                String eventKey = getEventKey(singleEventArray);
-
-                singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
-                        + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
-                        + (eventType.equals(eventTypesIDs.get(Type_BirthDay)) ? "1"
-                        : eventType.equals(eventTypesIDs.get(Type_Anniversary)) ? "2"
-                        : eventType.equals(eventTypesIDs.get(Type_Custom)) ? "3"
-                        : eventType.equals(eventTypesIDs.get(Type_Other)) ? "6"
-                        : "4");
-
-                eventList.set(i, TextUtils.join(STRING_EOT, singleEventArray));
-
-                //Вычисляем 5K даты
-                if (Age > 0 && eventType.equals(eventTypesIDs.get(Type_BirthDay))) {
-
-                    //todo: подумать: надо ли считать 5K для смертей и.т.п.?
-                    long days = countDaysDiff(eventDate, currentDay);
-                    long k = (days + 365) / 5000;
-                    long mdays = (days + 365) % 5000;
-
-                    if (mdays >= 0 && mdays <= 365) {
-                        //Формируем новую запись
-                        Calendar cal5K = Calendar.getInstance();
-                        int magicDayDistance = (int) (365 - mdays);
-                        cal5K.add(Calendar.DATE, magicDayDistance);
-
-                        singleEventArray[Position_eventType] = eventTypesIDs.get(Type_5K);
-                        singleEventArray[Position_eventSubType] = eventTypesIDs.get(Type_5K);
-                        singleEventArray[Position_eventCaption] = "5K+";
-                        singleEventArray[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
-                        //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
-                        singleEventArray[Position_eventDate] = sdf_DDMMYYYY.format(cal5K.getTime());
-                        singleEventArray[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate);
-                        singleEventArray[Position_age] = Integer.toString(Age);
-                        singleEventArray[Position_age_caption] = 5 * k + "K";
-                        singleEventArray[Position_eventDistance] = Integer.toString(magicDayDistance);
-                        singleEventArray[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
-                        singleEventArray[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
-                        singleEventArray[Position_eventEmoji] = "🏆";
-                        singleEventArray[Position_age_current] = countDaysDiffText(eventDate, currentDay); //Возраст текущий
-                        //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
-
-                        eventKey = getEventKey(singleEventArray);
-                        singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
-                                + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
-                                + "5";
-
-                        magicList.add(TextUtils.join(STRING_EOT, singleEventArray));
-                    }
-
-                }
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) {
-                String finalSingleEvent = singleEvent;
-                handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_COMPUTE_DATES_ERROR + e + STRING_EOL + finalSingleEvent, Toast.LENGTH_LONG).show());
-            }
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e + STRING_EOL + singleEvent);
+        }
+    }
+
+    private void increaseStatForAccountType(@NonNull String accountType) {
+        if (!statEventTypes.containsKey(accountType)) {
+            statEventTypes.put(accountType, 1);
+        } else {
+            Integer oldCount = statEventTypes.get(accountType);
+            statEventTypes.put(accountType, (oldCount == null ? 0 : oldCount) + 1);
         }
     }
 
@@ -3456,14 +3574,14 @@ class ContactsEvents {
             eventDistance.append(STRING_BAR).append(getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1]);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR + e + STRING_EOL + dayDiff + STRING_EOL + eventDate, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e + STRING_EOL + dayDiff + STRING_EOL + eventDate);
         }
         return  eventDistance.toString();
     }
 
     List<String> insertPreviousEvents(@NonNull List<String> dataList, @NonNull String params) {
-
+        //todo: переделать под getPreviousEvents и сделать dataList final
         if (isEmpty(params) || dataList.isEmpty()) return dataList;
 
         try {
@@ -3591,7 +3709,7 @@ class ContactsEvents {
                         } else { //Сейчас идёт первый год жизни
 
                             singleEventArray[Position_age] = STRING_MINUS1;
-                            singleEventArray[Position_age_caption] = STRING_SPACE;
+                            singleEventArray[Position_age_caption] = STRING_EMPTY;
 
                         }
 
@@ -3601,8 +3719,8 @@ class ContactsEvents {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INSERT_PREVIOUS_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return dataList;
     }
@@ -3696,8 +3814,8 @@ class ContactsEvents {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATION_CHANNEL_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -3724,8 +3842,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_BOOT_RECEIVER_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -3761,8 +3879,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -3805,8 +3923,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_INIT_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -4050,7 +4168,14 @@ class ContactsEvents {
                             builder.setSound(Uri.parse(preferences_notifications_ringtone));
                         }
 
-                        builder.setLargeIcon(getContactPhoto(dataNotify[i], true, true,false));
+                        String eventSubType = singleEventArray[Position_eventSubType];
+                        int roundingFactor;
+                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_FileEvent))) {
+                            roundingFactor = 1;
+                        } else {
+                            roundingFactor = preferences_list_photostyle;
+                        }
+                        builder.setLargeIcon(getContactPhoto(dataNotify[i], true, true,false, roundingFactor));
 
                         if (preferences_notifications_priority > 2) {
                             builder.setOngoing(true);
@@ -4065,8 +4190,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -4083,8 +4208,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_EVENT_KEY_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return STRING_EMPTY;
     }
@@ -4128,8 +4253,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -4198,7 +4323,14 @@ class ContactsEvents {
                     builder.setSound(Uri.parse(preferences_notifications_ringtone));
                 }
 
-                builder.setLargeIcon(getContactPhoto(dataNotify, true, true, false));
+                String eventSubType = singleEventArray[Position_eventSubType];
+                int roundingFactor;
+                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_FileEvent))) {
+                    roundingFactor = 1;
+                } else {
+                    roundingFactor = preferences_list_photostyle;
+                }
+                builder.setLargeIcon(getContactPhoto(dataNotify, true, true, false, roundingFactor));
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(notificationID, builder.build());
 
@@ -4206,15 +4338,15 @@ class ContactsEvents {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
 
     boolean isEmptyEventList() {return eventList.isEmpty();}
 
-    @NonNull static String checkForNull(String strIn, @NonNull String strDefault) {return strIn != null && !strIn.isEmpty() ? strIn : strDefault;}
+    @NonNull static String checkForNull(String strIn) {return strIn != null && !strIn.isEmpty() ? strIn : Constants.STRING_EMPTY;}
 
     void clearHiddenEvents() {
 
@@ -4223,8 +4355,8 @@ class ContactsEvents {
             if (getHiddenEventsCount() > 0) preferences_hiddenEvents.clear();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -4236,8 +4368,8 @@ class ContactsEvents {
             return preferences_hiddenEvents == null || preferences_hiddenEvents.isEmpty() ? 0 : preferences_hiddenEvents.size();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_HIDDEN_EVENTS_COUNT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -4249,8 +4381,8 @@ class ContactsEvents {
             return !key.isEmpty() && preferences_hiddenEvents != null && preferences_hiddenEvents.contains(key);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -4271,8 +4403,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -4302,8 +4434,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -4316,8 +4448,8 @@ class ContactsEvents {
             if (getSilencedEventsCount() > 0) preferences_silentEvents.clear();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CLEAR_SILENCED_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -4329,8 +4461,8 @@ class ContactsEvents {
             return preferences_silentEvents == null || preferences_silentEvents.isEmpty() ? 0 : preferences_silentEvents.size();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_SILENT_EVENTS_COUNT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -4342,8 +4474,8 @@ class ContactsEvents {
             return !key.isEmpty() && preferences_silentEvents != null && preferences_silentEvents.contains(key);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -4364,8 +4496,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -4395,8 +4527,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_UNSET_SILENT_EVENT_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -4407,11 +4539,11 @@ class ContactsEvents {
 
         try {
 
-            return checkForNull(preferences_mergedIDs.get(linkID), STRING_EMPTY);
+            return checkForNull(preferences_mergedIDs.get(linkID));
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_MERGED_ID_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
     }
@@ -4446,8 +4578,8 @@ class ContactsEvents {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_MERGED_ID_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -4473,12 +4605,12 @@ class ContactsEvents {
             }
             if (toRemove.size() > 0) {
                 preferences_silentEvents.removeAll(toRemove);
-                handler.post(() -> Toast.makeText(context, context.getString(R.string.msg_filter_clean_silenced_result) + toRemove.size(), Toast.LENGTH_LONG).show());
+                ToastExpander.showText(context, context.getString(R.string.msg_filter_clean_silenced_result) + toRemove.size());
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -4503,12 +4635,12 @@ class ContactsEvents {
             }
             if (toRemove.size() > 0) {
                 preferences_hiddenEvents.removeAll(toRemove);
-                handler.post(() -> Toast.makeText(context, context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size(), Toast.LENGTH_LONG).show());
+                ToastExpander.showText(context,  context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size());
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -4518,17 +4650,15 @@ class ContactsEvents {
 
         try {
 
-
-
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putString(context.getString(R.string.widget_config_PrefName) + id, value);
             editor.apply();
 
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_SAVED, id) + value, Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) ToastExpander.showText(context, String.format(Constants.MSG_WIDGET_PREFS_SAVED, id) + value);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -4558,15 +4688,11 @@ class ContactsEvents {
                 prefWidget.add(defaultPref.get(prefWidget.size()));
             }
 
-            /*if (preferences_debug_on) new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, widgetType
-                    + STRING_PARENTHESIS_OPEN + widgetID
-                    + STRING_PARENTHESIS_CLOSE + STRING_COLON_SPACE+ prefWidget, Toast.LENGTH_LONG).show());*/
-
             return prefWidget;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_GET_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return defaultPref;
         }
 
@@ -4581,11 +4707,11 @@ class ContactsEvents {
         try {
 
             PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + id).apply();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, String.format(Constants.MSG_WIDGET_PREFS_REMOVED, id), Toast.LENGTH_LONG).show());
+            if (preferences_debug_on) ToastExpander.showText(context, String.format(Constants.MSG_WIDGET_PREFS_REMOVED, id));
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_REMOVE_WIDGET_PREFERENCE_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -4673,8 +4799,8 @@ class ContactsEvents {
             alertToShow.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -4702,8 +4828,8 @@ class ContactsEvents {
             return String.format(HTML_COLOR, Integer.toHexString(ContextCompat.getColor(context, colorId) & 0x00ffffff), msg);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_SET_HTML_COLOR_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return msg;
     }
@@ -4719,6 +4845,15 @@ class ContactsEvents {
             }
             if (normalName.contains("é")) {
                 normalName = normalName.replace("é", "e");
+            }
+            if (normalName.contains("\n")) {
+                normalName = normalName.replace("\n", "");
+            }
+            if (normalName.contains("\r")) {
+                normalName = normalName.replace("\r", "");
+            }
+            if (normalName.contains("\t")) {
+                normalName = normalName.replace("\t", " ");
             }
             return normalName;
         }
@@ -4979,7 +5114,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return STRING_EMPTY;
         }
     }
@@ -5116,7 +5252,7 @@ class ContactsEvents {
                 builder.setContentIntent(pendingIntent);
 
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setLargeIcon(getContactPhoto(quest.event, true, true,false));
+                    builder.setLargeIcon(getContactPhoto(quest.event, true, true,false, preferences_list_photostyle));
 
                     String[] eventInfo = quest.event.split(STRING_EOT, -1);
                     intent = new Intent(Intent.ACTION_VIEW);
@@ -5164,7 +5300,7 @@ class ContactsEvents {
                 builder.setTitle(quest.type);
                 builder.setMessage(STRING_EOL + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, true,false)));
+                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, true,false, preferences_list_photostyle)));
                 }
 
                 for (int i = 0; i < quest.actions.size(); i++) {
@@ -5203,8 +5339,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
     }
@@ -5229,8 +5365,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question), Constants.quiz_error_button_OK);
         }
@@ -5329,7 +5465,9 @@ class ContactsEvents {
             return result;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
+
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
@@ -5422,7 +5560,9 @@ class ContactsEvents {
             return result;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
+
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
@@ -5549,7 +5689,9 @@ class ContactsEvents {
             return result;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
+
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
     }
@@ -5589,8 +5731,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context.getApplicationContext(),Constants.CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
 
         return resultList;
@@ -5611,8 +5753,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
             return true;
         }
     }
@@ -5683,8 +5825,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context, Constants.SETTINGS_ACTIVITY_GET_PATH_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return STRING_EMPTY;
 
@@ -5726,8 +5868,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_DATA_COLUMN_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
         return null;
 
@@ -5741,13 +5883,14 @@ class ContactsEvents {
 
             for(int i = 0; i < Position_attrAmount; i++) {
                 if (!userData.containsKey(i)) {
-                    userData.put(i, (i == Position_contactID || i == Position_eventID || i == Position_photo_uri) ? STRING_EMPTY : STRING_SPACE);
+                    //userData.put(i, (i == Position_contactID || i == Position_eventID || i == Position_photo_uri) ? STRING_EMPTY : STRING_SPACE);
+                    userData.put(i, STRING_EMPTY);
                 }
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -5804,8 +5947,7 @@ class ContactsEvents {
             return uri != null ? new Intent(Intent.ACTION_VIEW, uri) : null;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            //if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_GET_ACTION_INTENT_ERROR + e.toString(), Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
             return null;
         }
 
@@ -5902,8 +6044,8 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (preferences_debug_on) handler.post(() -> Toast.makeText(context,Constants.CONTACT_EVENTS_INIT_ICONPACK_ERROR + e, Toast.LENGTH_LONG).show());
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on) ToastExpander.showText(context, getMethodName(3) + STRING_COLON_SPACE + e);
         }
     }
 
@@ -5942,6 +6084,35 @@ class ContactsEvents {
         } else {
             return null;
         }
+    }
+
+    //https://stackoverflow.com/questions/21633637/rounded-corners-android-image-buttons
+    static Bitmap toRoundCorner(@NonNull Bitmap bitmap, int pixelsX, int pixelsY) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, (float) pixelsX, (float) pixelsY, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
+    /**
+     * Get the method name for a depth in call stack.
+     * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
+     * @return method name
+     */
+    public static String getMethodName(final int depth)
+    {
+        final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+        //return ste[ste.length - 1 - depth].getClassName() + "->" + ste[ste.length - 1 - depth].getMethodName();
+        return depth >=0 ? ste[depth].getClassName() + "->" + ste[depth].getMethodName() : STRING_EMPTY;
     }
 
 }

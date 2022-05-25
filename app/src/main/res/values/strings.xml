@@ -77,6 +77,7 @@
     <string name="msg_after_year_prefix_4_21">" years"</string>
     <string name="msg_after_year_prefix_1_">" years"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_year_prefix_2_3_4">" years"</string>
+    <string name="msg_after_year_bc">" BC"</string>
 
     <string name="msg_after_month_prefix_1">" month"</string>
     <string name="msg_after_month_prefix_2_3_4">" months"</string>
@@ -333,7 +334,18 @@
         <item>Cards</item>
      </string-array>
 
-    <string name="pref_List_Filling_title">Filling type</string>
+    <string name="pref_List_PhotoStyle_title">Photos style</string>
+    <string name="pref_List_PhotoStyle_description">Set style of contacts photos in the event list</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Original</item>
+        <item>Slightly rounded</item>
+        <item>Medium rounded</item>
+        <item>Strongly rounded</item>
+        <item>Circle</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Background filling type</string>
     <string name="pref_List_Filling_description">Set filling type for event placeholder (gradient)</string>
 
     <string-array name="pref_List_Filling_entries">
@@ -544,6 +556,7 @@
     <string-array name="widget_config_font">
         <item>Auto</item>
         <item>x0.5</item>
+        <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
@@ -551,6 +564,17 @@
         <item>x1.5</item>
         <item>x1.75</item>
         <item>x2.0</item>
+    </string-array>
+
+    <string name="widget_config_photostyle_label">Photos style</string>
+    <string name="widget_config_photostyle_description">Contacts photos style</string>
+    <string name="widget_config_photostyle_with_align_description">Contacts photos style. Alignment: original - fill entire cell, rounded - vertically aligned to top, circle - vertically centered</string>
+    <string-array name="widget_config_photostyle">
+        <item>Original</item>
+        <item>Slightly rounded</item>
+        <item>Medium rounded</item>
+        <item>Strongly rounded</item>
+        <item>Circle</item>
     </string-array>
 
     <string name="widget_config_events_count_label">Custom events number</string>
@@ -800,7 +824,7 @@
 
 <!-- COMMON STRINGS -->
 
-    <drawable name="app_icon">@drawable/ic_launcher_spring</drawable>
+    <drawable name="app_icon">@mipmap/ic_launcher_spring_round</drawable>
 
     <string name="account_google" translatable="false">"com.google"</string>
     <string name="account_skype" translatable="false">"com.skype."</string>
@@ -1037,6 +1061,9 @@
     <string name="pref_List_Style_key" translatable="false">List_Style</string>
     <string name="pref_List_Style_default" translatable="false">@string/pref_List_Style_Card</string>
 
+    <string name="pref_List_PhotoStyle_key" translatable="false">List_PhotoStyle</string>
+    <string name="pref_List_PhotoStyle_default" translatable="false">@string/pref_List_PhotoStyle_Rounded1</string>
+
     <string name="pref_List_Filling_key" translatable="false">List_Filling</string>
     <string name="pref_List_Filling_default" translatable="false">@string/pref_List_Filling_RightToLeft</string>
 
@@ -1060,6 +1087,19 @@
     <string-array name="pref_List_Style_values" translatable="false">
         <item>@string/pref_List_Style_Flat</item>
         <item>@string/pref_List_Style_Card</item>
+    </string-array>
+
+    <string name="pref_List_PhotoStyle_Original" translatable="false">1</string>
+    <string name="pref_List_PhotoStyle_Rounded1" translatable="false">2</string>
+    <string name="pref_List_PhotoStyle_Rounded2" translatable="false">3</string>
+    <string name="pref_List_PhotoStyle_Rounded3" translatable="false">4</string>
+    <string name="pref_List_PhotoStyle_Circle" translatable="false">9</string>
+    <string-array name="pref_List_PhotoStyle_values" translatable="false">
+        <item>@string/pref_List_PhotoStyle_Original</item>
+        <item>@string/pref_List_PhotoStyle_Rounded1</item>
+        <item>@string/pref_List_PhotoStyle_Rounded2</item>
+        <item>@string/pref_List_PhotoStyle_Rounded3</item>
+        <item>@string/pref_List_PhotoStyle_Circle</item>
     </string-array>
 
     <string name="pref_List_Filling_None" translatable="false">1</string>
@@ -1212,9 +1252,9 @@
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,</string>
-    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17,</string>
-    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,</string>
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17,,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>

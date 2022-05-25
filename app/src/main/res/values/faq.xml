@@ -55,8 +55,12 @@
 
         <item>#Calendar events</item>
         <item>Any events from selected calendars are supported. Calendar sets are specified separately for the events \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
-        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol><li>contact found, but there is already data about the birthday - the date from the calendar is added to the event (with or without a year - depending on the setting)<li>the contact was found, but there is no information about the birthday - a new event is added to the list, clicking on it will open a contact card in the address book<li>contact not found - a new event is added, clicking on it will open a calendar event card</ol>]]></item>
-        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title is saved. Clicking on the event will open the calendar event card.]]></item>
+        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol>
+        <li>contact found, but there is already data about the birthday - the date from the calendar will be added to the event (with or without a year - depending on the setting)
+        <li>the contact was found, but there is no information about the birthday - a new event will be added to the list
+        <li>contact not found - a new event will be added
+        </ol>]]></item>
+        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title will be used as event naming]]></item>
         <item><![CDATA[<br>How to setup the display of events:<ol>
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
         <li>If the calendar is empty, create or import the required events. Events must be for the whole day
@@ -69,7 +73,7 @@
         <item><![CDATA[Events and birthdays from <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> are supported with some features:<ul><li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY etc)<li>if the year is unknown set 0000<li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title</ul>]]></item>
         <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME LASTNAME</b>&gt; [([ORGANIZATION,] TITLE)] [WEB LINK]<br><br>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]<br><br>]]></item>
-        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>]]></item>
+        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>]]></item>
         <item><![CDATA[<br>How to setup the display of events:<ol>
         <li>Download or create files with events
         <li>Select files in Settings-> Event customizing-> Birthday-> Files-> SELECT (Settings-> Event customizing-> Other event-> Files-> SELECT)

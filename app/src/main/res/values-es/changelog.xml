@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.0</item>
+        <item>Se agregaron parámetros de estilo de foto de contactos: óvalo, círculo</item>
+        <item>Los eventos de archivo ahora son compatibles con las fechas anteriores a la era común (más detalles en la guía \"Preguntas y respuestas\")</item>
+        <item>Se agregó soporte para eventos de calendario muy recurrentes (una vez al mes, una vez a la semana o con mayor frecuencia)</item>
+        <item>Si la edad es inferior a 1 año, se muestran los días y los meses</item>
+        <item>Optimizaciones de procesamiento de números de eventos grandes (> 5000)</item>
+
         <item>#1.6.9</item>
         <item>Se agregaron nuevos detalles de eventos al constructor de widgets de lista: nueva línea (3 piezas), días antes del evento, día de la semana</item>
         <item>El tiempo de notificación se puede seleccionar hasta un minuto</item>

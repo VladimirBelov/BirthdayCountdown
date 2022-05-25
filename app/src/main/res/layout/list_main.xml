@@ -35,7 +35,7 @@
             android:textAlignment="gravity"
             android:textColor="?attr/windowTitleColor"
             android:textSize="10sp"
-            tools:ignore="RtlSymmetry,SmallSp" />
+            tools:ignore="RtlSymmetry,SmallSp"/>
 
     </LinearLayout>
 
@@ -49,11 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
-            android:foregroundGravity="top"
-            android:paddingStart="1dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="1dp"
-            android:paddingBottom="2dp" />
+            android:foregroundGravity="top"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

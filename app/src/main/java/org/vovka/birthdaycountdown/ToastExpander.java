@@ -44,7 +44,7 @@ public class ToastExpander {
         t.start();
     }
 
-    public static void showText(@NonNull Context context, @NonNull String text) {
+    public static synchronized void showText(@NonNull Context context, @NonNull String text) {
 
         new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
 
