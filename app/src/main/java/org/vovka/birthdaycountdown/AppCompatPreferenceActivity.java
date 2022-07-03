@@ -93,6 +93,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     }
     @Override
     protected void onDestroy() {
+        //ToastExpander.showText(this, "onDestroy");
         super.onDestroy();
         getDelegate().onDestroy();
     }

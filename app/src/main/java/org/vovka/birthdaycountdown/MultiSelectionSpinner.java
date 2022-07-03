@@ -8,14 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CHECKS;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_COLOR;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_COLORED;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_LIST;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_RESULTS;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_TITLE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,7 +32,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     String[] _items = null;
     boolean[] mSelection = null;
     private boolean isSortable = false;
-    private String zeroSelectedTitle = STRING_EMPTY;
+    private String zeroSelectedTitle = Constants.STRING_EMPTY;
     private int zeroSelectedIndex = -1;
     private AlertDialog.Builder dialogBuilder;
     final ArrayAdapter<String> adapter;
@@ -114,11 +106,11 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
                 mSelected.add(b ? 1 : 0);
             }
 
-            args.putStringArrayList(EXTRA_LIST, mItems);
-            args.putIntegerArrayList(EXTRA_CHECKS, mSelected);
-            args.putStringArrayList(EXTRA_COLORED, mColored);
-            args.putInt(EXTRA_COLOR, mColor);
-            args.putString(EXTRA_TITLE, getContext().getString(R.string.pref_List_EventInfo_title));
+            args.putStringArrayList(Constants.EXTRA_LIST, mItems);
+            args.putIntegerArrayList(Constants.EXTRA_CHECKS, mSelected);
+            args.putStringArrayList(Constants.EXTRA_COLORED, mColored);
+            args.putInt(Constants.EXTRA_COLOR, mColor);
+            args.putString(Constants.EXTRA_TITLE, getContext().getString(R.string.pref_List_EventInfo_title));
 
             fragment.setArguments(args);
 
@@ -177,7 +169,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     public void setSelectedFromFragmentResults() {
         Bundle args = fragment.getArguments();
         if (args != null) {
-            final ArrayList<String> selected = args.getStringArrayList(EXTRA_RESULTS);
+            final ArrayList<String> selected = args.getStringArrayList(Constants.EXTRA_RESULTS);
             //Toast.makeText(getContext(), "Selected:\n" + selected.toString() , Toast.LENGTH_LONG).show();
             if (!selected.isEmpty()) {
                 moveToBeginning(selected);

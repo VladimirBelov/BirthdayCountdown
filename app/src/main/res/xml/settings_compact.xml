@@ -12,16 +12,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="pref_main">
 
-    <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
-	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
-    <!-- todo: попробовать https://github.com/Gericop/Android-Support-Preference-V7-Fix -->
-
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_Common_key"
         android:title="@string/pref_Common_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_Common_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@android:drawable/ic_menu_mapmode">
 
-        <!-- todo: добавить другие языки https://crowdin.com/ -->
         <ListPreference
             android:defaultValue="@string/pref_Language_default"
             android:entries="@array/pref_Language_entries"
@@ -42,8 +39,7 @@
             android:title="@string/pref_Theme_title"
             android:icon="@android:drawable/ic_menu_gallery"
             android:dialogIcon="@android:drawable/ic_menu_gallery"
-            android:negativeButtonText="@string/button_cancel"
-            />
+            android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_Accounts_key"
@@ -64,7 +60,7 @@
             android:summary="@string/pref_MenuStyle_description"
             android:title="@string/pref_MenuStyle_title"
             android:defaultValue="@bool/pref_MenuStyle_default"
-            android:icon="@android:drawable/ic_menu_preferences" />
+            android:icon="@android:drawable/ic_menu_preferences"/>
 
         <SwitchPreference
             android:key="@string/pref_Help_ExtraFun_On_key"
@@ -72,361 +68,361 @@
             android:title="@string/pref_ExtraFun_On_title"
             android:icon="@android:drawable/ic_menu_manage"/>
 
-		<!-- https://www.javarticles.com/2015/04/example-of-grouping-android-preferences-by-sub-screens.html -->
-		<!-- https://stackoverflow.com/questions/18261601/how-do-i-do-sub-categories-in-preferences -->
-		<!-- https://stackoverflow.com/questions/27862299/toolbar-is-hidden-in-nested-preferencescreen -->
-        <PreferenceScreen
-            android:key="pref_custom_events"
-            android:summary="@string/pref_CustomEvents_summary"
-            android:title="@string/pref_CustomEvents_title"
-            android:icon="@android:drawable/ic_menu_manage">
+    </PreferenceScreen>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Birthday_key"
-                android:title="@string/event_type_birthday"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_birthday">
+    <PreferenceScreen
+        android:key="@string/pref_CustomEvents_key"
+        android:title="@string/pref_CustomEvents_title"
+        android:summary="@string/pref_CustomEvents_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@drawable/ic_menu_friendslist">
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_Birthday_UseInternal_default"
-                    android:key="@string/pref_CustomEvents_Birthday_UseInternal_key"
-                    android:summary="@string/pref_CustomEvents_Birthday_UseInternal_description"
-                    android:title="@string/pref_CustomEvents_Birthday_UseInternal_title"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Birthday_key"
+            android:title="@string/event_type_birthday"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_birthday">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Birthday_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
-                    android:title="@string/pref_CustomEvents_Birthday_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>1
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_Birthday_UseInternal_default"
+                android:key="@string/pref_CustomEvents_Birthday_UseInternal_key"
+                android:summary="@string/pref_CustomEvents_Birthday_UseInternal_description"
+                android:title="@string/pref_CustomEvents_Birthday_UseInternal_title"/>
 
-                <Preference
-                    android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
-                    android:title="@string/pref_CustomEvents_Calendars_title"
-                    android:summary="@string/pref_CustomEvents_Calendars_description"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Birthday_Labels_key"
+                android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
+                android:title="@string/pref_CustomEvents_Birthday_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <!-- создаём динамически, если выбраны календари -->
-                <!--<Preference
-                    android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
-                    android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
-                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>-->
+            <Preference
+                android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
+                android:title="@string/pref_CustomEvents_Calendars_title"
+                android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
-                <!--<SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_Birthday_Calendars_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>-->
+            <!-- создаём динамически, если выбраны календари -->
+            <!--<Preference
+                android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
+                android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
+                android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>-->
 
-                <!--<Preference
-                    android:key="@string/pref_CustomEvents_Birthday_LocalFiles_key"
-                    android:title="@string/pref_CustomEvents_LocalFiles_title"
-                    android:summary="@string/pref_CustomEvents_Birthday_LocalFiles_description"/>-->
+            <!--<SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_Birthday_Calendars_UseYear_default"
+                android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"
+                android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>-->
 
-            </PreferenceCategory>
+            <!--<Preference
+                android:key="@string/pref_CustomEvents_Birthday_LocalFiles_key"
+                android:title="@string/pref_CustomEvents_LocalFiles_title"
+                android:summary="@string/pref_CustomEvents_Birthday_LocalFiles_description"/>-->
 
-            <PreferenceCategory
-                android:title="@string/event_type_anniversary"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_wedding">
+        </PreferenceCategory>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_Anniversary_UseInternal_default"
-                    android:key="@string/pref_CustomEvents_Anniversary_UseInternal_key"
-                    android:summary="@string/pref_CustomEvents_Anniversary_UseInternal_description"
-                    android:title="@string/pref_CustomEvents_Anniversary_UseInternal_title"/>
+        <PreferenceCategory
+            android:title="@string/event_type_anniversary"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_wedding">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Anniversary_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
-                    android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_Anniversary_UseInternal_default"
+                android:key="@string/pref_CustomEvents_Anniversary_UseInternal_key"
+                android:summary="@string/pref_CustomEvents_Anniversary_UseInternal_description"
+                android:title="@string/pref_CustomEvents_Anniversary_UseInternal_title"/>
 
-                <Preference
-                    android:key="@string/pref_CustomEvents_Anniversary_List_key"
-                    android:title="@string/pref_CustomEvents_Anniversary_List_title"
-                    android:summary="@string/pref_CustomEvents_Anniversary_List_description" />
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Anniversary_Labels_key"
+                android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
+                android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <Preference
+                android:key="@string/pref_CustomEvents_Anniversary_List_key"
+                android:title="@string/pref_CustomEvents_Anniversary_List_title"
+                android:summary="@string/pref_CustomEvents_Anniversary_List_description"/>
 
-            <PreferenceCategory
-                android:title="@string/event_type_nameday"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_nameday">
+        </PreferenceCategory>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_NameDay_UseInternal_default"
-                    android:key="@string/pref_CustomEvents_NameDay_UseInternal_key"
-                    android:summary="@string/pref_CustomEvents_NameDay_UseInternal_description"
-                    android:title="@string/pref_CustomEvents_NameDay_UseInternal_title"/>
+        <PreferenceCategory
+            android:title="@string/event_type_nameday"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_nameday">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_NameDay_Labels_key"
-                    android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
-                    android:title="@string/pref_CustomEvents_NameDay_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_NameDay_UseInternal_default"
+                android:key="@string/pref_CustomEvents_NameDay_UseInternal_key"
+                android:summary="@string/pref_CustomEvents_NameDay_UseInternal_description"
+                android:title="@string/pref_CustomEvents_NameDay_UseInternal_title"/>
 
-            </PreferenceCategory>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_NameDay_Labels_key"
+                android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
+                android:title="@string/pref_CustomEvents_NameDay_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            <PreferenceCategory
-                android:title="@string/event_type_crowning"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_crowning">
+        </PreferenceCategory>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_Crowning_UseInternal_default"
-                    android:key="@string/pref_CustomEvents_Crowning_UseInternal_key"
-                    android:summary="@string/pref_CustomEvents_Crowning_UseInternal_description"
-                    android:title="@string/pref_CustomEvents_Crowning_UseInternal_title"/>
+        <PreferenceCategory
+            android:title="@string/event_type_crowning"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_crowning">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Crowning_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
-                    android:title="@string/pref_CustomEvents_Crowning_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_Crowning_UseInternal_default"
+                android:key="@string/pref_CustomEvents_Crowning_UseInternal_key"
+                android:summary="@string/pref_CustomEvents_Crowning_UseInternal_description"
+                android:title="@string/pref_CustomEvents_Crowning_UseInternal_title"/>
 
-            </PreferenceCategory>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Crowning_Labels_key"
+                android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
+                android:title="@string/pref_CustomEvents_Crowning_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            <PreferenceCategory
-                android:title="@string/event_type_death"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_death">
+        </PreferenceCategory>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_Death_UseInternal_default"
-                    android:key="@string/pref_CustomEvents_Death_UseInternal_key"
-                    android:summary="@string/pref_CustomEvents_Death_UseInternal_description"
-                    android:title="@string/pref_CustomEvents_Death_UseInternal_title"/>
+        <PreferenceCategory
+            android:title="@string/event_type_death"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_death">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Death_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Death_Labels_summary"
-                    android:title="@string/pref_CustomEvents_Death_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_Death_UseInternal_default"
+                android:key="@string/pref_CustomEvents_Death_UseInternal_key"
+                android:summary="@string/pref_CustomEvents_Death_UseInternal_description"
+                android:title="@string/pref_CustomEvents_Death_UseInternal_title"/>
 
-                <ListPreference
-                    android:defaultValue="@string/pref_List_SadPhoto_default"
-                    android:entries="@array/pref_List_SadPhoto_entries"
-                    android:entryValues="@array/pref_List_SadPhoto_values"
-                    android:key="@string/pref_List_SadPhoto_key"
-                    android:summary="@string/pref_List_SadPhoto_description"
-                    android:title="@string/pref_List_SadPhoto_title"
-                    android:dialogIcon="@android:drawable/ic_menu_crop"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Death_Labels_key"
+                android:summary="@string/pref_CustomEvents_Death_Labels_summary"
+                android:title="@string/pref_CustomEvents_Death_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <ListPreference
+                android:defaultValue="@string/pref_List_SadPhoto_default"
+                android:entries="@array/pref_List_SadPhoto_entries"
+                android:entryValues="@array/pref_List_SadPhoto_values"
+                android:key="@string/pref_List_SadPhoto_key"
+                android:summary="@string/pref_List_SadPhoto_description"
+                android:title="@string/pref_List_SadPhoto_title"
+                android:dialogIcon="@android:drawable/ic_menu_crop"/>
 
-            <PreferenceCategory
-                android:title="@string/event_type_other"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_other">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Other_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Other_Labels_description"
-                    android:title="@string/pref_CustomEvents_Other_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:title="@string/event_type_other"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_other">
 
-                <Preference
-                    android:key="@string/pref_CustomEvents_Other_Calendars_key"
-                    android:title="@string/pref_CustomEvents_Calendars_title"
-                    android:summary="@string/pref_CustomEvents_Calendars_description"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Other_Labels_key"
+                android:summary="@string/pref_CustomEvents_Other_Labels_description"
+                android:title="@string/pref_CustomEvents_Other_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <Preference
-                    android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
-                    android:title="@string/pref_CustomEvents_LocalFiles_title"
-                    android:summary="@string/pref_CustomEvents_Other_LocalFiles_description"/>
+            <Preference
+                android:key="@string/pref_CustomEvents_Other_Calendars_key"
+                android:title="@string/pref_CustomEvents_Calendars_title"
+                android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
-            </PreferenceCategory>
+            <Preference
+                android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
+                android:title="@string/pref_CustomEvents_LocalFiles_title"
+                android:summary="@string/pref_CustomEvents_Other_LocalFiles_description"/>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Custom1_key"
-                android:title="@string/pref_CustomEvents_Custom_title"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_custom1">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom1_Caption_key"
-                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:hint="@string/pref_CustomEvent_Caption_hint"
-                    android:textSize="16sp"
-                    android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Custom1_key"
+            android:title="@string/pref_CustomEvents_Custom_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_custom1">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom1_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
-                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:importantForAccessibility="no"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom1_Caption_key"
+                android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                android:hint="@string/pref_CustomEvent_Caption_hint"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Custom1_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom1_Labels_key"
+                android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:importantForAccessibility="no"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                android:key="@string/pref_CustomEvents_Custom1_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Custom2_key"
-                android:title="@string/pref_CustomEvents_Custom_title"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_custom2">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom2_Caption_key"
-                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:hint="@string/pref_CustomEvent_Caption_hint"
-                    android:textSize="16sp"
-                    android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Custom2_key"
+            android:title="@string/pref_CustomEvents_Custom_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_custom2">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom2_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
-                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:importantForAccessibility="no"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom2_Caption_key"
+                android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                android:hint="@string/pref_CustomEvent_Caption_hint"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Custom2_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom2_Labels_key"
+                android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:importantForAccessibility="no"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                android:key="@string/pref_CustomEvents_Custom2_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Custom3_key"
-                android:title="@string/pref_CustomEvents_Custom_title"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_custom3">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom3_Caption_key"
-                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:hint="@string/pref_CustomEvent_Caption_hint"
-                    android:textSize="16sp"
-                    android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Custom3_key"
+            android:title="@string/pref_CustomEvents_Custom_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_custom3">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom3_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
-                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:importantForAccessibility="no"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom3_Caption_key"
+                android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                android:hint="@string/pref_CustomEvent_Caption_hint"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Custom3_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom3_Labels_key"
+                android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:importantForAccessibility="no"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                android:key="@string/pref_CustomEvents_Custom3_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Custom4_key"
-                android:title="@string/pref_CustomEvents_Custom_title"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_custom4">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom4_Caption_key"
-                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:hint="@string/pref_CustomEvent_Caption_hint"
-                    android:textSize="16sp"
-                    android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Custom4_key"
+            android:title="@string/pref_CustomEvents_Custom_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_custom4">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom4_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
-                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:importantForAccessibility="no"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom4_Caption_key"
+                android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                android:hint="@string/pref_CustomEvent_Caption_hint"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Custom4_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom4_Labels_key"
+                android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:importantForAccessibility="no"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                android:key="@string/pref_CustomEvents_Custom4_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
-            <PreferenceCategory
-                android:key="@string/pref_CustomEvents_Custom5_key"
-                android:title="@string/pref_CustomEvents_Custom_title"
-                android:layout="@layout/settings_category_with_icon"
-                android:icon="@drawable/ic_event_custom5">
+        </PreferenceCategory>
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom5_Caption_key"
-                    android:title="@string/pref_CustomEvents_Custom_Caption_title"
-                    android:hint="@string/pref_CustomEvent_Caption_hint"
-                    android:textSize="16sp"
-                    android:inputType="textCapSentences"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:negativeButtonText="@string/button_cancel"/>
+        <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Custom5_key"
+            android:title="@string/pref_CustomEvents_Custom_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_custom5">
 
-                <org.vovka.birthdaycountdown.CustomEditTextPreference
-                    android:key="@string/pref_CustomEvents_Custom5_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_description"
-                    android:title="@string/pref_CustomEvents_Custom_Labels_title"
-                    android:hint="@string/pref_CustomEvents_hint"
-                    android:textSize="16sp"
-                    android:dialogIcon="@android:drawable/ic_menu_edit"
-                    android:importantForAccessibility="no"
-                    android:negativeButtonText="@string/button_cancel"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom5_Caption_key"
+                android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                android:hint="@string/pref_CustomEvent_Caption_hint"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
 
-                <SwitchPreference
-                    android:defaultValue="@string/pref_CustomEvents_UseYear_default"
-                    android:key="@string/pref_CustomEvents_Custom5_UseYear_key"
-                    android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
-                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Custom5_Labels_key"
+                android:summary="@string/pref_CustomEvents_Custom_Labels_description"
+                android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:importantForAccessibility="no"
+                android:negativeButtonText="@string/button_cancel"/>
 
-            </PreferenceCategory>
+            <SwitchPreference
+                android:defaultValue="@string/pref_CustomEvents_UseYear_default"
+                android:key="@string/pref_CustomEvents_Custom5_UseYear_key"
+                android:summary="@string/pref_CustomEvents_Custom_UseYear_description"
+                android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
-        </PreferenceScreen>
+        </PreferenceCategory>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_EventList_key"
         android:title="@string/pref_EventList_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_EventList_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@android:drawable/ic_menu_agenda">
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_EventTypes_values_default"
@@ -439,11 +435,6 @@
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView
-            https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/
-            https://github.com/JayH5/drag-sort-listview
-            https://github.com/jonathangerbaud/Klyph/blob/master/Klyph/src/android/preference/MultiSelectDragListPreference.javaMultiSelectDragListPreference.java
-            -->
         <MultiSelectListPreference
             android:defaultValue="@array/pref_List_EventInfo_values_default"
             android:entries="@array/pref_List_EventInfo_entries"
@@ -591,12 +582,14 @@
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_Widgets_key"
         android:title="@string/pref_Widgets_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_Widgets_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@android:drawable/ic_menu_crop">
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_UpdateInterval_default"
@@ -641,8 +634,6 @@
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
-
-        <!-- todo: сделать цветные переключатели http://0x5453.blogspot.com/2014/06/61214.html -->
 
         <ListPreference
             android:defaultValue="@string/pref_Widgets_Days_EventSoon_default"
@@ -713,12 +704,14 @@
             app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_Notifications_key"
         android:title="@string/pref_Notifications_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_Notifications_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@drawable/ic_menu_notifications">
 
         <MultiSelectListPreference
             android:defaultValue="@array/pref_Notifications_Days_values_default"
@@ -777,9 +770,9 @@
             android:key="@string/pref_Notifications_Ringtone_key"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_description"
-            android:icon="@android:drawable/ic_menu_more"/>
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
 
-        <!--todo: сделать проверку, что выбрали не больше 3х действий https://stackoverflow.com/questions/11090304/multiselectlistpreference-example -->
         <MultiSelectListPreference
             android:defaultValue="@array/pref_Notifications_QuickActions_values_default"
             android:entries="@array/pref_Notifications_QuickActions_entries"
@@ -808,12 +801,14 @@
             android:title="@string/pref_Notifications_NotifyTest_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_Quiz_key"
         android:title="@string/pref_Quiz_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_Quiz_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@android:drawable/ic_menu_compass">
 
         <ListPreference
             android:key="@string/pref_Quiz_Interface_key"
@@ -825,25 +820,20 @@
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
         android:key="@string/pref_Help_key"
         android:title="@string/pref_Help_title"
-        android:layout="@layout/settings_category">
+        android:summary="@string/pref_Help_summary"
+        android:icon="@android:drawable/ic_menu_help"
+        android:layout="@layout/settings_category_with_icon">
 
         <Preference
             android:key="@string/pref_FAQActivity_key"
             android:summary="@string/pref_FAQ_description"
             android:title="@string/pref_FAQ_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
-
-        <Preference
-            android:key="@string/pref_BatteryOptimization_key"
-            android:summary="@string/pref_BatteryOptimization_description"
-            android:title="@string/pref_BatteryOptimization_title"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:layout="@layout/settings_item_red"/>
 
         <SwitchPreference
             android:key="@string/pref_Help_Debug_On_key"
@@ -852,10 +842,19 @@
             android:icon="@android:drawable/ic_menu_manage"/>
 
         <Preference
-            android:key="@string/pref_AboutActivity_key"
-            android:title="@string/window_about"
-            android:icon="@android:drawable/ic_menu_info_details"/>
+            android:key="@string/pref_BatteryOptimization_key"
+            android:summary="@string/pref_BatteryOptimization_description"
+            android:title="@string/pref_BatteryOptimization_title"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
 
-    </PreferenceCategory>
+    </PreferenceScreen>
+
+    <Preference
+        android:key="@string/pref_AboutActivity_key"
+        android:title="@string/window_about"
+        android:summary="@string/pref_About_summary"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:layout="@layout/settings_category_with_icon"/>
 
 </PreferenceScreen>

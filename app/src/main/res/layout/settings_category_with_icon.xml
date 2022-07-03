@@ -41,6 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingStart="8dip"
         android:paddingTop="6dip"
         android:paddingEnd="8dip"
         android:paddingBottom="6dip"
@@ -53,9 +54,11 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:paddingTop="2dp"
+            android:paddingBottom="4dip"
             android:textColor="?android:attr/textColorPrimary" />
 
         <TextView

@@ -66,6 +66,8 @@ final class Constants {
     static final String DATE_DD_MMM_YYYY = "dd MMM yyyy";
     static final String DATE_DD_MMM = "dd MMM";
     static final String DATE_D_MMMM_YYYY = "d MMMM yyyy";
+    static final String DATE_MMMM_D_YYYY = "MMMM d, yyyy";
+    static final String DATE_MMMM_D = "MMMM d";
     static final String DATE_D_MMMM = "d MMMM";
     static final String DATE_RUS = "dd MMMMM yyyy г.";
     static final String DATE_US = "MMM dd, yyyy";
@@ -208,6 +210,12 @@ final class Constants {
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 5000;
 
+    static final String account_google = "com.google";
+    static final String account_skype = "com.skype.";
+    static final String account_vk = "com.vkontakte.account";
+    static final String account_exchange = "com.google.android.gm.exchange";
+    static final String account_huawei = "com.android.huawei.phone";
+
     //Отладочные сообщения
 
     static final String MSG_NOTIFICATIONS_WERE_ENABLED = "Notifications were enabled\n";
@@ -221,164 +229,10 @@ final class Constants {
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
     static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
     static final String MSG_NO_ACTION = "No action for event";
+    static final String MSG_ERROR_PARSING_DATES = "Error parsing dates: ";
 
     static final String RULE_TAG_NAME = "[name]";
     //static final String RULE_TAG_ALIAS = "[alias]";
-
-    //Ошибки
-
-    static final String ALARM_RECEIVER_ON_RECEIVE_ERROR = "AlarmReceiver->onReceive error:\n";
-    static final String ACTION_RECEIVER_ON_RECEIVE_ERROR = "ActionReceiver->onReceive error:\n";
-    static final String WIDGETUPDATE_RECEIVER_ON_RECEIVE_ERROR = "WidgetUpdaterReceiver->onReceive error:\n";
-
-    static final String CONTACTS_EVENTS_GET_CONTACTS_EVENTS_ERROR = "ContactsEvents->getContactsEvents error:\n";
-
-    /*static final String CONTACTS_EVENTS_CHECK_IS_HIDDEN_EVENT_ERROR = "ContactsEvents->checkIsHiddenEvent error:\n";
-    static final String CONTACTS_EVENTS_CHECK_IS_SILENT_EVENT_ERROR = "ContactsEvents->checkIsSilentEvent error:\n";
-    static final String CONTACTS_EVENTS_CHECK_IS_BATTERY_OPTIMIZATION_ERROR = "ContactsEvents->checkNoBatteryOptimization error:\n";
-    static final String CONTACTS_EVENTS_COMPUTE_DATES_ERROR = "ContactsEvents->computeDates error:\n";
-    static final String CONTACTS_EVENTS_COMPUTE_DATE_FOR_EVENT_ERROR = "ContactsEvents->computeDateForEvent error:\n";
-    static final String CONTACTS_EVENTS_GET_EVENTS_ERROR = "ContactsEvents->getEvents error:\n";
-
-    static final String CONTACTS_EVENTS_GET_FILTERED_EVENT_LIST_ERROR = "ContactsEvents->getFilteredEventList error:\n";
-    static final String CONTACTS_EVENTS_READ_TEXT_FROM_URI_ERROR = "ContactsEvents->readFileToString error:\n";
-    static final String CONTACTS_EVENTS_ADD_CONTACT_EVENT_ERROR = "ContactsEvents->addContactEventToEventList error:\n";
-    static final String CONTACTS_EVENTS_GET_CALENDAR_EVENTS_ERROR = "ContactsEvents->getCalendarEvents error:\n";
-    static final String CONTACTS_EVENTS_GET_FILE_EVENTS_ERROR = "ContactsEvents->getFileEvents error:\n";
-    static final String CONTACTS_EVENTS_GET_CALENDARS_ERROR = "ContactsEvents->getCalendars error:\n";
-    //static final String CONTACTS_EVENTS_GET_CONTACT_PHOTO_ERROR = "ContactsEvents->getContactPhoto error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACT_DATA_ERROR = "ContactsEvents->getContactData error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACT_DATA_MULTI_ERROR = "ContactsEvents->getContactDataMulti error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACT_NAME_ERROR = "ContactsEvents->getContactFirstName error:\n";
-    static final String CONTACTS_EVENTS_GET_CONTACT_PHONE_ERROR = "ContactsEvents->getContactPhone error:\n";
-    static final String CONTACTS_EVENTS_GET_EVENT_DISTANCE_TEXT_ERROR = "ContactsEvents->getEventDistanceText error:\n";
-    static final String CONTACTS_EVENTS_GET_HIDDEN_EVENTS_COUNT_ERROR = "ContactsEvents->getHiddenEventsCount error:\n";
-    static final String CONTACTS_EVENTS_CLEAR_HIDDEN_EVENTS_ERROR = "ContactsEvents->clearHiddenEvents error:\n";
-    static final String CONTACTS_EVENTS_CLEAR_SILENCED_EVENTS_ERROR = "ContactsEvents->clearSilencedEvents error:\n";
-    static final String CONTACTS_EVENTS_GET_SILENT_EVENTS_COUNT_ERROR = "ContactsEvents->getSilentEventsCount error:\n";
-    static final String CONTACTS_EVENTS_GET_PREFERENCES_ERROR = "ContactsEvents->getPreferences error:\n";
-    static final String CONTACTS_EVENTS_INIT_BOOT_RECEIVER_ERROR = "ContactsEvents->initBootReceiver error:\n";
-    static final String CONTACTS_EVENTS_INIT_NOTIFICATIONS_ERROR = "ContactsEvents->initNotifications error:\n";
-    static final String CONTACTS_EVENTS_INIT_WIDGETUPDATE_ERROR = "ContactsEvents->initWidgetUpdate error:\n";
-    static final String CONTACTS_EVENTS_INIT_NOTIFICATION_CHANNEL_ERROR = "ContactsEvents->initNotificationChannel error:\n";
-    static final String CONTACTS_EVENTS_INSERT_PREVIOUS_EVENTS_ERROR = "ContactsEvents->insertPreviousEvents error:\n";
-    static final String CONTACTS_EVENTS_SET_HIDDEN_EVENT_ERROR = "ContactsEvents->setHiddenEvent error:\n";
-    static final String CONTACTS_EVENTS_UNSET_HIDDEN_EVENT_ERROR = "ContactsEvents->unsetHiddenEvent error:\n";
-    static final String CONTACTS_EVENTS_SET_SILENT_EVENT_ERROR = "ContactsEvents->setSilentEvent error:\n";
-    static final String CONTACTS_EVENTS_UNSET_SILENT_EVENT_ERROR = "ContactsEvents->unsetSilentEvent error:\n";
-    static final String CONTACTS_EVENTS_GET_MERGED_ID_ERROR = "ContactsEvents->getMergedID error:\n";
-    static final String CONTACTS_EVENTS_SET_MERGED_ID_ERROR = "ContactsEvents->setMergedID error:\n";
-    static final String CONTACTS_EVENTS_CLEAR_UNEXISTING_SILENCED_EVENTS_ERROR = "ContactsEvents->clearUnexistingSilencedEvents error:\n";
-    static final String CONTACTS_EVENTS_CLEAR_UNEXISTING_HIDDEN_EVENTS_ERROR = "ContactsEvents->clearUnexistingHiddenEvents error:\n";
-    static final String CONTACTS_EVENTS_SET_WIDGET_PREFERENCE_ERROR = "ContactsEvents->setWidgetPreference error:\n";
-    static final String CONTACTS_EVENTS_GET_WIDGET_PREFERENCE_ERROR = "ContactsEvents->getWidgetPreference error:\n";
-    static final String CONTACTS_EVENTS_REMOVE_WIDGET_PREFERENCE_ERROR = "ContactsEvents->removeWidgetPreference error:\n";
-    static final String CONTACTS_EVENTS_SET_LOCALE_ERROR = "ContactsEvents->setLocale error:\n";
-    static final String CONTACTS_EVENTS_SET_PREFERENCES_ERROR = "ContactsEvents->setPreferences error:\n";
-    static final String CONTACTS_EVENTS_SHOW_NOTIFICATIONS_ERROR = "ContactsEvents->showNotifications error:\n";
-    static final String CONTACTS_EVENTS_SNOOZE_NOTIFICATION_ERROR = "ContactsEvents->SnoozeNotification error:\n";
-    static final String CONTACTS_EVENTS_EVENT_KEY_ERROR = "ContactsEvents->getEventKey error:\n";
-    static final String CONTACTS_EVENTS_SHOW_NOTIFICATION_ERROR = "ContactsEvents->ShowNotification error:\n";
-    static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_ERROR = "ContactsEvents->countDaysDiff error:\n";
-    static final String CONTACTS_EVENTS_COUNT_DAYS_DIFF_TEXT_ERROR = "ContactsEvents->countDaysDiffText error:\n";
-    static final String CONTACTS_EVENTS_ADD_YEAR_ERROR = "ContactsEvents->addYear error:\n";
-    static final String CONTACTS_EVENTS_GET_AGE_STRING_ERROR = "ContactsEvents->getAgeString error:\n";
-    static final String CONTACTS_EVENTS_COUNT_YEARS_DIFF_ERROR = "ContactsEvents->countYearsDiff error:\n";
-    static final String CONTACTS_EVENTS_SHOW_ANNIVERSARY_LIST_ERROR = "ContactsEvents->showAnniversaryList error:\n";
-    static final String CONTACTS_EVENTS_SET_HTML_COLOR_ERROR = "ContactsEvents->setHTMLColor error:\n";
-    static final String CONTACTS_EVENTS_QUIZ_CHECK_AND_GO_ERROR = "ContactsEvents->quizCheckAndGo error:\n";
-    static final String CONTACTS_EVENTS_QUIZ_GET_QUESTION_ERROR = "ContactsEvents->quizGetQuestion error:\n";
-    static final String CONTACT_EVENTS_GET_DATA_COLUMN_ERROR = "ContactsEvents->getDataColumn error:\n";
-    static final String CONTACT_EVENTS_FILL_EMPTY_USERDATA_ERROR = "ContactsEvents->fillEmptyUserData error:\n";
-    static final String CONTACT_EVENTS_GET_ACTION_INTENT_ERROR = "ContactsEvents->getViewActionIntent error:\n";
-    static final String CONTACT_EVENTS_INIT_ICONPACK_ERROR = "ContactsEvents->initIconPack error:\n";
-*/
-    static final String DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR = "DeviceBootReceiver->onReceive error:\n";
-
-    static final String DATE_RECEIVER_ON_RECEIVE_ERROR = "DateReceiver->onReceive error:\n";
-
-    static final String DRAGLIST_ACTIVITY_ACTIVITY_ON_CREATE_ERROR = "DragListActivity->onCreate error:\n";
-
-    static final String EVENT_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventListDataProvider->getViewAt error:\n";
-    static final String EVENT_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventListDataProvider->initData error:\n";
-
-    static final String EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR = "EventPhotoListDataProvider->getViewAt error:\n";
-    static final String EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR = "EventPhotoListDataProvider->initData error:\n";
-
-    static final String GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR = "AccountsListAdapter->getView error:\n";
-    static final String GET_ICONPACK_LIST_ADAPTER_GET_VIEW_ERROR = "IconPackListAdapter->getView error:\n";
-
-    //static final String MAIN_ACTIVITY_DRAW_LIST_ERROR = "MainActivity->drawList error:\n";
-    //static final String MAIN_ACTIVITY_PREPARE_LIST_ERROR = "MainActivity->prepareList error:\n";
-    //static final String MAIN_ACTIVITY_DRAW_LIST_ON_ITEM_CLICK_ERROR = "MainActivity->drawList->onItemClick error:\n";
-    //static final String MAIN_ACTIVITY_INIT_NOTIFICATIONS_ERROR = "MainActivity->initNotifications error:\n";
-    //static final String MAIN_ACTIVITY_ON_CONTEXT_ITEM_SELECTED_ERROR = "MainActivity->onContextItemSelected error:\n";
-    //static final String MAIN_ACTIVITY_ON_CREATE_CONTEXT_MENU_ERROR = "MainActivity->onCreateContextMenu error:\n";
-    //static final String MAIN_ACTIVITY_ON_CREATE_ERROR = "MainActivity->onCreate error:\n";
-    //static final String MAIN_ACTIVITY_ON_OPTIONS_ITEM_SELECTED_ERROR = "MainActivity->onOptionsItemSelected error:\n";
-    //static final String MAIN_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "MainActivity->onActivityResult error:\n";
-    //static final String MAIN_ACTIVITY_ON_CREATE_OPTIONS_MENU_ERROR = "MainActivity->onCreateOptionsMenu error:\n";
-    //static final String MAIN_ACTIVITY_ON_START_ERROR = "MainActivity->onStart error:\n";
-    //static final String MAIN_ACTIVITY_ON_REFRESH_ERROR = "MainActivity->onRefresh error:\n";
-    //static final String MAIN_ACTIVITY_ON_RESUME_ERROR = "MainActivity->onResume error:\n";
-    //static final String MAIN_ACTIVITY_SET_HINT_ERROR = "MainActivity->setHint error:\n";
-    //static final String MAIN_ACTIVITY_UPDATE_LIST_ERROR = "MainActivity->updateList error:\n";
-    //static final String MAIN_ACTIVITY_CHECK_NEW_VERSION_ERROR = "MainActivity->checkNewVersion error:\n";
-    //static final String MAIN_ACTIVITY_SET_LASTRUN_VERSION_ERROR = "MainActivity->setLastRunVersion error:\n";
-    //static final String MAIN_ACTIVITY_CHECK_BATTERY_OPTIMIZATION_ERROR = "MainActivity->checkBatteryOptimization error:\n";
-    //static final String MAIN_ACTIVITY_SHOW_WELCOME_SCREEN_ERROR = "MainActivity->showWelcomeScreen error:\n";
-
-    static final String EVENTS_ADAPTER_GET_VIEW_ERROR = "EventsAdapter->getView error:\n";
-
-    static final String PERSON_CONSTRUCTOR_ERROR = "Person->Constructor error:\n";
-    static final String PERSON_GET_FULL_NAME_SHORT_ERROR = "Person->getFullNameShort error: ";
-    static final String PERSON_GET_GENDER_ERROR = "Person->getGender error:\n";
-
-    static final String SETTINGS_ACTIVITY_ON_CREATE_ERROR = "SettingsActivity->onCreate error:\n";
-    static final String SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR = "SettingsActivity->onPreferenceTreeClick error:\n";
-    static final String SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR = "SettingsActivity->setUpNestedScreen error:\n";
-    static final String SETTINGS_ACTIVITY_ON_STOP_ERROR = "SettingsActivity->onStop error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_ACCOUNTS_ERROR = "SettingsActivity->selectAccounts error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_ICONPACK_ERROR = "SettingsActivity->selectIconPack error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR = "SettingsActivity->selectCalendars error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR = "SettingsActivity->selectRingtone error:\n";
-    static final String SETTINGS_ACTIVITY_EDIT_RULES_ERROR = "SettingsActivity->editRules error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_FILES_ERROR = "SettingsActivity->selectFiles error:\n";
-    static final String SETTINGS_ACTIVITY_SELECT_ALARMTIME_ERROR = "SettingsActivity->selectAlarmTime error:\n";
-    static final String SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR = "SettingsActivity->onActivityResult error:\n";
-    static final String SETTINGS_ACTIVITY_GET_PATH_ERROR = "SettingsActivity->getPath error:\n";
-    static final String SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR = "SettingsActivity->updateTitles error:\n";
-    static final String SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR = "SettingsActivity->updateVisibility error:\n";
-
-    static final String SUGGESTIONPROVIDER_GETSUGGESTIONS_ERROR = "SuggestionProvider->getSuggestions error:\n";
-
-    static final String ABOUT_ACTIVITY_ON_CREATE_ERROR = "AboutActivity->onCreate error:\n";
-    static final String ABOUT_ACTIVITY_SET_DEBUG_ERROR = "AboutActivity->setDebug error:\n";
-    static final String ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR = "AboutActivity->showPreferences error:\n";
-
-    static final String COLOR_PICKER_INIT_ATTRS_ERROR = "ColorPicker->initAttrs error:\n";
-    static final String COLOR_PICKER_ON_CLICK_ERROR = "ColorPicker->onClick error:\n";
-    static final String COLOR_PICKER_SET_COLOR_VIEW_VALUE_ERROR = "ColorPicker->setColorViewValue error:\n";
-
-    static final String NOTIFY_ACTIVITY_ON_CREATE_ERROR = "NotifyActivity->onCreate error:\n";
-
-    static final String QUIZ_ACTIVITY_ON_CREATE_ERROR = "QuizActivity->onCreate error:\n";
-    static final String QUIZ_RECEIVER_ON_RECEIVE_ERROR = "QuizReceiver->onReceive error:\n";
-
-    static final String WIDGET_2_X_2_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget2x2->onAppWidgetOptionsChanged error:\n";
-    static final String WIDGET_2_X_2_UPDATE_APP_WIDGET_ERROR = "Widget2x2->updateAppWidget error:\n";
-    static final String WIDGET_4_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget4x1->onAppWidgetOptionsChanged error:\n";
-    static final String WIDGET_4_X_1_UPDATE_APP_WIDGET_ERROR = "Widget4x1->updateAppWidget error:\n";
-    static final String WIDGET_5_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "Widget5x1->onAppWidgetOptionsChanged error:\n";
-    static final String WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR = "Widget5x1->updateAppWidget error:\n";
-    static final String WIDGET_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "WidgetList->onAppWidgetOptionsChanged error:\n";
-    static final String WIDGET_LIST_UPDATE_APP_WIDGET_ERROR = "WidgetList->updateAppWidget error:\n";
-    static final String WIDGET_PHOTO_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR = "WidgetPhotoList->onAppWidgetOptionsChanged error:\n";
-    static final String WIDGET_PHOTO_LIST_UPDATE_APP_WIDGET_ERROR = "WidgetPhotoList->updateAppWidget error:\n";
-    static final String WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR = "WidgetConfigureActivity->buttonOkOnClick error:\n";
-    static final String WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR = "WidgetConfigureActivity->onCreate error:\n";
-    static final String WIDGET_UPDATER_INVOKE_ERROR = "WidgetUpdater->invokePhotoEventsUpdate error:\n";
-    static final String WIDGET_UPDATER_DRAW_EVENT_ERROR = "WidgetUpdater->drawEvent error:\n";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
     static final String WIDGET_TYPE_LIST = ".WidgetList";

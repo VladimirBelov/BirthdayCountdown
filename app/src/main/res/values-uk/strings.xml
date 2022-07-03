@@ -128,11 +128,12 @@
     <string name="hint_Age">Вік</string>
     <string name="hint_Date">Дата</string>
     <string name="hint_EventDistance">До події</string>
-    <string name="hint_Description">Деталі</string>
+    <string name="hint_EventDetails">Деталі</string>
     <string name="hint_VersionNumberDetails">Деталі номера версії</string>
     <string name="hint_EventIcon">Значок</string>
     <string name="hint_SearchPanel">Панель пошуку</string>
     <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
+    <string name="hint_AlertDialogIcon">Значок діалогового вікна сповіщення</string>
     <string name="hint_DragItem">Перетягнутий елемент</string>
     <string name="hint_Version_History">Історія версій</string>
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Play Market</string>
@@ -191,7 +192,8 @@
     <string name="widget_msg_updated">"оновлено: "</string>
     <string name="widget_msg_events">"події: "</string>
 
-    <string name="pref_Events_title">Загальні</string>
+    <string name="pref_Common_title">Загальні</string>
+    <string name="pref_Common_summary">Мова, колірна тема та інші налаштування</string>
     <string name="pref_Language_title">Мова</string>
     <string name="pref_Language_description">Мова інтерфейсу та відображених даних</string>
     <string name="pref_Theme_title">Тема</string>
@@ -200,6 +202,8 @@
     <string name="pref_Accounts_description">Шукати події тільки в наданих облікових записах</string>
     <string name="pref_IconPack_title">Пакет іконок</string>
     <string name="pref_IconPack_description">Використовуйте вибраний пакет значків, щоб показати силует контакту</string>
+    <string name="pref_MenuStyle_title">Ущільнене меню</string>
+    <string name="pref_MenuStyle_description">Використовуйте ущільнене меню з кількома рівнями або розширене меню з категоріями</string>
 
     <string-array name="pref_IconPack_entries">
         <item>Стандартні</item>
@@ -309,7 +313,8 @@
         <item>Для всіх подій контакту</item>
     </string-array>
 
-    <string name="pref_List_title">Список подій</string>
+    <string name="pref_EventList_title">Список подій</string>
+    <string name="pref_EventList_summary">Налаштування основного списку подій</string>
 
     <string name="pref_List_PrevEvents_title">Попередні події</string>
     <string name="pref_List_PrevEvents_description">Показувати попередні події у верхній частині списку</string>
@@ -325,6 +330,15 @@
         <item>Два попередніх події</item>
         <item>Три попередніх події</item>
     </string-array>
+
+    <string name="pref_List_FontMagnify_title">Розмір шрифту</string>
+    <string name="pref_List_FontMagnify_description">Встановити розмір шрифту елементів події</string>
+    <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
+    <string name="pref_List_FontMagnify_seek_distance">Відстань події:</string>
+    <string name="pref_List_FontMagnify_seek_name">Ім\'я або назва події:</string>
+    <string name="pref_List_FontMagnify_seek_details">Деталі події:</string>
+    <string name="pref_List_FontMagnify_seek_date">Дата:</string>
+    <string name="pref_List_FontMagnify_seek_age">Вік:</string>
 
     <string name="pref_List_Style_title">Стиль списку подій</string>
     <string name="pref_List_Style_description">Встановити стиль списку подій</string>
@@ -427,6 +441,7 @@
     <string name="pref_List_Color_EventJubilee_description">Колір ювілейного віку</string>
 
     <string name="pref_Widgets_title">Віджети</string>
+    <string name="pref_Widgets_summary">Загальні налаштування віджетів</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Період оновлення</string>
     <string name="pref_Widgets_UpdateInterval_description">Інтервал примусового поновлення віджетів</string>
@@ -595,6 +610,7 @@
     <string name="widget_config_color_back_description">Колір фону для віджета</string>
 
     <string name="pref_Notifications_title">Повідомлення</string>
+    <string name="pref_Notifications_summary">Коли та як показувати сповіщення про події</string>
 
     <string name="pref_Notifications_Type_title">Стиль повідомлень</string>
     <string name="pref_Notifications_Type_description">Вигляд вiдображення повідомлень</string>
@@ -662,6 +678,7 @@
     <string name="pref_Notifications_NotifyTest_description">Натисніть для показу тестового повідомлення за сьогодні</string>
 
     <string name="pref_Quiz_title">Вікторина</string>
+    <string name="pref_Quiz_summary">Вподобання вікторини</string>
     <string name="pref_Quiz_Interface_title">Інтерфейс</string>
     <string name="pref_Quiz_Interface_description">Який інтерфейс використовувати для запитань</string>
 
@@ -673,11 +690,15 @@
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_description">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>
     <string name="pref_Help_title">Допомога</string>
+    <string name="pref_Help_summary">Іноді це може допомогти</string>
+    <string name="pref_About_summary">Історія версій, статистика подій, посилання на магазини програм</string>
     <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_description">Відкрити налаштування і вимкнути оптимізацію…</string>
     <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
     <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_description">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
+    <string name="pref_ExtraFun_On_title">Додаткові функції</string>
+    <string name="pref_ExtraFun_On_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
@@ -692,7 +713,7 @@
     <string name="stats_speed_dates"><![CDATA[<li>підрахунок дат: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Лічильники:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>оригінальних подій: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>подій контактів: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>контактів: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>посад: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>організацій: %1$d]]></string>

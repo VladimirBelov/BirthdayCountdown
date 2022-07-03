@@ -8,15 +8,15 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "AlarmReceiver";
     private ContactsEvents eventsData;
 
     @Override
@@ -51,13 +51,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             //Посылаем сообщения на обновление виджетов
             eventsData.updateWidgets(0);
-            log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(STRING_EOL);
+            log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(Constants.STRING_EOL);
 
             if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ALARM_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

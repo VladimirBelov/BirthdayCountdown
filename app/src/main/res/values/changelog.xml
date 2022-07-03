@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.1</item>
+        <item>The settings menu has become more compact (but there is a new setting to return the old look)</item>
+        <item>Added event details magnify setting for event list</item>
+        <item>Size scaling is enabled for the widget for 5 events (but this widget is only for case of instability of widget for 1–7 events)</item>
+        <item>Event date display added to list photo widget</item>
+        <item>Added the \"Extra features\" checkbox to common settings, when enabled, all application settings become available</item>
+        <item>Optimizations and bug fixes</item>
+
         <item>#1.7.0</item>
         <item>Added contacts photo style parameters: oval, circle</item>
         <item>File events now support Before the Common Era dates (more details in the \"How to\" guide)</item>

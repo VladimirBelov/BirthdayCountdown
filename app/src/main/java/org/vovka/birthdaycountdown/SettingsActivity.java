@@ -8,23 +8,10 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_FILE;
-import static org.vovka.birthdaycountdown.Constants.RESULT_PICK_RINGTONE;
-import static org.vovka.birthdaycountdown.Constants.RULE_TAG_NAME;
-import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_CLOSE;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
-import static org.vovka.birthdaycountdown.Constants.STRING_PIPE;
-import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
-import static org.vovka.birthdaycountdown.Constants.Type_Other;
-
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -54,6 +41,7 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -65,15 +53,18 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -97,14 +88,13 @@ import java.util.Set;
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
-    private String testChannelId = STRING_EMPTY;
+    private static final String TAG = "SettingsActivity";
+    private String testChannelId = Constants.STRING_EMPTY;
     private TypedArray ta;
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
     private Set<String> filesList;
-    //private String selectedColorPicker = "";
 
-    @SuppressLint("PrivateResource")
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -133,10 +123,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
-            addPreferencesFromResource(R.xml.settings);
-
-            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             setContentView(R.layout.activity_settings);
@@ -161,46 +147,56 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setTitle(R.string.window_settings);
             }
 
+            if (eventsData.preferences_menustyle_compact) {
+                addPreferencesFromResource(R.xml.settings_compact);
+            } else {
+                addPreferencesFromResource(R.xml.settings);
+            }
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
             Preference notificationSoundPref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
-            notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
-                eventsData.getPreferences();
-                //Toast.makeText(this, eventsData.preferences_notifications_ringtone, Toast.LENGTH_LONG).show();
-                if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (notificationSoundPref != null) {
+                notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    eventsData.getPreferences();
+                    //Toast.makeText(this, eventsData.preferences_notifications_ringtone, Toast.LENGTH_LONG).show();
+                    if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
+                            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                        builder.setTitle(getString(R.string.msg_no_access_contacts));
-                        builder.setIcon(android.R.drawable.ic_menu_info_details);
-                        builder.setMessage(getString(R.string.msg_no_access_storage_hint));
-                        builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-                        builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
-                            try {
-                                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
-                            } catch (android.content.ActivityNotFoundException e) { /**/ }
-                        });
-                        AlertDialog alertToShow = builder.create();
-                        alertToShow.setOnShowListener(arg0 -> {
-                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        });
-                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        alertToShow.show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                            builder.setTitle(getString(R.string.msg_no_access_contacts));
+                            builder.setIcon(android.R.drawable.ic_menu_info_details);
+                            builder.setMessage(getString(R.string.msg_no_access_storage_hint));
+                            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                            builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
+                                try {
+                                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                            });
+                            AlertDialog alertToShow = builder.create();
+                            alertToShow.setOnShowListener(arg0 -> {
+                                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+                            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            alertToShow.show();
 
-                    } else {
+                        } else {
 
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                        }
 
                     }
+                    return true;
+                });
+            }
 
-                }
-                return true;
-            });
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -219,6 +215,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             updateVisibility();
         }
     }
+
+/*    @Override
+    public void onBackPressed()
+    {
+        //если используется compacted menu, то без этого после recreate на выходе из активности по back nav key вылетает ANR
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        //super.onBackPressed();
+        finish();
+    }*/
 
     private void updateTitles() {
 
@@ -262,45 +268,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_TITLES_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
     private void updateVisibility() {
+
         try {
 
             PreferenceCategory prefCat;
             Preference pref;
+            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add("");}});
+            boolean isNotifyEnabled = eventsData.preferences_notifications_days.size() > 0;
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
-            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
-            if (prefCat != null && eventsData.preferences_notifications_days.size() == 0) {
+            if (eventsData.preferences_menustyle_compact) {
+                PreferenceScreen prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
+                if (prefScreen != null) {
+                    pref = findPreference(getString(R.string.pref_Notifications_Type_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_Type_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_Events_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_Events_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
 
-                pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
-                if (pref != null) prefCat.removePreference(pref);
+                    pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
+                }
 
-                pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
-                if (pref != null) prefCat.removePreference(pref);
+            } else {
+                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
+                if (prefCat != null && !isNotifyEnabled) {
+                    pref = findPreference(getString(R.string.pref_Notifications_Type_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_Events_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
+                    if (pref != null) prefCat.removePreference(pref);
+                }
 
             }
 
@@ -344,30 +382,64 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
-            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Help_key));
-            if (prefCat != null) {
-                if (eventsData.checkNoBatteryOptimization()) {
-                    pref = findPreference(getString(R.string.pref_BatteryOptimization_key));
-                    if (pref != null) prefCat.removePreference(pref);
+            hidePreference(eventsData.checkNoBatteryOptimization(), eventsData.preferences_menustyle_compact, R.string.pref_Help_key, R.string.pref_BatteryOptimization_key);
+
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_NameFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_DateFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_Female_Names_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
+
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
+
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void hidePreference(boolean condition, boolean isThisScreen, @StringRes int parentId, @StringRes int resId) {
+
+        try {
+
+            if (condition) {
+                if (isThisScreen) {
+                    PreferenceScreen prefScreen = (PreferenceScreen) findPreference(getString(parentId));
+                    if (prefScreen != null) {
+                        Preference pref = findPreference(getString(resId));
+                        if (pref != null) prefScreen.removePreference(pref);
+                    }
+                } else {
+                    PreferenceCategory prefCat = (PreferenceCategory) findPreference(getString(parentId));
+                    if (prefCat != null) {
+                        Preference pref = findPreference(getString(resId));
+                        if (pref != null) prefCat.removePreference(pref);
+                    }
                 }
             }
 
-
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_UPDATE_VISIBILITY_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
         if (getPreferenceScreen() != null)
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
@@ -428,7 +500,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
@@ -442,7 +514,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
 
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
@@ -472,14 +544,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
 
                 filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_otherevent_files));
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_Other);
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
 
                 filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_birthday_files));
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Type_BirthDay);
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -493,11 +565,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectAlarmTime();
                 return true;
 
+            } else if (getString(R.string.pref_List_FontMagnify_key).equals(key)) {
+
+                selectFontMagnify();
+                return true;
+
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_PREFERENCE_TREE_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return false;
@@ -508,7 +585,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
             //удаляем временный канал оповещений
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals(STRING_EMPTY)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals(Constants.STRING_EMPTY)) {
                 NotificationManager notificationManager = getSystemService(NotificationManager.class);
                 if (notificationManager != null && notificationManager.getNotificationChannel(testChannelId) != null) {
                     notificationManager.deleteNotificationChannel(testChannelId);
@@ -518,8 +595,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_STOP_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             super.onStop();
         }
@@ -540,51 +617,67 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        ContactsEvents eventsData = ContactsEvents.getInstance();
-        eventsData.statLastPausedForOtherActivity = 0;
-        eventsData.getPreferences();
-        updateVisibility();
+        try {
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData.statLastPausedForOtherActivity = 0;
+            eventsData.getPreferences();
+            eventsData.needUpdateEventList = true;
 
-        if (key.equals(getString(R.string.pref_Language_key))) {
+            if (key.equals(getString(R.string.pref_Language_key))) {
 
-            this.recreate();
+                //https://stackoverflow.com/questions/2486934/programmatically-relaunch-recreate-an-activity
+                //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen !
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
 
-        } else if (key.equals(getString(R.string.pref_Theme_key))) {
+            } else if (key.equals(getString(R.string.pref_Theme_key))) {
 
-            this.setTheme(eventsData.preferences_theme.themeMain);
-            this.recreate();
-            //todo: созданные программно настройки не подхватывают стиль
+                this.setTheme(eventsData.preferences_theme.themeMain);
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+                //todo: созданные программно настройки не подхватывают стиль
 
-        } else if (key.equals(getString(R.string.pref_CustomEvents_Custom1_Caption_key)) ||
-                key.equals(getString(R.string.pref_CustomEvents_Custom2_Caption_key)) ||
-                key.equals(getString(R.string.pref_CustomEvents_Custom3_Caption_key)) ||
-                key.equals(getString(R.string.pref_CustomEvents_Custom4_Caption_key)) ||
-                key.equals(getString(R.string.pref_CustomEvents_Custom5_Caption_key))) {
+            } else if (key.equals(getString(R.string.pref_MenuStyle_key))) {
 
-            updateTitles();
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
 
-        } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
+            } else if (key.equals(getString(R.string.pref_Help_ExtraFun_On_key))) {
 
-            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add("");}});
-            if (eventsData.preferences_notifications_days.size() != 0) {
-                this.recreate();
-            //} else {
-            //    updateVisibility();
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+
+            } else if (key.equals(getString(R.string.pref_CustomEvents_Custom1_Caption_key)) ||
+                    key.equals(getString(R.string.pref_CustomEvents_Custom2_Caption_key)) ||
+                    key.equals(getString(R.string.pref_CustomEvents_Custom3_Caption_key)) ||
+                    key.equals(getString(R.string.pref_CustomEvents_Custom4_Caption_key)) ||
+                    key.equals(getString(R.string.pref_CustomEvents_Custom5_Caption_key))) {
+
+                updateTitles();
+                updateVisibility();
+
+            } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
+
+                if (eventsData.preferences_menustyle_compact) {
+                    updateVisibility();
+                } else {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
+
             }
-
-        //} else if (key.equals(getString(R.string.pref_CustomEvents_Birthday_Calendars_key))) {
-
-            // if (eventsData.preferences_Calendars_BirthDay.size() == 0) {
-
-            //     } else {
-            //       this.recreate();
-            //       setUpNestedScreen((PreferenceScreen) findPreference(getString(R.string.pref_CustomEvents_Birthday_key)));
-            //    }
-
-        }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
         else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
         }*/
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
 
     }
 
@@ -649,8 +742,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             list.setDividerHeight((int) (1 * displayMetrics.density));
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SET_UP_NESTED_SCREEN_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -667,7 +760,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (notificationManager != null) {
 
                     //если был предыдущий тест
-                    if (!testChannelId.equals(STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
+                    if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
                         notificationManager.deleteNotificationChannel(testChannelId);
                     }
 
@@ -686,7 +779,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.showNotifications(true, testChannelId);
 
         } else {
-            Toast.makeText(this, getString(R.string.msg_notifications_disabled), Toast.LENGTH_LONG).show();
+            ToastExpander.showText(this, getString(R.string.msg_notifications_disabled));
         }
     }
 
@@ -704,7 +797,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Account[] accounts = AccountManager.get(this).getAccounts();
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
                 for (Account account : accounts) {
-                    accountNames.add(account.name + STRING_PARENTHESIS_OPEN + account.type + STRING_PARENTHESIS_CLOSE);
+                    accountNames.add(account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE);
                     for (AuthenticatorDescription desc : descriptions) {
                         if (account.type.equals(desc.type)) {
                             accountIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
@@ -714,7 +807,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                     if (accountNames.size() != accountIcons.size()) { //Не нашли иконку, что ОЧЕНЬ странно
                         accountIcons.add(0);
-                        accountPackages.add(STRING_EMPTY);
+                        accountPackages.add(Constants.STRING_EMPTY);
                     }
                 }
             }
@@ -795,8 +888,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ACCOUNTS_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -842,8 +935,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ICONPACK_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -877,7 +970,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int ind = 0;
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
-                calTitles.add(entry.getValue().replace(STRING_EOT, STRING_PARENTHESIS_OPEN).concat(STRING_PARENTHESIS_CLOSE));
+                calTitles.add(entry.getValue().replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN).concat(Constants.STRING_PARENTHESIS_CLOSE));
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
                 sel[ind] = calSelected.get(ind++);
             }
@@ -911,8 +1004,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_CALENDARS_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -933,12 +1026,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
             }
             try {
-                startActivityForResult(intent, RESULT_PICK_RINGTONE);
+                startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
             } catch (android.content.ActivityNotFoundException e) { /**/ }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_RINGTONE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -991,11 +1084,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 String rules = input.getText().toString().trim();
 
                 if (!rules.isEmpty()) {
-                    final int rStartIndex = rules.indexOf(RULE_TAG_NAME);
+                    final int rStartIndex = rules.indexOf(Constants.RULE_TAG_NAME);
                     if (rStartIndex == -1) { //todo: && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
                         Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags), Toast.LENGTH_LONG).show();
                         return;
-                    } else if (rules.indexOf(RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf(STRING_BAR, rStartIndex) == -1) {
+                    } else if (rules.indexOf(Constants.RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf(Constants.STRING_BAR, rStartIndex) == -1) {
                         Toast.makeText(this, getText(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error), Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -1008,8 +1101,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_EDIT_RULES_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1026,7 +1119,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             boolean[] sel = new boolean[filesList.size()];
             int ind = 0;
             for (String file: filesList) {
-                filesPaths.add(file.split(STRING_PIPE)[0]);
+                filesPaths.add(file.split(Constants.STRING_PIPE)[0]);
                 filesFullData.add(file);
                 filesSelected.add(true);
                 sel[ind] = filesSelected.get(ind++);
@@ -1045,7 +1138,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (filesSelected.get(i)) {
                                 toStore.add(file);
                             } else {
-                                String[] fileDetails = file.split(STRING_PIPE);
+                                String[] fileDetails = file.split(Constants.STRING_PIPE);
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
@@ -1073,7 +1166,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (filesSelected.get(i)) {
                                 filesList.add(file);
                             } else {
-                                String[] fileDetails = file.split(STRING_PIPE);
+                                String[] fileDetails = file.split(Constants.STRING_PIPE);
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
@@ -1090,7 +1183,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         intent.setType("*/*");
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                         try {
-                            startActivityForResult(intent, RESULT_PICK_FILE);
+                            startActivityForResult(intent, Constants.RESULT_PICK_FILE);
                         } catch (android.content.ActivityNotFoundException e) { /**/ }
                     })
                     .setCancelable(true);
@@ -1112,13 +1205,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_FILES_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
 
-    private  void selectAlarmTime() {
+    private void selectAlarmTime() {
 
         try {
 
@@ -1140,8 +1233,204 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_SELECT_ALARMTIME_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void selectFontMagnify() {
+
+        try {
+
+            int dimen_details = (int) (eventsData.dimen_List_details / eventsData.DisplayMetrics_density);
+            int dimen_name = (int) (eventsData.dimen_List_name / eventsData.DisplayMetrics_density);
+            int dimen_date = (int) (eventsData.dimen_list_date / eventsData.DisplayMetrics_density);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+
+            AlertDialog dialog = builder.create();
+            View view = View.inflate(this, R.layout.dialog_fontmagnify, null);
+            dialog.setCustomTitle(view);
+
+            ImageView icon = view.findViewById(R.id.icon);
+            if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_menu_find));
+            TextView title = view.findViewById(R.id.title);
+            if (title != null) title.setText(R.string.pref_List_FontMagnify_title);
+
+            //Данные события
+            ImageView iconEvent = view.findViewById(R.id.entryEventIcon);
+            if (iconEvent != null) iconEvent.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_event_birthday));
+
+            ImageView photoEvent = view.findViewById(R.id.entryPhotoImageView);
+            if (photoEvent != null) {
+                final Integer idPhoto = eventsData.preferences_IconPackImages_M.get(0);
+                if (idPhoto != null) {
+                    photoEvent.setImageResource(idPhoto);
+                } else {
+                    photoEvent.setImageResource(R.drawable.ic_pack00_m1);
+                }
+            }
+
+            //Размер: Срок до события
+            TextView seek1_label = view.findViewById(R.id.seek1_label);
+            seek1_label.setText(getString(R.string.pref_List_FontMagnify_seek_distance));
+
+            SeekBar seek1 = view.findViewById(R.id.seek1);
+            seek1.setProgress(eventsData.preferences_list_magnify_distance + 5);
+
+            TextView seek1_progress = view.findViewById(R.id.seek1_progress);
+            seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek1.getProgress() - 5) * 10)));
+
+            TextView event_distance = view.findViewById(R.id.entryDayDistanceTextView);
+            event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek1.getProgress() - 5) * 0.1)));
+
+            seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                    seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek1.getProgress() - 5) * 10)));
+                    event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek1.getProgress() - 5) * 0.1)));
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            //Размер: ФИО
+            TextView seek2_label = view.findViewById(R.id.seek2_label);
+            seek2_label.setText(getString(R.string.pref_List_FontMagnify_seek_name));
+
+            SeekBar seek2 = view.findViewById(R.id.seek2);
+            seek2.setProgress(eventsData.preferences_list_magnify_name + 5);
+
+            TextView seek2_progress = view.findViewById(R.id.seek2_progress);
+            seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek2.getProgress() - 5) * 10)));
+
+            TextView event_title = view.findViewById(R.id.entryNameTextView);
+            event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek2.getProgress() - 5) * 0.1)));
+
+            seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                    seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek2.getProgress() - 5) * 10)));
+                    event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek2.getProgress() - 5) * 0.1)));
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            //Размер: Детали
+            TextView seek3_label = view.findViewById(R.id.seek3_label);
+            seek3_label.setText(getString(R.string.pref_List_FontMagnify_seek_details));
+
+            SeekBar seek3 = view.findViewById(R.id.seek3);
+            seek3.setProgress(eventsData.preferences_list_magnify_details + 5);
+
+            TextView seek3_progress = view.findViewById(R.id.seek3_progress);
+            seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek3.getProgress() - 5) * 10)));
+
+            TextView event_details = view.findViewById(R.id.entryEventDetailsTextView);
+            event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek3.getProgress() - 5) * 0.1)));
+
+            seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                    seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek3.getProgress() - 5) * 10)));
+                    event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek3.getProgress() - 5) * 0.1)));
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+
+            //Размер: Дата события
+            TextView seek4_label = view.findViewById(R.id.seek4_label);
+            seek4_label.setText(getString(R.string.pref_List_FontMagnify_seek_date));
+
+            SeekBar seek4 = view.findViewById(R.id.seek4);
+            seek4.setProgress(eventsData.preferences_list_magnify_date + 5);
+
+            TextView seek4_progress = view.findViewById(R.id.seek4_progress);
+            seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek4.getProgress() - 5) * 10)));
+
+            TextView event_date = view.findViewById(R.id.entryDateTextView);
+            event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seek4.getProgress() - 5) * 0.1)));
+
+            seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                    seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek4.getProgress() - 5) * 10)));
+                    event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seek4.getProgress() - 5) * 0.1)));
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            //Размер: Возраст
+            TextView seek5_label = view.findViewById(R.id.seek5_label);
+            seek5_label.setText(getString(R.string.pref_List_FontMagnify_seek_age));
+
+            SeekBar seek5 = view.findViewById(R.id.seek5);
+            seek5.setProgress(eventsData.preferences_list_magnify_age + 5);
+
+            TextView seek5_progress = view.findViewById(R.id.seek5_progress);
+            seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek5.getProgress() - 5) * 10)));
+
+            TextView event_age = view.findViewById(R.id.entryDetailsCounter);
+            event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek5.getProgress() - 5) * 0.1)));
+
+            seek5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                    seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek5.getProgress() - 5) * 10)));
+                    event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek5.getProgress() - 5) * 0.1)));
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            dialog.setOnShowListener(arg0 -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                eventsData.setPreferences_List_FontMagnify(
+                        seek1.getProgress() - 5,
+                        seek2.getProgress() - 5,
+                        seek3.getProgress() - 5,
+                        seek4.getProgress() - 5,
+                        seek5.getProgress() - 5
+                );
+                eventsData.setPreferences();
+                dialog.dismiss();
+            }));
+
+            dialog.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1150,7 +1439,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            if (requestCode == RESULT_PICK_FILE && resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.RESULT_PICK_FILE && resultCode == Activity.RESULT_OK) {
                 if (resultData != null) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
@@ -1159,7 +1448,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (!filename.isEmpty()) {
                                 this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                                 this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                filesList.add(filename.concat(STRING_BAR).concat(uri.toString()));
+                                filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
                                 selectFiles(this.eventTypeForSelect);
                             }
                         } else {
@@ -1167,7 +1456,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                     }
                 }
-            } else if (requestCode == RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
+            } else if (requestCode == Constants.RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
                 if (resultData != null) {
                     Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                     if (ringtone != null) {
@@ -1184,8 +1473,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.SETTINGS_ACTIVITY_ON_ACTIVITY_RESULT_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1196,6 +1485,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     //https://stackoverflow.com/questions/50077917/android-graphics-drawable-adaptiveicondrawable-cannot-be-cast-to-android-graphic
     private static class AccountsListAdapter extends ArrayAdapter<String> {
 
+        private static final String TAG = "AccountsListAdapter";
         private final List<Integer> images;
         private final List<String> packages;
         private final TypedArray ta;
@@ -1237,8 +1527,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), Constants.GET_ACCOUNTS_LIST_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -1248,6 +1538,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     private static class IconPackListAdapter extends ArrayAdapter<String> {
 
+        private static final String TAG = "IconPackListAdapter";
         private final List<Integer> images;
         private final TypedArray ta;
 
@@ -1288,8 +1579,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), Constants.GET_ICONPACK_LIST_ADAPTER_GET_VIEW_ERROR + e, Toast.LENGTH_LONG).show();
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;

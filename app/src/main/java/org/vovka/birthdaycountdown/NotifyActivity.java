@@ -10,10 +10,12 @@ package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class NotifyActivity extends Activity {
 
+    private static final String TAG = "NotifyActivity";
     private ContactsEvents eventsData;
 
     @Override
@@ -43,8 +45,8 @@ public class NotifyActivity extends Activity {
             finish();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.NOTIFY_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

@@ -8,15 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
-import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_4X1;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_5X1;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_LIST;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TYPE_PHOTO_LIST;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
@@ -27,6 +18,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +40,7 @@ import java.util.Locale;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
+    private static final String TAG = "WidgetConfigureActivity";
     private int widgetId = 0;
     private ContactsEvents eventsData;
     private List<String> eventTypesIDs;
@@ -100,13 +93,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if (extras != null) widgetId = extras.getInt(PARAM_APP_WIDGET_ID, 0);
+            if (extras != null) widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId);
             String widgetType;
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName();
             } else {
-                widgetType = WIDGET_TYPE_PHOTO_LIST;
+                widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
             }
 
             List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
@@ -174,7 +167,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             switch (widgetType) {
 
-                case WIDGET_TYPE_LIST:
+                case Constants.WIDGET_TYPE_LIST:
 
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
@@ -197,7 +190,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_NewLine3_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_NewLine3));
                     break;
 
-                case WIDGET_TYPE_PHOTO_LIST:
+                case Constants.WIDGET_TYPE_PHOTO_LIST:
 
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_None));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
@@ -211,6 +204,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate));
                     break;
 
                 default:
@@ -231,11 +225,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             String[] infoArray = null;
             try {
                 if (widgetPref.size() > 4) {
-                    if (widgetType.equals(WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_Widgets_EventInfo_None_ID)))) {
-                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(STRING_COMMA, -1)[4]);
+                    if (widgetType.equals(Constants.WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_Widgets_EventInfo_None_ID)))) {
+                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
                     }
 
-                    infoArray = widgetPref.get(4).split(REGEX_PLUS);
+                    infoArray = widgetPref.get(4).split(Constants.REGEX_PLUS);
                 }
                 if (infoArray != null) {
                     for (String item : infoArray) {
@@ -244,7 +238,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {/**/}
 
-            if (widgetType.equals(WIDGET_TYPE_LIST)) {
+            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
                 spinnerEventInfo.setSortable(true);
                 spinnerEventInfo.fm = getSupportFragmentManager();
                 spinnerEventInfo.setZeroSelectedIndex(-1);
@@ -310,7 +304,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
 
-            if (widgetType.equals(WIDGET_TYPE_4X1)) {
+            /*if (widgetType.equals(WIDGET_TYPE_4X1)) {
 
                 //Скрываем Коэффициент масштабирования размера шрифта
                 findViewById(R.id.dividerFontMagnify).setVisibility(View.GONE);
@@ -318,9 +312,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerFontMagnify).setVisibility(View.GONE);
                 findViewById(R.id.hintFontMagnify).setVisibility(View.GONE);
 
-            }
+            }*/
 
-            if (!widgetType.equals(WIDGET_TYPE_5X1)) {
+            if (!widgetType.equals(Constants.WIDGET_TYPE_5X1)) {
 
                 //Скрываем количество событий
                 findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
@@ -330,7 +324,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (widgetType.equals(WIDGET_TYPE_LIST) || widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
+            if (widgetType.equals(Constants.WIDGET_TYPE_LIST) || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
 
                 //Скрываем стартовый номер
                 findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
@@ -345,7 +339,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (widgetType.equals(WIDGET_TYPE_LIST)) {
+            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
 
                 //Скрываем стиль фото
                 findViewById(R.id.dividerPhotoStyle).setVisibility(View.GONE);
@@ -355,7 +349,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(WIDGET_TYPE_LIST) || widgetType.equals(WIDGET_TYPE_PHOTO_LIST)) {
+            if (eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + widgetId) || widgetType.equals(Constants.WIDGET_TYPE_LIST) || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
 
                 //Скрываем подсказку для существующих виджетов
                 findViewById(R.id.widget_hint).setVisibility(View.GONE);
@@ -363,8 +357,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -419,13 +413,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .concat(Constants.STRING_COMMA)
                     .concat(eventInfo.toString()) //Детали события (через +)
                     .concat(Constants.STRING_COMMA)
-                    .concat(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : STRING_EMPTY) //Цвет подложки
+                    .concat(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY) //Цвет подложки
                     .concat(Constants.STRING_COMMA)
                     .concat(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())) //Стиль фото
             );
 
             Intent intent = new Intent();
-            intent.putExtra(PARAM_APP_WIDGET_ID, widgetId);
+            intent.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
             setResult(RESULT_OK, intent);
 
             //Посылаем сообщение на обновление виджета
@@ -433,8 +427,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             finish();
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.WIDGET_CONFIGURE_ACTIVITY_BUTTON_OK_ON_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -456,14 +450,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(PARAM_APP_WIDGET_ID, widgetId);
+        outState.putInt(Constants.PARAM_APP_WIDGET_ID, widgetId);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        widgetId = savedInstanceState.getInt(PARAM_APP_WIDGET_ID);
+        widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
     }
 
     @Override

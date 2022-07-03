@@ -43,7 +43,7 @@ android {
     }
 
     compileSdkVersion 32
-    buildToolsVersion '33.0.0 rc4'
+    buildToolsVersion '33.0.0'
     //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
     def versionPropsFile = rootProject.file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -65,7 +65,7 @@ android {
             targetSdkVersion 32
             //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.7.0"
+            versionName "1.7.1"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {

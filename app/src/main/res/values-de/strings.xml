@@ -128,11 +128,12 @@
     <string name="hint_Age">Alter</string>
     <string name="hint_Date">Datum</string>
     <string name="hint_EventDistance">Bis zum Ereignis</string>
-    <string name="hint_Description">Einzelheiten</string>
+    <string name="hint_EventDetails">Einzelheiten</string>
     <string name="hint_VersionNumberDetails">Details zur Versionsnummer</string>
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Suchfeld</string>
     <string name="hint_AlertDialog">Warndialog</string>
+    <string name="hint_AlertDialogIcon">Icon für Warndialog</string>
     <string name="hint_DragItem">Ziehbares Element</string>
     <string name="hint_Version_History">Versionsgeschichte</string>
     <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Play Market</string>
@@ -191,7 +192,8 @@
     <string name="widget_msg_updated">"aktualisiert: "</string>
     <string name="widget_msg_events">"Ereignisse: "</string>
 
-    <string name="pref_Events_title">Allgemein</string>
+    <string name="pref_Common_title">Allgemein</string>
+    <string name="pref_Common_summary">Sprache, Farbthema und andere Einstellungen</string>
     <string name="pref_Language_title">Sprache</string>
     <string name="pref_Language_description">Sprache der Benutzeroberfläche</string>
     <string name="pref_Theme_title">Farbschema</string>
@@ -200,6 +202,8 @@
     <string name="pref_Accounts_description">Scannen Sie nur diese Konten auf Ereignisse</string>
     <string name="pref_IconPack_title">Symbolpaket</string>
     <string name="pref_IconPack_description">Verwenden Sie das ausgewählte Symbolpaket, um die Kontaktsilhouette anzuzeigen</string>
+    <string name="pref_MenuStyle_title">Kompaktes Menü</string>
+    <string name="pref_MenuStyle_description">Nutzen Sie ein kompaktes Menü mit mehreren Ebenen oder ein erweitertes Menü mit Kategorien</string>
 
     <string-array name="pref_IconPack_entries">
         <item>Standard</item>
@@ -309,7 +313,8 @@
         <item>Für alle Kontaktereignisse</item>
     </string-array>
 
-    <string name="pref_List_title">Liste der Ereignisse</string>
+    <string name="pref_EventList_title">Liste der Ereignisse</string>
+    <string name="pref_EventList_summary">Anpassung der Hauptereignisliste</string>
 
     <string name="pref_List_PrevEvents_title">Frühere Ereignisse</string>
     <string name="pref_List_PrevEvents_description">Zeigen Sie frühere Ereignisse oben in der Liste an</string>
@@ -325,6 +330,15 @@
         <item>Zwei frühere Ereignisse</item>
         <item>Drei frühere Ereignisse</item>
     </string-array>
+
+    <string name="pref_List_FontMagnify_title">Schriftgröße</string>
+    <string name="pref_List_FontMagnify_description">Legen Sie die Schriftgröße von Ereigniselementen fest</string>
+    <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
+    <string name="pref_List_FontMagnify_seek_distance">Ereignisdistanz:</string>
+    <string name="pref_List_FontMagnify_seek_name">Name oder Titel des Ereignisses:</string>
+    <string name="pref_List_FontMagnify_seek_details">Ereignisdetails:</string>
+    <string name="pref_List_FontMagnify_seek_date">Datum:</string>
+    <string name="pref_List_FontMagnify_seek_age">Das Alter:</string>
 
     <string name="pref_List_Style_title">Stil der Ereignisliste</string>
     <string name="pref_List_Style_description">Legen Sie den Stil der Ereignisliste fest</string>
@@ -427,6 +441,7 @@
     <string name="pref_List_Color_EventJubilee_description">Farbe des Jubiläumsalters</string>
 
     <string name="pref_Widgets_title">Widgets</string>
+    <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Aktualisierungsintervall</string>
     <string name="pref_Widgets_UpdateInterval_description">Intervall für erzwungene Aktualisierung von Widgets</string>
@@ -595,6 +610,7 @@
     <string name="widget_config_color_back_description">Hintergrundfarbe für Widget</string>
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
+    <string name="pref_Notifications_summary">Wann und wie Ereignisbenachrichtigungen angezeigt werden</string>
 
     <string name="pref_Notifications_Type_title">Benachrichtigungsstil</string>
     <string name="pref_Notifications_Type_description">Wie werden Benachrichtigungen aussehen</string>
@@ -662,6 +678,7 @@
     <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Benachrichtigung anzuzeigen</string>
 
     <string name="pref_Quiz_title">Quiz</string>
+    <string name="pref_Quiz_summary">Quiz-Einstellungen</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
     <string name="pref_Quiz_Interface_description">Welche Schnittstelle für Fragen verwendend werden soll</string>
 
@@ -673,11 +690,15 @@
     <string name="pref_FAQ_title">Fragen und Antworten</string>
     <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
     <string name="pref_Help_title">Hilfe</string>
+    <string name="pref_Help_summary">Manchmal kann es helfen</string>
+    <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_description">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
     <string name="pref_Debug_On_title">Debug &amp; Zusatzfunktionen</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
     <string name="pref_Debug_On_description">Debug-Meldungen und Zusatzfunktionen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
+    <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
+    <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
 
     <string name="changelog_version"><![CDATA[Version: %1$s (%2$s)<br>Datum: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
@@ -692,7 +713,7 @@
     <string name="stats_speed_dates"><![CDATA[<li>Datumsanzahl: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Zähler:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>Ursprüngliche Ereignisse: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>Kontakt Ereignisse: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>

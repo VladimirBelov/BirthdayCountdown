@@ -8,14 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_H1_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H1_START;
-import static org.vovka.birthdaycountdown.Constants.HTML_H2_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H2_START;
-import static org.vovka.birthdaycountdown.Constants.HTML_H3_END;
-import static org.vovka.birthdaycountdown.Constants.HTML_H3_START;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -23,8 +15,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,14 +25,17 @@ import androidx.core.content.ContextCompat;
 
 public class FAQActivity extends AppCompatActivity {
 
+    private static final String TAG = "FAQActivity";
+
     @SuppressLint("PrivateResource")
     public void onCreate(Bundle savedInstanceState) {
+
+        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
 
             super.onCreate(savedInstanceState);
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
             this.setTheme(eventsData.preferences_theme.themeMain);
             eventsData.setLocale(true);
 
@@ -90,13 +85,13 @@ public class FAQActivity extends AppCompatActivity {
             if (arrFAQrows.length > 0) {
                 for (String strRow : arrFAQrows) {
                     if (strRow.length() >= 3 && strRow.startsWith("###")) {
-                        sb.append(HTML_BR).append(HTML_H1_START).append(strRow.substring(3)).append(HTML_H1_END);
+                        sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
                     } else if (strRow.length() >= 2 && strRow.startsWith("##")) {
-                        sb.append(HTML_BR).append(HTML_H2_START).append(strRow.substring(2)).append(HTML_H2_END);
+                        sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
                     } else if (strRow.length() >= 1 && strRow.startsWith("#")) {
-                        sb.append(HTML_H3_START).append(strRow.substring(1)).append(HTML_H3_END);
+                        sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
                     } else {
-                        sb.append(strRow).append(HTML_BR);
+                        sb.append(strRow).append(Constants.HTML_BR);
                     }
                 }
             }
@@ -107,8 +102,8 @@ public class FAQActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

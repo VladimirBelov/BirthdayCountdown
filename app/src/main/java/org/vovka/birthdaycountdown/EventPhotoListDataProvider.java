@@ -8,43 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_PREFS;
-import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR;
-import static org.vovka.birthdaycountdown.Constants.HTML_FONT_END;
-import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.STRING_0;
-import static org.vovka.birthdaycountdown.Constants.STRING_1;
-import static org.vovka.birthdaycountdown.Constants.STRING_2;
-import static org.vovka.birthdaycountdown.Constants.STRING_3;
-import static org.vovka.birthdaycountdown.Constants.STRING_4;
-import static org.vovka.birthdaycountdown.Constants.STRING_5;
-import static org.vovka.birthdaycountdown.Constants.STRING_6;
-import static org.vovka.birthdaycountdown.Constants.STRING_7;
-import static org.vovka.birthdaycountdown.Constants.STRING_8;
-import static org.vovka.birthdaycountdown.Constants.STRING_9;
-import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
-import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
-import static org.vovka.birthdaycountdown.Constants.TIME_FORCE_UPDATE;
-import static org.vovka.birthdaycountdown.Constants.Type_5K;
-import static org.vovka.birthdaycountdown.Constants.Type_BirthDay;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_SMALL;
-import static org.vovka.birthdaycountdown.Constants.WIDGET_TEXT_SIZE_TINY;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_caption;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventCaption;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventEmoji;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventSubType;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullName;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_personFullNameAlt;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacSign;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_zodiacYear;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -53,6 +16,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -66,6 +30,7 @@ import java.util.List;
 
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
+    private static final String TAG = "EventPhotoListProvider";
     final List<String> eventListView = new ArrayList<>();
     final Context context;
     //final Resources resources;
@@ -109,48 +74,48 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             //Размер
             double fontMagnify = 1.2;
-            if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(STRING_0)) {
+            if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
                 switch (widgetPref.get(1)) {
-                    case STRING_1:
+                    case Constants.STRING_1:
                         fontMagnify = fontMagnify * 0.5;
                         break;
-                    case STRING_2:
+                    case Constants.STRING_2:
                         fontMagnify = fontMagnify * 0.65;
                         break;
-                    case STRING_3:
+                    case Constants.STRING_3:
                         fontMagnify = fontMagnify * 0.75;
                         break;
-                    case STRING_4:
+                    case Constants.STRING_4:
                         fontMagnify = fontMagnify * 0.85;
                         break;
-                    case STRING_5:
+                    case Constants.STRING_5:
                         fontMagnify = fontMagnify * 1;
                         break;
-                    case STRING_6:
+                    case Constants.STRING_6:
                         fontMagnify = fontMagnify * 1.2;
                         break;
-                    case STRING_7:
+                    case Constants.STRING_7:
                         fontMagnify = fontMagnify * 1.5;
                         break;
-                    case STRING_8:
+                    case Constants.STRING_8:
                         fontMagnify = fontMagnify * 1.75;
                         break;
-                    case STRING_9:
+                    case Constants.STRING_9:
                         fontMagnify = fontMagnify * 2.0;
                         break;
                 }
             }
-            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_SMALL * fontMagnify));
-            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP, (float) (WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_SMALL * fontMagnify));
+            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
 
             views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
             views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
-            String[] singleEventArray = eventInfo.split(STRING_EOT, -1);
+            String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
 
-            if (singleEventArray.length < Position_attrAmount) {
+            if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
                 views.setTextViewText(R.id.eventCaption, eventInfo);
 
@@ -158,11 +123,11 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                 switch (eventsData.preferences_list_nameformat) {
                     case 2: //Фамилия Имя Отчество
-                        views.setTextViewText(R.id.eventCaption, singleEventArray[Position_personFullNameAlt]);
+                        views.setTextViewText(R.id.eventCaption, singleEventArray[ContactsEvents.Position_personFullNameAlt]);
                         break;
                     case 1: //Имя Отчество Фамилия
                     default:
-                        views.setTextViewText(R.id.eventCaption, singleEventArray[Position_personFullName]);
+                        views.setTextViewText(R.id.eventCaption, singleEventArray[ContactsEvents.Position_personFullName]);
                         break;
                 }
 
@@ -203,7 +168,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_JobTitle)) {
                     final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
-                        if (sbDetails.length() > 0) sbDetails.append(STRING_COMMA_SPACE);
+                        if (sbDetails.length() > 0) sbDetails.append(Constants.STRING_COMMA_SPACE);
                         sbDetails.append(positionJobTitle);
                     }
                 }
@@ -211,62 +176,70 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Иконка
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
-                    if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
-                    sbDetails.append(singleEventArray[Position_eventEmoji]).append(STRING_SPACE);
+                    if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                    sbDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
                 }
 
                 //Наименование события и возраст
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption)) {
-                    sbDetails.append(singleEventArray[Position_eventCaption]);
+                    sbDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                 }
-                if (!singleEventArray[Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
+                if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
                         ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
                         : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Age)) {
-                    if (!singleEventArray[Position_age_caption].trim().isEmpty()) {
+                    if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
                         if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventCaption))
-                            sbDetails.append(STRING_COLON_SPACE);
-                        sbDetails.append(singleEventArray[Position_age_caption]);
+                            sbDetails.append(Constants.STRING_COLON_SPACE);
+                        sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                     }
                 }
 
                 //Знак зодиака и животное в восточном календаре
-                String eventSubType = singleEventArray[Position_eventSubType];
+                String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
 
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_5K))) {
+                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
 
-                    String strZodiacInfo = STRING_EMPTY;
+                    String strZodiacInfo = Constants.STRING_EMPTY;
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)
                             : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)) {
-                        strZodiacInfo = singleEventArray[Position_zodiacSign].trim();
+                        strZodiacInfo = singleEventArray[ContactsEvents.Position_zodiacSign].trim();
                     }
 
-                    String strZodiacYearInfo = STRING_EMPTY;
+                    String strZodiacYearInfo = Constants.STRING_EMPTY;
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)
                             : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
-                        strZodiacYearInfo = singleEventArray[Position_zodiacYear].trim();
+                        strZodiacYearInfo = singleEventArray[ContactsEvents.Position_zodiacYear].trim();
                     }
 
                     if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
-                        if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
-                        sbDetails.append((strZodiacInfo.concat(STRING_SPACE).concat(strZodiacYearInfo)).trim());
+                        if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                        sbDetails.append((strZodiacInfo.concat(Constants.STRING_SPACE).concat(strZodiacYearInfo)).trim());
                     }
                 }
 
                 //Срок до события и день недели
-                final String eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText];
+                final String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                 final boolean showDistance = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID));
                 final boolean showDayOfWeek = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID));
-                final int barIndex = eventDistanceText.indexOf(STRING_BAR);
-                if ((showDistance || showDayOfWeek) && barIndex > -1) {
-                    if (sbDetails.length() > 0) sbDetails.append(HTML_BR);
+                final boolean showEventDate = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventDate_ID));
 
-                    if (showDistance && (!showDayOfWeek || singleEventArray[ContactsEvents.Position_eventDistance].equals(STRING_0))) {
-                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.substring(0, barIndex)).concat(HTML_FONT_END) : eventDistanceText);
-                    } else if (showDistance) {
-                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.replace(STRING_BAR, STRING_SPACE)).concat(HTML_FONT_END) : eventDistanceText);
-                    } else {
-                        sbDetails.append(colorDate != null ? String.format(HTML_COLOR, colorDate, eventDistanceText.substring(barIndex + 1)).concat(HTML_FONT_END) : eventDistanceText);
+                if (showDistance || showDayOfWeek || showEventDate) {
+                    if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+
+                    StringBuilder textDistance = new StringBuilder();
+                    if (showDistance) textDistance.append(eventDistanceText[0]);
+                    if (!singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+                        if (showDayOfWeek) {
+                            if (textDistance.length() > 0) textDistance.append(Constants.STRING_SPACE);
+                            textDistance.append(eventDistanceText[1]);
+                        }
+                        if (showEventDate) {
+                            if (textDistance.length() > 0) textDistance.append(Constants.STRING_COMMA_SPACE);
+                            textDistance.append(eventDistanceText[2]);
+                        }
                     }
+
+                    sbDetails.append(colorDate != null ? String.format(Constants.HTML_COLOR, colorDate, textDistance).concat(Constants.HTML_FONT_END) : textDistance.toString());
                 }
 
                 views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(sbDetails.toString(), 0));
@@ -280,10 +253,10 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     int roundingFactor = 1;
                     if (widgetPref != null && widgetPref.size() > 6) {
                         switch (widgetPref.get(6)) {
-                            case STRING_1: roundingFactor = 2; break;
-                            case STRING_2: roundingFactor = 3; break;
-                            case STRING_3: roundingFactor = 4; break;
-                            case STRING_4: roundingFactor = 9; break;
+                            case Constants.STRING_1: roundingFactor = 2; break;
+                            case Constants.STRING_2: roundingFactor = 3; break;
+                            case Constants.STRING_3: roundingFactor = 4; break;
+                            case Constants.STRING_4: roundingFactor = 9; break;
                         }
                     }
 
@@ -316,13 +289,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             }
 
             Intent clickIntent = new Intent();
-            clickIntent.putExtra(EXTRA_CLICKED_EVENT, eventInfo);
-            clickIntent.putExtra(EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
             views.setOnClickFillInIntent(R.id.eventEntry, clickIntent);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_GETVIEWAT_ERROR + e);
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return views;
@@ -370,20 +343,20 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName();
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
-            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             widgetPref_eventInfo = new ArrayList<>();
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(REGEX_PLUS));
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
             }
 
             eventListView.clear();
             eventListView.addAll(eventsData.getFilteredEventList(eventsData.eventList, widgetPref));
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context.getApplicationContext(),Constants.EVENT_PHOTO_LIST_DATA_PROVIDER_INIT_DATA_ERROR + e);
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

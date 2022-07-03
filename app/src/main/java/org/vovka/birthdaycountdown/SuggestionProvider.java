@@ -8,15 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.STRING_BAR;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
-import static org.vovka.birthdaycountdown.Constants.STRING_NULL;
-import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_age_caption;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDistanceText;
-
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -24,12 +15,14 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 // https://habr.com/ru/post/111961/
 // https://stackoverflow.com/questions/47917200/android-custom-suggestions-wont-show-up
 
 public class SuggestionProvider extends ContentProvider{
 
+    private static final String TAG = "SuggestionProvider";
     ContactsEvents eventsData;
 
     @Override
@@ -72,30 +65,30 @@ public class SuggestionProvider extends ContentProvider{
                     for (String event : eventsData.eventList) {
                         eventNum++;
                         if (event != null && event.toLowerCase().contains(queryString)) {
-                            String[] singleEventArray = event.split(STRING_EOT, -1);
+                            String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
 
                             if (eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleEventArray))) {
                                 eventNum--;
                             } else {
-                                final String eventDistance = singleEventArray[Position_eventDistanceText];
+                                final String[] eventDistance = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                                 matrixCursor.addRow(new Object[]{
                                         (long) eventNum,
                                         singleEventArray[ContactsEvents.Position_personFullName],
                                         singleEventArray[ContactsEvents.Position_eventEmoji]
-                                                .concat(STRING_SPACE)
+                                                .concat(Constants.STRING_SPACE)
                                                 .concat(singleEventArray[ContactsEvents.Position_eventCaption])
-                                                .concat(STRING_COLON)
-                                                .concat(!singleEventArray[Position_age_caption].trim().isEmpty() ?
-                                                        STRING_SPACE.concat(singleEventArray[Position_age_caption]) :
-                                                        STRING_EMPTY
+                                                .concat(Constants.STRING_COLON)
+                                                .concat(!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() ?
+                                                        Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
+                                                        Constants.STRING_EMPTY
                                                 )
-                                                .concat(STRING_SPACE)
-                                                .concat(eventDistance.substring(0, eventDistance.indexOf(STRING_BAR)).toLowerCase()),
-                                        !(singleEventArray[ContactsEvents.Position_photo_uri].trim().equals(STRING_EMPTY)
-                                                || singleEventArray[ContactsEvents.Position_photo_uri].equals(STRING_NULL)) ?
+                                                .concat(Constants.STRING_SPACE)
+                                                .concat(eventDistance[0].toLowerCase()),
+                                        !(singleEventArray[ContactsEvents.Position_photo_uri].trim().equals(Constants.STRING_EMPTY)
+                                                || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
                                                     singleEventArray[ContactsEvents.Position_photo_uri] :
-                                                    STRING_EMPTY,
-                                        Integer.toString(eventNum).concat(STRING_EOT).concat(singleEventArray[ContactsEvents.Position_personFullName]).concat(STRING_EOT)
+                                                    Constants.STRING_EMPTY,
+                                        Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(singleEventArray[ContactsEvents.Position_personFullName]).concat(Constants.STRING_EOT)
                                 });
                             }
                         }
@@ -105,9 +98,8 @@ public class SuggestionProvider extends ContentProvider{
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) ToastExpander.showText(eventsData.getContext(), Constants.SUGGESTIONPROVIDER_GETSUGGESTIONS_ERROR + e);
-
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return matrixCursor;

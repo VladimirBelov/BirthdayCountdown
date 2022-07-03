@@ -8,18 +8,15 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_QUESTION;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_QUIZ_RESULT;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 public class QuizReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "QuizReceiver";
     private ContactsEvents eventsData;
 
     @Override
@@ -34,15 +31,15 @@ public class QuizReceiver extends BroadcastReceiver {
             String quizQuestion = null;
             String quizAnswer = null;
             if (extras != null) {
-                quizQuestion = extras.getString(EXTRA_QUIZ_QUESTION, STRING_EMPTY);
-                quizAnswer = extras.getString(EXTRA_QUIZ_RESULT, STRING_EMPTY);
+                quizQuestion = extras.getString(Constants.EXTRA_QUIZ_QUESTION, Constants.STRING_EMPTY);
+                quizAnswer = extras.getString(Constants.EXTRA_QUIZ_RESULT, Constants.STRING_EMPTY);
             }
 
             eventsData.quizCheckAndGo(quizQuestion, quizAnswer);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.QUIZ_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

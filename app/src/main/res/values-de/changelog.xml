@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.1</item>
+        <item>Das Einstellungsmenü ist kompakter geworden (aber es gibt eine neue Einstellung, um das alte Aussehen wiederherzustellen)</item>
+        <item>Vergrößerungseinstellung für Ereignisdetails zur Ereignisliste hinzugefügt</item>
+        <item>Die Größenskalierung ist für das Widget für 5 Ereignisse aktiviert (aber dieses Widget ist nur für den Fall einer Instabilität des Widgets für 1–7 Ereignisse)</item>
+        <item>Ereignisdatumsanzeige zum Listenfoto-Widget hinzugefügt</item>
+        <item>Das Kontrollkästchen \"Extrafunktionen\" wurde zu den allgemeinen Einstellungen hinzugefügt. Wenn es aktiviert ist, werden alle Anwendungseinstellungen verfügbar</item>
+        <item>Optimierungen und Fehlerbehebungen</item>
+
         <item>#1.7.0</item>
         <item>Parameter für den Fotostil von Kontakten hinzugefügt: Oval, Kreis</item>
         <item>Datei-Ereignisse unterstützen jetzt Before the Common Era-Daten (weitere Einzelheiten in der \"Fragen und Antworten\"-Anleitung)</item>

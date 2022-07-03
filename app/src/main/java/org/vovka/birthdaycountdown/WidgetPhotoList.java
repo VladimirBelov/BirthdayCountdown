@@ -8,18 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.ACTION_CLICK;
-import static org.vovka.birthdaycountdown.Constants.ACTION_LAUNCH;
-import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_EVENT;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CLICKED_PREFS;
-import static org.vovka.birthdaycountdown.Constants.PARAM_APP_WIDGET_ID;
-import static org.vovka.birthdaycountdown.Constants.REGEX_PLUS;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_attrAmount;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -30,8 +18,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -47,14 +35,17 @@ import java.util.Objects;
 // Список событий масштабируемый (с фото)
 public class WidgetPhotoList extends AppWidgetProvider {
 
+    private static final String TAG = "Widget2x2";
+    final ContactsEvents eventsData = ContactsEvents.getInstance();
+
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int widgetId) {
 
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
+        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -77,8 +68,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             //Кнопка настроек
             Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
-            intentConfig.setAction(ACTION_LAUNCH);
-            intentConfig.putExtra(PARAM_APP_WIDGET_ID, widgetId);
+            intentConfig.setAction(Constants.ACTION_LAUNCH);
+            intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
             views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId);
@@ -89,15 +80,15 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
 
-                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
-                        + STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
+                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
             } else {
-                views.setTextViewText(R.id.info, STRING_EMPTY);
+                views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
 
             //Реакция на нажатие
             Intent listClickIntent = new Intent(context, WidgetPhotoList.class);
-            listClickIntent.setAction(ACTION_CLICK);
+            listClickIntent.setAction(Constants.ACTION_CLICK);
             PendingIntent listClickPIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntentMutable);
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
 
@@ -116,7 +107,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             //Если события есть - рисуем бордюр, иначе - прозрачность
             List<String> widgetPref_eventInfo = new ArrayList<>();
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(REGEX_PLUS));
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
             }
             if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border)
                     : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Border))) {
@@ -130,8 +121,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_PHOTO_LIST_UPDATE_APP_WIDGET_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -146,11 +137,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
     @Override
     public void onDeleted (Context context, int[] widgetIds) {
 
-        ContactsEvents eventsData = ContactsEvents.getInstance();
         for (int widgetId : widgetIds) {
             eventsData.removeWidgetPreference(widgetId);
         }
-
     }
 
     @Override
@@ -158,7 +147,6 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -168,8 +156,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             super.onAppWidgetOptionsChanged(context, appWidgetManager, widgetId, newOptions);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.WIDGET_PHOTO_LIST_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -177,19 +165,19 @@ public class WidgetPhotoList extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (Objects.requireNonNull(intent.getAction()).equalsIgnoreCase(ACTION_CLICK)) {
-            String eventInfo = intent.getStringExtra(EXTRA_CLICKED_EVENT);
-            int actionPref = intent.getIntExtra(EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+        if (Objects.requireNonNull(intent.getAction()).equalsIgnoreCase(Constants.ACTION_CLICK)) {
+            String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
+            int actionPref = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
             if (eventInfo == null || eventInfo.isEmpty()) return;
 
-            String[] singleEventArray = eventInfo.split(STRING_EOT, -1);
-            if (singleEventArray.length == Position_attrAmount) {
+            String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
 
                 Intent intentView = null;
 
                 if (actionPref == 7) { //Основной список событий
                     intentView = new Intent(context, MainActivity.class);
-                    intentView.setAction(ACTION_LAUNCH);
+                    intentView.setAction(Constants.ACTION_LAUNCH);
                 } else if (actionPref >= 1 & actionPref <=4) {
                     intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref);
                 }

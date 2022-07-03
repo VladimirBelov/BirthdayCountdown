@@ -16,14 +16,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static android.view.View.GONE;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_CHECKS;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_COLOR;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_COLORED;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_LIST;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_RESULTS;
-import static org.vovka.birthdaycountdown.Constants.EXTRA_TITLE;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,12 +63,12 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
             return;
         }
 
-        adapter = new RecyclerListAdapter(fa, this, args.getStringArrayList(EXTRA_LIST), args.getIntegerArrayList(EXTRA_CHECKS), args.getStringArrayList(EXTRA_COLORED), args.getInt(EXTRA_COLOR));
+        adapter = new RecyclerListAdapter(fa, this, args.getStringArrayList(Constants.EXTRA_LIST), args.getIntegerArrayList(Constants.EXTRA_CHECKS), args.getStringArrayList(Constants.EXTRA_COLORED), args.getInt(Constants.EXTRA_COLOR));
 
         Toolbar toolbar = fa.findViewById(R.id.toolbar);
         if (toolbar != null) {
             parentTitle = toolbar.getTitle().toString();
-            toolbar.setTitle(args.getString(EXTRA_TITLE));
+            toolbar.setTitle(args.getString(Constants.EXTRA_TITLE));
         }
         View layoutMain = fa.findViewById(R.id.layout_main);
         if (layoutMain != null) layoutMain.setVisibility(View.GONE);
@@ -103,7 +95,7 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
     public void onDestroyView() {
         Bundle args = getArguments();
         if (args != null) {
-            args.putStringArrayList(EXTRA_RESULTS, adapter.getAllSelectedItems());
+            args.putStringArrayList(Constants.EXTRA_RESULTS, adapter.getAllSelectedItems());
             setArguments(args);
         }
 
@@ -112,7 +104,7 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
         View layoutMain = fa.findViewById(R.id.layout_main);
         if (layoutMain != null) layoutMain.setVisibility(View.VISIBLE);
         View layoutFragment = fa.findViewById(R.id.layout_fragment);
-        if (layoutFragment != null) layoutFragment.setVisibility(GONE);
+        if (layoutFragment != null) layoutFragment.setVisibility(View.GONE);
         fa.invalidateOptionsMenu();
 
         super.onDestroyView();

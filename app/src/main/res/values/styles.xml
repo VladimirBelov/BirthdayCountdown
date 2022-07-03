@@ -6,6 +6,8 @@
   ~  */
   -->
 
+    <!--https://stackoverflow.com/questions/17769198/android-change-color-of-disabled-text-using-theme-style-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Зелёная тема ===========================================================================-->
@@ -21,8 +23,8 @@
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.Light</item>
         <item name="android:listDivider">@color/dark_green_transp</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item> <!-- Цвет кнопок навигации внизу-->
-        <item name="android:textColorPrimary">@color/medium_gray</item>
-        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/white</item>
         <item name="borderWindowColor">@color/dark_green</item>
         <item name="colorAccent">@color/light_green</item> <!-- Цвет вторичных элементов: переключатели в настройках и.т.п. -->
@@ -69,12 +71,12 @@
     </style>
 
     <!-- Темы диалогов -->
-    <style name="AlertDialog.Light" parent="android:Theme.Material.Dialog">
+    <style name="AlertDialog.Light" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:background">@color/white</item>
         <item name="android:textColorPrimary">@color/dark_gray</item>
         <item name="android:textColorSecondary">@color/dark_gray</item>
-        <item name="android:colorAccent">@color/light_green</item>
+        <item name="colorAccent">@color/light_green</item>
         <item name="textColorAlertDialogListItem">@color/dark_gray</item>
         <item name="android:textColorAlertDialogListItem">@color/dark_gray</item>
         <item name="listDividerColor">@color/dark_green_transp</item>
@@ -94,8 +96,8 @@
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.DarkGray</item>
         <item name="android:listDivider">@color/light_gray_transp</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
-        <item name="android:textColorPrimary">@color/medium_gray</item>
-        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/lighter_gray</item>
         <item name="borderWindowColor">@color/medium_gray</item>
         <item name="colorAccent">@color/light_gray</item>
@@ -135,11 +137,11 @@
         <item name="android:textColor">@color/lighter_gray</item>
     </style>
 
-    <style name="AlertDialog.DarkGray" parent="android:Theme.Material.Dialog">
+    <style name="AlertDialog.DarkGray" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/medium_gray</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
-        <item name="android:colorAccent">@color/lighter_gray</item>
+        <item name="colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
@@ -158,8 +160,8 @@
         <item name="android:listDivider">@color/light_gray_transp</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
         <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?attr/windowNavbarDividerColor</item>
-        <item name="android:textColorPrimary">@color/lighter_gray</item>
-        <item name="android:textColorSecondary">@color/light_gray</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
         <item name="backgroundColor">@color/dark_gray</item>
         <item name="borderWindowColor">@color/lighter_gray</item>
         <item name="colorAccent">@color/light_gray</item>
@@ -205,11 +207,11 @@
         <item name="android:textColor">?attr/windowTitleColor</item>
     </style>-->
 
-    <style name="AlertDialog.Black" parent="android:Theme.Material.Dialog">
+    <style name="AlertDialog.Black" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/dark_gray</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
-        <item name="android:colorAccent">@color/lighter_gray</item>
+        <item name="colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="android:textAppearanceListItem">@color/light_gray</item>
         <item name="android:textColorAlertDialogListItem">@color/light_gray</item>
@@ -229,8 +231,8 @@
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.Blue</item>
         <item name="android:listDivider">@color/dark_blue_transp</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
-        <item name="android:textColorPrimary">@color/medium_gray</item>
-        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/white</item>
         <item name="borderWindowColor">@color/dark_blue</item>
         <item name="colorAccent">@color/light_blue</item>
@@ -268,12 +270,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="AlertDialog.Blue" parent="android:Theme.Material.Dialog">
+    <style name="AlertDialog.Blue" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:background">@color/light_blue_transp</item>
         <item name="android:textColorPrimary">@color/dark_gray</item>
         <item name="android:textColorSecondary">@color/dark_gray</item>
-        <item name="android:colorAccent">@color/dark_gray</item>
+        <item name="colorAccent">@color/dark_gray</item>
         <item name="textColorAlertDialogListItem">@color/dark_gray</item>
         <item name="listDividerColor">@color/dark_blue_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
@@ -293,8 +295,8 @@
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.BlueGrey</item>
         <item name="android:listDivider">@color/lighter_gray</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
-        <item name="android:textColorPrimary">@color/medium_gray</item>
-        <item name="android:textColorSecondary">@color/light_gray_darker</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/blue_gray_gradient2</item>
         <item name="borderCardColor">@color/blue_gray_dark_transp</item>
         <item name="borderWindowColor">@color/blue_gray_light</item>

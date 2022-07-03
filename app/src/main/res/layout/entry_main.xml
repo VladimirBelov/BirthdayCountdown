@@ -40,17 +40,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/hint_EventDistance"
                 android:textColor="?attr/eventDistanceColor"
-                android:textSize="12sp" />
+                android:textSize="@dimen/event_details" />
 
             <TextView
                 android:id="@+id/entryDateTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
+                android:minWidth="10dp"
                 android:text="@string/hint_Date"
                 android:textAlignment="textEnd"
                 android:textColor="?attr/eventDateColor"
-                android:textSize="14sp" />
+                android:textSize="@dimen/event_date" />
 
         </LinearLayout>
 
@@ -75,7 +76,7 @@
                     android:gravity="top|start"
                     android:text="@string/hint_Name"
                     android:textColor="?attr/eventFullNameColor"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/event_name"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -96,7 +97,7 @@
                     android:singleLine="true"
                     android:text="@string/hint_Age"
                     android:textColor="?attr/eventAgeColor"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/event_name"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -107,9 +108,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|start"
-                android:text="@string/hint_Description"
+                android:text="@string/hint_EventDetails"
                 android:textColor="?attr/eventDetailsColor"
-                android:textSize="12sp" />
+                android:textSize="@dimen/event_details" />
 
 
         </LinearLayout>

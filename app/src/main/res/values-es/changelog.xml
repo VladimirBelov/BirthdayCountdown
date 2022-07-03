@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.1</item>
+        <item>El menú de configuración se ha vuelto más compacto (pero hay una nueva configuración para devolver el aspecto anterior)</item>
+        <item>Se agregó la configuración de ampliación de los detalles del evento para la lista de eventos</item>
+        <item>La escala de tamaño está habilitada para el widget para 5 eventos (pero este widget es solo para el caso de inestabilidad del widget para 1–7 eventos)</item>
+        <item>Visualización de la fecha del evento agregada al widget de lista de fotos</item>
+        <item>Se agregó la casilla de verificación \"Características adicionales\" a la configuración común, cuando está habilitada, todas las configuraciones de la aplicación están disponibles</item>
+        <item>Optimizaciones y correcciones de errores</item>
+
         <item>#1.7.0</item>
         <item>Se agregaron parámetros de estilo de foto de contactos: óvalo, círculo</item>
         <item>Los eventos de archivo ahora son compatibles con las fechas anteriores a la era común (más detalles en la guía \"Preguntas y respuestas\")</item>

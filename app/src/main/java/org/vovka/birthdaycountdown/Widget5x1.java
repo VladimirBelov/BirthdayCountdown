@@ -16,6 +16,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -25,11 +26,15 @@ import java.util.List;
 // На 1-7 событий масштабируемый
 public class Widget5x1 extends AppWidgetProvider {
 
+    private static final String TAG = "Widget5x1";
+    final ContactsEvents eventsData = ContactsEvents.getInstance();
+
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+
+        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -88,8 +93,8 @@ public class Widget5x1 extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            ToastExpander.showText(context, Constants.WIDGET_5_X_1_UPDATE_APP_WIDGET_ERROR + e);
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -98,20 +103,15 @@ public class Widget5x1 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for (int appWidgetId : appWidgetIds) {
-
             updateAppWidget(context, appWidgetManager, appWidgetId, null);
-
         }
     }
 
     @Override
     public void onDeleted (Context context, int[] appWidgetIds) {
-        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         for (int appWidgetId : appWidgetIds) {
-
             eventsData.removeWidgetPreference(appWidgetId);
-
         }
     }
 
@@ -124,8 +124,8 @@ public class Widget5x1 extends AppWidgetProvider {
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            ToastExpander.showText(context, Constants.WIDGET_5_X_1_ON_APP_WIDGET_OPTIONS_CHANGED_ERROR + e);
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

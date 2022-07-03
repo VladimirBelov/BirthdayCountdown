@@ -11,11 +11,14 @@ package org.vovka.birthdaycountdown;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Objects;
 
 public class DeviceBootReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "DeviceBootReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,8 +39,8 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.DEVICE_BOOT_RECEIVER_ON_RECEIVE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

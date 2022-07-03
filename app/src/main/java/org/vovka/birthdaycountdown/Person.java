@@ -8,13 +8,8 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.STRING_EOT;
-import static org.vovka.birthdaycountdown.Constants.STRING_COMMA_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_SPACE;
-
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +17,7 @@ import java.util.regex.Pattern;
 
 class Person {
 
+    private static final String TAG = "Person";
     private String LastName;
 
     public String getFirstName() {
@@ -51,13 +47,13 @@ class Person {
             //this.eventArray = eventArray;
 
             FIO_str = eventArray[ContactsEvents.Position_personFullName];
-            int spaceFirst = FIO_str.indexOf(STRING_SPACE);
+            int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 FirstName = FIO_str;
-                LastName = STRING_EMPTY;
-                SecondName = STRING_EMPTY;
+                LastName = Constants.STRING_EMPTY;
+                SecondName = Constants.STRING_EMPTY;
             } else {
-                int spaceLast = FIO_str.lastIndexOf(STRING_SPACE);
+                int spaceLast = FIO_str.lastIndexOf(Constants.STRING_SPACE);
                 if (spaceFirst != spaceLast) { //Есть отчество
                     FirstName = FIO_str.substring(0, spaceFirst);
                     SecondName = FIO_str.substring(spaceFirst + 1, spaceLast);
@@ -65,7 +61,7 @@ class Person {
                 } else {
                     FirstName = FIO_str.substring(0, spaceFirst);
                     LastName = FIO_str.substring(spaceFirst + 1);
-                    SecondName = STRING_EMPTY;
+                    SecondName = Constants.STRING_EMPTY;
                 }
             }
 
@@ -78,13 +74,13 @@ class Person {
             //eventSubType = eventArray[ContactsEvents.Position_eventSubType];
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_CONSTRUCTOR_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
     Person(@NonNull Context context, @NonNull String eventData) {
-        this(context, eventData.split(STRING_EOT, -1));
+        this(context, eventData.split(Constants.STRING_EOT, -1));
     }
 
 /*    String getFullName () { //Фамилия Имя Отчество
@@ -130,17 +126,17 @@ class Person {
     String getFullNameShort () { //Фамилия И. О.
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {
-            if (!LastName.equals(STRING_EMPTY)) {
-                return LastName + (!FirstName.equals(STRING_EMPTY) ? STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY) + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
-            } else if (!FirstName.equals(STRING_EMPTY)) {
-                return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + (!SecondName.equals(STRING_EMPTY) ? STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : STRING_EMPTY);
+            if (!LastName.equals(Constants.STRING_EMPTY)) {
+                return LastName + (!FirstName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY) + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
+            } else if (!FirstName.equals(Constants.STRING_EMPTY)) {
+                return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
             } else {
-                return STRING_EMPTY;
+                return Constants.STRING_EMPTY;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_SHORT_ERROR + e, Toast.LENGTH_LONG).show();
-            return STRING_EMPTY;
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return Constants.STRING_EMPTY;
         }
     }
 
@@ -160,15 +156,15 @@ class Person {
                 final String regex_inter = "\\Z|";
                 final String regex_last = "\\Z";
 
-                contactsEvents.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                contactsEvents.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                contactsEvents.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                contactsEvents.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
+                contactsEvents.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
+                contactsEvents.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
                 final String names = contactsEvents.preferences_first_names_female_custom.isEmpty() ?
                         context.getString(R.string.first_names_female) :
-                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(contactsEvents.preferences_first_names_female_custom.toLowerCase().replace(STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
-                contactsEvents.preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                contactsEvents.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
-                contactsEvents.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(STRING_EMPTY);
+                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(contactsEvents.preferences_first_names_female_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+                contactsEvents.preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
+                contactsEvents.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
+                contactsEvents.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
 
             }
 
@@ -194,8 +190,8 @@ class Person {
             return ind > 0 ? 1 : ind < 0 ? 2 : -1;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_GENDER_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return -1;
         }
 

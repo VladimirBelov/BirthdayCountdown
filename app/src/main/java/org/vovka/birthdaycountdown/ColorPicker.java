@@ -8,9 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.RES_PACKAGE_ANDROID;
-import static org.vovka.birthdaycountdown.Constants.STRING_ID;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -20,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +43,7 @@ import java.util.List;
 
 public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
+    private static final String TAG = "ColorPicker";
     private int[] mColorChoices = {};
     private int mValue = 0;
     private int mItemLayoutId = R.layout.item_color;
@@ -94,14 +93,14 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
 
             if (a.hasValue(R.styleable.ColorPreference_title)) {
-                int id = getResources().getIdentifier("title", STRING_ID, RES_PACKAGE_ANDROID);
+                int id = getResources().getIdentifier("title", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null) view.setText(a.getString(R.styleable.ColorPreference_title));
                 }
             }
             if (a.hasValue(R.styleable.ColorPreference_summary)) {
-                int id = getResources().getIdentifier("summary", STRING_ID, RES_PACKAGE_ANDROID);
+                int id = getResources().getIdentifier("summary", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null)
@@ -110,7 +109,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             }
 
-            int id = getResources().getIdentifier("icon", STRING_ID, RES_PACKAGE_ANDROID);
+            int id = getResources().getIdentifier("icon", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
             if (id > 0) {
                 ImageView view = findViewById(id);
                 if (view != null) {
@@ -123,11 +122,11 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 }
             }
 
-            int idRGB = getResources().getIdentifier("text1", STRING_ID, RES_PACKAGE_ANDROID);
+            int idRGB = getResources().getIdentifier("text1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
             if (idRGB > 0) {
                 View rgbView = findViewById(idRGB);
                 if (rgbView != null) {
-                    if (!ContactsEvents.getInstance().preferences_debug_on) {
+                    if (!ContactsEvents.getInstance().preferences_extrafun) {
                         rgbView.setVisibility(GONE);
                     } else {
                         rgbView.setOnClickListener(v -> setColorManual());
@@ -137,8 +136,8 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             setColor(mValue);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_INIT_ATTRS_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             a.recycle();
         }
@@ -148,7 +147,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
     public void setColor(int color) {
 
         mValue = color;
-        int id = getResources().getIdentifier("icon1", STRING_ID, RES_PACKAGE_ANDROID);
+        int id = getResources().getIdentifier("icon1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
         if (id > 0) {
             View view = findViewById(id);
             if (view != null) {
@@ -157,7 +156,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (mAlphaSeekBar != null) {
                 mAlphaSeekBar.setProgress(Color.alpha(mValue));
             }
-            int idRGB = getResources().getIdentifier("text1", STRING_ID, RES_PACKAGE_ANDROID);
+            int idRGB = getResources().getIdentifier("text1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
             if (idRGB > 0) {
                 TextView rgbView = findViewById(idRGB);
                 if (rgbView != null) {
@@ -253,8 +252,8 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             alertToShow.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_ON_CLICK_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -298,8 +297,8 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 ((TextView) view).setTextColor(color);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), Constants.COLOR_PICKER_SET_COLOR_VIEW_VALUE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

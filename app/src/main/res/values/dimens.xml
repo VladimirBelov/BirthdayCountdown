@@ -10,7 +10,6 @@
 <!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
 <!-- https://stackoverflow.com/questions/32860815/how-to-define-dimens-xml-for-every-different-screen-size-in-android -->
 
-<!-- сначала размер берётся из  swXXXdp.xml, если не нашёл - из YYYdpi.xml -->
 <resources>
     <dimen name="widgetDate_fontSize">10.0sp</dimen>
     <dimen name="widgetMarks_fontSize">12.0sp</dimen>
@@ -21,4 +20,8 @@
     <dimen name="widget_41bc_fullwidth">320dp</dimen>
     <dimen name="widget_41bc_cellWidth">66.0dp</dimen>
     <dimen name="widget_41bc_cellHeight">80.0dp</dimen>
+
+    <dimen name="event_details">12sp</dimen>
+    <dimen name="event_name">18sp</dimen>
+    <dimen name="event_date">14sp</dimen>
 </resources>

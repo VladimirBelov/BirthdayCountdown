@@ -128,11 +128,12 @@
     <string name="hint_Age">Age</string>
     <string name="hint_Date">Date</string>
     <string name="hint_EventDistance">Before event</string>
-    <string name="hint_Description">Details</string>
+    <string name="hint_EventDetails">Details</string>
     <string name="hint_VersionNumberDetails">Version number details</string>
     <string name="hint_EventIcon">Icon</string>
     <string name="hint_SearchPanel">Search panel</string>
     <string name="hint_AlertDialog">Alert dialog</string>
+    <string name="hint_AlertDialogIcon">Alert dialog icon</string>
     <string name="hint_DragItem">Draggable item</string>
     <string name="hint_Version_History">Version history</string>
     <string name="hint_Rate_PlayMarket">Rate this app on Play Market</string>
@@ -191,7 +192,8 @@
     <string name="widget_msg_updated">"updated: "</string>
     <string name="widget_msg_events">"events: "</string>
 
-    <string name="pref_Events_title">Common</string>
+    <string name="pref_Common_title">Common settings</string>
+    <string name="pref_Common_summary">Language, color theme and other useful settings</string>
     <string name="pref_Language_title">Language</string>
     <string name="pref_Language_description">Interface and data language</string>
     <string name="pref_Theme_title">Color theme</string>
@@ -200,6 +202,8 @@
     <string name="pref_Accounts_description">Scan only these contact accounts for events</string>
     <string name="pref_IconPack_title">Icon pack</string>
     <string name="pref_IconPack_description">Use selected icon pack to show contact silhouette</string>
+    <string name="pref_MenuStyle_title">Compacted menu</string>
+    <string name="pref_MenuStyle_description">Use a compacted menu with several levels or an expanded menu with categories</string>
 
     <string-array name="pref_IconPack_entries">
         <item>Standard</item>
@@ -228,7 +232,7 @@
     </string-array>
 
     <string name="pref_CustomEvents_title">Events customizing</string>
-    <string name="pref_CustomEvents_summary">Preferences to detect custom events</string>
+    <string name="pref_CustomEvents_summary">Preferences to detect, select or import events</string>
     <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
     <string name="pref_CustomEvent_Caption_hint">Event caption</string>
 
@@ -309,7 +313,8 @@
         <item>For all contact events</item>
     </string-array>
 
-    <string name="pref_List_title">Events list</string>
+    <string name="pref_EventList_title">Events list</string>
+    <string name="pref_EventList_summary">Main event list customizing</string>
 
     <string name="pref_List_PrevEvents_title">Previous events</string>
     <string name="pref_List_PrevEvents_description">Show previous events on top of the events list</string>
@@ -325,6 +330,15 @@
         <item>Two previous events</item>
         <item>Three previous events</item>
     </string-array>
+
+    <string name="pref_List_FontMagnify_title">Font size</string>
+    <string name="pref_List_FontMagnify_description">Set font size of event elements</string>
+    <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
+    <string name="pref_List_FontMagnify_seek_distance">Event distance:</string>
+    <string name="pref_List_FontMagnify_seek_name">Name or event title:</string>
+    <string name="pref_List_FontMagnify_seek_details">Event details:</string>
+    <string name="pref_List_FontMagnify_seek_date">Date:</string>
+    <string name="pref_List_FontMagnify_seek_age">Age:</string>
 
     <string name="pref_List_Style_title">Event list style</string>
     <string name="pref_List_Style_description">Set style of event list</string>
@@ -426,7 +440,8 @@
     <string name="pref_List_Color_EventJubilee_title">Jubilee</string>
     <string name="pref_List_Color_EventJubilee_description">Color of jubilee age</string>
 
-    <string name="pref_Widgets_title">Widgets (common settings)</string>
+    <string name="pref_Widgets_title">Widgets</string>
+    <string name="pref_Widgets_summary">Common widgets preferences</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Update interval</string>
     <string name="pref_Widgets_UpdateInterval_description">Forced widget update interval</string>
@@ -595,6 +610,7 @@
     <string name="widget_config_color_back_description">Background color for widget</string>
 
     <string name="pref_Notifications_title">Notifications</string>
+    <string name="pref_Notifications_summary">When and how to show event notifications</string>
 
     <string name="pref_Notifications_Type_title">Style of notifications</string>
     <string name="pref_Notifications_Type_description">How notifications will be looks like</string>
@@ -662,6 +678,7 @@
     <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
 
     <string name="pref_Quiz_title">Quiz</string>
+    <string name="pref_Quiz_summary">Quiz preferences</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
     <string name="pref_Quiz_Interface_description">What interface to use for questions</string>
 
@@ -673,11 +690,15 @@
     <string name="pref_FAQ_title">\"How to\" guide</string>
     <string name="pref_FAQ_description">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
     <string name="pref_Help_title">Help</string>
+    <string name="pref_Help_summary">Sometimes it can help</string>
+    <string name="pref_About_summary">Version history, events statistics, appstores links</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
     <string name="pref_BatteryOptimization_description">Open the setting and turn off the optimization…</string>
-    <string name="pref_Debug_On_title">Debug &amp; Extra features</string>
+    <string name="pref_Debug_On_title">Debug messages</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
-    <string name="pref_Debug_On_description">Show debugging messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author) and extra application features</string>
+    <string name="pref_Debug_On_description">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
+    <string name="pref_ExtraFun_On_title">Extra features</string>
+    <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Version history:</h1>]]></string>
@@ -692,7 +713,7 @@
     <string name="stats_speed_dates"><![CDATA[<li>dates computing: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Counters:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>original events: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>contacts events: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contacts: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
@@ -826,12 +847,6 @@
 
     <drawable name="app_icon">@mipmap/ic_launcher_spring_round</drawable>
 
-    <string name="account_google" translatable="false">"com.google"</string>
-    <string name="account_skype" translatable="false">"com.skype."</string>
-    <string name="account_vk" translatable="false">"com.vkontakte.account"</string>
-    <string name="account_exchange" translatable="false">"com.google.android.gm.exchange"</string>
-    <string name="account_huawei" translatable="false">"com.android.huawei.phone"</string>
-
     <string name="content_provider_authority" translatable="false">"org.vovka.birthdaycountdown.SuggestionProvider"</string>
     <string name="content_provider_intent_view" translatable="false">"android.intent.action.VIEW"</string>
 
@@ -850,6 +865,7 @@
     <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento"</string>
     <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa"</string>
 
+    <string name="pref_Common_key" translatable="false">Common</string>
     <string name="pref_Language_key" translatable="false">Language</string>
     <string name="pref_Language_default" translatable="false">AUTO</string>
     <string name="pref_Language_de" translatable="false">de</string>
@@ -864,7 +880,6 @@
     </string-array>
 
     <string name="pref_Theme_key" translatable="false">Theme</string>
-
     <string-array name="pref_Theme_values" translatable="false">
         <item>1</item>
         <item>2</item>
@@ -872,13 +887,16 @@
         <item>3</item>
         <item>5</item>
     </string-array>
-
     <string name="pref_Theme_default" translatable="false">5</string>
 
     <string name="pref_Accounts_key" translatable="false">Accounts</string>
 
     <string name="pref_IconPack_key" translatable="false">IconPack</string>
 
+    <string name="pref_MenuStyle_key" translatable="false">MenuStyle</string>
+    <bool name="pref_MenuStyle_default" translatable="false">true</bool>
+
+    <string name="pref_EventList_key" translatable="false">EventList</string>
     <string name="pref_List_Events_key" translatable="false">EventTypes</string>
     <string name="pref_Events_Hidden_key" translatable="false">HiddenEvents</string>
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
@@ -911,6 +929,7 @@
         <item>2</item>
     </string-array>
 
+    <string name="pref_CustomEvents_key" translatable="false">CustomEvents</string>
     <string name="pref_CustomEvents_Birthday_key" translatable="false">CustomEvents_Birthday</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_key" translatable="false">CustomEvents_Birthday_UseInternal</string>
@@ -1058,6 +1077,13 @@
     <string name="pref_List_PrevEvents_key" translatable="false">List_PrevEvents</string>
     <string name="pref_List_PrevEvents_default" translatable="false">""</string>
 
+    <string name="pref_List_FontMagnify_key" translatable="false">List_FontMagnify</string>
+    <string name="pref_List_FontMagnify_Distance_key" translatable="false">List_FontMagnify_Distance</string>
+    <string name="pref_List_FontMagnify_Name_key" translatable="false">List_FontMagnify_Name</string>
+    <string name="pref_List_FontMagnify_Details_key" translatable="false">List_FontMagnify_Details</string>
+    <string name="pref_List_FontMagnify_Date_key" translatable="false">List_FontMagnify_Date</string>
+    <string name="pref_List_FontMagnify_Age_key" translatable="false">List_FontMagnify_Age</string>
+
     <string name="pref_List_Style_key" translatable="false">List_Style</string>
     <string name="pref_List_Style_default" translatable="false">@string/pref_List_Style_Card</string>
 
@@ -1119,6 +1145,7 @@
         <item>@string/pref_List_Filling_ToCenter</item>
     </string-array>
 
+    <string name="pref_Widgets_key" translatable="false">Widgets</string>
     <string name="pref_Widgets_UpdateInterval_key" translatable="false">Widgets_UpdateInterval</string>
     <string name="pref_Widgets_UpdateInterval_default" translatable="false">0</string>
 
@@ -1359,6 +1386,7 @@
 
     <string name="pref_Help_key" translatable="false">Help</string>
     <string name="pref_Help_Debug_On_key" translatable="false">Debug</string>
+    <string name="pref_Help_ExtraFun_On_key" translatable="false">ExtraFun</string>
 
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 
