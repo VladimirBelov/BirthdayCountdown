@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:47
+  ~  * Last modified 18.09.2022, 8:19
   ~  */
   -->
 
@@ -69,7 +69,12 @@
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
+    <string name="msg_date_parse_error">"Error de análisis de fecha: "</string>
     <string name="msg_jump_to_event_error">¡Evento no encontrado! Habilite más tipos de eventos en la configuración de la aplicación</string>
+    <string name="msg_errors_total">"Errores totales: "</string>
+    <string name="msg_errors_details">"clave de cuenta=%1$s, tipo de evento=%2$s, fecha=%3$s"</string>
+    <string name="msg_all">Todos</string>
+    <string name="msg_none">Nada</string>
 
     <string name="msg_plural_postfix">es</string>
 
@@ -136,12 +141,13 @@
     <string name="hint_AlertDialogIcon">Icono de diálogo de alerta</string>
     <string name="hint_DragItem">Elemento arrastrable</string>
     <string name="hint_Version_History">Historial de versiones</string>
-    <string name="hint_Rate_PlayMarket">Califica esta aplicación en Play Market</string>
-    <string name="hint_Rate_AppGallery">Califique esta aplicación en la App Gallery</string>
+    <string name="hint_Rate_PlayMarket">Califica esta aplicación en Google Play</string>
+    <string name="hint_Rate_AppGallery">Califique esta aplicación en la HUAWEI AppGallery</string>
     <string name="hint_ShowPreferences">Ver todas las preferencias guardadas</string>
 
     <string name="button_ok">Okay</string>
     <string name="button_cancel">Cancelación</string>
+    <string name="button_reset">Reiniciar</string>
     <string name="button_choose">Escoger</string>
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
@@ -397,6 +403,9 @@
     <string name="pref_List_CustomCaption_description">Título personalizado de la lista de eventos principales (se admiten emojis 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Ingrese el título</string>
 
+    <string name="pref_List_FastScroll_title">Desplazamiento rápido</string>
+    <string name="pref_List_FastScroll_description">Habilite el desplazamiento rápido para la lista de eventos mientras toca el lado derecho de la pantalla</string>
+
     <string name="pref_Female_Names_title">Nombres femeninos</string>
     <string name="pref_Female_Names_description">Nombres femeninos adicionales para la visualización correcta de los iconos de contacto sin una foto.</string>
     <string name="pref_Female_Names_hint">Ingrese nombres femeninos (separados por comas)</string>
@@ -458,7 +467,7 @@
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
     <string name="pref_Widgets_EventInfo_description">Qué detalles del evento y elementos del widget mostrar</string>
 
-    <string name="pref_Widgets_EventInfo_None">Ninguna</string>
+    <string name="pref_Widgets_EventInfo_None">Nada</string>
     <string name="pref_Widgets_EventInfo_Border">Borde del widget</string>
     <string name="pref_Widgets_EventInfo_Photo">Foto de contacto</string>
     <string name="pref_Widgets_EventInfo_EventIcon">Icono de tipo de evento</string>
@@ -566,6 +575,12 @@
     <string name="widget_config_index_label">Número de inicio del evento</string>
     <string name="widget_config_index_description">Un valor de 1 significa que los eventos se mostrarán desde el principio de la lista, 2 - desde el segundo, y así sucesivamente … Puede agregar varios widgets a la pantalla con diferentes valores en este campo para obtener la configuración deseada</string>
 
+    <string name="widget_config_scope_label">Limitación del volumen de eventos</string>
+    <string name="widget_config_scope_events_label">Cantidad (máx.):</string>
+    <string name="widget_config_scope_days_label">Días:</string>
+    <string name="widget_config_scope_events_items">Todos,1,2,3,4,5,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">Todos,1,2,3,4,5,6,7,14,21,30</string>
+
     <string name="widget_config_font_label">Factor de escala del tamaño de fuente</string>
     <string name="widget_config_font_description">Se usa al escalar el widget para aumentar el tamaño de fuente de la edad, la distancia al evento y la información debajo de la foto</string>
     <string-array name="widget_config_font">
@@ -591,6 +606,10 @@
         <item>Fuertemente redondeado</item>
         <item>Círculo</item>
     </string-array>
+
+    <string name="widget_config_custom_zero_events_label">Mensaje personalizado para cero eventos</string>
+    <string name="widget_config_custom_zero_events_description">Mensaje personalizado cuando no se encuentran eventos (se admiten emojis 🎂). Ingrese un espacio para hacer que el widget sea transparente, texto claro para mostrar el mensaje estándar</string>
+    <string name="widget_config_custom_zero_events_hint">Introducir mensaje…</string>
 
     <string name="widget_config_events_count_label">Numero de eventos</string>
     <string name="widget_config_events_count_description">Si los eventos son demasiado \"estrechos\" o \"anchos\" en el widget, ajuste el número de eventos</string>
@@ -690,7 +709,7 @@
     <string name="pref_FAQ_title">Preguntas y Respuestas</string>
     <string name="pref_FAQ_description">Si algo no funciona correctamente o no sabe cómo configurar una función particular del programa, está en esta sección</string>
     <string name="pref_Help_title">Ayuda</string>
-    <string name="pref_Help_summary">A veces puede ayudar</string>
+    <string name="pref_Help_summary">A veces puede ayudar…</string>
     <string name="pref_About_summary">Historial de versiones, estadísticas de eventos, enlaces de tiendas de aplicaciones</string>
     <string name="pref_BatteryOptimization_title">Optimización de batería activada</string>
     <string name="pref_BatteryOptimization_description">Abra la configuración y desactive la optimización…</string>
@@ -713,7 +732,10 @@
     <string name="stats_speed_dates"><![CDATA[<li>contando fechas: %1$s ms]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Contadores:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>eventos de contacto: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>eventos totales: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>eventos de contacto: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>eventos del calendario: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>eventos de archivos: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contactos: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>publicaciones: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>organizaciones: %1$d]]></string>
@@ -721,6 +743,31 @@
     <string name="stats_counters_URLs"><![CDATA[<li>enlaces web: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por cuenta:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Permisos y opciones:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>acceso a la lista de cuentas: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>acceso a datos de contacto: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>acceso a los datos del calendario: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>acceso a archivos de almacenamiento externo: %1$s]]></string>
+    <string name="stats_permissions_notifications"><![CDATA[<li>notificaciones: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>acceso a la actualización de widgets (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>optimización de la batería: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autoencendido (Xiaomi): %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No se muestran eventos</h2>Esta información puede ayudar:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Tipos de eventos: %1$s</p>
+         <h4>Eventos de contactos:</h4><ul>%2$s
+             <li>mostrar eventos de cuentas: %3$s</li>
+         </ul>
+         <h4>Calendarios de eventos:</h4><ul>%4$s
+             <li>cumpleaños (ID de calendario): %5$s</li>
+             <li>otros eventos (ID de calendario): %6$s</li>
+         </ul>
+         <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %7$s</li>
+             <li>otros eventos: %8$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Si esta información no ayudó a encontrar el motivo de la ausencia de eventos, escríbame un correo electrónico (haga clic en el nombre de la aplicación y allí en el botón \"Escribe\")</h4>]]></string>
 
     <!-- https://es.wikipedia.org/wiki/Aniversario_de_bodas -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>
@@ -826,6 +873,7 @@
 
     <string name="msg_on">EN</string>
     <string name="msg_off">APAGADO</string>
+    <string name="msg_unknown">DESCONOCIDO</string>
 
     <string name="quiz_msg_error_title">"Error"</string>
     <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>

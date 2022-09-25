@@ -42,7 +42,18 @@ android {
         }
     }
 
-    compileSdkVersion 32
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude "/META-INF/*.kotlin_module"
+        exclude "**/kotlin/**"
+        exclude "**/*.txt"
+        exclude "**/*.xml"
+        exclude "**/*.properties"
+    }
+
+    compileSdkVersion 33
     buildToolsVersion '33.0.0'
     //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
     def versionPropsFile = rootProject.file('version.properties')
@@ -62,10 +73,10 @@ android {
             minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
             //https://stackoverflow.com/questions/26694108/what-is-the-difference-between-compilesdkversion-and-targetsdkversion
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
-            targetSdkVersion 32
+            targetSdkVersion 33
             //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.7.1"
+            versionName "1.7.2"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
@@ -114,6 +125,7 @@ android {
         targetCompatibility = '1.8'
         //coreLibraryDesugaringEnabled true
     }
+    namespace 'org.vovka.birthdaycountdown'
 
     //https://stackoverflow.com/questions/28249036/app-release-apk-how-to-change-this-default-generated-apk-name
     applicationVariants.all { variant ->
@@ -129,8 +141,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2' //https://developer.android.com/jetpack/androidx/releases/appcompat
     //https://issuetracker.google.com/issues/140602653
     //noinspection GradleDependency
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha10' //https://github.com/material-components/material-components-android/releases
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
+    implementation 'androidx.core:core:1.9.0' //https://developer.android.com/jetpack/androidx/releases/core
 }

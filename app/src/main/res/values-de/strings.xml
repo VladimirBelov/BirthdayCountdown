@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:46
+  ~  * Last modified 18.09.2022, 8:19
   ~  */
   -->
 
@@ -68,8 +68,13 @@
     <string name="msg_stats_silenced_prefix">"Ereignisse ohne Benachrichtigung: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
-    <string name="msg_color_parse_error">Fehler beim Analysieren der Farbe!</string>
+    <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
+    <string name="msg_date_parse_error">"Fehler bei der Datumsanalyse: "</string>
     <string name="msg_jump_to_event_error">Ereignis nicht gefunden! Aktivieren Sie weitere Ereignistypen in den App-Einstellungen</string>
+    <string name="msg_errors_total">"Gesamtfehler: "</string>
+    <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>
+    <string name="msg_all">Alle</string>
+    <string name="msg_none">Keine</string>
 
     <string name="msg_plural_postfix">e</string>
 
@@ -135,13 +140,14 @@
     <string name="hint_AlertDialog">Warndialog</string>
     <string name="hint_AlertDialogIcon">Icon für Warndialog</string>
     <string name="hint_DragItem">Ziehbares Element</string>
-    <string name="hint_Version_History">Versionsgeschichte</string>
-    <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Play Market</string>
-    <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der App Gallery</string>
+    <string name="hint_Version_History">Versionsverlauf</string>
+    <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Google Play</string>
+    <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der HUAWEI AppGallery</string>
     <string name="hint_ShowPreferences">Alle gespeicherten Einstellungen anzeigen</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Abbrechen</string>
+    <string name="button_reset">Zurücksetzen</string>
     <string name="button_choose">Wählen</string>
     <string name="button_rate">Bewerten</string>
     <string name="button_mail">Mail</string>
@@ -208,8 +214,8 @@
     <string-array name="pref_IconPack_entries">
         <item>Standard</item>
         <item>Farbig</item>
-        <item>Schwarz und weiß</item>
-        <item>Schalkhaft</item>
+        <item>Schwarz-Weiß</item>
+        <item>Spaßig</item>
     </string-array>
 
     <string-array name="pref_Language_entries">
@@ -344,7 +350,7 @@
     <string name="pref_List_Style_description">Legen Sie den Stil der Ereignisliste fest</string>
 
     <string-array name="pref_List_Style_entries">
-        <item>Eben</item>
+        <item>Flach</item>
         <item>Karten</item>
     </string-array>
 
@@ -354,13 +360,13 @@
     <string-array name="pref_List_PhotoStyle_entries">
         <item>Original</item>
         <item>Leicht abgerundet</item>
-        <item>Mittelrund</item>
+        <item>Medium abgerundet</item>
         <item>Stark abgerundet</item>
-        <item>Kreis</item>
+        <item>Rund (Kreis)</item>
     </string-array>
 
-    <string name="pref_List_Filling_title">Füllart</string>
-    <string name="pref_List_Filling_description">Fülltyp für Ereignisplatzhalter festlegen (Farbverlauf)</string>
+    <string name="pref_List_Filling_title">Füllung des Hintergrundes</string>
+    <string name="pref_List_Filling_description">Füllung für Platzhalter der Ereignisse festlegen (Farbverlauf)</string>
 
     <string-array name="pref_List_Filling_entries">
         <item>Keine Füllung</item>
@@ -369,7 +375,7 @@
         <item>Von oben nach unten</item>
         <item>Von unten nach oben</item>
         <item>Von der Mitte</item>
-        <item>Zum Zentrum</item>
+        <item>Zur Mitte</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Format des Kontaktnamens</string>
@@ -396,6 +402,9 @@
     <string name="pref_List_CustomCaption_title">Benutzerdefinierter Titel</string>
     <string name="pref_List_CustomCaption_description">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Titel eingeben</string>
+
+    <string name="pref_List_FastScroll_title">Schnelles Scrollen</string>
+    <string name="pref_List_FastScroll_description">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
 
     <string name="pref_Female_Names_title">Weibliche Namen</string>
     <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto</string>
@@ -475,10 +484,10 @@
     <string name="pref_Widgets_EventInfo_Age">Alter (Jahrestag)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (fernes Ereignis)</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (ferneres Ereignis)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (fernes Ereignis)</string>
-    <string name="pref_Widgets_EventInfo_Organization">Organisation</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
+    <string name="pref_Widgets_EventInfo_Organization">Unternehmen</string>
     <string name="pref_Widgets_EventInfo_JobTitle">Position</string>
     <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Symbol für die Ereignisquelle</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
@@ -566,6 +575,12 @@
     <string name="widget_config_index_label">Ereignisstartnummer</string>
     <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>
 
+    <string name="widget_config_scope_label">Begrenzung der Ereignisliste</string>
+    <string name="widget_config_scope_events_label">Menge (max.)</string>
+    <string name="widget_config_scope_days_label">Tage:</string>
+    <string name="widget_config_scope_events_items">Alle,1,2,3,4,5,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">Alle,1,2,3,4,5,6,7,14,21,30</string>
+
     <string name="widget_config_font_label">Schriftgrößenverhältnis</string>
     <string name="widget_config_font_description">Wird beim Skalieren des Widgets verwendet, um die Schriftgrößen des Alters, des Abstands zum Ereignis und der Informationen unter dem Foto zu erhöhen</string>
     <string-array name="widget_config_font">
@@ -582,18 +597,22 @@
     </string-array>
 
     <string name="widget_config_photostyle_label">Fotostil</string>
-    <string name="widget_config_photostyle_description">Kontakt fotos stil</string>
-    <string name="widget_config_photostyle_with_align_description">Kontakte Fotos Stil. Ausrichtung: Original - ganze Zelle ausfüllen, gerundet - vertikal nach oben ausgerichtet, Kreis - vertikal zentriert</string>
+    <string name="widget_config_photostyle_description">Stil von Kontaktfotos</string>
+    <string name="widget_config_photostyle_with_align_description">Kontakte Fotos Stil. Ausrichtung: Original - ganze Zelle ausfüllen, abgerundet - vertikal nach oben ausgerichtet, Rund (Kreis) - vertikal zentriert</string>
     <string-array name="widget_config_photostyle">
         <item>Original</item>
         <item>Leicht abgerundet</item>
-        <item>Mittelrund</item>
+        <item>Medium abgerundet</item>
         <item>Stark abgerundet</item>
-        <item>Kreis</item>
+        <item>Rund (Kreis)</item>
     </string-array>
 
-    <string name="widget_config_events_count_label">Benutzerdefinierte Anzahl der Ereignisse</string>
-    <string name="widget_config_events_count_description">Wenn das Widget \"zu eng\" oder \"zu locker\" für Ereignisse ist, passen Sie die Anzahl der Ereignisse an</string>
+    <string name="widget_config_custom_zero_events_label">Benutzerdefinierte Nachricht für keine Ereignisse</string>
+    <string name="widget_config_custom_zero_events_description">Benutzerdefinierte Nachricht, wenn keine Ereignisse gefunden werden (Emojis werden unterstützt 🎂). Geben Sie ein Leerzeichen ein, um das Widget transparent zu machen, löschen Sie allen Text für die Anzeige der Standardnachricht</string>
+    <string name="widget_config_custom_zero_events_hint">Nachricht eingeben…</string>
+
+    <string name="widget_config_events_count_label">Anzahl der Ereignisse (horizontal)</string>
+    <string name="widget_config_events_count_description">Stehen die Ereignisse im Widget \"zu eng\" oder \"zu locker\", passen Sie die Anzahl der Ereignisse an</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
         <item>-2</item>
@@ -610,7 +629,7 @@
     <string name="widget_config_color_back_description">Hintergrundfarbe für Widget</string>
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
-    <string name="pref_Notifications_summary">Wann und wie Ereignisbenachrichtigungen angezeigt werden</string>
+    <string name="pref_Notifications_summary">Wann und wie Benachrichtigungen zu Ereignissen angezeigt werden</string>
 
     <string name="pref_Notifications_Type_title">Benachrichtigungsstil</string>
     <string name="pref_Notifications_Type_description">Wie werden Benachrichtigungen aussehen</string>
@@ -690,7 +709,7 @@
     <string name="pref_FAQ_title">Fragen und Antworten</string>
     <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
     <string name="pref_Help_title">Hilfe</string>
-    <string name="pref_Help_summary">Manchmal kann es helfen</string>
+    <string name="pref_Help_summary">Manchmal kann es helfen…</string>
     <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_description">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
@@ -713,7 +732,10 @@
     <string name="stats_speed_dates"><![CDATA[<li>Datumsanzahl: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Zähler:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>Kontakt Ereignisse: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>Ereignisse total: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>Kontakt Ereignisse: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>Kalenderereignisse: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>Ereignisse aus Dateien: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>
@@ -721,6 +743,31 @@
     <string name="stats_counters_URLs"><![CDATA[<li>Web-Links: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Ereignisse nach Konten:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Berechtigungen und Optionen:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>Zugriff auf die Kontenliste: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>Zugriff auf Kontaktdaten: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>Zugriff auf Kalenderdaten: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>Zugriff auf externe Speicherdateien: %1$s]]></string>
+    <string name="stats_permissions_notifications"><![CDATA[<li>Benachrichtigungen: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>Zugriff auf Widgets aktualisieren (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>Batterieoptimierung: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>Autostart (Xiaomi): %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Ereignistypen: %1$s</p>
+        <h4>Kontaktereignisse:</h4><ul>%2$s
+            <li>Ereignisse von Konten anzeigen: %3$s</li>
+        </ul>
+        <h4>Kalenderereignisse:</h4><ul>%4$s
+             <li>Geburtstage (Kalender-IDs): %5$s</li>
+             <li>andere Ereignisse (Kalender-IDs): %6$s</li>
+         </ul>
+         <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %7$s</li>
+             <li>andere Ereignisse: %8$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Wenn diese Informationen nicht geholfen haben, den Grund für das Ausbleiben von Veranstaltungen zu finden, schreiben Sie mir eine E-Mail (klicken Sie auf den Namen der Anwendung und dort auf die Schaltfläche \"Mail\")</h4>]]></string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierne Hochzeit</string>
@@ -827,6 +874,7 @@
 
     <string name="msg_on">AN</string>
     <string name="msg_off">AUS</string>
+    <string name="msg_unknown">UNBEKANNT</string>
 
     <string name="quiz_msg_error_title">"Fehler"</string>
     <string name="quiz_msg_error_get_question">"Fehler beim Empfang der nächsten Frage"</string>

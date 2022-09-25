@@ -1,12 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.03.2022, 20:59
+ *  * Last modified 16.09.2022, 8:23
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDate;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -15,6 +17,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,7 +29,11 @@ import androidx.core.text.HtmlCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
@@ -166,10 +173,10 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
                 }
                 if (widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_JobTitle)) {
-                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
-                    if (!positionJobTitle.isEmpty()) {
+                    final String positionJobTitle = singleEventArray[ContactsEvents.Position_title];
+                    if (!TextUtils.isEmpty(positionJobTitle)) {
                         if (sbDetails.length() > 0) sbDetails.append(Constants.STRING_COMMA_SPACE);
-                        sbDetails.append(positionJobTitle);
+                        sbDetails.append(positionJobTitle.trim());
                     }
                 }
 
@@ -223,7 +230,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 final boolean showDayOfWeek = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID));
                 final boolean showEventDate = widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventDate_ID));
 
-                if (showDistance || showDayOfWeek || showEventDate) {
+                if ((showDistance || showDayOfWeek || showEventDate) && eventDistanceText.length >= 3) {
                     if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
 
                     StringBuilder textDistance = new StringBuilder();
@@ -341,7 +348,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             //Получаем данные
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
             if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName();
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getEvents(context)) eventsData.computeDates();
@@ -352,7 +359,62 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             }
 
             eventListView.clear();
-            eventListView.addAll(eventsData.getFilteredEventList(eventsData.eventList, widgetPref));
+            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
+
+            //Ограничения объёма
+            int maxEvents = 0;
+            int maxDays = 0;
+            String prefScope = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
+
+            if (!TextUtils.isEmpty(prefScope)) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
+                if (matchScopes.find()) {
+                    final String scopeEvents = matchScopes.group(1);
+                    if (scopeEvents != null) {
+                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(context.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                        if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
+                            try {
+                                maxEvents = Integer.parseInt(scopeEvents);
+                            } catch (NumberFormatException e) { /**/ }
+                        }
+                    }
+                    final String scopeDays = matchScopes.group(2);
+                    if (scopeDays != null) {
+                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(context.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+                        if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
+                            try {
+                                maxDays = Integer.parseInt(scopeDays);
+                            } catch (NumberFormatException e) { /**/ }
+                        }
+                    }
+                }
+            }
+
+            if (maxEvents == 0 && maxDays == 0) {
+                eventListView.addAll(eventsData.getFilteredEventList(eventsData.eventList, widgetPref));
+            } else {
+                Calendar now = Calendar.getInstance();
+                Date currentDay = new Date(now.getTimeInMillis());
+                for (int i = 0, filteredEventListSize = filteredEventList.size(); i < filteredEventListSize; i++) {
+                    if (maxEvents > 0 && i >= maxEvents) break;
+                    String event = filteredEventList.get(i);
+                    if (maxDays > 0) {
+                        String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                        Date eventDate = null;
+                        try {
+                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
+                        } catch (Exception e) { /**/ }
+
+                        if (eventDate != null) {
+                            long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                            if (countDays + 1 > maxDays) break;
+                        }
+                    }
+                    eventListView.add(event);
+                }
+            }
+
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

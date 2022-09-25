@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 06.03.2022, 16:12
+ *  * Last modified 17.09.2022, 0:21
  *
  */
 
@@ -79,7 +79,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -105,7 +104,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
-            eventsData.setLocale(true);
 
             //Без этого на Android 8 и 9 не меняет динамически язык
             Locale locale;
@@ -122,6 +120,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 applicationConf.setLocale(locale);
             }
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+            eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
@@ -345,7 +345,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Birthday_key));
             if (prefCat != null) {
 
-                if (eventsData.preferences_Calendars_BirthDay.size() == 0) {
+                if (eventsData.preferences_BirthDay_calendars.size() == 0) {
 
                     pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
                     if (pref != null) prefCat.removePreference(pref);
@@ -382,13 +382,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
-            hidePreference(eventsData.checkNoBatteryOptimization(), eventsData.preferences_menustyle_compact, R.string.pref_Help_key, R.string.pref_BatteryOptimization_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Common_key, R.string.pref_Female_Names_key);
 
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_NameFormat_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_DateFormat_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_Female_Names_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
 
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
@@ -396,6 +396,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
             hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+
+            hidePreference(eventsData.checkNoBatteryOptimization(), eventsData.preferences_menustyle_compact, R.string.pref_Help_key, R.string.pref_BatteryOptimization_key);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -543,14 +545,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
 
-                filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_otherevent_files));
+                if (eventsData.preferences_Otherevent_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_Otherevent_files);
+                } else {
+                    filesList = new HashSet<>();
+                }
                 this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
 
-                filesList = new HashSet<>(Objects.requireNonNull(eventsData.preferences_birthday_files));
+                if (eventsData.preferences_Otherevent_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_Birthday_files);
+                } else {
+                    filesList = new HashSet<>();
+                }
                 this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
                 selectFiles(this.eventTypeForSelect);
                 return true;
@@ -662,6 +672,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                        && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                        && eventsData.preferences_notifications_days.size() > 0) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+                }
+
                 if (eventsData.preferences_menustyle_compact) {
                     updateVisibility();
                 } else {
@@ -687,17 +703,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) return;
+
         if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
 
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectAccounts();
-            }
+            selectAccounts();
 
         } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
-            }
+            if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
 
         }
 
@@ -1115,14 +1129,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ArrayList<String> filesPaths = new ArrayList<>(); //Только видимая часть
             ArrayList<String> filesFullData = new ArrayList<>(); //Вся информация о файле
             ArrayList<Boolean> filesSelected = new ArrayList<>();
+            boolean[] sel = new boolean[0];
 
-            boolean[] sel = new boolean[filesList.size()];
-            int ind = 0;
-            for (String file: filesList) {
-                filesPaths.add(file.split(Constants.STRING_PIPE)[0]);
-                filesFullData.add(file);
-                filesSelected.add(true);
-                sel[ind] = filesSelected.get(ind++);
+            if (filesList != null) {
+                sel = new boolean[filesList.size()];
+                int ind = 0;
+                for (String file : filesList) {
+                    filesPaths.add(file.split(Constants.STRING_PIPE)[0]);
+                    filesFullData.add(file);
+                    filesSelected.add(true);
+                    sel[ind] = filesSelected.get(ind++);
+                }
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
@@ -1248,7 +1265,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
-                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.button_reset, null);
 
             AlertDialog dialog = builder.create();
             View view = View.inflate(this, R.layout.dialog_fontmagnify, null);
@@ -1414,17 +1432,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
 
-            dialog.setOnShowListener(arg0 -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                eventsData.setPreferences_List_FontMagnify(
-                        seek1.getProgress() - 5,
-                        seek2.getProgress() - 5,
-                        seek3.getProgress() - 5,
-                        seek4.getProgress() - 5,
-                        seek5.getProgress() - 5
-                );
-                eventsData.setPreferences();
-                dialog.dismiss();
-            }));
+            dialog.setOnShowListener(arg0 -> {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                    eventsData.setPreferences_List_FontMagnify(
+                            seek1.getProgress() - 5,
+                            seek2.getProgress() - 5,
+                            seek3.getProgress() - 5,
+                            seek4.getProgress() - 5,
+                            seek5.getProgress() - 5
+                    );
+                    eventsData.setPreferences();
+                    dialog.dismiss();
+                });
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                    seek1.setProgress(5);
+                    seek2.setProgress(5);
+                    seek3.setProgress(5);
+                    seek4.setProgress(5);
+                    seek5.setProgress(5);
+                });
+
+            });
 
             dialog.show();
 

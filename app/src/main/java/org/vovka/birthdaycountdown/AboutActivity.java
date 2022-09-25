@@ -1,27 +1,20 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 24.11.2021, 12:09
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 15.09.2022, 21:54
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.Constants.DATETIME_DD_MM_YYYY_HH_MM;
-import static org.vovka.birthdaycountdown.Constants.HTML_BR;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_DEFAULT;
-import static org.vovka.birthdaycountdown.Constants.HTML_COLOR_RED;
-import static org.vovka.birthdaycountdown.Constants.SPEED_LOAD_CRITICAL;
-import static org.vovka.birthdaycountdown.Constants.STRING_COLON_SPACE;
-import static org.vovka.birthdaycountdown.Constants.STRING_EMPTY;
-import static org.vovka.birthdaycountdown.Constants.STRING_EOL;
-import static org.vovka.birthdaycountdown.Constants.STRING_PARENTHESIS_OPEN;
-
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -31,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
@@ -42,9 +36,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +54,7 @@ import java.util.TreeSet;
 
 public class AboutActivity extends AppCompatActivity {
 
+    private static final String TAG = "AboutActivity";
     ContactsEvents eventsData;
     int counterClicks = 0;
     private Toast mToast = null;
@@ -72,7 +69,6 @@ public class AboutActivity extends AppCompatActivity {
             eventsData = ContactsEvents.getInstance();
             this.setTheme(eventsData.preferences_theme.themeMain);
             eventsData.getPreferences();
-            eventsData.setLocale(true);
 
             //Без этого на Android 8 и 9 не меняет динамически язык
             Locale locale;
@@ -89,6 +85,8 @@ public class AboutActivity extends AppCompatActivity {
                 applicationConf.setLocale(locale);
             }
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+            eventsData.setLocale(true);
 
             setContentView(R.layout.activity_changelog);
 
@@ -109,7 +107,7 @@ public class AboutActivity extends AppCompatActivity {
             }
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
-            SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
+            SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
             //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
@@ -136,40 +134,91 @@ public class AboutActivity extends AppCompatActivity {
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
-            //Statistics information
-            sb.append(getString(R.string.stats_title));
+            if (eventsData.preferences_extrafun) {
 
-            sb.append(getString(R.string.stats_speed_title));
-            if (eventsData.statTimeGetContactEvents > 0)
-                sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
-            if (eventsData.statTimeGetCalendarEvents > 0)
-                sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
-            if (eventsData.statTimeGetFileEvents > 0)
-                sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
-            sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > SPEED_LOAD_CRITICAL ? HTML_COLOR_RED : HTML_COLOR_DEFAULT).replace("#", "")));
-            sb.append(Constants.HTML_UL_END);
+                //Statistics information
+                sb.append(getString(R.string.stats_title));
 
-            sb.append(getString(R.string.stats_counters_title));
-            if (eventsData.statAllEvents > 0)
-                sb.append(getString(R.string.stats_counters_events, eventsData.statAllEvents));
-            if (eventsData.statAllContacts > 0)
-                sb.append(getString(R.string.stats_counters_contacts, eventsData.statAllContacts));
-            if (eventsData.statAllTitles > 0)
-                sb.append(getString(R.string.stats_counters_titles, eventsData.statAllTitles));
-            if (eventsData.statAllOrganizations > 0)
-                sb.append(getString(R.string.stats_counters_organizations, eventsData.statAllOrganizations));
-            if (eventsData.statAllNicknames > 0)
-                sb.append(getString(R.string.stats_counters_nicknames, eventsData.statAllNicknames));
-            if (eventsData.statAllURLs > 0)
-                sb.append(getString(R.string.stats_counters_URLs, eventsData.statAllURLs));
-            sb.append(Constants.HTML_UL_END);
-
-            if (eventsData.statEventTypes.entrySet().size() > 0) {
-                sb.append(getString(R.string.stats_counters_events_title));
-                for (Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
-                    sb.append(Constants.HTML_LI).append(entry.getKey()).append(STRING_COLON_SPACE).append(entry.getValue());
-                }
+                sb.append(getString(R.string.stats_speed_title));
+                try {
+                    if (eventsData.statTimeGetContactEvents > 0)
+                        sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                    if (eventsData.statTimeGetCalendarEvents > 0)
+                        sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                    if (eventsData.statTimeGetFileEvents > 0)
+                        sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                    sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                } catch (Exception e) { /**/ }
                 sb.append(Constants.HTML_UL_END);
+
+                sb.append(getString(R.string.stats_counters_title));
+                try {
+                    if (eventsData.statContactsCount > 0)
+                        sb.append(getString(R.string.stats_counters_contacts, eventsData.statContactsCount));
+                    if (eventsData.statContactsTitleCount > 0)
+                        sb.append(getString(R.string.stats_counters_titles, eventsData.statContactsTitleCount));
+                    if (eventsData.statContactsOrganizationCount > 0)
+                        sb.append(getString(R.string.stats_counters_organizations, eventsData.statContactsOrganizationCount));
+                    if (eventsData.statContactsNicknameCount > 0)
+                        sb.append(getString(R.string.stats_counters_nicknames, eventsData.statContactsNicknameCount));
+                    if (eventsData.statContactsURLCount > 0)
+                        sb.append(getString(R.string.stats_counters_URLs, eventsData.statContactsURLCount));
+                    sb.append(getString(R.string.stats_counters_events, eventsData.statEventsCount));
+                    if (eventsData.statContactsEventCount > 0)
+                        sb.append(getString(R.string.stats_counters_contacts_events, eventsData.statContactsEventCount));
+                    if (eventsData.statCalendarsEventCount > 0)
+                        sb.append(getString(R.string.stats_counters_calendars_events, eventsData.statCalendarsEventCount));
+                    if (eventsData.statFilesEventCount > 0)
+                        sb.append(getString(R.string.stats_counters_files_events, eventsData.statFilesEventCount));
+                    sb.append(Constants.HTML_UL_END);
+
+                    if (eventsData.statEventTypes.entrySet().size() > 0) {
+                        sb.append(getString(R.string.stats_counters_events_title));
+                        for (Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
+                            sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());
+                        }
+                        sb.append(Constants.HTML_UL_END);
+                    }
+                } catch (Exception e) { /**/ }
+
+                //Permissions
+                sb.append(getString(R.string.stats_permissions_title));
+                try {
+
+                    sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_contacts, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_calendar, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_files, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_notifications, NotificationManagerCompat.from(this).areNotificationsEnabled()
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+
+                    sb.append(getString(R.string.stats_permissions_battery, !eventsData.checkNoBatteryOptimization()
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace("#", ""));
+
+                    //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
+                    if (isXiaomi()) {
+                        final State state = getMIUIAutoStartState();
+                        sb.append(getString(R.string.stats_permissions_xiaomi_autostart,
+                                state == State.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
+                                        state == State.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
+                                                eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace("#", ""));
+
+                    }
+
+                } catch (Exception e) { /**/ }
+                sb.append(Constants.HTML_UL_END);
+
             }
 
             //Change log
@@ -195,7 +244,7 @@ public class AboutActivity extends AppCompatActivity {
 
                     } else {
 
-                        sb.append(Constants.HTML_LI).append(strChange.replace(STRING_EOL, HTML_BR));
+                        sb.append(Constants.HTML_LI).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR));
 
                     }
                 }
@@ -217,7 +266,8 @@ public class AboutActivity extends AppCompatActivity {
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" +
+                            getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
                 } catch (RuntimeException e) { /**/ }
                 finish();
             });
@@ -248,8 +298,8 @@ public class AboutActivity extends AppCompatActivity {
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_ON_CREATE_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -265,7 +315,7 @@ public class AboutActivity extends AppCompatActivity {
                 if (mToast != null) mToast.cancel();
                 mToast = Toast.makeText(this, getString(R.string.pref_Debug_On_hint,
                         5 - counterClicks,
-                        (5 - counterClicks) > 1 ? getString(R.string.msg_plural_postfix) : STRING_EMPTY,
+                        (5 - counterClicks) > 1 ? getString(R.string.msg_plural_postfix) : Constants.STRING_EMPTY,
                         getString(!eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)
                 ), Toast.LENGTH_SHORT);
                 mToast.show();
@@ -282,14 +332,14 @@ public class AboutActivity extends AppCompatActivity {
                             .apply();
                     this.recreate();
                     if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(this, getString(R.string.pref_Debug_On_title).concat(Constants.STRING_COLON_SPACE).concat(getString(eventsData.preferences_debug_on ? R.string.msg_on : R.string.msg_off)), Toast.LENGTH_SHORT);
                     mToast.show();
                 }
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SET_DEBUG_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -301,7 +351,7 @@ public class AboutActivity extends AppCompatActivity {
             Map<String, ?> prefs = PreferenceManager.getDefaultSharedPreferences(this).getAll();
             SortedSet<String> keys = new TreeSet<>(prefs.keySet());
             for (String key : keys) {
-                sb.append(key).append(STRING_COLON_SPACE).append(prefs.get(key)).append(HTML_BR);
+                sb.append(key).append(Constants.STRING_COLON_SPACE).append(prefs.get(key)).append(Constants.HTML_BR);
             }
 
             TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
@@ -318,9 +368,43 @@ public class AboutActivity extends AppCompatActivity {
             if (textView != null) textView.setTextSize(11);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if (eventsData.preferences_debug_on) Toast.makeText(this, Constants.ABOUT_ACTIVITY_SHOW_PREFERENCES_ERROR + e, Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private enum State {
+        ENABLED, DISABLED, NO_INFO, UNEXPECTED_RESULT
+    }
+
+    private static boolean isXiaomi() {return Build.MANUFACTURER.equalsIgnoreCase("xiaomi");}
+
+    @SuppressLint("PrivateApi")
+    public State getMIUIAutoStartState() throws Exception {
+
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName("android.miui.AppOpsUtils");
+        } catch (ClassNotFoundException ignored) { /**/ }
+        if (clazz == null) return State.NO_INFO;
+
+        Method method = null;
+        try {
+            method = clazz.getDeclaredMethod("getApplicationAutoStart", Context.class, String.class);
+            method.setAccessible(true);
+        } catch (Exception ignored) { /**/ }
+        if (method == null) return State.NO_INFO;
+
+        final Object result = method.invoke(null, this, this.getPackageName());
+
+        if (!(result instanceof Integer)) {return State.UNEXPECTED_RESULT;}
+        final int _int = (int) result;
+        if (_int == 0) {
+            return State.ENABLED;
+        } else if (_int == 1) {
+            return State.DISABLED;
+        }
+        return State.UNEXPECTED_RESULT;
     }
 
 }

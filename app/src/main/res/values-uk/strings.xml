@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:49
+  ~  * Last modified 18.09.2022, 8:20
   ~  */
   -->
 
@@ -69,7 +69,12 @@
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
+    <string name="msg_date_parse_error">"Помилка розпізнавання дати: "</string>
     <string name="msg_jump_to_event_error">Подія не знайдено! Увімкніть більше типів подій у налаштуваннях програми</string>
+    <string name="msg_errors_total">"Усього помилок: "</string>
+    <string name="msg_errors_details">"акаунт=%1$s, тип події=%2$s, дата=%3$s"</string>
+    <string name="msg_all">Всі</string>
+    <string name="msg_none">Ніякі</string>
 
     <string name="msg_plural_postfix">и</string>
 
@@ -136,12 +141,13 @@
     <string name="hint_AlertDialogIcon">Значок діалогового вікна сповіщення</string>
     <string name="hint_DragItem">Перетягнутий елемент</string>
     <string name="hint_Version_History">Історія версій</string>
-    <string name="hint_Rate_PlayMarket">Оцініть цю програму на Play Market</string>
-    <string name="hint_Rate_AppGallery">Оцініть цю програму в App Gallery</string>
+    <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
+    <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
     <string name="hint_ShowPreferences">Переглянути всі збережені параметри</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Відміна</string>
+    <string name="button_reset">Скинути</string>
     <string name="button_choose">Виберіть</string>
     <string name="button_rate">Оцінити</string>
     <string name="button_mail">Написати</string>
@@ -290,7 +296,7 @@
         <item>Темно-сіра</item>
         <item>Блакитна</item>
         <item>Чорна</item>
-        <item>Блакитно-сіра</item>
+        <item>Сіро-блакитна</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Типи подій</string>
@@ -396,6 +402,9 @@
     <string name="pref_List_CustomCaption_title">Свій заголовок</string>
     <string name="pref_List_CustomCaption_description">Спеціальний заголовок основного списку подій (підтримуються смайли 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Введіть свій заголовок</string>
+
+    <string name="pref_List_FastScroll_title">Швидке прокручування</string>
+    <string name="pref_List_FastScroll_description">Увімкніть швидке прокручування списку подій, торкаючись правого краю екрана</string>
 
     <string name="pref_Female_Names_title">Жіночі імена</string>
     <string name="pref_Female_Names_description">Додаткові жіночі імена для коректного відображення піктограм контактів без фото</string>
@@ -566,6 +575,12 @@
     <string name="widget_config_index_label">Початковий номер події</string>
     <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додавати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
 
+    <string name="widget_config_scope_label">Обмеження обсягу подій</string>
+    <string name="widget_config_scope_events_label">Кількість (макс)</string>
+    <string name="widget_config_scope_days_label">Дні:</string>
+    <string name="widget_config_scope_events_items">Всi,1,2,3,4,5,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">Всi,1,2,3,4,5,6,7,14,21,30</string>
+
     <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
     <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, часу до події та інформації під фото</string>
     <string-array name="widget_config_font">
@@ -592,7 +607,11 @@
         <item>Коло</item>
     </string-array>
 
-    <string name="widget_config_events_count_label">Кількість подій</string>
+    <string name="widget_config_custom_zero_events_label">Спеціальне повідомлення для нульових подій</string>
+    <string name="widget_config_custom_zero_events_description">Спеціальне повідомлення, коли події не знайдено (підтримуються Emojis 🎂). Введіть пробіл, щоб зробити віджет прозорим, чіткий текст для показу стандартного повідомлення</string>
+    <string name="widget_config_custom_zero_events_hint">Введіть повідомлення…</string>
+
+    <string name="widget_config_events_count_label">Кількість подій завширшки</string>
     <string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>
     <string-array name="widget_config_events_count">
         <item>Авто</item>
@@ -690,7 +709,7 @@
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_description">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>
     <string name="pref_Help_title">Допомога</string>
-    <string name="pref_Help_summary">Іноді це може допомогти</string>
+    <string name="pref_Help_summary">Іноді це може допомогти…</string>
     <string name="pref_About_summary">Історія версій, статистика подій, посилання на магазини програм</string>
     <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_description">Відкрити налаштування і вимкнути оптимізацію…</string>
@@ -713,7 +732,10 @@
     <string name="stats_speed_dates"><![CDATA[<li>підрахунок дат: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Лічильники:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>подій контактів: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>всього подій: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>подій контактів: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>події календаря: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>події з файлів: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>контактів: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>посад: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>організацій: %1$d]]></string>
@@ -721,6 +743,31 @@
     <string name="stats_counters_URLs"><![CDATA[<li>веб-посилання: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Події за акаунтів:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Дозволи та параметри:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>доступ до списку облікових записів: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>доступ до даних контактів: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>доступ до даних календарів: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>доступ до файлів зовнішнього сховища: %1$s]]></string>
+    <string name="stats_permissions_notifications"><![CDATA[<li>повідомлення: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>доступ до оновлення віджетів (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>оптимізація акумулятора: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>авто старт (Xiaomi): %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Події не відображаються</h2>Ця інформація може допомогти:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Типи подій: %1$s</p>
+         <h4>Події контактів:</h4><ul>%2$s
+             <li>показати події з облікових записів: %3$s</li>
+         </ul>
+         <h4>Події в календарях:</h4><ul>%4$s
+             <li>дні народження (ідентифікатори календарів): %5$s</li>
+             <li>інші події (ідентифікатори календарів): %6$s</li>
+         </ul>
+         <h4>Події файлів:</h4><ul><li>дні народження: %7$s</li>
+             <li>інші події: %8$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Якщо ця інформація не допомогла знайти причину відсутності подій, напишіть мені лист (натисніть назву програми і там на кнопку \"Написати\")</h4>]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/
@@ -832,6 +879,7 @@
 
     <string name="msg_on">ВКЛ</string>
     <string name="msg_off">ВИКЛ</string>
+    <string name="msg_unknown">НЕВІДОМО</string>
 
     <string name="quiz_msg_error_title">"Помилка"</string>
     <string name="quiz_msg_error_get_question">"Помилка отримання наступного запитання!"</string>

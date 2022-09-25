@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2021, 1:01
-  ~  * Copyright (c) 2018 - 2021. All rights reserved.
-  ~  * Last modified 22.11.2021, 22:34
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.09.2022, 20:50
   ~  */
   -->
 
 <!-- minWidth: 70 * n - 30 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:initialKeyguardLayout="@layout/widget2x2"
     android:initialLayout="@layout/widget2x2"
     android:minWidth="110dp"
@@ -19,4 +20,6 @@
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen"
-    android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+    android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"
+    android:widgetFeatures="reconfigurable"
+    tools:targetApi="p" />

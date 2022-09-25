@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 22.11.2021, 22:34
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 15.09.2022, 21:56
  *
  */
 
@@ -10,10 +10,12 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -22,6 +24,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+
+import java.util.Locale;
 
 public class FAQActivity extends AppCompatActivity {
 
@@ -36,8 +40,28 @@ public class FAQActivity extends AppCompatActivity {
 
             super.onCreate(savedInstanceState);
 
-            this.setTheme(eventsData.preferences_theme.themeMain);
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
+            eventsData.getPreferences();
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
             eventsData.setLocale(true);
+
+            this.setTheme(eventsData.preferences_theme.themeMain);
 
             setContentView(R.layout.activity_faq);
 

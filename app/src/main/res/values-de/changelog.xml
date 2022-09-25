@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:54
+  ~  * Last modified 18.09.2022, 8:25
   ~  */
   -->
 
@@ -11,33 +11,41 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.2</item>
+        <item>Die Anzahl der Ereignisse in Listen-Widgets kann durch die Ereignissanzahl und (oder) Tage begrenzt werden</item>
+        <item>Wenn die Ereignisliste leer ist, werden zusammenfassende Informationen für alle Parameter angezeigt</item>
+        <item>Das schnelle Scrollen von Ereignissen ist standardmäßig deaktiviert und kann in den Einstellungen für Ereignislisten aktiviert werden</item>
+        <item>Fehler beim Verfassen von Ereignislisten mit sehr großer Schriftgröße behoben</item>
+        <item>Fehler bei Leseberechtigungen für Dateien mit Ereignissen behoben</item>
+        <item>Das Aktualisieren von Listen-Widgets beim Ändern der Bildschirmausrichtung oder beim Ändern der Größe des Widgets (für Android 12+) wurde korrigiert</item>
+
         <item>#1.7.1</item>
         <item>Das Einstellungsmenü ist kompakter geworden (aber es gibt eine neue Einstellung, um das alte Aussehen wiederherzustellen)</item>
-        <item>Vergrößerungseinstellung für Ereignisdetails zur Ereignisliste hinzugefügt</item>
+        <item>Einstellung zur Vergrößerung von Ereignisdetails zur Ereignisliste hinzugefügt</item>
         <item>Die Größenskalierung ist für das Widget für 5 Ereignisse aktiviert (aber dieses Widget ist nur für den Fall einer Instabilität des Widgets für 1–7 Ereignisse)</item>
-        <item>Ereignisdatumsanzeige zum Listenfoto-Widget hinzugefügt</item>
+        <item>Datumsanzeige der Ereignisse zum Listenfoto-Widget hinzugefügt</item>
         <item>Das Kontrollkästchen \"Extrafunktionen\" wurde zu den allgemeinen Einstellungen hinzugefügt. Wenn es aktiviert ist, werden alle Anwendungseinstellungen verfügbar</item>
         <item>Optimierungen und Fehlerbehebungen</item>
 
         <item>#1.7.0</item>
         <item>Parameter für den Fotostil von Kontakten hinzugefügt: Oval, Kreis</item>
-        <item>Datei-Ereignisse unterstützen jetzt Before the Common Era-Daten (weitere Einzelheiten in der \"Fragen und Antworten\"-Anleitung)</item>
+        <item>Ereignisse aus Dateien unterstützen jetzt Before the Common Era-Daten (weitere Einzelheiten in der \"Fragen und Antworten\"-Anleitung)</item>
         <item>Unterstützung für häufig wiederkehrende Kalenderereignisse hinzugefügt (einmal im Monat, einmal pro Woche oder öfter)</item>
         <item>Wenn das Alter weniger als 1 Jahr beträgt, werden Tage und Monate angezeigt</item>
         <item>Optimierung der Verarbeitung großer Ereigniszahlen (> 5000)</item>
 
         <item>#1.6.9</item>
-        <item>Dem Listen-Widget-Konstruktor wurden neue Ereignisdetails hinzugefügt: neue Zeile (3 Stück), Tage vor dem Ereignis, Wochentag</item>
-        <item>Die Benachrichtigungszeit kann bis zu einer Minute ausgewählt werden</item>
-        <item>Möglichkeit hinzugefügt, über die globale Suche auf dem Gerät nach Ereignissen zu suchen (QuickSearchBox)</item>
+        <item>Dem Listen-Widgets-Konfigurator wurden neue Möglichkeiten für Ereignisdetails hinzugefügt: neue Zeile (3 Stück), Tage vor dem Ereignis, Wochentag</item>
+        <item>Die Benachrichtigungszeit kann bis auf die Minute ausgewählt werden</item>
+        <item>Möglichkeit hinzugefügt, über die globale Suche auf dem Gerät nach Ereignissen zu suchen (Schnellsuche)</item>
         <item>Fehler beim Berechnen von Kalenderdaten für Zeitzonen westlich von UTC behoben</item>
 
         <item>#1.6.8</item>
         <item>Neues Farbthema: Blaugrau</item>
-        <item>Dekorationen hinzugefügt: Anzeige von Ereignissen in einer flachen Liste oder in Form von Karten, sowie die Möglichkeit, einen Verlauf mit Farbe zu füllen (für weitere Details siehe Einstellungen der Ereignisliste)</item>
+        <item>Neue Gestaltungsmöglichkeiten hinzugefügt: Anzeige von Ereignissen in einer flachen Liste oder in Form von Karten, sowie die Möglichkeit, einen Verlauf mit Farbe zu füllen (für weitere Details siehe Einstellungen der Ereignisliste)</item>
         <item>3 zusätzliche Symbolsätze für Kontakte ohne Fotos hinzugefügt</item>
-        <item>Neue Kontextereignisaktion: Kontakt erstellen (das Datum wird in die Notiz eingefügt)</item>
-        <item>Dem Listen-Widget-Konstruktor wurden neue Ereignisdetails hinzugefügt: Ereignisquellensymbol und Weblink-Präsenz</item>
+        <item>Neues Kontextmenü bei Ereignissen: Kontakt erstellen (das Datum wird in die Notiz eingefügt)</item>
+        <item>Dem Listen-Widgets-Konfigurator wurden neue Möglichkeiten für Ereignisdetails hinzugefügt: Ereignisquellensymbol und Weblink-Präsenz</item>
 
         <item>#1.6.7</item>
         <item>Neuer App-Name: Geburtstage &amp; Ereignisse</item>

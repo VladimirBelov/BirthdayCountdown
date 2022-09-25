@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:53
+  ~  * Last modified 18.09.2022, 8:25
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.7.2</item>
+        <item>La cantidad de eventos en los widgets de lista puede estar limitada por el recuento de eventos y (o) por días</item>
+        <item>Si la lista de eventos está vacía, se muestra información de resumen para todos los parámetros</item>
+        <item>El desplazamiento rápido de eventos está deshabilitado de forma predeterminada y está habilitado en la configuración de la lista de eventos</item>
+        <item>Lista de eventos arreglada que se compone con un tamaño de fuente muy amplio</item>
+        <item>Se corrigió la toma de permisos de lectura para archivos con eventos</item>
+        <item>Se corrigieron los widgets de la lista de actualización al cambiar la orientación de la pantalla o cambiar el tamaño del widget (para Android 12+)</item>
 
         <item>#1.7.1</item>
         <item>El menú de configuración se ha vuelto más compacto (pero hay una nueva configuración para devolver el aspecto anterior)</item>

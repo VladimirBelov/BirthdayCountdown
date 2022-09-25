@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 19.06.2022, 20:39
+  ~  */
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

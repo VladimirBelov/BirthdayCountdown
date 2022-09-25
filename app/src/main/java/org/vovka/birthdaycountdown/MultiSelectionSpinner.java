@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 23.12.2021, 14:16
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 12.09.2022, 22:19
  *
  */
 
@@ -129,7 +129,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
 
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
-        throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
+        //throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
     }
 
     /**

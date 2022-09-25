@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:24
+  ~  * Last modified 18.09.2022, 8:19
   ~  */
   -->
 
@@ -68,8 +68,13 @@
     <string name="msg_stats_silenced_prefix">"silenced events: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
-    <string name="msg_color_parse_error">Error parsing color!</string>
+    <string name="msg_color_parse_error">Color parsing error!</string>
+    <string name="msg_date_parse_error">"Date parsing error: "</string>
     <string name="msg_jump_to_event_error">Event not found! Enable more event types in app settings</string>
+    <string name="msg_errors_total">"Total errors: "</string>
+    <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
+    <string name="msg_all">All</string>
+    <string name="msg_none">None</string>
 
     <string name="msg_plural_postfix">s</string>
 
@@ -136,12 +141,13 @@
     <string name="hint_AlertDialogIcon">Alert dialog icon</string>
     <string name="hint_DragItem">Draggable item</string>
     <string name="hint_Version_History">Version history</string>
-    <string name="hint_Rate_PlayMarket">Rate this app on Play Market</string>
-    <string name="hint_Rate_AppGallery">Rate this app on App Gallery</string>
+    <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
+    <string name="hint_Rate_AppGallery">Rate this app on HUAWEI AppGallery</string>
     <string name="hint_ShowPreferences">View all saved preferences</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_reset">Reset</string>
     <string name="button_choose">Choose</string>
     <string name="button_rate">Rate app</string>
     <string name="button_mail">Mail</string>
@@ -397,6 +403,9 @@
     <string name="pref_List_CustomCaption_description">Custom main event list caption (Emojis are supported 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Enter custom caption</string>
 
+    <string name="pref_List_FastScroll_title">Fast scroll</string>
+    <string name="pref_List_FastScroll_description">Enable fast scroll for event list while touching right side of screen</string>
+
     <string name="pref_Female_Names_title">Female names</string>
     <string name="pref_Female_Names_description">Additional female names for the correct display of contact icons without a photo</string>
     <string name="pref_Female_Names_hint">Enter female names (by comma)</string>
@@ -566,6 +575,12 @@
     <string name="widget_config_index_label">Event start index to display</string>
     <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
 
+    <string name="widget_config_scope_label">Events scope limit</string>
+    <string name="widget_config_scope_events_label">Max events:</string>
+    <string name="widget_config_scope_days_label">Max days:</string>
+    <string name="widget_config_scope_events_items">All,1,2,3,4,5,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">All,1,2,3,4,5,6,7,14,21,30</string>
+
     <string name="widget_config_font_label">Font magnify factor</string>
     <string name="widget_config_font_description">Font scale multiplier for age, event distance and under photo info text</string>
     <string-array name="widget_config_font">
@@ -592,7 +607,11 @@
         <item>Circle</item>
     </string-array>
 
-    <string name="widget_config_events_count_label">Custom events number</string>
+    <string name="widget_config_custom_zero_events_label">Custom message for zero events</string>
+    <string name="widget_config_custom_zero_events_description">Custom message when no events is found (Emojis are supported 🎂). Enter space to make widget transparent, clear text for show standard message</string>
+    <string name="widget_config_custom_zero_events_hint">Enter message…</string>
+
+    <string name="widget_config_events_count_label">Number of events horizontal</string>
     <string name="widget_config_events_count_description">If there is too \"narrow\" or \"loose\" for events on the widget, adjust the number of events</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
@@ -690,7 +709,7 @@
     <string name="pref_FAQ_title">\"How to\" guide</string>
     <string name="pref_FAQ_description">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
     <string name="pref_Help_title">Help</string>
-    <string name="pref_Help_summary">Sometimes it can help</string>
+    <string name="pref_Help_summary">Sometimes it can help…</string>
     <string name="pref_About_summary">Version history, events statistics, appstores links</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
     <string name="pref_BatteryOptimization_description">Open the setting and turn off the optimization…</string>
@@ -713,7 +732,10 @@
     <string name="stats_speed_dates"><![CDATA[<li>dates computing: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Counters:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>contacts events: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>events total: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>contacts events: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>calendar events: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>events from files: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contacts: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
@@ -721,6 +743,31 @@
     <string name="stats_counters_URLs"><![CDATA[<li>web links: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Events by accounts:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Permissions and options:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>accounts access: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>contacts access: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>calendar access: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>external storage access: %1$s]]></string>
+    <string name="stats_permissions_notifications"><![CDATA[<li>notifications: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>widgets update access (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>battery optimization: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autostart (Xiaomi): %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No events displayed</h2>This information may help:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Event types: %1$s</p>
+        <h4>Contacts events:</h4><ul>%2$s
+            <li>show events from accounts: %3$s</li>
+        </ul>
+        <h4>Calendars events:</h4><ul>%4$s
+            <li>birthdays (calendar ids): %5$s</li>
+            <li>other events (calendar ids): %6$s</li>
+        </ul>
+        <h4>Files events:</h4><ul><li>birthdays: %7$s</li>
+            <li>other events: %8$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Paper</string>
@@ -828,6 +875,7 @@
 
     <string name="msg_on">ON</string>
     <string name="msg_off">OFF</string>
+    <string name="msg_unknown">UNKNOWN</string>
 
     <string name="quiz_msg_error_title">"Error"</string>
     <string name="quiz_msg_error_get_question">"Error receiving next question!"</string>
@@ -895,6 +943,9 @@
 
     <string name="pref_MenuStyle_key" translatable="false">MenuStyle</string>
     <bool name="pref_MenuStyle_default" translatable="false">true</bool>
+
+    <string name="pref_List_FastScroll_key" translatable="false">FastScroll</string>
+    <bool name="pref_List_FastScroll_default" translatable="false">false</bool>
 
     <string name="pref_EventList_key" translatable="false">EventList</string>
     <string name="pref_List_Events_key" translatable="false">EventTypes</string>
@@ -1279,9 +1330,9 @@
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,</string>
-    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17,,</string>
-    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,</string>
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17,,,,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
@@ -1329,6 +1380,7 @@
     </string-array>
 
     <string-array name="pref_Notifications_Days_values_default" translatable="false">
+        <item>0</item>
     </string-array>
 
     <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>

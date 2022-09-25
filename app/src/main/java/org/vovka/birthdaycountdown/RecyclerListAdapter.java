@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 20.07.2022, 16:37
+ *
+ */
+
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
@@ -75,7 +83,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             holder.textView.setTextColor(mColor);
         } else {
             TypedValue typedValue = new TypedValue();
-            context.getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+            context.getTheme().resolveAttribute(R.attr.dialogHintColor, typedValue, true);
             holder.textView.setTextColor(typedValue.data);
         }
         holder.checkBoxView.setChecked(mSelected.get(mIndex.get(position)) == 1);

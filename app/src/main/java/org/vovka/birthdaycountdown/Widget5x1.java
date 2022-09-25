@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.03.2022, 20:58
+ *  * Last modified 13.09.2022, 18:50
  *
  */
 
@@ -47,7 +47,7 @@ public class Widget5x1 extends AppWidgetProvider {
             //Уточняем количество событий в настройке
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName();
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int prefEventsCountIndex = 0;
             try {
@@ -72,20 +72,19 @@ public class Widget5x1 extends AppWidgetProvider {
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
 
-            if (newOptions != null && eventsData.preferences_debug_on) {
+            if (eventsData.preferences_debug_on) {
 
                 final Resources resources = context.getResources();
                 final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
                 final float density = displayMetrics.density;
 
                 ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        Widget5x1.class.getName() +
-                                "\n appWidgetId=" + appWidgetId +
+                        widgetType + Constants.STRING_COLON + appWidgetId +
                                 "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
                                 "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
                                 "\n widgetPref=" + widgetPref
-                        : "id "+  appWidgetId + ":\n" + widgetPref
+                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
                 );
             }
 

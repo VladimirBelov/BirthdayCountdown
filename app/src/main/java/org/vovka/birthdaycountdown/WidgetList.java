@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2021, 1:01
- *  * Copyright (c) 2018 - 2021. All rights reserved.
- *  * Last modified 22.12.2021, 0:41
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
+ *  * Copyright (c) 2018 - 2022. All rights reserved.
+ *  * Last modified 17.09.2022, 21:31
  *
  */
 
@@ -14,10 +14,13 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -30,7 +33,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 // Список событий масштабируемый
 public class WidgetList extends AppWidgetProvider {
@@ -38,7 +40,7 @@ public class WidgetList extends AppWidgetProvider {
     private static final String TAG = "WidgetList";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
 
-    private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int widgetId) {
+    private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
 
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
@@ -53,25 +55,25 @@ public class WidgetList extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
 
             //Привязываем адаптер
+            //todo: переделать под RemoteCollectionItems https://developer.android.com/about/versions/12/features/widgets
             Intent adapter = new Intent(context, EventListWidgetService.class);
-            adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
             views.setRemoteAdapter(R.id.widget_list, adapter);
 
-            views.setTextViewText(R.id.empty_view, context.getString(R.string.msg_no_events));
             views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
             Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
             intentConfig.setAction(Constants.ACTION_LAUNCH);
-            intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
-            views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+            intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+            views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
 
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId);
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName();
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
             if (eventsData.preferences_debug_on) {
@@ -87,6 +89,11 @@ public class WidgetList extends AppWidgetProvider {
             listClickIntent.setAction(Constants.ACTION_CLICK);
             PendingIntent listClickPIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntentMutable);
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
+
+            //Сообщение при отсутствии событий
+            String prefZeroEventsMessage = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+            views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки
             int colorWidgetBackground = 0;
@@ -112,9 +119,24 @@ public class WidgetList extends AppWidgetProvider {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", 0);
             }
 
+            if (eventsData.preferences_debug_on) {
+
+                final Resources resources = context.getResources();
+                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+                final float density = displayMetrics.density;
+
+                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                        widgetType + Constants.STRING_COLON + appWidgetId +
+                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
+                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
+                                "\n widgetPref=" + widgetPref
+                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
+                );
+            }
+
             //Запуск обновления
-            appWidgetManager.updateAppWidget(widgetId, views);
-            appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -126,7 +148,7 @@ public class WidgetList extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] widgetIds) {
 
         for (int widgetId : widgetIds) {
-            updateAppWidget(context, appWidgetManager, widgetId);
+            updateAppWidget(context, appWidgetManager, widgetId, null);
         }
     }
 
@@ -140,7 +162,7 @@ public class WidgetList extends AppWidgetProvider {
     }
 
     @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int widgetId, Bundle newOptions) {
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
 
         try {
 
@@ -149,9 +171,8 @@ public class WidgetList extends AppWidgetProvider {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
-            appWidgetManager.updateAppWidget(widgetId, views);
-            super.onAppWidgetOptionsChanged(context, appWidgetManager, widgetId, newOptions);
+            updateAppWidget(context, appWidgetManager, appWidgetId, newOptions);
+            super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -163,7 +184,9 @@ public class WidgetList extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
 
         super.onReceive(context, intent);
-        if (Objects.requireNonNull(intent.getAction()).equalsIgnoreCase(Constants.ACTION_CLICK)) {
+
+        final String action = intent.getAction();
+        if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
             int actionPref = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
             if (eventInfo == null || eventInfo.isEmpty()) return;

@@ -1,3 +1,11 @@
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 07.06.2022, 14:16
+  ~  */
+  -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="false" android:color="@color/light_gray_darker"/>
     <item android:color="@color/lighter_gray"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:24
+  ~  * Last modified 17.09.2022, 22:55
   ~  */
   -->
 
@@ -69,7 +69,12 @@
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
+    <string name="msg_date_parse_error">"Ошибка распознавания даты: "</string>
     <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
+    <string name="msg_errors_total">"Всего ошибок: "</string>
+    <string name="msg_errors_details">"аккаунт=%1$s, тип события=%2$s, дата=%3$s"</string>
+    <string name="msg_all">Все</string>
+    <string name="msg_none">Никакие</string>
 
     <string name="msg_plural_postfix">а</string>
 
@@ -136,12 +141,13 @@
     <string name="hint_AlertDialogIcon">Иконка диалога</string>
     <string name="hint_DragItem">Перетаскиваемый элемент</string>
     <string name="hint_Version_History">История версий</string>
-    <string name="hint_Rate_PlayMarket">Оценить приложение на Play Market</string>
-    <string name="hint_Rate_AppGallery">Оценить приложение на App Gallery</string>
+    <string name="hint_Rate_PlayMarket">Оценить приложение на Google Play</string>
+    <string name="hint_Rate_AppGallery">Оценить приложение на HUAWEI AppGallery</string>
     <string name="hint_ShowPreferences">Просмотреть все сохранённые настройки</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Отмена</string>
+    <string name="button_reset">Сбросить</string>
     <string name="button_choose">Выбрать</string>
     <string name="button_rate">Оценить</string>
     <string name="button_mail">Написать</string>
@@ -290,7 +296,7 @@
         <item>Тёмно-серая</item>
         <item>Голубая</item>
         <item>Чёрная</item>
-        <item>Голубо-серая</item>
+        <item>Серо-голубая</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Типы событий</string>
@@ -396,6 +402,9 @@
     <string name="pref_List_CustomCaption_title">Свой заголовок</string>
     <string name="pref_List_CustomCaption_description">Свой собственный заголовок для основного списка событий (Emoji 🎂 поддерживаются)</string>
     <string name="pref_List_CustomCaption_hint">Введите заголовок</string>
+
+    <string name="pref_List_FastScroll_title">Быстрая прокрутка</string>
+    <string name="pref_List_FastScroll_description">Включить быструю прокрутку списка событий, касаясь правой части экрана</string>
 
     <string name="pref_Female_Names_title">Женские имена</string>
     <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото</string>
@@ -566,6 +575,12 @@
     <string name="widget_config_index_label">Стартовый номер событий</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>
 
+    <string name="widget_config_scope_label">Ограничение объема событий</string>
+    <string name="widget_config_scope_events_label">Количество (макс):</string>
+    <string name="widget_config_scope_days_label">Дни:</string>
+    <string name="widget_config_scope_events_items">Все,1,2,3,4,5,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">Все,1,2,3,4,5,6,7,14,21,30</string>
+
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
     <string name="widget_config_font_description">Используется при масштабировании виджета для увеличения размера шрифта возраста, дистанции до события и информации под фото</string>
     <string-array name="widget_config_font">
@@ -593,7 +608,11 @@
         <item>Круг</item>
     </string-array>
 
-    <string name="widget_config_events_count_label">Количество событий</string>
+    <string name="widget_config_custom_zero_events_label">Сообщение при отсутствии событий</string>
+    <string name="widget_config_custom_zero_events_description">Своё сообщение вместо стандартного, если нет событий для отображения (поддерживаются эмодзи 🎂). Введите пробел для невидимости виджета, оставьте пустым для стандартного сообщения</string>
+    <string name="widget_config_custom_zero_events_hint">Введите сообщение…</string>
+
+    <string name="widget_config_events_count_label">Количество событий в ширину</string>
     <string name="widget_config_events_count_description">Если событиям слишком \"узко\" или \"широко\" в виджете, откорректируйте количество событий</string>
     <string-array name="widget_config_events_count">
         <item>Авто</item>
@@ -691,7 +710,7 @@
     <string name="pref_FAQ_title">Вопросы и Ответы</string>
     <string name="pref_FAQ_description">Если что-то работает не правильно или Вы не знаете, как настроить ту или иную функцию программы - Вам в этот раздел</string>
     <string name="pref_Help_title">Помощь</string>
-    <string name="pref_Help_summary">Иногда это может помочь</string>
+    <string name="pref_Help_summary">Иногда это может помочь…</string>
     <string name="pref_About_summary">История версий, статистика событий, ссылки на магазины приложений</string>
     <string name="pref_BatteryOptimization_title">Оптимизация батареи ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_description">Открыть настройку и выключить оптимизацию…</string>
@@ -714,7 +733,10 @@
     <string name="stats_speed_dates"><![CDATA[<li>подсчёт дат: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Счётчики:</h2><ul>]]></string>
-    <string name="stats_counters_events"><![CDATA[<li>событий контактов: %1$d]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>всего событий: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>событий контактов: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>событий из календарей: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>событий из файлов: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>контактов: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>должностей: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>организаций: %1$d]]></string>
@@ -722,6 +744,31 @@
     <string name="stats_counters_URLs"><![CDATA[<li>web ссылок: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>События по аккаунтам:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Доступы и системные опции:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>доступ к списку аккаунтов: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>доступ к данным контактов: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>доступ к данным календарей: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>доступ к файлам внешнего хранилища: %1$s]]></string>
+    <string name="stats_permissions_notifications"><![CDATA[<li>уведомления: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>обновление виджетов (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>оптимизация батареи: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>автозапуск (Xiaomi): %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Нет событий для показа</h2>Эта информация может помочь:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Типы событий: %1$s</p>
+        <h4>События контактов:</h4><ul>%2$s
+            <li>показывать события из аккаунтов: %3$s</li>
+        </ul>
+        <h4>События из календарей:</h4><ul>%4$s
+            <li>дни рождения (id календарей): %5$s</li>
+            <li>другие события (id календарей): %6$s</li>
+        </ul>
+        <h4>События из файлов:</h4><ul><li>дни рождения: %7$s</li>
+            <li>другие события: %8$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Если эта информация не помогла найти причину отсутствия событий, напишите мне письмо (нажмите на название приложения и там на кнопку \"Написать\")</h4>]]></string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>
@@ -831,6 +878,7 @@
 
     <string name="msg_on">ВКЛ</string>
     <string name="msg_off">ВЫКЛ</string>
+    <string name="msg_unknown">НЕИЗВЕСТНО</string>
 
     <string name="quiz_msg_error_title">"Ошибка"</string>
     <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>

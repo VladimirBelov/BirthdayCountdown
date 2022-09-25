@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.03.2022, 20:30
+ *  * Last modified 07.09.2022, 21:36
  *
  */
 
@@ -46,6 +46,9 @@ public class ToastExpander {
 
     public static synchronized void showText(@NonNull Context context, @NonNull String text) {
 
+        try {
+            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), text);
+        } catch (Exception e) { /**/ }
         new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
 
     }

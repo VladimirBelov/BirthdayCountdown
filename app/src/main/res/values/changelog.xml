@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 22:52
+  ~  * Last modified 15.09.2022, 22:40
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.7.2</item>
+        <item>Events amount in list widgets can be limited by the event count and (or) by days</item>
+        <item>If event list is empty summary info for all parameters is displaying</item>
+        <item>Fast scrolling of events is disabled by default and can be enabled in events list settings</item>
+        <item>Fixed event list composing with very lange font sizing</item>
+        <item>Fixed taking read permissions for files with events</item>
+        <item>Fixed updating list widgets when changing screen orientation or resizing the widget (for Android 12+)</item>
 
         <item>#1.7.1</item>
         <item>The settings menu has become more compact (but there is a new setting to return the old look)</item>

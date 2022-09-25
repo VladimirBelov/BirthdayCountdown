@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 04.03.2022, 1:54
+ *  * Last modified 17.09.2022, 22:55
  *
  */
 
@@ -13,6 +13,7 @@ final class Constants {
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String REGEX_COMMAS = " *, *";
     static final String REGEX_PLUS = "\\+";
+    static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
     static final String STRING_0000 = "0000";
@@ -80,6 +81,7 @@ final class Constants {
     static final String DATE_JAVA = "yyyy-MM-dd";
     static final String DATE_JAVA_G = "yyyy-MM-dd G";
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
+    static final String DATE_NO_DIV = "yyyyMMdd";
 
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
@@ -129,6 +131,7 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 101;
     static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
+    static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 104;
 
     static final int RESULT_PICK_CONTACT = 200;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
@@ -165,13 +168,19 @@ final class Constants {
     static final int HTML_COLOR_RED = 1;
     static final int HTML_COLOR_YELLOW = 2;
     static final int HTML_COLOR_BROWN = 3;
+    static final int HTML_COLOR_GREEN = 4;
 
     static final String HTML_BOLD_START = "<b>";
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
     static final String HTML_COLOR = "<font color=\"#%s\">%s</font>"; //https://dzone.com/articles/java-string-format-examples
     static final String HTML_COLOR_START = "<font color=\"#%s\">";
+    static final String HTML_COLOR_END = "</font>";
+    static final String FONT_COLOR_RED = "<font color=red>";
+    static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";
     static final String HTML_LI = "<li>";
+    static final String HTML_LI_API21 = "<br>&nbsp;-&nbsp;";
+    static final String HTML_LI_END = "</li>";
     static final String HTML_UL_END = "</ul>";
     static final String HTML_UL_START = "<ul>";
     static final String HTML_FONT_END = "</font>";
@@ -218,10 +227,11 @@ final class Constants {
 
     //Отладочные сообщения
 
+    //todo: переделать под ресурсы
     static final String MSG_NOTIFICATIONS_WERE_ENABLED = "Notifications were enabled\n";
     static final String MSG_NOTIFICATIONS_WERE_DISABLED = "Notifications were disabled\n";
     static final String MSG_WIDGET_PREFS_REMOVED = "Preferences for widget #%s has been removed";
-    static final String MSG_WIDGET_PREFS_SAVED = "Saved widget #%s preferences: ";
+    static final String MSG_WIDGET_PREFS_SAVED = "Saved widget #%s preferences:\n";
     static final String MSG_RINGTONE = "Ringtone: ";
     static final String MSG_DELETED_CHANNEL_ = "Deleted channel ";
     static final String MSG_CREATED_CHANNEL_ = "Created channel ";
@@ -229,16 +239,16 @@ final class Constants {
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
     static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
     static final String MSG_NO_ACTION = "No action for event";
-    static final String MSG_ERROR_PARSING_DATES = "Error parsing dates: ";
 
     static final String RULE_TAG_NAME = "[name]";
     //static final String RULE_TAG_ALIAS = "[alias]";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
-    static final String WIDGET_TYPE_LIST = ".WidgetList";
-    static final String WIDGET_TYPE_PHOTO_LIST = ".WidgetPhotoList";
-    static final String WIDGET_TYPE_5X1 = ".Widget5x1";
-    static final String WIDGET_TYPE_4X1 = ".Widget4x1";
+    static final String WIDGET_TYPE_LIST = "WidgetList";
+    static final String WIDGET_TYPE_PHOTO_LIST = "WidgetPhotoList";
+    static final String WIDGET_TYPE_5X1 = "Widget5x1";
+    static final String WIDGET_TYPE_4X1 = "Widget4x1";
+    static final String WIDGET_TYPE_2X2 = "Widget2x2";
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String FilePrefix_Media = "com.android.providers.media.documents";
@@ -249,5 +259,6 @@ final class Constants {
     static final String STRING_HTTP = "http://";
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
+    static final String RES_TYPE_STRING = "string";
 
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 24.02.2022, 12:48
+  ~  * Last modified 08.09.2022, 22:08
   ~  */
   -->
 
 <resources>
 
     <color name="dark_red">#FFbb0000</color>
-    <color name="red">#FFff0000</color>
+    <!--<color name="red">#FFff0000</color>-->
     <color name="brown">#FF873A07</color>
     <color name="yellow">#FFFFEE00</color>
     <color name="green">#FF2ED70E</color>

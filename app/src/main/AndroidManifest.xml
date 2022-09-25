@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 07.03.2022, 20:03
+  ~  * Last modified 15.09.2022, 21:18
   ~  */
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.vovka.birthdaycountdown">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>  <!-- без этого на Android 8+ виджеты не обновляются https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f -->
@@ -65,14 +64,14 @@
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="false"/>
 
         <activity
             android:name=".WidgetConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="true"
             android:launchMode="singleInstance">
@@ -84,7 +83,7 @@
         <activity android:name=".AboutActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".SettingsActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="false"/>
 

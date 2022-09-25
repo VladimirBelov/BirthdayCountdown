@@ -1,12 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.03.2022, 19:16
+ *  * Last modified 13.09.2022, 18:50
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -19,7 +21,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -97,7 +98,7 @@ class WidgetUpdater {
             //Получаем настройки отображения виджета
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetId);
             if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName();
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
 
             int startingIndex = 1;
@@ -267,8 +268,12 @@ class WidgetUpdater {
             views.setViewVisibility(id_widget_Caption_left, View.INVISIBLE);
             views.setViewVisibility(id_widget_Caption_centered, View.INVISIBLE);
 
-            views.setTextViewTextSize(id_widget_Caption_left, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
-            views.setTextViewTextSize(id_widget_Caption_centered, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption_left, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption_centered, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+
+            //todo: оптимизировать количество элементов на разметке
+            //RemoteViews TextView не понимает gravity, но LinearLayout - понимает
+            //https://stackoverflow.com/questions/7825508/remoteviews-textview-setgravity
 
             switch (eventsData.preferences_widgets_bottom_info) {
                 case Constants.STRING_1: //Фамилия Имя Отчество
@@ -371,8 +376,8 @@ class WidgetUpdater {
             views.setViewVisibility(id_widget_Caption2nd_left, View.INVISIBLE);
             views.setViewVisibility(id_widget_Caption2nd_centered, View.INVISIBLE);
 
-            views.setTextViewTextSize(id_widget_Caption2nd_left, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
-            views.setTextViewTextSize(id_widget_Caption2nd_centered, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption2nd_left, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(id_widget_Caption2nd_centered, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
 
             switch (eventsData.preferences_widgets_bottom_info_2nd) {
                 case Constants.STRING_1: //Фамилия Имя Отчество
@@ -659,7 +664,7 @@ class WidgetUpdater {
             views.setTextColor(id_widget_Caption2nd_left, colorDefault);
             views.setTextColor(id_widget_Caption2nd_centered, colorDefault);
 
-            //todo: сделать цвет тени зависымым от цвета текста
+            //todo: сделать цвет тени зависимым от цвета текста
             //https://stackoverflow.com/questions/44417666/change-properties-of-view-inside-remoteview
             //https://stackoverflow.com/questions/6435648/any-way-to-set-the-text-shadow-for-a-spannablestring - не работает
             // @android.view.RemotableViewMethod
@@ -680,7 +685,6 @@ class WidgetUpdater {
                 if (colorEventToday != 0) {
                     if (person.Age > -1) {
                         views.setTextColor(id_widget_Age, colorEventToday);
-                        //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.white));
                     } else {
                         //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
                         views.setTextColor(id_widget_Caption_left, colorEventToday);
@@ -695,13 +699,13 @@ class WidgetUpdater {
 
                 views.setTextColor(id_widget_Distance, colorEventSoon);
                 views.setTextViewText(id_widget_Distance, eventDistance);
-                views.setTextViewTextSize(id_widget_Distance, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_BIG * fontMagnify));
+                views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_BIG * fontMagnify));
 
             } else { //Попозже
 
                 views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_eventsoon != 0 ? colorEventFar : colorDefault);
                 views.setTextViewText(id_widget_Distance, eventDistance);
-                views.setTextViewTextSize(id_widget_Distance, TypedValue.COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+                views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 
             }
 
@@ -716,9 +720,8 @@ class WidgetUpdater {
                 } else {
                     views.setTextViewText(id_widget_Age, Constants.STRING_EMPTY);
                 }
-                views.setTextColor(resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + eventsDisplayed, Constants.STRING_ID, packageName), colorDefault);
-                //views.setInt(context.getResources().getIdentifier("textViewAge" + i, "id", context.getPackageName()),"setShadowColor", context.getResources().getColor(R.color.dark_gray));
-                views.setTextViewTextSize(id_widget_Age, TypedValue.COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+                //views.setTextColor(resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + eventsDisplayed, Constants.STRING_ID, packageName), colorDefault);
+                views.setTextViewTextSize(id_widget_Age, COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
                 views.setViewVisibility(id_widget_Age, View.VISIBLE);
 
             } else {

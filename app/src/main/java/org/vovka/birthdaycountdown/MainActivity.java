@@ -1,12 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
+ *  * Created by Vladimir Belov on 18.09.2022, 8:26
  *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.03.2022, 21:32
+ *  * Last modified 17.09.2022, 20:32
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static android.view.View.GONE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -34,6 +36,7 @@ import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -46,6 +49,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
@@ -126,6 +130,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.getContext() == null) eventsData.setContext(this);
             eventsData.getPreferences();
 
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+            //Устанавливаем язык приложения
+            eventsData.setLocale(true);
+            resources = getResources();
+
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
             //https://medium.com/@pkjvit/https-medium-com-pkjvit-android-multi-theme-night-mode-and-material-design-c186bf9fd678
@@ -141,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             super.onCreate(savedInstanceState);
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
-            //Устанавливаем язык приложения
-            eventsData.setLocale(true);
-            resources = getResources();
 
             setContentView(R.layout.activity_main);
 
@@ -184,9 +205,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 try {
                     //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
                     swipeRefresh = findViewById(R.id.swiperefresh);
-                    if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_SPEED_LOAD_OVERTIME) {
+                    if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME) {
 
-                        updateList(false, eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_OVERTIME);
+                        updateList(false, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
                     }
                 } catch (Exception e) {
@@ -200,18 +221,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //initNotifications();
 
             ListView listView = findViewById(R.id.mainListView);
-            //http://androidopentutorials.com/android-listview-fastscroll/
-            //https://stackoverflow.com/questions/33619453/scrollbar-touch-area-in-android-6
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                listView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    //включаем fast scroll, только когда скроллят
-                    if (!listView.isFastScrollEnabled()) {
-                        listView.setFastScrollEnabled(true);
-                        listView.postDelayed(() -> listView.setFastScrollEnabled(false), 4000);
-                    }
-                });
-            }
-
             displayMetrics = resources.getDisplayMetrics();
 
             //Разделитель списка зависит от стиля отображения
@@ -356,9 +365,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             } else {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    sb.append("<li>&nbsp;").append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR)).append("</li>");
+                                    sb.append(Constants.HTML_LI).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR)).append(Constants.HTML_LI_END);
                                 } else {
-                                    sb.append("<br>&nbsp;-&nbsp;").append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR));
+                                    sb.append(Constants.HTML_LI_API21).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR));
                                 }
                                 countChanges++;
 
@@ -396,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case 0: //при первом запуске показывать welcome screen
 
+
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                         //https://developer.android.com/training/permissions/requesting.html#java
                         swipeRefresh.setEnabled(false);
@@ -407,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_welcome_title));
                     builder.setIcon(android.R.drawable.ic_menu_info_details);
+                    builder.setCancelable(false);
                     builder.setMessage(getString(R.string.msg_welcome_text));
                     builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
                     builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
@@ -414,6 +425,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             startActivity(new Intent(this, SettingsActivity.class));
                         } catch (android.content.ActivityNotFoundException e) { /**/ }
                     });
+
                     alertToShow = builder.create();
                     alertToShow.setOnShowListener(arg0 -> {
                         alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
@@ -482,9 +494,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             StringBuilder log = new StringBuilder();
 
-            eventsData.initNotificationChannel(log); //для Android 8+
-            eventsData.initBootReceiver(log);
-            eventsData.initNotifications(log);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                log.append(getString(R.string.msg_notifications_disabled));
+            } else {
+                eventsData.initNotificationChannel(log); //для Android 8+
+                eventsData.initBootReceiver(log);
+                eventsData.initNotifications(log);
+            }
             eventsData.initWidgetUpdate(log);
 
             if (eventsData.preferences_debug_on && log.length() > 0)
@@ -648,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             searchView.setQueryHint(getString (R.string.msg_hint_search));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
-            menu.findItem(R.id.menu_open_file_with_events).setVisible(!eventsData.preferences_birthday_files.isEmpty() || !eventsData.preferences_otherevent_files.isEmpty());
+            menu.findItem(R.id.menu_open_file_with_events).setVisible(!eventsData.preferences_Birthday_files.isEmpty() || !eventsData.preferences_Otherevent_files.isEmpty());
 
             //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -688,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                 //https://medium.com/@elye.project/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
-                    swipeRefresh.post(() -> updateList(true, eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_OVERTIME));
+                    swipeRefresh.post(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME));
                 }
                 return true;
 
@@ -880,14 +896,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 ArrayList<String> fileNames = new ArrayList<>();
                 ArrayList<String> fileURIs = new ArrayList<>();
-                for (String file: eventsData.preferences_birthday_files) {
+                for (String file: eventsData.preferences_Birthday_files) {
                     String[] fileDetails = file.split(Constants.STRING_PIPE);
                     if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);
                         fileURIs.add(fileDetails[1]);
                     }
                 }
-                for (String file: eventsData.preferences_otherevent_files) {
+                for (String file: eventsData.preferences_Otherevent_files) {
                     String[] fileDetails = file.split(Constants.STRING_PIPE);
                     if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);
@@ -996,9 +1012,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (contactUri != null) {
                     String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
                     if (!contactID.isEmpty() && !selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
-                        if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], contactID))
+                        if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], contactID)) {
                             prepareList();
                             updateList(true, true);
+                        }
                     }
                 }
 
@@ -1066,12 +1083,67 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
 
+            if (eventsData.preference_list_fastscroll) {
+
+                //http://androidopentutorials.com/android-listview-fastscroll/
+                //https://stackoverflow.com/questions/33619453/scrollbar-touch-area-in-android-6
+                //https://stackoverflow.com/questions/6883785/android-sectionindexer-tutorial
+                //todo: разобраться. почему из-за FastScroll иногда падает приложение
+
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    listView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                        @Override
+                        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                            //включаем fast scroll, только когда скроллят
+                            if (!listView.isFastScrollEnabled()) {
+                                listView.setFastScrollEnabled(true);
+                                listView.postDelayed(() -> listView.setFastScrollEnabled(false), 4000);
+                            }
+                        }
+                    });
+                }*/
+
+                listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    int mCurrentState = 0;
+
+                    @Override
+                    public void onScrollStateChanged(AbsListView absListView, int state) {
+
+                        if (state == SCROLL_STATE_IDLE && mCurrentState != state && listView.isFastScrollEnabled()) {
+                            listView.postDelayed(() -> listView.setFastScrollEnabled(false), 3000);
+                        }
+
+                        mCurrentState = state;
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                        if (mCurrentState == SCROLL_STATE_TOUCH_SCROLL) {
+                            if (!listView.isFastScrollEnabled())
+                                listView.setFastScrollEnabled(true);
+                        }
+                    }
+                });
+
+            } else {
+
+                listView.setOnScrollListener(null);
+                listView.setFastScrollEnabled(false);
+
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                    && eventsData.preferences_notifications_days.size() > 0) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+            }
+
             //this.invalidateOptionsMenu();
 
             //Тему не меняли, просто обновляем данные
-            if (this.dataList.isEmpty() || eventsData.needUpdateEventList) {// || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+            if (this.dataList.isEmpty() || eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
-                updateList(true, !eventsData.isUIopen || eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_OVERTIME);
+                updateList(true, !eventsData.isUIopen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
                 //Уведомления
                 initNotifications();
@@ -1090,14 +1162,28 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+
+
             if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
+
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     registerForContextMenu(findViewById(R.id.mainListView));
-
-                    updateList(true, eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                     showWelcomeScreen();
-
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                        && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                        && eventsData.preferences_notifications_days.size() > 0) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+                }
+
+            } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initNotifications();
+                }
+
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1424,9 +1510,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             if (dataList.isEmpty()) {
 
+                findViewById(R.id.mainListView).setVisibility(GONE);
+                findViewById(R.id.mainListViewEmpty).setVisibility(View.VISIBLE);
+
+                TextView view = findViewById(R.id.mainListViewEmpty);
+                if (view != null) {
+                    view.setText(HtmlCompat.fromHtml(
+                        getString(R.string.msg_zero_events_title) +
+                                eventsData.getCurrentParams() +
+                                getString(R.string.msg_zero_events_footer)
+                        , 0));
+                    //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
+                    view.setMovementMethod(new ScrollingMovementMethod());
+                }
+
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));
 
             } else {
+
+                findViewById(R.id.mainListView).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
 
                 if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden) {
                     setHint(resources.getString(R.string.msg_stats_hidden_prefix) + statsHiddenEvents + Constants.STRING_SPACE);
@@ -1660,7 +1763,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     case Constants.STRING_1: //Завтра и послезавтра
                     case Constants.STRING_2:
 
-                        final String distance_near = eventDistanceText[0] + Constants.STRING_SPACE + eventDistanceText[1];
+                        final String distance_near = eventDistanceText[0] + (eventDistanceText.length > 1 ? Constants.STRING_SPACE + eventDistanceText[1] : Constants.STRING_EMPTY);
                         holder.DayDistanceTextView.setText(distance_near);
                         holder.DayDistanceTextView.setTypeface(null, Typeface.BOLD);
                         holder.DayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventsoon);
@@ -1668,7 +1771,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     default: //Попозже
 
-                        final String distance_far = eventDistanceText[0] + Constants.STRING_SPACE + eventDistanceText[1];
+                        final String distance_far = eventDistanceText[0] + (eventDistanceText.length > 1 ? Constants.STRING_SPACE + eventDistanceText[1] : Constants.STRING_EMPTY);
                         holder.DayDistanceTextView.setText(distance_far);
                         holder.DayDistanceTextView.setTypeface(null, Typeface.NORMAL);
                         holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(eventsData.getContext(), R.color.dark_gray)));
@@ -1738,13 +1841,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
-                    if ((eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) && !singleEventArray[ContactsEvents.Position_age_current].equals(Constants.STRING_EMPTY)) { //Если это день рождения или 5K
-                        if (eventsData.set_events_deaths.contains(singleEventArray[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
+                    if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) { //Если это день рождения или 5K
+                        final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                        if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                             if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                            eventDetails.append(getString(R.string.msg_age_could_be)).append(singleEventArray[ContactsEvents.Position_age_current]);
-                        } else {
-                            if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                            eventDetails.append(getString(R.string.msg_age_now)).append(singleEventArray[ContactsEvents.Position_age_current]);
+                            if (eventsData.set_events_deaths.contains(singleEventArray[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
+                                eventDetails.append(getString(R.string.msg_age_could_be));
+                            } else {
+                                eventDetails.append(getString(R.string.msg_age_now));
+                            }
+                            eventDetails.append(currentAge);
                         }
                     } else if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_Death)) && eventsData.set_events_birthdays.containsKey(singleEventArray[ContactsEvents.Position_contactID])) { //Если это годовщина смерти
                         Locale locale_en = new Locale(Constants.LANG_EN);
@@ -1804,7 +1910,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     holder.PhotoImageView.setVisibility(View.VISIBLE);
                 } else {
                     holder.PhotoImageView.setImageBitmap(null);
-                    holder.PhotoImageView.setVisibility(View.GONE);
+                    holder.PhotoImageView.setVisibility(GONE);
                 }
 
                 if (person.Age > -1 && person.Age % 10 == 0) {
@@ -1936,7 +2042,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (convertView == null) {
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
+                try {
                 return inflater.inflate(R.layout.entry_main, parent, false);
+                } catch (InflateException ie) {
+                    return parent;
+                }
             } else {
                 return convertView;
             }
@@ -2062,7 +2172,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         };
     }
 
-    public void onSaveInstanceState(Bundle bundle) {
+    public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
     }
 

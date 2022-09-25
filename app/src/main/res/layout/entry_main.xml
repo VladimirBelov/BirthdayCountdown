@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 04.03.2022, 3:04
+  ~  * Last modified 08.09.2022, 11:08
   ~  */
   -->
 
@@ -36,18 +36,26 @@
 
             <TextView
                 android:id="@+id/entryDayDistanceTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="?attr/colorAccent"
+                android:minEms="12"
+                android:singleLine="false"
                 android:text="@string/hint_EventDistance"
+                android:textAlignment="textStart"
                 android:textColor="?attr/eventDistanceColor"
-                android:textSize="@dimen/event_details" />
+                android:textSize="@dimen/event_details"
+                android:minHeight="0dp"/>
 
             <TextView
                 android:id="@+id/entryDateTextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="end"
-                android:minWidth="10dp"
+                android:minEms="12"
+                android:singleLine="true"
                 android:text="@string/hint_Date"
                 android:textAlignment="textEnd"
                 android:textColor="?attr/eventDateColor"

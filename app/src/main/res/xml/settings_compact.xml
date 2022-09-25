@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.03.2022, 22:54
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
   ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 02.03.2022, 23:08
+  ~  * Last modified 30.06.2022, 23:54
   ~  */
   -->
 
@@ -67,6 +67,16 @@
             android:summary="@string/pref_ExtraFun_On_description"
             android:title="@string/pref_ExtraFun_On_title"
             android:icon="@android:drawable/ic_menu_manage"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_Female_Names_key"
+            android:summary="@string/pref_Female_Names_description"
+            android:title="@string/pref_Female_Names_title"
+            android:hint="@string/pref_Female_Names_hint"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceScreen>
 
@@ -528,15 +538,12 @@
             android:dialogIcon="@android:drawable/ic_menu_edit"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <org.vovka.birthdaycountdown.CustomEditTextPreference
-            android:key="@string/pref_Female_Names_key"
-            android:summary="@string/pref_Female_Names_description"
-            android:title="@string/pref_Female_Names_title"
-            android:hint="@string/pref_Female_Names_hint"
-            android:textSize="16sp"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:dialogIcon="@android:drawable/ic_menu_edit"
-            android:negativeButtonText="@string/button_cancel"/>
+        <SwitchPreference
+            android:key="@string/pref_List_FastScroll_key"
+            android:summary="@string/pref_List_FastScroll_description"
+            android:title="@string/pref_List_FastScroll_title"
+            android:defaultValue="@bool/pref_List_FastScroll_default"
+            android:icon="@android:drawable/ic_menu_preferences" />
 
         <ListPreference
             android:defaultValue="@string/pref_List_OnClick_default"
