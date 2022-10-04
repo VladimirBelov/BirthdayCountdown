@@ -54,6 +54,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventInfoValues;
 
     public void onCreate(Bundle savedInstanceState) {
+
+        TypedArray ta = null;
+
         try {
 
             super.onCreate(savedInstanceState);
@@ -89,7 +92,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.window_widget_settings);
 
             //Цвет заголовка окна
-            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
@@ -426,6 +429,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            if (ta != null) ta.recycle();
         }
     }
 

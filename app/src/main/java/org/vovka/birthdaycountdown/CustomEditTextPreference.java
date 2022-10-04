@@ -60,6 +60,7 @@ public class CustomEditTextPreference extends EditTextPreference {
             //final float scale = getContext().getResources().getDisplayMetrics().density;
             //editText.setMinimumHeight((int) (48 * scale + 0.5f));
             editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getContext().getResources().getDisplayMetrics()));
+            ta.recycle();
         }
     }
 }

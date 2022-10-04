@@ -1885,7 +1885,7 @@ class ContactsEvents {
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
 
-                    statCalendarsEventCount++;
+                    statCalendarsEventCount+= cursor.getCount();
                     statEventsCount+= cursor.getCount();
                     //Calendar c = Calendar.getInstance();
 
@@ -4702,6 +4702,7 @@ class ContactsEvents {
 
             TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
             alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+            ta.recycle();
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();

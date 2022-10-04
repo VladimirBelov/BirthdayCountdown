@@ -144,6 +144,8 @@
         <item name="colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
+        <item name="eventFullNameColor">@color/light_gray_darker</item>
+        <item name="eventAgeColor">@color/light_gray_darker</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
     </style>
 

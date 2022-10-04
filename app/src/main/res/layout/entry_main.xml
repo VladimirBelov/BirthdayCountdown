@@ -39,7 +39,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="?attr/colorAccent"
                 android:minEms="12"
                 android:singleLine="false"
                 android:text="@string/hint_EventDistance"

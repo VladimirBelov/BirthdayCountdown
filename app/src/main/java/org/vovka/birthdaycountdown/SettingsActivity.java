@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     private static final String TAG = "SettingsActivity";
     private String testChannelId = Constants.STRING_EMPTY;
-    private TypedArray ta;
+    private TypedArray ta = null;
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
     private Set<String> filesList;
@@ -225,6 +225,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         //super.onBackPressed();
         finish();
     }*/
+
+    @Override
+    protected void onDestroy() {
+        if (ta != null) ta.recycle();
+        super.onDestroy();
+    }
 
     private void updateTitles() {
 
@@ -1269,13 +1275,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .setNeutralButton(R.string.button_reset, null);
 
             AlertDialog dialog = builder.create();
-            View view = View.inflate(this, R.layout.dialog_fontmagnify, null);
+            View view = View.inflate(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_fontmagnify, null);
             dialog.setCustomTitle(view);
 
             ImageView icon = view.findViewById(R.id.icon);
             if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_menu_find));
             TextView title = view.findViewById(R.id.title);
             if (title != null) title.setText(R.string.pref_List_FontMagnify_title);
+                //Resources.Theme th = this.getTheme();
+               // ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+               // title.setTextColor(ta.getColor(R.styleable.Theme_colorPrimary, title.getCurrentTextColor()));
+                        //getResources().getColor(R.color.white));
+            //}
+
+            //ta = this.getTheme().obtainStyledAttributes(R.style.ContactsEvents.getInstance().preferences_theme.themeDialog);
 
             //Данные события
             ImageView iconEvent = view.findViewById(R.id.entryEventIcon);

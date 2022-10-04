@@ -596,6 +596,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onDestroy() {
         executor.shutdown();
+        if (ta != null) ta.recycle();
         super.onDestroy();
     }
 
@@ -1677,6 +1678,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private static class ViewHolder {
         //https://stackoverflow.com/questions/21501316/what-is-the-benefit-of-viewholder
+        //todo: перейти на RecycleView https://www.spreys.com/listview-to-recyclerview/
 
         final TextView NameTextView;
         final TextView DayDistanceTextView;
@@ -1739,8 +1741,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     convertView = inflater.inflate(R.layout.entry_main, parent, false);
                     holder = createViewHolderFrom(convertView);
                     convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
                 }
-                holder = (ViewHolder) convertView.getTag();
 
                 event = getItem(position);
                 if (event == null) return convertView;

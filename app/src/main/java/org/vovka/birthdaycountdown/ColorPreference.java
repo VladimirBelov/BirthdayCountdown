@@ -57,22 +57,22 @@ public class ColorPreference extends Preference {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyle) {
-        TypedArray a = getContext().getTheme().obtainStyledAttributes(
+        TypedArray ta = getContext().getTheme().obtainStyledAttributes(
                 attrs, R.styleable.ColorPreference, defStyle, defStyle);
 
         try {
-            mSelectDialogTitle = a.getString(R.styleable.ColorPreference_dialogTitle);
-            mSelectDialogIcon = a.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
-            mItemLayoutId = a.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
-            mNumColumns = a.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            int choicesResId = a.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
+            mSelectDialogTitle = ta.getString(R.styleable.ColorPreference_dialogTitle);
+            mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
+            mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
+            mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
+            int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
-                mColorChoices = a.getResources().getIntArray(choicesResId);
+                mColorChoices = ta.getResources().getIntArray(choicesResId);
             }
 
         } finally {
-            a.recycle();
+            ta.recycle();
         }
 
         setWidgetLayoutResource(mItemLayoutId);

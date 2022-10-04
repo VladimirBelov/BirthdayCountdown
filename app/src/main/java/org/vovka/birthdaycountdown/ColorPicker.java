@@ -78,33 +78,33 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         LayoutInflater.from(getContext()).inflate(R.layout.picker_color, this);
         setOnClickListener(this);
 
-        TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.ColorPreference, defStyleAttr, defStyleRes);
+        TypedArray ta = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.ColorPreference, defStyleAttr, defStyleRes);
 
         try {
-            mSelectDialogTitle = a.getString(R.styleable.ColorPreference_dialogTitle);
-            mSelectDialogIcon = a.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
-            mItemLayoutId = a.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
-            mNumColumns = a.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            mValue = a.getInteger(R.styleable.ColorPreference_defaultValue, ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
-            int choicesResId = a.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
+            mSelectDialogTitle = ta.getString(R.styleable.ColorPreference_dialogTitle);
+            mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
+            mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
+            mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
+            mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
+            int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
-                mColorChoices = a.getResources().getIntArray(choicesResId);
+                mColorChoices = ta.getResources().getIntArray(choicesResId);
             }
 
-            if (a.hasValue(R.styleable.ColorPreference_title)) {
+            if (ta.hasValue(R.styleable.ColorPreference_title)) {
                 int id = getResources().getIdentifier("title", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
-                    if (view != null) view.setText(a.getString(R.styleable.ColorPreference_title));
+                    if (view != null) view.setText(ta.getString(R.styleable.ColorPreference_title));
                 }
             }
-            if (a.hasValue(R.styleable.ColorPreference_summary)) {
+            if (ta.hasValue(R.styleable.ColorPreference_summary)) {
                 int id = getResources().getIdentifier("summary", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null)
-                        view.setText(a.getString(R.styleable.ColorPreference_summary));
+                        view.setText(ta.getString(R.styleable.ColorPreference_summary));
                 }
 
             }
@@ -113,8 +113,8 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (id > 0) {
                 ImageView view = findViewById(id);
                 if (view != null) {
-                    if (a.hasValue(R.styleable.ColorPreference_icon)) {
-                        view.setImageResource(a.getResourceId(R.styleable.ColorPreference_icon, 0));
+                    if (ta.hasValue(R.styleable.ColorPreference_icon)) {
+                        view.setImageResource(ta.getResourceId(R.styleable.ColorPreference_icon, 0));
                         view.setVisibility(View.VISIBLE);
                     } else {
                         view.setVisibility(View.GONE);
@@ -139,7 +139,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            a.recycle();
+            ta.recycle();
         }
 
     }
@@ -208,6 +208,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertToShow.show();
+        ta.recycle();
 
     }
 
