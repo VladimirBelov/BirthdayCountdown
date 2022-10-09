@@ -184,7 +184,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         AlertDialog alertToShow = builder.create();
 
 
-        alertToShow.setOnShowListener(arg0 -> {
+        alertToShow.setOnShowListener(dialog -> {
             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
             alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
@@ -206,10 +206,12 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         });
 
+        alertToShow.setOnDismissListener(dialog -> {
+            ta.recycle();
+        });
+
         alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertToShow.show();
-        ta.recycle();
-
     }
 
     public int getColor() {return mValue;}

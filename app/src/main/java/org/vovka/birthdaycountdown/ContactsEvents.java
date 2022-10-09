@@ -1869,14 +1869,7 @@ class ContactsEvents {
                 if (calIDs.length() > 0) calIDs.append(" OR " + CalendarContract.Events.CALENDAR_ID + " = ");
                 calIDs.append(calID);
             }
-
             String selection = CalendarContract.Events.CALENDAR_ID + " = " + calIDs;
-                    /*"("
-                    + " ( " + CalendarContract.Events.ALL_DAY + " = 1 )"
-                    + " AND "
-                    + "( " + CalendarContract.Events.CALENDAR_ID + " = " + calIDs + " )"
-                    + ")";*/
-
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startTime.getTimeInMillis());
             ContentUris.appendId(builder, endTime.getTimeInMillis());
