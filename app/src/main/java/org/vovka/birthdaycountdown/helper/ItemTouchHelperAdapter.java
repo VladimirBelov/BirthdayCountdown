@@ -46,5 +46,5 @@ public interface ItemTouchHelperAdapter {
      * @param position The position of the item dismissed.
      */
     @SuppressWarnings("EmptyMethod")
-    void onItemDismiss(int position);
+    void onItemDismiss(@SuppressWarnings("unused") int position);
 }

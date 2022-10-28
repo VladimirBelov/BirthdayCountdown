@@ -94,6 +94,8 @@
     <string name="msg_after_day_prefix_1_">" Tage"</string> <!--21, 31, 41, ...-->
     <string name="msg_after_day_prefix_4_21">" Tage"</string>
 
+    <string name="msg_after_day_prefix_short">" d."</string>
+
     <string name="msg_age_now">"Alter: "</string>
     <string name="msg_age_was">"Alter bei Tod: "</string>
     <string name="msg_age_could_be">"Könnte jetzt sein: "</string>
@@ -101,6 +103,7 @@
     <string name="msg_hint_search">Suchanfrage</string>
     <string name="msg_hint_global_search">Suche nach Ereignissen</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die ausgewählte Tage</string>
+    <string name="msg_notifications_count">"Ereignisse in Kürze - "</string>
     <string name="msg_notifications_soon">"Ereignisse - "</string>
     <string name="msg_notifications_disabled">Benachrichtigungen aus</string>
     <string name="msg_no_events_hint">In Ihrem Adressbuch wurden keine Ereignisse gefunden. Um Ereignisse (Geburtstage, Jahrestage, Namenstage) anzuzeigen, müssen diese in die Karten Ihrer Kontakte eingetragen oder von auf Ihrem Smartphone installierten Anwendungen (Google, Skype, VK, …) importiert werden.</string>
@@ -403,6 +406,10 @@
     <string name="pref_List_CustomCaption_description">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Titel eingeben</string>
 
+    <string name="pref_List_CustomTodayEventCaption_title">Benutzerdefinierter Titel für das heutige Ereignist</string>
+    <string name="pref_List_CustomTodayEventCaption_description">Benutzerdefinierte Beschriftung für das heutige Ereignis anstelle der \"heute\"-Nachricht (Emojis werden unterstützt 🎂)</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Titel eingeben</string>
+
     <string name="pref_List_FastScroll_title">Schnelles Scrollen</string>
     <string name="pref_List_FastScroll_description">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
 
@@ -469,6 +476,8 @@
 
     <string name="pref_Widgets_EventInfo_None">Keine</string>
     <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
+    <string name="pref_Widgets_EventInfo_Dividers">Ereignisteiler</string>
+    <string name="pref_Widgets_EventInfo_ButtonConfig">Config-Taste</string>
     <string name="pref_Widgets_EventInfo_Photo">Kontaktfoto</string>
     <string name="pref_Widgets_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Ereignisdetails</string>
@@ -476,21 +485,24 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Sternzeichen</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Ursprüngliches Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Ursprüngliches Ereignisdatum mit Jahr</string>
-    <string name="pref_Widgets_EventInfo_EventDate">📆 Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Ereignisdatum</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Ereignistitel</string>
     <string name="pref_Widgets_EventInfo_Age">Alter (Jahrestag)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Tage vor dem Ereignis (kurzes Format)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (ferneres Ereignis)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Wochentag des Ereignisses (kurzes Format)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
     <string name="pref_Widgets_EventInfo_Organization">Unternehmen</string>
     <string name="pref_Widgets_EventInfo_JobTitle">Position</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Symbol für die Ereignisquelle</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
+    <string name="pref_Widgets_EventInfo_DatesInBrackets">Schließen Sie Datumsangaben in Klammern ein</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- neue Zeile -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- neue Zeile - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- neue Zeile -  "</string>
@@ -637,8 +649,9 @@
     <string-array name="pref_Notifications_Type_entries">
         <item>Eine allgemeine Benachrichtigung</item>
         <item>Jedes Ereignis in einer separaten Benachrichtigung</item>
-        <item>Bei weniger als 3 Ereignissen => getrennt, sonst - allgemein</item>
-        <item>Bei weniger als 4 Ereignissen => getrennt, sonst - allgemein</item>
+        <item>Bei weniger als 3 Ereignissen -> getrennt, sonst -> allgemein</item>
+        <item>Bei weniger als 4 Ereignissen -> getrennt, sonst -> allgemein</item>
+        <item>Die heutigen Ereignisse -> getrennt, andere -> allgemein</item>
     </string-array>
 
     <string name="pref_Notifications_Days_title">Benachrichtigungsintervall</string>
@@ -646,10 +659,19 @@
 
     <string-array name="pref_Notifications_Days_entries">
         <item>Am Tag des Ereignisses</item>
-        <item>Einem Tag vorher</item>
-        <item>Zwei Tage vorher</item>
-        <item>Drei Tage vorher</item>
+        <item>1 Tag vorher</item>
+        <item>2 Tage vorher</item>
+        <item>3 Tage vorher</item>
+        <item>4 Tage vorher</item>
+        <item>5 Tage vorher</item>
+        <item>6 Tage vorher</item>
         <item>Eine Woche vorher</item>
+        <item>8 Tage vorher</item>
+        <item>9 Tage vorher</item>
+        <item>10 Tage vorher</item>
+        <item>11 Tage vorher</item>
+        <item>12 Tage vorher</item>
+        <item>13 Tage vorher</item>
         <item>Zwei Wochen vorher</item>
     </string-array>
 
@@ -713,9 +735,13 @@
     <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_description">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
-    <string name="pref_Debug_On_title">Debug &amp; Zusatzfunktionen</string>
+    <string name="pref_ContactsAccess_title">Kein Zugriff auf Kontaktereignisse</string>
+    <string name="pref_ContactsAccess_description">Fordern Sie die Berechtigung für Kontaktereignisse an…</string>
+    <string name="pref_CalendarAccess_title">Kein Zugriff auf den Kalender</string>
+    <string name="pref_CalendarAccess_description">Berechtigung für Kalenderdaten anfordern…</string>
+    <string name="pref_Debug_On_title">Debug</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
-    <string name="pref_Debug_On_description">Debug-Meldungen und Zusatzfunktionen anzeigen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
+    <string name="pref_Debug_On_description">Debug-Meldungen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
     <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
 

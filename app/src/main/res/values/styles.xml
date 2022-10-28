@@ -191,23 +191,14 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:alertDialogTheme">@style/AlertDialog.Black</item>
+        <item name="windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/anim_startup</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
     </style>
 
     <style name="AppTheme.Black.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/dark_gray</item>
         <item name="android:textColor">@color/light_gray</item>
     </style>
-
-    <!-- Заголовок окна, так и не понял - работает или нет -->
-    <!--<style name="AppTheme.Light.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">?attr/windowTitleColor</item>
-    </style>
-    <style name="AppTheme.DarkGray.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">?attr/windowTitleColor</item>
-    </style>
-    <style name="AppTheme.Black.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">?attr/windowTitleColor</item>
-    </style>-->
 
     <style name="AlertDialog.Black" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
@@ -371,6 +362,15 @@
         <item name="overlapAnchor">false</item>
         <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
         <item name="android:dropDownVerticalOffset">5dp</item>
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!--<item name="windowSplashScreenBackground" tools:targetApi="s">@color/dark_green</item>-->
+        <item name="windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/anim_startup</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.Black.NoActionBar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

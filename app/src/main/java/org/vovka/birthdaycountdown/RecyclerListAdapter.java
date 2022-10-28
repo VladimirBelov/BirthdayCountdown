@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,16 +42,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     private final List<String> mItems = new ArrayList<>();
     private final List<String> mColoredItems = new ArrayList<>();
+    private final List<String> mNonSortableItems = new ArrayList<>();
     private final List<Integer> mSelected = new ArrayList<>();
     private final List<Integer> mIndex = new ArrayList<>();
-    private final int mColor;
+    private final int colorItem;
+    private final int colorAlt;
     private final OnStartDragListener mDragStartListener;
-    private final Context context;
 
-    public RecyclerListAdapter(@NonNull Context context, OnStartDragListener dragStartListener, List<String> items, List<Integer> selected, List<String> coloredItems, int color) {
+    public RecyclerListAdapter(@NonNull Context context, OnStartDragListener dragStartListener, List<String> items, List<Integer> selected, List<String> coloredItems, int color, List<String> nonSortableItems) {
 
         mDragStartListener = dragStartListener;
-        this.context = context;
 
         if (items != null) {
             mItems.addAll(items);
@@ -64,7 +63,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             for (int i = 0; i < selected.size(); i++) mIndex.add(i);
         }
         if (coloredItems != null) mColoredItems.addAll(coloredItems);
-        mColor = color;
+        if (nonSortableItems != null) mNonSortableItems.addAll(nonSortableItems);
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.dialogHintColor, typedValue, true);
+        colorItem = typedValue.data;
+        colorAlt = color;
         //printAll();
     }
 
@@ -79,29 +82,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.textView.setText(mItems.get(position));
-        if (mColoredItems.contains(mItems.get(position)) && mColor != 0) {
-            holder.textView.setTextColor(mColor);
+        if (mColoredItems.contains(mItems.get(position)) && colorAlt != 0) {
+            holder.textView.setTextColor(colorAlt);
         } else {
-            TypedValue typedValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.dialogHintColor, typedValue, true);
-            holder.textView.setTextColor(typedValue.data);
+            holder.textView.setTextColor(colorItem);
         }
         holder.checkBoxView.setChecked(mSelected.get(mIndex.get(position)) == 1);
-        holder.checkBoxView.setOnClickListener(view -> {
-            //mSelected.set(mItems.indexOf(mItems.get(position)), mSelected.get(mItems.indexOf(mItems.get(position))) == 1 ? 0 : 1);
-            //Toast.makeText(context, "pos " + position + "=" + mSelected.get(position) + ", set: " + (mSelected.get(position) == 1 ? 0 : 1), Toast.LENGTH_LONG).show();
-            mSelected.set(position, mSelected.get(position) == 1 ? 0 : 1);
-            //printAll();
-        });
+        holder.checkBoxView.setOnClickListener(view -> mSelected.set(position, mSelected.get(position) == 1 ? 0 : 1));
 
-        // Start a drag whenever the handle view it touched
-        holder.handleView.setOnTouchListener((v, event) -> {
-            //noinspection deprecation
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                mDragStartListener.onStartDrag(holder);
-            }
-            return false;
-        });
+        if (!mNonSortableItems.isEmpty() && mNonSortableItems.contains(mItems.get(position))) {
+            holder.handleView.setVisibility(View.GONE);
+        } else {
+            holder.handleView.setVisibility(View.VISIBLE);
+            holder.handleView.setOnTouchListener((v, event) -> {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onStartDrag(holder);
+                }
+                return false;
+            });
+        }
     }
 
     @Override
@@ -117,6 +116,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        if (!mNonSortableItems.isEmpty() && toPosition < mNonSortableItems.size()) return; //Dragged too much
         Collections.swap(mItems, fromPosition, toPosition);
         //Collections.swap(mSelected, fromPosition, toPosition);
         Collections.swap(mIndex, fromPosition, toPosition);

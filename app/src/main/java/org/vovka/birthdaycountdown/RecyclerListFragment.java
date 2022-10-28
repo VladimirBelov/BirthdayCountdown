@@ -55,7 +55,15 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
             return;
         }
 
-        adapter = new RecyclerListAdapter(fa, this, args.getStringArrayList(Constants.EXTRA_LIST), args.getIntegerArrayList(Constants.EXTRA_CHECKS), args.getStringArrayList(Constants.EXTRA_COLORED), args.getInt(Constants.EXTRA_COLOR));
+        adapter = new RecyclerListAdapter(
+                fa,
+                this,
+                args.getStringArrayList(Constants.EXTRA_LIST),
+                args.getIntegerArrayList(Constants.EXTRA_CHECKS),
+                args.getStringArrayList(Constants.EXTRA_COLORED),
+                args.getInt(Constants.EXTRA_COLOR),
+                args.getStringArrayList(Constants.EXTRA_NON_SORTED)
+        );
 
         Toolbar toolbar = fa.findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -86,7 +94,7 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
     @Override
     public void onDestroyView() {
         Bundle args = getArguments();
-        if (args != null) {
+        if (args != null && !isStateSaved()) {
             args.putStringArrayList(Constants.EXTRA_RESULTS, adapter.getAllSelectedItems());
             setArguments(args);
         }

@@ -68,6 +68,28 @@
             android:title="@string/pref_ExtraFun_On_title"
             android:icon="@android:drawable/ic_menu_manage"/>
 
+        <ListPreference
+            android:defaultValue="@string/pref_List_NameFormat_default"
+            android:key="@string/pref_List_NameFormat_key"
+            android:entries="@array/pref_List_NameFormat_entries"
+            android:entryValues="@array/pref_List_NameFormat_values"
+            android:title="@string/pref_List_NameFormat_title"
+            android:summary="@string/pref_List_NameFormat_description"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_DateFormat_default"
+            android:key="@string/pref_List_DateFormat_key"
+            android:entries="@array/pref_List_DateFormat_entries"
+            android:entryValues="@array/pref_List_DateFormat_values"
+            android:title="@string/pref_List_DateFormat_title"
+            android:summary="@string/pref_List_DateFormat_description"
+            android:icon="@android:drawable/ic_menu_month"
+            android:dialogIcon="@android:drawable/ic_menu_month"
+            android:negativeButtonText="@string/button_cancel"/>
+
         <org.vovka.birthdaycountdown.CustomEditTextPreference
             android:key="@string/pref_Female_Names_key"
             android:summary="@string/pref_Female_Names_description"
@@ -506,38 +528,6 @@
             android:dialogIcon="@drawable/ic_menu_paste"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_List_NameFormat_default"
-            android:key="@string/pref_List_NameFormat_key"
-            android:entries="@array/pref_List_NameFormat_entries"
-            android:entryValues="@array/pref_List_NameFormat_values"
-            android:title="@string/pref_List_NameFormat_title"
-            android:summary="@string/pref_List_NameFormat_description"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"
-            android:negativeButtonText="@string/button_cancel"/>
-
-        <ListPreference
-            android:defaultValue="@string/pref_List_DateFormat_default"
-            android:key="@string/pref_List_DateFormat_key"
-            android:entries="@array/pref_List_DateFormat_entries"
-            android:entryValues="@array/pref_List_DateFormat_values"
-            android:title="@string/pref_List_DateFormat_title"
-            android:summary="@string/pref_List_DateFormat_description"
-            android:icon="@android:drawable/ic_menu_month"
-            android:dialogIcon="@android:drawable/ic_menu_month"
-            android:negativeButtonText="@string/button_cancel"/>
-
-        <org.vovka.birthdaycountdown.CustomEditTextPreference
-            android:key="@string/pref_List_CustomCaption_key"
-            android:summary="@string/pref_List_CustomCaption_description"
-            android:title="@string/pref_List_CustomCaption_title"
-            android:hint="@string/pref_List_CustomCaption_hint"
-            android:textSize="16sp"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:dialogIcon="@android:drawable/ic_menu_edit"
-            android:negativeButtonText="@string/button_cancel"/>
-
         <SwitchPreference
             android:key="@string/pref_List_FastScroll_key"
             android:summary="@string/pref_List_FastScroll_description"
@@ -588,6 +578,26 @@
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_List_CustomCaption_key"
+            android:summary="@string/pref_List_CustomCaption_description"
+            android:title="@string/pref_List_CustomCaption_title"
+            android:hint="@string/pref_List_CustomCaption_hint"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_List_CustomTodayEventCaption_key"
+            android:summary="@string/pref_List_CustomTodayEventCaption_description"
+            android:title="@string/pref_List_CustomTodayEventCaption_title"
+            android:hint="@string/pref_List_CustomTodayEventCaption_hint"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceScreen>
 
@@ -849,9 +859,23 @@
             android:icon="@android:drawable/ic_menu_manage"/>
 
         <Preference
-            android:key="@string/pref_BatteryOptimization_key"
+            android:key="@string/pref_Help_BatteryOptimization_key"
             android:summary="@string/pref_BatteryOptimization_description"
             android:title="@string/pref_BatteryOptimization_title"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
+            android:key="@string/pref_Help_ContactsAccess_key"
+            android:summary="@string/pref_ContactsAccess_description"
+            android:title="@string/pref_ContactsAccess_title"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
+            android:key="@string/pref_Help_CalendarAccess_key"
+            android:summary="@string/pref_CalendarAccess_description"
+            android:title="@string/pref_CalendarAccess_title"
             android:icon="@android:drawable/ic_menu_info_details"
             android:layout="@layout/settings_item_red"/>
 

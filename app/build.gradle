@@ -76,7 +76,7 @@ android {
             targetSdkVersion 33
             //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.7.2"
+            versionName "1.7.3"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
@@ -146,4 +146,5 @@ dependencies {
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation 'androidx.core:core:1.9.0' //https://developer.android.com/jetpack/androidx/releases/core
+    implementation 'androidx.core:core-splashscreen:1.0.0'
 }

@@ -41,11 +41,11 @@
         android:fullBackupContent="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="tiramisu"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="false">
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.Black.NoActionBar"
+            android:theme="@style/Theme.App.Starting"
             android:screenOrientation="user"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"

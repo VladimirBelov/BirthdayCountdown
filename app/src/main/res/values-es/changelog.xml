@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.3</item>
+        <item>Se agregaron nuevos elementos a la lista de widgets: separador de eventos, botón de configuración, corchetes de fecha, signo del zodiaco, etc.</item>
+        <item>Nueva opción para mostrar notificaciones: los eventos de hoy se muestran como notificaciones separadas, y todo el resto (para los días especificados), como una lista de resumen</item>
+        <item>Períodos de notificación extendidos a 14 días (puede elegir cualquier día)</item>
+        <item>En la configuración avanzada de la lista de eventos, es posible ingresar un título personalizado para los eventos de hoy.</item>
+        <item>Puede dar permiso para acceder a contactos o calendarios a través de Configuración->Ayuda</item>
+        <item>Optimizaciones y correcciones de errores</item>
+
         <item>#1.7.2</item>
         <item>La cantidad de eventos en los widgets de lista puede estar limitada por el recuento de eventos y (o) por días</item>
         <item>Si la lista de eventos está vacía, se muestra información de resumen para todos los parámetros</item>

@@ -132,6 +132,8 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
     static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 104;
+    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_2 = 105;
+    static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 = 106;
 
     static final int RESULT_PICK_CONTACT = 200;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
@@ -162,6 +164,7 @@ final class Constants {
     static final String EXTRA_LIST = "list";
     static final String EXTRA_CHECKS = "checks";
     static final String EXTRA_COLORED = "colored";
+    static final String EXTRA_NON_SORTED = "nonsorted";
     static final String EXTRA_COLOR = "color";
 
     static final int HTML_COLOR_DEFAULT = 0;

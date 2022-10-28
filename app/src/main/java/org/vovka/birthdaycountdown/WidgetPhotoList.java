@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
     private static final String TAG = "WidgetPhotoList";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
@@ -52,33 +53,45 @@ public class WidgetPhotoList extends AppWidgetProvider {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
+
+            List<String> widgetPref_eventInfo = new ArrayList<>();
+            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
+            }
+
+            RemoteViews views;
+            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Dividers_ID))) {
+                views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
+            } else {
+                views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
+            }
 
             //Привязываем адаптер
             Intent adapter = new Intent(context, EventPhotoListWidgetService.class);
             adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
-            //Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
-            //adapter.putExtra("intWidgetWidth", options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH));
-            //DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            //adapter.putExtra("floatScreenDensity", displayMetrics.density);
             views.setRemoteAdapter(R.id.widget_list, adapter);
 
-            views.setTextViewText(R.id.empty_view, context.getString(R.string.msg_no_events));
             views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
-            Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
-            intentConfig.setAction(Constants.ACTION_LAUNCH);
-            intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
-            views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+            if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ButtonConfig_ID))) {
+                views.setViewVisibility(R.id.config_button, View.GONE);
+            } else {
+                views.setViewVisibility(R.id.config_button, View.VISIBLE);
+                Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
+                intentConfig.setAction(Constants.ACTION_LAUNCH);
+                intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+                views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+            }
 
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
-            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
+
 
             if (eventsData.preferences_debug_on) {
 
@@ -112,12 +125,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setInt(R.id.widget_list,"setBackgroundColor", colorWidgetBackground);
 
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            List<String> widgetPref_eventInfo = new ArrayList<>();
-            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
-            }
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Border))) {
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID)))) {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", R.drawable.layout_bg);
             } else {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", 0);
@@ -152,7 +161,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] widgetIds) {
 
         for (int widgetId : widgetIds) {
-            updateAppWidget(context, appWidgetManager, widgetId, null);
+            updateAppWidget(context, appWidgetManager, widgetId);
         }
     }
 
@@ -173,7 +182,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            updateAppWidget(context, appWidgetManager, appWidgetId, newOptions);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {

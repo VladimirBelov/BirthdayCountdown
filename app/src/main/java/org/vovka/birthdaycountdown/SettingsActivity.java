@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -160,7 +161,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     eventsData.getPreferences();
                     //Toast.makeText(this, eventsData.preferences_notifications_ringtone, Toast.LENGTH_LONG).show();
                     if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
-                            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            eventsData.checkNoStorageAccess()) {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
@@ -290,7 +291,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
-            if (eventsData.preferences_menustyle_compact) {
+            final boolean pref_menu_isCompact = eventsData.preferences_menustyle_compact;
+            if (pref_menu_isCompact) {
                 PreferenceScreen prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
                 if (prefScreen != null) {
                     pref = findPreference(getString(R.string.pref_Notifications_Type_key));
@@ -388,22 +390,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Common_key, R.string.pref_Female_Names_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_Female_Names_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
 
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_NameFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_DateFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
 
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
 
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
-            hidePreference(!eventsData.preferences_extrafun, eventsData.preferences_menustyle_compact, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
 
-            hidePreference(eventsData.checkNoBatteryOptimization(), eventsData.preferences_menustyle_compact, R.string.pref_Help_key, R.string.pref_BatteryOptimization_key);
+            hidePreference(eventsData.checkNoBatteryOptimization(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+            hidePreference(!eventsData.checkNoContactsAccess(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
+            hidePreference(!eventsData.checkNoCalendarAccess(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -478,18 +483,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Intent intent = new Intent(this, FAQActivity.class);
                 try {
                     startActivity(intent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
 
             } else if (getString(R.string.pref_AboutActivity_key).equals(key)) { //О приложении
 
                 Intent intent = new Intent(this, AboutActivity.class);
                 try {
                     startActivity(intent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
 
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                if (eventsData.checkNoContactsAccess()) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
                     return true;
                 }
@@ -509,7 +514,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
                 this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                if (eventsData.checkNoCalendarAccess()) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
@@ -524,7 +529,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                if (eventsData.checkNoCalendarAccess()) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
                     return true;
@@ -539,14 +544,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 editRules();
                 return true;
 
-            } else if (getString(R.string.pref_BatteryOptimization_key).equals(key)) {
+            } else if (getString(R.string.pref_Help_BatteryOptimization_key).equals(key)) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     Intent intent = new Intent();
                     intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                     try {
                         startActivity(intent);
+                    } catch (ActivityNotFoundException e) { /**/ }
+                }
+
+            } else if (getString(R.string.pref_Help_ContactsAccess_key).equals(key)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } else {
+                    ActivityCompat.requestPermissions(
+                            this,
+                            new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS},
+                            Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2
+                    );
+                }
+
+            } else if (getString(R.string.pref_Help_CalendarAccess_key).equals(key)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } else {
+                    ActivityCompat.requestPermissions(
+                            this,
+                            new String[]{Manifest.permission.READ_CALENDAR},
+                            Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
+                    );
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
@@ -679,7 +712,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                        && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                        && eventsData.checkNoNotificationAccess()
                         && eventsData.preferences_notifications_days.size() > 0) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
                 }
@@ -718,6 +751,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
             if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
+
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
+
+            updateVisibility();
 
         }
 
@@ -812,7 +849,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<String> accountPackages = new ArrayList<>();
             ContactsEvents eventsData = ContactsEvents.getInstance();
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+            if (!eventsData.checkNoContactsAccess()) {
                 //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
                 Account[] accounts = AccountManager.get(this).getAccounts();
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
@@ -992,7 +1029,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 calIDs.add(entry.getKey());
                 calTitles.add(entry.getValue().replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN).concat(Constants.STRING_PARENTHESIS_CLOSE));
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
-                sel[ind] = calSelected.get(ind++);
+                sel[ind] = calSelected.get(ind);
+                ind++;
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
@@ -1144,7 +1182,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     filesPaths.add(file.split(Constants.STRING_PIPE)[0]);
                     filesFullData.add(file);
                     filesSelected.add(true);
-                    sel[ind] = filesSelected.get(ind++);
+                    sel[ind] = filesSelected.get(ind);
+                    ind++;
                 }
             }
 

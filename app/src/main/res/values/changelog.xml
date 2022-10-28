@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.3</item>
+        <item>Added new elements to list widgets: event separator, settings button, date brackets, zodiac sign, etc.</item>
+        <item>New option for displaying notifications: today\'s events are shown as separate notifications, and all the rest (for the specified days) - as a summary list</item>
+        <item>Notification periods extended to 14 days (you can choose any days)</item>
+        <item>In the advanced settings of the event list, it\'s possible to enter custom caption for today events</item>
+        <item>You can give permission to access contacts or calendars through Settings->Help</item>
+        <item>Optimizations and bug fixes</item>
+
         <item>#1.7.2</item>
         <item>Events amount in list widgets can be limited by the event count and (or) by days</item>
         <item>If event list is empty summary info for all parameters is displaying</item>

@@ -29,7 +29,7 @@ public class Widget2x2 extends AppWidgetProvider {
     private static final String TAG = "Widget2x2";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
@@ -78,7 +78,7 @@ public class Widget2x2 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, null);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -95,7 +95,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         try {
 
-            updateAppWidget(context, appWidgetManager, appWidgetId, newOptions);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
         } catch (Exception e) {

@@ -94,6 +94,8 @@
     <string name="msg_after_day_prefix_1_">" días"</string>
     <string name="msg_after_day_prefix_4_21">" días"</string>
 
+    <string name="msg_after_day_prefix_short">" d."</string>
+
     <string name="msg_age_now">"Ahora: "</string>
     <string name="msg_age_was">"Tenía: "</string>
     <string name="msg_age_could_be">"Sería ahora: "</string>
@@ -101,6 +103,7 @@
     <string name="msg_hint_search">Consulta de busqueda</string>
     <string name="msg_hint_global_search">Buscar eventos</string>
     <string name="msg_notifications_soon_no_events">No hay eventos para los días elegidos</string>
+    <string name="msg_notifications_count">"Eventos pronto - "</string>
     <string name="msg_notifications_soon">"Eventos - "</string>
     <string name="msg_notifications_disabled">Notificaciones desactivadas</string>
     <string name="msg_no_events_hint">No se encontraron eventos en su libreta de direcciones. Para mostrar eventos (cumpleaños, aniversarios, días del nombre), deben ser completados en sus tarjetas de contacto o importados por aplicaciones instaladas en su teléfono inteligente (Google, Skype, …)</string>
@@ -403,6 +406,10 @@
     <string name="pref_List_CustomCaption_description">Título personalizado de la lista de eventos principales (se admiten emojis 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Ingrese el título</string>
 
+    <string name="pref_List_CustomTodayEventCaption_title">Título personalizado para el evento de hoy</string>
+    <string name="pref_List_CustomTodayEventCaption_description">Título personalizado para el evento de hoy en lugar del mensaje \"hoy\" (se admiten emojis 🎂)</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Ingrese el título</string>
+
     <string name="pref_List_FastScroll_title">Desplazamiento rápido</string>
     <string name="pref_List_FastScroll_description">Habilite el desplazamiento rápido para la lista de eventos mientras toca el lado derecho de la pantalla</string>
 
@@ -469,6 +476,8 @@
 
     <string name="pref_Widgets_EventInfo_None">Nada</string>
     <string name="pref_Widgets_EventInfo_Border">Borde del widget</string>
+    <string name="pref_Widgets_EventInfo_Dividers">Separadores de eventos</string>
+    <string name="pref_Widgets_EventInfo_ButtonConfig">Botón de configuración</string>
     <string name="pref_Widgets_EventInfo_Photo">Foto de contacto</string>
     <string name="pref_Widgets_EventInfo_EventIcon">Icono de tipo de evento</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Detalles del evento</string>
@@ -476,21 +485,24 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon">Icono de evento silenciado</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">Signo del zodiaco</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">Año del zodiaco</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Fecha original del evento</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Fecha del evento original con año</string>
-    <string name="pref_Widgets_EventInfo_EventDate">📆 Fecha del evento</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Fecha del evento con año</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Fecha original del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Fecha del evento original con año</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Fecha del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Fecha del evento con año</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Título del evento</string>
     <string name="pref_Widgets_EventInfo_Age">Edad</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Nombre del aniversario de bodas</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Días antes del evento</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Días antes del evento (formato corto)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Días antes del evento (evento lejano)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">Día de la semana del evento</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Día de la semana del evento (formato corto)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Día de la semana del evento (evento lejano)</string>
     <string name="pref_Widgets_EventInfo_Organization">Organización</string>
     <string name="pref_Widgets_EventInfo_JobTitle">Posición</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Icono de fuente de eventos</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Icono de fuente de eventos</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Enlace web disponible</string>
+    <string name="pref_Widgets_EventInfo_DatesInBrackets">Rodear las fechas entre paréntesis</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- nueva línea -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- nueva línea - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- nueva línea -  "</string>
@@ -637,8 +649,9 @@
     <string-array name="pref_Notifications_Type_entries">
         <item>Una notificación resumida</item>
         <item>Cada evento en una notificación separada</item>
-        <item>Si hay menos de 3 eventos => individual, de lo contrario - total</item>
-        <item>Si hay menos de 4 eventos => individual, de lo contrario - total</item>
+        <item>Si hay menos de 3 eventos -> individual, de lo contrario -> total</item>
+        <item>Si hay menos de 4 eventos -> individual, de lo contrario -> total</item>
+        <item>Eventos de hoy -> individual, otros -> total</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Prioridad de notificaciones</string>
@@ -655,10 +668,19 @@
 
     <string-array name="pref_Notifications_Days_entries">
         <item>El día del evento</item>
-        <item>El día antes</item>
-        <item>Dos días antes</item>
-        <item>Tres días antes</item>
+        <item>1 día antes</item>
+        <item>2 días antes</item>
+        <item>3 días antes</item>
+        <item>4 días antes</item>
+        <item>5 días antes</item>
+        <item>6 días antes</item>
         <item>Una semana antes</item>
+        <item>8 días antes</item>
+        <item>9 días antes</item>
+        <item>10 días antes</item>
+        <item>11 días antes</item>
+        <item>12 días antes</item>
+        <item>13 días antes</item>
         <item>Dos semanas antes</item>
     </string-array>
 
@@ -713,6 +735,10 @@
     <string name="pref_About_summary">Historial de versiones, estadísticas de eventos, enlaces de tiendas de aplicaciones</string>
     <string name="pref_BatteryOptimization_title">Optimización de batería activada</string>
     <string name="pref_BatteryOptimization_description">Abra la configuración y desactive la optimización…</string>
+    <string name="pref_ContactsAccess_title">Sin acceso a eventos de contactos</string>
+    <string name="pref_ContactsAccess_description">Solicitar permiso para eventos de contactos…</string>
+    <string name="pref_CalendarAccess_title">Sin acceso al calendario</string>
+    <string name="pref_CalendarAccess_description">Solicitar permiso para datos de calendarios…</string>
     <string name="pref_Debug_On_title">Mensajes de depuración</string>
     <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_description">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>

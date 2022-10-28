@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 
 import java.util.ArrayList;
@@ -40,13 +41,16 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     private static final String TAG = "EventListDataProvider";
     final List<String> eventListView = new ArrayList<>();
     final Context context;
+    final Resources resources;
     final int widgetID;
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
+    boolean widgetPref_DatesInBrackets = false;
     ContactsEvents eventsData;
 
     public EventListDataProvider(Context context, Intent intent) {
         this.context = context;
+        this.resources = context.getResources();
         widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
@@ -134,59 +138,97 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } catch (Resources.NotFoundException nfe) { /**/ }
 
                 //Составление события
+                final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
+                final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
 
                 for (String eventItem: widgetPref_eventInfo) {
-                    if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))) {
+
+                    if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                         sb.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventCaption_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
+
+                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                            final String zodiacSign = singleEventArray[ContactsEvents.Position_zodiacSign];
+                            int indexSpace = zodiacSign.indexOf(Constants.STRING_SPACE);
+                            if (indexSpace > -1) {
+                                sb.append(zodiacSign.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                            } else {
+                                sb.append(zodiacSign).append(Constants.STRING_SPACE);
+                            }
+                        }
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))) {
+
+                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                            final String zodiacYear = singleEventArray[ContactsEvents.Position_zodiacYear];
+                            int indexSpace = zodiacYear.indexOf(Constants.STRING_SPACE);
+                            if (indexSpace > -1) {
+                                sb.append(zodiacYear.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                            } else {
+                                sb.append(zodiacYear).append(Constants.STRING_SPACE);
+                            }
+                        }
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventCaption_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                         if (!singleEventArray[ContactsEvents.Position_eventCaption].trim().isEmpty()) {
                             sb.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                         }
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithoutYear);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay);
+                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithoutYear);
+                        sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID))) {
-
-                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay);
-
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay);
+                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                        sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithYear);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay);
+                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
+                        sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventTitle_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID))) {
+
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithYear);
+                        sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventShort_ID))) {
+
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                        if (eventDistance_Days < 2) {
+                            sb.append(eventDistanceInfo[0]);
+                        } else {
+                            sb.append(eventDistance).append(eventsData.getResources().getString(R.string.msg_after_day_prefix_short));
+                        }
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventTitle_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                         sb.append(eventsData.preferences_list_nameformat == 2 ? singleEventArray[ContactsEvents.Position_personFullNameAlt] : singleEventArray[ContactsEvents.Position_personFullName]);
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
 
                         if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
                             if (sb.length() - sb.lastIndexOf(Constants.HTML_BR) != Constants.HTML_BR.length()) sb.append(Constants.STRING_COLON_SPACE);
                             sb.append(singleEventArray[ContactsEvents.Position_age_caption]);
                         }
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_WeddingName_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_WeddingName_ID))) {
 
-                        if (singleEventArray[ContactsEvents.Position_eventSubType].equals(ContactsEvents.eventTypesIDs.get(Constants.Type_Anniversary))) {
+                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_Anniversary))) {
                             int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(Constants.STRING_PARENTHESIS_OPEN);
                             if (ind1 > -1) {
                                 if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
@@ -194,31 +236,32 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                             }
                         }
 
-                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventFar_ID))) {
+                    } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventFar_ID))) {
 
-                        final String[] text = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, text[0]) : text[0]);
+                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDistanceInfo[0]) : eventDistanceInfo[0]);
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID))) {
 
-                        final String[] text = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, text[0]) : text[0]);
+                        sb.append(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDistanceInfo[0]) : eventDistanceInfo[0]);
 
-                    } else if (dateColorId > 2 && eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar_ID))) {
+                    } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar_ID))) {
 
-                        final String[] text = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        if (text.length >= 1) sb.append(text[1]);
+                        if (eventDistanceInfo.length >= 1) sb.append(eventDistanceInfo[1]);
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID))) {
 
-                        final String[] text = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        if (text.length >= 1) sb.append(text[1]);
+                        if (eventDistanceInfo.length >= 1) sb.append(eventDistanceInfo[1]);
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_SourceIcon_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekShort_ID))) {
+
+                        if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                        if (eventDistanceInfo.length >= 3) sb.append(eventDistanceInfo[3]);
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_SourceIcon_ID))) {
 
                         String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
                         if (dates.length > 0) {
@@ -232,22 +275,22 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                                     sb.append("📁");
                                     sources[2] = true;
                                 } else if (!sources[0]) {
-                                    sb.append("📖");
+                                    sb.append("👨‍💼");
                                     sources[0] = true;
                                 }
                             }
                         }
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_LinkIcon_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_LinkIcon_ID))) {
 
                         if (!singleEventArray[ContactsEvents.Position_eventURL].trim().isEmpty()) {
                             if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                             sb.append("🔗");
                         }
 
-                    } else if (eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine1_ID))
-                            || eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine2_ID))
-                            || eventItem.equals(context.getString(R.string.pref_Widgets_EventInfo_NewLine3_ID))) {
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_NewLine1_ID))
+                            || eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_NewLine2_ID))
+                            || eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_NewLine3_ID))) {
 
                         sb.append(Constants.HTML_BR);
 
@@ -318,11 +361,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 if (eventsData.getEvents(context)) eventsData.computeDates();
             }
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(context.getString(R.string.pref_Widgets_EventInfo_None_ID))) {
-                    widgetPref.set(4, context.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
+                if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(resources.getString(R.string.pref_Widgets_EventInfo_None_ID))) {
+                    widgetPref.set(4, resources.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
                 }
 
                 widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
+                widgetPref_DatesInBrackets = widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_DatesInBrackets_ID));
             }
 
             eventListView.clear();
@@ -339,7 +383,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 if (matchScopes.find()) {
                     final String scopeEvents = matchScopes.group(1);
                     if (scopeEvents != null) {
-                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(context.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
                         if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
                             try {
                                 maxEvents = Integer.parseInt(scopeEvents);
@@ -348,7 +392,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     }
                     final String scopeDays = matchScopes.group(2);
                     if (scopeDays != null) {
-                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(context.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
                         if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
                             try {
                                 maxDays = Integer.parseInt(scopeDays);
@@ -388,4 +432,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         }
 
     }
+
+    String surround(@NonNull String str, boolean condition) {return !condition ? str : Constants.STRING_PARENTHESIS_START + str + Constants.STRING_PARENTHESIS_CLOSE;}
 }

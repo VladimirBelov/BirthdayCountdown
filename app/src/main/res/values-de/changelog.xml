@@ -11,6 +11,14 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.3</item>
+        <item>Neue Elemente zu Listen-Widgets hinzugefügt: Ereignistrenner, Einstellungsschaltfläche, Datumsklammern, Sternzeichen usw.</item>
+        <item>Neue Option zum Anzeigen von Benachrichtigungen: Die heutigen Ereignisse werden als separate Benachrichtigungen und alle anderen (für die angegebenen Tage) als zusammenfassende Liste angezeigt</item>
+        <item>Benachrichtigungsfristen auf 14 Tage verlängert (Sie können beliebige Tage wählen)</item>
+        <item>In den erweiterten Einstellungen der Ereignisliste ist es möglich, benutzerdefinierte Beschriftungen für heutige Ereignisse einzugeben</item>
+        <item>Sie können die Berechtigung zum Zugriff auf Kontakte oder Kalender über Einstellungen->Hilfe erteilen</item>
+        <item>Optimierungen und Fehlerbehebungen</item>
+
         <item>#1.7.2</item>
         <item>Die Anzahl der Ereignisse in Listen-Widgets kann durch die Ereignissanzahl und (oder) Tage begrenzt werden</item>
         <item>Wenn die Ereignisliste leer ist, werden zusammenfassende Informationen für alle Parameter angezeigt</item>

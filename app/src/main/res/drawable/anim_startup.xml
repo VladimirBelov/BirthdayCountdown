@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 23.10.2022, 22:29
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 23.10.2022, 22:29
+  ~  */
+  -->
+
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/spring">
+
+    <target
+        android:name="bee">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="1"
+                    android:propertyName="translateX"
+                    android:valueFrom="0"
+                    android:valueTo="450"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="1"
+                    android:propertyName="translateY"
+                    android:valueFrom="0"
+                    android:valueTo="450"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1"
+                    android:duration="1999"
+                    android:propertyName="translateX"
+                    android:valueFrom="450"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1"
+                    android:duration="1999"
+                    android:propertyName="translateY"
+                    android:valueFrom="450"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="digit_left">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:startOffset="0"
+                    android:duration="500"
+                    android:propertyName="translateX"
+                    android:valueFrom="0"
+                    android:valueTo="-20"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="501"
+                    android:duration="499"
+                    android:propertyName="translateX"
+                    android:valueFrom="-20"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1000"
+                    android:duration="500"
+                    android:propertyName="translateX"
+                    android:valueFrom="0"
+                    android:valueTo="-20"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1501"
+                    android:duration="499"
+                    android:propertyName="translateX"
+                    android:valueFrom="-20"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="digit_right">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:startOffset="0"
+                    android:duration="500"
+                    android:propertyName="translateX"
+                    android:valueFrom="0"
+                    android:valueTo="20"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="501"
+                    android:duration="499"
+                    android:propertyName="translateX"
+                    android:valueFrom="20"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1000"
+                    android:duration="500"
+                    android:propertyName="translateX"
+                    android:valueFrom="0"
+                    android:valueTo="20"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:startOffset="1501"
+                    android:duration="499"
+                    android:propertyName="translateX"
+                    android:valueFrom="20"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

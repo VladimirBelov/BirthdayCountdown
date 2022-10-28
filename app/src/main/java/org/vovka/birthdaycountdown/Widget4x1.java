@@ -104,12 +104,5 @@ public class Widget4x1 extends AppWidgetProvider {
         }
     }
 
-    private static int getCellsForSize(int size) {
-        int n = 2;
-        while (70 * n - 30 < (size + 6)) {
-            ++n;
-        }
-        return n - 1;
-    }
 }
 

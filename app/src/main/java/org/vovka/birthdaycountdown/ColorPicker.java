@@ -206,9 +206,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         });
 
-        alertToShow.setOnDismissListener(dialog -> {
-            ta.recycle();
-        });
+        alertToShow.setOnDismissListener(dialog -> ta.recycle());
 
         alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertToShow.show();

@@ -37,8 +37,8 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     private AlertDialog.Builder dialogBuilder;
     final ArrayAdapter<String> adapter;
     private ArrayList<String> mColored = new ArrayList<>();
+    private ArrayList<String> mNonSorted = new ArrayList<>();
     private int mColor = 0;
-    private final Context context;
     FragmentManager fm;
     Fragment fragment;
     Menu menu;
@@ -46,7 +46,6 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     public MultiSelectionSpinner(Context context) {
         super(context);
 
-        this.context = context;
         adapter = new ArrayAdapter<>(context, R.layout.list_item_text);
         super.setAdapter(adapter);
     }
@@ -54,7 +53,6 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     public MultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        this.context = context;
         adapter = new ArrayAdapter<>(context, R.layout.list_item_text);
         super.setAdapter(adapter);
     }
@@ -109,6 +107,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
             args.putStringArrayList(Constants.EXTRA_LIST, mItems);
             args.putIntegerArrayList(Constants.EXTRA_CHECKS, mSelected);
             args.putStringArrayList(Constants.EXTRA_COLORED, mColored);
+            args.putStringArrayList(Constants.EXTRA_NON_SORTED, mNonSorted);
             args.putInt(Constants.EXTRA_COLOR, mColor);
             args.putString(Constants.EXTRA_TITLE, getContext().getString(R.string.pref_List_EventInfo_title));
 
@@ -175,6 +174,10 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
                 moveToBeginning(selected);
                 setSelection(selected);
             }
+            if (!mNonSorted.isEmpty()) {
+                moveToBeginning(mNonSorted);
+                setSelection(selected);
+            }
         } else {
             Toast.makeText(getContext(), "No results!" , Toast.LENGTH_LONG).show();
         }
@@ -231,10 +234,6 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         this.zeroSelectedIndex = zeroSelectedIndex;
     }
 
-    public boolean isSortable() {
-        return isSortable;
-    }
-
     public void setSortable(boolean sortable) {
         isSortable = sortable;
     }
@@ -242,6 +241,10 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     public void setColored(ArrayList<String> listColored, int color) {
         this.mColored = listColored;
         this.mColor = color;
+    }
+
+    public void setNonSorted(ArrayList<String> listNonSorted) {
+        this.mNonSorted = listNonSorted;
     }
 
 }

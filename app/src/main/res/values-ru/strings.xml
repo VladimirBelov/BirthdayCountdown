@@ -94,6 +94,8 @@
     <string name="msg_after_day_prefix_1_">" день"</string>
     <string name="msg_after_day_prefix_4_21">" дней"</string>
 
+    <string name="msg_after_day_prefix_short">" дн."</string>
+
     <string name="msg_age_now">"Сейчас: "</string>
     <string name="msg_age_was">"Было: "</string>
     <string name="msg_age_could_be">"Было бы сейчас: "</string>
@@ -101,6 +103,7 @@
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
+    <string name="msg_notifications_count">"Событий скоро - "</string>
     <string name="msg_notifications_soon">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
     <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполнены в карточках Ваших контактов или импортированы установленными на смартфон приложениями (Google, Skype, VK, …)</string>
@@ -235,6 +238,17 @@
         <item>"в четверг"</item>
         <item>"в пятницу"</item>
         <item>"в субботу"</item>
+    </string-array>
+
+
+    <string-array name="weekDaysShort">
+        <item>"вс"</item>
+        <item>"пн"</item>
+        <item>"вт"</item>
+        <item>"ср"</item>
+        <item>"чт"</item>
+        <item>"пт"</item>
+        <item>"сб"</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Настройка событий</string>
@@ -399,9 +413,13 @@
         <item>Д ММММ ГГГГ</item>
     </string-array>
 
-    <string name="pref_List_CustomCaption_title">Свой заголовок</string>
-    <string name="pref_List_CustomCaption_description">Свой собственный заголовок для основного списка событий (Emoji 🎂 поддерживаются)</string>
+    <string name="pref_List_CustomCaption_title">Свой заголовок для списка событий</string>
+    <string name="pref_List_CustomCaption_description">Свой собственный заголовок для основного списка событий (поддерживаются 🎂 эмоджи)</string>
     <string name="pref_List_CustomCaption_hint">Введите заголовок</string>
+
+    <string name="pref_List_CustomTodayEventCaption_title">Свой заголовок для события сегодня</string>
+    <string name="pref_List_CustomTodayEventCaption_description">Свой заголовок для события сегодня вместо надписи \"сегодня\" (поддерживаются 🎂 эмоджи)</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Введите заголовок</string>
 
     <string name="pref_List_FastScroll_title">Быстрая прокрутка</string>
     <string name="pref_List_FastScroll_description">Включить быструю прокрутку списка событий, касаясь правой части экрана</string>
@@ -469,6 +487,8 @@
 
     <string name="pref_Widgets_EventInfo_None">Ничего</string>
     <string name="pref_Widgets_EventInfo_Border">Бордюр виджета</string>
+    <string name="pref_Widgets_EventInfo_Dividers">Разделитель событий</string>
+    <string name="pref_Widgets_EventInfo_ButtonConfig">Кнопка конфигурации</string>
     <string name="pref_Widgets_EventInfo_Photo">Фото контакта</string>
     <string name="pref_Widgets_EventInfo_EventIcon">🎂 Иконка типа события</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Подробности события</string>
@@ -476,21 +496,24 @@
     <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Иконка события без уведомления</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Знак зодиака</string>
     <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Животное в восточном календаре</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">📆 Дата исходного события</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">📆 Дата исходного события с годом</string>
-    <string name="pref_Widgets_EventInfo_EventDate">📆 Дата события</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">📆 Дата события с годом</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Дата исходного события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Дата исходного события с годом</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Дата события</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата события с годом</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Заголовок события</string>
     <string name="pref_Widgets_EventInfo_Age">Возраст (годовщина)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Название годовщины свадьбы</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дней до события</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Дней до события (кратко)</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Дней до события (если событие не ближайшее)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">День недели события</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">День недели события (кратко)</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">День недели события (если событие не ближайшее)</string>
     <string name="pref_Widgets_EventInfo_Organization">Организация</string>
     <string name="pref_Widgets_EventInfo_JobTitle">Должность</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">📖📆📁 Иконка источника события</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼‍📆📁 Иконка источника события</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
+    <string name="pref_Widgets_EventInfo_DatesInBrackets">Окружать даты скобками</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- новая строка -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- новая строка - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- новая строка -  "</string>
@@ -638,8 +661,9 @@
     <string-array name="pref_Notifications_Type_entries">
         <item>Одно общее уведомление</item>
         <item>Каждое событие в отдельном уведомлении</item>
-        <item>Если событий меньше 3 => отдельные, иначе - общее</item>
-        <item>Если событий меньше 4 => отдельные, иначе - общее</item>
+        <item>Если событий меньше 3 -> отдельные, иначе -> общее</item>
+        <item>Если событий меньше 4 -> отдельные, иначе -> общее</item>
+        <item>События сегодня -> отдельные, остальные -> общее</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Приоритет уведомлений</string>
@@ -656,11 +680,20 @@
 
     <string-array name="pref_Notifications_Days_entries">
         <item>В день события</item>
-        <item>За один день</item>
-        <item>За два дня</item>
-        <item>За три дня</item>
-        <item>За неделю</item>
-        <item>За две недели</item>
+        <item>За 1 день</item>
+        <item>За 2 дня</item>
+        <item>За 3 дня</item>
+        <item>За 4 дня</item>
+        <item>За 5 дней</item>
+        <item>За 6 дней</item>
+        <item>За 1 неделю</item>
+        <item>За 8 дней</item>
+        <item>За 9 дней</item>
+        <item>За 10 дней</item>
+        <item>За 11 дней</item>
+        <item>За 12 дней</item>
+        <item>За 13 дней</item>
+        <item>За 2 недели</item>
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
@@ -714,6 +747,10 @@
     <string name="pref_About_summary">История версий, статистика событий, ссылки на магазины приложений</string>
     <string name="pref_BatteryOptimization_title">Оптимизация батареи ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_description">Открыть настройку и выключить оптимизацию…</string>
+    <string name="pref_ContactsAccess_title">Нет доступа к контактам</string>
+    <string name="pref_ContactsAccess_description">Запросить доступ к данным контактов…</string>
+    <string name="pref_CalendarAccess_title">Нет доступа к календарям</string>
+    <string name="pref_CalendarAccess_description">Запросить доступ к данным календарей…</string>
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
     <string name="pref_Debug_On_hint">Нажмите ещё %1$d раз%2$s для %3$s отладочных сообщений</string>
     <string name="pref_Debug_On_description">Показывать сообщения для отладки ошибок (рекомендуется включить, если некорректно отображаются виджеты или события, или не определяются какие-то даты, и прислать автору программы)</string>

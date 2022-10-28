@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         try {
 
+            //SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
             //Оформление стиля окна приложения
             //https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
             //https://stackoverflow.com/questions/29069070/completely-transparent-status-bar-and-navigation-bar-on-lollipop
@@ -204,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener = () -> {
                 try {
                     //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
-                    swipeRefresh = findViewById(R.id.swiperefresh);
                     if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME) {
 
                         updateList(false, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
@@ -212,7 +213,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    if (eventsData.preferences_debug_on)
+                        ToastExpander.showText(MainActivity.this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                } finally {
+                    swipeRefresh.setRefreshing(false);
                 }
             };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
@@ -405,8 +409,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case 0: //при первом запуске показывать welcome screen
 
-
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    if (eventsData.checkNoContactsAccess()) {
                         //https://developer.android.com/training/permissions/requesting.html#java
                         swipeRefresh.setEnabled(false);
                         swipeRefresh.setRefreshing(false);
@@ -975,11 +978,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else if (strLine.equals(headerStart)) {
                             countHintLines++;
                         } else {
-
+                            sb.append(Constants.HTML_BR);
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                strLine = strLine.replaceAll(Constants.HTML_LI, "<br>&nbsp;-&nbsp;");
+                                sb.append(strLine.replaceAll(Constants.HTML_LI, "<br>&nbsp;-&nbsp;"));
+                            } else {
+                                sb.append(strLine);
                             }
-                            sb.append(Constants.HTML_BR).append(strLine);
                             countHintLines++;
                         }
                     }
@@ -1512,17 +1516,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (dataList.isEmpty()) {
 
                 findViewById(R.id.mainListView).setVisibility(GONE);
-                findViewById(R.id.mainListViewEmpty).setVisibility(View.VISIBLE);
 
-                TextView view = findViewById(R.id.mainListViewEmpty);
-                if (view != null) {
-                    view.setText(HtmlCompat.fromHtml(
+                TextView viewZero = findViewById(R.id.mainListViewEmpty);
+                if (viewZero != null) {
+                    viewZero.setVisibility(View.VISIBLE);
+                    viewZero.setText(HtmlCompat.fromHtml(
                         getString(R.string.msg_zero_events_title) +
                                 eventsData.getCurrentParams() +
                                 getString(R.string.msg_zero_events_footer)
                         , 0));
                     //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
-                    view.setMovementMethod(new ScrollingMovementMethod());
+                    viewZero.setMovementMethod(new ScrollingMovementMethod());
+                    viewZero.setOnClickListener(v -> {
+                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) { /**/ }
+                    });
                 }
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));
@@ -1648,6 +1658,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
         } catch (Exception e) {
+            swipeRefresh.setRefreshing(false);
             Log.e(TAG, e.getMessage(), e);
             if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
@@ -1657,7 +1668,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void showZeroEventsHints() {
 
         try {
-            if (!triggeredMsgNoEvents && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) { //Сообщение для тех, у кого не найдено ни одного события
+            if (!triggeredMsgNoEvents && !eventsData.checkNoContactsAccess()) { //Сообщение для тех, у кого не найдено ни одного события
                 triggeredMsgNoEvents = true;
                 if (!eventsData.getPreferences_Accounts().isEmpty() && eventsData.statTimeGetContactEvents == 0) { //... но выбраны конкретные аккаунты
 
@@ -1758,7 +1769,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     case Constants.STRING_0: //Сегодня
 
-                        holder.DayDistanceTextView.setText(eventDistanceText[0]);
+                        final String caption = eventsData.preferences_list_custom_todayevent_caption;
+                        if (caption.isEmpty()) {
+                            holder.DayDistanceTextView.setText(eventDistanceText[0]);
+                        } else {
+                            holder.DayDistanceTextView.setText(caption);
+                        }
                         holder.DayDistanceTextView.setTypeface(null, Typeface.BOLD);
                         holder.DayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventtoday);
                         break;
@@ -1797,11 +1813,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Инфо под именем
                 StringBuilder eventDetails = new StringBuilder();
 
-                if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_JobTitle)) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
                     final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
                 }
-                if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_Organization)) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
                     final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_COMMA_SPACE);
@@ -1820,7 +1836,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
                 String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel].trim();
                 String eventCaption = singleEventArray[ContactsEvents.Position_eventCaption].trim();
-                if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_EventCaption)) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventCaption);
                     if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel)) {
@@ -1828,9 +1844,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
-                        final String strZodiacInfo = eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_ZodiacSign) ?
+                        final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
                                 singleEventArray[ContactsEvents.Position_zodiacSign].trim() : Constants.STRING_EMPTY;
-                        final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_ZodiacYear) ?
+                        final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
                                 singleEventArray[ContactsEvents.Position_zodiacYear].trim() : Constants.STRING_EMPTY;
 
                         if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
@@ -1901,7 +1917,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Фото
-                if (eventsData.preferences_list_event_info.contains(ContactsEvents.pref_List_EventInfo_Photo)) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
                     int roundingFactor;
                     if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_FileEvent))) {
                         roundingFactor = 1;
@@ -2042,16 +2058,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ToastExpander.showText(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
 
-            if (convertView == null) {
-                if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-                LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
-                try {
+            if (convertView != null) return convertView;
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
+            LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
+            try {
                 return inflater.inflate(R.layout.entry_main, parent, false);
-                } catch (InflateException ie) {
-                    return parent;
-                }
-            } else {
-                return convertView;
+            } catch (InflateException ie) {
+                return parent;
             }
         }
 

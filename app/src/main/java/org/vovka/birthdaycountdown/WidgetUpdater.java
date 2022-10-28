@@ -87,7 +87,6 @@ class WidgetUpdater {
 
         //Отрисовываем события
         try {
-
             //Скрываем все события
             resources = context.getResources();
             packageName = context.getPackageName();
@@ -168,7 +167,8 @@ class WidgetUpdater {
 
             int i = 0;
             while (i < eventsData.eventList.size() & eventsDisplayed <= eventsToShow) {
-                drawPhotoEvent(i++);
+                drawPhotoEvent(i);
+                i++;
             }
 
             if (eventsDisplayed == 0) { //вообще ничего не нашли
@@ -200,15 +200,14 @@ class WidgetUpdater {
 
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Border)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Border))) {
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID)))) {
                 views.setInt(R.id.appwidget_main,"setBackgroundResource", R.drawable.layout_bg);
             } else {
                 views.setInt(R.id.appwidget_main,"setBackgroundResource", 0);
             }
 
             if (eventsData.preferences_debug_on) {
-                List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
                 views.setTextViewText(R.id.info, (width > 70 ? context.getString(R.string.widget_msg_updated) : Constants.STRING_EMPTY) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
@@ -488,8 +487,8 @@ class WidgetUpdater {
             }
 
             //eventsData.temp_int = roundingFactor;
-            Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Photo)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Photo), true, true, roundingFactor);
+            Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID)), true, true, roundingFactor);
             if (photo != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -533,8 +532,8 @@ class WidgetUpdater {
             //Иконка события
             int id_widget_EventIcon = resources.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_EventIcon)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))) {
 
                 int eventIcon;
                 try {
@@ -561,8 +560,8 @@ class WidgetUpdater {
             String strZodiacInfo = Constants.STRING_EMPTY;
             int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacSign)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
 
@@ -595,8 +594,8 @@ class WidgetUpdater {
             String strZodiacYearInfo = Constants.STRING_EMPTY;
             int id_widget_ZodiacYearIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))) {
 
             //if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
 
@@ -630,8 +629,8 @@ class WidgetUpdater {
 
             //Иконка фаворита
             int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.STRING_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_FavoritesIcon)) && singleEventArray[ContactsEvents.Position_starred].equals(Constants.STRING_1)) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) && singleEventArray[ContactsEvents.Position_starred].equals(Constants.STRING_1)) {
 
                 views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
 
@@ -643,8 +642,8 @@ class WidgetUpdater {
 
             //Иконка события без уведомления
             int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.STRING_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_SilencedIcon)) && eventsData.checkIsSilencedEvent(eventKey)) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey)) {
 
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
@@ -710,8 +709,8 @@ class WidgetUpdater {
             }
 
             //Возраст
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_Age)
-                    : widgetPref_eventInfo.contains(ContactsEvents.pref_Widgets_EventInfo_Age)) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
 
                 if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
                     views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
