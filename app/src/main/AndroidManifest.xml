@@ -66,7 +66,7 @@
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="user"
-            tools:ignore="LockedOrientationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"/>
 
         <activity
@@ -91,8 +91,8 @@
         <activity android:name=".FAQActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".SettingsActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="user"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"/>
 
         <!--https://developer.android.com/guide/topics/ui/shortcuts https://habr.com/ru/post/335480/-->

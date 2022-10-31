@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         try {
 
+            //https://habr.com/ru/post/648535/
             //SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
             //Оформление стиля окна приложения
@@ -1738,6 +1739,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         @NonNull
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View convertedView = convertView;
             ViewHolder holder;
             String[] singleEventArray;
             Person person;
@@ -1747,19 +1749,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
 
-                if (convertView == null) {
+                if (convertedView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
-                    convertView = inflater.inflate(R.layout.entry_main, parent, false);
-                    holder = createViewHolderFrom(convertView);
-                    convertView.setTag(holder);
+                    convertedView = inflater.inflate(R.layout.entry_main, parent, false);
+                    holder = createViewHolderFrom(convertedView);
+                    convertedView.setTag(holder);
                 } else {
-                    holder = (ViewHolder) convertView.getTag();
+                    holder = (ViewHolder) convertedView.getTag();
                 }
 
                 event = getItem(position);
-                if (event == null) return convertView;
+                if (event == null) return convertedView;
                 singleEventArray = event.split(Constants.STRING_EOT, -1);
-                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertView;
+                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
 
                 person = new Person(eventsData.getContext(), event);
 
@@ -2021,8 +2023,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                convertView.setBackground(drawableBack);
-                convertView.setAlpha(1);
+                convertedView.setBackground(drawableBack);
+                convertedView.setAlpha(1);
 
                 //Прозрачность для прошедших событий
                 holder.NameTextView.setAlpha(1);
@@ -2058,7 +2060,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ToastExpander.showText(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
 
-            if (convertView != null) return convertView;
+            if (convertedView != null) return convertedView;
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
             try {

@@ -136,7 +136,7 @@ public class AboutActivity extends AppCompatActivity {
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
-            if (eventsData.preferences_extrafun) {
+            if (eventsData.preferences_extrafun || eventsData.preferences_debug_on) {
 
                 //Statistics information
                 sb.append(getString(R.string.stats_title));
@@ -190,10 +190,10 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
 
-                    sb.append(getString(R.string.stats_permissions_contacts, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+                    sb.append(getString(R.string.stats_permissions_contacts, !eventsData.checkNoContactsAccess()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
 
-                    sb.append(getString(R.string.stats_permissions_calendar, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
+                    sb.append(getString(R.string.stats_permissions_calendar, !eventsData.checkNoCalendarAccess()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
 
                     sb.append(getString(R.string.stats_permissions_files, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -209,7 +209,7 @@ public class AboutActivity extends AppCompatActivity {
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace("#", ""));
 
                     //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
-                    if (isXiaomi()) {
+                    if (ContactsEvents.isXiaomi()) {
                         final State state = getMIUIAutoStartState();
                         sb.append(getString(R.string.stats_permissions_xiaomi_autostart,
                                 state == State.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
@@ -380,8 +380,6 @@ public class AboutActivity extends AppCompatActivity {
     private enum State {
         ENABLED, DISABLED, NO_INFO, UNEXPECTED_RESULT
     }
-
-    private static boolean isXiaomi() {return Build.MANUFACTURER.equalsIgnoreCase("xiaomi");}
 
     @SuppressLint("PrivateApi")
     public State getMIUIAutoStartState() throws Exception {
