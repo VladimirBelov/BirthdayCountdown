@@ -124,7 +124,7 @@
 			android:drawableStart="@drawable/ic_mail"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
-			android:singleLine="true"
+			android:maxLines="1"
 			android:text="@string/button_mail" />
 
 		<Button
@@ -143,7 +143,7 @@
 			android:drawableStart="@drawable/ic_google_play"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
-			android:singleLine="true"
+			android:maxLines="1"
 			android:text="@string/button_rate"
 			android:contentDescription="@string/hint_Rate_PlayMarket" />
 
@@ -161,7 +161,7 @@
 			android:drawableStart="@drawable/ic_huawei_appgalery"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
-			android:singleLine="true"
+			android:maxLines="1"
 			android:text="@string/button_rate"
 			android:contentDescription="@string/hint_Rate_AppGallery" />
 
@@ -180,7 +180,7 @@
 			android:drawableStart="@drawable/ic_4pda"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
-			android:singleLine="true"
+			android:maxLines="1"
 			android:text="@string/button_discuss" />
 
 		<WebView

@@ -47,6 +47,9 @@
     <string name="menu_context_unmerge_event">Desvincular del contacto</string>
     <string name="menu_context_remerge_event">Enlace a otro contacto…</string>
     <string name="menu_context_open_url">Abrir enlace web</string>
+    <string name="menu_context_share">Compartir evento…</string>
+    <string name="menu_context_share_as_image">como imagen</string>
+    <string name="menu_context_share_as_text">como texto</string>
     <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
@@ -161,7 +164,7 @@
     <string name="button_all">Todas</string>
     <string name="button_snooze">Recordar</string>
     <string name="button_hide">Esconder</string>
-    <string name="button_silent">Excluir</string>
+    <string name="button_silent">No notificar</string>
     <string name="button_dial">Llamada</string>
     <string name="button_question">Hacer una pregunta</string>
     <string name="button_close">Cerrar</string>
@@ -187,11 +190,16 @@
     <string name="event_type_file">Evento de archivo</string>
 
     <string name="appwidget_text">Cargando…</string>
-    <string name="appwidget_name_1_7">Para 1–7 eventos</string>
-    <string name="appwidget_name_1">Para 1 evento</string>
-    <string name="appwidget_name_5">Para 5 eventos</string>
-    <string name="appwidget_name_List">Lista de eventos</string>
-    <string name="appwidget_name_PhotoList">Lista con foto</string>
+    <string name="appwidget_label_1_7">Para 1–7 eventos</string>
+    <string name="appwidget_desc_1_7">Widget de foto horizontal expandible</string>
+    <string name="appwidget_label_1">Para 1 evento</string>
+    <string name="appwidget_desc_1">Widget de fotos expandible en todas las direcciones para 1 evento</string>
+    <string name="appwidget_label_5">Para 5 eventos</string>
+    <string name="appwidget_desc_5">Widget de foto horizontal para exactamente 5 eventos</string>
+    <string name="appwidget_label_List">Lista de eventos</string>
+    <string name="appwidget_desc_List">Widget de lista vertical expandible con constructor de visualización de eventos</string>
+    <string name="appwidget_label_PhotoList">Lista con foto</string>
+    <string name="appwidget_desc_PhotoList">Widget vertical expandible con detalles de fotos y eventos</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Nombre completo</string>
     <string name="widget_Date">Fecha</string>
@@ -207,6 +215,8 @@
     <string name="pref_Language_description">Idioma de la interfaz y datos mostrados</string>
     <string name="pref_Theme_title">Tema de color</string>
     <string name="pref_Theme_description">Tema de color de la interfaz</string>
+    <string name="pref_Icon_title">Icono de la aplicación</string>
+    <string name="pref_Icon_description">Elija el ícono de la aplicación para el iniciador del sistema</string>
     <string name="pref_Accounts_title">Cuentas</string>
     <string name="pref_Accounts_description">Buscar eventos solo en estas cuentas</string>
     <string name="pref_IconPack_title">Paquete de iconos</string>
@@ -222,12 +232,20 @@
     </string-array>
 
     <string-array name="pref_Language_entries">
-        <item>Automáticamente</item>
+        <item>Lenguaje del sistema</item>
         <item>🇬🇧 Inglés</item>
         <item>🇩🇪 Aleman</item>
         <item>🇷🇺 Ruso</item>
         <item>🇪🇸 Español</item>
         <item>🇺🇦 Ucraniano</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Primavera</item>
+        <item>Verano</item>
+        <item>Invierno</item>
+        <item>Gris</item>
+        <item>Negro</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -295,11 +313,15 @@
     <string name="pref_CustomEvents_Custom_UseYear_description">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
 
     <string-array name="pref_Theme_entries">
+        <item>Marrón</item>
+        <item>Naranja</item>
         <item>Verde</item>
-        <item>Gris oscuro</item>
+        <item>Azul verde</item>
         <item>Azul</item>
-        <item>Negro</item>
+        <item>Indiga</item>
         <item>Gris azulado</item>
+        <item>Gris oscuro</item>
+        <item>Negro</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
@@ -455,6 +477,14 @@
 
     <string name="pref_List_Color_EventJubilee_title">Jubileo</string>
     <string name="pref_List_Color_EventJubilee_description">Color de la edad jubilar</string>
+
+    <string name="pref_List_Margin_title">Márgenes horizontales</string>
+    <string name="pref_List_Margin_description">Compense los bordes opacos de la pantalla del teléfono inteligente agregando algunos márgenes</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Pequeño</item>
+        <item>Medio</item>
+        <item>Grande</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Preferencias de widgets comunes</string>
@@ -779,6 +809,9 @@
     <string name="stats_permissions_wakelock"><![CDATA[<li>acceso a la actualización de widgets (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>optimización de la batería: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autoencendido (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>modelo: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>versión de Android: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>monitor: %1$s]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No se muestran eventos</h2>Esta información puede ayudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
@@ -905,7 +938,7 @@
     <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>
 
     <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Respuesta: %1$s\nRespuesta correcta: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Respuesta: %1$s\nCorrecto: %2$s (%3$s)"</string>
 
     <string name="quiz_month01_title">"¿Qué mes de nacimiento?"</string>
 

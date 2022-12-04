@@ -41,7 +41,8 @@
         android:fullBackupContent="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="tiramisu"
-        android:enableOnBackInvokedCallback="false">
+        android:enableOnBackInvokedCallback="false"
+        android:localeConfig="@xml/locale_config">
 
         <activity
             android:name=".MainActivity"
@@ -52,15 +53,80 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
         </activity>
-
+        <activity-alias
+            android:name="org.vovka.birthdaycountdown.Spring"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity-alias>
+        <activity-alias
+            android:name="org.vovka.birthdaycountdown.Summer"
+            android:icon="@drawable/app_icon_summer"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity-alias>
+        <activity-alias
+            android:name="org.vovka.birthdaycountdown.Winter"
+            android:icon="@drawable/app_icon_winter"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity-alias>
+        <activity-alias
+            android:name="org.vovka.birthdaycountdown.Grey"
+            android:icon="@drawable/app_icon_grey"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity-alias>
+        <activity-alias
+            android:name="org.vovka.birthdaycountdown.Black"
+            android:icon="@drawable/app_icon_black"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity-alias>
         <activity
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
@@ -140,7 +206,7 @@
         <!--Widgets-->
         <receiver
             android:name=".Widget5x1"
-            android:label="@string/appwidget_name_1_7"
+            android:label="@string/appwidget_label_1_7"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -154,7 +220,7 @@
 
         <receiver
             android:name=".Widget2x2"
-            android:label="@string/appwidget_name_1"
+            android:label="@string/appwidget_label_1"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -166,7 +232,7 @@
 
         <receiver
             android:name=".Widget4x1"
-            android:label="@string/appwidget_name_5"
+            android:label="@string/appwidget_label_5"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -178,7 +244,7 @@
 
         <receiver
             android:name=".WidgetList"
-            android:label="@string/appwidget_name_List"
+            android:label="@string/appwidget_label_List"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -190,7 +256,7 @@
 
         <receiver
             android:name=".WidgetPhotoList"
-            android:label="@string/appwidget_name_PhotoList"
+            android:label="@string/appwidget_label_PhotoList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -215,6 +281,14 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
+        </provider>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:authorities="${applicationId}"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
         </provider>
 
         <meta-data android:name="android.app.default_searchable" android:value=".MainActivity" />

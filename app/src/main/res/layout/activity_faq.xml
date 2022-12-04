@@ -60,7 +60,7 @@
 			android:drawableStart="@drawable/ic_mail"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
-			android:singleLine="true"
+			android:maxLines="1"
 			android:text="@string/button_question" />
 
 	</RelativeLayout>

@@ -100,15 +100,15 @@ public class FAQActivity extends AppCompatActivity {
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.faq_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
-            String[] arrFAQrows;
+            String[] arrFAQ;
             try {
-                arrFAQrows = getResources().getStringArray(R.array.faq);
+                arrFAQ = getResources().getStringArray(R.array.faq);
             } catch (Resources.NotFoundException e) {
-                arrFAQrows = new String[]{};
+                arrFAQ = new String[]{};
             }
 
-            if (arrFAQrows.length > 0) {
-                for (String strRow : arrFAQrows) {
+            if (arrFAQ.length > 0) {
+                for (String strRow : arrFAQ) {
                     if (strRow.length() >= 3 && strRow.startsWith("###")) {
                         sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
                     } else if (strRow.length() >= 2 && strRow.startsWith("##")) {

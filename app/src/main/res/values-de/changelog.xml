@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.4</item>
+        <item>Themenfarben korrigiert. Themen hinzugefügt: orange, blaugrün, braun, indigo</item>
+        <item>Anpassung der horizontalen Ränder zur Hauptereignisliste hinzugefügt</item>
+        <item>App-Icon-Auswahl hinzugefügt</item>
+        <item>Neue Kontextaktion: Ereignis teilen</item>
+        <item>Die Anwendungssprache kann in den Systemeinstellungen ausgewählt werden (Android 13+, \"Systemsprache\" in den Anwendungseinstellungen einstellen)</item>
+
         <item>#1.7.3</item>
         <item>Neue Elemente zu Listen-Widgets hinzugefügt: Ereignistrenner, Einstellungsschaltfläche, Datumsklammern, Sternzeichen usw.</item>
         <item>Neue Option zum Anzeigen von Benachrichtigungen: Die heutigen Ereignisse werden als separate Benachrichtigungen und alle anderen (für die angegebenen Tage) als zusammenfassende Liste angezeigt</item>

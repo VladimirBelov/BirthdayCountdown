@@ -47,6 +47,9 @@
     <string name="menu_context_unmerge_event">Від’єднати контакт</string>
     <string name="menu_context_remerge_event">Посилання на інший контакт…</string>
     <string name="menu_context_open_url">Відкрити веб-посилання</string>
+    <string name="menu_context_share">Поділіться подією…</string>
+    <string name="menu_context_share_as_image">як зображення</string>
+    <string name="menu_context_share_as_text">як текст</string>
     <string name="menu_ok">Добре</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
@@ -161,7 +164,7 @@
     <string name="button_all">Всі</string>
     <string name="button_snooze">Нагадати через годину</string>
     <string name="button_hide">Приховати</string>
-    <string name="button_silent">Вимкнути</string>
+    <string name="button_silent">Не повідомляти</string>
     <string name="button_dial">Дзвонити</string>
     <string name="button_question">Надіслати запитання</string>
     <string name="button_close">Закрити</string>
@@ -187,11 +190,16 @@
     <string name="event_type_file">Подія з файлу</string>
 
     <string name="appwidget_text">Завантаження…</string>
-    <string name="appwidget_name_1_7">На 1–7 подій</string>
-    <string name="appwidget_name_5">На 5 подій</string>
-    <string name="appwidget_name_1">На 1 подію</string>
-    <string name="appwidget_name_List">Список подій</string>
-    <string name="appwidget_name_PhotoList">Список з фото</string>
+    <string name="appwidget_label_1_7">На 1–7 подій</string>
+    <string name="appwidget_desc_1_7">Горизонтальний що розширюється фото віджет</string>
+    <string name="appwidget_label_5">На 5 подій</string>
+    <string name="appwidget_desc_1">Фото віджет на 1 подію, що розширюється на всі боки</string>
+    <string name="appwidget_label_1">На 1 подію</string>
+    <string name="appwidget_desc_5">Горизонтальний фото віджет рівно на 5 подій</string>
+    <string name="appwidget_label_List">Список подій</string>
+    <string name="appwidget_desc_List">Розширюваний вертикальний списковий віджет з конструктором інформації про подію, що виводиться</string>
+    <string name="appwidget_label_PhotoList">Список з фото</string>
+    <string name="appwidget_desc_PhotoList">Розширюваний вертикальний віджет з фото та деталями події</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
     <string name="widget_Date">Дата</string>
@@ -207,6 +215,8 @@
     <string name="pref_Language_description">Мова інтерфейсу та відображених даних</string>
     <string name="pref_Theme_title">Тема</string>
     <string name="pref_Theme_description">Кольорова тема інтерфейсу</string>
+    <string name="pref_Icon_title">Значок програми</string>
+    <string name="pref_Icon_description">Виберіть значок програми для запуску системи</string>
     <string name="pref_Accounts_title">Облікові записи</string>
     <string name="pref_Accounts_description">Шукати події тільки в наданих облікових записах</string>
     <string name="pref_IconPack_title">Пакет іконок</string>
@@ -222,12 +232,20 @@
     </string-array>
 
     <string-array name="pref_Language_entries">
-        <item>Автоматично</item>
+        <item>Системна мова</item>
         <item>🇬🇧 Англійська</item>
         <item>🇩🇪 Німецька</item>
         <item>🇷🇺 Російська</item>
         <item>🇪🇸 Іспанська</item>
         <item>🇺🇦 Українська</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Весна</item>
+        <item>Літо</item>
+        <item>Зима</item>
+        <item>Сіра</item>
+        <item>Чорна</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -295,11 +313,15 @@
     <string name="pref_CustomEvents_Custom_UseYear_description">Використовувати рік для розрахунку річниць (не тільки день і місяць)</string>
 
     <string-array name="pref_Theme_entries">
+        <item>Коричнева</item>
+        <item>Помаранчева</item>
         <item>Зелена</item>
-        <item>Темно-сіра</item>
+        <item>Бірюзовая</item>
         <item>Блакитна</item>
-        <item>Чорна</item>
+        <item>Iндиго</item>
         <item>Сіро-блакитна</item>
+        <item>Темно-сіра</item>
+        <item>Чорна</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Типи подій</string>
@@ -455,6 +477,14 @@
 
     <string name="pref_List_Color_EventJubilee_title">Ювілей</string>
     <string name="pref_List_Color_EventJubilee_description">Колір ювілейного віку</string>
+
+    <string name="pref_List_Margin_title">Горизонтальні відступи</string>
+    <string name="pref_List_Margin_description">Компенсуйте непрозорі краї екрана смартфона, додавши поля</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Маленький</item>
+        <item>Середній</item>
+        <item>Великий</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Віджети</string>
     <string name="pref_Widgets_summary">Загальні налаштування віджетів</string>
@@ -779,6 +809,9 @@
     <string name="stats_permissions_wakelock"><![CDATA[<li>доступ до оновлення віджетів (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимізація акумулятора: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>авто старт (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>пристрій: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>версія Android: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>дисплей: %1$s]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Події не відображаються</h2>Ця інформація може допомогти:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
@@ -911,7 +944,7 @@
     <string name="quiz_msg_error_get_question">"Помилка отримання наступного запитання!"</string>
 
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Відповідь: %1$s\nВiрна відповідь: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Відповідь: %1$s\nПравильно: %2$s (%3$s)"</string>
 
     <string name="quiz_month01_title">"Який місяць народження?"</string>
 

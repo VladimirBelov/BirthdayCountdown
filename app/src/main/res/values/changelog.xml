@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.4</item>
+        <item>Corrected theme colors. Added themes: orange, teal, brown, indigo</item>
+        <item>Added adjustment of horizontal margins to main events list</item>
+        <item>Added app icon selection</item>
+        <item>New context action: Share event</item>
+        <item>The application language can be selected in system settings (Android 13+, set \"System language\" in application settings)</item>
+
         <item>#1.7.3</item>
         <item>Added new elements to list widgets: event separator, settings button, date brackets, zodiac sign, etc.</item>
         <item>New option for displaying notifications: today\'s events are shown as separate notifications, and all the rest (for the specified days) - as a summary list</item>

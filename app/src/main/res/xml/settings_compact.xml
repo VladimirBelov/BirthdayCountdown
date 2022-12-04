@@ -30,15 +30,18 @@
             android:dialogIcon="@android:drawable/ic_menu_mapmode"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_Theme_default"
-            android:entries="@array/pref_Theme_entries"
-            android:entryValues="@array/pref_Theme_values"
+        <Preference
             android:key="@string/pref_Theme_key"
-            android:summary="@string/pref_Theme_description"
             android:title="@string/pref_Theme_title"
+            android:summary="@string/pref_Theme_description"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:dialogIcon="@android:drawable/ic_menu_gallery"
+            android:dialogIcon="@android:drawable/ic_menu_gallery"/>
+
+        <Preference
+            android:key="@string/pref_Icon_key"
+            android:summary="@string/pref_Icon_description"
+            android:title="@string/pref_Icon_title"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
@@ -95,6 +98,7 @@
             android:summary="@string/pref_Female_Names_description"
             android:title="@string/pref_Female_Names_title"
             android:hint="@string/pref_Female_Names_hint"
+            android:inputType="text"
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
             android:dialogIcon="@android:drawable/ic_menu_edit"
@@ -135,7 +139,7 @@
                 android:title="@string/pref_CustomEvents_Calendars_title"
                 android:summary="@string/pref_CustomEvents_Calendars_description"/>
 
-            <!-- создаём динамически, если выбраны календари -->
+            <!-- создаём динамически в SettingsActivity->updateVisibility(), если выбраны календари -->
             <!--<Preference
                 android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                 android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
@@ -597,6 +601,17 @@
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
             android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_List_Margin_default"
+            android:entries="@array/pref_List_Margin_entries"
+            android:entryValues="@array/pref_List_Margin_values"
+            android:key="@string/pref_List_Margin_key"
+            android:summary="@string/pref_List_Margin_description"
+            android:title="@string/pref_List_Margin_title"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceScreen>

@@ -242,6 +242,7 @@ final class Constants {
     static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
     static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
     static final String MSG_NO_ACTION = "No action for event";
+    static final String MSG_ICON_CHANGED = "App icon set: ";
 
     static final String RULE_TAG_NAME = "[name]";
     //static final String RULE_TAG_ALIAS = "[alias]";
@@ -263,5 +264,24 @@ final class Constants {
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
     static final String RES_TYPE_STRING = "string";
+
+    static final int ContextMenu_EditContact = 1;
+    static final int ContextMenu_CreateContact = 2;
+    static final int ContextMenu_EventInfo = 3;
+    static final int ContextMenu_HideEvent = 4;
+    static final int ContextMenu_UnhideEvent = 5;
+    static final int ContextMenu_Remind_1H = 7;
+    static final int ContextMenu_Remind_Morning = 8;
+    static final int ContextMenu_AnniversaryList = 9;
+    static final int ContextMenu_SilentEvent = 10;
+    static final int ContextMenu_UnsilentEvent = 11;
+    static final int ContextMenu_EditEvent = 12;
+    static final int ContextMenu_MergeEvent = 13;
+    static final int ContextMenu_UnmergeEvent = 14;
+    static final int ContextMenu_RemergeEvent = 15;
+    static final int ContextMenu_OpenURL = 16;
+    static final int ContextMenu_ShareAsImage = 17;
+    static final int ContextMenu_ShareAsText = 18;
+
 
 }

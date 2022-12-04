@@ -331,14 +331,17 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup container) {
+            View convertedView;
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(mItemLayoutId, container, false);
+                convertedView = LayoutInflater.from(getContext()).inflate(mItemLayoutId, container, false);
+            } else {
+                convertedView = convertView;
             }
 
             int color = getItem(position);
-            setColorViewValue(convertView.findViewById(R.id.color_view), color);
-            convertView.setBackgroundColor(color == mSelectedColor ? 0x6633b5e5 : 0);
-            return convertView;
+            setColorViewValue(convertedView.findViewById(R.id.color_view), color);
+            convertedView.setBackgroundColor(color == mSelectedColor ? 0x6633b5e5 : 0);
+            return convertedView;
         }
 
         public void setSelectedColor(int selectedColor) {

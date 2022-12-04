@@ -47,6 +47,9 @@
     <string name="menu_context_unmerge_event">Unlink from contact</string>
     <string name="menu_context_remerge_event">Link to other contact…</string>
     <string name="menu_context_open_url">Open web link</string>
+    <string name="menu_context_share">Share event…</string>
+    <string name="menu_context_share_as_image">as image</string>
+    <string name="menu_context_share_as_text">as text</string>
     <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
@@ -161,7 +164,7 @@
     <string name="button_all">All</string>
     <string name="button_snooze">Remind</string>
     <string name="button_hide">Hide</string>
-    <string name="button_silent">Disable</string>
+    <string name="button_silent">Don\'t notify</string>
     <string name="button_dial">Dial</string>
     <string name="button_question">Mail new question</string>
     <string name="button_close">Close</string>
@@ -187,11 +190,16 @@
     <string name="event_type_file">File event</string>
 
     <string name="appwidget_text">Loading…</string>
-    <string name="appwidget_name_1_7">For 1–7 events</string>
-    <string name="appwidget_name_1">For 1 event</string>
-    <string name="appwidget_name_5">For 5 events</string>
-    <string name="appwidget_name_List">Event list</string>
-    <string name="appwidget_name_PhotoList">List with photos</string>
+    <string name="appwidget_label_1_7">For 1–7 events</string>
+    <string name="appwidget_desc_1_7">Expandable horizontal photo widget</string>
+    <string name="appwidget_label_1">For 1 event</string>
+    <string name="appwidget_desc_1">Expandable in all directions photo widget for just 1 event</string>
+    <string name="appwidget_label_5">For 5 events</string>
+    <string name="appwidget_desc_5">Horizontal photo widget for exactly 5 events</string>
+    <string name="appwidget_label_List">Event list</string>
+    <string name="appwidget_desc_List">Expandable vertical list widget with constructor for event info</string>
+    <string name="appwidget_label_PhotoList">List with photos</string>
+    <string name="appwidget_desc_PhotoList">Expandable vertical widget with photo and event info</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
     <string name="widget_Date">Date</string>
@@ -207,6 +215,8 @@
     <string name="pref_Language_description">Interface and data language</string>
     <string name="pref_Theme_title">Color theme</string>
     <string name="pref_Theme_description">Interface color theme</string>
+    <string name="pref_Icon_title">Application icon</string>
+    <string name="pref_Icon_description">Choose application icon for system launcher</string>
     <string name="pref_Accounts_title">Accounts</string>
     <string name="pref_Accounts_description">Scan only these contact accounts for events</string>
     <string name="pref_IconPack_title">Icon pack</string>
@@ -222,12 +232,20 @@
     </string-array>
 
     <string-array name="pref_Language_entries">
-        <item>Auto</item>
+        <item>System language</item>
         <item>🇬🇧 English</item>
         <item>🇩🇪 German</item>
         <item>🇷🇺 Russian</item>
         <item>🇪🇸 Spain</item>
         <item>🇺🇦 Ukrainian</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Winter</item>
+        <item>Grey</item>
+        <item>Black</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -305,11 +323,15 @@
     <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
 
     <string-array name="pref_Theme_entries">
+        <item>Brown</item>
+        <item>Orange</item>
         <item>Green</item>
-        <item>Dark grey</item>
+        <item>Teal</item>
         <item>Blue</item>
-        <item>Black</item>
+        <item>Indigo</item>
         <item>Blue-Grey</item>
+        <item>Dark grey</item>
+        <item>Black</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Event types</string>
@@ -465,6 +487,14 @@
 
     <string name="pref_List_Color_EventJubilee_title">Jubilee</string>
     <string name="pref_List_Color_EventJubilee_description">Color of jubilee age</string>
+
+    <string name="pref_List_Margin_title">Horizontal margins</string>
+    <string name="pref_List_Margin_description">Compensate intransparent smartphone screen edges by adding some margins</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Big</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Common widgets preferences</string>
@@ -769,8 +799,8 @@
 
     <string name="stats_counters_title"><![CDATA[<h2>Counters:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>events total: %1$d]]></string>
-    <string name="stats_counters_contacts_events"><![CDATA[<li>contacts events: %1$d]]></string>
-    <string name="stats_counters_calendars_events"><![CDATA[<li>calendar events: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>events from contacts: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>events from calendars: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>events from files: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contacts: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
@@ -789,18 +819,21 @@
     <string name="stats_permissions_wakelock"><![CDATA[<li>widgets update access (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>battery optimization: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autostart (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>device: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>Android version: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>display: %1$s]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No events displayed</h2>This information may help:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Event types: %1$s</p>
-        <h4>Contacts events:</h4><ul>%2$s
+        <h4>Events from contacts:</h4><ul>%2$s
             <li>show events from accounts: %3$s</li>
         </ul>
-        <h4>Calendars events:</h4><ul>%4$s
+        <h4>Events from calendars:</h4><ul>%4$s
             <li>birthdays (calendar ids): %5$s</li>
             <li>other events (calendar ids): %6$s</li>
         </ul>
-        <h4>Files events:</h4><ul><li>birthdays: %7$s</li>
+        <h4>Events from files:</h4><ul><li>birthdays: %7$s</li>
             <li>other events: %8$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
@@ -930,6 +963,10 @@
 <!-- COMMON STRINGS -->
 
     <drawable name="app_icon">@mipmap/ic_launcher_spring_round</drawable>
+    <drawable name="app_icon_summer">@mipmap/ic_launcher_summer_round</drawable>
+    <drawable name="app_icon_winter">@mipmap/ic_launcher_winter_round</drawable>
+    <drawable name="app_icon_grey">@mipmap/ic_launcher_grey_round</drawable>
+    <drawable name="app_icon_black">@mipmap/ic_launcher_black_round</drawable>
 
     <string name="content_provider_authority" translatable="false">"org.vovka.birthdaycountdown.SuggestionProvider"</string>
     <string name="content_provider_intent_view" translatable="false">"android.intent.action.VIEW"</string>
@@ -962,13 +999,33 @@
         <item>uk</item>
     </string-array>
 
+    <string name="pref_Icon_key" translatable="false">Icon</string>
+    <string name="pref_Icon_default" translatable="false">@string/pref_Icon_Spring</string>
+    <string name="pref_Icon_Spring" translatable="false">Spring</string>
+    <string name="pref_Icon_Summer" translatable="false">Summer</string>
+    <string name="pref_Icon_Winter" translatable="false">Winter</string>
+    <string name="pref_Icon_Grey" translatable="false">Grey</string>
+    <string name="pref_Icon_Black" translatable="false">Black</string>
+
+    <string-array name="pref_Icon_values" translatable="false">
+        <item>@string/pref_Icon_Spring</item>
+        <item>@string/pref_Icon_Summer</item>
+        <item>@string/pref_Icon_Winter</item>
+        <item>@string/pref_Icon_Grey</item>
+        <item>@string/pref_Icon_Black</item>
+    </string-array>
+
     <string name="pref_Theme_key" translatable="false">Theme</string>
     <string-array name="pref_Theme_values" translatable="false">
+        <item>8</item>
+        <item>6</item>
         <item>1</item>
-        <item>2</item>
+        <item>7</item>
         <item>4</item>
-        <item>3</item>
+        <item>9</item>
         <item>5</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
     <string name="pref_Theme_default" translatable="false">5</string>
 
@@ -1230,6 +1287,15 @@
         <item>@string/pref_List_Filling_BottomToTop</item>
         <item>@string/pref_List_Filling_FromCenter</item>
         <item>@string/pref_List_Filling_ToCenter</item>
+    </string-array>
+
+    <string name="pref_List_Margin_key" translatable="false">List_Margin</string>
+    <string name="pref_List_Margin_default" translatable="false">0</string>
+
+    <string-array name="pref_List_Margin_values" translatable="false">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
     </string-array>
 
     <string name="pref_Widgets_key" translatable="false">Widgets</string>
@@ -1497,22 +1563,5 @@
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 
     <string name="faq_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
-
-    <integer name="menu_context_id_edit_contact">1</integer>
-    <integer name="menu_context_id_create_contact">2</integer>
-    <integer name="menu_context_id_event_info">3</integer>
-    <integer name="menu_context_id_hide_event">4</integer>
-    <integer name="menu_context_id_unhide_event">5</integer>
-    <!--<integer name="menu_context_id_remind">6</integer>-->
-    <integer name="menu_context_id_remind_1h">7</integer>
-    <integer name="menu_context_id_remind_morning">8</integer>
-    <integer name="menu_context_id_anniversary_list">9</integer>
-    <integer name="menu_context_id_silent_event">10</integer>
-    <integer name="menu_context_id_unsilent_event">11</integer>
-    <integer name="menu_context_id_edit_event">12</integer>
-    <integer name="menu_context_id_merge_event">13</integer>
-    <integer name="menu_context_id_unmerge_event">14</integer>
-    <integer name="menu_context_id_remerge_event">15</integer>
-    <integer name="menu_context_id_open_url">16</integer>
 
 </resources>

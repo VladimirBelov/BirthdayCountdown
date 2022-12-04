@@ -28,6 +28,7 @@
         <attr name="gradientCenterColor" format="color"/>
         <attr name="borderCardColor" format="color"/>
         <attr name="colorPrimary" format="color"/>
+        <attr name="editTextBackgroundCustom" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="ColorPreference">

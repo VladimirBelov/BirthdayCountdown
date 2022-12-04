@@ -8,6 +8,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/entryLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
@@ -38,14 +39,12 @@
                 android:id="@+id/entryDayDistanceTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:minEms="12"
-                android:singleLine="false"
                 android:text="@string/hint_EventDistance"
                 android:textAlignment="textStart"
                 android:textColor="?attr/eventDistanceColor"
-                android:textSize="@dimen/event_details"
-                android:minHeight="0dp"/>
+                android:textSize="@dimen/event_details" />
 
             <TextView
                 android:id="@+id/entryDateTextView"
@@ -53,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:maxLines="1"
                 android:minEms="12"
-                android:singleLine="true"
                 android:text="@string/hint_Date"
                 android:textAlignment="textEnd"
                 android:textColor="?attr/eventDateColor"
@@ -90,6 +89,7 @@
                     android:id="@+id/entryEventIcon"
                     android:layout_width="15dip"
                     android:layout_height="25dip"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginEnd="2dp"
                     android:adjustViewBounds="false"
                     android:contentDescription="@string/hint_EventIcon"
@@ -101,12 +101,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="top|center"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:text="@string/hint_Age"
                     android:textColor="?attr/eventAgeColor"
                     android:textSize="@dimen/event_name"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
 
@@ -119,9 +118,7 @@
                 android:textColor="?attr/eventDetailsColor"
                 android:textSize="@dimen/event_details" />
 
-
         </LinearLayout>
-
-
     </LinearLayout>
+
 </LinearLayout>

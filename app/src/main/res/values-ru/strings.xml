@@ -47,6 +47,9 @@
     <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
     <string name="menu_context_remerge_event">Присоединить к другому контакту…</string>
     <string name="menu_context_open_url">Открыть web ссылку</string>
+    <string name="menu_context_share">Поделиться событием…</string>
+    <string name="menu_context_share_as_image">как изображение</string>
+    <string name="menu_context_share_as_text">как текст</string>
     <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
@@ -161,7 +164,7 @@
     <string name="button_all">Все</string>
     <string name="button_snooze">Напомнить</string>
     <string name="button_hide">Скрыть</string>
-    <string name="button_silent">Исключить</string>
+    <string name="button_silent">Не уведомлять</string>
     <string name="button_dial">Позвонить</string>
     <string name="button_question">Задать вопрос</string>
     <string name="button_close">Закрыть</string>
@@ -187,11 +190,16 @@
     <string name="event_type_file">Событие из файла</string>
 
     <string name="appwidget_text">Загрузка…</string>
-    <string name="appwidget_name_1_7">На 1–7 событий</string>
-    <string name="appwidget_name_1">На 1 событие</string>
-    <string name="appwidget_name_5">На 5 событий</string>
-    <string name="appwidget_name_List">Список событий</string>
-    <string name="appwidget_name_PhotoList">Список с фото</string>
+    <string name="appwidget_label_1_7">На 1–7 событий</string>
+    <string name="appwidget_desc_1_7">Расширяемый горизонтальный фото виджет</string>
+    <string name="appwidget_label_1">На 1 событие</string>
+    <string name="appwidget_desc_1">Расширяемый во все стороны фото виджет на 1 событие</string>
+    <string name="appwidget_label_5">На 5 событий</string>
+    <string name="appwidget_desc_5">Горизонтальный фото виджет ровно на 5 событий</string>
+    <string name="appwidget_label_List">Список событий</string>
+    <string name="appwidget_desc_List">Расширяемый вертикальный списковый виджет с конструктором выводимой информации о событии</string>
+    <string name="appwidget_label_PhotoList">Список с фото</string>
+    <string name="appwidget_desc_PhotoList">Расширяемый вертикальный виджет с фото и деталями события</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ФИО</string>
     <string name="widget_Date">Дата</string>
@@ -207,6 +215,8 @@
     <string name="pref_Language_description">Язык интерфейса и отображаемых данных</string>
     <string name="pref_Theme_title">Цветовая тема</string>
     <string name="pref_Theme_description">Цветовая тема интерфейса</string>
+    <string name="pref_Icon_title">Иконка приложения</string>
+    <string name="pref_Icon_description">Выбрать иконку для приложения</string>
     <string name="pref_Accounts_title">Учётные записи</string>
     <string name="pref_Accounts_description">Искать события только в этих учётных записях контактов</string>
     <string name="pref_IconPack_title">Набор иконок</string>
@@ -222,12 +232,20 @@
     </string-array>
 
     <string-array name="pref_Language_entries">
-        <item>Автоматически</item>
+        <item>Язык системы</item>
         <item>🇬🇧 Английский</item>
         <item>🇩🇪 Немецкий</item>
         <item>🇷🇺 Русский</item>
         <item>🇪🇸 Испанский</item>
         <item>🇺🇦 Украинский</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Весна</item>
+        <item>Лето</item>
+        <item>Зима</item>
+        <item>Серая</item>
+        <item>Чёрная</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -306,11 +324,15 @@
     <string name="pref_CustomEvents_Custom_UseYear_description">Использовать год для расчёта годовщин (не только день и месяц)</string>
 
     <string-array name="pref_Theme_entries">
+        <item>Коричневая</item>
+        <item>Оранжевая</item>
         <item>Зелёная</item>
-        <item>Тёмно-серая</item>
+        <item>Бирюзовая</item>
         <item>Голубая</item>
-        <item>Чёрная</item>
+        <item>Индиго</item>
         <item>Серо-голубая</item>
+        <item>Тёмно-серая</item>
+        <item>Чёрная</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Типы событий</string>
@@ -466,6 +488,14 @@
 
     <string name="pref_List_Color_EventJubilee_title">Юбилей</string>
     <string name="pref_List_Color_EventJubilee_description">Цвет юбилейного возраста</string>
+
+    <string name="pref_List_Margin_title">Горизонтальные отступы</string>
+    <string name="pref_List_Margin_description">Компенсация боковых непрозрачных краёв экрана добавлением отступов</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Небольшие</item>
+        <item>Средние</item>
+        <item>Большие</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Виджеты</string>
     <string name="pref_Widgets_summary">Общие настройки для виджетов</string>
@@ -791,6 +821,9 @@
     <string name="stats_permissions_wakelock"><![CDATA[<li>обновление виджетов (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимизация батареи: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>автозапуск (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>устройство: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>версия Android: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>экран: %1$s]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Нет событий для показа</h2>Эта информация может помочь:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
@@ -921,7 +954,7 @@
     <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>
 
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Ответ: %1$s\nПравильный ответ: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Ответ: %1$s\nПравильно: %2$s (%3$s)"</string>
 
 	<string name="quiz_month01_title">"Какой месяц рождения?"</string>
 

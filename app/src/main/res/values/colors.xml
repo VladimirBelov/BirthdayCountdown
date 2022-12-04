@@ -10,44 +10,77 @@
 <resources>
 
     <color name="dark_red">#FFbb0000</color>
-    <!--<color name="red">#FFff0000</color>-->
     <color name="brown">#FF873A07</color>
     <color name="yellow">#FFFFEE00</color>
     <color name="green">#FF2ED70E</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
+    <color name="ic_launcher_background">@color/dark_green</color>
+
+    <color name="theme_secondary">#e1e2e1</color>
+
+    <color name="theme_green_primary">#2e7d32</color>
+    <color name="theme_green_secondary">@color/theme_secondary</color>
+    <color name="theme_green_status">#004f04</color>
+    <color name="theme_green_status_transp">#32004f04</color>
+
+    <color name="theme_blue_primary">#0276bd</color>
+    <color name="theme_blue_secondary">@color/theme_secondary</color>
+    <color name="theme_blue_status">#004c8c</color>
+
+    <color name="theme_teal_primary">#00796b</color>
+    <color name="theme_teal_secondary">@color/theme_secondary</color>
+    <color name="theme_teal_status">#004c40</color>
+    <color name="theme_teal_status_transp">#32004c40</color>
+
+    <color name="theme_orange_primary">#fb8c00</color>
+    <color name="theme_orange_primary_transp">#80fb8c00</color>
+    <color name="theme_orange_secondary">@color/theme_secondary</color>
+    <color name="theme_orange_status">#c25e00</color>
+    <color name="theme_orange_status_transp">#32c25e00</color>
+
+    <color name="theme_brown_primary">@color/brown</color>
+    <color name="theme_brown_primary_transp">#80873A07</color>
+    <color name="theme_brown_secondary">@color/theme_secondary</color>
+    <color name="theme_brown_status">#602701</color>
+    <color name="theme_brown_status_transp">#32602701</color>
+
+    <color name="theme_blue_gray_primary">#455a64</color>
+    <color name="theme_blue_gray_secondary">@color/theme_secondary</color>
+    <color name="theme_blue_gray_status">#384951</color> <!--#263847-->
+
+    <color name="theme_black_primary">#FF121212</color>
+
+    <color name="theme_grey_primary">#FF323232</color>
+
+    <color name="theme_indigo_primary">#303f9f</color> <!--#3f51b5-->
+    <color name="theme_indigo_primary_transp">#80303F9F</color>
+    <color name="theme_indigo_secondary">@color/theme_secondary</color>
+    <color name="theme_indigo_status">#001970</color> <!--#002984-->
+    <color name="theme_indigo_status_transp">#32001970</color> <!--#32002984-->
 
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#FF1B5E20</color>
-    <color name="dark_green_transp">#321B5E20</color>
-    <color name="darker_green">#FF164E1B</color>
 
     <color name="dark_blue">#FF1476D2</color>
-    <color name="dark_blue_transp">#261565C0</color>
-    <color name="darker_blue">#FF1465C0</color>
+    <color name="dark_blue_transp">#70004c8c</color>
     <color name="light_blue">#FF2196F3</color>
     <color name="light_blue_transp">#66D3D5D8</color>
 
-    <color name="blue_gray">#FF455a64</color>
+
     <color name="blue_gray_light">#FF718792</color>
     <color name="blue_gray_dark">#FF1c313a</color>
     <color name="blue_gray_dark_transp">#991C313A</color>
     <color name="blue_gray_transp">#331c313a</color>
     <color name="blue_gray_gradient1">#B0BEC5</color>
-    <color name="blue_gray_gradient2">#ECEFF1</color>
-    <color name="blue_gray_gradient3">#CFD8DC</color>
-
-    <color name="dark_gray">#FF121212</color>
-    <color name="dark_gray_lighter">#FF181818</color>
     <color name="medium_dark_gray">#FF232323</color>
 	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->
 	<color name="medium_dark_gray_trans_25">#40232323</color>
-    <color name="medium_gray">#FF323232</color>
+
     <color name="light_gray">#FF808080</color>
     <color name="light_gray_transp">#33808080</color>
     <color name="light_gray_darker">#FF505050</color>
     <color name="lighter_gray">#FFDDDDDD</color>
-    <color name="lighter_gray_transp">#33DDDDDD</color>
 
     <string-array name="default_color_choice_values" translatable="false">
         <item>@color/dark_red</item>
@@ -61,7 +94,7 @@
         <item>@color/white</item>
         <item>@color/lighter_gray</item>
         <item>@color/light_gray</item>
-        <item>@color/dark_gray</item>
+        <item>@color/theme_black_primary</item>
     </string-array>
 
     <color name="dark_gray_transp">#00121212</color>

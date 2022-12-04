@@ -52,7 +52,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:singleLine="false"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="18sp"
             android:textStyle="bold"

@@ -11,11 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.4</item>
+        <item>Colores del tema corregidos. Temas añadidos: naranja, azul verde, marrón, indiga</item>
+        <item>Se agregó el ajuste de los márgenes horizontales a la lista de eventos principales</item>
+        <item>Selección de icono de aplicación agregada</item>
+        <item>Nueva acción de contexto: Compartir evento</item>
+        <item>El idioma de la aplicación se puede seleccionar en la configuración del sistema (Android 13+, configure \"Idioma del sistema\" en la configuración de la aplicación)</item>
+
         <item>#1.7.3</item>
-        <item>Se agregaron nuevos elementos a la lista de widgets: separador de eventos, botón de configuración, corchetes de fecha, signo del zodiaco, etc.</item>
+        <item>Se agregaron nuevos elementos a la lista de widgets: separador de eventos, botón de configuración, corchetes de fecha, signo del zodiaco, etc</item>
         <item>Nueva opción para mostrar notificaciones: los eventos de hoy se muestran como notificaciones separadas, y todo el resto (para los días especificados), como una lista de resumen</item>
         <item>Períodos de notificación extendidos a 14 días (puede elegir cualquier día)</item>
-        <item>En la configuración avanzada de la lista de eventos, es posible ingresar un título personalizado para los eventos de hoy.</item>
+        <item>En la configuración avanzada de la lista de eventos, es posible ingresar un título personalizado para los eventos de hoy</item>
         <item>Puede dar permiso para acceder a contactos o calendarios a través de Configuración->Ayuda</item>
         <item>Optimizaciones y correcciones de errores</item>
 

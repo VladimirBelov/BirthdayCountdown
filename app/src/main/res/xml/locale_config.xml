@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 25.11.2022, 0:22
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 25.11.2022, 0:22
+  ~  */
+  -->
+
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--https://android-developers.googleblog.com/2022/11/per-app-language-preferences-part-1.html-->
+    <locale android:name="en"/>
+    <locale android:name="de"/>
+    <locale android:name="ru"/>
+    <locale android:name="es"/>
+    <locale android:name="uk"/>
+
+</locale-config>

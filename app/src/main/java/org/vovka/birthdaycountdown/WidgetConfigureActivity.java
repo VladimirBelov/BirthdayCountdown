@@ -20,12 +20,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,6 +56,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         TypedArray ta = null;
@@ -83,6 +86,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             eventsData.setLocale(true);
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
@@ -96,6 +100,17 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
+
+            //Отступы всего окна
+            if (eventsData.preferences_list_marging > 0) {
+                RelativeLayout main = findViewById(R.id.layout_main);
+                main.setPadding(
+                        main.getPaddingLeft() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                        main.getPaddingTop(),
+                        main.getPaddingRight() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                        main.getPaddingBottom()
+                );
+            }
 
             //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color
 
@@ -575,15 +590,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
         outState.putInt(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
     }
 
@@ -604,7 +617,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         if (itemId == R.id.menu_ok) {
 
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-            ArrayList<String> allSelectedItems = ((RecyclerListFragment) spinnerEventInfo.fragment).adapter.getAllSelectedItems();
+            List<String> allSelectedItems = ((RecyclerListFragment) spinnerEventInfo.fragment).adapter.getAllSelectedItems();
             allSelectedItems.remove(getString(R.string.pref_Widgets_EventInfo_Border));
             if (allSelectedItems.isEmpty()) {
 

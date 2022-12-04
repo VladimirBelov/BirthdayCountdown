@@ -51,16 +51,17 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     public RecyclerListAdapter(@NonNull Context context, OnStartDragListener dragStartListener, List<String> items, List<Integer> selected, List<String> coloredItems, int color, List<String> nonSortableItems) {
 
+        List<Integer> selectedItems = selected;
         mDragStartListener = dragStartListener;
 
         if (items != null) {
             mItems.addAll(items);
-            if (selected == null || selected.size() != items.size()) {
-                selected = new ArrayList<>();
-                for (int i = 0; i < items.size(); i++) selected.add(0);
+            if (selectedItems == null || selectedItems.size() != items.size()) {
+                selectedItems = new ArrayList<>();
+                for (int i = 0; i < items.size(); i++) selectedItems.add(0);
             }
-            mSelected.addAll(selected);
-            for (int i = 0; i < selected.size(); i++) mIndex.add(i);
+            mSelected.addAll(selectedItems);
+            for (int i = 0; i < selectedItems.size(); i++) mIndex.add(i);
         }
         if (coloredItems != null) mColoredItems.addAll(coloredItems);
         if (nonSortableItems != null) mNonSortableItems.addAll(nonSortableItems);

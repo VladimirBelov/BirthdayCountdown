@@ -21,4 +21,5 @@
     android:widgetCategory="home_screen"
     android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"
     android:widgetFeatures="reconfigurable"
-    tools:targetApi="p" />
+    tools:targetApi="p"
+    android:description="@string/appwidget_desc_PhotoList"/>

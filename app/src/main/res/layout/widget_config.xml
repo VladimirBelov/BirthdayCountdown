@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
+        android:padding="4dp"
         android:background="?attr/backgroundColor">
 
         <ScrollView
@@ -406,7 +407,7 @@
                 android:layout_weight="1.0"
                 android:onClick="buttonCancelOnClick"
                 android:text="@string/button_cancel"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="?attr/windowStatusbarColor"
                 tools:ignore="ButtonStyle" />
 
             <Button
@@ -415,7 +416,7 @@
                 android:layout_weight="1.0"
                 android:onClick="buttonOkOnClick"
                 android:text="@string/button_ok"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="?attr/windowStatusbarColor"
                 tools:ignore="ButtonStyle" />
 
         </LinearLayout>

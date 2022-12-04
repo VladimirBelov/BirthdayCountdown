@@ -1,0 +1,21 @@
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 15.06.2022, 1:10
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Начальный экран -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/theme_black_primary</item>
+        <item name="windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/anim_startup</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.Black.NoActionBar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

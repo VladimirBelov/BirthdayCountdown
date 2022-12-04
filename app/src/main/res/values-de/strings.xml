@@ -47,6 +47,9 @@
     <string name="menu_context_unmerge_event">Verbindung zum Kontakt trennen</string>
     <string name="menu_context_remerge_event">Link zu anderen Kontakt…</string>
     <string name="menu_context_open_url">Weblink öffnen</string>
+    <string name="menu_context_share">Ereignis teilen…</string>
+    <string name="menu_context_share_as_image">als Bild</string>
+    <string name="menu_context_share_as_text">als Texte</string>
     <string name="menu_ok">OK</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
@@ -161,7 +164,7 @@
     <string name="button_all">Alle</string>
     <string name="button_snooze">Erinnerung</string>
     <string name="button_hide">Ausblenden</string>
-    <string name="button_silent">Deaktivieren</string>
+    <string name="button_silent">Nicht benachrichtigen</string>
     <string name="button_dial">Telefonieren</string>
     <string name="button_question">Neue Frage mailen</string>
     <string name="button_close">Schließen</string>
@@ -187,11 +190,16 @@
     <string name="event_type_file">Dateiereignis</string>
 
     <string name="appwidget_text">Laden…</string>
-    <string name="appwidget_name_1_7">Für 1–7 Ereignisse</string>
-    <string name="appwidget_name_1">Für 1 Ereignis</string>
-    <string name="appwidget_name_5">Für 5 Ereignisse</string>
-    <string name="appwidget_name_List">Ereignisliste</string>
-    <string name="appwidget_name_PhotoList">Liste mit Foto</string>
+    <string name="appwidget_label_1_7">Für 1–7 Ereignisse</string>
+    <string name="appwidget_desc_1_7">Erweiterbares horizontales Foto-Widget</string>
+    <string name="appwidget_label_1">Für 1 Ereignis</string>
+    <string name="appwidget_desc_1">Foto-Widget in alle Richtungen erweiterbar für 1 Ereignis</string>
+    <string name="appwidget_label_5">Für 5 Ereignisse</string>
+    <string name="appwidget_desc_5">Horizontales Foto-Widget für genau 5 Ereignisse</string>
+    <string name="appwidget_label_List">Ereignisliste</string>
+    <string name="appwidget_desc_List">Erweiterbares vertikales Listen-Widget mit Ereignisanzeige-Konstruktor</string>
+    <string name="appwidget_label_PhotoList">Liste mit Foto</string>
+    <string name="appwidget_desc_PhotoList">Erweiterbares vertikales Widget mit Foto- und Ereignisdetails</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Name</string>
     <string name="widget_Date">Datum</string>
@@ -207,6 +215,8 @@
     <string name="pref_Language_description">Sprache der Benutzeroberfläche</string>
     <string name="pref_Theme_title">Farbschema</string>
     <string name="pref_Theme_description">Farbschema der Benutzeroberfläche</string>
+    <string name="pref_Icon_title">Anwendungssymbol</string>
+    <string name="pref_Icon_description">Wählen Sie das Anwendungssymbol für den Systemstarter</string>
     <string name="pref_Accounts_title">Konten</string>
     <string name="pref_Accounts_description">Scannen Sie nur diese Konten auf Ereignisse</string>
     <string name="pref_IconPack_title">Symbolpaket</string>
@@ -222,12 +232,20 @@
     </string-array>
 
     <string-array name="pref_Language_entries">
-        <item>Automatisch</item>
+        <item>Systemsprache</item>
         <item>🇬🇧 Englisch</item>
         <item>🇩🇪 Deutsch</item>
         <item>🇷🇺 Russisch</item>
         <item>🇪🇸 Spanisch</item>
         <item>🇺🇦 Ukrainisch</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Frühling</item>
+        <item>Sommer</item>
+        <item>Winter</item>
+        <item>Grau</item>
+        <item>Schwarz</item>
     </string-array>
 
     <string-array name="weekDays">
@@ -295,11 +313,15 @@
     <string name="pref_CustomEvents_Custom_UseYear_description">Verwenden Sie das Jahr, um Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
 
     <string-array name="pref_Theme_entries">
+        <item>Braun</item>
+        <item>Orange</item>
         <item>Grün</item>
-        <item>Dunkelgrau</item>
+        <item>Blaugrün</item>
         <item>Blau</item>
-        <item>Schwarz</item>
+        <item>Indigo</item>
+        <item>Dunkelgrau</item>
         <item>Blaugrau</item>
+        <item>Schwarz</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
@@ -455,6 +477,14 @@
 
     <string name="pref_List_Color_EventJubilee_title">Jubiläum</string>
     <string name="pref_List_Color_EventJubilee_description">Farbe des Jubiläumsalters</string>
+
+    <string name="pref_List_Margin_title">Horizontale Ränder</string>
+    <string name="pref_List_Margin_description">Kompensieren Sie intransparente Smartphone-Bildschirmränder, indem Sie einige Ränder hinzufügen</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Klein</item>
+        <item>Mittel</item>
+        <item>Groß</item>
+    </string-array>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>
@@ -779,6 +809,9 @@
     <string name="stats_permissions_wakelock"><![CDATA[<li>Zugriff auf Widgets aktualisieren (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>Batterieoptimierung: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>Autostart (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>Modell: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>Android-Version: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>Anzeige: %1$s]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
@@ -906,7 +939,7 @@
     <string name="quiz_msg_error_get_question">"Fehler beim Empfang der nächsten Frage"</string>
 
     <string name="quiz_answer_true">"Richtig, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Antwort: %1$s\nRichtige Antwort: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Antwort: %1$s\nRichtig: %2$s (%3$s)"</string>
 
     <string name="quiz_month01_title">"Welcher ist der Geburtsmonat?"</string>
 

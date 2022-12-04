@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 25.11.2022, 11:08
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 14.11.2022, 11:04
+  ~  */
+  -->
+
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/light_gray"/>
+    <foreground android:drawable="@mipmap/ic_launcher_grey_foreground"/>
+</adaptive-icon>

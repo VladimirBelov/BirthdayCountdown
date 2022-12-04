@@ -26,9 +26,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -91,6 +93,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private static final String TAG = "SettingsActivity";
     private String testChannelId = Constants.STRING_EMPTY;
     private TypedArray ta = null;
+    private static DisplayMetrics displayMetrics;
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
     private Set<String> filesList;
@@ -126,6 +129,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
+            setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.activity_settings);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -363,7 +367,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
 
                     if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key)) == null) {
-                        pref = new Preference(eventsData.getContext());
+                        pref = new CustomEditTextPreference(eventsData.getContext());
                         pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
                         pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
                         pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
@@ -378,6 +382,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         prefCat.addPreference(pref);
                     }
 
+                    //Удаляем "Файлы", чтобы они могли (ниже) создасться после календарных настроек
+                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
                 }
 
                 if (findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key)) == null) {
@@ -390,6 +398,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_Female_Names_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
@@ -398,6 +407,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
+            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
 
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
@@ -500,6 +510,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
 
                 selectAccounts();
+                return true;
+
+            } else if (getString(R.string.pref_Theme_key).equals(key)) { //Цветовая тема
+
+                selectTheme();
+                return true;
+
+            } else if (getString(R.string.pref_Icon_key).equals(key)) { //Иконка приложения
+
+                selectIcon();
+                return true;
 
             } else if (getString(R.string.pref_IconPack_key).equals(key)) { //Силуэты
 
@@ -556,30 +577,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Help_ContactsAccess_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                    try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS},
                             Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2
                     );
+                } else {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
             } else if (getString(R.string.pref_Help_CalendarAccess_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
-                    try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.READ_CALENDAR},
                             Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
                     );
+                } else {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
@@ -672,15 +693,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.getPreferences();
             eventsData.needUpdateEventList = true;
 
-            if (key.equals(getString(R.string.pref_Language_key))) {
+            if (getString(R.string.pref_Language_key).equals(key)) {
 
                 //https://stackoverflow.com/questions/2486934/programmatically-relaunch-recreate-an-activity
-                //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen !
+                //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen!
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
 
-            } else if (key.equals(getString(R.string.pref_Theme_key))) {
+            } else if (getString(R.string.pref_Theme_key).equals(key)) {
 
                 this.setTheme(eventsData.preferences_theme.themeMain);
                 Intent intent = getIntent();
@@ -688,28 +709,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 startActivity(intent);
                 //todo: созданные программно настройки не подхватывают стиль
 
-            } else if (key.equals(getString(R.string.pref_MenuStyle_key))) {
+            } else if (getString(R.string.pref_MenuStyle_key).equals(key)) {
 
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
 
-            } else if (key.equals(getString(R.string.pref_Help_ExtraFun_On_key))) {
+            } else if (getString(R.string.pref_Help_ExtraFun_On_key).equals(key)) {
 
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
 
-            } else if (key.equals(getString(R.string.pref_CustomEvents_Custom1_Caption_key)) ||
-                    key.equals(getString(R.string.pref_CustomEvents_Custom2_Caption_key)) ||
-                    key.equals(getString(R.string.pref_CustomEvents_Custom3_Caption_key)) ||
-                    key.equals(getString(R.string.pref_CustomEvents_Custom4_Caption_key)) ||
-                    key.equals(getString(R.string.pref_CustomEvents_Custom5_Caption_key))) {
+            } else if (getString(R.string.pref_CustomEvents_Custom1_Caption_key).equals(key) ||
+                    getString(R.string.pref_CustomEvents_Custom2_Caption_key).equals(key) ||
+                    getString(R.string.pref_CustomEvents_Custom3_Caption_key).equals(key) ||
+                    getString(R.string.pref_CustomEvents_Custom4_Caption_key).equals(key) ||
+                    getString(R.string.pref_CustomEvents_Custom5_Caption_key).equals(key)) {
 
                 updateTitles();
                 updateVisibility();
 
-            } else if (key.equals(getString(R.string.pref_Notifications_Days_key))) {
+            } else if (getString(R.string.pref_Notifications_Days_key).equals(key)) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                         && eventsData.checkNoNotificationAccess()
@@ -724,6 +745,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     finish();
                     startActivity(intent);
                 }
+
+            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) {
+
+                updateVisibility();
 
             }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
@@ -768,7 +793,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             Dialog dialog = preferenceScreen.getDialog();
             ListView list = dialog.findViewById(android.R.id.list);
-            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
             //this.setTheme(eventsData.preferences_theme.themeMain);
             //ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
@@ -887,13 +911,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 }
                             }
                             eventsData.setPreferences_Accounts(checkedAccounts);
-                            eventsData.setPreferences();
+                            eventsData.savePreferences();
 
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                         .setNeutralButton(R.string.button_all, (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
-                            eventsData.setPreferences();
+                            eventsData.savePreferences();
                         })
                         .setCancelable(true);
 
@@ -929,16 +953,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 AlertDialog alertToShow = builder.create();
 
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-
-                    //https://stackoverflow.com/questions/33074313/getting-default-padding-for-alertdialog
-                    /*float dpi = getResources().getDisplayMetrics().density;
-                    ListView listView = alertToShow.getListView();
-                    listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
-                    listView.setDividerHeight(2);
-                    listView.setPadding((int)(30*dpi), 0, (int)(20*dpi), 0);*/
-                });
+                alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 alertToShow.show();
@@ -950,19 +965,70 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void selectTheme() {
+
+       try {
+
+           List<String> themeNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Theme_entries)));
+           List<String> themeNumbers = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Theme_values)));
+           List<Integer> themeColors = new ArrayList<>();
+           themeColors.add(getResources().getColor(R.color.theme_brown_primary));
+           themeColors.add(getResources().getColor(R.color.theme_orange_primary));
+           themeColors.add(getResources().getColor(R.color.theme_green_primary));
+           themeColors.add(getResources().getColor(R.color.theme_teal_primary));
+           themeColors.add(getResources().getColor(R.color.theme_blue_primary));
+           themeColors.add(getResources().getColor(R.color.theme_indigo_primary));
+           themeColors.add(getResources().getColor(R.color.theme_blue_gray_primary));
+           themeColors.add(getResources().getColor(R.color.theme_grey_primary));
+           themeColors.add(getResources().getColor(R.color.theme_black_primary));
+
+           ListAdapter adapter = new ThemeListAdapter(this, themeNames, themeColors, ta);
+
+           AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                   .setTitle(R.string.pref_Theme_title)
+                   .setAdapter(adapter, null)
+                   .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                   .setCancelable(true);
+
+           AlertDialog alertToShow = builder.create();
+
+           ListView listView = alertToShow.getListView();
+           listView.setItemsCanFocus(false);
+           listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+           listView.setOnItemClickListener((parent, view, position, id) -> {
+               String s1 = themeNumbers.get(position);
+               eventsData.setPreferences_ThemeNumber(Integer.parseInt(themeNumbers.get(position)));
+               eventsData.savePreferences();
+               alertToShow.dismiss();
+           });
+
+           alertToShow.setOnShowListener(arg0 -> {
+               alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+               listView.setItemChecked(themeNumbers.indexOf(Integer.toString(eventsData.preferences_theme.prefNumber)), true);
+           });
+
+           alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+           alertToShow.show();
+
+       } catch (Exception e) {
+           Log.e(TAG, e.getMessage(), e);
+           if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+       }
+    }
+
     private void selectIconPack() {
 
         try {
 
-            List<Integer> packIcons = new ArrayList<>();
             List<String> packNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
-
+            List<Integer> packIcons = new ArrayList<>();
             packIcons.add(R.drawable.ic_pack00_f1);
             packIcons.add(R.drawable.ic_pack01_f2);
             packIcons.add(R.drawable.ic_pack02_f2);
             packIcons.add(R.drawable.ic_pack03_f3);
 
-            ListAdapter adapter = new IconPackListAdapter(this, packNames, packIcons, ta);
+            ListAdapter adapter = new ImageSelectAdapter(this, packNames, packIcons, false, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_IconPack_title)
@@ -978,7 +1044,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
                 eventsData.setPreferences_IconPackNumber(position);
-                eventsData.setPreferences();
+                eventsData.savePreferences();
                 eventsData.initIconPack();
                 alertToShow.dismiss();
             });
@@ -986,6 +1052,53 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 listView.setItemChecked(eventsData.getPreferences_IconPackNumber(), true);
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void selectIcon() {
+
+        try {
+            List<String> iconNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
+            List<String> iconIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
+            List<Integer> iconImages = new ArrayList<>();
+            iconImages.add(R.mipmap.ic_launcher_spring_round);
+            iconImages.add(R.mipmap.ic_launcher_summer_round);
+            iconImages.add(R.mipmap.ic_launcher_winter_round);
+            iconImages.add(R.mipmap.ic_launcher_grey_round);
+            iconImages.add(R.mipmap.ic_launcher_black_round);
+
+            ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages, true, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_Icon_title)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                eventsData.setPreferences_Icon(iconIDs.get(position));
+                eventsData.savePreferences();
+                alertToShow.dismiss();
+                eventsData.setAppIcon();
+            });
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                listView.setItemChecked(iconIDs.indexOf(eventsData.preferences_icon), true);
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1044,7 +1157,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (calSelected.get(i)) toStore.add(calIDs.get(i));
                         }
                         eventsData.setPreferences_Calendars(eventType, toStore);
-                        eventsData.setPreferences();
+                        eventsData.savePreferences();
 
                         dialog.cancel();
                     })
@@ -1097,7 +1210,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            int themeEditText;
+            if (ContactsEvents.getInstance().preferences_theme.themeEditText != 0) {
+                themeEditText = ContactsEvents.getInstance().preferences_theme.themeEditText;
+            } else {
+                themeEditText = ContactsEvents.themeEditText_default;
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, themeEditText));
             builder.setTitle(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title);
             builder.setIcon(android.R.drawable.ic_menu_edit);
             builder.setMessage(R.string.pref_CustomEvents_Birthday_Calendars_Rules_hint);
@@ -1131,10 +1251,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             input.requestFocus();
             if (alertToShow.getWindow() != null) alertToShow.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             alertToShow.show();
+            alertToShow.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
 
             //https://stackoverflow.com/questions/15362122/change-font-size-for-an-alertdialog-message
             TextView textView = alertToShow.findViewById(android.R.id.message);
-            if (textView != null) textView.setTextSize(12);
+            if (textView != null) {
+                textView.setTextSize(12);
+                textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+            }
 
             //https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
@@ -1153,7 +1278,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
 
                 eventsData.preferences_birthday_calendars_rules = rules;
-                eventsData.setPreferences();
+                eventsData.savePreferences();
                 alertToShow.dismiss();
 
             });
@@ -1213,7 +1338,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                         }
                         eventsData.setPreferences_Files(eventType, toStore);
-                        eventsData.setPreferences();
+                        eventsData.savePreferences();
 
                         dialog.cancel();
                     })
@@ -1288,7 +1413,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         int hour = Build.VERSION.SDK_INT >= 23 ? timePicker.getHour() : timePicker.getCurrentHour();
                         int minute = Build.VERSION.SDK_INT >= 23 ? timePicker.getMinute() : timePicker.getCurrentMinute();
                         eventsData.setPreferences_AlarmTime(hour, minute);
-                        eventsData.setPreferences();
+                        eventsData.savePreferences();
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss())
                     .setView(timePicker)
@@ -1493,7 +1618,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             seek4.getProgress() - 5,
                             seek5.getProgress() - 5
                     );
-                    eventsData.setPreferences();
+                    eventsData.savePreferences();
                     dialog.dismiss();
                 });
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
@@ -1544,7 +1669,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     } else {
                         eventsData.preferences_notifications_ringtone = ""; //Беззвучный
                     }
-                    eventsData.setPreferences();
+                    eventsData.savePreferences();
                 }
             } else {
 
@@ -1604,7 +1729,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     bmp.recycle();
                     textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
                 }
-                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
+                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -1616,16 +1741,68 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
-    private static class IconPackListAdapter extends ArrayAdapter<String> {
+    private static class ThemeListAdapter extends ArrayAdapter<String> {
 
-        private static final String TAG = "IconPackListAdapter";
-        private final List<Integer> images;
+        private static final String TAG = "ImageSelectAdapter";
+        private final List<Integer> colors;
         private final TypedArray ta;
 
-        IconPackListAdapter(Context context, List<String> items, List<Integer> images, TypedArray theme) {
+        ThemeListAdapter(Context context, List<String> items, List<Integer> colors, TypedArray theme) {
+            super(context, R.layout.settings_list_item_single_choice, items);
+            this.colors = colors;
+            this.ta = theme;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            try {
+
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
+
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
+
+                int color = colors.get(position);
+                int darkenedColor = Color.rgb(
+                        Color.red(color) * 192 / 256,
+                        Color.green(color) * 192 / 256,
+                        Color.blue(color) * 192 / 256);
+
+                GradientDrawable oval = new GradientDrawable();
+                oval.setShape(GradientDrawable.OVAL);
+                oval.setSize(80, 80);
+                oval.setColor(color);
+                oval.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics), darkenedColor);
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(oval, null, null, null);
+
+                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            }
+
+            return view;
+        }
+
+    }
+
+    private static class ImageSelectAdapter extends ArrayAdapter<String> {
+
+        private static final String TAG = "ImageSelectAdapter";
+        private final List<Integer> images;
+        private final TypedArray ta;
+        private final boolean makeSquared;
+
+        ImageSelectAdapter(Context context, List<String> items, List<Integer> images, boolean makeSquared, TypedArray theme) {
             super(context, R.layout.settings_list_item_single_choice, items);
             this.images = images;
             this.ta = theme;
+            this.makeSquared = makeSquared;
         }
 
         @NonNull
@@ -1645,18 +1822,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 //Resources resources = packageContext.getResources();
                 //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
                 //Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
-                Bitmap bmp = ContactsEvents.getBitmap(getContext(), images.get(position));
+                Bitmap bmp = ContactsEvents.getBitmap(getContext(), images.size() <= position ? 0 : images.get(position));
                 if (bmp != null) {
                     //Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                     /*Canvas canvas = new Canvas(bmp);
                     icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     icon.draw(canvas);*/
                     //Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 150, false);
-                    Bitmap bitmapResized = Bitmap.createScaledBitmap(Bitmap.createBitmap(bmp, bmp.getWidth() / 3, 0, bmp.getWidth() / 3, bmp.getHeight()), 90, 130, false);
+                    //Bitmap bitmapScaled = Bitmap.createBitmap(bmp, bmp.getWidth() / 3, 0, bmp.getWidth() / 3, bmp.getHeight());
+                    Bitmap bitmapResized;
+                    if (makeSquared) {
+                        final int bmWidth = bmp.getWidth();
+                        final int bmHeight = bmp.getHeight();
+                        //final int bmPadding = 20;
+                        Bitmap bitmapSquared;
+                        if (bmHeight > bmWidth) {
+                            //noinspection SuspiciousNameCombination
+                            bitmapSquared = Bitmap.createBitmap(bmp, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
+                        } else {
+                            //noinspection SuspiciousNameCombination
+                            bitmapSquared = Bitmap.createBitmap(bmp, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+                        }
+                        //bitmapResized = Bitmap.createBitmap(bitmapSquared.getWidth(), bitmapSquared.getHeight(), Bitmap.Config.ARGB_8888);
+                        //Canvas can = new Canvas(bitmapResized);
+                        //can.drawBitmap(bitmapSquared, 0, 0, null);
+                        bitmapResized = Bitmap.createScaledBitmap(bitmapSquared, 130, 130, true);
+                        bitmapSquared.recycle();
+                    } else {
+                        bitmapResized = Bitmap.createScaledBitmap(Bitmap.createBitmap(bmp, bmp.getWidth() / 3, 0, bmp.getWidth() / 3, bmp.getHeight()), 90, 130, true);
+                    }
+                    //bitmapScaled.recycle();
                     bmp.recycle();
                     textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
                 }
-                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
+                textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -1667,5 +1866,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
 
     }
+
+    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 }

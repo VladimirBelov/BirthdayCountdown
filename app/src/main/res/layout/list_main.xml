@@ -7,13 +7,12 @@
   ~  */
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="?attr/backgroundColor"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
             android:textAlignment="gravity"
             android:textColor="?attr/windowTitleColor"
             android:textSize="10sp"
-            tools:ignore="RtlSymmetry,SmallSp"/>
+            tools:ignore="RtlSymmetry,SmallSp" />
 
     </LinearLayout>
 
