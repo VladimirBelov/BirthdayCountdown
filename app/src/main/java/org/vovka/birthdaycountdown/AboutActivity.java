@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -183,7 +184,7 @@ public class AboutActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) { /**/ }
 
-                //Permissions
+                //Permissions and system options
                 sb.append(getString(R.string.stats_permissions_title));
                 try {
 
@@ -217,6 +218,13 @@ public class AboutActivity extends AppCompatActivity {
                                                 eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace("#", ""));
 
                     }
+
+                    final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+                    final float density = displayMetrics.density;
+                    sb.append(getString(R.string.stats_permissions_device, Build.BRAND, Build.MODEL));
+                    sb.append(getString(R.string.stats_permissions_os, Build.VERSION.RELEASE, Build.VERSION.SDK_INT));
+                    sb.append(getString(R.string.stats_permissions_display, displayMetrics.heightPixels + "x" + displayMetrics.widthPixels
+                            + " (" + displayMetrics.densityDpi + " dpi, density " + displayMetrics.density + ")"));
 
                 } catch (Exception e) { /**/ }
                 sb.append(Constants.HTML_UL_END);
