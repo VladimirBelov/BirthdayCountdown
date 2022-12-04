@@ -8,6 +8,8 @@
 
 package org.vovka.birthdaycountdown;
 
+import static android.provider.BaseColumns._ID;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -1458,13 +1460,23 @@ class ContactsEvents {
             cache.clear();
 
             //Контакты
-            String[] projectionAllContacts = new String[]{ContactsContract.Contacts._ID, ContactsContract.Data.DISPLAY_NAME, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE};
-            contactData = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, projectionAllContacts, null, null, null);
+            String[] projectionAllContacts = new String[]{
+                    _ID,
+                    ContactsContract.Data.DISPLAY_NAME,
+                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
+            };
+            contactData = contentResolver.query(
+                    ContactsContract.Contacts.CONTENT_URI,
+                    projectionAllContacts,
+                    null,
+                    null,
+                    null
+            );
             if (contactData != null) {
                 if (contactData.moveToFirst()) {
                     do {
 
-                        String personID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Contacts._ID));
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, _ID));
                         if (personID != null) set_contacts_ids.add(personID);
 
                         String personName = normalizeName(contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME)));
@@ -1512,8 +1524,25 @@ class ContactsEvents {
 */
 
             //События
-            final String[] projectionContactsEvents = new String[]{ContactsContract.CommonDataKinds.Event.DATA, ContactsContract.CommonDataKinds.Event.TYPE, Constants.ColumnNames_ACCOUNT_TYPE, Constants.ColumnNames_ACCOUNT_NAME, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE, ContactsContract.Data.DISPLAY_NAME, ContactsContract.CommonDataKinds.Event.LABEL, Constants.ColumnNames_CONTACT_ID, ContactsContract.Contacts.PHOTO_URI, ContactsContract.Contacts.STARRED};
-            Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, projectionContactsEvents, ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE + "'", null, ContactsContract.Data.DISPLAY_NAME + " ASC, " + ContactsContract.CommonDataKinds.Event.TYPE + " ASC, " + ContactsContract.CommonDataKinds.Event.LABEL + " ASC");
+            final String[] projectionContactsEvents = new String[]{
+                    ContactsContract.CommonDataKinds.Event.DATA,
+                    ContactsContract.CommonDataKinds.Event.TYPE,
+                    Constants.ColumnNames_ACCOUNT_TYPE,
+                    Constants.ColumnNames_ACCOUNT_NAME,
+                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                    ContactsContract.Data.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Event.LABEL,
+                    Constants.ColumnNames_CONTACT_ID,
+                    ContactsContract.Contacts.PHOTO_URI,
+                    ContactsContract.Contacts.STARRED
+            };
+            Cursor cursor = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionContactsEvents,
+                    ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE + "'",
+                    null,
+                    ContactsContract.Data.DISPLAY_NAME + " ASC, " + ContactsContract.CommonDataKinds.Event.TYPE + " ASC, " + ContactsContract.CommonDataKinds.Event.LABEL + " ASC"
+            );
             if (cursor == null) return false;
 
             int countErrors = 0;
@@ -1583,6 +1612,39 @@ class ContactsEvents {
                 ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
+    }
+
+    int getContactsEventsCount(String accountType, String accountName) {
+
+        int count = 0;
+        try {
+
+            final StringBuilder selection = new StringBuilder();
+            selection.append(ContactsContract.Data.MIMETYPE).append(" = '").append(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).append("' ");
+            if (accountType != null) {
+                selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" = '").append(accountType).append("' ");
+            }
+            if (accountName != null) {
+                selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_NAME).append(" = '").append(accountName).append("' ");
+            }
+            Cursor cursor = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    new String[]{_ID},
+                    selection.toString(),
+                    null,
+                    null
+            );
+            if (cursor != null) {
+                count = cursor.getCount();
+                cursor.close();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on)
+                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return count;
     }
 
     @NonNull
@@ -1814,11 +1876,9 @@ class ContactsEvents {
             }
 
         } catch (Exception e) {
-            if (preferences_debug_on) {
-                Log.e(TAG, e.getMessage(), e);
-                if (preferences_debug_on)
-                    ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDate));
-            }
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on)
+                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDate));
         }
         return eventKey_current;
 
@@ -2208,7 +2268,7 @@ class ContactsEvents {
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
             Uri uri = CalendarContract.Calendars.CONTENT_URI;
-            cursor = contentResolver.query(uri, new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.VISIBLE, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CalendarContract.Calendars.ACCOUNT_NAME}, null, null, null);
+            cursor = contentResolver.query(uri, new String[]{_ID, CalendarContract.Calendars.VISIBLE, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CalendarContract.Calendars.ACCOUNT_NAME}, null, null, null);
 
             if (cursor != null) {
                 if (cursor.getCount() > 0) {

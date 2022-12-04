@@ -38,7 +38,6 @@ public class CustomEditTextPreference extends EditTextPreference {
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        //TypedArray ta = builder.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
 
         ContactsEvents contactsEvents = ContactsEvents.getInstance();
         if (contactsEvents.preferences_theme.themeEditText != 0) {
@@ -47,35 +46,18 @@ public class CustomEditTextPreference extends EditTextPreference {
             builder.getContext().setTheme(ContactsEvents.themeEditText_default);
         }
 
-        //builder.getContext().setTheme(ContactsEvents.getInstance().preferences_theme.themeDialog);
-        //builder.getContext().setTheme(R.style.EditText_Light);
         super.onPrepareDialogBuilder(builder);
 
-        //int color = ta.getColor(R.styleable.Theme_dialogTextColor, 0);
-        //ToastExpander.showText(builder.getContext(), "color:" + Color.red(color) + "," + Color.green(color) + "," + Color.blue(color));
-        //super.onPrepareDialogBuilder(builder);
     }
-/*protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        TypedArray ta = builder.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
-        int color = ta.getColor(R.styleable.Theme_dialogTextColor, 0);
-        Toast.makeText(builder.getContext(), Color.red(color) + "," + Color.green(color) + "," + Color.blue(color), Toast.LENGTH_LONG).show();
-        //builder.getContext().setTheme(ContactsEvents.getInstance().preferences_theme.themeDialog);
-        super.onPrepareDialogBuilder(builder);
-    }*/
+
 
     @Override
-    protected void showDialog(Bundle state)
-    {
+    protected void showDialog(Bundle state) {
         super.showDialog(state);
         TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
         final AlertDialog dialog = (AlertDialog) getDialog();
-
-        /*int color = ta.getColor(R.styleable.Theme_backgroundColor, 0);
-        ToastExpander.showText(getContext(), Color.red(color) + "," + Color.green(color) + "," + Color.blue(color));*/
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
-        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getContext().getResources().getColor(R.color.theme_grey_primary)));
-        final EditText editText = getEditText(); //dialog.findViewById(android.R.id.edit);
+        final EditText editText = getEditText();
 
         if (editText != null) {
 

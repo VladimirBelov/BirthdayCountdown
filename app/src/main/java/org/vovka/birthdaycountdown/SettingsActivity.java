@@ -871,6 +871,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<String> accountNames = new ArrayList<>();
             List<Integer> accountIcons = new ArrayList<>();
             List<String> accountPackages = new ArrayList<>();
+            List<String> choiceList = new ArrayList<>();
             ContactsEvents eventsData = ContactsEvents.getInstance();
 
             if (!eventsData.checkNoContactsAccess()) {
@@ -878,7 +879,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Account[] accounts = AccountManager.get(this).getAccounts();
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
                 for (Account account : accounts) {
-                    accountNames.add(account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE);
+
+                    final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                    accountNames.add(accountName);
+                    choiceList.add(accountName
+                            + Constants.STRING_BRACKETS_OPEN
+                            + eventsData.getContactsEventsCount(account.type, account.name)
+                            + Constants.STRING_BRACKETS_CLOSE
+                    );
                     for (AuthenticatorDescription desc : descriptions) {
                         if (account.type.equals(desc.type)) {
                             accountIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
@@ -886,7 +894,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             break;
                         }
                     }
-                    if (accountNames.size() != accountIcons.size()) { //Не нашли иконку, что ОЧЕНЬ странно
+                    if (accountNames.size() != accountIcons.size()) { //Не нашли иконку
                         accountIcons.add(0);
                         accountPackages.add(Constants.STRING_EMPTY);
                     }
@@ -894,7 +902,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
             if (accountNames.size() > 0) {
-                ListAdapter adapter = new AccountsListAdapter(this, accountNames, accountIcons, accountPackages, ta);
+                ListAdapter adapter = new AccountsListAdapter(this, choiceList, accountIcons, accountPackages, ta);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
@@ -915,7 +923,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setNeutralButton(R.string.button_all, (dialog, which) -> {
+                        .setNeutralButton(getString(R.string.button_all) + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getContactsEventsCount(null, null)
+                                + Constants.STRING_BRACKETS_CLOSE, (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
                             eventsData.savePreferences();
                         })

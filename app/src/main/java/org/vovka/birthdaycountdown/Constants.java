@@ -46,6 +46,8 @@ final class Constants {
     static final String STRING_PARENTHESIS_CLOSE = ")";
     static final String STRING_PARENTHESIS_OPEN = " (";
     static final String STRING_PARENTHESIS_START = "(";
+    static final String STRING_BRACKETS_OPEN = " [";
+    static final String STRING_BRACKETS_CLOSE = "]";
     static final String STRING_PERIOD = ".";
     static final String STRING_PIPE = "\\|";
     static final String STRING_SPACE = " ";
