@@ -54,7 +54,7 @@
                 <item>Para restringir la elección de cuentas para escanear eventos, debe seleccionar las necesarias en Configuraciones-> Cuentas.</item>
                 <item>Para mostrar los eventos de todas las cuentas (incluidas las locales), haga clic en \"Todos\".</item>
 
-                <item>#Eventos del calendario</item>
+                <item>#<![CDATA[<a id=\"events_calendar\">Eventos del calendario]]></item>
                 <item>Se admiten todos los eventos de los calendarios seleccionados. Los conjuntos de calendario se especifican por separado para los eventos \"Cumpleaños\" y \"Otro evento\". El mecanismo para trabajar con eventos de calendario difiere según el tipo de evento.</item>
                 <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres se usan para esto (de manera predeterminada, se usa el título del evento del calendario como nombre del contacto). Si se encuentra un contacto, los datos de la persona se utilizan para la visualización de eventos. Hay tres opciones: <ol>
                 <li>contacto encontrado, pero ya hay datos sobre el cumpleaños: la fecha del calendario se agrega al evento (con o sin año, dependiendo de la configuración)
@@ -70,8 +70,13 @@
          <li>Después de crear (habilitar) calendarios, debe seleccionarlos en Configuración-> Personalización de eventos-> Cumpleaños-> Calendarios (Configuraciones-> Personalización de eventos-> Otro evento-> Calendarios)
         </ol>]]></item>
 
-                <item>#Eventos de archivos locales</item>
-                <item><![CDATA[Los eventos y cumpleaños de <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> son compatibles con algunas características:<ul><li>la fecha del evento puede ser de cualquier formato sin espacios (DD.MM.YYYY, MM/DD/YYYY, etc.)<li>si no se conoce el año, establezca 0000<li>si hay varios pares de corchetes después del nombre, entonces si los pares de corchetes siguen entre sí: el contenido dentro del último par se moverá al título del trabajo de los contactos, si un par está dentro del otro, el contenido dentro de los corchetes exteriores se moverá al título del trabajo de los contactos</ul>]]></item>
+                <item>#<![CDATA[<a id=\"events_files\">Eventos de archivos locales]]></item>
+                <item><![CDATA[Los eventos y cumpleaños de <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> son compatibles con algunas características:<ul>
+                <li>la fecha del evento puede ser de cualquier formato sin espacios (DD.MM.YYYY, MM/DD/YYYY, etc.)
+                <li>si no se conoce el año, establezca 0000
+                <li>el archivo debe guardarse en codificación UTF-8
+                <li>si hay varios pares de corchetes después del nombre, entonces si los pares de corchetes siguen entre sí: el contenido dentro del último par se moverá al título del trabajo de los contactos, si un par está dentro del otro, el contenido dentro de los corchetes exteriores se moverá al título del trabajo de los contactos
+                </ul>]]></item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE APELLIDO</b>&gt; [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
                 <item><![CDATA[BANDERAS:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>]]></item>

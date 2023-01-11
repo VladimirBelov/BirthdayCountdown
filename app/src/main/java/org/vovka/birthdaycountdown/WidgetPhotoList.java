@@ -14,13 +14,11 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -133,15 +131,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             if (eventsData.preferences_debug_on) {
-
-                final Resources resources = context.getResources();
-                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                final float density = displayMetrics.density;
-
                 ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON + appWidgetId +
-                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
-                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
+                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
+                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
                                 "\n widgetPref=" + widgetPref
                         : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
                 );

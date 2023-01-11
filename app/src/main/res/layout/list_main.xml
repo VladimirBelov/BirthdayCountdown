@@ -21,9 +21,9 @@
 
         <TextView
             android:id="@+id/mainStatsTextView"
-            android:layout_width="0dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="46dip"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dip"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             android:gravity="center_vertical|fill_vertical|end"

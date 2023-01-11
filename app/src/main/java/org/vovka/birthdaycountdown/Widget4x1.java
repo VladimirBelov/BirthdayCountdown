@@ -12,10 +12,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -51,14 +49,10 @@ public class Widget4x1 extends AppWidgetProvider {
                 if (appWidgetInfo == null) return;
                 String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
-                final Resources resources = context.getResources();
-                final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                final float density = displayMetrics.density;
 
                 ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON + appWidgetId +
-                                "\n screen: " + displayMetrics.heightPixels + "x" + displayMetrics.widthPixels + " (density " + density + ")" +
-                                "\n layout=" + resources.getResourceEntryName(views.getLayoutId()) +
+                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
+                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
                                 "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
                                 "\n widgetPref=" + widgetPref
                         : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref

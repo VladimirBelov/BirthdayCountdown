@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -114,7 +115,11 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
             fragment.setArguments(args);
 
             if (menu != null) {
-                menu.getItem(0).setVisible(true);
+                final MenuItem item1 = menu.getItem(0);
+                if (item1 != null) item1.setVisible(true);
+
+                final MenuItem item2 = menu.getItem(1);
+                if (item2 != null) item2.setVisible(false);
             }
 
             fm.beginTransaction()

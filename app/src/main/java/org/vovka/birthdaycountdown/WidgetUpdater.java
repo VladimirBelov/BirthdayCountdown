@@ -486,7 +486,6 @@ class WidgetUpdater {
                 }
             }
 
-            //eventsData.temp_int = roundingFactor;
             Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID)), true, true, roundingFactor);
             if (photo != null) {

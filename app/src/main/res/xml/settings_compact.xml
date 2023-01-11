@@ -45,13 +45,6 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
-            android:key="@string/pref_Accounts_key"
-            android:title="@string/pref_Accounts_title"
-            android:summary="@string/pref_Accounts_description"
-            android:icon="@android:drawable/ic_menu_my_calendar"
-            android:dialogIcon="@android:drawable/ic_menu_my_calendar"/>
-
-        <Preference
             android:key="@string/pref_IconPack_key"
             android:title="@string/pref_IconPack_title"
             android:summary="@string/pref_IconPack_description"
@@ -114,6 +107,30 @@
         android:icon="@drawable/ic_menu_friendslist">
 
         <PreferenceCategory
+            android:key="@string/pref_CustomEvents_Sources_key"
+            android:title="@string/pref_CustomEvents_Sources_title"
+            android:summary="@string/pref_CustomEvents_Sources_summary"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/btn_zoom_page_press">
+
+            <Preference
+                android:key="@string/pref_Accounts_key"
+                android:title="@string/pref_Accounts_title"
+                android:summary="@string/pref_Accounts_description"/>
+
+            <Preference
+                android:key="@string/pref_CustomEvents_MultiType_Calendars_key"
+                android:title="@string/pref_CustomEvents_Calendars_title"
+                android:summary="@string/pref_CustomEvents_Calendars_description"/>
+
+            <Preference
+                android:key="@string/pref_CustomEvents_MultiType_LocalFiles_key"
+                android:title="@string/pref_CustomEvents_LocalFiles_title"
+                android:summary="@string/pref_CustomEvents_Other_LocalFiles_description"/>
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
             android:key="@string/pref_CustomEvents_Birthday_key"
             android:title="@string/event_type_birthday"
             android:layout="@layout/settings_category_with_icon"
@@ -137,7 +154,7 @@
             <Preference
                 android:key="@string/pref_CustomEvents_Birthday_Calendars_key"
                 android:title="@string/pref_CustomEvents_Calendars_title"
-                android:summary="@string/pref_CustomEvents_Calendars_description"/>
+                android:summary="@string/pref_CustomEvents_Birthday_Calendars_description"/>
 
             <!-- создаём динамически в SettingsActivity->updateVisibility(), если выбраны календари -->
             <!--<Preference

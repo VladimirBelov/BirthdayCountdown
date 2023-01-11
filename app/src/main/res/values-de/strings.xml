@@ -51,6 +51,9 @@
     <string name="menu_context_share_as_image">als Bild</string>
     <string name="menu_context_share_as_text">als Texte</string>
     <string name="menu_ok">OK</string>
+    <string name="menu_help">Referenz</string>
+    <string name="menu_help_events_calendar">Kalenderereignisse</string>
+    <string name="menu_help_events_files">Lokale Dateiereignisse</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
@@ -67,12 +70,17 @@
     <string name="msg_before_yesterday">Vorgestern</string>
     <string name="msg_day_after_tomorrow">Übermorgen</string>
     <string name="msg_stats_prefix">"Ereignisse: "</string>
+    <string name="msg_stats_filtered_prefix">"Ereignisse gefunden: "</string>
     <string name="msg_stats_hidden_prefix">"Ausgeblendete Ereignisse: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"Ausgeblendete Ereignisse gefunden: "</string>
     <string name="msg_stats_silenced_prefix">"Ereignisse ohne Benachrichtigung: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"Ereignisse ohne Benachrichtigung gefunden: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
     <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
     <string name="msg_date_parse_error">"Fehler bei der Datumsanalyse: "</string>
+    <string name="msg_event_parse_error">"Ereignisanalysefehler: "</string>
+    <string name="msg_type_parse_error">"Ereignistyp ist nicht definiert: "</string>
     <string name="msg_jump_to_event_error">Ereignis nicht gefunden! Aktivieren Sie weitere Ereignistypen in den App-Einstellungen</string>
     <string name="msg_errors_total">"Gesamtfehler: "</string>
     <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>
@@ -109,11 +117,10 @@
     <string name="msg_notifications_count">"Ereignisse in Kürze - "</string>
     <string name="msg_notifications_soon">"Ereignisse - "</string>
     <string name="msg_notifications_disabled">Benachrichtigungen aus</string>
-    <string name="msg_no_events_hint">In Ihrem Adressbuch wurden keine Ereignisse gefunden. Um Ereignisse (Geburtstage, Jahrestage, Namenstage) anzuzeigen, müssen diese in die Karten Ihrer Kontakte eingetragen oder von auf Ihrem Smartphone installierten Anwendungen (Google, Skype, VK, …) importiert werden.</string>
+    <string name="msg_no_events_hint">Keine Ereignisse gefunden. Um Ereignisse anzuzeigen, müssen sie in den Karten Ihrer Kontakte oder in ausgewählten Kalendern oder in ausgewählten Dateien ausgefüllt werden</string>
     <string name="msg_no_accounts_hint">"Es wurden keine Konten gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_calendars_hint">"Es wurden keine verfügbaren Kalender gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
-    <string name="msg_no_events_check_prefs">"Keine Ereignisse gefunden. Überprüfen Sie die Punkte \"%1$s\" und \"%2$s\" in den Programmeinstellungen"</string>
-    <!--<string name="msg_no_access_contacts_hint">Kein Zugriff auf Kontakte. Überprüfen Sie die Anwendungsberechtigungen</string>-->
+    <string name="msg_no_events_check_prefs">"Keine Ereignisse gefunden. Überprüfen Sie das Element \"%1$s\" im Abschnitt \"%2$s\" in den Programmeinstellungen"</string>
     <string name="msg_no_access_storage_hint">Kein Zugriff auf externen Speicher. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_welcome_title">Willkommen!</string>
     <string name="msg_welcome_text">Vielen Dank, dass Sie dieses Programm installiert haben. Obwohl die meisten Funktionen bestmöglich vorkonfiguriert sind, wird empfohlen, die Anwendungseinstellungen zu überprüfen. Dort können Sie beispielsweise Benachrichtigungen über bevorstehende Ereignisse aktivieren oder Parameter für Widgets festlegen. Viel Spaß beim Gebrauch!</string>
@@ -124,6 +131,7 @@
     <string name="msg_filter_clean_confirmation">Alle Filter von Links zu abwesenden Kontakten oder Kalenderereignissen bereinigen?</string>
     <string name="msg_filter_clean_silenced_result">"Stillgelegte Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
     <string name="msg_filter_clean_hidden_result">"Ausgeblendete Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
+    <string name="msg_account_info">"Ereignis von Konto \"%1$s\""</string>
     <string name="msg_calendar_info">"Kalenderereignis \"%1$s\""</string>
     <string name="msg_file_info">"Ereignis aus Datei \"%1$s\""</string>
     <string name="msg_title_confirmation">Bestätigung</string>
@@ -258,15 +266,29 @@
         <item>"am Samstag"</item>
     </string-array>
 
-    <string name="pref_CustomEvents_title">Anpassung der Ereignisse</string>
-    <string name="pref_CustomEvents_summary">Einstellungen zum Erkennen benutzerdefinierter Ereignisse</string>
+    <string-array name="weekDaysShort">
+        <item>So</item>
+        <item>Mo</item>
+        <item>Di</item>
+        <item>Mi</item>
+        <item>Do</item>
+        <item>Fr</item>
+        <item>Sa</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_title">Ereignisse einrichten</string>
+    <string name="pref_CustomEvents_summary">Ereignisquellen, Typenklassifizierung, Anpassung von Etiketten</string>
     <string name="pref_CustomEvents_hint">Eigene Bezeichnung(en) (durch Kommas getrennt)</string>
     <string name="pref_CustomEvent_Caption_hint">Bezeichnung des Ereignisses</string>
+
+    <string name="pref_CustomEvents_Sources_title">Ereignisquellen</string>
+    <string name="pref_CustomEvents_Sources_summary">Verwenden Sie diese Quellen für Ereignisse verschiedener Typen (der Typ wird innerhalb von Ereignissen angegeben oder durch die \"Eigene Bezeichnung(en)\" unten bestimmt)</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Geburtstage zu erkennen</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_description">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln zum Importieren</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln zum Importieren von Kalenderereignissen bei Geburtstagen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
@@ -274,7 +296,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen (Dateiformat beschrieben in Hilfe->\"Fragen und Antworten\")</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Hochzeitstage zu erkennen</string>
@@ -303,7 +325,7 @@
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
     <string name="pref_CustomEvents_Calendars_description">Ereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_description">Ereignisse aus ausgewählten Dateien anzeigen (Dateiformat beschrieben in Hilfe->\"Fragen und Antworten\")</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Ereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
@@ -449,6 +471,7 @@
         <item>Spitzname</item>
         <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
+        <item>Ereignisquelle</item>
         <item>Symbol für Ereignistyp</item>
         <item>Favoriten Symbol</item>
         <item>Alter</item>
@@ -822,9 +845,11 @@
         <h4>Kalenderereignisse:</h4><ul>%4$s
              <li>Geburtstage (Kalender-IDs): %5$s</li>
              <li>andere Ereignisse (Kalender-IDs): %6$s</li>
+             <li>verschiedene Ereignisse (Kalender-IDs): %7$s</li>
          </ul>
-         <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %7$s</li>
-             <li>andere Ereignisse: %8$s</li>
+         <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %8$s</li>
+             <li>andere Ereignisse: %9$s</li>
+             <li>verschiedene Ereignisse: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Wenn diese Informationen nicht geholfen haben, den Grund für das Ausbleiben von Veranstaltungen zu finden, schreiben Sie mir eine E-Mail (klicken Sie auf den Namen der Anwendung und dort auf die Schaltfläche \"Mail\")</h4>]]></string>
 

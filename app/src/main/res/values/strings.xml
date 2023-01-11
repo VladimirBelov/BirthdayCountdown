@@ -51,6 +51,9 @@
     <string name="menu_context_share_as_image">as image</string>
     <string name="menu_context_share_as_text">as text</string>
     <string name="menu_ok">OK</string>
+    <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
+    <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>
+    <string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
 <!--    <string name="msg_no_access_storage">No access to external storage</string>-->
@@ -67,12 +70,17 @@
     <string name="msg_before_yesterday">Day before yesterday</string>
     <string name="msg_day_after_tomorrow">Day after tomorrow</string>
     <string name="msg_stats_prefix">"events: "</string>
+    <string name="msg_stats_filtered_prefix">"events found: "</string>
     <string name="msg_stats_hidden_prefix">"hidden events: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"hidden events found: "</string>
     <string name="msg_stats_silenced_prefix">"silenced events: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"silenced events found: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
     <string name="msg_color_parse_error">Color parsing error!</string>
     <string name="msg_date_parse_error">"Date parsing error: "</string>
+    <string name="msg_event_parse_error">"Event parsing error: "</string>
+    <string name="msg_type_parse_error">"Event type is not defined: "</string>
     <string name="msg_jump_to_event_error">Event not found! Enable more event types in app settings</string>
     <string name="msg_errors_total">"Total errors: "</string>
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
@@ -109,11 +117,10 @@
     <string name="msg_notifications_count">"Events - "</string>
     <string name="msg_notifications_soon">"Events soon - "</string>
     <string name="msg_notifications_disabled">Notifications disabled</string>
-    <string name="msg_no_events_hint">No events were found in your address book. To display events (birthdays, anniversaries, name days) they must be filled in your contacts cards or imported by applications installed on your smartphone (Google, Skype, VK, …)</string>
+    <string name="msg_no_events_hint">No events found. To display events, they must be filled in your contacts cards or in selected calendars or in selected files</string>
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
     <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
-    <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" and \"%2$s\" items in program settings"</string>
-    <!--<string name="msg_no_access_contacts_hint">No access to contacts. Check application permissions</string>-->
+    <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" item in the \"%2$s\" section of program settings"</string>
     <string name="msg_no_access_storage_hint">No access to external storage. Check application permissions</string>
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
@@ -124,6 +131,7 @@
     <string name="msg_filter_clean_confirmation">Clean all filters from links to absent contacts or calendar events?</string>
     <string name="msg_filter_clean_silenced_result">"Cleared silenced events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_hidden_result">"Cleared hidden events for absent contacts and calendar events: "</string>
+    <string name="msg_account_info">"Event from account \"%1$s\""</string>
     <string name="msg_calendar_info">"Event from calendar \"%1$s\""</string>
     <string name="msg_file_info">"Event from file \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
@@ -218,7 +226,7 @@
     <string name="pref_Icon_title">Application icon</string>
     <string name="pref_Icon_description">Choose application icon for system launcher</string>
     <string name="pref_Accounts_title">Accounts</string>
-    <string name="pref_Accounts_description">Scan only these contact accounts for events</string>
+    <string name="pref_Accounts_description">Scan only these contacts accounts for events</string>
     <string name="pref_IconPack_title">Icon pack</string>
     <string name="pref_IconPack_description">Use selected icon pack to show contact silhouette</string>
     <string name="pref_MenuStyle_title">Compacted menu</string>
@@ -258,25 +266,29 @@
         <item>"on Saturday"</item>
     </string-array>
 
-    <string-array name="weekDaysShort">
-        <item>"su"</item>
-        <item>"mo"</item>
-        <item>"tu"</item>
-        <item>"we"</item>
-        <item>"th"</item>
-        <item>"fr"</item>
-        <item>"sa"</item>
+    <string-array name="weekDaysShort"> <!-- https://tetran.ru/SiteContentEn/Details/4 -->
+        <item>su</item>
+        <item>mo</item>
+        <item>tu</item>
+        <item>we</item>
+        <item>th</item>
+        <item>fr</item>
+        <item>sa</item>
     </string-array>
 
-    <string name="pref_CustomEvents_title">Events customizing</string>
-    <string name="pref_CustomEvents_summary">Preferences to detect, select or import events</string>
+    <string name="pref_CustomEvents_title">Events setup</string>
+    <string name="pref_CustomEvents_summary">Events sources, types classification, labels customizing</string>
     <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
     <string name="pref_CustomEvent_Caption_hint">Event caption</string>
+
+    <string name="pref_CustomEvents_Sources_title">Events sources</string>
+    <string name="pref_CustomEvents_Sources_summary">Use these sources for events of different types (type is specified inside events or determined by \"Events labels\" below)</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standard labels to detect birthday events</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this label will be identified as birthdays (by comma)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_description">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Import rules</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Rules for importing calendar events to birthdays</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are multi):"</string>
@@ -284,7 +296,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Incorrect format! Delimiter must be | symbol</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files (file format described in Help->\"How to\" guide)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standard labels to detect anniversary events</string>
@@ -313,7 +325,7 @@
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
     <string name="pref_CustomEvents_Calendars_description">Show events from chosen calendars</string>
     <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_description">Show events from chosen files (file format described in Help->\"How to\" guide)</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Show events from chosen files</string>
 
     <string name="pref_CustomEvents_Custom_title">User-defined event</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
@@ -459,6 +471,7 @@
         <item>Nickname</item>
         <item>Event type</item>
         <item>Original event label</item>
+        <item>Event source</item>
         <item>Event type icon</item>
         <item>Favorites icon</item>
         <item>Age</item>
@@ -832,9 +845,11 @@
         <h4>Events from calendars:</h4><ul>%4$s
             <li>birthdays (calendar ids): %5$s</li>
             <li>other events (calendar ids): %6$s</li>
+            <li>multitype (calendar ids): %7$s</li>
         </ul>
-        <h4>Events from files:</h4><ul><li>birthdays: %7$s</li>
-            <li>other events: %8$s</li>
+        <h4>Events from files:</h4><ul><li>birthdays: %8$s</li>
+            <li>other events: %9$s</li>
+            <li>multitype: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
 
@@ -980,7 +995,7 @@
     <!--<string name="pref_BattOptiCheck" translatable="false">CheckBatteryOptimization</string>-->
 
     <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento"</string>
-    <string name="event_type_wedding_labels" translatable="false">"wedding,свадьба,свадьбы,весілля,hochzeitstag,civil"</string>
+    <string name="event_type_wedding_labels" translatable="false">"anniversary,wedding,годовщина,свадьба,свадьбы,весілля,hochzeitstag,civil"</string>
     <string name="event_type_nameday_labels" translatable="false">"name-day,name day,именины,день ангела,іменини,namenstag,nombre"</string>
     <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento"</string>
     <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa"</string>
@@ -989,6 +1004,7 @@
     <string name="pref_Language_key" translatable="false">Language</string>
     <string name="pref_Language_default" translatable="false">AUTO</string>
     <string name="pref_Language_de" translatable="false">de</string>
+    <string name="pref_Language_uk" translatable="false">uk</string>
 
     <string-array name="pref_Language_values" translatable="false">
         <item>@string/pref_Language_default</item>
@@ -996,7 +1012,7 @@
         <item>@string/pref_Language_de</item>
         <item>ru</item>
         <item>es</item>
-        <item>uk</item>
+        <item>@string/pref_Language_uk</item>
     </string-array>
 
     <string name="pref_Icon_key" translatable="false">Icon</string>
@@ -1073,6 +1089,9 @@
     </string-array>
 
     <string name="pref_CustomEvents_key" translatable="false">CustomEvents</string>
+    <string name="pref_CustomEvents_Sources_key" translatable="false">CustomEvents_Sources</string>
+    <string name="pref_CustomEvents_MultiType_Calendars_key" translatable="false">CustomEvents_MultiType_Calendars</string>
+    <string name="pref_CustomEvents_MultiType_LocalFiles_key" translatable="false">CustomEvents_MultiType_LocalFiles</string>
     <string name="pref_CustomEvents_Birthday_key" translatable="false">CustomEvents_Birthday</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_key" translatable="false">CustomEvents_Birthday_UseInternal</string>
@@ -1190,6 +1209,7 @@
     <string name="pref_List_EventInfo_ZodiacYear" translatable="false">10</string>
     <string name="pref_List_EventInfo_URL" translatable="false">11</string>
     <string name="pref_List_EventInfo_EventIcon" translatable="false">12</string>
+    <string name="pref_List_EventInfo_EventSource" translatable="false">13</string>
     <string name="pref_List_EventInfo_DebugInfo" translatable="false">91</string>
 
     <string-array name="pref_List_EventInfo_values_default" translatable="false">
@@ -1209,6 +1229,7 @@
         <item>@string/pref_List_EventInfo_Nickname</item> <!--Псевдоним-->
         <item>@string/pref_List_EventInfo_EventCaption</item> <!--Подробности события-->
         <item>@string/pref_List_EventInfo_StoredEventTitle</item> <!--Исходное наименование события-->
+        <item>@string/pref_List_EventInfo_EventSource</item> <!--Источник события-->
         <item>@string/pref_List_EventInfo_EventIcon</item> <!--Иконка события-->
         <item>@string/pref_List_EventInfo_FavoritesIcon</item> <!--Иконка избранного контакта-->
         <item>@string/pref_List_EventInfo_Age</item> <!--Возраст-->
@@ -1562,6 +1583,9 @@
 
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 
-    <string name="faq_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
+    <string name="faq_header" translatable="false"><![CDATA[<!DOCTYPE html><html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
+    <string name="faq_anchor_events_calendar" translatable="false">events_calendar</string>
+    <string name="faq_anchor_events_files" translatable="false">events_files</string>
+    <string name="faq_anchor_widgets" translatable="false">widgets</string>
 
 </resources>

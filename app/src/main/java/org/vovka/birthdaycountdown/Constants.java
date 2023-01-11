@@ -52,6 +52,11 @@ final class Constants {
     static final String STRING_PIPE = "\\|";
     static final String STRING_SPACE = " ";
     static final String STRING_BC = "BC";
+    static final String STRING_UNDERSCORE = "_";
+    static final String STRING_BDP_DIV = "❙"; //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
+    static final String STRING_BDP_EOL = "❚";
+    static final String STRING_BDP_NO_YEAR = "1900";
+    static final String STRING_BDP_CUSTOM = "Custom";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -88,7 +93,9 @@ final class Constants {
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_STORAGE_CONTACTS = "contacts";
+    static final int Storage_Contacts = 1;
     static final String STRING_STORAGE_CALENDAR = "calendar";
+    static final int Storage_Calendar = 0;
     static final String STRING_STORAGE_FILE = "file";
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
@@ -124,6 +131,7 @@ final class Constants {
     static final int Type_Custom5 = 12;
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
+    static final String Type_MultiEvent = "30";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";
@@ -168,6 +176,7 @@ final class Constants {
     static final String EXTRA_COLORED = "colored";
     static final String EXTRA_NON_SORTED = "nonsorted";
     static final String EXTRA_COLOR = "color";
+    static final String EXTRA_ANCHOR = "anchor";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -184,7 +193,7 @@ final class Constants {
     static final String FONT_COLOR_RED = "<font color=red>";
     static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";
     static final String HTML_LI = "<li>";
-    static final String HTML_LI_API21 = "<br>&nbsp;-&nbsp;";
+    static final String HTML_LI_API21 = "&nbsp;-&nbsp;";
     static final String HTML_LI_END = "</li>";
     static final String HTML_UL_END = "</ul>";
     static final String HTML_UL_START = "<ul>";
@@ -229,6 +238,8 @@ final class Constants {
     static final String account_vk = "com.vkontakte.account";
     static final String account_exchange = "com.google.android.gm.exchange";
     static final String account_huawei = "com.android.huawei.phone";
+    static final String account_sim = ".sim";
+    static final String account_none = "none";
 
     //Отладочные сообщения
 
@@ -266,6 +277,7 @@ final class Constants {
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
     static final String RES_TYPE_STRING = "string";
+    static final String URI_PACKAGE = "package:";
 
     static final int ContextMenu_EditContact = 1;
     static final int ContextMenu_CreateContact = 2;
@@ -284,6 +296,5 @@ final class Constants {
     static final int ContextMenu_OpenURL = 16;
     static final int ContextMenu_ShareAsImage = 17;
     static final int ContextMenu_ShareAsText = 18;
-
 
 }

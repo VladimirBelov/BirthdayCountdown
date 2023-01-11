@@ -55,7 +55,7 @@
                 <item>Um die Auswahl der Konten für Scan-Ereignisse einzuschränken, müssen die erforderlichen Konten unter Einstellungen->Konten ausgewählt werden.</item>
                 <item>Um Ereignisse von allen Konten (einschließlich lokaler) anzuzeigen, klicken Sie auf \"Alle\".</item>
 
-                <item>#Kalenderereignisse</item>
+                <item>#<![CDATA[<a id=\"events_calendar\">Kalenderereignisse]]></item>
                 <item>Alle Kalenderereignisse aus ausgewählten Kalendern werden unterstützt. Kalendersets werden für die Ereignisse \"Geburtstag\" und \"Sonstiges Ereignis\" separat angegeben. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
                 <item> </item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
@@ -72,10 +72,11 @@
                 <li>Nach dem Erstellen (Aktivieren) des Kalenders, müssen Sie diesen in den Einstellungen auswählen: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Kalender
                 </ol>]]></item>
 
-                <item>#Ereignisse aus lokalen Dateien</item>
+                <item>#<![CDATA[<a id=\"events_files\">Ereignisse aus lokalen Dateien]]></item>
                 <item><![CDATA[Ereignisse und Geburtstage vom <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> werden mit einigen Funktionen unterstützt:<ul>
                 <li>Das Ereignisdatum kann ein beliebiges Format ohne Leerzeichen haben (TT.MM.JJJJ, MM/TT/JJJJ usw.)
                 <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein
+                <li>Die Datei muss in UTF-8-Kodierung gespeichert werden
                 <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
                 </ul>]]></item>
                 <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME NACHNAME</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
@@ -97,7 +98,7 @@
                 <li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary
                 <li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge
                 </ul>]]></item>
-                <item>Die Suche verwendet alle Ereignisdaten (zur Überprüfung: aktivieren Sie \"Debug &amp; Zusatzfunktionen\" in den App-Einstellungen, drücken Sie lange auf das Ereignis, Punkt \"Ereignisdaten\").</item>
+                <item>Die Suche verwendet alle Ereignisdaten (zur Überprüfung: aktivieren Sie \"Extrafunktionen\" in den App-Einstellungen, drücken Sie lange auf das Ereignis, Punkt \"Ereignisdaten\").</item>
                 <item> </item>
 
                 <item>#Sprache der Anwendungsoberfläche</item>

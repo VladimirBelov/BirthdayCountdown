@@ -17,6 +17,7 @@ import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +42,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.InputType;
 import android.text.format.DateFormat;
@@ -176,7 +179,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
                             builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                                 try {
-                                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
                                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                             });
                             AlertDialog alertToShow = builder.create();
@@ -560,6 +563,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     selectCalendars(this.eventTypeForSelect);
                 }
 
+            } else if (getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)) { //Календари (Разные события)
+
+                this.eventTypeForSelect = Constants.Type_MultiEvent;
+
+                if (eventsData.checkNoCalendarAccess()) {
+
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
+                    return true;
+
+                } else {
+
+                    selectCalendars(this.eventTypeForSelect);
+                }
+
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key).equals(key)) {
 
                 editRules();
@@ -585,7 +602,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     );
                 } else {
                     try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
@@ -599,14 +616,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     );
                 } else {
                     try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + this.getPackageName())));
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
 
+            } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
+
+                if (eventsData.preferences_Birthday_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_Birthday_files);
+                } else {
+                    filesList = new HashSet<>();
+                }
+                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
+                selectFiles(this.eventTypeForSelect);
+                return true;
+
             } else if (getString(R.string.pref_CustomEvents_Other_LocalFiles_key).equals(key)) {
 
-                if (eventsData.preferences_Otherevent_files != null) {
-                    filesList = new HashSet<>(eventsData.preferences_Otherevent_files);
+                if (eventsData.preferences_OtherEvent_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_OtherEvent_files);
                 } else {
                     filesList = new HashSet<>();
                 }
@@ -614,14 +642,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
-            } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
+            } else if (getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key).equals(key)) {
 
-                if (eventsData.preferences_Otherevent_files != null) {
-                    filesList = new HashSet<>(eventsData.preferences_Birthday_files);
+                if (eventsData.preferences_MultiType_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_MultiType_files);
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
+                this.eventTypeForSelect = Constants.Type_MultiEvent;
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -793,6 +821,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             Dialog dialog = preferenceScreen.getDialog();
             ListView list = dialog.findViewById(android.R.id.list);
+            Toolbar bar;
             //this.setTheme(eventsData.preferences_theme.themeMain);
             //ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
@@ -802,7 +831,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 marginParams.setMargins(0, (int) (48 * displayMetrics.density + 0.5f), 0, 0);
                 list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
                 ViewGroup root = (ViewGroup) list.getParent();
-                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+                bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
@@ -812,7 +841,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
                 LinearLayout root = (LinearLayout) list.getParent();
-                Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+                bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
@@ -821,6 +850,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_transp))));
             list.setDividerHeight((int) (1 * displayMetrics.density));
+
+            if (preferenceScreen.getKey().equals(getString(R.string.pref_CustomEvents_key))) {
+                if (!Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_uk))) {
+                    bar.setPopupTheme(eventsData.preferences_theme.themePopup);
+                    bar.inflateMenu(R.menu.menu_settings);
+                    bar.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.menu_help_events_calendar) {
+
+                            Intent intent = new Intent(this, FAQActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_events_calendar));
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+
+                        } else if (item.getItemId() == R.id.menu_help_events_files) {
+
+                            Intent intent = new Intent(this, FAQActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_events_files));
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+
+                        }
+                        return false;
+                    });
+                }
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -876,8 +934,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             if (!eventsData.checkNoContactsAccess()) {
                 //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
-                Account[] accounts = AccountManager.get(this).getAccounts();
+
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
+
+                //user's online accounts
+                Account[] accounts = AccountManager.get(this).getAccounts();
                 for (Account account : accounts) {
 
                     final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
@@ -899,6 +960,56 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         accountPackages.add(Constants.STRING_EMPTY);
                     }
                 }
+
+                //raw accounts
+                ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
+                        new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
+                        "deleted=0",
+                        null,
+                        null);
+                Set<String> accountsList = new HashSet<>();
+                if (cursor != null && cursor.getCount() >0) {
+
+                    if (cursor.moveToFirst()) {
+                        final int columnName = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
+                        final int columnType = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
+                        do {
+                            String accountString = cursor.getString(columnName)
+                                    + Constants.STRING_PARENTHESIS_OPEN
+                                    + cursor.getString(columnType)
+                                    + Constants.STRING_PARENTHESIS_CLOSE;
+
+                            accountsList.add(accountString);
+
+                        } while (cursor.moveToNext());
+                        cursor.close();
+                    }
+
+                }
+                for (String accountString: accountsList) {
+                    if (!accountNames.contains(accountString)) {
+                        accountNames.add(accountString);
+                        choiceList.add(accountString
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getContactsEventsCount(accountString.substring(accountString.indexOf(Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_OPEN.length(), accountString.indexOf(Constants.STRING_PARENTHESIS_CLOSE)), null)
+                                + Constants.STRING_BRACKETS_CLOSE
+                        );
+                        if (accountString.toLowerCase().contains(Constants.account_sim)) {
+                            accountIcons.add(R.drawable.sim_card);
+                        } else {
+                            accountIcons.add(R.drawable.emo_im_happy);
+                        }
+                        accountPackages.add(getPackageName());
+                    }
+                }
+                accountsList.add(getString(R.string.msg_none));
+                choiceList.add(getString(R.string.msg_none));
+                accountNames.add(Constants.account_none);
+                accountIcons.add(android.R.drawable.ic_delete);
+                accountPackages.add(getPackageName());
+
+
             }
 
             if (accountNames.size() > 0) {
@@ -906,6 +1017,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
+                        .setIcon(android.R.drawable.ic_menu_my_calendar)
                         .setAdapter(adapter, null)
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
@@ -950,6 +1062,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             listView.setItemChecked(i, true);
                         }
                     }
+                    if (preferences_accounts.isEmpty()) {
+                        listView.setItemChecked(accountNames.size() - 1, false);
+                    }
+
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
+                        if (position == listView.getCount() - 1) {
+                            for (int i = 0; i < accountNames.size(); i++) {
+                                listView.setItemChecked(i, i >= accountNames.size() - 1);
+                            }
+                        } else {
+                            listView.setItemChecked(accountNames.size() - 1, false);
+                        }
+                    });
                 });
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1150,7 +1275,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int ind = 0;
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
-                calTitles.add(entry.getValue().replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN).concat(Constants.STRING_PARENTHESIS_CLOSE));
+                calTitles.add(
+                        entry.getValue().replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN)
+                                + Constants.STRING_PARENTHESIS_CLOSE
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getCalendarEventsCount(entry.getKey())
+                                + Constants.STRING_BRACKETS_CLOSE
+                );
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
                 sel[ind] = calSelected.get(ind);
                 ind++;
@@ -1314,7 +1445,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 sel = new boolean[filesList.size()];
                 int ind = 0;
                 for (String file : filesList) {
-                    filesPaths.add(file.split(Constants.STRING_PIPE)[0]);
+                    filesPaths.add(
+                            file.split(Constants.STRING_PIPE)[0]
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getFileEventsCount(file)
+                                + Constants.STRING_BRACKETS_CLOSE
+                    );
                     filesFullData.add(file);
                     filesSelected.add(true);
                     sel[ind] = filesSelected.get(ind);

@@ -50,7 +50,6 @@ public class CustomEditTextPreference extends EditTextPreference {
 
     }
 
-
     @Override
     protected void showDialog(Bundle state) {
         super.showDialog(state);

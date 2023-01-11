@@ -31,7 +31,7 @@ public class FAQActivity extends AppCompatActivity {
 
     private static final String TAG = "FAQActivity";
 
-    @SuppressLint("PrivateResource")
+    @SuppressLint({"PrivateResource", "SetJavaScriptEnabled"})
     public void onCreate(Bundle savedInstanceState) {
 
         ContactsEvents eventsData = ContactsEvents.getInstance();
@@ -87,44 +87,61 @@ public class FAQActivity extends AppCompatActivity {
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);
                 webView.setBackgroundColor(Color.TRANSPARENT);
+
+                StringBuilder sb = new StringBuilder();
+                int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
+                sb.append(getString(R.string.faq_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
+
+                String[] arrFAQ;
+                try {
+                    arrFAQ = getResources().getStringArray(R.array.faq);
+                } catch (Resources.NotFoundException e) {
+                    arrFAQ = new String[]{};
+                }
+
+                if (arrFAQ.length > 0) {
+                    for (String strRow : arrFAQ) {
+                        if (strRow.length() >= 3 && strRow.startsWith("###")) {
+                            sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
+                        } else if (strRow.length() >= 2 && strRow.startsWith("##")) {
+                            sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
+                        } else if (strRow.length() >= 1 && strRow.startsWith("#")) {
+                            sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
+                        } else {
+                            sb.append(strRow).append(Constants.HTML_BR);
+                        }
+                    }
+                }
+
+                Intent intent = getIntent();
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    String anchor;
+                    anchor = extras.getString(Constants.EXTRA_ANCHOR, Constants.STRING_EMPTY);
+                    if (!anchor.isEmpty()) {
+                        // https://stackoverflow.com/questions/14062901/webview-jump-to-anchor-using-loaddatawithbaseurl
+                        webView.getSettings().setJavaScriptEnabled(true);
+                        sb.append("<script>window.location.hash=\"").append(anchor).append("\";</script>");
+                    }
+                }
+                sb.append("</body></html>");
+
+                webView.loadDataWithBaseURL(
+                        "file:///android_res/drawable/",
+                        sb.toString(),
+                        "text/html; charset=utf-8",
+                        "utf-8",
+                        null
+                );
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20"
+                            + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
-
-            StringBuilder sb = new StringBuilder();
-            int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
-            sb.append(getString(R.string.faq_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
-
-            String[] arrFAQ;
-            try {
-                arrFAQ = getResources().getStringArray(R.array.faq);
-            } catch (Resources.NotFoundException e) {
-                arrFAQ = new String[]{};
-            }
-
-            if (arrFAQ.length > 0) {
-                for (String strRow : arrFAQ) {
-                    if (strRow.length() >= 3 && strRow.startsWith("###")) {
-                        sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
-                    } else if (strRow.length() >= 2 && strRow.startsWith("##")) {
-                        sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
-                    } else if (strRow.length() >= 1 && strRow.startsWith("#")) {
-                        sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
-                    } else {
-                        sb.append(strRow).append(Constants.HTML_BR);
-                    }
-                }
-            }
-            sb.append("</body></html>");
-
-            if (webView != null) {
-                webView.loadDataWithBaseURL("file:///android_res/drawable/", sb.toString(), "text/html; charset=utf-8", "utf-8", null);
-            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

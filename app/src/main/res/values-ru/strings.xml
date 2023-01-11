@@ -51,6 +51,9 @@
     <string name="menu_context_share_as_image">как изображение</string>
     <string name="menu_context_share_as_text">как текст</string>
     <string name="menu_ok">OK</string>
+    <string name="menu_help">Справка</string>
+    <string name="menu_help_events_calendar">События календаря</string>
+    <string name="menu_help_events_files">События из локальных файлов</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
 <!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
@@ -67,12 +70,17 @@
     <string name="msg_before_yesterday">Позавчера</string>
     <string name="msg_day_after_tomorrow">Послезавтра</string>
     <string name="msg_stats_prefix">"событий: "</string>
+    <string name="msg_stats_filtered_prefix">"событий найдено: "</string>
     <string name="msg_stats_hidden_prefix">"скрытых событий: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"скрытых событий найдено: "</string>
     <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"событий без уведомления найдено: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
     <string name="msg_date_parse_error">"Ошибка распознавания даты: "</string>
+    <string name="msg_event_parse_error">"Ошибка распознавания события: "</string>
+    <string name="msg_type_parse_error">"Тип события не определён: "</string>
     <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
     <string name="msg_errors_total">"Всего ошибок: "</string>
     <string name="msg_errors_details">"аккаунт=%1$s, тип события=%2$s, дата=%3$s"</string>
@@ -109,11 +117,10 @@
     <string name="msg_notifications_count">"Событий скоро - "</string>
     <string name="msg_notifications_soon">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены</string>
-    <string name="msg_no_events_hint">В Вашей адресной книге не найдено ни одного события. Для отображения событий (дней рождений, юбилеев, именин) они должны быть заполнены в карточках Ваших контактов или импортированы установленными на смартфон приложениями (Google, Skype, VK, …)</string>
+    <string name="msg_no_events_hint">Не найдено ни одного события. Для отображения событий они должны быть заполнены в карточках Ваших контактов или в выбранных календарях или в выбранных файлах</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_calendars_hint">Доступные календари не найдены или Вы не дали к ним доступ</string>
-    <string name="msg_no_events_check_prefs">"Не найдено ни одного события. Проверьте в настройках программы пункты \"%1$s\" и \"%2$s\""</string>
-    <!--<string name="msg_no_access_contacts_hint">Нет доступа к контактам. Проверьте разрешения приложения</string>-->
+    <string name="msg_no_events_check_prefs">"Нет событий для отображения. Проверьте в настройках программы пункт \"%1$s\" в разделе \"%2$s\""</string>
     <string name="msg_no_access_storage_hint">Нет доступа к внешнему хранилищу. Проверьте разрешения приложения</string>
     <string name="msg_welcome_title">Добро пожаловать!</string>
     <string name="msg_welcome_text">Спасибо, что установили эту программу. Хотя большинство функций настроено максимально информативно и минимально надоедливо, рекомендуется проверить настройки приложения. Например, там можно включить уведомления о предстоящих событиях или задать параметры для виджетов. Приятного пользования!</string>
@@ -124,6 +131,7 @@
     <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или события?</string>
     <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
+    <string name="msg_account_info">"Событие из аккаунта \"%1$s\""</string>
     <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
     <string name="msg_title_confirmation">Подтверждение</string>
@@ -258,26 +266,29 @@
         <item>"в субботу"</item>
     </string-array>
 
-
     <string-array name="weekDaysShort">
-        <item>"вс"</item>
-        <item>"пн"</item>
-        <item>"вт"</item>
-        <item>"ср"</item>
-        <item>"чт"</item>
-        <item>"пт"</item>
-        <item>"сб"</item>
+        <item>вс</item>
+        <item>пн</item>
+        <item>вт</item>
+        <item>ср</item>
+        <item>чт</item>
+        <item>пт</item>
+        <item>сб</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Настройка событий</string>
-    <string name="pref_CustomEvents_summary">Параметры детектирования и импорта событий</string>
+    <string name="pref_CustomEvents_summary">Источники событий, классификация типов, настройка меток</string>
     <string name="pref_CustomEvents_hint">Наименования (через запятую)</string>
     <string name="pref_CustomEvent_Caption_hint">Заголовок события</string>
+
+    <string name="pref_CustomEvents_Sources_title">Источники событий</string>
+    <string name="pref_CustomEvents_Sources_summary">Использовать эти источники для поиска событий разных типов (тип указан в самом событии или определяется по наименованиям, введёнными ниже)</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Использовать стандартные наименования для определения дней рождений</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">События контактов с такой меткой будут идентифицированы как дни рождения (через запятую)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_description">Показывать дни рождения из выбранных календарей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила импорта событий календаря в дни рождения</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько):"</string>
@@ -285,7 +296,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Использовать год из события календаря для расчёта годовщин (не только день и месяц)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов (описание формата находится в разделе Помощь->Вопросы и Ответы)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_description">Использовать стандартные наименования для определения годовщин свадеб</string>
@@ -314,7 +325,7 @@
     <string name="pref_CustomEvents_Calendars_title">Календари</string>
     <string name="pref_CustomEvents_Calendars_description">Показывать события из выбранных календарей</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_description">Показывать события из выбранных файлов (описание формата находится в разделе Помощь->Вопросы и Ответы)</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_description">Показывать события из выбранных файлов</string>
 
     <string name="pref_CustomEvents_Custom_title">Пользовательское событие</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
@@ -460,6 +471,7 @@
         <item>Псевдоним</item>
         <item>Наименование события</item>
         <item>Исходное наименование события</item>
+        <item>Источник события</item>
         <item>Иконка типа события</item>
         <item>Иконка избранного контакта</item>
         <item>Возраст</item>
@@ -834,9 +846,11 @@
         <h4>События из календарей:</h4><ul>%4$s
             <li>дни рождения (id календарей): %5$s</li>
             <li>другие события (id календарей): %6$s</li>
+            <li>разные события (id календарей): %7$s</li>
         </ul>
-        <h4>События из файлов:</h4><ul><li>дни рождения: %7$s</li>
-            <li>другие события: %8$s</li>
+        <h4>События из файлов:</h4><ul><li>дни рождения: %8$s</li>
+            <li>другие события: %9$s</li>
+            <li>разные события: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Если эта информация не помогла найти причину отсутствия событий, напишите мне письмо (нажмите на название приложения и там на кнопку \"Написать\")</h4>]]></string>
 

@@ -51,6 +51,9 @@
     <string name="menu_context_share_as_image">як зображення</string>
     <string name="menu_context_share_as_text">як текст</string>
     <string name="menu_ok">Добре</string>
+    <!--<string name="menu_help" tools:ignore="MissingTranslation">Reference</string>-->
+    <!--<string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>-->
+    <!--<string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>-->
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
 <!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
@@ -63,16 +66,21 @@
     <string name="msg_after_event_postfix">" тому"</string>
     <string name="msg_today">Сьогодні</string>
     <string name="msg_tomorrow">Завтра</string>
-    <string name="msg_day_after_tomorrow">Післязавтра</string>
     <string name="msg_yesterday">Вчора</string>
     <string name="msg_before_yesterday">Позавчора</string>
+    <string name="msg_day_after_tomorrow">Післязавтра</string>
     <string name="msg_stats_prefix">"подій: "</string>
+    <string name="msg_stats_filtered_prefix">"знайдено події: "</string>
     <string name="msg_stats_hidden_prefix">"прихованих подій: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"знайдено прихованих подій: "</string>
     <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"знайдено замовчуваних подій: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
     <string name="msg_date_parse_error">"Помилка розпізнавання дати: "</string>
+    <string name="msg_event_parse_error">"Помилка розпізнавання події: "</string>
+    <string name="msg_type_parse_error">"Тип події не визначено: "</string>
     <string name="msg_jump_to_event_error">Подія не знайдено! Увімкніть більше типів подій у налаштуваннях програми</string>
     <string name="msg_errors_total">"Усього помилок: "</string>
     <string name="msg_errors_details">"акаунт=%1$s, тип події=%2$s, дата=%3$s"</string>
@@ -109,11 +117,10 @@
     <string name="msg_notifications_count">"Незабаром подій - "</string>
     <string name="msg_notifications_soon">"Подій - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
-    <string name="msg_no_events_hint">У Вашій адресній книзі не знайдено жодної події. Для відображення подій (днів народжень, ювілеїв, іменин) вони повинні бути заповнені в картках Ваших контактів або імпортовані встановленими на смартфонi додатками (Google, Skype, VK, …)</string>
+    <string name="msg_no_events_hint">Не знайдено жодної події. Для відображення подій вони мають бути заповнені у картках Ваших контактів або у вибраних календарях або у вибраних файлах</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
-    <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте у налаштуваннях програми пунктiв \"%1$s\" та \"%2$s\""</string>
-    <!--<string name="msg_no_access_contacts_hint">Немає доступу до контактів. Перевірте дозволи додатку</string>-->
+    <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте в налаштуваннях програми \"%1$s\" у розділі \"%2$s\""</string>
     <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте надання дозволiв додатку</string>
     <string name="msg_welcome_title">Ласкаво просимо!</string>
     <string name="msg_welcome_text">Дякую, що Ви встановили цю програму, хоча більшість функцій налаштована максимально інформативно та мінімально набридливо, раджу перевірити всi налаштування програми. (наприклад, там можна вiмкнути повідомлення про майбутні події або задати параметри для віджетів) Приємного Вам користування!</string>
@@ -124,6 +131,7 @@
     <string name="msg_filter_clean_confirmation">Очистити всі фільтри від посилань на відсутні контакти чи події календаря?</string>
     <string name="msg_filter_clean_silenced_result">"Очищено приглушені події для відсутніх контактів та подій календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Видалено приховані події для відсутніх контактів та події календаря: "</string>
+    <string name="msg_account_info">"Подія з рахунку \"%1$s\""</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
     <string name="msg_title_confirmation">Підтвердження</string>
@@ -258,15 +266,29 @@
         <item>"у суботу"</item>
     </string-array>
 
+    <string-array name="weekDaysShort">
+        <item>нд</item>
+        <item>пн</item>
+        <item>вт</item>
+        <item>ср</item>
+        <item>чт</item>
+        <item>пт</item>
+        <item>сб</item>
+    </string-array>
+
     <string name="pref_CustomEvents_title">Налаштування подій</string>
-    <string name="pref_CustomEvents_summary">Параметри визначення подій користувача</string>
+    <string name="pref_CustomEvents_summary">Джерела подій, класифікація типів, налаштування міток</string>
     <string name="pref_CustomEvents_hint">Найменування (через кому)</string>
     <string name="pref_CustomEvent_Caption_hint">Тема події</string>
+
+    <string name="pref_CustomEvents_Sources_title">Джерела подій</string>
+    <string name="pref_CustomEvents_Sources_summary">Використовуйте ці джерела для подій різних типів (тип вказується всередині подій або визначається \"Власнi найменування\" нижче)</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Використовувати стандартні найменування для визначення днів народжень</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свої найменування</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як дні народження (через кому)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_description">Показувати події днів народження з вибраних календарів</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила імпорту подій календаря в дні народження</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введіть правила розпізнавання імені контакту з заголовка календарного події (кілька правил поділяються |). Правило повинне містити тег [name], оточений іншим текстом (опціонально):</string>
@@ -449,6 +471,7 @@
         <item>Псевдонім</item>
         <item>Найменування події</item>
         <item>Початкове найменування події</item>
+        <item>Джерело події</item>
         <item>Значок типу події</item>
         <item>Значок вибраного</item>
         <item>Вік</item>
@@ -822,9 +845,11 @@
          <h4>Події в календарях:</h4><ul>%4$s
              <li>дні народження (ідентифікатори календарів): %5$s</li>
              <li>інші події (ідентифікатори календарів): %6$s</li>
+             <li>різні події (ідентифікатори календарів): %7$s</li>
          </ul>
-         <h4>Події файлів:</h4><ul><li>дні народження: %7$s</li>
-             <li>інші події: %8$s</li>
+         <h4>Події файлів:</h4><ul><li>дні народження: %8$s</li>
+             <li>інші події: %9$s</li>
+             <li>різні події: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Якщо ця інформація не допомогла знайти причину відсутності подій, напишіть мені лист (натисніть назву програми і там на кнопку \"Написати\")</h4>]]></string>
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 26.12.2022, 22:37
+  ~  * Copyright (c) 2018 - 2022. All rights reserved.
+  ~  * Last modified 26.12.2022, 22:37
+  ~  */
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="@string/menu_help"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_help">
+
+        <menu>
+
+            <item
+                android:id="@+id/menu_help_events_calendar"
+                android:title="@string/menu_help_events_calendar"/>
+
+            <item
+                android:id="@+id/menu_help_events_files"
+                android:title="@string/menu_help_events_files"/>
+
+        </menu>
+
+    </item>
+
+</menu>

@@ -14,6 +14,13 @@
         android:icon="@android:drawable/checkbox_on_background"
         android:title="@string/menu_ok"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_help_widgets"
+        android:title="@string/menu_help"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_help">
+    </item>
 
 </menu>

@@ -310,9 +310,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             builder.setIcon(android.R.drawable.ic_menu_info_details);
             builder.setMessage(getString(R.string.msg_no_events_hint));
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-            builder.setNeutralButton(R.string.button_open_addressbook, (dialog, which) -> {
+            /*builder.setNeutralButton(R.string.button_open_addressbook, (dialog, which) -> {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
+            });*/
+            builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
+                try {
+                    startActivity(new Intent(this, SettingsActivity.class));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
             });
             AlertDialog alertToShow = builder.create();
@@ -335,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(getString(R.string.msg_no_events));
             builder.setIcon(android.R.drawable.ic_menu_info_details);
-            builder.setMessage(getString(R.string.msg_no_events_check_prefs, getString(R.string.pref_Accounts_title), getString(R.string.pref_List_EventTypes_title)));
+            builder.setMessage(getString(R.string.msg_no_events_check_prefs, getString(R.string.pref_Accounts_title), getString(R.string.pref_CustomEvents_title)));
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                 try {
@@ -387,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     sb.append(Constants.HTML_LI).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR)).append(Constants.HTML_LI_END);
                                 } else {
-                                    sb.append(Constants.HTML_LI_API21).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR));
+                                    sb.append(Constants.HTML_BR).append(Constants.HTML_LI_API21).append(strChange.replace(Constants.STRING_EOL, Constants.HTML_BR));
                                 }
                                 countChanges++;
 
@@ -684,7 +689,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             searchView.setQueryHint(getString (R.string.msg_hint_search));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
-            menu.findItem(R.id.menu_open_file_with_events).setVisible(!eventsData.preferences_Birthday_files.isEmpty() || !eventsData.preferences_Otherevent_files.isEmpty());
+            menu.findItem(R.id.menu_open_file_with_events).setVisible(
+                    !eventsData.preferences_Birthday_files.isEmpty()
+                            || !eventsData.preferences_OtherEvent_files.isEmpty()
+                            || !eventsData.preferences_MultiType_files.isEmpty());
 
             //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -733,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent intent = new Intent(this, SettingsActivity.class);
                 try {
                     startActivity(intent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == R.id.menu_quiz) {
@@ -741,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent intent = new Intent(this, QuizActivity.class);
                 try {
                     startActivity(intent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == R.id.menu_filter_events) {
@@ -891,7 +899,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 editIntent.putExtra("finishActivityOnSaveCompleted", true);
                 try {
                     startActivity(editIntent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == R.id.menu_add_event_to_calendar) {
@@ -906,7 +914,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .putExtra(CalendarContract.Events.RRULE, "FREQ=YEARLY");
                 try {
                     startActivity(addEventIntent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == R.id.menu_open_file_with_events) {
@@ -923,7 +931,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         fileURIs.add(fileDetails[1]);
                     }
                 }
-                for (String file: eventsData.preferences_Otherevent_files) {
+                for (String file: eventsData.preferences_OtherEvent_files) {
+                    String[] fileDetails = file.split(Constants.STRING_PIPE);
+                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                        fileNames.add(fileDetails[0]);
+                        fileURIs.add(fileDetails[1]);
+                    }
+                }
+                for (String file: eventsData.preferences_MultiType_files) {
                     String[] fileDetails = file.split(Constants.STRING_PIPE);
                     if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);
@@ -940,15 +955,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             if (uri != null) {
                                 try {
                                     Intent intent = new Intent();
-                                    intent.setAction(Intent.ACTION_VIEW);
+                                    intent.setAction(Intent.ACTION_EDIT);
                                     intent.setDataAndType(uri, "text/plain");
                                     //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+                                    intent.addFlags(flags);
                                     dialog.cancel();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        for (ResolveInfo resolveInfo : getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL)) {
+                                            String packageName = resolveInfo.activityInfo.packageName;
+                                            grantUriPermission(packageName, uri, flags);
+                                        }
+                                    }
                                     try {
                                         startActivity(intent);
-                                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                                } catch (java.lang.SecurityException se) {
+                                    } catch (ActivityNotFoundException e) { /**/ }
+                                } catch (SecurityException se) {
                                     ToastExpander.showText(this, getText(R.string.msg_file_access_error).toString());
                                 }
                             }
@@ -1058,7 +1080,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         try {
             super.onResume();
-            if (!filterNames.equals(Constants.STRING_EMPTY)) return; //чтобы параметра поиска не сбрасывал после просмотра контакта
+            if (!filterNames.isEmpty()) return; //чтобы параметра поиска не сбрасывал после просмотра контакта
 
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(this);
@@ -1816,16 +1838,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void showZeroEventsHints() {
 
         try {
-            if (!triggeredMsgNoEvents && !eventsData.checkNoContactsAccess()) { //Сообщение для тех, у кого не найдено ни одного события
+            //Сообщение для тех, у кого не найдено ни одного события контактов
+            if (!triggeredMsgNoEvents && !eventsData.checkNoContactsAccess() && dataListFull.isEmpty()) {
                 triggeredMsgNoEvents = true;
-                if (!eventsData.getPreferences_Accounts().isEmpty() && eventsData.statTimeGetContactEvents == 0) { //... но выбраны конкретные аккаунты
+                if (!eventsData.getPreferences_Accounts().isEmpty()
+                        && !eventsData.getPreferences_Accounts().contains(Constants.account_none)
+                        && eventsData.statContactsEventCount > 0
+                        && eventsData.statFilesEventCount == 0
+                        && eventsData.statCalendarsEventCount == 0) { //... но выбраны конкретные аккаунты (или "ничего")
 
                     showAlertNoEventsWithAccounts();
 
-                } else if (!eventsData.preferences_list_event_types.isEmpty() && eventsData.statTimeComputeDates == 0
-                ) { //... используются все аккаунты, но не выбраны типы событий для списка
+                } else {
 
                     showAlertNoEvents();
+
                 }
             }
         } catch (Exception e) {
@@ -2037,6 +2064,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (eventURL.length() > 0) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(eventURL.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
+                    }
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventSource))) {
+                    final String eventSource = singleEventArray[ContactsEvents.Position_eventSource].trim();
+                    if (eventSource.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(eventSource.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
                     }
                 }
 
@@ -2327,17 +2362,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     if (dataList.size() > 0) {
                         if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden) {
-                            setHint(resources.getString(R.string.msg_stats_hidden_prefix)
+                            setHint(
+                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_hidden_prefix) : resources.getString(R.string.msg_stats_hidden_filtered_prefix))
                                     .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                     .concat(Constants.STRING_SPACE)
                             );
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced) {
-                            setHint(resources.getString(R.string.msg_stats_silenced_prefix)
+                            setHint(
+                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_silenced_prefix) : resources.getString(R.string.msg_stats_silenced_filtered_prefix))
                                     .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                     .concat(Constants.STRING_SPACE)
                             );
                         } else {
-                            setHint(resources.getString(R.string.msg_stats_prefix)
+                            setHint(
+                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_prefix) : resources.getString(R.string.msg_stats_filtered_prefix))
                                     .concat(filterNames.isEmpty() ? ""+(statsAllEvents - statsHiddenEvents) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                     .concat(Constants.STRING_SPACE)
                             );

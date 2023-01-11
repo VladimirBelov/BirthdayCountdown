@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -614,6 +615,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
 
         final int itemId = item.getItemId();
+
         if (itemId == R.id.menu_ok) {
 
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
@@ -628,10 +630,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 onBackPressed();
                 spinnerEventInfo.setSelectedFromFragmentResults();
                 item.setVisible(false);
+
+                final MenuItem item2 = spinnerEventInfo.menu.getItem(1);
+                if (item2 != null) item2.setVisible(true);
             }
 
             return true;
+
+        } else if (itemId == R.id.menu_help_widgets) {
+
+                Intent intent = new Intent(this, FAQActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets));
+                try {
+                    startActivity(intent);
+                    return true;
+                } catch (ActivityNotFoundException e) { /**/ }
+
         }
+
         return super.onOptionsItemSelected(item);
     }
 

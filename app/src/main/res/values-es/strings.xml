@@ -51,6 +51,9 @@
     <string name="menu_context_share_as_image">como imagen</string>
     <string name="menu_context_share_as_text">como texto</string>
     <string name="menu_ok">OK</string>
+    <string name="menu_help">Referencia</string>
+    <string name="menu_help_events_calendar">Eventos del calendario</string>
+    <string name="menu_help_events_files">Eventos de archivos locales</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
@@ -67,12 +70,17 @@
     <string name="msg_before_yesterday">Anteayer</string>
     <string name="msg_day_after_tomorrow">Pasado mañana</string>
     <string name="msg_stats_prefix">"eventos: "</string>
+    <string name="msg_stats_filtered_prefix">"eventos encontrados: "</string>
     <string name="msg_stats_hidden_prefix">"eventos ocultos: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"eventos ocultos encontrados: "</string>
     <string name="msg_stats_silenced_prefix">"eventos sin notificación: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"eventos silenciados encontrados: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
     <string name="msg_date_parse_error">"Error de análisis de fecha: "</string>
+    <string name="msg_event_parse_error">"Error de análisis de eventos: "</string>
+    <string name="msg_type_parse_error">"El tipo de evento no está definido: "</string>
     <string name="msg_jump_to_event_error">¡Evento no encontrado! Habilite más tipos de eventos en la configuración de la aplicación</string>
     <string name="msg_errors_total">"Errores totales: "</string>
     <string name="msg_errors_details">"clave de cuenta=%1$s, tipo de evento=%2$s, fecha=%3$s"</string>
@@ -109,11 +117,10 @@
     <string name="msg_notifications_count">"Eventos pronto - "</string>
     <string name="msg_notifications_soon">"Eventos - "</string>
     <string name="msg_notifications_disabled">Notificaciones desactivadas</string>
-    <string name="msg_no_events_hint">No se encontraron eventos en su libreta de direcciones. Para mostrar eventos (cumpleaños, aniversarios, días del nombre), deben ser completados en sus tarjetas de contacto o importados por aplicaciones instaladas en su teléfono inteligente (Google, Skype, …)</string>
+    <string name="msg_no_events_hint">No se encontraron eventos. Para mostrar eventos, deben ser llenados en las tarjetas de sus contactos o en calendarios seleccionados o en archivos seleccionados</string>
     <string name="msg_no_accounts_hint">Cuentas no encontradas o no les ha dado acceso</string>
     <string name="msg_no_calendars_hint">No se encontraron calendarios disponibles o no les ha dado acceso</string>
-    <string name="msg_no_events_check_prefs">"No se encontraron eventos. Compruebe los elementos \"%1$s\" y \"%2$s\" en la configuración del programa"</string>
-    <!--<string name="msg_no_access_contacts_hint">Sin acceso a contactos. Verificar los permisos de la aplicación</string>-->
+    <string name="msg_no_events_check_prefs">"Verifique el elemento \"%1$s\" en la sección \"%2$s\" en la configuración del programa"</string>
     <string name="msg_no_access_storage_hint">Sin acceso a almacenamiento externo. Verificar los permisos de la aplicación</string>
     <string name="msg_welcome_title">Bienvenidos!</string>
     <string name="msg_welcome_text">Gracias por instalar este programa. Si bien la mayoría de las funciones están configuradas de la manera más informativa posible y mínimamente molesta, se recomienda que verifique la configuración de la aplicación. Por ejemplo, allí puede activar notificaciones sobre próximos eventos o configurar opciones para widgets. Disfruta tu uso!</string>
@@ -124,6 +131,7 @@
     <string name="msg_filter_clean_confirmation">¿Limpiar todos los filtros de enlaces a contactos ausentes o eventos de calendario?</string>
     <string name="msg_filter_clean_silenced_result">"Eventos silenciados borrados para contactos ausentes y eventos del calendario: "</string>
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos borrados para contactos ausentes y eventos del calendario: "</string>
+    <string name="msg_account_info">"Evento de la cuenta \"%1$s\""</string>
     <string name="msg_calendar_info">"Evento de calendario \"%1$s\""</string>
     <string name="msg_file_info">"Evento de archivo \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmación</string>
@@ -249,24 +257,38 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>"en el domingo"</item>
         <item>"en el lunes"</item>
         <item>"en el martes"</item>
         <item>"en el miércoles"</item>
         <item>"en el jueves"</item>
         <item>"en el viernes"</item>
         <item>"en el sábado"</item>
+        <item>"en el domingo"</item>
+    </string-array>
+
+    <string-array name="weekDaysShort">
+        <item>lu</item>
+        <item>ma</item>
+        <item>mi</item>
+        <item>ju</item>
+        <item>vi</item>
+        <item>sá</item>
+        <item>do</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Configurar eventos</string>
-    <string name="pref_CustomEvents_summary">Opciones de definición de eventos personalizados</string>
+    <string name="pref_CustomEvents_summary">Fuentes de eventos, clasificación de tipos, personalización de etiquetas</string>
     <string name="pref_CustomEvents_hint">Nombres (separados por comas)</string>
     <string name="pref_CustomEvent_Caption_hint">Título del evento</string>
+
+    <string name="pref_CustomEvents_Sources_title">Fuentes de eventos</string>
+    <string name="pref_CustomEvents_Sources_summary">Use estas fuentes para eventos de diferentes tipos (el tipo se especifica dentro de los eventos o está determinado por \"Etiquetas de eventos\" a continuación)</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_description">Use nombres estándar para los cumpleaños</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Los eventos de contactos con esta etiqueta se identificarán como cumpleaños (por coma)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_description">Mostrar eventos de cumpleaños de los calendarios elegidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Reglas</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Reglas para importar eventos de calendario en cumpleaños</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Ingrese las reglas para reconocer el nombre del contacto del encabezado del evento del calendario (varias reglas están separadas |). La regla debe contener la etiqueta [name] rodeada de otro texto (opcional):</string>
@@ -449,6 +471,7 @@
         <item>Alias</item>
         <item>Nombre del evento</item>
         <item>Nombre original del evento</item>
+        <item>Origen del evento</item>
         <item>Icono de tipo de evento</item>
         <item>Icono de contacto favorito</item>
         <item>Edad</item>
@@ -822,9 +845,11 @@
          <h4>Calendarios de eventos:</h4><ul>%4$s
              <li>cumpleaños (ID de calendario): %5$s</li>
              <li>otros eventos (ID de calendario): %6$s</li>
+             <li>varios eventos (ID de calendario): %7$s</li>
          </ul>
-         <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %7$s</li>
-             <li>otros eventos: %8$s</li>
+         <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %8$s</li>
+             <li>otros eventos: %9$s</li>
+             <li>varios eventos: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Si esta información no ayudó a encontrar el motivo de la ausencia de eventos, escríbame un correo electrónico (haga clic en el nombre de la aplicación y allí en el botón \"Escribe\")</h4>]]></string>
 
