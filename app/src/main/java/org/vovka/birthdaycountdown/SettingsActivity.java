@@ -760,10 +760,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Notifications_Days_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                        && eventsData.checkNoNotificationAccess()
-                        && eventsData.preferences_notifications_days.size() > 0) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+                if (eventsData.preferences_notifications_days.size() > 0) {
+                    //Нет доступа
+                    if (eventsData.checkNoNotificationAccess() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+                    }
+                    //Уведомления выключены
+                    if (!NotificationManagerCompat.from(this).areNotificationsEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        try {
+                            startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                        } catch (ActivityNotFoundException e) { /**/ }
+                    }
+
                 }
 
                 if (eventsData.preferences_menustyle_compact) {
