@@ -133,6 +133,7 @@ class ContactsEvents {
     static final int Position_eventURL = 28;
     static final int Position_attrAmount = 29; //MAX
 
+
     static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
         put(Constants.Type_BirthDay, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY));
         put(Constants.Type_Anniversary, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY));
@@ -1377,7 +1378,8 @@ class ContactsEvents {
                     | (idOther == null || getCalendarEvents(idOther))
                     | (idBirthday == null || getFileEvents(idBirthday))
                     | (idOther == null || getFileEvents(idOther))
-                    | getFileEvents(Constants.Type_MultiEvent);
+                    | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
+                    | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1922,6 +1924,15 @@ class ContactsEvents {
                     eventEmoji = "🎂";
                     eventSubType = eventTypesIDs.get(Constants.Type_BirthDay);
 
+                } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find()) {
+
+                    eventCaption = getResources().getString(R.string.event_type_death);
+                    eventIcon = R.drawable.ic_event_death;
+                    //https://emojipedia.org/google/android-6.0.1/new/
+                    eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "⚰️" : "\uD83D\uDCC5";
+                    eventSubType = eventTypesIDs.get(Constants.Type_Death);
+                    set_events_deaths.add(cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_CONTACT_ID))); //Запоминаем событие контакта
+
                 } else if (eventType.equals(eventTypesIDs.get(Constants.Type_Anniversary))
                         || (isEventLabel && preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel.toLowerCase()).find())) {
 
@@ -2003,15 +2014,6 @@ class ContactsEvents {
                         eventIcon = R.drawable.ic_event_crowning; //https://iconscout.com/icon/wedding-destination-romance-building-emoj-symbol
                         eventEmoji = "💒";
                         eventSubType = eventTypesIDs.get(Constants.Type_Crowning);
-
-                    } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find()) {
-
-                        eventCaption = getResources().getString(R.string.event_type_death);
-                        eventIcon = R.drawable.ic_event_death;
-                        //https://emojipedia.org/google/android-6.0.1/new/
-                        eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "⚰️" : "\uD83D\uDCC5";
-                        eventSubType = eventTypesIDs.get(Constants.Type_Death);
-                        set_events_deaths.add(cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_CONTACT_ID))); //Запоминаем событие контакта
 
                     }
 
@@ -2144,6 +2146,7 @@ class ContactsEvents {
 
             ColumnIndexCache cache = new ColumnIndexCache();
             StringBuilder dataRow;
+            Event event = null;
 
             if (map_calendars.isEmpty()) recieveCalendarList();
 
@@ -2177,12 +2180,12 @@ class ContactsEvents {
             endTime.add(Calendar.MILLISECOND, zoneOffset);
             endTime.add(Calendar.SECOND, -1);
 
-            String eventSubType = Constants.STRING_EMPTY;
-            int eventIcon = 0;
-            String eventEmoji = Constants.STRING_EMPTY;
-            String eventCaption = Constants.STRING_EMPTY;
+            //String eventSubType = Constants.STRING_EMPTY;
+            //int eventIcon = 0;
+            //String eventEmoji = Constants.STRING_EMPTY;
+            //String eventCaption = Constants.STRING_EMPTY;
 
-            int importStorage = -1;
+            int importStorage;
             String[] arrRules;
             List<Matcher> matcherNames = new ArrayList<>();
             boolean useEventYear = false;
@@ -2190,13 +2193,36 @@ class ContactsEvents {
 
             if (eventType.equals(eventTypesIDs.get(Constants.Type_BirthDay))) {
 
-                eventCaption = getResources().getString(R.string.event_type_birthday);
-                eventSubType = eventTypesIDs.get(Constants.Type_BirthDay);
-                eventIcon = R.drawable.ic_event_birthday;
-                eventEmoji = "🎂";
+                event = new Event();
+                event.Caption = getResources().getString(R.string.event_type_birthday);
+                event.Type = eventType;
+                event.SubType = eventTypesIDs.get(Constants.Type_BirthDay);
+                event.Icon = R.drawable.ic_event_birthday;
+                event.Emoji = "🎂";
+                event.needScanContacts = true;
                 importStorage = Constants.Storage_Contacts;
                 useEventYear = preferences_birthday_calendars_useyear;
 
+            } else if (eventType.equals(eventTypesIDs.get(Constants.Type_Other))) {
+
+                event = new Event();
+                event.Caption = getResources().getString(R.string.event_type_calendar);
+                event.Type = eventType;
+                event.SubType = eventTypesIDs.get(Constants.Type_CalendarEvent);
+                event.Icon = R.drawable.ic_event_other;
+                event.Emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "🗓️" : "\uD83D\uDCC6";
+                importStorage = Constants.Storage_Calendar;
+
+            } else if (eventType.equals(Constants.Type_MultiEvent)) {
+
+                importStorage = Constants.Storage_Calendar;
+                useEventYear = true;
+
+            } else {
+                return false;
+            }
+
+            if (eventType.equals(eventTypesIDs.get(Constants.Type_BirthDay)) || eventType.equals(Constants.Type_MultiEvent)) {
                 arrRules = preferences_birthday_calendars_rules.split(Constants.STRING_PIPE, -1);
                 if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
@@ -2205,21 +2231,6 @@ class ContactsEvents {
                         }
                     }
                 }
-
-            } else if (eventType.equals(eventTypesIDs.get(Constants.Type_Other))) {
-
-                eventCaption = getResources().getString(R.string.event_type_calendar);
-                eventSubType = eventTypesIDs.get(Constants.Type_CalendarEvent);
-                eventIcon = R.drawable.ic_event_other;
-                eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "🗓️" : "\uD83D\uDCC6";
-                importStorage = Constants.Storage_Calendar;
-
-            } else if (eventType.equals(Constants.Type_MultiEvent)) {
-
-                //todo: доделать
-
-            } else {
-                return false;
             }
 
             //todo: переделать на https://developer.android.com/reference/android/provider/CalendarContract.Instances
@@ -2304,6 +2315,14 @@ class ContactsEvents {
                                     indURL = eventDescription.indexOf(prefix);
                                 }
                             }
+
+                            if (eventType.equals(Constants.Type_MultiEvent)) {
+                                event = recognizeEventByLabel(eventDescription);
+                                if (event.needScanContacts) {
+                                    importStorage = Constants.Storage_Contacts;
+                                }
+                            }
+
                         }
 
                         if (importStorage == Constants.Storage_Contacts && !getMergedID(eventID).isEmpty()) {
@@ -2339,12 +2358,12 @@ class ContactsEvents {
                             }
                         }
 
-                        if (contactID != null) {
+                        if (contactID != null && event != null) {
                             importMethod = importMethod_NewContactEvent;
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(eventSubType + Constants.STRING_EOT + contactID);
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(event.SubType + Constants.STRING_EOT + contactID);
                             if (eventIndex != null && eventIndex <= eventList.size() && !isInstance) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
@@ -2406,10 +2425,9 @@ class ContactsEvents {
                             } else { //Такого события ещё не было
 
                                 //Добавляем данные контакта
-                                final Long contactIDLong = parseToLong(contactID);
-                                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{ContactsContract.Contacts.PHOTO_URI, ContactsContract.Data.DISPLAY_NAME, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE});
+                                HashMap<String, String> contactDataMap = getContactDataMulti(parseToLong(contactID), new String[]{ContactsContract.Contacts.PHOTO_URI, ContactsContract.Data.DISPLAY_NAME, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE});
 
-                                userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                userData.put(Position_photo_uri, checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
 
                                 String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME));
                                 String contactTitle = checkForNull(map_contacts_titles.get(contactID));
@@ -2446,18 +2464,19 @@ class ContactsEvents {
 
                         if (importMethod != importMethod_AdditionalDateToContactEvent) {
 
+                            if (event == null) continue;
                             if (importMethod != importMethod_NewContactEvent) {
                                 userData.put(Position_eventStorage, Constants.STRING_STORAGE_CALENDAR);
                             }
 
-                            userData.put(Position_eventCaption, eventCaption); //Наименование события
+                            userData.put(Position_eventCaption, event.Caption); //Наименование события
                             userData.put(Position_eventID, eventID);
                             userData.put(Position_eventLabel, Constants.STRING_EMPTY); //Заголовок пользовательского события
-                            userData.put(Position_eventType, eventType); //Тип события
-                            userData.put(Position_eventSubType, eventSubType); //Подтип события
+                            userData.put(Position_eventType, event.Type); //Тип события
+                            userData.put(Position_eventSubType, event.SubType); //Подтип события
                             userData.put(Position_dates, Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE + (useEventYear ? sdf_java.format(dateFirst) : sdf_java_no_year.format(dateFirst)));
-                            userData.put(Position_eventIcon, Integer.toString(eventIcon));
-                            userData.put(Position_eventEmoji, eventEmoji);
+                            userData.put(Position_eventIcon, Integer.toString(event.Icon));
+                            userData.put(Position_eventEmoji, event.Emoji);
                             if (isInstance) { //Уже известна дата следующего события
                                 userData.put(Position_eventDate, sdf_DDMMYYYY.format(date));
                                 userData.put(Position_eventDateText, sdf_DDMMYYYY.format(dateFirst));
@@ -2492,7 +2511,7 @@ class ContactsEvents {
 
                                 if (importMethod == importMethod_NewContactEvent & !isInstance) {  //Добавляем событие
                                     //map_eventsBySubtypeAndPersonID_offset.put(eventTypesIDs.get(Type_BirthDay) + STRING_EOT + contactID, eventList.size() - 1);
-                                    map_eventsBySubtypeAndPersonID_offset.put(eventSubType + Constants.STRING_EOT + contactID, eventList.size() - 1);
+                                    map_eventsBySubtypeAndPersonID_offset.put(event.SubType + Constants.STRING_EOT + contactID, eventList.size() - 1);
                                 }
                             }
                         }
@@ -3036,6 +3055,15 @@ class ContactsEvents {
                 event.Emoji = "🎂";
                 event.needScanContacts = true;
 
+            } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel_forSearch).find()) {
+
+                event.Caption = getResources().getString(R.string.event_type_death);
+                event.Type = eventTypesIDs.get(Constants.Type_Custom);
+                event.SubType = eventTypesIDs.get(Constants.Type_Death);
+                event.Icon = R.drawable.ic_event_death;
+                event.Emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "⚰️" : "\uD83D\uDCC5";
+                event.needScanContacts = true;
+
             } else if (preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel_forSearch).find()) {
 
                 event.Caption = getResources().getString(R.string.event_type_anniversary);
@@ -3061,15 +3089,6 @@ class ContactsEvents {
                 event.SubType = eventTypesIDs.get(Constants.Type_Crowning);
                 event.Icon = R.drawable.ic_event_crowning;
                 event.Emoji = "💒";
-                event.needScanContacts = true;
-
-            } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel_forSearch).find()) {
-
-                event.Caption = getResources().getString(R.string.event_type_death);
-                event.Type = eventTypesIDs.get(Constants.Type_Custom);
-                event.SubType = eventTypesIDs.get(Constants.Type_Death);
-                event.Icon = R.drawable.ic_event_death;
-                event.Emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "⚰️" : "\uD83D\uDCC5";
                 event.needScanContacts = true;
 
             } else if (preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel_forSearch).find()) {
