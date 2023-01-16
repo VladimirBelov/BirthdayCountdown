@@ -166,7 +166,7 @@
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
     <string name="button_discuss">Discutir</string>
-    <string name="button_open_addressbook">Abrir libreta de direcciones…</string>
+    <!--<string name="button_open_addressbook">Abrir libreta de direcciones…</string>-->
     <string name="button_open_app_settings">Abrir configuración…</string>
     <string name="button_open_version_history">Historial de versiones</string>
     <string name="button_all">Todas</string>
@@ -290,7 +290,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Los eventos de contactos con esta etiqueta se identificarán como cumpleaños (por coma)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_description">Mostrar eventos de cumpleaños de los calendarios elegidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Reglas</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Reglas para importar eventos de calendario en cumpleaños</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Reglas para reconocer el nombre del contacto del encabezado del evento del calendario</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Ingrese las reglas para reconocer el nombre del contacto del encabezado del evento del calendario (varias reglas están separadas |). La regla debe contener la etiqueta [name] rodeada de otro texto (opcional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">¡No se encontraron etiquetas!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">¡Formato de regla incorrecto! El separador es el símbolo |</string>

@@ -366,14 +366,17 @@ public class AboutActivity extends AppCompatActivity {
                 sb.append(key).append(Constants.STRING_COLON_SPACE).append(prefs.get(key)).append(Constants.HTML_BR);
             }
 
-            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(R.string.msg_title_settings);
             builder.setIcon(android.R.drawable.ic_menu_info_details);
             builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
-            alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+            alertToShow.setOnShowListener(arg0 -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
             TextView textView = alertToShow.findViewById(android.R.id.message);

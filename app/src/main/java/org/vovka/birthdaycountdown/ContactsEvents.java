@@ -5300,9 +5300,7 @@ class ContactsEvents {
 
     void showAnniversaryList(Context context) {
 
-        try (
-                TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme)
-        ){
+        try{
 
             List<String> items = new ArrayList<>();
             for (int i = 1; i <= 100; i++) {
@@ -5324,7 +5322,13 @@ class ContactsEvents {
                     .setCancelable(true);
             AlertDialog alertToShow = builder.create();
 
-            alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+            //todo: https://stackoverflow.com/questions/66504777/how-to-scroll-to-a-specific-list-position-inside-alertdialog
+
+            alertToShow.setOnShowListener(arg0 -> {
+                TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();

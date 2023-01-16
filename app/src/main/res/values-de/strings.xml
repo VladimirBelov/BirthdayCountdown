@@ -166,7 +166,7 @@
     <string name="button_rate">Bewerten</string>
     <string name="button_mail">Mail</string>
     <string name="button_discuss">Diskutieren</string>
-    <string name="button_open_addressbook">Adressbuch öffnen…</string>
+    <!--<string name="button_open_addressbook">Adressbuch öffnen…</string>-->
     <string name="button_open_app_settings">Einstellungen öffnen…</string>
     <string name="button_open_version_history">Versionsverlauf</string>
     <string name="button_all">Alle</string>
@@ -290,7 +290,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt (durch Kommas getrennt)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_description">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln zum Importieren</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln zum Importieren von Kalenderereignissen bei Geburtstagen</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln für die Erkennungsregeln für Kontaktnamen aus dem Titel des Kalenderereignisses</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>

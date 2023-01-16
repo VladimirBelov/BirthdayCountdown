@@ -160,15 +160,15 @@
             <!--<Preference
                 android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                 android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
-                android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>-->
+                android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>
 
-            <!--<SwitchPreference
+            <SwitchPreference
                 android:defaultValue="@string/pref_CustomEvents_Birthday_Calendars_UseYear_default"
                 android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
                 android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"
-                android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>-->
+                android:title="@string/pref_CustomEvents_Birthday_Calendars_UseYear_title"/>
 
-            <!--<Preference
+            <Preference
                 android:key="@string/pref_CustomEvents_Birthday_LocalFiles_key"
                 android:title="@string/pref_CustomEvents_LocalFiles_title"
                 android:summary="@string/pref_CustomEvents_Birthday_LocalFiles_description"/>-->

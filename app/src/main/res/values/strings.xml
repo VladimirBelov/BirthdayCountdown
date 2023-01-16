@@ -166,7 +166,7 @@
     <string name="button_rate">Rate app</string>
     <string name="button_mail">Mail</string>
     <string name="button_discuss">Discuss</string>
-    <string name="button_open_addressbook">Open address book…</string>
+    <!--<string name="button_open_addressbook">Open address book…</string>-->
     <string name="button_open_app_settings">Open settings…</string>
     <string name="button_open_version_history">Version history</string>
     <string name="button_all">All</string>
@@ -290,7 +290,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this label will be identified as birthdays (by comma)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_description">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Import rules</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Rules for importing calendar events to birthdays</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Rules for contact name recognition rules from calendar event title</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are multi):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags not found!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Incorrect format! Delimiter must be | symbol</string>

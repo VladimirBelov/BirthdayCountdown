@@ -103,7 +103,7 @@
 		<!-- https://stackoverflow.com/questions/18261601/how-do-i-do-sub-categories-in-preferences -->
 		<!-- https://stackoverflow.com/questions/27862299/toolbar-is-hidden-in-nested-preferencescreen -->
         <PreferenceScreen
-            android:key="pref_custom_events"
+            android:key="@string/pref_CustomEvents_key"
             android:summary="@string/pref_CustomEvents_summary"
             android:title="@string/pref_CustomEvents_title"
             android:icon="@android:drawable/ic_menu_manage">
@@ -162,9 +162,9 @@
                 <!--<Preference
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                     android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
-                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>-->
+                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_description"/>
 
-                <!--<SwitchPreference
+                <SwitchPreference
                     android:defaultValue="@string/pref_CustomEvents_Birthday_Calendars_UseYear_default"
                     android:key="@string/pref_CustomEvents_Birthday_Calendars_UseYear_key"
                     android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_description"

@@ -166,7 +166,7 @@
     <string name="button_rate">Оценить</string>
     <string name="button_mail">Написать</string>
     <string name="button_discuss">Обсудить</string>
-    <string name="button_open_addressbook">Открыть адресную книгу…</string>
+    <!--<string name="button_open_addressbook">Открыть адресную книгу…</string>-->
     <string name="button_open_app_settings">Открыть настройки…</string>
     <string name="button_open_version_history">История версий</string>
     <string name="button_all">Все</string>
@@ -290,7 +290,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">События контактов с такой меткой будут идентифицированы как дни рождения (через запятую)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_description">Показывать дни рождения из выбранных календарей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила импорта событий календаря в дни рождения</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Правила распознавания имени контакта из заголовка календарного события</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не найдены!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>

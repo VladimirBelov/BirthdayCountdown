@@ -360,11 +360,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Birthday_key));
             if (prefCat != null) {
 
-                if (eventsData.preferences_BirthDay_calendars.size() == 0) {
+                if (eventsData.preferences_BirthDay_calendars.size() == 0
+                        && eventsData.preferences_MultiType_calendars.size() == 0) {
 
                     pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
-                    if (pref != null) prefCat.removePreference(pref);
-                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
                     if (pref != null) prefCat.removePreference(pref);
 
                 } else {
@@ -376,6 +375,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
                         prefCat.addPreference(pref);
                     }
+
+                    //Удаляем "Файлы", чтобы они могли (ниже) создасться после календарных настроек
+                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                }
+
+                if (eventsData.preferences_BirthDay_calendars.size() == 0) {
+
+                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                } else {
 
                     if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key)) == null) {
                         pref = new SwitchPreference(eventsData.getContext());
@@ -782,7 +794,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     startActivity(intent);
                 }
 
-            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) {
+            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)
+                    || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)) {
 
                 updateVisibility();
 
