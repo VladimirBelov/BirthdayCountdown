@@ -6498,7 +6498,7 @@ class ContactsEvents {
                     listEventsTypes.append(typeNames[i]);
                 }
             }
-
+            if (map_calendars.isEmpty()) recieveCalendarList();
             final String result = resources.getString(R.string.msg_zero_events_body,
                     (preferences_list_event_types.isEmpty() ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none) : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END,
                     resources.getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END) + resources.getString(R.string.stats_permissions_contacts, !checkNoContactsAccess() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END),
@@ -6508,9 +6508,9 @@ class ContactsEvents {
                              Constants.FONT_COLOR_RED + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
                     ) + Constants.HTML_COLOR_END,
                     resources.getString(R.string.stats_permissions_calendar, !checkNoCalendarAccess() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END),
-                    (preferences_BirthDay_calendars.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_BirthDay_calendars)),
-                    (preferences_OtherEvent_calendars.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_calendars)),
-                    (preferences_MultiType_calendars.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_calendars)),
+                    (preferences_BirthDay_calendars.isEmpty() ? Constants.STRING_MINUS : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END),
+                    (preferences_OtherEvent_calendars.isEmpty() ? Constants.STRING_MINUS : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END),
+                    (preferences_MultiType_calendars.isEmpty() ? Constants.STRING_MINUS : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END),
                     (preferences_Birthday_files.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files)),
                     (preferences_OtherEvent_files.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files)),
                     (preferences_MultiType_files.isEmpty() ? Constants.STRING_MINUS : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files))
@@ -6528,9 +6528,31 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return getMethodName(3) + Constants.STRING_COLON_SPACE + e;
+            if (preferences_debug_on)
+                ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return Constants.STRING_EMPTY;
         }
 
+    }
+
+    private String replaceCalendarIDtoTitle(Set<String> setIDs, HashMap<String, String> mapTitles){
+
+        StringBuilder sb = new StringBuilder();
+        try {
+
+            for(String id: setIDs){
+                if (sb.length() > 0) sb.append(Constants.STRING_COMMA_SPACE);
+                sb.append(mapTitles.containsKey(id)
+                        ? checkForNull(mapTitles.get(id)).replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_CLOSE
+                        : id);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on)
+                ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return sb.toString();
     }
 
     @NonNull
@@ -6635,6 +6657,12 @@ class ContactsEvents {
         }
     }
 
+    public boolean isContextHelpAvailable() {
+
+        return !Locale.getDefault().getLanguage().equals(resources.getString(R.string.pref_Language_uk));
+
+    }
+
     private static class QuizQuestion {
         final String type;
         final String question;
@@ -6662,5 +6690,6 @@ class ContactsEvents {
             return this.type + Constants.STRING_COMMA + this.question + Constants.STRING_COMMA + this.actions.toString();
 
         }
+
     }
 }

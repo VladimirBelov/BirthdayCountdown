@@ -26,14 +26,14 @@
             android:layout_marginTop="48dip"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            android:gravity="center_vertical|fill_vertical|end"
+            android:gravity="bottom|fill_vertical|end"
             android:maxLines="1"
             android:minEms="50"
             android:minLines="1"
             android:paddingStart="5dip"
             android:textAlignment="gravity"
             android:textColor="?attr/windowTitleColor"
-            android:textSize="10sp"
+            android:textSize="9sp"
             tools:ignore="RtlSymmetry,SmallSp" />
 
     </LinearLayout>

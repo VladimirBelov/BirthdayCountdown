@@ -11,6 +11,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.5</item>
+        <item>Moved contacts accounts selection to the \"Event Setup\" section, added support for selecting from local accounts and the ability don't use address book events</item>
+        <item>Added support for files with multiple event types</item>
+        <item>Added support for calendars containing multiple types of events</item>
+        <item>Added support for format of \"Birthdays\" application (description in \"Questions and Answers\")</item>
+        <item>Added display of events count when selecting accounts, calendars, files</item>
+        <item>Added quick links (button \"?\") to the corresponding \"Questions and Answers\" sections from some setting screens</item>
+        <item>Bug fixes and faster loading of events</item>
+
         <item>#1.7.4</item>
         <item>Corrected theme colors. Added themes: orange, teal, brown, indigo</item>
         <item>Added adjustment of horizontal margins to main events list</item>

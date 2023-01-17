@@ -873,7 +873,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             list.setDividerHeight((int) (1 * displayMetrics.density));
 
             if (preferenceScreen.getKey().equals(getString(R.string.pref_CustomEvents_key))) {
-                if (!Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_uk))) {
+                if (eventsData.isContextHelpAvailable()) {
                     bar.setPopupTheme(eventsData.preferences_theme.themePopup);
                     bar.inflateMenu(R.menu.menu_settings);
                     bar.setOnMenuItemClickListener(item -> {

@@ -115,11 +115,11 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
             fragment.setArguments(args);
 
             if (menu != null) {
-                final MenuItem item1 = menu.getItem(0);
-                if (item1 != null) item1.setVisible(true);
+                final MenuItem itemOk = menu.findItem(R.id.menu_ok);
+                if (itemOk != null) itemOk.setVisible(true);
 
-                final MenuItem item2 = menu.getItem(1);
-                if (item2 != null) item2.setVisible(false);
+                final MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
+                if (itemHelp != null) itemHelp.setVisible(false);
             }
 
             fm.beginTransaction()

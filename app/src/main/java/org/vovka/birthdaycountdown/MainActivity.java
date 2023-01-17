@@ -1688,12 +1688,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         , 0));
                     //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
                     viewZero.setMovementMethod(new ScrollingMovementMethod());
-                    viewZero.setOnClickListener(v -> {
+                    /*viewZero.setOnClickListener(v -> {
                         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                         try {
                             startActivity(intent);
-                        } catch (ActivityNotFoundException e) { /**/ }
-                    });
+                        } catch (ActivityNotFoundException e) { *//**//* }
+                    });*/
                 }
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));

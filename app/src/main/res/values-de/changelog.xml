@@ -11,6 +11,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.5</item>
+        <item>Auswahl von Kontaktkonten in den Abschnitt \"Ereignisse einrichten\" verschoben, Unterstützung für die Auswahl aus lokalen Konten und die Möglichkeit, keine Adressbuchereignisse zu verwenden, hinzugefügt</item>
+        <item>Unterstützung für Dateien mit mehreren Ereignistypen hinzugefügt</item>
+        <item>Unterstützung für Kalender mit mehreren Arten von Ereignissen hinzugefügt</item>
+        <item>Unterstützung für das Format der \"Bithdays\"-Anwendung hinzugefügt (Beschreibung in \"Fragen und Antworten\")</item>
+        <item>Anzeige der Anzahl der Ereignisse bei der Auswahl von Konten, Kalendern, Dateien hinzugefügt</item>
+        <item>Schnelllinks (Schaltfläche \"?\") zu den entsprechenden \"Fragen und Antworten\"-Abschnitten einiger Einstellungsbildschirme hinzugefügt</item>
+        <item>Fehlerbehebungen und schnelleres Laden von Ereignissen</item>
+
         <item>#1.7.4</item>
         <item>Themenfarben korrigiert. Themen hinzugefügt: orange, blaugrün, braun, indigo</item>
         <item>Anpassung der horizontalen Ränder zur Hauptereignisliste hinzugefügt</item>

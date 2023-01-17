@@ -843,9 +843,9 @@
             <li>Ereignisse von Konten anzeigen: %3$s</li>
         </ul>
         <h4>Kalenderereignisse:</h4><ul>%4$s
-             <li>Geburtstage (Kalender-IDs): %5$s</li>
-             <li>andere Ereignisse (Kalender-IDs): %6$s</li>
-             <li>verschiedene Ereignisse (Kalender-IDs): %7$s</li>
+             <li>Geburtstage: %5$s</li>
+             <li>andere Ereignisse: %6$s</li>
+             <li>verschiedene Ereignisse: %7$s</li>
          </ul>
          <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %8$s</li>
              <li>andere Ereignisse: %9$s</li>

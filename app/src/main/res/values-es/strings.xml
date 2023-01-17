@@ -276,7 +276,7 @@
         <item>do</item>
     </string-array>
 
-    <string name="pref_CustomEvents_title">Configurar eventos</string>
+    <string name="pref_CustomEvents_title">Configuración de eventos</string>
     <string name="pref_CustomEvents_summary">Fuentes de eventos, clasificación de tipos, personalización de etiquetas</string>
     <string name="pref_CustomEvents_hint">Nombres (separados por comas)</string>
     <string name="pref_CustomEvent_Caption_hint">Título del evento</string>
@@ -843,9 +843,9 @@
              <li>mostrar eventos de cuentas: %3$s</li>
          </ul>
          <h4>Calendarios de eventos:</h4><ul>%4$s
-             <li>cumpleaños (ID de calendario): %5$s</li>
-             <li>otros eventos (ID de calendario): %6$s</li>
-             <li>varios eventos (ID de calendario): %7$s</li>
+             <li>cumpleaños: %5$s</li>
+             <li>otros eventos : %6$s</li>
+             <li>varios eventos: %7$s</li>
          </ul>
          <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %8$s</li>
              <li>otros eventos: %9$s</li>

@@ -11,6 +11,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.5</item>
+        <item>Se movió la selección de cuentas de contactos a la sección \"Configuración de eventos\", se agregó soporte para seleccionar cuentas locales y la capacidad de no usar eventos de la libreta de direcciones</item>
+        <item>Se agregó soporte para archivos con múltiples tipos de eventos</item>
+        <item>Se agregó soporte para calendarios que contienen múltiples tipos de eventos</item>
+        <item>Se agregó compatibilidad con el formato de la aplicación \"Birthdays\" (descripción en \"Preguntas y respuestas\")</item>
+        <item>Se agregó visualización de la cantidad de eventos al seleccionar cuentas, calendarios, archivos</item>
+        <item>Se agregaron enlaces rápidos (botón \"?\") a las secciones correspondientes \"Preguntas y respuestas\" de algunas pantallas de configuración</item>
+        <item>Corrección de errores y carga más rápida de eventos</item>
+
         <item>#1.7.4</item>
         <item>Colores del tema corregidos. Temas añadidos: naranja, azul verde, marrón, indiga</item>
         <item>Se agregó el ajuste de los márgenes horizontales a la lista de eventos principales</item>

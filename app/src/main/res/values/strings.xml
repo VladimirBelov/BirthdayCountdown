@@ -843,13 +843,13 @@
             <li>show events from accounts: %3$s</li>
         </ul>
         <h4>Events from calendars:</h4><ul>%4$s
-            <li>birthdays (calendar ids): %5$s</li>
-            <li>other events (calendar ids): %6$s</li>
-            <li>multitype (calendar ids): %7$s</li>
+            <li>birthdays: %5$s</li>
+            <li>other events: %6$s</li>
+            <li>multitype events: %7$s</li>
         </ul>
         <h4>Events from files:</h4><ul><li>birthdays: %8$s</li>
             <li>other events: %9$s</li>
-            <li>multitype: %10$s</li>
+            <li>multitype events: %10$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
 

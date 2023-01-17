@@ -608,6 +608,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
         spinnerEventInfo.menu = menu;
 
+        MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
+        if (itemHelp != null) {
+            itemHelp.setVisible(eventsData.isContextHelpAvailable());
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
