@@ -795,7 +795,7 @@
     <string name="pref_Debug_On_title">Mensajes de depuración</string>
     <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_description">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
-    <string name="pref_ExtraFun_On_title">Características adicionales</string>
+    <string name="pref_ExtraFun_On_title">Funciones extra</string>
     <string name="pref_ExtraFun_On_description">Habilite funciones adicionales para personalizar varios aspectos de la aplicación</string>
 
     <string name="changelog_version"><![CDATA[versión: %1$s (%2$s)<br>fecha: %3$s]]></string>

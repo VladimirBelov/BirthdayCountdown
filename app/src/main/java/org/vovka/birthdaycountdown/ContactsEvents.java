@@ -3692,7 +3692,11 @@ class ContactsEvents {
                                                     try {
                                                         storedDate_Date = sdf_india_no_year.parse(storedDate);
                                                     } catch (ParseException e8) {
-                                                        //Не получилось распознать
+                                                        try {
+                                                            storedDate_Date = sdf_DDMMYYYY.parse(storedDate);
+                                                        } catch (ParseException e9) {
+                                                            //Не получилось распознать
+                                                        }
                                                     }
                                                 }
                                             }

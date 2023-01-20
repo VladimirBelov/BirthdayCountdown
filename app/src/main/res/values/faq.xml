@@ -20,7 +20,7 @@
         <item>Setting \"Notification period\" in the main application settings allows you to select several separate periods for notification of an event. For example, you can set up receiving notifications for the week and day of the event.</item>
 
         <item> </item>
-        <item>###Widgets</item>
+        <item>###<![CDATA[<a id="widgets">Widgets]]></item>
 
         <item>#Widget settings</item>
         <item>To edit the settings of photo widget, click on event caption of the rightmost event. Clicking anywhere else in this event will open events list.</item>
@@ -50,38 +50,65 @@
 
         <item>#Contact events</item>
         <item>By default, events (birthdays, anniversaries, user events, other events) from all accounts on the device are shown.</item>
-        <item>To restrict the choice of accounts for scanning events, it need to select the necessary ones in Settings-> Accounts.</item>
+        <item>To restrict the choice of accounts for scanning events, it need to select the necessary ones in Settings-> Events setup-> Events sources-> Accounts.</item>
         <item>To display events from all accounts (including local ones) click \"All\".</item>
 
-        <item>#<![CDATA[<a id=\"events_calendar\">Calendar events]]></item>
-        <item>Any events from selected calendars are supported. Calendar sets are specified separately for the events \"Birthday\" and \"Other event\". The mechanism for working with calendar events differs depending on the type of event.</item>
-        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol>
+        <item>#<![CDATA[<a id="events_calendar">Calendar events]]></item>
+        <item><![CDATA[Any calendar events from the selected calendars are supported.<ul>
+         <li>If the calendar contains only one type of events, then such calendars should be selected in the appropriate section (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday, <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event).
+         <li>Calendars with events of different types are specified in the section <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Event sources.
+         <li>If you want to specify links to external resources, web links in calendar events should be in the Description field and start with http:// or https://
+         <li>Depending on the selected section where the calendar is specified, the mechanism for importing events is different.
+         </ul>]]></item>
+        <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol>
         <li>contact found, but there is already data about the birthday - the date from the calendar will be added to the event (with or without a year - depending on the setting)
         <li>the contact was found, but there is no information about the birthday - a new event will be added to the list
         <li>contact not found - a new event will be added
         </ol>]]></item>
-        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title will be used as event naming]]></item>
-        <item><![CDATA[<br>How to setup the display of events:<ol>
+        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event: these calendar events are not shown on the widgets, only in the event list and notifications. The entire event title will be used as event naming.<br>]]></item>
+        <item><![CDATA[<br><img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Different types of events: <ul>
+         <li>The event type is determined by the contents of the Description field of event. To determine the type, standard event labels and (or) your own label are used, which you need to specify for events yourself.
+         <li>If the event type is not defined as Other event, a contact search will be performed by the name of the calendar event (similar to the contact search for birthdays described above).
+         <li>Calendar events can be created both in the standard calendar application (simply specifying the required type in the event description) and in third-party applications. For example, when creating events in the <a href="https://play.google.com/store/apps/details?id=org.withouthat.acalendar">aCalendar</a> application, you can select the event type (anniversary , wedding, birthday, etc.) and the corresponding type will be added to the Description field automatically.
+         </ul>]]></item>
+        <item><![CDATA[How to setup the display of events:<ol>
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
-        <li>If the calendar is empty, create or import the required events. Events must be for the whole day
+        <li>If the calendar is empty, create or import the required events
         <li>A link to instructions on how to upload friends\' birthdays from social networks is below
         <li>If in a birthday calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events customizing-> Birthday-> Rules. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
-        <li>After creating (enabling) calendars, you must select them in Settings-> Event customizing-> Birthday-> Calendars (Settings-> Event customizing-> Other event-> Calendars)
+        <li>After creating (turning on) the calendar must be selected in one of the settings (in only one!): <ul>
+                         <li>Settings-> Events setup-> Event Sources-> Calendars
+                         <li>Settings-> Events setup-> Birthday-> Calendars
+                         <li>Settings-> Events setup-> Other Event-> Calendars
+        </ul>
         </ol>]]></item>
 
-        <item>#<![CDATA[<a id=\"events_files\">Events from local files]]></item>
-        <item><![CDATA[Events and birthdays from <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> are supported with some features:<ul>
-        <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY etc)
+        <item>#<![CDATA[<a id="events_files">Events from local files]]></item>
+        <item><![CDATA[Events and birthdays from <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> and <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> are supported with some features:<ul>
+        <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY, YYYY-MM-DD etc)
         <li>if the year is unknown set 0000
         <li>the file must be saved in UTF-8 encoding
         <li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title
+        <li>if the file only lists events of a certain type (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday, <img src="ic_event_other.webp" width=5 % style="vertical-align:middle"> Other event), such files must be specified in the settings section corresponding to their type
+         <li>files with different types of events are specified in the section <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Event Sources. The event type is determined by the flag (below is the format and examples)
+         <li>for all event types except <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event, searches for a contact in the address book to merge with duplicate events or add web links
+         <li>To use events from Birthdays, they must be exported to a file: Synchronization-> Save to SD card
         </ul>]]></item>
-        <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME LASTNAME</b>&gt; [([ORGANIZATION,] TITLE)] [WEB LINK]<br><br>]]></item>
-        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]<br><br>]]></item>
-        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>]]></item>
+
+        <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> event format</b> (in square brackets - optional parameters):<br>]]></item>
+        <item><![CDATA[<b></b># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt; [([ORGANIZATION,] TITLE)] [WEB LINK]<br><br>]]></item>
+        <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]<br><br>for example:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (neighbour)<br>01.01.2022,1 Beginning of 2022<br>15.3.44,BC Yu.Caesar was killed<br>02.03.1819,Birthday Nemo (captain,)<br>]]></item>
+        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>Event_label - for files containing events of different types, the event type is determined by this label. If there is a space in the label, then it must be replaced with an underscore \"_\"<br>]]></item>
+
+        <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> event format</b>:<br>]]></item>
+        <item><![CDATA[❙YYYY-MM-DD❙Name❙Event type (Birthday, Anniversary, Custom)❙Event label or null❚<br><br>for example:<br> ❙1900–02–04❙John Doe❙Birthday❙null❚<br>❙2009–03–09❙John Doe❙Custom❙Death❚<br>]]></item>
         <item><![CDATA[<br>How to setup the display of events:<ol>
-        <li>Download or create files with events
-        <li>Select files in Settings-> Event customizing-> Birthday-> Files-> SELECT (Settings-> Event customizing-> Other event-> Files-> SELECT)
+        <li>Download or create file with events
+        <li>Select file in settings (in only one!): <ul>
+                        <li>Settings-> Events setup-> Event Sources-> Files
+                        <li>Settings-> Events setup-> Birthday-> Files
+                        <li>Settings-> Events setup-> Other Event-> Files
+         </ul>
         </ol>]]></item>
 
         <item>#Importing events from social networks</item>

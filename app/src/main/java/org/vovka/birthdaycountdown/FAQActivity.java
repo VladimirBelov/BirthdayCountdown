@@ -63,7 +63,7 @@ public class FAQActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
-
+            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе нижняя кнопка на системном языке
             setContentView(R.layout.activity_faq);
 
             Toolbar toolbar = findViewById(R.id.toolbar);

@@ -20,7 +20,7 @@
                 <item>Establecer \"Intervalo de notificación\" en la configuración principal de la aplicación le permite seleccionar varios períodos separados para la notificación de un evento. Por ejemplo, puede configurar notificaciones para la semana y el día de un evento.</item>
 
                 <item> </item>
-                <item>###Widgets</item>
+                <item>###<![CDATA[<a id="widgets">Widgets]]></item>
 
                 <item>#Configuración de widgets</item>
                 <item>Para editar la configuración del widget de fotos, haga clic en la etiqueta del evento más a la derecha. Al hacer clic en cualquier otro lugar de este evento, se abrirá la ventana principal de la aplicación.</item>
@@ -34,56 +34,83 @@
 
                 <item>#Los widgets no se actualizan</item>
                 <item><![CDATA[Debe deshabilitar la optimización de la batería para la aplicación. Hay diferentes configuraciones para diferentes shells de Android: <ul>
-        <li>para Xiaomi MIUI esto es \"Habilitar inicio automático\" (Seguridad–> Permisos–> Inicio automático)
-        <li>para Android 9-11 puro, esto es \"Deshabilitar la optimización de la batería\" (Aplicaciones y notificaciones-> Avanzado-> Acceso a aplicaciones especiales-> Optimización de la batería)
-        <li>para Huawei EMUI esto es \"Habilitar inicio automático\" (Configuración-> Batería-> Iniciar aplicaciones)</ul>]]></item>
-                <item>When battery optimization is enabled, there will be a warning message at the top of the screen in each widget preference screen. A similar inscription will be at the bottom of the application settings. To turn off optimization, click on the red label</item>
+                <li>para Xiaomi MIUI esto es \"Habilitar inicio automático\" (Seguridad–> Permisos–> Inicio automático)
+                <li>para Android 9-11 puro, esto es \"Deshabilitar la optimización de la batería\" (Aplicaciones y notificaciones-> Avanzado-> Acceso a aplicaciones especiales-> Optimización de la batería)
+                <li>para Huawei EMUI esto es \"Habilitar inicio automático\" (Configuración-> Batería-> Iniciar aplicaciones)</ul>]]></item>
+                <item>Cuando la optimización de la batería está habilitada, habrá un mensaje de advertencia en la parte superior de la pantalla en cada pantalla de preferencias de widgets. Una inscripción similar estará en la parte inferior de la configuración de la aplicación. Para desactivar la optimización, haga clic en la etiqueta roja.</item>
                 <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
                 <item><![CDATA[A veces, en Android 9-10, los widgets dejan de actualizarse después de instalar una nueva versión de la aplicación. Para corregir las actualizaciones de widgets, debe:<ol>
-        <li>eliminar el widget de la pantalla
-        <li>borre el caché del iniciador (en la configuración de Android en la lista de aplicaciones, busque el iniciador y seleccione \"borrar caché\" en propiedades)
-        <li>reiniciar el teléfono inteligente
-        <li>volver a agregar el widget a la pantalla
-        </ol>]]></item>
+                <li>eliminar el widget de la pantalla
+                <li>borre el caché del iniciador (en la configuración de Android en la lista de aplicaciones, busque el iniciador y seleccione "borrar caché" en propiedades)
+                <li>reiniciar el teléfono inteligente
+                <li>volver a agregar el widget a la pantalla
+                </ol>]]></item>
                 <item>Si el mecanismo estándar de actualización de widgets no funciona, puede activar el intervalo de actualización forzada: Configuraciones-> Widgets-> Intervalo de actualización.</item>
 
                 <item>###Eventos</item>
 
                 <item>#Eventos de contacto</item>
                 <item>De forma predeterminada, se muestran los eventos (cumpleaños, aniversarios, eventos de usuarios, otros eventos) de todas las cuentas del dispositivo.</item>
-                <item>Para restringir la elección de cuentas para escanear eventos, debe seleccionar las necesarias en Configuraciones-> Cuentas.</item>
+                <item>Para restringir la elección de cuentas para escanear eventos, debe seleccionar las necesarias en Configuraciones-> Configurar eventos-> Fuentes de eventos-> Cuentas.</item>
                 <item>Para mostrar los eventos de todas las cuentas (incluidas las locales), haga clic en \"Todos\".</item>
 
-                <item>#<![CDATA[<a id=\"events_calendar\">Eventos del calendario]]></item>
-                <item>Se admiten todos los eventos de los calendarios seleccionados. Los conjuntos de calendario se especifican por separado para los eventos \"Cumpleaños\" y \"Otro evento\". El mecanismo para trabajar con eventos de calendario difiere según el tipo de evento.</item>
+                <item>#<![CDATA[<a id="events_calendar">Eventos del calendario]]></item>
+                <item><![CDATA[Se admite cualquier evento de calendario de los calendarios seleccionados.<ul>
+                 <li>Si el calendario contiene solo un tipo de eventos, dichos calendarios deben seleccionarse en la sección correspondiente (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento).
+                 <li>Los calendarios con eventos de diferentes tipos se especifican en la sección <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Orígenes de eventos.
+                 <li>Si desea especificar enlaces a recursos externos, los enlaces web en los eventos del calendario deben estar en el campo Descripción y comenzar con http:// o https://
+                 <li>Dependiendo de la sección seleccionada donde se especifica el calendario, el mecanismo para importar eventos es diferente.
+                 </ul>]]></item>
                 <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres se usan para esto (de manera predeterminada, se usa el título del evento del calendario como nombre del contacto). Si se encuentra un contacto, los datos de la persona se utilizan para la visualización de eventos. Hay tres opciones: <ol>
                 <li>contacto encontrado, pero ya hay datos sobre el cumpleaños: la fecha del calendario se agrega al evento (con o sin año, dependiendo de la configuración)
                 <li>el contacto se encontró, pero no hay información sobre el cumpleaños: se agrega un nuevo evento a la lista
                 <li>contacto no encontrado: se agrega un nuevo evento
                 </ol>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento: estos eventos del calendario no se muestran en los widgets, solo en la lista de eventos y notificaciones. Se guarda todo el título del evento.]]></item>
+                <item><![CDATA[<br><img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Diferentes tipos de eventos: <ul>
+                <li>El tipo de evento está determinado por el contenido del campo de descripción del evento del Calendario. Para determinar el tipo, se utilizan nombres de eventos estándar y (o) sus propios nombres, que debe especificar para los eventos usted mismo.
+                <li>Si el tipo de evento no está definido como Otro evento, se realizará una búsqueda de contactos por el nombre del evento del calendario (similar a la búsqueda de contactos para cumpleaños descrita anteriormente).
+                <li>Los eventos de calendario se pueden crear tanto en la aplicación de calendario estándar (simplemente especificando el tipo requerido en la descripción del evento) como en aplicaciones de terceros. Por ejemplo, al crear eventos en la aplicación <a href=\"https://play.google.com/store/apps/details?id=org.withouthat.acalendar\">aCalendar</a>, puede seleccionar el tipo de evento (aniversario, boda, cumpleaños, etc.) y el tipo correspondiente se agregarán al campo Descripción automáticamente.
+                </ul>]]></item>
                 <item><![CDATA[<br>Cómo configurar la visualización de eventos:<ol>
-         <li>En la aplicación de calendario estándar, cree un calendario (o elija mostrar el calendario para días festivos nacionales o religiosos)
-         <li>Si el calendario está vacío, cree o importe los eventos necesarios. Los eventos deben ser para todo el día.
-         <li>A continuación se incluye un enlace a las instrucciones sobre cómo cargar los cumpleaños de amigos de las redes sociales.
-         <li>Si en un evento de calendario de cumpleaños, el nombre del contacto ocupa solo una parte del nombre del evento, puede definir reglas para la recuperación de nombres. Este nombre se utilizará para buscar contactos en la libreta de direcciones para agregar atributos adicionales: foto, organización, título, alias. Las reglas se configuran en Ajustes-> Personalización de eventos-> Cumpleaños-> Reglas. Por ejemplo: título del evento de calendario \"Cumpleaños. John Doe\", regla: \"Cumpleaños. [nombre]\" (sin comillas)
-         <li>Después de crear (habilitar) calendarios, debe seleccionarlos en Configuración-> Personalización de eventos-> Cumpleaños-> Calendarios (Configuraciones-> Personalización de eventos-> Otro evento-> Calendarios)
-        </ol>]]></item>
+                <li>En la aplicación de calendario estándar, cree un calendario (o elija mostrar el calendario para días festivos nacionales o religiosos)
+                <li>Si el calendario está vacío, cree o importe los eventos necesarios
+                <li>A continuación se incluye un enlace a las instrucciones sobre cómo cargar los cumpleaños de amigos de las redes sociales.
+                <li>Si en un evento de calendario de cumpleaños, el nombre del contacto ocupa solo una parte del nombre del evento, puede definir reglas para la recuperación de nombres. Este nombre se utilizará para buscar contactos en la libreta de direcciones para agregar atributos adicionales: foto, organización, título, alias. Las reglas se configuran en Ajustes-> Personalización de eventos-> Cumpleaños-> Reglas. Por ejemplo: título del evento de calendario \"Cumpleaños. John Doe\", regla: \"Cumpleaños. [nombre]\" (sin comillas)
+                <li>Después de crear (encender) el calendario se debe seleccionar en uno de los párrafos (¡en uno solo!): <ul>
+                         <li>Configuración-> Configurar eventos-> Fuentes de eventos-> Calendarios
+                         <li>Configuración-> Configurar eventos-> Cumpleaños-> Calendarios
+                         <li>Configuración-> Configurar eventos-> Otro evento-> Calendarios
+                </ul>
+                </ol>]]></item>
 
-                <item>#<![CDATA[<a id=\"events_files\">Eventos de archivos locales]]></item>
-                <item><![CDATA[Los eventos y cumpleaños de <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> son compatibles con algunas características:<ul>
+                <item>#<![CDATA[<a id="events_files">Eventos de archivos locales]]></item>
+                <item><![CDATA[Los eventos y cumpleaños de <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> y <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> son compatibles con algunas características:<ul>
                 <li>la fecha del evento puede ser de cualquier formato sin espacios (DD.MM.YYYY, MM/DD/YYYY, etc.)
                 <li>si no se conoce el año, establezca 0000
                 <li>el archivo debe guardarse en codificación UTF-8
                 <li>si hay varios pares de corchetes después del nombre, entonces si los pares de corchetes siguen entre sí: el contenido dentro del último par se moverá al título del trabajo de los contactos, si un par está dentro del otro, el contenido dentro de los corchetes exteriores se moverá al título del trabajo de los contactos
+                <li>si el archivo solo enumera eventos de cierto tipo (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Otro evento), dichos archivos deben especificarse en la sección de configuración correspondiente a su tipo
+                <li>los archivos con diferentes tipos de eventos se especifican en la sección <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Orígenes de eventos. El tipo de evento está determinado por la bandera (a continuación se muestra el formato y los ejemplos)
+                <li>para todos los tipos de eventos excepto <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento, busca un contacto en la libreta de direcciones para fusionarlo con eventos duplicados o agregar web Enlaces
+                <li>Para usar eventos de Cumpleaños, deben exportarse a un archivo: Sincronización-> Guardar en tarjeta SD
                 </ul>]]></item>
-                <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE APELLIDO</b>&gt; [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
+
+                <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> formato de evento</b> (entre corchetes - parámetros opcionales):<br>]]></item>
+                <item><![CDATA[<b></b># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE y TÍTULO DEL EVENTO</b>&gt; [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
-                <item><![CDATA[BANDERAS:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>]]></item>
+                <item tools:ignore="Typos"><![CDATA[<b>BANDERAS</b>:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>BC: antes de la fecha de la era común (¡se requiere el año!)<br>Etiqueta_de_evento: para archivos que contienen eventos de diferentes tipos, el tipo de evento está determinado por esta etiqueta. Si hay un espacio en la etiqueta, debe reemplazarse con un guión bajo \"_\"<br><br>por ejemplo:<br>01/01/2000 John Doe (Enigma, jefe) https://enigma.com/<br>02/01/2000 Richard Roe (Enigma,)<br>01 /03/0000 Friedman v. Ferguson (vecino)<br>01/01/2022, 1 a principios de 2022<br>15/03/44, BC Yu.Caesar fue asesinado<br>02/03/1819, cumpleaños Nemo (capitán)<br>]]></item>
+
+                <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> formato de evento</b>:<br>]]></item>
+                <item><![CDATA[❙YYYY-MM-DD❙Nombre❙Tipo de evento (Cumpleaños, Aniversario, Custom)❙Etiqueta de evento o nulo❚<br><br>por ejemplo:<br> ❙1900–02–04❙John Doe❙Birthday❙null❚<br>❙2009–03–09❙John Doe❙Custom❙Muerte❚<br>]]></item>
                 <item><![CDATA[<br>Cómo configurar la visualización de eventos:<ol>
-         <li>Descargar o crear archivos con eventos
-         <li>Seleccione archivos en Configuración-> Personalización de eventos-> Cumpleaños-> Archivos-> SELECCIONAR (Configuraciones-> Personalización de eventos-> Otro evento-> Archivos-> SELECCIONAR)
-         </ol>]]></item>
+                <li>Descargar o crear archivos con eventos
+                <li>Seleccione el archivo en Configuración (¡en uno solo!): <ul>
+                         <li>Configuración-> Configurar eventos-> Fuentes de eventos-> Archivos
+                         <li>Configuración-> Configurar eventos-> Cumpleaños-> Archivos
+                         <li>Configuración-> Configurar eventos-> Otro evento-> Archivos
+                </ul>
+                </ol>]]></item>
 
                 <item>#Importación de eventos de redes sociales</item>
                 <item><![CDATA[Los cumpleaños de los amigos de Facebook se pueden exportar al calendario usando la herramienta fb2cal: <a href="https://github.com/mobeigi/fb2cal">enlace</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">instrucciones en video</a>]]></item>
@@ -92,11 +119,11 @@
                 <item>Esta sección no está disponible en el idioma seleccionado en la configuración. Cambie a inglés o ruso en la interfaz del programa y use el traductor de Google.</item>
 
                 <item>#Buscar</item>
-                <item><![CDATA[Para buscar varios parámetros, sepárelos con comas (cualquier valor) o \"+\" (todos los valores), por ejemplo:<ul>
-        <li>\"John, Mary\": mostrará los eventos de contacto con los nombres John o Mary
-        <li>\"Juan + Géminis\": mostrará los eventos de contacto con el nombre Juan y el signo zodiacal Géminis
-        </ul>]]></item>
-                <item>La búsqueda usa todos los datos del evento (para verificar: habilite \"Mensajes de depuración\" en la configuración de la aplicación, mantenga presionado el evento, elemento \"Datos de eventos\")</item>
+                <item><![CDATA[Para buscar varios parámetros, sepárelos con comas (cualquier valor) o "+" (todos los valores), por ejemplo:<ul>
+                <li>\"John, Mary\": mostrará los eventos de contacto con los nombres John o Mary
+                <li>\"Juan + Géminis\": mostrará los eventos de contacto con el nombre Juan y el signo zodiacal Géminis
+                </ul>]]></item>
+                <item>La búsqueda usa todos los datos del evento (para verificar: habilite \"Funciones extra\" en la configuración de la aplicación, mantenga presionado el evento, elemento \"Datos de eventos\")</item>
                 <item> </item>
 
                 <item>#Lenguajes de aplicación</item>

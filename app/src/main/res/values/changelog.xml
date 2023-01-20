@@ -12,7 +12,7 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.7.5</item>
-        <item>Moved contacts accounts selection to the \"Event Setup\" section, added support for selecting from local accounts and the ability don't use address book events</item>
+        <item>Moved contacts accounts selection to the \"Event Setup\" section, added support for selecting from local accounts and the ability don\'t use address book events</item>
         <item>Added support for files with multiple event types</item>
         <item>Added support for calendars containing multiple types of events</item>
         <item>Added support for format of \"Birthdays\" application (description in \"Questions and Answers\")</item>

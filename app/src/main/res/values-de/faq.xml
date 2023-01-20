@@ -20,7 +20,7 @@
                 <item>Durch Festlegen von \"Benachrichtigungsintervall\" in den Einstellungen können Sie mehrere separate Zeiträume der Benachrichtigung für ein Ereignis auswählen. Sie können beispielsweise festlegen, dass Benachrichtigungen eine Woche vorher und am Tag des Ereignisses empfangen werden.</item>
 
                 <item> </item>
-                <item>###Widgets</item>
+                <item>###<![CDATA[<a id="widgets">Widgets]]></item>
 
                 <item>#Widget-Einstellungen</item>
                 <item>Um die Einstellungen des Widgets zu bearbeiten, klicken Sie unten auf die Beschriftung des rechtsstehenden Ereignisses. Klicken Sie dagegen auf eine beliebige Stelle in diesem (rechtsstehenden) Ereignis, wird die Liste der Ereignisse geöffnet.</item>
@@ -52,39 +52,61 @@
 
                 <item>#Kontaktereignisse</item>
                 <item>Standardmäßig werden Ereignisse (Geburtstage, Jahrestage, benutzerdefinierte Ereignisse, andere Ereignisse) von allen Konten auf dem Gerät angezeigt.</item>
-                <item>Um die Auswahl der Konten für Scan-Ereignisse einzuschränken, müssen die erforderlichen Konten unter Einstellungen->Konten ausgewählt werden.</item>
+                <item>Um die Auswahl der Konten für Scan-Ereignisse einzuschränken, müssen die erforderlichen Konten unter Einstellungen-> Ereignisse eirichten-> Ereignisquellen-> Konten ausgewählt werden.</item>
                 <item>Um Ereignisse von allen Konten (einschließlich lokaler) anzuzeigen, klicken Sie auf \"Alle\".</item>
 
-                <item>#<![CDATA[<a id=\"events_calendar\">Kalenderereignisse]]></item>
-                <item>Alle Kalenderereignisse aus ausgewählten Kalendern werden unterstützt. Kalendersets werden für die Ereignisse \"Geburtstag\" und \"Sonstiges Ereignis\" separat angegeben. Der Mechanismus zum Arbeiten mit Kalenderereignissen unterscheidet sich je nach Ereignistyp.</item>
+                <item>#<![CDATA[<a id="events_calendar">Kalenderereignisse]]></item>
+                <item><![CDATA[Alle Kalenderereignisse aus den ausgewählten Kalendern werden unterstützt.<ul>
+                 <li>Wenn der Kalender nur eine Art von Ereignissen enthält, sollten solche Kalender im entsprechenden Abschnitt ausgewählt werden (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle">Geburtstag, <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Andere Veranstaltung).
+                 <li>Kalender mit Ereignissen unterschiedlicher Art werden im Abschnitt <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Ereignisquellen angegeben.
+                 <li>Wenn Sie Links zu externen Ressourcen angeben möchten, sollten sich Weblinks in Kalenderereignissen im Feld Beschreibung befinden und mit http:// oder https:// beginnen.
+                 <li>Je nach ausgewähltem Abschnitt, in dem der Kalender angegeben ist, ist der Mechanismus zum Importieren von Ereignissen unterschiedlich.
+                 </ul>]]></item>
                 <item> </item>
                 <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
                 <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
                 <li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt
                 <li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt
                 </ol>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert.]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis: Diese Kalenderereignisse werden nur in der Ereignisliste und in den Benachrichtigungen, nicht auf den Widgets angezeigt. Der gesamte Ereignistitel wird gespeichert.<br>]]></item>
                 <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
                 <li>Erstellen Sie einen neuen Kalender in ihrer Standardkalender-App oder wählen Sie beispielsweise einen Kalender für Feiertage
-                <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse. Die Ereignisse müssen dabei ganztägig sein
+                <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse
                 <li>Ein Link zu den Anweisungen, wie man Geburtstage von Freunden aus sozialen Netzwerken hochlädt, steht unten
                 <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Anpassung der Ereignisse-> Geburtstag-> Regeln. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
-                <li>Nach dem Erstellen (Aktivieren) des Kalenders, müssen Sie diesen in den Einstellungen auswählen: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Kalender
+                <li>Nach dem Erstellen (Aktivieren) muss der Kalender in einem der Absätze (in nur einem!) ausgewählt werden: <ul>
+                         <li>Einstellungen-> Ereignisse einrichten-> Ereignisquellen-> Kalender
+                         <li>Einstellungen-> Ereignisse einrichten-> Geburtstag-> Kalender
+                         <li>Einstellungen-> Ereignisse einrichten-> Anderes Ereignis-> Kalender
+                </ul>
                 </ol>]]></item>
 
-                <item>#<![CDATA[<a id=\"events_files\">Ereignisse aus lokalen Dateien]]></item>
-                <item><![CDATA[Ereignisse und Geburtstage vom <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> werden mit einigen Funktionen unterstützt:<ul>
-                <li>Das Ereignisdatum kann ein beliebiges Format ohne Leerzeichen haben (TT.MM.JJJJ, MM/TT/JJJJ usw.)
+                <item>#<![CDATA[<a id="events_files">Ereignisse aus lokalen Dateien]]></item>
+                <item><![CDATA[Ereignisse und Geburtstage vom <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> und <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> werden mit einigen Funktionen unterstützt:<ul>
+                <li>Das Ereignisdatum kann ein beliebiges Format ohne Leerzeichen haben (TT.MM.JJJJ, MM/TT/JJJJ, JJJJ-MM-TT usw.)
                 <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein
                 <li>Die Datei muss in UTF-8-Kodierung gespeichert werden
                 <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
+                <li>Wenn die Datei nur Ereignisse eines bestimmten Typs auflistet (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Sonstiges Ereignis), müssen solche Dateien im Einstellungsbereich entsprechend ihrem Typ angegeben werden
+                <li>Dateien mit unterschiedlichen Arten von Ereignissen sind im Abschnitt <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Ereignisquellen angegeben. Der Ereignistyp wird durch das Flag bestimmt (unten ist das Format und Beispiele)
+                <li>für alle Ereignistypen außer <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis, sucht nach einem Kontakt im Adressbuch, um es mit doppelten Ereignissen zusammenzuführen oder Web hinzuzufügen Verknüpfungen
+                <li>Um Ereignisse aus Geburtstagen zu verwenden, müssen sie in eine Datei exportiert werden: Synchronisierung -> Auf SD-Karte speichern
                 </ul>]]></item>
-                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME NACHNAME</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
+
+                <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>-Ereignisformat</b> (in eckigen Klammern - optionale Parameter):<br>]]></item>
+                <item><![CDATA[<b></b># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME oder EREIGNISTITEL</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>EREIGNISTITEL</b>&gt; [WEBLINK]<br><br>]]></item>
-                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>]]></item>
+                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>Ereignisbezeichnung - Bei Dateien, die Ereignisse unterschiedlicher Art enthalten, wird die Ereignisart durch diese Bezeichnung bestimmt. Wenn das Label ein Leerzeichen enthält, muss es durch einen Unterstrich \"_\" ersetzt werden.<br><br>zum Beispiel:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (Nachbar)<br>01.01.2022, 1 Anfang 2022<br>15.3.44,BC Yu.Caesar wurde getötet<br>02.03.1819,Geburtstag Nemo (Kapitän)<br>]]></item>
+
+                <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>-Ereignisformat</b>:<br>]]></item>
+                <item><![CDATA[❙JJJJ-MM-TT❙Name❙Ereignistyp (Geburtstag, Jubiläum, Benutzerdefiniert)❙Ereignisbezeichnung oder null❚<br><br>zum Beispiel:<br> ❙1900–02–04❙John Doe❙Birthday❙null❚<br>❙2009–03–09❙John Doe❙Custom❙Todes❚<br>]]></item>
                 <item><![CDATA[<br>So legen Sie die Anzeige von Ereignissen an:<ol>
                 <li>Laden Sie Dateien mit Ereignissen herunter oder erstellen Sie diese
-                <li>Wählen Sie diese Dateien aus: Einstellungen-> Anpassung der Ereignisse-> Geburtstage (oder \"Andere Ereignisse\")-> Lokale Dateien-> WÄHLEN
+                <li>Datei in den Einstellungen auswählen (in nur einer!): <ul>
+                         <li>Einstellungen-> Ereignisse einrichten-> Ereignisquellen-> Dateien
+                         <li>Einstellungen-> Ereignisse einrichten-> Geburtstag-> Dateien
+                         <li>Einstellungen-> Ereignisse einrichten-> Andere Ereignisse-> Dateien
+                </ul>
                 </ol>]]></item>
 
                 <item>#Importieren von Ereignissen aus sozialen Netzwerken</item>
@@ -94,7 +116,7 @@
                 <item>###Allgemein</item>
 
                 <item>#Suche</item>
-                <item><![CDATA[Um nach mehreren Parametern zu suchen, trennen Sie diese mit Kommas (beliebiger Wert) oder \"+\" (alle Werte), zum Beispiel:<ul>
+                <item><![CDATA[Um nach mehreren Parametern zu suchen, trennen Sie diese mit Kommas (beliebiger Wert) oder "+" (alle Werte), zum Beispiel:<ul>
                 <li>\"John, Mary\"- zeigt die Kontaktereignisse mit den Namen John oder Mary
                 <li>\"John+Gemini\"- zeigt die Kontaktereignisse mit dem Namen John und dem Sternzeichen Zwillinge
                 </ul>]]></item>
