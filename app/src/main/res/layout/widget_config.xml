@@ -115,7 +115,7 @@
                     android:id="@+id/hintEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pref_Widgets_EventInfo_description"
+                    android:text="@string/pref_Widgets_EventInfo_summary"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View

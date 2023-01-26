@@ -234,8 +234,8 @@ class WidgetUpdater {
             final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
             final String eventKey = eventsData.getEventKey(singleEventArray);
 
-            if  (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_CalendarEvent)) ||
-                    eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_FileEvent))) { //пропускаем события календарей и из файлов
+            if  (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) ||
+                    eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
             } else if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
                 List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
@@ -562,7 +562,7 @@ class WidgetUpdater {
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
 
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
                     strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
 
@@ -598,7 +598,7 @@ class WidgetUpdater {
 
             //if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
 
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
                     strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
 
@@ -711,7 +711,7 @@ class WidgetUpdater {
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
 
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                     views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
                 } else if (person.Age > -1) {
                     views.setTextViewText(id_widget_Age, Integer.toString(person.Age));

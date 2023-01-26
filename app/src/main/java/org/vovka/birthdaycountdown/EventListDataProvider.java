@@ -150,7 +150,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
 
-                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                             if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                             final String zodiacSign = singleEventArray[ContactsEvents.Position_zodiacSign];
                             int indexSpace = zodiacSign.indexOf(Constants.STRING_SPACE);
@@ -163,7 +163,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))) {
 
-                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                             if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                             final String zodiacYear = singleEventArray[ContactsEvents.Position_zodiacYear];
                             int indexSpace = zodiacYear.indexOf(Constants.STRING_SPACE);
@@ -228,7 +228,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_WeddingName_ID))) {
 
-                        if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_Anniversary))) {
+                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
                             int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(Constants.STRING_PARENTHESIS_OPEN);
                             if (ind1 > -1) {
                                 if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);

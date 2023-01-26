@@ -33,18 +33,13 @@ class Person {
     int Age = -1;
     String Age_str;
     String FIO_str;
-    //String eventSubType;
     private Context context;
-    //private String[] eventArray;
-    //ContactsEvents eventsData;
 
     Person(@NonNull Context context, @NonNull String[] eventArray) {
 
         try {
 
             this.context = context;
-            //this.eventsData = ContactsEvents.getInstance();
-            //this.eventArray = eventArray;
 
             FIO_str = eventArray[ContactsEvents.Position_personFullName];
             int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
@@ -67,11 +62,8 @@ class Person {
 
             try {
                 Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);
-            } catch (NumberFormatException e) {
-                //Пусто
-            }
+            } catch (NumberFormatException e) { /**/ }
             Age_str = eventArray[ContactsEvents.Position_age_caption];
-            //eventSubType = eventArray[ContactsEvents.Position_eventSubType];
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -79,49 +71,33 @@ class Person {
         }
     }
 
+    public static String getAltName(@NonNull String fullName, int formatName, @NonNull Context context) {
+
+        try{
+
+            final int spaceFirst = fullName.indexOf(Constants.STRING_SPACE);
+            if (spaceFirst == -1) { //Имя из одного слова
+                return fullName;
+            } else {
+                final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
+
+                if (Integer.toString(formatName).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast))) {
+                        return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
+                } else {
+                    return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return Constants.STRING_EMPTY;
+        }
+    }
+
     Person(@NonNull Context context, @NonNull String eventData) {
         this(context, eventData.split(Constants.STRING_EOT, -1));
     }
-
-/*    String getFullName () { //Фамилия Имя Отчество
-
-        try{
-            if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
-                return this.FIO_str;
-            } else if (!LastName.isEmpty()) {
-                return LastName + (!isEmpty(FirstName) ? STRING_SPACE + FirstName : STRING_EMPTY) + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
-            } else if (!isEmpty(FirstName)) {
-                return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY);
-            } else {
-                return STRING_EMPTY;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-            return STRING_EMPTY;
-        }
-
-    }*/
-
-/*    String getFullNameAlt () { //Имя Отчество Фамилия
-
-        try{
-            if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Type_CalendarEvent))) {
-                return this.FIO_str;
-            } else if (!isEmpty(FirstName)) {
-                return FirstName + (!isEmpty(SecondName) ? STRING_SPACE + SecondName : STRING_EMPTY) + (!isEmpty(LastName) ? STRING_SPACE + LastName : STRING_EMPTY);
-            } else {
-                return LastName;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, Constants.PERSON_GET_FULL_NAME_ALT_ERROR + e.toString(), Toast.LENGTH_LONG).show();
-            return STRING_EMPTY;
-        }
-
-    }*/
-
 
     String getFullNameShort () { //Фамилия И. О.
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
@@ -139,7 +115,6 @@ class Person {
             return Constants.STRING_EMPTY;
         }
     }
-
 
     int getGender() { //Определение пола по фамилии, имени, отчеству
         // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён

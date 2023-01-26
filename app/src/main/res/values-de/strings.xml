@@ -226,7 +226,7 @@
     <string name="pref_Icon_title">Anwendungssymbol</string>
     <string name="pref_Icon_description">Wählen Sie das Anwendungssymbol für den Systemstarter</string>
     <string name="pref_Accounts_title">Konten</string>
-    <string name="pref_Accounts_description">Scannen Sie nur diese Konten auf Ereignisse</string>
+    <string name="pref_Accounts_summary">Scannen Sie nur diese Konten auf Ereignisse</string>
     <string name="pref_IconPack_title">Symbolpaket</string>
     <string name="pref_IconPack_description">Verwenden Sie das ausgewählte Symbolpaket, um die Kontaktsilhouette anzuzeigen</string>
     <string name="pref_MenuStyle_title">Kompaktes Menü</string>
@@ -278,61 +278,68 @@
 
     <string name="pref_CustomEvents_title">Ereignisse einrichten</string>
     <string name="pref_CustomEvents_summary">Ereignisquellen, Typenklassifizierung, Anpassung von Etiketten</string>
-    <string name="pref_CustomEvents_hint">Eigene Bezeichnung(en) (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_hint">Ereignislabels eingeben (durch Komma)</string>
     <string name="pref_CustomEvent_Caption_hint">Bezeichnung des Ereignisses</string>
 
     <string name="pref_CustomEvents_Sources_title">Ereignisquellen</string>
     <string name="pref_CustomEvents_Sources_summary">Verwenden Sie diese Quellen für Ereignisse verschiedener Typen (der Typ wird innerhalb von Ereignissen angegeben oder durch die \"Eigene Bezeichnung(en)\" unten bestimmt)</string>
 
-    <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
-    <string name="pref_CustomEvents_Birthday_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Geburtstage zu erkennen</string>
-    <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt (durch Kommas getrennt)</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_description">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln zum Importieren</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Regeln für die Erkennungsregeln für Kontaktnamen aus dem Titel des Kalenderereignisses</string>
+    <string name="pref_CustomEvents_Rules_title">Importeinstellungen</string>
+    <string name="pref_CustomEvents_Rules_summary">Verwenden Sie diese Einstellung beim Importieren von Ereignissen</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln zum Erkennen von Kontaktnamen aus Kalenderereignistiteln</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Regeln für die Erkennungsregeln für Kontaktnamen aus dem Titel des Kalenderereignisses</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Namensformat für Kalenderereignisse</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Kontakte in Kalenderereignissen werden in diesem Format aufgezeichnet</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Namensformat für Dateiereignisse</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Kontakte in Ereignissen aus lokalen Dateien werden in diesem Format aufgezeichnet</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Geburtstage zu erkennen</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Bezeichnung(en)</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_summary">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
+      <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>
-    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Hochzeitstage zu erkennen</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Hochzeitstage zu erkennen</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Hochzeitstag" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Hochzeitstag" erkannt</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Liste</string>
-    <string name="pref_CustomEvents_Anniversary_List_description">Alle Hochzeitstage (nach Jahren)</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">Alle Hochzeitstage (nach Jahren)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Standardbezeichnung</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Namenstage zu erkennen</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Namenstage zu erkennen</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Namenstag" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Namenstag" erkannt</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Standardbezeichnung</string>
-    <string name="pref_CustomEvents_Crowning_UseInternal_description">Verwenden Sie die Standardbezeichnung, um kirchliche Hochzeiten zu erkennen</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um kirchliche Hochzeiten zu erkennen</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Kirchliche Hochzeit" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Kirchliche Hochzeit" erkannt</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Standardbezeichnung</string>
-    <string name="pref_CustomEvents_Death_UseInternal_description">Verwenden Sie die Standardbezeichnung, um Todestage zu erkennen</string>
+    <string name="pref_CustomEvents_Death_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Todestage zu erkennen</string>
     <string name="pref_CustomEvents_Death_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Todestag" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Todestag" erkannt</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Other_Labels_description">Kontaktereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt</string>
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
-    <string name="pref_CustomEvents_Calendars_description">Ereignisse aus ausgewählten Kalendern anzeigen</string>
+    <string name="pref_CustomEvents_Calendars_summary">Ereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_description">Ereignisse aus ausgewählten Dateien anzeigen</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Eigene Bezeichnung(en)</string>
-    <string name="pref_CustomEvents_Custom_Labels_description">Kontaktereignisse mit diesen Bezeichnungen werden als dieses Ereignis erkannt (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als dieses Ereignis erkannt</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Verwenden Sie das Jahr</string>
-    <string name="pref_CustomEvents_Custom_UseYear_description">Verwenden Sie das Jahr, um Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">Verwenden Sie das Jahr, um Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>
@@ -347,7 +354,7 @@
     </string-array>
 
     <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
-    <string name="pref_List_EventTypes_description">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
+    <string name="pref_List_EventTypes_summary">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Geburtstage</item>
@@ -358,7 +365,7 @@
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Trauerband</string>
-    <string name="pref_List_SadPhoto_description">Markieren Sie Fotos von verstorbenen Kontakten mit Trauerband</string>
+    <string name="pref_List_SadPhoto_summary">Markieren Sie Fotos von verstorbenen Kontakten mit Trauerband</string>
 
     <string-array name="pref_List_SadPhoto_entries">
         <item>Niemals</item>
@@ -370,7 +377,7 @@
     <string name="pref_EventList_summary">Anpassung der Hauptereignisliste</string>
 
     <string name="pref_List_PrevEvents_title">Frühere Ereignisse</string>
-    <string name="pref_List_PrevEvents_description">Zeigen Sie frühere Ereignisse oben in der Liste an</string>
+    <string name="pref_List_PrevEvents_summary">Zeigen Sie frühere Ereignisse oben in der Liste an</string>
 
     <string-array name="pref_List_PrevEvents_entries">
         <item>Nicht zeigen</item>
@@ -385,7 +392,7 @@
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Schriftgröße</string>
-    <string name="pref_List_FontMagnify_description">Legen Sie die Schriftgröße von Ereigniselementen fest</string>
+    <string name="pref_List_FontMagnify_summary">Legen Sie die Schriftgröße von Ereigniselementen fest</string>
     <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
     <string name="pref_List_FontMagnify_seek_distance">Ereignisdistanz:</string>
     <string name="pref_List_FontMagnify_seek_name">Name oder Titel des Ereignisses:</string>
@@ -394,7 +401,7 @@
     <string name="pref_List_FontMagnify_seek_age">Das Alter:</string>
 
     <string name="pref_List_Style_title">Stil der Ereignisliste</string>
-    <string name="pref_List_Style_description">Legen Sie den Stil der Ereignisliste fest</string>
+    <string name="pref_List_Style_summary">Legen Sie den Stil der Ereignisliste fest</string>
 
     <string-array name="pref_List_Style_entries">
         <item>Flach</item>
@@ -402,7 +409,7 @@
     </string-array>
 
     <string name="pref_List_PhotoStyle_title">Fotostil</string>
-    <string name="pref_List_PhotoStyle_description">Stil von Kontaktfotos in der Ereignisliste</string>
+    <string name="pref_List_PhotoStyle_summary">Stil von Kontaktfotos in der Ereignisliste</string>
 
     <string-array name="pref_List_PhotoStyle_entries">
         <item>Original</item>
@@ -413,7 +420,7 @@
     </string-array>
 
     <string name="pref_List_Filling_title">Füllung des Hintergrundes</string>
-    <string name="pref_List_Filling_description">Füllung für Platzhalter der Ereignisse festlegen (Farbverlauf)</string>
+    <string name="pref_List_Filling_summary">Füllung für Platzhalter der Ereignisse festlegen (Farbverlauf)</string>
 
     <string-array name="pref_List_Filling_entries">
         <item>Keine Füllung</item>
@@ -447,22 +454,22 @@
     </string-array>
 
     <string name="pref_List_CustomCaption_title">Benutzerdefinierter Titel</string>
-    <string name="pref_List_CustomCaption_description">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
+    <string name="pref_List_CustomCaption_summary">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Titel eingeben</string>
 
     <string name="pref_List_CustomTodayEventCaption_title">Benutzerdefinierter Titel für das heutige Ereignist</string>
-    <string name="pref_List_CustomTodayEventCaption_description">Benutzerdefinierte Beschriftung für das heutige Ereignis anstelle der \"heute\"-Nachricht (Emojis werden unterstützt 🎂)</string>
+    <string name="pref_List_CustomTodayEventCaption_summary">Benutzerdefinierte Beschriftung für das heutige Ereignis anstelle der \"heute\"-Nachricht (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomTodayEventCaption_hint">Titel eingeben</string>
 
     <string name="pref_List_FastScroll_title">Schnelles Scrollen</string>
-    <string name="pref_List_FastScroll_description">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
+    <string name="pref_List_FastScroll_summary">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
 
     <string name="pref_Female_Names_title">Weibliche Namen</string>
     <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto</string>
     <string name="pref_Female_Names_hint">Geben Sie weibliche Namen ein (durch Komma getrennt)</string>
 
     <string name="pref_List_EventInfo_title">Ereignisdetails</string>
-    <string name="pref_List_EventInfo_description">Was soll unter dem Namen des Kontakts angezeigt werden</string>
+    <string name="pref_List_EventInfo_summary">Was soll unter dem Namen des Kontakts angezeigt werden</string>
 
     <string-array name="pref_List_EventInfo_entries">
         <item>Foto</item>
@@ -482,7 +489,7 @@
     </string-array>
 
     <string name="pref_List_OnClick_title">Ereignisklick</string>
-    <string name="pref_List_OnClick_description">Was tun bei Anklicken des Ereignisses</string>
+    <string name="pref_List_OnClick_summary">Was tun bei Anklicken des Ereignisses</string>
     <string-array name="pref_List_OnClick_entries">
         <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
         <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
@@ -493,16 +500,16 @@
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Heutige Ereignisse</string>
-    <string name="pref_List_Color_EventToday_description">Farbe der Tagesbeschriftung für heutige Ereignisse</string>
+    <string name="pref_List_Color_EventToday_summary">Farbe der Tagesbeschriftung für heutige Ereignisse</string>
 
     <string name="pref_List_Color_EventSoon_title">Nächste Ereignisse</string>
-    <string name="pref_List_Color_EventSoon_description">Farbe des Tageszählers für die nächstliegenden Ereignisse</string>
+    <string name="pref_List_Color_EventSoon_summary">Farbe des Tageszählers für die nächstliegenden Ereignisse</string>
 
     <string name="pref_List_Color_EventJubilee_title">Jubiläum</string>
-    <string name="pref_List_Color_EventJubilee_description">Farbe des Jubiläumsalters</string>
+    <string name="pref_List_Color_EventJubilee_summary">Farbe des Jubiläumsalters</string>
 
     <string name="pref_List_Margin_title">Horizontale Ränder</string>
-    <string name="pref_List_Margin_description">Kompensieren Sie intransparente Smartphone-Bildschirmränder, indem Sie einige Ränder hinzufügen</string>
+    <string name="pref_List_Margin_summary">Kompensieren Sie intransparente Smartphone-Bildschirmränder, indem Sie einige Ränder hinzufügen</string>
     <string-array name="pref_List_Margin_entries">
         <item>Klein</item>
         <item>Mittel</item>
@@ -513,7 +520,7 @@
     <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Aktualisierungsintervall</string>
-    <string name="pref_Widgets_UpdateInterval_description">Intervall für erzwungene Aktualisierung von Widgets</string>
+    <string name="pref_Widgets_UpdateInterval_summary">Intervall für erzwungene Aktualisierung von Widgets</string>
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Automatisch (von Android gesteuert)</item>
@@ -525,7 +532,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Ereignisdetails</string>
-    <string name="pref_Widgets_EventInfo_description">Welche Ereignisdetails und Widget-Elemente angezeigt werden sollen</string>
+    <string name="pref_Widgets_EventInfo_summary">Welche Ereignisdetails und Widget-Elemente angezeigt werden sollen</string>
 
     <string name="pref_Widgets_EventInfo_None">Keine</string>
     <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
@@ -572,10 +579,10 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo_description">Was unter dem Foto angezeigt werden soll</string>
+    <string name="pref_Widgets_BottomInfo_summary">Was unter dem Foto angezeigt werden soll</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Bildunterschrift (obere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo2nd_description">Was unter dem Foto angezeigt werden soll</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Was unter dem Foto angezeigt werden soll</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Nachname Vorname(n)</item>
@@ -605,7 +612,7 @@
     </string-array>
 
     <string name="pref_Widgets_OnClick_title">Ereignisklick</string>
-    <string name="pref_Widgets_OnClick_description">Was tun bei Anklicken des Ereignisses</string>
+    <string name="pref_Widgets_OnClick_summary">Was tun bei Anklicken des Ereignisses</string>
     <string-array name="pref_Widgets_OnClick_entries">
         <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
         <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
@@ -616,18 +623,18 @@
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Primärfarbe</string>
-    <string name="pref_Widgets_Color_EventCaption_description">Primärfarbe für Widget-Elemente (Ereignisbeschriftungen, Alter)</string>
+    <string name="pref_Widgets_Color_EventCaption_summary">Primärfarbe für Widget-Elemente (Ereignisbeschriftungen, Alter)</string>
 
     <string name="pref_Widgets_Color_EventToday_title">Alter</string>
-    <string name="pref_Widgets_Color_EventToday_description">Farbe des Alters für heutige Ereignisse</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Farbe des Alters für heutige Ereignisse</string>
 
     <string name="pref_Widgets_Color_EventSoon_title">Tage bis zum Ereignis (nah)</string>
-    <string name="pref_Widgets_Color_EventSoon_description">Tageszählerfarbe für bevorstehende Ereignisse</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Tageszählerfarbe für bevorstehende Ereignisse</string>
 
     <string name="pref_Widgets_Color_EventFar_title">Tage bis zum Ereignis (weiter entfernt)</string>
-    <string name="pref_Widgets_Color_EventFar_description">Tageszählerfarbe für weiter entfernte Ereignisse</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Tageszählerfarbe für weiter entfernte Ereignisse</string>
 
-    <string name="pref_Widgets_Days_EventSoon_description">Ab wieviel Tagen gelten Ereignisse als nah</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Bevorstehende Ereignisse</string>
 
     <string name="widget_config_hint_battery_optimization_title">Die Batterieoptimierung für diese Anwendung ist aktiviert. Dies kann verhindern, dass Widgets aktualisiert werden oder Benachrichtigungen angezeigt werden. Schalte es AUS…</string>
@@ -697,7 +704,7 @@
     <string name="pref_Notifications_summary">Wann und wie Benachrichtigungen zu Ereignissen angezeigt werden</string>
 
     <string name="pref_Notifications_Type_title">Benachrichtigungsstil</string>
-    <string name="pref_Notifications_Type_description">Wie werden Benachrichtigungen aussehen</string>
+    <string name="pref_Notifications_Type_summary">Wie werden Benachrichtigungen aussehen</string>
 
     <string-array name="pref_Notifications_Type_entries">
         <item>Eine allgemeine Benachrichtigung</item>
@@ -708,7 +715,7 @@
     </string-array>
 
     <string name="pref_Notifications_Days_title">Benachrichtigungsintervall</string>
-    <string name="pref_Notifications_Days_description">Wie viele Tage vorher benachrichtigt werden soll</string>
+    <string name="pref_Notifications_Days_summary">Wie viele Tage vorher benachrichtigt werden soll</string>
 
     <string-array name="pref_Notifications_Days_entries">
         <item>Am Tag des Ereignisses</item>
@@ -729,7 +736,7 @@
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priorität der Benachrichtigungen</string>
-    <string name="pref_Notifications_Priority_description">Nicht schließbare Benachrichtigungen mit hoher Priorität stehen immer ganz oben. Um sie auszublenden, klicken Sie darauf</string>
+    <string name="pref_Notifications_Priority_summary">Nicht schließbare Benachrichtigungen mit hoher Priorität stehen immer ganz oben. Um sie auszublenden, klicken Sie darauf</string>
 
     <string-array name="pref_Notifications_Priority_entries">
         <item>Standardpriorität</item>
@@ -738,16 +745,16 @@
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Ereignistypen</string>
-    <string name="pref_Notifications_EventTypes_description">Welche Ereignisse in den Benachrichtigungen enthalten sein sollen</string>
+    <string name="pref_Notifications_EventTypes_summary">Welche Ereignisse in den Benachrichtigungen enthalten sein sollen</string>
 
     <string name="pref_Notifications_AlarmHour_title">Benachrichtigungszeit</string>
-    <string name="pref_Notifications_AlarmHour_description">Uhrzeit der Benachrichtigung</string>
+    <string name="pref_Notifications_AlarmHour_summary">Uhrzeit der Benachrichtigung</string>
 
     <string name="pref_Notifications_Ringtone_title">Benachrichtigungston</string>
-    <string name="pref_Notifications_Ringtone_description">Benachrichtigungston für bevorstehende Ereignisse</string>
+    <string name="pref_Notifications_Ringtone_summary">Benachrichtigungston für bevorstehende Ereignisse</string>
 
     <string name="pref_Notifications_QuickActions_title">Schnelle Aktionen</string>
-    <string name="pref_Notifications_QuickActions_description">Welche Aktionen für eine einzelne Benachrichtigung angezeigt werden sollen (bis zu 3)</string>
+    <string name="pref_Notifications_QuickActions_summary">Welche Aktionen für eine einzelne Benachrichtigung angezeigt werden sollen (bis zu 3)</string>
 
     <string-array name="pref_Notifications_QuickActions_entries">
         <item>Telefonieren</item>
@@ -758,7 +765,7 @@
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Benachrichtigungsklick</string>
-    <string name="pref_Notifications_OnClick_description">Was tun bei Anklicken der Benachrichtigung</string>
+    <string name="pref_Notifications_OnClick_summary">Was tun bei Anklicken der Benachrichtigung</string>
     <string-array name="pref_Notifications_OnClick_entries">
         <item>Kontakt öffnen, falls nicht vorhanden - Kalendertermin, falls nicht vorhanden - Weblink</item>
         <item>Kalendertermin öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Weblink</item>
@@ -769,12 +776,12 @@
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Testbenachrichtigungen</string>
-    <string name="pref_Notifications_NotifyTest_description">Klicken Sie hier, um die heutige Benachrichtigung anzuzeigen</string>
+    <string name="pref_Notifications_NotifyTest_summary">Klicken Sie hier, um die heutige Benachrichtigung anzuzeigen</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Quiz-Einstellungen</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_description">Welche Schnittstelle für Fragen verwendend werden soll</string>
+    <string name="pref_Quiz_Interface_summary">Welche Schnittstelle für Fragen verwendend werden soll</string>
 
     <string-array name="pref_Quiz_Interface_entries">
         <item>Erinnerung (Sie können jederzeit unterbrechen und nach der richtigen Antwort sehen)</item>
@@ -782,19 +789,19 @@
     </string-array>
 
     <string name="pref_FAQ_title">Fragen und Antworten</string>
-    <string name="pref_FAQ_description">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
+    <string name="pref_FAQ_summary">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>
     <string name="pref_Help_title">Hilfe</string>
     <string name="pref_Help_summary">Manchmal kann es helfen…</string>
     <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
-    <string name="pref_BatteryOptimization_description">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
+    <string name="pref_BatteryOptimization_summary">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
     <string name="pref_ContactsAccess_title">Kein Zugriff auf Kontaktereignisse</string>
-    <string name="pref_ContactsAccess_description">Fordern Sie die Berechtigung für Kontaktereignisse an…</string>
+    <string name="pref_ContactsAccess_summary">Fordern Sie die Berechtigung für Kontaktereignisse an…</string>
     <string name="pref_CalendarAccess_title">Kein Zugriff auf den Kalender</string>
-    <string name="pref_CalendarAccess_description">Berechtigung für Kalenderdaten anfordern…</string>
+    <string name="pref_CalendarAccess_summary">Berechtigung für Kalenderdaten anfordern…</string>
     <string name="pref_Debug_On_title">Debug</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
-    <string name="pref_Debug_On_description">Debug-Meldungen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
+    <string name="pref_Debug_On_summary">Debug-Meldungen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
     <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
 

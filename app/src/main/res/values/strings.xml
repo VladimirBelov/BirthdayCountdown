@@ -226,7 +226,7 @@
     <string name="pref_Icon_title">Application icon</string>
     <string name="pref_Icon_description">Choose application icon for system launcher</string>
     <string name="pref_Accounts_title">Accounts</string>
-    <string name="pref_Accounts_description">Scan only these contacts accounts for events</string>
+    <string name="pref_Accounts_summary">Scan only these contacts accounts for events</string>
     <string name="pref_IconPack_title">Icon pack</string>
     <string name="pref_IconPack_description">Use selected icon pack to show contact silhouette</string>
     <string name="pref_MenuStyle_title">Compacted menu</string>
@@ -278,61 +278,68 @@
 
     <string name="pref_CustomEvents_title">Events setup</string>
     <string name="pref_CustomEvents_summary">Events sources, types classification, labels customizing</string>
-    <string name="pref_CustomEvents_hint">Events labels (by comma)</string>
+    <string name="pref_CustomEvents_hint">Enter events labels (by comma)</string>
     <string name="pref_CustomEvent_Caption_hint">Event caption</string>
 
     <string name="pref_CustomEvents_Sources_title">Events sources</string>
     <string name="pref_CustomEvents_Sources_summary">Use these sources for events of different types (type is specified inside events or determined by \"Events labels\" below)</string>
 
-    <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
-    <string name="pref_CustomEvents_Birthday_UseInternal_description">Use standard labels to detect birthday events</string>
-    <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Contacts events with this label will be identified as birthdays (by comma)</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_description">Show birthday events from chosen calendars</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Import rules</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_description">Rules for contact name recognition rules from calendar event title</string>
+    <string name="pref_CustomEvents_Rules_title">Import settings</string>
+    <string name="pref_CustomEvents_Rules_summary">Use these setting while importing events</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Name recognition rules</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Rules for contact name recognition rules from calendar event title</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are multi):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags not found!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Incorrect format! Delimiter must be | symbol</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Name format for calendar events</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Contacts in calendar events are recorded in this format</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Name format for file events</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Contacts in events from local files are recorded in this format</string>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use standard labels to detect birthday events</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Events with this label will be identified as birthdays</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_summary">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
-    <string name="pref_CustomEvents_Anniversary_UseInternal_description">Use standard labels to detect anniversary events</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Use standard labels to detect anniversary events</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Contacts events with this label will be identified as anniversaries (by comma)</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Events with this label will be identified as anniversaries</string>
     <string name="pref_CustomEvents_Anniversary_List_title">List</string>
-    <string name="pref_CustomEvents_Anniversary_List_description">All known anniversaries titles (by year)</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">All known anniversaries titles (by year)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standard labels</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_description">Use standard labels to detect name days events</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Use standard labels to detect name days events</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Contacts events with this label will be identified as name days (by comma)</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Events with this label will be identified as name days</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standard labels</string>
-    <string name="pref_CustomEvents_Crowning_UseInternal_description">Use standard labels to detect crowning events</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Use standard labels to detect crowning events</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Contacts events with this label will be identified as crownings (by comma)</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Events with this label will be identified as crownings</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Use standard labels</string>
-    <string name="pref_CustomEvents_Death_UseInternal_description">Use standard labels to detect death anniversary events</string>
+    <string name="pref_CustomEvents_Death_UseInternal_summary">Use standard labels to detect death anniversary events</string>
     <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Contacts events with this label will be identified as death anniversaries (by comma)</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Events with this label will be identified as death anniversaries</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Other_Labels_description">Contacts events with this label will be identified as other events (by comma)</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Events with this label will be identified as other events</string>
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
-    <string name="pref_CustomEvents_Calendars_description">Show events from chosen calendars</string>
+    <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
     <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_description">Show events from chosen files</string>
+    <string name="pref_CustomEvents_Other_LocalFiles_summary">Show events from chosen files</string>
 
     <string name="pref_CustomEvents_Custom_title">User-defined event</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Custom_Labels_description">Contacts events with this label will be identified as this event (by comma)</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Events with this label will be identified as this event</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
-    <string name="pref_CustomEvents_Custom_UseYear_description">Use full date info for event (not only day and month)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">Use full date info for event (not only day and month)</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brown</item>
@@ -347,7 +354,7 @@
     </string-array>
 
     <string name="pref_List_EventTypes_title">Event types</string>
-    <string name="pref_List_EventTypes_description">What kind of events to include in list</string>
+    <string name="pref_List_EventTypes_summary">What kind of events to include in list</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Birthdays</item>
@@ -358,7 +365,7 @@
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Mourning tape</string>
-    <string name="pref_List_SadPhoto_description">Mark photos of deceased contacts with mourning tape</string>
+    <string name="pref_List_SadPhoto_summary">Mark photos of deceased contacts with mourning tape</string>
 
     <string-array name="pref_List_SadPhoto_entries">
         <item>Never</item>
@@ -370,7 +377,7 @@
     <string name="pref_EventList_summary">Main event list customizing</string>
 
     <string name="pref_List_PrevEvents_title">Previous events</string>
-    <string name="pref_List_PrevEvents_description">Show previous events on top of the events list</string>
+    <string name="pref_List_PrevEvents_summary">Show previous events on top of the events list</string>
 
     <string-array name="pref_List_PrevEvents_entries">
         <item>None</item>
@@ -385,7 +392,7 @@
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Font size</string>
-    <string name="pref_List_FontMagnify_description">Set font size of event elements</string>
+    <string name="pref_List_FontMagnify_summary">Set font size of event elements</string>
     <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
     <string name="pref_List_FontMagnify_seek_distance">Event distance:</string>
     <string name="pref_List_FontMagnify_seek_name">Name or event title:</string>
@@ -394,7 +401,7 @@
     <string name="pref_List_FontMagnify_seek_age">Age:</string>
 
     <string name="pref_List_Style_title">Event list style</string>
-    <string name="pref_List_Style_description">Set style of event list</string>
+    <string name="pref_List_Style_summary">Set style of event list</string>
 
     <string-array name="pref_List_Style_entries">
         <item>Flat</item>
@@ -402,7 +409,7 @@
      </string-array>
 
     <string name="pref_List_PhotoStyle_title">Photos style</string>
-    <string name="pref_List_PhotoStyle_description">Set style of contacts photos in the event list</string>
+    <string name="pref_List_PhotoStyle_summary">Set style of contacts photos in the event list</string>
 
     <string-array name="pref_List_PhotoStyle_entries">
         <item>Original</item>
@@ -413,7 +420,7 @@
     </string-array>
 
     <string name="pref_List_Filling_title">Background filling type</string>
-    <string name="pref_List_Filling_description">Set filling type for event placeholder (gradient)</string>
+    <string name="pref_List_Filling_summary">Set filling type for event placeholder (gradient)</string>
 
     <string-array name="pref_List_Filling_entries">
         <item>No filling</item>
@@ -447,22 +454,22 @@
     </string-array>
 
     <string name="pref_List_CustomCaption_title">Custom event list caption</string>
-    <string name="pref_List_CustomCaption_description">Custom main event list caption (Emojis 🎂 are supported)</string>
+    <string name="pref_List_CustomCaption_summary">Custom main event list caption (Emojis 🎂 are supported)</string>
     <string name="pref_List_CustomCaption_hint">Enter custom caption</string>
 
     <string name="pref_List_CustomTodayEventCaption_title">Custom caption for today event</string>
-    <string name="pref_List_CustomTodayEventCaption_description">Custom caption for today event instead of \"today\" message (Emojis 🎂 are supported)</string>
+    <string name="pref_List_CustomTodayEventCaption_summary">Custom caption for today event instead of \"today\" message (Emojis 🎂 are supported)</string>
     <string name="pref_List_CustomTodayEventCaption_hint">Enter custom caption</string>
 
     <string name="pref_List_FastScroll_title">Fast scroll</string>
-    <string name="pref_List_FastScroll_description">Enable fast scroll for event list while touching right side of screen</string>
+    <string name="pref_List_FastScroll_summary">Enable fast scroll for event list while touching right side of screen</string>
 
     <string name="pref_Female_Names_title">Female names</string>
     <string name="pref_Female_Names_description">Additional female names for the correct display of contact icons without a photo</string>
     <string name="pref_Female_Names_hint">Enter female names (by comma)</string>
 
     <string name="pref_List_EventInfo_title">Event details</string>
-    <string name="pref_List_EventInfo_description">What additional event details to show</string>
+    <string name="pref_List_EventInfo_summary">What additional event details to show</string>
 
     <string-array name="pref_List_EventInfo_entries">
         <item>Photo</item>
@@ -482,7 +489,7 @@
     </string-array>
 
     <string name="pref_List_OnClick_title">On click action</string>
-    <string name="pref_List_OnClick_description">What to do on event click</string>
+    <string name="pref_List_OnClick_summary">What to do on event click</string>
     <string-array name="pref_List_OnClick_entries">
         <item>Open contact card, if absent - calendar event, if absent - web link</item>
         <item>Open calendar event, if absent - contact card, if absent - web link</item>
@@ -493,16 +500,16 @@
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Today events</string>
-    <string name="pref_List_Color_EventToday_description">Color of day caption for today events</string>
+    <string name="pref_List_Color_EventToday_summary">Color of day caption for today events</string>
 
     <string name="pref_List_Color_EventSoon_title">Near events</string>
-    <string name="pref_List_Color_EventSoon_description">Color of days distance for near events</string>
+    <string name="pref_List_Color_EventSoon_summary">Color of days distance for near events</string>
 
     <string name="pref_List_Color_EventJubilee_title">Jubilee</string>
-    <string name="pref_List_Color_EventJubilee_description">Color of jubilee age</string>
+    <string name="pref_List_Color_EventJubilee_summary">Color of jubilee age</string>
 
     <string name="pref_List_Margin_title">Horizontal margins</string>
-    <string name="pref_List_Margin_description">Compensate intransparent smartphone screen edges by adding some margins</string>
+    <string name="pref_List_Margin_summary">Compensate intransparent smartphone screen edges by adding some margins</string>
     <string-array name="pref_List_Margin_entries">
         <item>Small</item>
         <item>Medium</item>
@@ -513,7 +520,7 @@
     <string name="pref_Widgets_summary">Common widgets preferences</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Update interval</string>
-    <string name="pref_Widgets_UpdateInterval_description">Forced widget update interval</string>
+    <string name="pref_Widgets_UpdateInterval_summary">Forced widget update interval</string>
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Automatically (controlled by Android)</item>
@@ -525,7 +532,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Event details</string>
-    <string name="pref_Widgets_EventInfo_description">What event details and widget elements to show</string>
+    <string name="pref_Widgets_EventInfo_summary">What event details and widget elements to show</string>
 
     <string name="pref_Widgets_EventInfo_None">None</string>
     <string name="pref_Widgets_EventInfo_Border">Widget border</string>
@@ -572,10 +579,10 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
-    <string name="pref_Widgets_BottomInfo_description">What to show bellow photo</string>
+    <string name="pref_Widgets_BottomInfo_summary">What to show bellow photo</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Event caption (upper row)</string>
-    <string name="pref_Widgets_BottomInfo2nd_description">What to show bellow photo</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">What to show bellow photo</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Surname Name Patronymic</item>
@@ -605,7 +612,7 @@
     </string-array>
 
     <string name="pref_Widgets_OnClick_title">On click action</string>
-    <string name="pref_Widgets_OnClick_description">What to do on event click</string>
+    <string name="pref_Widgets_OnClick_summary">What to do on event click</string>
     <string-array name="pref_Widgets_OnClick_entries">
         <item>Open contact card, if absent - calendar event, if absent - web link</item>
         <item>Open calendar event, if absent - contact card, if absent - web link</item>
@@ -616,18 +623,18 @@
     </string-array>
 
     <string name="pref_Widgets_Color_EventCaption_title">Primary color</string>
-    <string name="pref_Widgets_Color_EventCaption_description">Primary color for widget elements (event captions, age)</string>
+    <string name="pref_Widgets_Color_EventCaption_summary">Primary color for widget elements (event captions, age)</string>
 
     <string name="pref_Widgets_Color_EventToday_title">Age</string>
-    <string name="pref_Widgets_Color_EventToday_description">Color of age for today events</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Color of age for today events</string>
 
     <string name="pref_Widgets_Color_EventSoon_title">Days to event (near)</string>
-    <string name="pref_Widgets_Color_EventSoon_description">Color of days count for near events</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Color of days count for near events</string>
 
     <string name="pref_Widgets_Color_EventFar_title">Days to event (far)</string>
-    <string name="pref_Widgets_Color_EventFar_description">Color of days count for far events</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Color of days count for far events</string>
 
-    <string name="pref_Widgets_Days_EventSoon_description">For how many days events are considered to be nearest</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">For how many days events are considered to be nearest</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
 
     <string name="widget_config_hint_battery_optimization_title">Battery optimization for this application is ON. This may prevents widgets update or notifications appear. Turn it OFF…</string>
@@ -697,7 +704,7 @@
     <string name="pref_Notifications_summary">When and how to show event notifications</string>
 
     <string name="pref_Notifications_Type_title">Style of notifications</string>
-    <string name="pref_Notifications_Type_description">How notifications will be looks like</string>
+    <string name="pref_Notifications_Type_summary">How notifications will be looks like</string>
 
     <string-array name="pref_Notifications_Type_entries">
         <item>One summary notification</item>
@@ -708,7 +715,7 @@
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priority of notifications</string>
-    <string name="pref_Notifications_Priority_description">High priority unclosable notifications are always on the top. To hide them click on it</string>
+    <string name="pref_Notifications_Priority_summary">High priority unclosable notifications are always on the top. To hide them click on it</string>
 
     <string-array name="pref_Notifications_Priority_entries">
         <item>Standard</item>
@@ -717,7 +724,7 @@
     </string-array>
 
     <string name="pref_Notifications_Days_title">Notification period</string>
-    <string name="pref_Notifications_Days_description">How many days before event to notify</string>
+    <string name="pref_Notifications_Days_summary">How many days before event to notify</string>
 
     <string-array name="pref_Notifications_Days_entries">
         <item>On event day</item>
@@ -738,16 +745,16 @@
     </string-array>
 
     <string name="pref_Notifications_EventTypes_title">Event types</string>
-    <string name="pref_Notifications_EventTypes_description">What kind of events to include in notifications</string>
+    <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
 
     <string name="pref_Notifications_AlarmHour_title">Alarm time</string>
-    <string name="pref_Notifications_AlarmHour_description">What time is to notify</string>
+    <string name="pref_Notifications_AlarmHour_summary">What time is to notify</string>
 
     <string name="pref_Notifications_Ringtone_title">Notification sound</string>
-    <string name="pref_Notifications_Ringtone_description">Upcoming Events Sound</string>
+    <string name="pref_Notifications_Ringtone_summary">Upcoming Events Sound</string>
 
     <string name="pref_Notifications_QuickActions_title">Quick actions</string>
-    <string name="pref_Notifications_QuickActions_description">Which actions are available for single notification (up to 3)</string>
+    <string name="pref_Notifications_QuickActions_summary">Which actions are available for single notification (up to 3)</string>
 
     <string-array name="pref_Notifications_QuickActions_entries">
         <item>Call</item>
@@ -758,7 +765,7 @@
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">On click action</string>
-    <string name="pref_Notifications_OnClick_description">What to do on single notification click</string>
+    <string name="pref_Notifications_OnClick_summary">What to do on single notification click</string>
     <string-array name="pref_Notifications_OnClick_entries">
         <item>Open contact card, if absent - calendar event, if absent - web link</item>
         <item>Open calendar event, if absent - contact card, if absent - web link</item>
@@ -769,12 +776,12 @@
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_title">Test notification</string>
-    <string name="pref_Notifications_NotifyTest_description">Click to show notification for today</string>
+    <string name="pref_Notifications_NotifyTest_summary">Click to show notification for today</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Quiz preferences</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_description">What interface to use for questions</string>
+    <string name="pref_Quiz_Interface_summary">What interface to use for questions</string>
 
     <string-array name="pref_Quiz_Interface_entries">
         <item>Notifications (you can stop at any time and go to look for the right answer)</item>
@@ -782,19 +789,19 @@
     </string-array>
 
     <string name="pref_FAQ_title">\"How to\" guide</string>
-    <string name="pref_FAQ_description">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
+    <string name="pref_FAQ_summary">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
     <string name="pref_Help_title">Help</string>
     <string name="pref_Help_summary">Sometimes it can help…</string>
     <string name="pref_About_summary">Version history, events statistics, appstores links</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
-    <string name="pref_BatteryOptimization_description">Open the setting and turn off the optimization…</string>
+    <string name="pref_BatteryOptimization_summary">Open the setting and turn off the optimization…</string>
     <string name="pref_ContactsAccess_title">No access to contacts events</string>
-    <string name="pref_ContactsAccess_description">Request permission to contacts events…</string>
+    <string name="pref_ContactsAccess_summary">Request permission to contacts events…</string>
     <string name="pref_CalendarAccess_title">No access to calendar</string>
-    <string name="pref_CalendarAccess_description">Request permission to calendars data…</string>
+    <string name="pref_CalendarAccess_summary">Request permission to calendars data…</string>
     <string name="pref_Debug_On_title">Debug messages</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
-    <string name="pref_Debug_On_description">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
+    <string name="pref_Debug_On_summary">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
     <string name="pref_ExtraFun_On_title">Extra features</string>
     <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
 
@@ -1092,13 +1099,18 @@
     <string name="pref_CustomEvents_Sources_key" translatable="false">CustomEvents_Sources</string>
     <string name="pref_CustomEvents_MultiType_Calendars_key" translatable="false">CustomEvents_MultiType_Calendars</string>
     <string name="pref_CustomEvents_MultiType_LocalFiles_key" translatable="false">CustomEvents_MultiType_LocalFiles</string>
+    <string name="pref_CustomEvents_Rules_key" translatable="false">CustomEvents_Rules</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_key" translatable="false">CustomEvents_Birthday_Calendars_Rules</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]"</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_key" translatable="false">CustomEvents_Rules_Calendars_NameFormat</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_key" translatable="false">CustomEvents_Rules_LocalFiles_NameFormat</string>
+
     <string name="pref_CustomEvents_Birthday_key" translatable="false">CustomEvents_Birthday</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_key" translatable="false">CustomEvents_Birthday_UseInternal</string>
     <string name="pref_CustomEvents_Birthday_Labels_key" translatable="false">CustomEvents_Birthday_Labels</string>
     <string name="pref_CustomEvents_Birthday_Calendars_key" translatable="false">CustomEvents_Birthday_Calendars</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_key" translatable="false">CustomEvents_Birthday_Calendars_Rules</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]"</string>
+
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_key" translatable="false">CustomEvents_Birthday_Calendars_UseYear</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_default" translatable="false">true</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_key" translatable="false">CustomEvents_Birthday_LocalFiles</string>
@@ -1152,10 +1164,12 @@
     <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
 
     <string name="pref_List_NameFormat_key" translatable="false">List_Caption</string>
-    <string name="pref_List_NameFormat_default" translatable="false">1</string>
+    <string name="pref_List_NameFormat_FirstSecondLast" translatable="false">1</string>
+    <string name="pref_List_NameFormat_LastFirstSecond" translatable="false">2</string>
+    <string name="pref_List_NameFormat_default" translatable="false">@string/pref_List_NameFormat_FirstSecondLast</string>
      <string-array name="pref_List_NameFormat_values" translatable="false">
-        <item>1</item> <!--Имя Отчество Фамилия-->
-        <item>2</item> <!--Фамилия Имя Отчество-->
+        <item>@string/pref_List_NameFormat_FirstSecondLast</item> <!--Имя Отчество Фамилия-->
+        <item>@string/pref_List_NameFormat_LastFirstSecond</item> <!--Фамилия Имя Отчество-->
     </string-array>
 
     <string name="pref_List_DateFormat_key" translatable="false">List_DateFormat</string>
@@ -1466,7 +1480,7 @@
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
 
-    <string name="first_names_man" translatable="false">абрам,август,аверьян,авраам,агафон,адам,азар,азат,акакий,аким,аксьонов,аксён,алан,александр,алексей,алексий,ален,альберт,альфонс,альфред,амыр,анатолий,анатоль,анатолій,андерсен,андрей,андре,андрон,андрюша,антипр,антип,антонин,антонио,антон,аполлон,аристарх,аркадий,аркадій,армен,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,архип,аскольда,аскольд,афанасий,батько,билли,билл,богдан,борислав,борис,брайан,брат,бронислав,броніслав,булат,бьорн,вадим,валентин,валерий,ваня,варлам,василий,василь,вацлав,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виссарион,виталий,витус,владилен,владимир,владислав,владлен,внук,вован,вова,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,гарри,гектор,геннадий,геннадій,генрих,генри,георгий,герман,глеб,глен,гнат,грег,григорий,григорій,гриня,давид,даниил,данила,данил,даниэль,демьян,денис,джанни,джеймс,джек,джим,джон,джо,джузеппе,димитрий,димитрій,дмитрий,добриня,добрыня,доктор,донатос,дэвид,дэйв,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,жак,жерар,жорж,жюль,захар,зигмунд,иван,игнат,игорь,иларион,илларион,ильдар,ильнур,илья,имре,иоганнес,иоганн,иосиф,исаак,йогор,казимир,карл,касьян,кирилл,кирило,кирсан,клаус,клод,коля,кондрат,константин,кристиан,кристоф,крис,кузьма,курт,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларс,ларіон,лев,леонард,леонид,леонід,лесли,лион,луи,лука,людвиг,лёня,майк,максим,манфред,мао,марат,мариус,марк,мартин,мартын,матвей,матвій,маттиас,мефодий,мефодій,микола,мик,милий,миллер,мирон,михаил,михайло,миша,моисей,мойсей,морис,мстислав,мухаджир,назар,наполеон,насіння,нестор,никита,николай,нильс,нил,овер\'ян,овсій,олег,олександр,оливер,омелян,онук,опанас,орест,осип,оскар,остап,отец,отто,павел,павло,панкрат,пантелей,папа,парамон,патрик,петро,петр,петька,платон,поль,пол,потап,проспер,прохор,пьер,пьер-жан,пётр,ральф,рафаэль,рейнгольд,рем,рик,рихард,роберт,роджер,рой,роман,ромен,ростислав,рудольф,рэй,сава,савва,савелий,савелій,сальвадор,самуил,святослав,семен,семён,сергей,сидор,сидір,сид,син,спартак,стефан,стивен,стив,стюард,сын,сэмюэл,тарас,тенесси,теодор,терентий,терентій,тесть,тимофей,тимофій,тимур,тим,тихон,том,тэд,уилл,уильям,ульян,фадей,фазиль,федерико,федор,федот,федір,феликс,фил,фирс,фицджеральд,фома,франц,фредди,френк,фёдор,фірс,харитон,харлам,харлі,харрисон,хритофор,хулио,цибулі,чак,чарльз,шарль,эдуард,элтон,эмиль,эммануил,эндри,эраст,эрнесто,ювеналий,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,якоб,яков,яків,ян,януарий,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,петро,платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,herbert,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,oscar,oskar,papa,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
+    <string name="first_names_man" translatable="false">абрам,август,аверьян,авраам,агафон,адам,азар,азат,акакий,аким,аксьонов,аксён,алан,александр,алексей,алексий,ален,альберт,альфонс,альфред,амыр,анатолий,анатоль,анатолій,андерсен,андрей,андре,андрон,андрюша,антипр,антип,антонин,антонио,антон,аполлон,аристарх,аркадий,аркадій,армен,арнольд,арсений,арсентий,арсентій,арсеній,артемий,артемій,артем,артур,артём,архип,аскольда,аскольд,афанасий,батько,билли,билл,богдан,борислав,борис,брайан,брат,бронислав,броніслав,булат,бьорн,вадим,валентин,валерий,ваня,варлам,василий,василь,вацлав,венедикт,вениамин,венцеслав,веньямин,веніамін,веремій,виктор,вилен,виссарион,виталий,витус,владилен,владимир,владислав,владлен,внук,вован,вова,всеволод,всеслав,вячеслав,вілен,віталій,гавриил,гавриїл,гарри,гектор,геннадий,геннадій,генрих,генри,георгий,герман,глеб,глен,гнат,грег,григорий,григорій,гриня,давид,даниил,данила,данил,даниэль,демьян,денис,джанни,джеймс,джек,джим,джон,джо,джузеппе,димитрий,димитрій,дмитрий,добриня,добрыня,доктор,донатос,дэвид,дэйв,дядько,дядя,евгений,евдоким,евсей,егор,едуард,емельян,еммануїл,ераст,еремей,ермолай,ерофей,ефим,жак,жерар,жорж,жюль,захар,зигмунд,иван,игнат,игорь,иларион,илларион,ильдар,ильнур,илья,имре,иоганнес,иоганн,иосиф,исаак,йогор,казимир,карл,касьян,кирилл,кирило,кирсан,клаус,клод,коля,кондрат,константин,кристиан,кристоф,крис,кузьма,курт,кіндрат,лаврентий,лаврентій,лавр,лазарь,лазар,ларион,ларс,ларіон,лев,леонард,леонид,леонід,лесли,лион,луи,лука,людвиг,лёня,майк,максим,манфред,мао,марат,мариус,марк,мартин,мартын,матвей,матвій,маттиас,мефодий,мефодій,микола,мик,милий,миллер,мирон,михаил,михайло,миша,моисей,мойсей,морис,мстислав,мухаджир,назар,наполеон,насіння,нестор,никита,николай,нильс,нил,овер\'ян,овсій,олег,олександр,оливер,омелян,онук,опанас,орест,осип,оскар,остап,отец,отто,павел,павло,панкрат,пантелей,папа,парамон,патрик,петро,петр,петька,платон,поль,пол,потап,проспер,прохор,пьер,пьер-жан,пётр,ральф,рафаэль,рейнгольд,рем,рик,рихард,роберт,роджер,рой,роман,ромен,ростислав,рудольф,рэй,сава,савва,савелий,савелій,сальвадор,самуил,святослав,семен,семён,сергей,сидор,сидір,сид,син,спартак,стефан,стивен,стив,стюард,сын,сэмюэл,тарас,тенесси,теодор,терентий,терентій,тесть,тимофей,тимофій,тимур,тим,тихон,том,тэд,уилл,уильям,ульян,фадей,фазиль,федерико,федор,федот,федір,феликс,фил,фирс,фицджеральд,фома,франц,фредди,френк,фёдор,фірс,харитон,харлам,харлі,харрисон,хритофор,хулио,цибулі,чак,чарльз,шарль,эдуард,эльдар,элтон,эмиль,эммануил,эндри,эраст,эрнесто,ювеналий,юлиан,юлий,юліан,юлій,юрий,юрій,юхим,якоб,яков,яків,ян,януарий,ярослав,євдоким,єрмолай,єрофій,іван,ігор,іларіон,ілля,петро,платон,aaron,adam,alan,albert,alexander,andrew,anthony,anton,arthur,austin,ben,benjamin,billy,bobby,brandon,brian,brother,bruce,bruder,bryan,carl,charles,christian,christopher,dad,daniel,david,dennis,donald,douglas,dylan,edward,elias,emil,eric,ethan,eugene,father,felix,finn,frank,fynn,gabriel,gary,george,gerald,grandson,gregory,harold,harry,henri,henry,herbert,jack,jacob,james,jason,jeffrey,jeremy,jerry,jesse,joe,john,johnny,jonas,jonathan,jordan,jose,joseph,joshua,juan,justin,keith,kenneth,kevin,kyle,larry,lawrence,leon,liam,logan,louis,luca,lucas,luis,luka,luke,mark,matthew,max,maximilian,michael,moritz,nathan,nicholas,noah,oscar,oskar,otto,ottomar,papa,patrick,paul,peter,philip,ralph,randy,raymond,richard,robert,roger,ronald,roy,russell,ryan,samuel,scott,sean,sohn,son,stephen,steven,terry,thomas,timothy,tyler,uncle,vater,victor,viktor,vincent,walker,walter,wayne,william,willie,zachary</string>
     <string name="first_names_female" translatable="false">åsa,ève,édith,šejla,ава,августа,августина,авдотья,аврора,агапия,агата,агафья,аглая,агнесса,агния,агнія,агрипина,агриппина,агунда,ада,аделаида,аделина,адель,адиля,адриана,азалия,аза,азиза,аида,аиша,айару,айгерим,айгуль,айлин,айнагуль,айнур,айседора,айсель,айсун,айсылу,ай,акилина,аксинья,акулина,алана,албена,алевтина,александра,александрина,алексия,алена,алеста,алина,алиса,алия,алла,алсу,алтын,альба,альбина,альфия,аля,алёна,аліна,аліса,амалия,амаль,амалія,амина,амира,анабель,анаит,анастасия,анастасія,ангелина,андрианка,андрiанка,анжела,анжелика,анисия,анисья,анита,анна,антонина,анфиса,анфіса,анюта,аня,аполлинария,арабелла,ариадна,ариана,арианда,арина,ария,арсения,аріна,асель,асия,астрид,ася,аурелия,афина,аэлита,аяна,ая,баба,бажена,беата,беатрис,бела,белинда,белла,белоцвета,березня,берислава,берта,бильяна,бисера,блага,блажена,богдана,богна,божана,божена,божидара,борислава,боряна,бояна,бьянка,бэлла,вавилия,валентина,валерия,валерія,ванга,ванда,ванесса,варвара,василика,василина,василиса,василка,васса,вега,веда,вела,венера,вениамина,венцеслава,вера,вероника,вероніка,веселина,веста,ветана,вета,видослава,вика,викторина,виктория,вилена,виола,виолета,виолетта,виринея,виталина,виталия,вита,владана,влада,владислава,владлена,власта,внучка,вікторія,віола,віолетта,віра,віта,габриэлла,галина,галия,ганна,гаяна,гаянэ,генриетта,гергана,гизела,глафира,глафіра,гликерия,гоар,грета,гузель,гульзира,гульмира,гульназ,гульнара,гульшат,гюзель,далида,дамира,дана,даниэла,дания,дара,дарена,дарина,дарья,даяна,дельфина,демира,десислава,джамиля,джанет,джемила,дженифер,дженна,дженнифер,джессика,джиневра,джулия,джуна,диана,дильназ,дильнара,диляна,дилярам,диля,динара,дина,долорес,доминика,домна,домника,донка,дочка,діана,діна,евангелина,ева,евгения,евдокия,евеліна,евлалия,евлампия,евстолия,едіта,екатерина,елена,елеонора,елизавета,елла,ельвіра,емма,емілія,есения,ефросиния,ефросинья,ея,жаклин,жанна,жансая,жасмин,живка,жозефина,жоржина,забава,заира,залина,замира,замфира,зара,зарема,зарина,заряна,земфира,зинаида,зиновия,зита,злата,златослава,зоряна,зося,зоя,зульфия,зухра,зіновія,ивана,иванка,иванна,ива,ивета,иветта,ивет,ивонна,ида,изабелла,изольда,илария,илина,илия,иллирика,илона,ильзира,ильяна,илюза,инара,инга,индира,инесса,инна,иоанна,ирада,ираида,ира,ирина,ирма,искра,ия,йоана,йорданка,калерия,камелия,камила,камилла,капитолина,капітоліна,кара,каре,карима,карина,каролина,катарина,катерина,катюша,катя,кира,кирилла,клавдия,клара,клеопатра,климентина,констанция,кора,корнелия,кору,кохана,кохання,кристина,ксанта,ксения,ксенія,кэт,лада,лала,лана,лара,лариса,лаура,лейла,леля,лена,леона,леонилла,леонтина,лера,леся,лета,лея,лиана,лидия,лиза,лика,лилиана,лилит,лилия,лили,лильяна,лина,линда,лиора,липа,лира,лия,лола,лолита,лора,луиза,лукерья,лукия,луна,льоха,любава,любимая,любовь,любов,люда,людмила,люсиль,люсьена,люция,люче,ляйсан,ляля,ліана,лілія,лія,мавиле,мавлюда,магдалина,магдалeна,магда,мадина,мадлен,мадонна,майя,макария,малика,мама,мара,маргарита,марианна,мариетта,марика,марина,мариэтта,мариям,мария,мари,марта,маруся,марфа,марьям,марьяна,марья,маріанна,марія,марієтта,мар\'я,мата,матильда,мати,матрена,матрона,матрёна,мать,маша,мая,мелания,мелисса,мехри,мика,милада,милана,мила,милена,милен,милица,милослава,мина,мира,мирослава,мирра,михримах,мишель,мия,моника,мотрона,муза,мілена,мілослава,надежда,надя,надія,наиля,наима,нана,наоми,наргиза,настасия,настасья,настасія,настя,наталия,наталья,наталя,наташа,невена,невістка,нейдежда,нелли,неонила,нея,ника,николина,николь,никомия,нина,нинель,номина,нонна,нора,нурия,нінель,одетта,оксана,октябрина,олександра,олена,олеся,оливия,олимпиада,ольга,оля,олімпіада,офелия,павлина,памела,парасковія,патриция,паула,пейтон,пекла,пелагея,пенка,перизат,пина,платонида,полина,поля,прасковья,преслава,присцилла,пульхерия,равшана,рада,радка,радмила,разина,раиля,раиса,раифа,райна,ралина,рамина,рахиль,раяна,рая,раїса,ребекка,регина,резеда,рената,рена,риана,рианна,рикарда,рима,римма,рина,рита,рогнеда,роза,роксана,роксолана,росица,рузалия,рузанна,русалина,русана,руслана,рут,руфина,руфь,сабина,сабрина,сажида,саида,салима,саломея,сальвина,сальма,самира,сандра,сания,сара,сарра,сати,сауле,сафина,сафия,сафура,саяна,свекровь,свекруха,светлана,светлозара,светозара,світла,севара,селена,сельвия,сельма,серафима,сесилия,сестра,сиара,сидония,силвия,сильвия,симона,систер,сияна,славена,славяна,смарагда,смила,снежана,снежанна,сноха,соня,софия,софи,софья,софія,станислава,стелла,степанида,стефания,стефанія,стоянка,сусанна,сюзанна,таисия,таисья,тамара,тамила,тара,татьяна,таяна,тая,таїсія,текле,теона,тереза,тетяна,тетя,тея,тина,тиффани,тодорка,томирис,томи,тора,трояна,троянда,тэмми,тётя,тітка,ульяна,уляна,ума,урсула,устина,устиния,устинья,устинія,фазиля,фаина,фарида,фариза,фатима,фаїна,феврония,федора,фекла,фелисити,фелиция,феодора,феруза,физалия,филиппа,филомена,фируза,флора,флоренс,флорентина,флоренция,флориана,фотиния,фредерика,фрида,фёкла,хаврония,хадия,харита,хилари,хлоя,хрисанда,христина,хюррем,цагана,цветана,цветанка,цвета,цецилия,циара,челси,чеслава,чулпан,шакира,шарлотта,шахина,шейла,шелли,шерил,эвдокия,эвелина,эвита,эдита,эдит,элеонора,элиана,элизавета,элиза,элина,элла,эльвина,эльвира,эльза,эльмира,эльнара,эля,эмилия,эмили,эмма,энже,эрика,эрмина,эсмеральда,эсмира,эстер,этель,этери,юдифь,юдіф,юлиана,юлианна,юлия,юлія,юна,юния,юнна,юнона,юстина,ядвига,ядвіга,яна,янина,янка,ярина,ярослава,ясмина,яся,єва,євгенія,євдокія,євлампія,єфросинія,івонна,ізольда,ірина,ія,aahna,abba,abcde,abena,abida,abigail,abijah,abou,abril,acey,acie,ada,adalgisa,adama,adame,addie,adee,adeline,adena,adhira,adia,adina,aditi,adora,adria,adriana,adrianne,aesha,afaf,afreen,africa,afsana,agafya,agatha,agboola,aggrey,agnė,agra,agustina,aila,aileen,ailsa,aimone,aina,ainara,ainhoa,ainslie,aitana,aiva,aiyana,ajla,alaina,alanna,alba,alberta,albina,aldona,aleana,aleena,alejandra,aleksa,alena,alene,alessandra,aletta,alevtina,alexa,alexandra,alexia,alexis,alia,alice,alicia,alide,aliette,alima,aline,alisha,aliza,allene,alma,aloma,alondra,althea,alya,alycia,alys,alyson,alyssa,amalia,amalie,amanda,amara,amaya,amber,amelie,amoli,amy,anaïs,ana,anabelle,ananya,anastacia,anastasia,anastasiia,anastasiya,anastassia,anastassiya,ance,anda,andrea,andrijana,ane,aneta,anete,angel,angela,angelica,anika,anisha,anitra,anka,ann,ann-louise,anna,anna-lena,annabella,annabelle,annalena,annalisa,annalise,annastasia,anneke,annette,annika,annot,anthea,anthonia,antonella,antonia,antra,april,arabella,arantxa,ariadna,ariel,ariella,arielle,arleen,arlet,arline,aroa,arya,ashley,aslaug,astou,astrid,athena,attia,aubrey,audra,audrey,augustine,aunt,aurea,aurelia,aurora,ausma,austėja,avice,avie,aviva,aya,ayanna,azahara,azucena,babette,baiba,bailey,barbara,basilia,bea,beatrix,becki,bella,benedicta,berengaria,bernadeta,bernadine,berta,beryl,bess,beth,bethany,bettina,betty,beverly,bhagya,bimala,binny,birte,bita,björg,blanca,blythe,bobbi,bodil,bohumil,bolette,bonita,braden,branka,bree,brenda,brett,bria,brianna,bridgette,briget,brigid,brigita,brilliana,britnee,brittany,brittny,brooklyn,burdine,caden,cady,cairine,calixte,cally,camelia,candace,candela,candida,cara,carina,caris,carla,carlene,carlota,carmen,carol,carola,carolee,carolina,carolyn,carrie,cassidy,cassie,cath,catharine,catherine,cathie,cayetana,caylee,celeste,celestia,celia,celinda,cerys,chahna,chanda,chandrika,chapa,charlene,charlize,charlotta,charlotte,charu,cherine,cheryl,chloe,chrissie,christa,christabelle,christene,christi,christiane,christina,christine,cilla,cindy,clémence,clara,clare,clarice,clarinda,clarine,clarisse,claudia,clemence,cleopatra,cloe,colla,constantine,coralee,cornelia,cosette,courtney,crista,cristina,cristy,crystal,cynthia,cyra,désirée,dagmar,daiga,dainuvīte,dakota,dalal,dalene,damini,dana,danah,daneliya,danie,daniela,danielle,danna,dannah,daphna,darcie,dariga,darlene,daughter,dayna,deb,deborah,debra,debrah,deepa,deidre,delena,delilah,demi,dena,denice,denise,denisse,denyce,denyse,deriba,devon,devya,diamond,diana,diane,dina,dionne,ditte,dobroslav,donna,dorcas,dorina,dorinda,doris,dorothy,dorrie,dorrit,dot,dottie,draginja,drahomíra,drew,dulari,dunja,dzidra,dzintra,ebba,eda,edda,edeltraud,edie,edina,edit,eglė,eivor,eka,ekaterina,elayne,elektra,elena,elfi,elia,elif,elissa,eliza,elizabeth,elke,elle,ellie,eloise,elsa,else,elysia,elza,emelie,emilia,emilie,emily,emma,emmeline,emmy,epp,ericka,erlea,ermengarde,erminia,ernestine,esha,esperanza,esther,eta,etty,eugenia,eula,euphemia,eurydice,eva,evangelina,evelin,evelina,evelyn,evelyne,evi,evie,eyerusalem,ezra,fabia,falguni,fannie,fanny,fathia,fathy,fatuma,fay,felicia,fen,fernande,filomena,fiona,fioralba,flann,fleurette,flora,flore,florrie,frances,francisca,frederica,frederique,freya,friederike,friedl,fritzi,fulki,gabija,gabriela,galenka,gana,gayle,gazala,geena,georgeanna,georgene,georgette,georgina,geraldine,gerri,gerrie,gianina,giedrė,gillian,gina,ginevra,ginny,gisele,giuliana,giva,gladys,glaphyra,gloria,gordana,grażyna,gražina,grace,graciela,granddaughter,gratia,grayce,grazia,greta,gretchen,grete,gretta,grozdana,guðrún,gundega,gunhild,gunta,guntra,habiba,hagar,haima,haizea,hanima,hanna,hannah,hannah/hanna,haydée,hayden,hazel,hazelle,heather,hedvig,heidi,heidrun,helen,helena,helma,helmi,henrietta,hermana,hermanita,hermione,hetty,hilary,hilda,hildegard,hildr,hildur,hilma,hiya,hortense,hulda,humaira,hyacinth,iванка,ibtissam,ida,idina,ilana,ildze,ilene,ilka,ilona,ilze,iman,imanta,ināra,ina,india,indrė,indra,ines,inese,inessa,ineta,inez,ingrīda,ingrid,ingrida,inguna,inta,iqra,irbe,irene,iria,irina,iris,irma,irmela,isabel,isabella,ishita,isidora,isis,isolde,itziar,iveta,ivita,ivone,ivonne,iwona,izaro,izetta,izna,izolda,jacinta,jacqueline,jacquetta,jacquie,jada,jamie,jana,janaki,jane,janee,janet,janica,janice,janiya,jarmila,jasmine,jasna,jay,jaya,jayda,jean,jeana,jeananne,jemma,jen,jenni,jennica,jennifer,jenny,jenya,jerri,jerrie,jessica,jette,jillian,jilly,jimena,jinny,joan,joanie,joanna,joanne,jodie,joelle,joey,johanna,johny,joice,jolanta,jolene,jolie,jordan,jorja,josefa,josepha,josette,jovana,joy,joya,joyce,judi,judie,judith,judy,julia,juliana,julie,julissa,jurgita,justine,jyothi,kärt,kaia,kaiva,kalpana,kamala,kamie,karen,karin,karina,karishma,karla,karolina,kashvi,katalin,katarina,katerina,katey,katherine,kathleen,kathlyn,kathryn,kathy,katia,katja,katrin,katrina,katryna,kaye,kayla,keerthi,kelly,kellyn,kelsey,kerly,kertu,keya,khioniya,kiera,kim,kimberly,kirsi,kirsty,klaartje,klara,kornelia,korneliya,krisha,krista,kristel,kristen,kristi,kristin,kristina,kunigunde,lāsma,laasya,lada,ladli,laia,laimdota,laisa,lan,lanette,lara,laranya,larissa,lark,latanya,latisha,latoya,laura,lauran,lauren,lauretta,laurette,lea,leah,leanne,leida,leire,leisa,leisha,lekha,lelde,lena,leni,lenina,lenka,leonie,leonore,leontina,lepa,lesia,lesli,leticia,letitia,letty,leyna,leyre,lia,lianne,liddy,lidija,lidy,liene,lieselotte,liesl,ligia,liia,lila,lili,lilia,liliane,lilija,lilly,lilo,lina,linda,linnéa,linnie,lisa,liselotte,lissa,livia,logan,lola,loni,loredana,lorelei,lorena,lori,lorinda,lorrie,lottie,louisa,lovisa,lowiena,luana,luce,lucia,ludivine,luisa,luitgard,luna,lya,lynda,lynn,lynnette,lysette,lyubov,máire,märta,māra,maalai,mabel,macy,madalena,maddy,madeleine,madhavi,madhuri,madison,madre,magda,magdalene,magnhild,mahika,mahsa,maia,maila,maite,maja,malak,mallory,malou,malvina,mamá,mama,mammi,mana,mandy,mangala,mangamma,manuéla,manuela,mar,mara,marcela,marcie,maresa,marg,margaret,margarete,margarethe,margarita,margherita,margie,margit,margot,margrethe,marguerite,maria,mariann,marianne,maricel,marie,marieke,mariel,marilu,marilyn,marina,marita,marjana,marji,marjie,marjon,marjory,marlee,marta,martha,martina,martine,mary,mary lou,mason,matilde,maud,maurine,maxine,maya,mayo,meara,meg,megan,mehar,mel,melania,melinda,melissa,melita,mellisa,melly,mena,mendy,mercy,meredith,meri,merike,merilyn,merrilyn,meseret,mette,mia,michaela,michelle,mickey,mietje,mignon,mila,milana,milena,miley,millaray,millia,millie,milly,mimi,mimmi,mindy,minea,minnie,mirabel,mirai,miranda,mirdza,mireia,mirella,miriam,missy,mitzi,modra,molly,mom,mona,monica,montserrat,moonika,mother,mrinalini,mutti,mythri,nabhitha,nabila,nadia,nadja,nadya,nahia,nahla,naia,naiara,naina,naira,naitee,namita,nanci,nancy,nandini,nanette,naomi,nastja,nasya,nata,natalee,natalia,natalie,natallia,nataly,nayara,neela,negin,nell,nella,nelli,nelly,nerea,nerissa,neva,nevena,neysa,nichi,nicole,nidia,nieves,nijolė,nike,nilufar,nira,nisha,nivea,noa,noelia,noella,nonna,nora,norma,nuria,olesya,olga,olimpiada,olita,olivia,omala,ona,oriana,oviya,pablita,padmaja,paige,pallavi,pamela,paola,paoletta,pari,patricia,patty,paula,paulette,paulina,pavla,payton,pearl,peggy,penda,penelope,penny,pernille,persis,peta,petra,petrina,phebe,philippa,philomena,phoebe,phyllida,phyllis,pia,piia,pille,pipaluk,piper,pippa,polly,pooja,poppy,prerna,prisha,priska,prudence,prunella,quasar,queenie,queralt,rachel,rada,rae,raewyn,rajani,rambha,ramya,rebecca,regina,renesmee,renita,renitta,rewan,rhea,rhiannon,rhonda,rianne,rihanna,rimantė,rina,ritva,rocío,rochelle,roda,rosalie,rosamond,rosanna,rose,rosetta,roshni,rosie,rosina,rowan,roxann,roxanne,ruža,ružica,ruby,ruhi,ruth,saachi,sabine,sahana,saidat,saila,salena,sally,salma,salome,saloni,samantha,samara,samia,sandra,sandy,sanita,sanober,sara,sarah,sarina,sarmīte,sarojini,sasikala,saulcerīte,saule,savannah,scarlett,schwester,serafina,seren,shakuntala,shamma,shanelle,shania,shanique,shanzay,shara,sharna,sharon,shawna,shawnae,shayma,shayna,shefali,shenna,sherry,sheryl,shirley,shriya,shulamith,siân,siana,sidonia,sieglinde,sienna,sierra,sigita,signe,sigríður,silva,silvia,silvija,sinta,sissy,sister,siv,skaidrīte,skyler,smaida,sneha,sniedze,sofia,sofie,sokhna,solvita,sona,sonia,sonika,sophia,sophie,spodra,steffi,stefi,steph,stephanie,stephie,stina,suhanisa,susan,susannah,susanne,susy,suvarna,suzie,suzy,téa,taahira,taara,tabitha,talia,talisa,tamara,tameka,tami,tammie,tammy,tanis,tanisha,tante,tawny,taylor,tea,teegan,tekla,teresa,teresita,teri,terisa,tess,tessa,tessie,thea,theresa,therese,theresia,tiffanie,tiffany,tiia,tillie,tilly,tina,tinashe,tineke,tisha,tochter,tolulope,tonantzin,toni,tonia,traute,trayi,triana,tricia,trina,trish,trisha,trude,tuhina,tulsi,tutta,twyla,udaya,udval,ugnė,uliana,ulla,ulrica,urja,uxue,vahini,valarie,valentina,valeria,vanessa,vanita,varalakshmi,varsha,vasudha,vega,velga,velma,vendela,vendula,vera,vesta,vickie,vicky,victoria,vidya,viera,viive,viktorija,vilina,viola,violet,violeta,violetta,violette,virginia,viti,viviana,vizma,vlasta,vlatka,wanda,whitney,wilma,winnie,xóchitl,yaa,yanet,yuliana,yvette,yvonne,zahira,zaiga,zaina,zanda,zara,zarina,zelia,zena,zenia,zinta,zita,zlata,zoe,zora,zuleika</string>
 
     <string name="second_name_completions_man" translatable="false">ев,ов,ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>

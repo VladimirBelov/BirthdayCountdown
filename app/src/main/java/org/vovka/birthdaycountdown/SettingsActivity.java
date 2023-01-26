@@ -41,7 +41,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.InputType;
@@ -357,6 +356,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
+            /*
+            //Динамическое скрытие настроек
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Birthday_key));
             if (prefCat != null) {
 
@@ -371,12 +372,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key)) == null) {
                         pref = new CustomEditTextPreference(eventsData.getContext());
                         pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
-                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_description));
+                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary));
                         pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
                         prefCat.addPreference(pref);
                     }
 
-                    //Удаляем "Файлы", чтобы они могли (ниже) создасться после календарных настроек
+                    //Удаляем "Файлы", чтобы они могли (ниже) создастся после календарных настроек
                     pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
                     if (pref != null) prefCat.removePreference(pref);
 
@@ -411,29 +412,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     prefCat.addPreference(pref);
                 }
 
-            }
+            }*/
 
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_Icon_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_Female_Names_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Female_Names_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
 
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Birthday_key, R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom1_key, R.string.pref_CustomEvents_Custom1_UseYear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom2_key, R.string.pref_CustomEvents_Custom2_UseYear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom3_key, R.string.pref_CustomEvents_Custom3_UseYear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom4_key, R.string.pref_CustomEvents_Custom4_UseYear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom5_key, R.string.pref_CustomEvents_Custom5_UseYear_key);
 
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
 
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
-            hidePreference(!eventsData.preferences_extrafun, pref_menu_isCompact, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
 
-            hidePreference(eventsData.checkNoBatteryOptimization(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
-            hidePreference(!eventsData.checkNoContactsAccess(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
-            hidePreference(!eventsData.checkNoCalendarAccess(), pref_menu_isCompact, R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+
+            hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+            hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
+            hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -441,23 +450,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    void hidePreference(boolean condition, boolean isThisScreen, @StringRes int parentId, @StringRes int resId) {
+    void hidePreference(boolean condition, @StringRes int parentId, @StringRes int resId) {
 
         try {
 
-            if (condition) {
-                if (isThisScreen) {
-                    PreferenceScreen prefScreen = (PreferenceScreen) findPreference(getString(parentId));
-                    if (prefScreen != null) {
-                        Preference pref = findPreference(getString(resId));
-                        if (pref != null) prefScreen.removePreference(pref);
+            if (!condition) return;
+
+            Preference pref = findPreference(getString(resId));
+            if (pref != null) {
+                Preference prefParent = findPreference(getString(parentId));
+                if (prefParent != null) {
+                    if (prefParent instanceof PreferenceScreen) {
+                        ((PreferenceScreen) prefParent).removePreference(pref);
+                    } else if (prefParent instanceof PreferenceCategory) {
+                        ((PreferenceCategory) prefParent).removePreference(pref);
                     }
-                } else {
-                    PreferenceCategory prefCat = (PreferenceCategory) findPreference(getString(parentId));
-                    if (prefCat != null) {
-                        Preference pref = findPreference(getString(resId));
-                        if (pref != null) prefCat.removePreference(pref);
-                    }
+
                 }
             }
 
@@ -549,7 +557,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_BirthDay);
                 if (eventsData.checkNoCalendarAccess()) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
@@ -563,7 +571,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Other);
 
                 if (eventsData.checkNoCalendarAccess()) {
 
@@ -639,7 +647,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay);
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_BirthDay);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -650,7 +658,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.eventTypesIDs.get(Constants.Type_Other);
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Other);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -1453,7 +1461,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     //https://habr.com/ru/post/203884/
-    private void selectFiles(String eventType) {
+    private void selectFiles(@NonNull String eventType) {
 
         try {
 
@@ -1469,7 +1477,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     filesPaths.add(
                             file.split(Constants.STRING_PIPE)[0]
                                 + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getFileEventsCount(file)
+                                + eventsData.getFileEventsCount(file, eventType.equals(Constants.Type_MultiEvent))
                                 + Constants.STRING_BRACKETS_CLOSE
                     );
                     filesFullData.add(file);

@@ -204,7 +204,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Знак зодиака и животное в восточном календаре
                 String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
 
-                if (eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.eventTypesIDs.get(Constants.Type_5K))) {
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
                     String strZodiacInfo = Constants.STRING_EMPTY;
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))
