@@ -23,7 +23,7 @@
             android:id="@+id/mainStatsTextView"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dip"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             android:gravity="bottom|fill_vertical|end"
@@ -31,9 +31,9 @@
             android:minEms="50"
             android:minLines="1"
             android:paddingStart="5dip"
-            android:textAlignment="gravity"
+            android:textAlignment="center"
             android:textColor="?attr/windowTitleColor"
-            android:textSize="9sp"
+            android:textSize="10sp"
             tools:ignore="RtlSymmetry,SmallSp" />
 
     </LinearLayout>

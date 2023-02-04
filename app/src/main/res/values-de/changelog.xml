@@ -18,6 +18,8 @@
         <item>Unterstützung für das Format der \"Bithdays\"-Anwendung hinzugefügt (Beschreibung in \"Fragen und Antworten\")</item>
         <item>Anzeige der Anzahl der Ereignisse bei der Auswahl von Konten, Kalendern, Dateien hinzugefügt</item>
         <item>Schnelllinks (Schaltfläche \"?\") zu den entsprechenden \"Fragen und Antworten\"-Abschnitten einiger Einstellungsbildschirme hinzugefügt</item>
+        <item>Ereignisimporteinstellungen wurden in eine separate Kategorie unter Ereignisquellen verschoben. Dort können Sie die Namensformate für den Import von Kalender- und Dateiereignissen festlegen</item>
+        <item>Ereignisse aus Dateien können jetzt ausgeblendet und Benachrichtigungen für sie deaktiviert werden</item>
         <item>Fehlerbehebungen und schnelleres Laden von Ereignissen</item>
 
         <item>#1.7.4</item>

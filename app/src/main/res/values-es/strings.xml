@@ -284,7 +284,7 @@
     <string name="pref_CustomEvents_Sources_title">Fuentes de eventos</string>
     <string name="pref_CustomEvents_Sources_summary">Use estas fuentes para eventos de diferentes tipos (el tipo se especifica dentro de los eventos o está determinado por \"Etiquetas de eventos\" a continuación)</string>
 
-    <string name="pref_CustomEvents_Rules_title">Importar ajustes</string>
+    <string name="pref_CustomEvents_Rules_title">Configuración de importación</string>
     <string name="pref_CustomEvents_Rules_summary">Use esta configuración al importar eventos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Reglas</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Reglas para reconocer el nombre del contacto del encabezado del evento del calendario</string>

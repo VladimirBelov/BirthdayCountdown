@@ -18,6 +18,8 @@
         <item>Se agregó compatibilidad con el formato de la aplicación \"Birthdays\" (descripción en \"Preguntas y respuestas\")</item>
         <item>Se agregó visualización de la cantidad de eventos al seleccionar cuentas, calendarios, archivos</item>
         <item>Se agregaron enlaces rápidos (botón \"?\") a las secciones correspondientes \"Preguntas y respuestas\" de algunas pantallas de configuración</item>
+        <item>La configuración de importación de eventos se movió a una categoría separada en las fuentes de eventos. Allí puede especificar los formatos de nombre para importar eventos de calendario y archivos.</item>
+        <item>Los eventos de los archivos ahora se pueden ocultar y las notificaciones se pueden desactivar para ellos</item>
         <item>Corrección de errores y carga más rápida de eventos</item>
 
         <item>#1.7.4</item>

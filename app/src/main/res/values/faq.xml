@@ -51,7 +51,7 @@
         <item>#Contact events</item>
         <item>By default, events (birthdays, anniversaries, user events, other events) from all accounts on the device are shown.</item>
         <item>To restrict the choice of accounts for scanning events, it need to select the necessary ones in Settings-> Events setup-> Events sources-> Accounts.</item>
-        <item>To display events from all accounts (including local ones) click \"All\".</item>
+        <item>To display events from all accounts click button \"All\".</item>
 
         <item>#<![CDATA[<a id="events_calendar">Calendar events]]></item>
         <item><![CDATA[Any calendar events from the selected calendars are supported.<ul>
@@ -60,7 +60,7 @@
          <li>If you want to specify links to external resources, web links in calendar events should be in the Description field and start with http:// or https://
          <li>Depending on the selected section where the calendar is specified, the mechanism for importing events is different.
          </ul>]]></item>
-        <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules are used for this (by default uses calendar event title as contact name). If a contact is found, the person\'s data is used for event display. There are three options: <ol>
+        <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday: During importing of event there is a search for a contact in the address book. Name recognition rules and name format are used for this (they are set in Settings-> Events setup-> Import settings). By default, the whole event title is used as the contact name. If a contact is found, the person\'s data is added to the event details: photo, organization, position, web links. There are three options: <ol>
         <li>contact found, but there is already data about the birthday - the date from the calendar will be added to the event (with or without a year - depending on the setting)
         <li>the contact was found, but there is no information about the birthday - a new event will be added to the list
         <li>contact not found - a new event will be added
@@ -75,7 +75,7 @@
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
         <li>If the calendar is empty, create or import the required events
         <li>A link to instructions on how to upload friends\' birthdays from social networks is below
-        <li>If in a birthday calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events customizing-> Birthday-> Rules. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
+        <li>If in a birthday calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events setup-> Import settings-> Name recognition rules. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
         <li>After creating (turning on) the calendar must be selected in one of the settings (in only one!): <ul>
                          <li>Settings-> Events setup-> Event Sources-> Calendars
                          <li>Settings-> Events setup-> Birthday-> Calendars

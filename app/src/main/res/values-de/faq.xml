@@ -53,7 +53,7 @@
                 <item>#Kontaktereignisse</item>
                 <item>Standardmäßig werden Ereignisse (Geburtstage, Jahrestage, benutzerdefinierte Ereignisse, andere Ereignisse) von allen Konten auf dem Gerät angezeigt.</item>
                 <item>Um die Auswahl der Konten für Scan-Ereignisse einzuschränken, müssen die erforderlichen Konten unter Einstellungen-> Ereignisse eirichten-> Ereignisquellen-> Konten ausgewählt werden.</item>
-                <item>Um Ereignisse von allen Konten (einschließlich lokaler) anzuzeigen, klicken Sie auf \"Alle\".</item>
+                <item>Um Ereignisse von allen Konten anzuzeigen, klicken Sie auf die Schaltfläche \"Alle\".</item>
 
                 <item>#<![CDATA[<a id="events_calendar">Kalenderereignisse]]></item>
                 <item><![CDATA[Alle Kalenderereignisse aus den ausgewählten Kalendern werden unterstützt.<ul>
@@ -63,7 +63,7 @@
                  <li>Je nach ausgewähltem Abschnitt, in dem der Kalender angegeben ist, ist der Mechanismus zum Importieren von Ereignissen unterschiedlich.
                  </ul>]]></item>
                 <item> </item>
-                <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Hierfür werden Regeln zur Erkennung von Namen verwendet. Standardmäßig wird der Titel des Kalenderereignisses als Kontaktname verwendet. Wenn ein Kontakt gefunden wird, werden die Daten der Person für die Ereignisanzeige verwendet. Es gibt drei Möglichkeiten: <ol>
+                <item><![CDATA[<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag: Während des Imports des Ereignisses wird nach einem Kontakt im Adressbuch gesucht. Dazu werden Namenserkennungsregeln und Namensformat verwendet (sie werden in Einstellungen-> Ereignisse einrichten-> Importeinstellungen festgelegt). Standardmäßig wird der gesamte Veranstaltungstitel als Kontaktname verwendet. Wird ein Kontakt gefunden, werden die Daten der Person zu den Veranstaltungsdetails hinzugefügt: Foto, Organisation, Position, Weblinks. Es gibt drei Möglichkeiten: <ol>
                 <li>Kontakt gefunden, aber es gibt bereits Daten über den Geburtstag - das Datum aus dem Kalender wird dem Ereignis hinzugefügt (mit oder ohne ein Jahr - je nach Einstellung)
                 <li>der Kontakt wurde gefunden, aber es gibt keine Informationen über den Geburtstag - ein neues Ereignis wird der Liste hinzugefügt
                 <li>Kontakt nicht gefunden - ein neues Ereignis wird hinzugefügt
@@ -73,7 +73,7 @@
                 <li>Erstellen Sie einen neuen Kalender in ihrer Standardkalender-App oder wählen Sie beispielsweise einen Kalender für Feiertage
                 <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse
                 <li>Ein Link zu den Anweisungen, wie man Geburtstage von Freunden aus sozialen Netzwerken hochlädt, steht unten
-                <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Anpassung der Ereignisse-> Geburtstag-> Regeln. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
+                <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Ereignisse einrichten-> Importeinstellungen-> Regeln. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
                 <li>Nach dem Erstellen (Aktivieren) muss der Kalender in einem der Absätze (in nur einem!) ausgewählt werden: <ul>
                          <li>Einstellungen-> Ereignisse einrichten-> Ereignisquellen-> Kalender
                          <li>Einstellungen-> Ereignisse einrichten-> Geburtstag-> Kalender

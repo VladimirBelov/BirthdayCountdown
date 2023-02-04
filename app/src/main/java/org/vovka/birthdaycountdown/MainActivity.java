@@ -1265,7 +1265,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
 
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
-            if (!selectedEvent[ContactsEvents.Position_contactID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
+            int contactID = 0;
+            try {
+                contactID = Integer.parseInt(selectedEvent[ContactsEvents.Position_contactID]);
+            } catch (NumberFormatException e) {/**/}
+            if (!selectedEvent[ContactsEvents.Position_contactID].isEmpty() && (contactID > 0 & contactID < 1000000)) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact));
             } else {
                 menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact));

@@ -483,9 +483,13 @@ class ContactsEvents {
 
             if (singleEventArray.length < Position_attrAmount) return null;
             Uri uri = null;
+            int contactID = 0;
+            try {
+                contactID = Integer.parseInt(singleEventArray[ContactsEvents.Position_contactID]);
+            } catch (NumberFormatException e) {/**/}
 
             if (prefAction == 1) { //Контакт, календарь, ссылка
-                if (!TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
@@ -498,7 +502,7 @@ class ContactsEvents {
 
                 if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
@@ -510,14 +514,14 @@ class ContactsEvents {
                 if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                 }
 
             } else if (prefAction == 4) { //Контакт, ссылка, календарь
-                if (!TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
@@ -2923,7 +2927,9 @@ class ContactsEvents {
 
                         //hashCode -> ID
                         if (contactID == null) {
-                            contactID = Integer.toString(Math.abs((file + eventTitle).hashCode()));
+                            int divIndex = file.indexOf(Constants.STRING_BAR);
+                            if (divIndex < 0) divIndex = file.length();
+                            contactID = Integer.toString(Math.abs((file.substring(divIndex) + eventTitle).hashCode()));
                             isFakeID = true;
                         }
 

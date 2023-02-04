@@ -13,7 +13,7 @@
     <!-- Зелёная тема ===========================================================================-->
 
     <style name="AppTheme.Green" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -82,7 +82,7 @@
     <!-- Тёмно-серая тема ===========================================================================-->
 
     <style name="AppTheme.DarkGray" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -149,7 +149,7 @@
     <!-- Чёрная тема ===========================================================================-->
 
     <style name="AppTheme.Black" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -214,7 +214,7 @@
     <!-- Голубая тема ===========================================================================-->
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -278,7 +278,7 @@
     <!-- Blue-Grey тема ===========================================================================-->
 
     <style name="AppTheme.BlueGrey" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="alertDialogTheme">@style/AlertDialog.BlueGrey</item>
@@ -354,7 +354,7 @@
     <!-- Оранжевая тема ===========================================================================-->
 
     <style name="AppTheme.Orange" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -422,7 +422,7 @@
     <!-- Бирюзовая тема ===========================================================================-->
 
     <style name="AppTheme.Teal" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -490,7 +490,7 @@
     <!-- Коричневая тема ===========================================================================-->
 
     <style name="AppTheme.Brown" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
@@ -558,7 +558,7 @@
     <!-- Индиго ===========================================================================-->
 
     <style name="AppTheme.Indigo" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarSize">48sp</item>
+        <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>

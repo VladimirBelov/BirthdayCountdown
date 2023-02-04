@@ -18,6 +18,8 @@
         <item>Added support for format of \"Birthdays\" application (description in \"Questions and Answers\")</item>
         <item>Added display of events count when selecting accounts, calendars, files</item>
         <item>Added quick links (button \"?\") to the corresponding \"Questions and Answers\" sections from some setting screens</item>
+        <item>Event import settings moved to separate category under event sources. There you can specify the name formats for importing calendar and file events</item>
+        <item>Events from files can now be hidden and notifications can be turned off for them</item>
         <item>Bug fixes and faster loading of events</item>
 
         <item>#1.7.4</item>

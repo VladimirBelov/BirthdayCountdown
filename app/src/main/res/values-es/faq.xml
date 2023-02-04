@@ -52,7 +52,7 @@
                 <item>#Eventos de contacto</item>
                 <item>De forma predeterminada, se muestran los eventos (cumpleaños, aniversarios, eventos de usuarios, otros eventos) de todas las cuentas del dispositivo.</item>
                 <item>Para restringir la elección de cuentas para escanear eventos, debe seleccionar las necesarias en Configuraciones-> Configurar eventos-> Fuentes de eventos-> Cuentas.</item>
-                <item>Para mostrar los eventos de todas las cuentas (incluidas las locales), haga clic en \"Todos\".</item>
+                <item>Para mostrar los eventos de todas las cuentas, haga clic en el botón \"Todos\".</item>
 
                 <item>#<![CDATA[<a id="events_calendar">Eventos del calendario]]></item>
                 <item><![CDATA[Se admite cualquier evento de calendario de los calendarios seleccionados.<ul>
@@ -61,7 +61,7 @@
                  <li>Si desea especificar enlaces a recursos externos, los enlaces web en los eventos del calendario deben estar en el campo Descripción y comenzar con http:// o https://
                  <li>Dependiendo de la sección seleccionada donde se especifica el calendario, el mecanismo para importar eventos es diferente.
                  </ul>]]></item>
-                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres se usan para esto (de manera predeterminada, se usa el título del evento del calendario como nombre del contacto). Si se encuentra un contacto, los datos de la persona se utilizan para la visualización de eventos. Hay tres opciones: <ol>
+                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres y el formato de nombre se utilizan para esto (se establecen en Configuraciones-> Configuración de eventos-> Configuración de importación). De forma predeterminada, se utiliza el título completo del evento como nombre del contacto. Si se encuentra un contacto, los datos de la persona se agregan a los detalles del evento: foto, organización, cargo, enlaces web. Hay tres opciones: <ol>
                 <li>contacto encontrado, pero ya hay datos sobre el cumpleaños: la fecha del calendario se agrega al evento (con o sin año, dependiendo de la configuración)
                 <li>el contacto se encontró, pero no hay información sobre el cumpleaños: se agrega un nuevo evento a la lista
                 <li>contacto no encontrado: se agrega un nuevo evento
@@ -76,7 +76,7 @@
                 <li>En la aplicación de calendario estándar, cree un calendario (o elija mostrar el calendario para días festivos nacionales o religiosos)
                 <li>Si el calendario está vacío, cree o importe los eventos necesarios
                 <li>A continuación se incluye un enlace a las instrucciones sobre cómo cargar los cumpleaños de amigos de las redes sociales.
-                <li>Si en un evento de calendario de cumpleaños, el nombre del contacto ocupa solo una parte del nombre del evento, puede definir reglas para la recuperación de nombres. Este nombre se utilizará para buscar contactos en la libreta de direcciones para agregar atributos adicionales: foto, organización, título, alias. Las reglas se configuran en Ajustes-> Personalización de eventos-> Cumpleaños-> Reglas. Por ejemplo: título del evento de calendario \"Cumpleaños. John Doe\", regla: \"Cumpleaños. [nombre]\" (sin comillas)
+                <li>Si en un evento de calendario de cumpleaños, el nombre del contacto ocupa solo una parte del nombre del evento, puede definir reglas para la recuperación de nombres. Este nombre se utilizará para buscar contactos en la libreta de direcciones para agregar atributos adicionales: foto, organización, título, alias. Las reglas se configuran en Configurationes-> Configuratión de eventos-> Configuratión de importación-> Reglas. Por ejemplo: título del evento de calendario \"Cumpleaños. John Doe\", regla: \"Cumpleaños. [nombre]\" (sin comillas)
                 <li>Después de crear (encender) el calendario se debe seleccionar en uno de los párrafos (¡en uno solo!): <ul>
                          <li>Configuración-> Configurar eventos-> Fuentes de eventos-> Calendarios
                          <li>Configuración-> Configurar eventos-> Cumpleaños-> Calendarios
