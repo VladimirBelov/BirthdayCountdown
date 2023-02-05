@@ -1,4 +1,14 @@
 EN:
+
+Privacy policy: personal data that the application receives, processes or stores:
+
+1. No personal data is stored outside the user's device, transferred anywhere or used. The application does not have permissions to use the Internet.
+2. If the user has given permission to access contact data, then the list of Android user accounts is read and event data is obtained from the address book. The data is not stored anywhere, but only displayed in the application.
+3. If the user has given permission to access calendar data, then the list of calendars and events in the selected calendars are read. The data is not stored anywhere, but only displayed in the application.
+4. If the user specified any files to be used as event sources, then the events from these files are read. The data is not stored anywhere, but only displayed in the application.
+
+Permissions that the application receives after installation or that may be requested during the application setup process:
+
 Permission android.permission.READ_CONTACTS is required to obtain data from the Android address book. Information is not copied anywhere and does not change in any way.
 Permission android.permission.WAKE_LOCK (prevent device from sleeping) is necessary to automatically update widgets on Android 8+.
 Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notification.
@@ -7,7 +17,18 @@ Permission android.permission.READ_EXTERNAL_STORAGE is necessary for playing not
 Permission android.permission.READ_CALENDAR is required to read calendar events. Information is not copied anywhere else and does not change in any way.
 Permission android.permission.ACCESS_NOTIFICATION_POLICY is required to set high priority to quiz notifications on Android 7 and below.
 
+-------------------
 RU:
+
+Политика конфиденциальности: персональные данные, которые приложение получает, обрабатывает или хранит:
+
+1. Никакие персональные данные не хранятся вне устройства пользователя, никуда не передаются и не используются. У приложения нет разрешений на использование сети Интернет.
+2. Если пользователь дал разрешение на доступ к данным контактов, то считывается список пользовательских учётных записей Android и получаются данные о событиях из адресной книги. Данные нигде не сохраняются, а только отображаются в приложении.
+3. Если пользователь дал разрешение на доступ к данным календарей, то считывается список календарей и события в выбранных календарях. Данные нигде не сохраняются, а только отображаются в приложении.
+4. Если пользователь указал какие-либо файлы, что использования их в качестве источников событий, то считываются события из этих файлов. Данные нигде не сохраняются, а только отображаются в приложении.
+
+Разрешения, которые приложение получает после установки или которые могут быть запрошены в процессе настройки приложения:
+
 Разрешение android.permission.READ_CONTACTS необходимо для получения данных из адресной книги Android. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.WAKE_LOCK (prevent device from sleeping) необходимо для автоматического обновления виджетов на Android 8+.
 Разрешение android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необходимо для корректировки времени появления уведомления о предстоящих событиях.
@@ -16,7 +37,18 @@ RU:
 Разрешение android.permission.READ_CALENDAR необходимо для получения календарных событий. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.ACCESS_NOTIFICATION_POLICY необходимо для выставления высокого приоритета уведомлениям викторины на Android 7 и младше.
 
+-------------------
 DE:
+
+Datenschutzrichtlinie: Personenbezogene Daten, die die Anwendung erhält, verarbeitet oder speichert:
+
+1. Es werden keine personenbezogenen Daten außerhalb des Geräts des Benutzers gespeichert, irgendwohin übertragen oder verwendet. Die Anwendung ist nicht berechtigt, das Internet zu verwenden.
+2. Wenn der Benutzer die Erlaubnis zum Zugriff auf Kontaktdaten erteilt hat, wird die Liste der Android-Benutzerkonten gelesen und Ereignisdaten aus dem Adressbuch abgerufen. Die Daten werden nirgendwo gespeichert, sondern nur in der Anwendung angezeigt.
+3. Wenn der Benutzer die Erlaubnis zum Zugriff auf Kalenderdaten erteilt hat, wird die Liste der Kalender und Ereignisse in den ausgewählten Kalendern gelesen. Die Daten werden nirgendwo gespeichert, sondern nur in der Anwendung angezeigt.
+4. Wenn der Benutzer Dateien angegeben hat, die als Ereignisquellen verwendet werden sollen, werden die Ereignisse aus diesen Dateien gelesen. Die Daten werden nirgendwo gespeichert, sondern nur in der Anwendung angezeigt.
+
+Berechtigungen, die die Anwendung nach der Installation erhält oder die während des Einrichtungsprozesses der Anwendung angefordert werden können:
+
 Die Berechtigungen android.permission.READ_CONTACTS und android.permission.GET_ACCOUNTS sind erforderlich, um Daten aus dem Android-Adressbuch abzurufen. Informationen werden nirgendwo kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.WAKE_LOCK (Standby-Modus des Geräts verhindern) ist erforderlich, um Widgets unter Android 8+ automatisch zu aktualisieren.
 Die Berechtigung android.permission.RECEIVE_BOOT_COMPLETED (wird beim Start ausgeführt) ist erforderlich, um den Zeitpunkt der Benachrichtigung über bevorstehende Ereignisse anzupassen.
@@ -25,7 +57,18 @@ Die Berechtigung android.permission.READ_EXTERNAL_STORAGE ist erforderlich, um B
 Die Berechtigung android.permission.READ_CALENDAR ist erforderlich, um Kalenderereignisse zu empfangen. Informationen werden nirgendwo anders kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.ACCESS_NOTIFICATION_POLICY ist erforderlich, um Quizbenachrichtigungen unter Android 7 und niedriger eine hohe Priorität einzuräumen.
 
+-------------------
 UKR:
+
+Політика конфіденційності: персональні дані, які програма отримує, обробляє або зберігає:
+
+1. Ніякі персональні дані не зберігаються поза пристроєм користувача, нікуди не передаються та не використовуються. Програма не має дозволів на використання Інтернету.
+2. Якщо користувач дав дозвіл на доступ до даних контактів, то зчитується список облікових записів Android і виходять дані про події з адресної книги. Дані ніде не зберігаються, а лише відображаються у програмі.
+3. Якщо користувач дав дозвіл на доступ до даних календарів, зчитується список календарів та події у вибраних календарях. Дані ніде не зберігаються, а лише відображаються у програмі.
+4. Якщо користувач вказав будь-які файли, що використовують їх як джерела подій, то зчитуються події з цих файлів. Дані ніде не зберігаються, а лише відображаються у програмі.
+
+Дозволи, які програма отримує після встановлення або які можуть бути запитані в процесі налаштування програми:
+
 Дозвіл android.permission.READ_CONTACTS необхідно для отримання даних з адресної книги Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.WAKE_LOCK (prevent device from sleeping) необхідно для автоматичного оновлення віджетів на Android 8+.
 Дозвіл android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необхідно для коригування часу появи повідомлення про майбутні події.
@@ -34,7 +77,18 @@ UKR:
 Дозвіл android.permission.READ_CALENDAR необхідно для отримання календарних подій. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.ACCESS_NOTIFICATION_POLICY потрібен для встановлення високого пріоритету для повідомлень про вікторини на Android 7 і старіших версіях.
 
+-------------------
 CN:
+
+隐私政策：应用程序接收、处理或存储的个人数据：
+
+1. 个人数据不会存储在用户设备之外，也不会在任何地方传输或使用。 该应用程序没有使用 Internet 的权限。
+2. 如果用户允许访问联系人数据，则读取 Android 用户帐户列表并从地址簿中获取事件数据。 数据不存储在任何地方，而仅显示在应用程序中。
+3. 如果用户已授予访问日历数据的权限，则读取所选日历中的日历和事件列表。 数据不存储在任何地方，而仅显示在应用程序中。
+4. 如果用户指定任何文件用作事件源，则从这些文件中读取事件。 数据不存储在任何地方，而仅显示在应用程序中。
+
+应用程序在安装后收到的权限或在应用程序设置过程中可能请求的权限：
+
 从Android通讯录获取数据需要android.permission.READ_CONTACTS和android.permission.GET_ACCOUNTS权限。 信息不会被复制到任何地方，并且不会以任何方式改变。
 必须具有权限android.permission.WAKE_LOCK（防止设备进入休眠状态），才能在Android 8+上自动更新小部件。
 权限android.permission.RECEIVE_BOOT_COMPLETED（在启动时运行）对于调整即将发生的事件的通知时间是必需的。
