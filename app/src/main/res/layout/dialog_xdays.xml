@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 22.02.2023, 23:01
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 22.02.2023, 23:01
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|start"
+    android:orientation="vertical"
+    android:padding="?attr/dialogPreferredPadding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_marginEnd="8dip"
+            android:contentDescription="@string/hint_AlertDialogIcon"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/title"
+            style="?android:attr/windowTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="viewStart" />
+    </LinearLayout>
+
+
+    <include layout="@layout/entry_main"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Повторять событие:"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/repeats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:hint="введите число дней"
+                android:inputType="text"
+                android:textColorHint="?android:attr/textColorPrimary"
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="число дней, через которое нужно повторять событие. например: 1000, 5000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/captionNextEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Ближайшие повторы:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/listNextEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="08.10.2023: 2000 дней\n18.10.2033: 3000 дней\n18.10.2043: 4000 дней"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+</LinearLayout>
