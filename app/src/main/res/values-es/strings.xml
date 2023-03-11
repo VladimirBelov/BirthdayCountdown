@@ -532,7 +532,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
-    <string name="pref_Widgets_EventInfo_summary">Qué detalles del evento y elementos del widget mostrar</string>
+    <string name="pref_Widgets_EventInfo_summary">Qué detalles de eventos y elementos de widget mostrar de forma predeterminada</string>
 
     <string name="pref_Widgets_EventInfo_None">Nada</string>
     <string name="pref_Widgets_EventInfo_Border">Borde del widget</string>
@@ -579,14 +579,14 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Título (fila inferior)</string>
-    <string name="pref_Widgets_BottomInfo_summary">Qué mostrar debajo de la foto</string>
+    <string name="pref_Widgets_BottomInfo_summary">Qué mostrar debajo de la foto en los widgets de fotos</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Título (fila superior)</string>
-    <string name="pref_Widgets_BottomInfo2nd_summary">Qué mostrar debajo de la foto</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Qué mostrar debajo de la foto en los widgets de fotos</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Apellido Nombre Patronímico</item>
-        <item>Apellido N. P.</item>
+        <item>Apellido N. P. (Nombre, si no tiene Apellido)</item>
         <item>Nombre Patronímico Apellido</item>
         <item>Nombre</item>
         <item>Alias (Nombre, si está ausente)</item>

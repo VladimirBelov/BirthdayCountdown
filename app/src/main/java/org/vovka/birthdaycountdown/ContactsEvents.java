@@ -65,6 +65,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -147,6 +148,7 @@ class ContactsEvents {
         put(Constants.Type_Custom5, "19");
         put(Constants.Type_CalendarEvent, "20");
         put(Constants.Type_FileEvent, "21");
+        put(Constants.Type_Xdays, "22");
     }};
 
     @NonNull
@@ -182,7 +184,6 @@ class ContactsEvents {
     final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
-    final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
@@ -197,7 +198,8 @@ class ContactsEvents {
     final SimpleDateFormat sdf_DDMMY = new SimpleDateFormat(Constants.DATE_DD_MM_Y, Locale.US);
     final SimpleDateFormat sdf_DDMMYYYY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, Locale.US);
     final SimpleDateFormat sdf_DDMMYYYY_G = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, Locale.US);
-    final SimpleDateFormat sdf_DDMMYYYYHHMM = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.US);
+    @SuppressLint("SimpleDateFormat")
+    final SimpleDateFormat sdf_DDMMYYYYHHMM = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
     final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
     final SimpleDateFormat sdf_MMMMDYYYY = new SimpleDateFormat(Constants.DATE_MMMM_D_YYYY, Locale.US);
     final SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
@@ -213,6 +215,7 @@ class ContactsEvents {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final HashMap<String, String> map_contacts_data = new HashMap<>(); //кеш данных о контактах
     private final HashMap<String, String> preferences_mergedIDs = new HashMap<>();
+    private final HashMap<String, String> preferences_xDaysEvents = new HashMap<>();
     List<String> eventListUnsorted = new ArrayList<>(); //Несортированный список
     int currentTheme = 0;
     boolean needUpdateEventList = false;
@@ -249,19 +252,20 @@ class ContactsEvents {
     Set<String> preferences_widgets_event_info;
     String preferences_widgets_bottom_info;
     String preferences_widgets_bottom_info_2nd;
-    int preferences_widgets_days_eventsoon;
+    int preferences_widgets_days_event_soon;
     int preferences_widgets_color_default;
-    int preferences_widgets_color_eventtoday;
-    int preferences_widgets_color_eventsoon;
-    int preferences_widgets_color_eventfar;
+    int preferences_widgets_color_event_today;
+    int preferences_widgets_color_event_soon;
+    int preferences_widgets_color_event_far;
     int preferences_widgets_on_click_action;
     String preferences_first_names_female_custom;
-    Matcher preferences_last_name_comletions_man;
-    Matcher preferences_last_name_comletions_female;
-    Matcher preferences_first_names_man;
+    String preferences_first_names_male_custom;
+    Matcher preferences_last_name_completions_male;
+    Matcher preferences_last_name_completions_female;
+    Matcher preferences_first_names_male;
     Matcher preferences_first_names_female;
-    Matcher preferences_second_name_comletions_man;
-    Matcher preferences_second_name_comletions_female;
+    Matcher preferences_second_name_completions_male;
+    Matcher preferences_second_name_completions_female;
     @Nullable
     Matcher preferences_death_labels;
     String preferences_birthday_calendars_rules;
@@ -310,8 +314,8 @@ class ContactsEvents {
     /* preferences_notifications_type:
      *   0 - Одно общее уведомление
      *   1 - Каждое событие в отдельном уведомлении
-     *   2 - Если собыий меньше 3 => отдельные, иначе - общее
-     *   3 - Если собыий меньше 4 => отдельные, иначе - общее
+     *   2 - Если событий меньше 3 => отдельные, иначе - общее
+     *   3 - Если событий меньше 4 => отдельные, иначе - общее
      * */
     private int preferences_notifications_type;
     private int preferences_notifications_priority;
@@ -326,7 +330,8 @@ class ContactsEvents {
     Set<String> preferences_Birthday_files = new HashSet<>();
     Set<String> preferences_OtherEvent_files = new HashSet<>();
     Set<String> preferences_MultiType_files = new HashSet<>();
-
+    private Set<String> pref_List_Event_Info_Default;
+    private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
 
     //Статистика
@@ -335,6 +340,7 @@ class ContactsEvents {
     long statTimeGetFileEvents = 0;
     long statTimeComputeDates = 0;
     long statLastComputeDates = 0;
+    long statLastSearchSuggestion = 0;
     int statContactsEventCount = 0;
     int statCalendarsEventCount = 0;
     int statFilesEventCount = 0;
@@ -346,20 +352,20 @@ class ContactsEvents {
     int statEventsCount = 0;
     long statLastPausedForOtherActivity = 0;
     int statEventsPrevEventsFound = 0;
-    float DisplayMetrics_density;
+    final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
+    float DisplayMetrics_density;
     boolean isUIopen = false;
     float dimen_List_details;
     float dimen_List_name;
     float dimen_list_date;
-    private Set<String> pref_List_Event_Info_Default;
-    private Set<String> pref_Widgets_EventInfo_Info_Default;
     private String currentLocale = Constants.STRING_EMPTY;
 
     //UI объекты
     private Context context;
     private Resources resources;
     private ContentResolver contentResolver;
+    @Nullable protected CoordinatorLayout coordinator;
     private ContactsEvents() {
     }
 
@@ -483,14 +489,12 @@ class ContactsEvents {
 
             if (singleEventArray.length < Position_attrAmount) return null;
             Uri uri = null;
-            int contactID = 0;
-            try {
-                contactID = Integer.parseInt(singleEventArray[ContactsEvents.Position_contactID]);
-            } catch (NumberFormatException e) {/**/}
+            String contactID = singleEventArray[ContactsEvents.Position_contactID];
+            boolean isRealContactID = contactID != null && !contactID.isEmpty() && isRealContactEventID(contactID);
 
             if (prefAction == 1) { //Контакт, календарь, ссылка
-                if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
-                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                if (isRealContactID) {
+                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
@@ -502,7 +506,7 @@ class ContactsEvents {
 
                 if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
+                } else if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
@@ -514,14 +518,14 @@ class ContactsEvents {
                 if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
+                } else if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                 }
 
             } else if (prefAction == 4) { //Контакт, ссылка, календарь
-                if (!TextUtils.isEmpty(singleEventArray[Position_contactID]) && (contactID > 0 & contactID < 1000000)) {
+                if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
                     String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
@@ -854,7 +858,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    private String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_4_21) {
+    String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_4_21) {
 
         try {
 
@@ -938,12 +942,12 @@ class ContactsEvents {
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
             preferences_widgets_bottom_info_2nd = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
-            preferences_widgets_days_eventsoon = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default)));
+            preferences_widgets_days_event_soon = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default)));
             preferences_widgets_update_period = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_UpdateInterval_key), context.getString(R.string.pref_Widgets_UpdateInterval_default)));
             preferences_widgets_on_click_action = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_OnClick_key), context.getString(R.string.pref_Widgets_OnClick_default)));
-            preferences_widgets_color_eventtoday = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventToday_key), getResources().getColor(R.color.pref_Widgets_Color_EventToday_default));
-            preferences_widgets_color_eventsoon = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventSoon_key), getResources().getColor(R.color.pref_Widgets_Color_EventSoon_default));
-            preferences_widgets_color_eventfar = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
+            preferences_widgets_color_event_today = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventToday_key), getResources().getColor(R.color.pref_Widgets_Color_EventToday_default));
+            preferences_widgets_color_event_soon = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventSoon_key), getResources().getColor(R.color.pref_Widgets_Color_EventSoon_default));
+            preferences_widgets_color_event_far = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
             preferences_widgets_color_default = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
             preferences_notification_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
@@ -957,7 +961,7 @@ class ContactsEvents {
 
             boolean useInternal;
             String customLabels;
-            final String regex_inter = "|"; //"\\Z|";
+            final String div_inter = "|"; //"\\Z|";
             //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
 
             //День рождения
@@ -967,11 +971,11 @@ class ContactsEvents {
                 preferences_birthday_labels = null;
             } else {
                 if (customLabels.isEmpty())
-                    preferences_birthday_labels = Pattern.compile(context.getString(R.string.event_type_birthday_labels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_birthday_labels = Pattern.compile(context.getString(R.string.event_type_birthday_labels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 else if (!useInternal) {
-                    preferences_birthday_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_birthday_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else {
-                    preferences_birthday_labels = Pattern.compile(context.getString(R.string.event_type_birthday_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_birthday_labels = Pattern.compile(context.getString(R.string.event_type_birthday_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 }
             }
 
@@ -985,11 +989,11 @@ class ContactsEvents {
                 preferences_wedding_labels = null;
             } else {
                 if (customLabels.isEmpty()) {
-                    preferences_wedding_labels = Pattern.compile(context.getString(R.string.event_type_wedding_labels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_wedding_labels = Pattern.compile(context.getString(R.string.event_type_wedding_labels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else if (!useInternal) {
-                    preferences_wedding_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_wedding_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else {
-                    preferences_wedding_labels = Pattern.compile(context.getString(R.string.event_type_wedding_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_wedding_labels = Pattern.compile(context.getString(R.string.event_type_wedding_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 }
             }
 
@@ -1000,11 +1004,11 @@ class ContactsEvents {
                 preferences_nameday_labels = null;
             } else {
                 if (customLabels.isEmpty()) {
-                    preferences_nameday_labels = Pattern.compile(context.getString(R.string.event_type_nameday_labels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_nameday_labels = Pattern.compile(context.getString(R.string.event_type_nameday_labels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else if (!useInternal) {
-                    preferences_nameday_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_nameday_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else {
-                    preferences_nameday_labels = Pattern.compile(context.getString(R.string.event_type_nameday_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_nameday_labels = Pattern.compile(context.getString(R.string.event_type_nameday_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 }
             }
 
@@ -1015,11 +1019,11 @@ class ContactsEvents {
                 preferences_crowning_labels = null;
             } else {
                 if (customLabels.isEmpty()) {
-                    preferences_crowning_labels = Pattern.compile(context.getString(R.string.event_type_crowning_labels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_crowning_labels = Pattern.compile(context.getString(R.string.event_type_crowning_labels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else if (!useInternal) {
-                    preferences_crowning_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_crowning_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else {
-                    preferences_crowning_labels = Pattern.compile(context.getString(R.string.event_type_crowning_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_crowning_labels = Pattern.compile(context.getString(R.string.event_type_crowning_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 }
             }
 
@@ -1030,11 +1034,11 @@ class ContactsEvents {
                 preferences_death_labels = null;
             } else {
                 if (customLabels.isEmpty()) {
-                    preferences_death_labels = Pattern.compile(context.getString(R.string.event_type_death_labels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_death_labels = Pattern.compile(context.getString(R.string.event_type_death_labels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else if (!useInternal) {
-                    preferences_death_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_death_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 } else {
-                    preferences_death_labels = Pattern.compile(context.getString(R.string.event_type_death_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                    preferences_death_labels = Pattern.compile(context.getString(R.string.event_type_death_labels).concat(Constants.STRING_COMMA).concat(customLabels).replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                 }
             }
 
@@ -1043,7 +1047,7 @@ class ContactsEvents {
             if (customLabels.isEmpty()) {
                 preferences_otherevent_labels = null;
             } else {
-                preferences_otherevent_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                preferences_otherevent_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
             }
             preferences_OtherEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Other_LocalFiles_key), new HashSet<>());
 
@@ -1058,7 +1062,7 @@ class ContactsEvents {
                 String preferences_customevent1_labels_str = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom1_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
                 if (!preferences_customevent1_labels_str.isEmpty()) {
                     try {
-                        preferences_customevent1_labels = Pattern.compile(preferences_customevent1_labels_str.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                        preferences_customevent1_labels = Pattern.compile(preferences_customevent1_labels_str.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                         preferences_customevent1_enabled = true;
                     } catch (Exception e) { /**/ }
                 }
@@ -1073,7 +1077,7 @@ class ContactsEvents {
                 String preferences_customevent2_labels_str = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom2_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
                 if (!preferences_customevent2_labels_str.isEmpty()) {
                     try {
-                        preferences_customevent2_labels = Pattern.compile(preferences_customevent2_labels_str.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                        preferences_customevent2_labels = Pattern.compile(preferences_customevent2_labels_str.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                         preferences_customevent2_enabled = true;
                     } catch (Exception e) { /**/ }
                 }
@@ -1088,7 +1092,7 @@ class ContactsEvents {
                 String preferences_customevent3_labels_str = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom3_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
                 if (!preferences_customevent3_labels_str.isEmpty()) {
                     try {
-                        preferences_customevent3_labels = Pattern.compile(preferences_customevent3_labels_str.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                        preferences_customevent3_labels = Pattern.compile(preferences_customevent3_labels_str.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                         preferences_customevent3_enabled = true;
                     } catch (Exception e) { /**/ }
                 }
@@ -1103,7 +1107,7 @@ class ContactsEvents {
                 String preferences_customevent4_labels_str = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom4_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
                 if (!preferences_customevent4_labels_str.isEmpty()) {
                     try {
-                        preferences_customevent4_labels = Pattern.compile(preferences_customevent4_labels_str.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                        preferences_customevent4_labels = Pattern.compile(preferences_customevent4_labels_str.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                         preferences_customevent4_enabled = true;
                     } catch (Exception e) { /**/ }
                 }
@@ -1118,7 +1122,7 @@ class ContactsEvents {
                 String preferences_customevent5_labels_str = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom5_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
                 if (!preferences_customevent5_labels_str.isEmpty()) {
                     try {
-                        preferences_customevent5_labels = Pattern.compile(preferences_customevent5_labels_str.replace(Constants.STRING_COMMA, regex_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                        preferences_customevent5_labels = Pattern.compile(preferences_customevent5_labels_str.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
                         preferences_customevent5_enabled = true;
                     } catch (Exception e) { /**/ }
                 }
@@ -1144,7 +1148,25 @@ class ContactsEvents {
             );
             preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
             preferences_notifications_on_click_action = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default)));
+
+            //Имена
             preferences_first_names_female_custom = getPreferenceString(preferences, context.getString(R.string.pref_Female_Names_key), Constants.STRING_EMPTY);
+            preferences_first_names_male_custom = getPreferenceString(preferences, context.getString(R.string.pref_Male_Names_key), Constants.STRING_EMPTY);
+            preferences_last_name_completions_male = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
+            preferences_last_name_completions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
+
+            final String namesMale = preferences_first_names_male_custom.isEmpty() ?
+                    context.getString(R.string.first_names_male) :
+                    context.getString(R.string.first_names_male).concat(Constants.STRING_COMMA).concat(preferences_first_names_male_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+            preferences_first_names_male = Pattern.compile(namesMale.replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
+
+            final String namesFemale = preferences_first_names_female_custom.isEmpty() ?
+                    context.getString(R.string.first_names_female) :
+                    context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(preferences_first_names_female_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+            preferences_first_names_female = Pattern.compile(namesFemale.replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
+
+            preferences_second_name_completions_male = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
+            preferences_second_name_completions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
 
             //Запоминаем информацию о темах
             preferences_theme = new MyTheme();
@@ -1210,6 +1232,13 @@ class ContactsEvents {
                 int indexDiv = element.indexOf(Constants.STRING_COLON_SPACE);
                 if (indexDiv > -1) {
                     preferences_mergedIDs.put(element.substring(0, indexDiv), element.substring(indexDiv + Constants.STRING_COLON_SPACE.length()));
+                }
+            }
+
+            for (String element : getPreferenceStringSet(preferences, context.getString(R.string.pref_xDaysEvents_key), new HashSet<>())) {
+                int indexDiv = element.indexOf(Constants.STRING_COLON_SPACE);
+                if (indexDiv > -1) {
+                    preferences_xDaysEvents.put(element.substring(0, indexDiv), element.substring(indexDiv + Constants.STRING_COLON_SPACE.length()));
                 }
             }
 
@@ -1534,6 +1563,7 @@ class ContactsEvents {
                         final String personID = contactData.getString(cache.getColumnIndex(contactData, android.provider.BaseColumns._ID));
                         if (personID != null) set_contacts_ids.add(personID);
 
+                        //ИОФ
                         final String personName = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME));
                         final String personNameNormalized = normalizeName(personName);
                         if (!checkForNull(personNameNormalized).isEmpty() && !map_contacts_names.containsKey(personNameNormalized)) {
@@ -1541,13 +1571,28 @@ class ContactsEvents {
                         }
                         map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME, checkForNull(personName));
 
+                        //ИФ
+                        final String personNameShortNormalized = Person.getShortName(personNameNormalized, context);
+                        if (!map_contacts_names.containsKey(personNameShortNormalized)) {
+                            map_contacts_names.put(personNameShortNormalized, personID);
+                        }
+
+                        //ФИО
                         final String personNameAlt = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE));
                         final String personNameAltNormalized = normalizeName(personNameAlt);
                         if (!checkForNull(personNameAltNormalized).isEmpty() && !map_contacts_names.containsKey(personNameAltNormalized)) {
                             map_contacts_names.put(personNameAltNormalized, personID);
                         }
                         map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE, checkForNull(personNameAlt));
+
+                        //ФИ
+                        final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, context);
+                        if (!map_contacts_names.containsKey(personNameAltShortNormalized)) {
+                            map_contacts_names.put(personNameAltShortNormalized, personID);
+                        }
+
                         //todo: добавить имена латиницей (для мэппинга)
+
                     } while (contactData.moveToNext());
                     contactData.close();
                 }
@@ -2335,7 +2380,7 @@ class ContactsEvents {
                             }
 
                             if (eventType.equals(Constants.Type_MultiEvent)) {
-                                event = recognizeEventByLabel(eventDescription);
+                                event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar);
                                 if (event.needScanContacts) {
                                     importStorage = Constants.Storage_Contacts;
                                 }
@@ -2366,10 +2411,20 @@ class ContactsEvents {
                                         }
 
                                         //Ищем контакт
-                                        contactID = map_contacts_names.get(normalizeName(foundName));
+                                        final String personFullNameNormalized = normalizeName(foundName);
+                                        String personFullNameAltNormalized = Constants.STRING_EMPTY;
+                                                contactID = map_contacts_names.get(personFullNameNormalized);
                                         if (contactID == null) {
-                                            contactID = map_contacts_names.get(normalizeName(personFullNameAlt));
+                                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                                            contactID = map_contacts_names.get(personFullNameAltNormalized);
                                         }
+                                        if (contactID == null) {
+                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, context));
+                                        }
+                                        if (contactID == null) {
+                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, context));
+                                        }
+
                                         if (contactID != null) break;
                                     }
                                 }
@@ -2696,7 +2751,8 @@ class ContactsEvents {
                         eventLine = eventLine.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA);
                     }
                     if (eventLine.isEmpty()) continue;
-                    if (eventLine.charAt(0) == '#') continue;
+                    if (eventLine.startsWith("#")) continue;
+                    if (eventLine.startsWith("//")) continue;
 
                     userData.clear();
 
@@ -2711,7 +2767,6 @@ class ContactsEvents {
                     String eventURL = Constants.STRING_EMPTY;
                     boolean isEndless = true;
                     boolean isAD = true;
-                    boolean isFakeID = false;
 
                     int indexDateEnd = eventLine.indexOf(Constants.STRING_SPACE);
                     boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
@@ -2774,7 +2829,7 @@ class ContactsEvents {
                     }
 
                     if (!eventLabel_forSearch.isEmpty() && eventTypeToSearch.equals(Constants.Type_MultiEvent)) {
-                        event = recognizeEventByLabel(eventLabel_forSearch);
+                        event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File);
                     }
 
                     int indexDateNoYear = isBirthdaysPlusEvent ? eventDate.indexOf(Constants.STRING_BDP_NO_YEAR) : eventDate.indexOf(Constants.STRING_0000);
@@ -2920,17 +2975,25 @@ class ContactsEvents {
                         }
 
                         //Ищем в контактах
-                        contactID = map_contacts_names.get(normalizeName(eventTitle));
+                        final String personFullNameNormalized = normalizeName(eventTitle);
+                        String personFullNameAltNormalized = Constants.STRING_EMPTY;
+                        contactID = map_contacts_names.get(personFullNameNormalized);
                         if (contactID == null && !personFullNameAlt.equals(eventTitle)) {
-                            contactID = map_contacts_names.get(normalizeName(personFullNameAlt));
+                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                            contactID = map_contacts_names.get(personFullNameAltNormalized);
+                        }
+                        if (contactID == null) {
+                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, context));
+                        }
+                        if (contactID == null && !personFullNameAlt.equals(eventTitle)) {
+                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, context));
                         }
 
                         //hashCode -> ID
                         if (contactID == null) {
                             int divIndex = file.indexOf(Constants.STRING_BAR);
                             if (divIndex < 0) divIndex = file.length();
-                            contactID = Integer.toString(Math.abs((file.substring(divIndex) + eventTitle).hashCode()));
-                            isFakeID = true;
+                            contactID = Constants.PREFIX_FileEventID + Math.abs((file.substring(divIndex) + eventTitle).hashCode());
                         }
 
                     } else { //Просто событие
@@ -3012,7 +3075,7 @@ class ContactsEvents {
                         } else { //Такого события ещё не было
 
                             //Добавляем данные контакта
-                            if (!isFakeID) {
+                            if (isRealContactEventID(contactID)) {
                                 final Long contactIDLong = parseToLong(contactID);
                                 HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{ContactsContract.Contacts.PHOTO_URI, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE});
 
@@ -3065,7 +3128,7 @@ class ContactsEvents {
         }
     }
 
-    @NonNull private Event recognizeEventByLabel(@NonNull String eventLabel) {
+    @NonNull private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource) {
 
         String eventLabel_forSearch = eventLabel.toLowerCase();
         Event event = new Event();
@@ -3166,9 +3229,14 @@ class ContactsEvents {
 
                 event.Caption = getResources().getString(R.string.event_type_other);
                 event.Type = getEventType(Constants.Type_Other);
-                event.SubType = getEventType(Constants.Type_FileEvent);
+                if (eventSource == Constants.Storage_Calendar) {
+                    event.SubType = getEventType(Constants.Type_CalendarEvent);
+                } else if (eventSource == Constants.Storage_File) {
+                    event.SubType = getEventType(Constants.Type_FileEvent);
+                }
+
                 event.Icon = R.drawable.ic_event_other;
-                event.Emoji = "🗓️";
+                event.Emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "🗓️" : "\uD83D\uDCC6";
                 event.needScanContacts = false;
 
                 if (preferences_otherevent_labels == null || !preferences_otherevent_labels.reset(eventLabel_forSearch).find()) {
@@ -3229,8 +3297,6 @@ class ContactsEvents {
 
         try {
 
-            if (event.isEmpty()) return null;
-
             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
             String eventSubType = singleEventArray[Position_eventSubType];
 
@@ -3240,10 +3306,11 @@ class ContactsEvents {
 
             boolean isDeath = eventSubType.equals(getEventType(Constants.Type_Death));
 
-            if (showPhotos && !TextUtils.isEmpty(singleEventArray[Position_contactID]) && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
+            final String contactID = singleEventArray[Position_contactID];
+            if (showPhotos && !TextUtils.isEmpty(contactID) && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
                 //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
                 if (contentResolver == null) contentResolver = context.getContentResolver();
-                Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+                Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
                 if (photo_stream != null) {
                     BufferedInputStream buf = new BufferedInputStream(photo_stream);
@@ -3255,8 +3322,8 @@ class ContactsEvents {
 
             if (bm == null) {
                 //Если событие - не день рождения, пытаемся достать возраст из дня рождения
-                if (!eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
-                    final Date birthDate = set_events_birthdays.get(singleEventArray[Position_contactID]);
+                if (!eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !TextUtils.isEmpty(contactID)) {
+                    final Date birthDate = set_events_birthdays.get(contactID);
                     Date BDay = null;
                     try {
                         BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
@@ -3275,7 +3342,7 @@ class ContactsEvents {
                     }
                 }
 
-                //Случайное фото с соответствиии с возрастом и полом
+                //Случайное фото с соответствии с возрастом и полом
                 Person person = new Person(context, singleEventArray);
                 int gender = person.getGender();
 
@@ -3287,7 +3354,7 @@ class ContactsEvents {
                     idPhoto = preferences_IconPackImages_M.get(0);
                 }
 
-                //Фото для года
+                //Если определён возраст
                 if (person.Age >= 0) {
                     if (gender == 2) {
                         for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
@@ -3351,7 +3418,7 @@ class ContactsEvents {
 
             }
 
-            if (!singleEventArray[Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && (preferences_list_sad_photo == 2 || (preferences_list_sad_photo == 1 && isDeath)) && set_events_deaths.contains(singleEventArray[Position_contactID])) {
+            if (!singleEventArray[Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && (preferences_list_sad_photo == 2 || (preferences_list_sad_photo == 1 && isDeath)) && set_events_deaths.contains(contactID)) {
                 //Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
                 Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
@@ -3547,7 +3614,11 @@ class ContactsEvents {
             if (!TextUtils.isEmpty(lastName)) {
                 result = lastName + (!TextUtils.isEmpty(firstName) ? Constants.STRING_SPACE + firstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY) + secondNameWord;
             } else if (!TextUtils.isEmpty(firstName)) {
-                result = firstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + secondNameWord;
+                if (!secondNameWord.isEmpty()) {
+                    result = firstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + secondNameWord;
+                } else {
+                    result = firstName;
+                }
             }
             return checkForNull(result);
 
@@ -3905,10 +3976,13 @@ class ContactsEvents {
             if (eventDate_Date != null && BDay != null) {
                 dayDiff = countDaysDiff(currentDay, BDay);
                 Age = countYearsDiff(eventDate_Date, BDay); //Считаем, сколько будет лет
-                if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !set_events_birthdays.containsKey(singleEventArray[Position_contactID])) {
-                    set_events_birthdays.put(singleEventArray[Position_contactID], eventDate_Date);
-                } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
-                    set_events_deaths.add(singleEventArray[Position_contactID]);
+                final String contactID = singleEventArray[Position_contactID];
+                if (!TextUtils.isEmpty(contactID)) {
+                    if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !set_events_birthdays.containsKey(contactID)) {
+                        set_events_birthdays.put(contactID, eventDate_Date);
+                    } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
+                        set_events_deaths.add(contactID);
+                    }
                 }
             }
 
@@ -3972,10 +4046,10 @@ class ContactsEvents {
 
             eventList.set(i, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
-            //Вычисляем 5K даты
+
             if (Age > 0 && eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
-                //todo: подумать: надо ли считать 5K для смертей и.т.п.?
+                //Вычисляем 5K даты
                 long days = countDaysDiff(eventDate_Date, currentDay);
                 long k = (days + 365) / 5000;
                 long mdays = (days + 365) % 5000;
@@ -4007,6 +4081,8 @@ class ContactsEvents {
 
                     magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray));
                 }
+
+                //
 
             }
 
@@ -4267,7 +4343,7 @@ class ContactsEvents {
 
                 //находим канал. если канала нет или рингтон там другой - пересоздаём канал
                 String channel_id = Integer.toString(preferences_notification_channel_id);
-                NotificationChannel channel = notificationManager.getNotificationChannel(channel_id);
+                @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channel_id);
 
                 if (preferences_notifications_days.size() > 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
@@ -4275,37 +4351,39 @@ class ContactsEvents {
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel == null || !channel.getSound().toString().equals(preferences_notifications_ringtone)) {
-
+                    if (channel != null && !channel.getSound().toString().equals(preferences_notifications_ringtone)) {
                         notificationManager.deleteNotificationChannel(channel_id);
+                        channel = null;
                         if (preferences_debug_on)
                             log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(Constants.STRING_EOL);
+                    }
 
+                    if (channel == null) {
                         preferences_notification_channel_id = generator.nextInt(1000);
                         channel_id = Integer.toString(preferences_notification_channel_id);
 
                         channel = new NotificationChannel(channel_id, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        if (preferences_notifications_ringtone != null) {
-                            channel.setSound(Uri.parse(preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                            if (preferences_debug_on)
+                        if (preferences_notifications_ringtone != null)
+                            channel.setSound(
+                                    Uri.parse(preferences_notifications_ringtone),
+                                    new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
+                            );
+                        channel.enableVibration(true);
+                        notificationManager.createNotificationChannel(channel);
+
+                        if (preferences_debug_on) {
+                            log.append(Constants.MSG_CREATED_CHANNEL_).append(preferences_notification_channel_id).append(Constants.STRING_EOL);
+                            if (preferences_notifications_ringtone != null)
                                 log.append(Constants.MSG_RINGTONE).append(Uri.parse(preferences_notifications_ringtone)).append(Constants.STRING_EOL);
                         }
-                        channel.enableVibration(true);
-
-                        notificationManager.createNotificationChannel(channel);
-                        if (preferences_debug_on)
-                            log.append(Constants.MSG_CREATED_CHANNEL_).append(preferences_notification_channel_id).append(Constants.STRING_EOL);
-
                         savePreferences();
                     }
 
                 } else if (channel != null) {
-
                     notificationManager.deleteNotificationChannel(channel_id);
                     if (preferences_debug_on)
                         log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(Constants.STRING_EOL);
-
                 }
             }
         } catch (Exception e) {
@@ -5100,13 +5178,68 @@ class ContactsEvents {
 
             Set<String> someSets = new HashSet<>();
             for (String elementID : preferences_mergedIDs.keySet()) {
-                if (preferences_mergedIDs.get(elementID) != null) {
-                    someSets.add(elementID + Constants.STRING_COLON_SPACE + preferences_mergedIDs.get(elementID));
+                final String elementValue = preferences_mergedIDs.get(elementID);
+                if (elementValue != null) {
+                    someSets.add(elementID + Constants.STRING_COLON_SPACE + elementValue);
                 }
             }
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_MergedID_key), someSets);
+            editor.apply();
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on)
+                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return false;
+    }
+
+    boolean isXDaysEvent(@NonNull String eventId) {return preferences_xDaysEvents.containsKey(eventId);}
+
+    @NonNull
+    String getXDaysEvent(@NonNull String eventId) {
+
+        try {
+
+            return checkForNull(preferences_xDaysEvents.get(eventId));
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (preferences_debug_on)
+                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return Constants.STRING_EMPTY;
+        }
+    }
+
+    boolean setXDaysEvent(@NonNull String eventId, String eventData) {
+        try {
+
+            if (isXDaysEvent(eventId)) {
+                if (eventData == null) { //Удаляем существующее
+                    preferences_xDaysEvents.remove(eventId);
+                } else { //Заменяем
+                    preferences_xDaysEvents.remove(eventId);
+                    preferences_xDaysEvents.put(eventId, eventData.replace(Constants.STRING_COLON_SPACE, Constants.STRING_SPACE));
+                }
+            } else if (eventData != null) { //Добавляем новое
+                preferences_xDaysEvents.put(eventId, eventData.replace(Constants.STRING_COLON_SPACE, Constants.STRING_SPACE));
+            } else {
+                return false;
+            }
+
+            Set<String> someSets = new HashSet<>();
+            for (String elementID : preferences_xDaysEvents.keySet()) {
+                final String elementValue = preferences_xDaysEvents.get(elementID);
+                if (elementValue != null) {
+                    someSets.add(elementID + Constants.STRING_COLON_SPACE + elementValue);
+                }
+            }
+
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putStringSet(context.getString(R.string.pref_xDaysEvents_key), someSets);
             editor.apply();
             return true;
 
@@ -6722,4 +6855,6 @@ class ContactsEvents {
         }
 
     }
+
+    static boolean isRealContactEventID(String id) {return id != null && !id.startsWith(Constants.PREFIX_FileEventID);}
 }

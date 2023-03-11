@@ -56,10 +56,16 @@ public class CustomEditTextPreference extends EditTextPreference {
         TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
         final AlertDialog dialog = (AlertDialog) getDialog();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
+
+        /*int alertTitleId = getContext().getResources().getIdentifier("alertTitle", "id", "android");
+        TextView alertTitle = (TextView) dialog.getWindow().getDecorView().findViewById(alertTitleId);
+        alertTitle.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));*/
+
         final EditText editText = getEditText();
-
         if (editText != null) {
-
             //https://www.thetopsites.net/article/51779376.shtml
             //в светлой теме получилось выставить editTextPreference color только таким способом
             editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));

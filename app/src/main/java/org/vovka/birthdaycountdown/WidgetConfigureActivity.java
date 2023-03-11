@@ -351,7 +351,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_Widgets_EventInfo_EventDate));
                     add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear));
                     add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
-                }}, this.eventsData.preferences_widgets_color_eventtoday);
+                }}, this.eventsData.preferences_widgets_color_event_today);
 
                 ArrayList<String> listNonSorted = new ArrayList<String>() {{
                     add(getString(R.string.pref_Widgets_EventInfo_Border));

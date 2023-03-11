@@ -157,9 +157,9 @@ class WidgetUpdater {
             }
 
             colorDefault = eventsData.preferences_widgets_color_default;
-            colorEventToday = eventsData.preferences_widgets_color_eventtoday;
-            colorEventSoon = eventsData.preferences_widgets_color_eventsoon;
-            colorEventFar = eventsData.preferences_widgets_color_eventfar;
+            colorEventToday = eventsData.preferences_widgets_color_event_today;
+            colorEventSoon = eventsData.preferences_widgets_color_event_soon;
+            colorEventFar = eventsData.preferences_widgets_color_event_far;
 
             //Отрисовываем информацию о событиях
             eventsDisplayed = 0;
@@ -291,10 +291,13 @@ class WidgetUpdater {
                         visibleCell *= 3;
                     }
                     break;
-                case Constants.STRING_3: //Фамилия И.О.
-                    rowValue =
-                        singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID])) :
-                        person.getFullNameShort();
+                case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                    if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
+                            && ContactsEvents.isRealContactEventID(singleEventArray[ContactsEvents.Position_contactID])) {
+                        rowValue = eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID]));
+                    } else {
+                        rowValue = person.getFullNameShort();
+                    }
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -395,10 +398,13 @@ class WidgetUpdater {
                         visibleCell *= 7;
                     }
                     break;
-                case Constants.STRING_3: //Фамилия И.О.
-                    rowValue =
-                            singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS) ? eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID])) :
-                            person.getFullNameShort();
+                case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                    if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
+                            && ContactsEvents.isRealContactEventID(singleEventArray[ContactsEvents.Position_contactID])) {
+                        rowValue = eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID]));
+                    } else {
+                        rowValue = person.getFullNameShort();
+                    }
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
@@ -693,7 +699,7 @@ class WidgetUpdater {
                 }
                 views.setTextViewText(id_widget_Distance, Constants.STRING_EMPTY);
 
-            } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
+            } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
                 views.setTextColor(id_widget_Distance, colorEventSoon);
                 views.setTextViewText(id_widget_Distance, eventDistance);
@@ -701,7 +707,7 @@ class WidgetUpdater {
 
             } else { //Попозже
 
-                views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_eventsoon != 0 ? colorEventFar : colorDefault);
+                views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_event_soon != 0 ? colorEventFar : colorDefault);
                 views.setTextViewText(id_widget_Distance, eventDistance);
                 views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
 

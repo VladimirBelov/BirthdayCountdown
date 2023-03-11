@@ -50,6 +50,7 @@
     <string name="menu_context_share">Поделиться событием…</string>
     <string name="menu_context_share_as_image">как изображение</string>
     <string name="menu_context_share_as_text">как текст</string>
+    <string name="menu_context_xDaysEvent_add">Добавить счётчик дней…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -465,8 +466,12 @@
     <string name="pref_List_FastScroll_summary">Включить быструю прокрутку списка событий, касаясь правой части экрана</string>
 
     <string name="pref_Female_Names_title">Женские имена</string>
-    <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото</string>
+    <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото и определения полных имён</string>
     <string name="pref_Female_Names_hint">Введите женские имена (через запятую)</string>
+
+    <string name="pref_Male_Names_title">Мужские имена</string>
+    <string name="pref_Male_Names_description">Дополнительные мужские имена для корректного отображения пиктограмм контактов без фото и определения полных имён</string>
+    <string name="pref_Male_Names_hint">Введите мужские имена (через запятую)</string>
 
     <string name="pref_List_EventInfo_title">Детали события</string>
     <string name="pref_List_EventInfo_summary">Какие дополнительные детали события показывать</string>
@@ -532,7 +537,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Детали события</string>
-    <string name="pref_Widgets_EventInfo_summary">Какие детали события и элементы виджета показывать</string>
+    <string name="pref_Widgets_EventInfo_summary">Какие детали события и элементы виджета показывать по умолчанию</string>
 
     <string name="pref_Widgets_EventInfo_None">Ничего</string>
     <string name="pref_Widgets_EventInfo_Border">Бордюр виджета</string>
@@ -579,14 +584,14 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Надпись (нижний ряд)</string>
-    <string name="pref_Widgets_BottomInfo_summary">Что показывать под фотографией</string>
+    <string name="pref_Widgets_BottomInfo_summary">Что показывать под фотографией на фотовиджетах</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Надпись (верхний ряд)</string>
-    <string name="pref_Widgets_BottomInfo2nd_summary">Что показывать под фотографией</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Что показывать под фотографией на фотовиджетах</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Фамилия Имя Отчество</item>
-        <item>Фамилия И.О.</item>
+        <item>Фамилия И.О. (Имя Отчество, если нет фамилии)</item>
         <item>Имя Отчество Фамилия</item>
         <item>Имя</item>
         <item>Псевдоним (Имя, при отсутствии)</item>
@@ -984,4 +989,6 @@
     <string name="quiz_age01_title_future">"Сколько лет исполнится?"</string>
     <string name="quiz_age01_title_past">"Сколько сейчас лет?"</string>
     <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
 </resources>

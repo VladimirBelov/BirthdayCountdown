@@ -13,6 +13,8 @@ final class Constants {
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String REGEX_COMMAS = " *, *";
     static final String REGEX_PLUS = "\\+";
+    static final String REGEX_INTER = "\\Z|";
+    static final String REGEX_LAST = "\\Z";
     static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
@@ -97,9 +99,10 @@ final class Constants {
     static final String STRING_STORAGE_CALENDAR = "calendar";
     static final int Storage_Calendar = 0;
     static final String STRING_STORAGE_FILE = "file";
+    static final int Storage_File = 2;
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
-
+    static final String PREFIX_FileEventID = "f";
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
@@ -131,6 +134,7 @@ final class Constants {
     static final int Type_Custom5 = 12;
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
+    static final int Type_Xdays = 22;
     static final String Type_MultiEvent = "30";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
@@ -177,6 +181,7 @@ final class Constants {
     static final String EXTRA_NON_SORTED = "nonsorted";
     static final String EXTRA_COLOR = "color";
     static final String EXTRA_ANCHOR = "anchor";
+    static final String EXTRA_CONTACT_ON_SAVE_RESULT = "finishActivityOnSaveCompleted";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -296,5 +301,6 @@ final class Constants {
     static final int ContextMenu_OpenURL = 16;
     static final int ContextMenu_ShareAsImage = 17;
     static final int ContextMenu_ShareAsText = 18;
+    static final int ContextMenu_xDaysEvent = 19;
 
 }

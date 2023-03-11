@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -40,16 +41,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,12 +62,15 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,6 +81,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -156,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Resources applicationRes = getBaseContext().getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
+                applicationConf.setLocales(new LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
             }
@@ -288,7 +296,443 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             });
 
-            registerForContextMenu(listView);
+            listView.setOnItemLongClickListener((parent, v, position, id) -> {
+                try {
+
+                    //https://developer.alexanderklimov.ru/android/popupmenu.php
+                    //https://stackoverflow.com/questions/1245543/add-context-menu-icon-in-android
+                    //https://stackoverflow.com/questions/49706495/how-to-pass-a-custom-layout-to-a-popupmenu
+                    //https://stackoverflow.com/questions/64236522/how-to-implement-android-custom-popup-menu
+                    //https://stackoverflow.com/questions/23516247/how-change-position-of-popup-menu-on-android-overflow-button
+                    PopupMenu popupMenu = new PopupMenu(MainActivity.this, v, Gravity.RIGHT | Gravity.FILL_VERTICAL);
+                    final Menu menu = popupMenu.getMenu();
+                    setMenuIconsVisible(menu);
+
+                    selectedEvent_num = position;
+                    selectedEvent_str = (String)listView.getItemAtPosition(position);
+                    selectedEvent = selectedEvent_str.split(Constants.STRING_EOT, -1);
+
+                    //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
+                    //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
+
+                    String contactID = selectedEvent[ContactsEvents.Position_contactID];
+                    boolean isRealContactID = contactID != null && !contactID.isEmpty() && ContactsEvents.isRealContactEventID(contactID);
+                    if (isRealContactID) {
+                        menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
+                                .setIcon(android.R.drawable.ic_menu_edit);
+                    } else {
+                        MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
+                                .setIcon(android.R.drawable.ic_menu_add);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                        }
+                    }
+
+                    if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
+                        menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event))
+                                .setIcon(android.R.drawable.ic_menu_month);
+
+                        if (selectedEvent[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
+                            if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
+                                menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
+                                        .setIcon(R.drawable.ic_menu_chat_dashboard);
+                                menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
+                                        .setIcon(R.drawable.ic_menu_copy);
+                            } else if (selectedEvent[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
+                                menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
+                                        .setIcon(R.drawable.ic_menu_copy);
+                            }
+                        }
+                    }
+
+                    String[] eventURLs = selectedEvent[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                    if (!eventURLs[0].isEmpty()) {
+                        if (eventURLs.length == 1) {
+                            menu.add(Menu.NONE, Constants.ContextMenu_OpenURL, Menu.NONE, getString(R.string.menu_context_open_url))
+                                    .setIcon(android.R.drawable.ic_menu_directions);
+                        } else {
+                            SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_open_url))
+                                    .setIcon(android.R.drawable.ic_menu_directions);
+                            for (int i = 0, eventURLsLength = eventURLs.length; i < eventURLsLength; i++) {
+                                String url = eventURLs[i];
+                                sub.add(i, Constants.ContextMenu_OpenURL, Menu.NONE, url.replace(Constants.STRING_HTTP, Constants.STRING_EMPTY).replace(Constants.STRING_HTTPS, Constants.STRING_EMPTY));
+                            }
+                        }
+                    }
+
+                    final String eventKey = eventsData.getEventKey(selectedEvent);
+                    if (!eventKey.isEmpty()) {
+                        if (eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
+
+                            menu.add(Menu.NONE, Constants.ContextMenu_UnhideEvent, Menu.NONE, getString(R.string.menu_context_unhide_event))
+                                    .setIcon(android.R.drawable.ic_menu_revert);
+
+                        } else {
+
+                            MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_HideEvent, Menu.NONE, getString(R.string.menu_context_hide_event))
+                                    .setIcon(R.drawable.ic_menu_block);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
+                            }
+
+                        }
+
+                        if (eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
+
+                            menu.add(Menu.NONE, Constants.ContextMenu_UnsilentEvent, Menu.NONE, getString(R.string.menu_context_unsilent_event))
+                                    .setIcon(android.R.drawable.ic_menu_revert);
+
+                        } else if (!eventsData.checkIsHiddenEvent(eventKey)) {
+                            MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event))
+                                    .setIcon(R.drawable.ic_menu_end_conversation);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
+                            }
+
+                        }
+                    }
+
+                    //https://stackoverflow.com/questions/7042958/android-adding-a-submenu-to-a-menuitem-where-is-addsubmenu
+                    SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_remind))
+                            .setIcon(android.R.drawable.ic_menu_recent_history);
+                    sub.add(Menu.NONE, Constants.ContextMenu_Remind_1H, Menu.NONE, getString(R.string.menu_context_remind_1h));
+                    sub.add(Menu.NONE, Constants.ContextMenu_Remind_Morning, Menu.NONE, getString(R.string.menu_context_remind_morning));
+
+                    sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_share))
+                            .setIcon(android.R.drawable.ic_menu_share);
+                    sub.add(Menu.NONE, Constants.ContextMenu_ShareAsImage, Menu.NONE, getString(R.string.menu_context_share_as_image));
+                    sub.add(Menu.NONE, Constants.ContextMenu_ShareAsText, Menu.NONE, getString(R.string.menu_context_share_as_text));
+
+                    if (selectedEvent[ContactsEvents.Position_eventType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary)) ) {
+                        menu.add(Menu.NONE, Constants.ContextMenu_AnniversaryList, Menu.NONE, getString(R.string.menu_context_anniversary_list))
+                                .setIcon(android.R.drawable.ic_menu_info_details);
+                    }
+
+                    if (selectedEvent[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
+                        MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
+                                .setIcon(android.R.drawable.ic_menu_myplaces);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                        }
+                    }
+
+                    if (eventsData.preferences_extrafun) {
+                        menu.add(Menu.NONE, Constants.ContextMenu_EventInfo, Menu.NONE, getString(R.string.menu_context_event_info))
+                                .setIcon(android.R.drawable.ic_menu_view);
+                    }
+
+                    popupMenu.setOnMenuItemClickListener(item -> {
+
+                        try {
+                            final String eventKey1 = eventsData.getEventKey(selectedEvent);
+                            int itemId = item.getItemId();
+
+                            if (itemId == Constants.ContextMenu_EditContact) {
+
+                                Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[ContactsEvents.Position_contactID]);
+                                Intent editContactIntent = new Intent(Intent.ACTION_EDIT);
+                                editContactIntent.setDataAndType(selectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                                editContactIntent.putExtra(Constants.EXTRA_CONTACT_ON_SAVE_RESULT, true);
+                                try {
+                                    startActivity(editContactIntent);
+                                } catch (ActivityNotFoundException e) { /**/ }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_CreateContact) {
+
+                                Intent createContactIntent = new Intent(Intent.ACTION_INSERT);
+                                createContactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                                createContactIntent.putExtra(Constants.EXTRA_CONTACT_ON_SAVE_RESULT, true);
+                                createContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, selectedEvent[Position_personFullName]);
+                                createContactIntent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, selectedEvent[ContactsEvents.Position_title]);
+                                createContactIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, selectedEvent[ContactsEvents.Position_organization]);
+                                createContactIntent.putExtra(ContactsContract.Intents.Insert.NOTES, selectedEvent[ContactsEvents.Position_eventDateText]);
+
+                                try {
+                                    startActivity(createContactIntent);
+                                } catch (ActivityNotFoundException e) { /**/ }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_EditEvent) {
+
+                                Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
+                                Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
+                                try {
+                                    startActivity(editEventIntent);
+                                } catch (ActivityNotFoundException e) { /**/ }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_OpenURL) {
+
+                                int groupId = item.getGroupId();
+                                //String[] eventURLs = selectedEvent[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                                if (eventURLs.length >= groupId) {
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(eventURLs[groupId].trim())));
+                                    } catch (ActivityNotFoundException e) { /**/ }
+                                }
+
+                            } else if (itemId == Constants.ContextMenu_EventInfo) {
+
+                                StringBuilder eventInfo = new StringBuilder();
+
+                                for (int i = 0; i < selectedEvent.length; i++) {
+                                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(selectedEvent[i]).append(Constants.STRING_EOL);
+                                }
+
+                                String eventSubType = selectedEvent[Position_eventSubType];
+                                int roundingFactor;
+                                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
+                                    roundingFactor = 1;
+                                } else {
+                                    roundingFactor = eventsData.preferences_list_photostyle;
+                                }
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                                        .setTitle(selectedEvent[Position_personFullName])
+                                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false, true, roundingFactor)))
+                                        .setMessage(eventInfo.toString())
+                                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
+
+                                AlertDialog alertToShow = builder.create();
+                                alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0)));
+                                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                                alertToShow.show();
+
+                                TextView textView = alertToShow.findViewById(android.R.id.message);
+                                if (textView != null) textView.setTextSize(14);
+
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_HideEvent) {
+
+                                if (eventsData.setHiddenEvent(eventKey)) {
+                                    if (eventsData.checkIsSilencedEvent(eventKey))
+                                        eventsData.unsetSilencedEvent(eventKey); //Если скрываем - убираем из списка без уведомления
+                                    this.invalidateOptionsMenu();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets(0);
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_UnhideEvent) {
+
+                                if (eventsData.unsetHiddenEvent(eventKey)) {
+                                    this.invalidateOptionsMenu();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets(0);
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_Remind_1H) {
+
+                                eventsData.snoozeNotification(selectedEvent_str, 1, null);
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_Remind_Morning) {
+
+                                Calendar now = Calendar.getInstance();
+                                now.add(Calendar.DAY_OF_MONTH, 1);
+                                now.set(Calendar.HOUR_OF_DAY, 9);
+                                now.set(Calendar.MINUTE, 0);
+                                now.set(Calendar.SECOND, 0);
+                                now.set(Calendar.MILLISECOND, 0);
+
+                                eventsData.snoozeNotification(selectedEvent_str, 0, now.getTime());
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_AnniversaryList) {
+
+                                eventsData.showAnniversaryList(this);
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_SilentEvent) {
+
+                                if (eventsData.setSilencedEvent(eventKey)) {
+                                    this.invalidateOptionsMenu();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets(0);
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_UnsilentEvent) {
+
+                                if (eventsData.unsetSilencedEvent(eventKey)) {
+                                    this.invalidateOptionsMenu();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets(0);
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_MergeEvent) {
+
+                                //https://developer.android.com/guide/components/intents-common#PickContact
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                                try {
+                                    startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
+                                } catch (ActivityNotFoundException e) { /**/ }
+
+                            } else if (itemId == Constants.ContextMenu_UnmergeEvent) {
+
+                                if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], null)) {
+                                    this.invalidateOptionsMenu();
+                                    prepareList();
+                                    drawList();
+                                    eventsData.updateWidgets(0);
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_RemergeEvent) {
+
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                                try {
+                                    startActivityForResult(intent, Constants.RESULT_PICK_OTHER_CONTACT);
+                                } catch (ActivityNotFoundException e) { /**/ }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_ShareAsImage) {
+
+                                //https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items
+                                //https://demonuts.com/android-take-screenshot/
+                                //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
+
+                                //ListView listView = findViewById(R.id.mainListView);
+                                View childView = adapter.getView(selectedEvent_num, null, listView);
+
+                                childView.measure(
+                                        View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),
+                                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+                                childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
+                                childView.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.theme_secondary)));
+                                childView.setDrawingCacheEnabled(true);
+                                childView.buildDrawingCache(true);
+                                Bitmap bmp = childView.getDrawingCache(true);
+                                if (bmp == null) {
+                                    ToastExpander.showText(this, "Error getting event image");
+                                    return false;
+                                }
+
+                                Uri bitmapShareUri = null;
+
+                                File file = new File(this.getCacheDir(), "event.jpg");
+                                try {
+                                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                                    fileOutputStream.close();
+                                    bitmapShareUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
+                                } catch (Exception e) {
+                                    Log.e(TAG, e.getMessage(), e);
+                                    if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                                }
+                                childView.destroyDrawingCache();
+
+                                if (bitmapShareUri != null) {
+                                    //https://stackoverflow.com/questions/48045626/chooser-created-with-createchooserintent-title-doesnt-display-a-title
+                                    Intent intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setType("image/*");
+                                    final String[] mimeTypes = {"image/jpeg", "image/png"};
+                                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
+                                    intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
+                                    //intent.putExtra(Intent.EXTRA_TITLE, "Share event as image");
+                                    Intent chooser = Intent.createChooser(intent, "");
+                                    //https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                                    List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+                                    for (ResolveInfo resolveInfo : resInfoList) {
+                                        String packageName = resolveInfo.activityInfo.packageName;
+                                        this.grantUriPermission(packageName, bitmapShareUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                    }
+                                    try {
+                                        startActivity(chooser);
+                                        return true;
+                                    } catch (ActivityNotFoundException e) { /**/ }
+                                }
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_ShareAsText) {
+
+
+                                StringBuilder textBig = new StringBuilder();
+                                textBig
+                                        .append(eventsData.preferences_list_nameformat == 2 ? selectedEvent[Position_personFullNameAlt] : selectedEvent[Position_personFullName])
+                                        .append(Constants.STRING_EOL)
+                                        .append(selectedEvent[Position_eventEmoji])
+                                        .append(Constants.STRING_SPACE)
+                                        .append(selectedEvent[Position_eventDate])
+                                        .append(Constants.STRING_SPACE)
+                                        .append(selectedEvent[Position_eventCaption]);
+                                if (!TextUtils.isEmpty(selectedEvent[Position_age_caption].trim()))
+                                    textBig
+                                            .append(Constants.STRING_COLON_SPACE)
+                                            .append(selectedEvent[Position_age_caption]);
+
+                                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
+                                    String eventSubType = selectedEvent[Position_eventSubType];
+
+                                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
+                                        final String currentAge = selectedEvent[ContactsEvents.Position_age_current];
+                                        if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
+                                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                                            if (eventsData.set_events_deaths.contains(selectedEvent[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
+                                                textBig.append(getString(R.string.msg_age_could_be));
+                                            } else {
+                                                textBig.append(getString(R.string.msg_age_now));
+                                            }
+                                            textBig.append(currentAge);
+                                        }
+                                    } else if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death)) && eventsData.set_events_birthdays.containsKey(selectedEvent[ContactsEvents.Position_contactID])) { //Если это годовщина смерти
+                                        Locale locale_en = new Locale(Constants.LANG_EN);
+                                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                                        Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateText]);
+                                        Date birthDate = eventsData.set_events_birthdays.get(selectedEvent[ContactsEvents.Position_contactID]);
+                                        if (eventDate != null && birthDate != null) {
+                                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                                            textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
+                                        }
+                                    }
+                                }
+
+
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("text/plain");
+                                intent.putExtra(Intent.EXTRA_TEXT, textBig.toString());
+                                //intent.putExtra(Intent.EXTRA_TITLE, "Share event as text");
+                                startActivity(Intent.createChooser(intent, ""));
+                                return true;
+
+                            } else if (itemId == Constants.ContextMenu_xDaysEvent) {
+
+                                showDialogXDaysCounter(adapter.getView(selectedEvent_num, null, listView), selectedEvent);
+                                return true;
+
+                            }
+
+                            return false;
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
+                            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                            return false;
+                        }
+
+                    });
+
+                    popupMenu.show();
+                    return true;
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage(), e);
+                    if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    return false;
+                }
+            });
+
+            //registerForContextMenu(listView);
 
             //Приветственное сообщение или описание новой версии
             showWelcomeScreen();
@@ -302,8 +746,135 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private void showAlertNoEvents() {
+    private void showDialogXDaysCounter(@NonNull View selectedEventView, @NonNull String[] selectedEvent) {
+        try {
 
+            final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+                    //.setNeutralButton(R.string.button_reset, null);
+
+            if (eventsData.preferences_theme.themeEditText != 0) {
+                builder.getContext().setTheme(eventsData.preferences_theme.themeEditText);
+            } else {
+                builder.getContext().setTheme(ContactsEvents.themeEditText_default);
+            }
+
+            AlertDialog dialog = builder.create();
+            View view = View.inflate(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_xdays, null);
+            dialog.setCustomTitle(view);
+
+            //Фон
+            LinearLayout entryLayout = view.findViewById(R.id.entryLayout);
+            if (entryLayout != null) {
+                GradientDrawable drawableBack = new GradientDrawable();
+                drawableBack.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics),
+                        ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)));
+                drawableBack.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics));
+                entryLayout.setBackground(drawableBack);
+            }
+
+            //Иконка и заголовок
+            ImageView icon = view.findViewById(R.id.icon);
+            if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, android.R.drawable.ic_menu_myplaces));
+            TextView title = view.findViewById(R.id.title);
+            if (title != null) title.setText(R.string.xDaysCounter_Dialog_Title);
+
+            //Данные события
+            ImageView entryEventIcon = view.findViewById(R.id.entryEventIcon);
+            ImageView entryEventIconSelected = selectedEventView.findViewById(R.id.entryEventIcon);
+            if (entryEventIcon != null) entryEventIcon.setImageDrawable(entryEventIconSelected.getDrawable());
+
+            ImageView entryPhotoImageView = view.findViewById(R.id.entryPhotoImageView);
+            ImageView entryPhotoImageViewSelected = selectedEventView.findViewById(R.id.entryPhotoImageView);
+            if (entryPhotoImageView != null) entryPhotoImageView.setImageDrawable(entryPhotoImageViewSelected.getDrawable());
+
+            TextView entryNameTextView = view.findViewById(R.id.entryNameTextView);
+            TextView entryNameTextViewSelected = selectedEventView.findViewById(R.id.entryNameTextView);
+            if (entryNameTextView != null) {
+                entryNameTextView.setText(entryNameTextViewSelected.getText());
+                entryNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, entryNameTextView.getTextSize() * 4 / 5);
+            }
+
+            TextView entryDateTextView = view.findViewById(R.id.entryDateTextView);
+            TextView entryDateTextViewSelected = selectedEventView.findViewById(R.id.entryDateTextView);
+            if (entryDateTextView != null) {
+                entryDateTextView.setText(entryDateTextViewSelected.getText());
+                entryDateTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, entryDateTextView.getTextSize() * 4 / 5);
+            }
+
+            TextView entryEventDetailsTextView = view.findViewById(R.id.entryEventDetailsTextView);
+            TextView entryEventDetailsTextViewSelected = selectedEventView.findViewById(R.id.entryEventDetailsTextView);
+            if (entryEventDetailsTextView != null) {
+                entryEventDetailsTextView.setText(entryEventDetailsTextViewSelected.getText());
+                entryEventDetailsTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, entryEventDetailsTextView.getTextSize() * 4 / 5);
+            }
+
+            TextView entryDayDistanceTextView = view.findViewById(R.id.entryDayDistanceTextView);
+            if (entryDayDistanceTextView != null) entryDayDistanceTextView.setVisibility(GONE);
+
+            TextView entryDetailsCounter = view.findViewById(R.id.entryDetailsCounter);
+            if (entryDetailsCounter != null) entryDetailsCounter.setVisibility(GONE);
+
+            final EditText editText = view.findViewById(R.id.repeats);
+            if (editText != null) {
+                editText.requestFocus();
+                editText.setSingleLine(false);
+                if (dialog.getWindow() != null) dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) { /**/ }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        final String valueRepeats = editText.getText().toString().trim();
+                        ((TextView) view.findViewById(R.id.listNextEvents)).setText(String.valueOf(System.currentTimeMillis()));
+                    }
+                });
+            }
+
+            dialog.setOnShowListener(arg0 -> {
+                final Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                buttonPositive.setOnClickListener(v -> {
+                    final String valueRepeats = editText != null ? editText.getText().toString().trim() : Constants.STRING_EMPTY;
+                    /*eventsData.savePreferences();*/
+                    dialog.dismiss();
+                });
+                buttonPositive.setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                final Button buttonNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                buttonNegative.setOnClickListener(v -> {
+                    dialog.dismiss();
+                });
+                buttonNegative.setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                final View buttonBar = (View) buttonPositive.getParent();
+                buttonBar.setBackgroundColor(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0));
+
+            });
+            dialog.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @SuppressLint("RestrictedApi") //https://stackoverflow.com/questions/48607853/menubuilder-setoptionaliconsvisible-can-only-be-called-from-within-the-same-libr
+    private void setMenuIconsVisible(Menu menu) {
+        try {
+            if (menu instanceof MenuBuilder) {
+                ((MenuBuilder) menu).setOptionalIconsVisible(true);
+            }
+        } catch (Exception e) { /**/ }
+    }
+
+    private void showAlertNoEvents() {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(getString(R.string.msg_no_events));
@@ -331,7 +902,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.e(TAG, e.getMessage(), e);
             if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-
     }
 
     private void showAlertNoEventsWithAccounts() {
@@ -550,7 +1120,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         try {
             super.onStart();
-            if (eventsData != null) eventsData.isUIopen = true;
+            if (eventsData != null) {
+                eventsData.isUIopen = true;
+                eventsData.coordinator = this.findViewById(R.id.coordinator);
+            }
 
             Intent intent = getIntent();
             if (intent.getAction() != null && intent.getData() != null && intent.getAction() != null) {
@@ -613,7 +1186,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onStop() {
         if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
-        if (eventsData != null) eventsData.isUIopen = false;
+        if (eventsData != null) {
+            eventsData.isUIopen = false;
+            eventsData.coordinator = null;
+        }
         super.onStop();
     }
 
@@ -896,7 +1472,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Intent editIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
                 editIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
-                editIntent.putExtra("finishActivityOnSaveCompleted", true);
+                editIntent.putExtra(Constants.EXTRA_CONTACT_ON_SAVE_RESULT, true);
                 try {
                     startActivity(editIntent);
                 } catch (ActivityNotFoundException e) { /**/ }
@@ -1243,7 +1819,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
 
     }
-
+/*
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
@@ -1252,6 +1828,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //todo: подсказки про именины на основе имени и даты рождения
         //todo: знаки зодиака и года
         //todo: ссылки с имени и фамилии на web справочник
+
 
         try {
             if (v == null || v.getId() != R.id.mainListView) return;
@@ -1263,27 +1840,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             selectedEvent = selectedEvent_str.split(Constants.STRING_EOT, -1);
 
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
-
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
-            int contactID = 0;
-            try {
-                contactID = Integer.parseInt(selectedEvent[ContactsEvents.Position_contactID]);
-            } catch (NumberFormatException e) {/**/}
-            if (!selectedEvent[ContactsEvents.Position_contactID].isEmpty() && (contactID > 0 & contactID < 1000000)) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CONTACTS)) {
-                menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact));
+
+            String contactID = selectedEvent[ContactsEvents.Position_contactID];
+            boolean isRealContactID = contactID != null && !contactID.isEmpty() && ContactsEvents.isRealContactEventID(contactID);
+            if (isRealContactID) {
+                menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact)).setIcon(android.R.drawable.ic_menu_edit);
             } else {
-                menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact));
+                menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact)).setIcon(android.R.drawable.ic_menu_add);
             }
 
             if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
-                menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event));
+                menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event)).setIcon(android.R.drawable.ic_menu_month);
 
                 if (selectedEvent[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
                     if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
-                        menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event));
-                        menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event));
+                        menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event)).setIcon(android.R.drawable.ic_menu_revert);
+                        menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event)).setIcon(android.R.drawable.ic_menu_set_as);
                     } else if (selectedEvent[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
-                        menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event));
+                        menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event)).setIcon(android.R.drawable.ic_menu_set_as);
                     }
                 }
             }
@@ -1291,9 +1866,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             String[] eventURLs = selectedEvent[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
             if (!eventURLs[0].isEmpty()) {
                 if (eventURLs.length == 1) {
-                    menu.add(Menu.NONE, Constants.ContextMenu_OpenURL, Menu.NONE, getString(R.string.menu_context_open_url));
+                    menu.add(Menu.NONE, Constants.ContextMenu_OpenURL, Menu.NONE, getString(R.string.menu_context_open_url)).setIcon(android.R.drawable.ic_menu_set_as);
                 } else {
-                    SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_open_url));
+                    SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_open_url)).setIcon(android.R.drawable.ic_menu_set_as);
                     for (int i = 0, eventURLsLength = eventURLs.length; i < eventURLsLength; i++) {
                         String url = eventURLs[i];
                         sub.add(i, Constants.ContextMenu_OpenURL, Menu.NONE, url.replace(Constants.STRING_HTTP, Constants.STRING_EMPTY).replace(Constants.STRING_HTTPS, Constants.STRING_EMPTY));
@@ -1305,48 +1880,52 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!eventKey.isEmpty()) {
                 if (eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
 
-                    menu.add(Menu.NONE, Constants.ContextMenu_UnhideEvent, Menu.NONE, getString(R.string.menu_context_unhide_event));
+                    menu.add(Menu.NONE, Constants.ContextMenu_UnhideEvent, Menu.NONE, getString(R.string.menu_context_unhide_event)).setIcon(android.R.drawable.ic_menu_revert);
 
                 } else {
 
-                    menu.add(Menu.NONE, Constants.ContextMenu_HideEvent, Menu.NONE, getString(R.string.menu_context_hide_event));
+                    menu.add(Menu.NONE, Constants.ContextMenu_HideEvent, Menu.NONE, getString(R.string.menu_context_hide_event)).setIcon(R.drawable.ic_menu_clear_playlist);
 
                 }
 
                 if (eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
 
-                    menu.add(Menu.NONE, Constants.ContextMenu_UnsilentEvent, Menu.NONE, getString(R.string.menu_context_unsilent_event));
+                    menu.add(Menu.NONE, Constants.ContextMenu_UnsilentEvent, Menu.NONE, getString(R.string.menu_context_unsilent_event)).setIcon(R.drawable.ic_menu_notifications);
 
                 } else if (!eventsData.checkIsHiddenEvent(eventKey)) {
 
-                    menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event));
+                    menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event)).setIcon(R.drawable.ic_menu_block);
 
                 }
             }
 
             //https://stackoverflow.com/questions/7042958/android-adding-a-submenu-to-a-menuitem-where-is-addsubmenu
-            SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_remind));
+            SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_remind)).setIcon(android.R.drawable.ic_menu_recent_history);
             sub.add(Menu.NONE, Constants.ContextMenu_Remind_1H, Menu.NONE, getString(R.string.menu_context_remind_1h));
             sub.add(Menu.NONE, Constants.ContextMenu_Remind_Morning, Menu.NONE, getString(R.string.menu_context_remind_morning));
 
-            sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_share));
+            sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_share)).setIcon(android.R.drawable.ic_menu_share);
             sub.add(Menu.NONE, Constants.ContextMenu_ShareAsImage, Menu.NONE, getString(R.string.menu_context_share_as_image));
             sub.add(Menu.NONE, Constants.ContextMenu_ShareAsText, Menu.NONE, getString(R.string.menu_context_share_as_text));
 
             if (selectedEvent[ContactsEvents.Position_eventType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary)) ) {
-                menu.add(Menu.NONE, Constants.ContextMenu_AnniversaryList, Menu.NONE, getString(R.string.menu_context_anniversary_list));
+                menu.add(Menu.NONE, Constants.ContextMenu_AnniversaryList, Menu.NONE, getString(R.string.menu_context_anniversary_list)).setIcon(android.R.drawable.ic_menu_info_details);
+            }
+
+            if (selectedEvent[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
+                menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, "Добавить счётчик…");//getString(R.string.menu_context_xDaysEvent_add));
             }
 
             if (eventsData.preferences_extrafun) {
-                menu.add(Menu.NONE, Constants.ContextMenu_EventInfo, Menu.NONE, getString(R.string.menu_context_event_info));
+                menu.add(Menu.NONE, Constants.ContextMenu_EventInfo, Menu.NONE, getString(R.string.menu_context_event_info)).setIcon(android.R.drawable.ic_menu_view);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
+    }*/
+/*
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
 
@@ -1362,7 +1941,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 editContactIntent.putExtra("finishActivityOnSaveCompleted", true);
                 try {
                     startActivity(editContactIntent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_CreateContact) {
@@ -1377,7 +1956,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 try {
                     startActivity(createContactIntent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_EditEvent) {
@@ -1386,7 +1965,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
                 try {
                     startActivity(editEventIntent);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_OpenURL) {
@@ -1396,7 +1975,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventURLs.length >= groupId) {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(eventURLs[groupId].trim())));
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
+                    } catch (android.content.ActivityNotFoundException e) { *//**//* }
                 }
 
             } else if (itemId == Constants.ContextMenu_EventInfo) {
@@ -1503,7 +2082,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
 
             } else if (itemId == Constants.ContextMenu_UnmergeEvent) {
 
@@ -1521,7 +2100,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_OTHER_CONTACT);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (android.content.ActivityNotFoundException e) { *//**//* }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_ShareAsImage) {
@@ -1579,7 +2158,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     try {
                         startActivity(chooser);
                         return true;
-                    } catch (ActivityNotFoundException e) { /**/ }
+                    } catch (ActivityNotFoundException e) { *//**//* }
                 }
                 return true;
 
@@ -1640,12 +2219,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return true;
         }
-    }
+    }*/
 
     synchronized private void prepareList() {
 
         try{
-            //long statCurrentModuleStart = System.currentTimeMillis();
             statsAllEvents = 0;
             statsHiddenEvents = 0;
             statsSilencedEvents = 0;
@@ -1692,12 +2270,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         , 0));
                     //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
                     viewZero.setMovementMethod(new ScrollingMovementMethod());
-                    /*viewZero.setOnClickListener(v -> {
-                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) { *//**//* }
-                    });*/
                 }
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));
@@ -1907,7 +2479,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             resources = eventsData.getContext().getResources();
 
-            listAll = eventsListFull;
+            listAll = new ArrayList<>(eventsListFull);
             dimen_details = (int) (eventsData.dimen_List_details / eventsData.DisplayMetrics_density);
             dimen_name = (int) (eventsData.dimen_List_name / eventsData.DisplayMetrics_density);
             dimen_date = (int) (eventsData.dimen_list_date / eventsData.DisplayMetrics_density);

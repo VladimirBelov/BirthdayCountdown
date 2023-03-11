@@ -13,8 +13,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.regex.Pattern;
-
 class Person {
 
     private static final String TAG = "Person";
@@ -41,6 +39,33 @@ class Person {
 
             this.context = context;
 
+            FIO_str = eventArray[ContactsEvents.Position_personFullNameAlt];
+            int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
+            if (spaceFirst == -1) { //Имя из одного слова
+                final ContactsEvents contactsEvents = ContactsEvents.getInstance();
+                final String normalizedName = ContactsEvents.normalizeName(FIO_str);
+                if (contactsEvents.preferences_first_names_male.reset(normalizedName).find()
+                        ||contactsEvents.preferences_first_names_female.reset(normalizedName).find()) { //Это имя
+                    FirstName = FIO_str;
+                    LastName = Constants.STRING_EMPTY;
+                } else { //Это фамилия
+                    FirstName = Constants.STRING_EMPTY;
+                    LastName = FIO_str;
+                }
+                SecondName = Constants.STRING_EMPTY;
+            } else {
+                int spaceLast = FIO_str.lastIndexOf(Constants.STRING_SPACE);
+                if (spaceFirst != spaceLast && spaceLast != -1) { //Есть отчество
+                    LastName = FIO_str.substring(0, spaceFirst);
+                    FirstName = FIO_str.substring(spaceFirst + 1, spaceLast);
+                    SecondName = FIO_str.substring(spaceLast + 1);
+                } else {
+                    LastName = FIO_str.substring(0, spaceFirst);
+                    FirstName = FIO_str.substring(spaceFirst + 1);
+                    SecondName = Constants.STRING_EMPTY;
+                }
+            }
+/*            //--
             FIO_str = eventArray[ContactsEvents.Position_personFullName];
             int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
@@ -58,7 +83,7 @@ class Person {
                     LastName = FIO_str.substring(spaceFirst + 1);
                     SecondName = Constants.STRING_EMPTY;
                 }
-            }
+            }*/
 
             try {
                 Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);
@@ -82,10 +107,45 @@ class Person {
                 final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
 
                 if (Integer.toString(formatName).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast))) {
-                        return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
+                    return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
                 } else {
-                    return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
+                    final String fullNameAlt = fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
+                    if (spaceFirst != spaceLast) { //Имя из 3+ слов
+                        return fullNameAlt;
+                    } else { //Имя из двух слов
+                        final ContactsEvents contactsEvents = ContactsEvents.getInstance();
+                        final String normalizedFirstName = ContactsEvents.normalizeName(fullName.substring(0, spaceFirst));
+                        if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()
+                                ||contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {
+                            return fullName;
+                        } else {
+                            return fullNameAlt;
+                        }
+                    }
                 }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return Constants.STRING_EMPTY;
+        }
+    }
+
+    public static String getShortName(@NonNull String fullName, @NonNull Context context) {
+
+        try{
+
+            final int spaceFirst = fullName.indexOf(Constants.STRING_SPACE);
+            if (spaceFirst == -1) { //Имя из одного слова
+                return fullName;
+            } else {
+                final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
+
+                if (spaceFirst == spaceLast) return fullName; //Уже короткое
+
+                return fullName.substring(0, spaceFirst) + fullName.substring(spaceLast);
             }
 
         } catch (Exception e) {
@@ -103,9 +163,15 @@ class Person {
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {
             if (!LastName.equals(Constants.STRING_EMPTY)) {
-                return LastName + (!FirstName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY) + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
+                return LastName
+                        + (!FirstName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY)
+                        + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
             } else if (!FirstName.equals(Constants.STRING_EMPTY)) {
-                return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
+                if (!SecondName.isEmpty()) {
+                    return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD;
+                } else {
+                    return FirstName;
+                }
             } else {
                 return Constants.STRING_EMPTY;
             }
@@ -125,40 +191,23 @@ class Person {
             // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён
 
             final ContactsEvents contactsEvents = ContactsEvents.getInstance();
-            if (contactsEvents.preferences_last_name_comletions_man == null) {//Ищем первый раз
-                //eventsData.preferences_first_names_female = new HashSet<>(Arrays.asList(context.getString(R.string.first_names_female).split(ContactsEvents.STRING_COMMA)));
-
-                final String regex_inter = "\\Z|";
-                final String regex_last = "\\Z";
-
-                contactsEvents.preferences_last_name_comletions_man = Pattern.compile(context.getString(R.string.last_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-                contactsEvents.preferences_last_name_comletions_female = Pattern.compile(context.getString(R.string.last_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-                contactsEvents.preferences_first_names_man = Pattern.compile(context.getString(R.string.first_names_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-                final String names = contactsEvents.preferences_first_names_female_custom.isEmpty() ?
-                        context.getString(R.string.first_names_female) :
-                        context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(contactsEvents.preferences_first_names_female_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
-                contactsEvents.preferences_first_names_female = Pattern.compile(names.replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-                contactsEvents.preferences_second_name_comletions_man = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-                contactsEvents.preferences_second_name_comletions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, regex_inter) + regex_last).matcher(Constants.STRING_EMPTY);
-
-            }
 
             int ind = 0;
             if (!this.LastName.isEmpty()) {
                 final String normalizedLastName = ContactsEvents.normalizeName(this.LastName);
-                if (contactsEvents.preferences_last_name_comletions_man.reset(normalizedLastName).find()) {ind++;}
-                else if (contactsEvents.preferences_last_name_comletions_female.reset(normalizedLastName).find()) {ind--;}
+                if (contactsEvents.preferences_last_name_completions_male.reset(normalizedLastName).find()) {ind++;}
+                else if (contactsEvents.preferences_last_name_completions_female.reset(normalizedLastName).find()) {ind--;}
             }
 
             if (!this.SecondName.isEmpty()) {
                 final String normalizedSecondName = ContactsEvents.normalizeName(this.SecondName);
-                if (contactsEvents.preferences_second_name_comletions_man.reset(normalizedSecondName).find()) {ind++;}
-                else if (contactsEvents.preferences_second_name_comletions_female.reset(normalizedSecondName).find()) {ind--;}
+                if (contactsEvents.preferences_second_name_completions_male.reset(normalizedSecondName).find()) {ind++;}
+                else if (contactsEvents.preferences_second_name_completions_female.reset(normalizedSecondName).find()) {ind--;}
             }
 
             if (!this.FirstName.isEmpty()) {
                 final String normalizedFirstName = ContactsEvents.normalizeName(this.FirstName);
-                if (contactsEvents.preferences_first_names_man.reset(normalizedFirstName).find()) {ind++;}
+                if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()) {ind++;}
                 else if (contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {ind--;}
             }
 

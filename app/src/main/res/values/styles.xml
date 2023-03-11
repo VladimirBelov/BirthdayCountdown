@@ -682,7 +682,6 @@
         <item name="android:textColor">@color/lighter_gray</item>
     </style>
 
-
     <style name="EditText.DarkGrey" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>

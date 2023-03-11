@@ -417,6 +417,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Female_Names_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Male_Names_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
@@ -1621,13 +1622,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_menu_find));
             TextView title = view.findViewById(R.id.title);
             if (title != null) title.setText(R.string.pref_List_FontMagnify_title);
-                //Resources.Theme th = this.getTheme();
-               // ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-               // title.setTextColor(ta.getColor(R.styleable.Theme_colorPrimary, title.getCurrentTextColor()));
-                        //getResources().getColor(R.color.white));
-            //}
-
-            //ta = this.getTheme().obtainStyledAttributes(R.style.ContactsEvents.getInstance().preferences_theme.themeDialog);
 
             //Данные события
             ImageView iconEvent = view.findViewById(R.id.entryEventIcon);

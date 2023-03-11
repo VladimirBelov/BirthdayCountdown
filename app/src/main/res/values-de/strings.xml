@@ -532,7 +532,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Ereignisdetails</string>
-    <string name="pref_Widgets_EventInfo_summary">Welche Ereignisdetails und Widget-Elemente angezeigt werden sollen</string>
+    <string name="pref_Widgets_EventInfo_summary">Welche Ereignisdetails und Widget-Elemente standardmäßig angezeigt werden sollen</string>
 
     <string name="pref_Widgets_EventInfo_None">Keine</string>
     <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
@@ -579,14 +579,14 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo_summary">Was unter dem Foto angezeigt werden soll</string>
+    <string name="pref_Widgets_BottomInfo_summary">Was unter dem Foto angezeigt werden auf Foto-Widgets soll</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Bildunterschrift (obere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo2nd_summary">Was unter dem Foto angezeigt werden soll</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Was unter dem Foto angezeigt werden auf Foto-Widgets soll</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Nachname Vorname(n)</item>
-        <item>Nachname und Initialen</item>
+        <item>Nachname und Initialen (Name, wenn Nachname fehlt)</item>
         <item>Vorname(n) Nachname</item>
         <item>Name</item>
         <item>Pseudonym (Name, wenn Eintrag fehlt)</item>

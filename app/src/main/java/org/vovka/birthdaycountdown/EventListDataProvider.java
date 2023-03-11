@@ -122,17 +122,17 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
 
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventtoday & 0x00ffffff);
+                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_event_today & 0x00ffffff);
                         dateColorId = 1;
 
-                    } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_eventsoon) { //Скоро
+                    } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventsoon & 0x00ffffff);
+                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_event_soon & 0x00ffffff);
                         dateColorId = 2;
 
                     } else { //Попозже
 
-                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_eventfar & 0x00ffffff);
+                        dateColor = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
 
                     }
                 } catch (Resources.NotFoundException nfe) { /**/ }

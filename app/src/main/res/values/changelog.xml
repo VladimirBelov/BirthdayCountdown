@@ -11,6 +11,12 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.6</item>
+        <item>All name variations are used for searching contact names (with and w/o second names)</item>
+        <item>Added the ability to add unrecorded male names (in addition to female ones)</item>
+        <item>Fixed duplicate results for Quick Search</item>
+        <item>Fixed display of incomplete names (names lists are used for analysis)</item>
+
         <item>#1.7.5</item>
         <item>Moved contacts accounts selection to the \"Event Setup\" section, added support for selecting from local accounts and the ability don\'t use address book events</item>
         <item>Added support for files with multiple event types</item>

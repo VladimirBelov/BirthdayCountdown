@@ -9,12 +9,17 @@
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class ToastExpander {
 
@@ -49,8 +54,23 @@ public class ToastExpander {
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), text);
         } catch (Exception e) { /**/ }
-        new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            try {
+                if (eventsData.isUIopen && eventsData.coordinator != null) {
+                    final Snackbar snackbar = Snackbar.make(eventsData.coordinator, text, Snackbar.LENGTH_LONG);
+                    try {
+                        TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                        snackbar.setBackgroundTint(ta.getColor(R.styleable.Theme_colorPrimary, 0));
+                    } catch (Resources.NotFoundException e) {/**/}
+                    snackbar.show();
+                }
+            } catch (IllegalArgumentException e) {
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
+            }
+        } else {
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
+        }
     }
 
 }

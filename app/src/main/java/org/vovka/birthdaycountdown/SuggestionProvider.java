@@ -33,6 +33,13 @@ public class SuggestionProvider extends ContentProvider{
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+
+        eventsData = ContactsEvents.getInstance();
+        if (eventsData.getContext() == null) eventsData.setContext(getContext().getApplicationContext());
+
+        //to protect from running twice
+        if (System.currentTimeMillis() - eventsData.statLastSearchSuggestion < 500) return null;
+        eventsData.statLastSearchSuggestion = System.currentTimeMillis();
         return selectionArgs == null ? null : getSuggestions(selectionArgs[0]);
     }
 

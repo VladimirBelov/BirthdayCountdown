@@ -10,7 +10,7 @@
 <!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
 <!-- https://stackoverflow.com/questions/32860815/how-to-define-dimens-xml-for-every-different-screen-size-in-android -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="widgetDate_fontSize">10.0sp</dimen>
     <dimen name="widgetMarks_fontSize">12.0sp</dimen>
     <dimen name="widgetDaysX_fontSize">24.0sp</dimen>
@@ -24,4 +24,6 @@
     <dimen name="event_details">12sp</dimen>
     <dimen name="event_name">18sp</dimen>
     <dimen name="event_date">14sp</dimen>
+
+    <integer name="design_snackbar_text_max_lines" tools:override="true">5</integer> <!-- https://stackoverflow.com/questions/30705607/android-multiline-snackbar -->
 </resources>

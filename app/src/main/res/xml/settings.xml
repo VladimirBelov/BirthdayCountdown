@@ -94,8 +94,20 @@
             android:summary="@string/pref_Female_Names_description"
             android:title="@string/pref_Female_Names_title"
             android:hint="@string/pref_Female_Names_hint"
+            android:inputType="text"
             android:textSize="16sp"
-            android:icon="@android:drawable/ic_menu_edit"
+            android:icon="@drawable/ic_menu_friendslist"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_Male_Names_key"
+            android:summary="@string/pref_Male_Names_description"
+            android:title="@string/pref_Male_Names_title"
+            android:hint="@string/pref_Male_Names_hint"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:icon="@drawable/ic_menu_friendslist"
             android:dialogIcon="@android:drawable/ic_menu_edit"
             android:negativeButtonText="@string/button_cancel"/>
 
@@ -183,6 +195,7 @@
                     android:summary="@string/pref_CustomEvents_Birthday_Labels_summary"
                     android:title="@string/pref_CustomEvents_Birthday_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>1
@@ -221,6 +234,7 @@
                     android:summary="@string/pref_CustomEvents_Anniversary_Labels_summary"
                     android:title="@string/pref_CustomEvents_Anniversary_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
@@ -248,6 +262,7 @@
                     android:summary="@string/pref_CustomEvents_NameDay_Labels_summary"
                     android:title="@string/pref_CustomEvents_NameDay_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
@@ -270,6 +285,7 @@
                     android:summary="@string/pref_CustomEvents_Crowning_Labels_summary"
                     android:title="@string/pref_CustomEvents_Crowning_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
@@ -292,6 +308,7 @@
                     android:summary="@string/pref_CustomEvents_Death_Labels_summary"
                     android:title="@string/pref_CustomEvents_Death_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
@@ -317,6 +334,7 @@
                     android:summary="@string/pref_CustomEvents_Other_Labels_summary"
                     android:title="@string/pref_CustomEvents_Other_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
@@ -353,6 +371,7 @@
                     android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:importantForAccessibility="no"
@@ -386,6 +405,7 @@
                     android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:importantForAccessibility="no"
@@ -419,6 +439,7 @@
                     android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:importantForAccessibility="no"
@@ -452,6 +473,7 @@
                     android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:importantForAccessibility="no"
@@ -485,6 +507,7 @@
                     android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
                     android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
                     android:textSize="16sp"
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:importantForAccessibility="no"
@@ -640,6 +663,7 @@
             android:summary="@string/pref_List_CustomCaption_summary"
             android:title="@string/pref_List_CustomCaption_title"
             android:hint="@string/pref_List_CustomCaption_hint"
+            android:inputType="text"
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
             android:dialogIcon="@android:drawable/ic_menu_edit"
@@ -650,6 +674,7 @@
             android:summary="@string/pref_List_CustomTodayEventCaption_summary"
             android:title="@string/pref_List_CustomTodayEventCaption_title"
             android:hint="@string/pref_List_CustomTodayEventCaption_hint"
+            android:inputType="text"
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_edit"
             android:dialogIcon="@android:drawable/ic_menu_edit"

@@ -532,7 +532,7 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Деталі події</string>
-    <string name="pref_Widgets_EventInfo_summary">Які показувати деталі події та елементи віджету</string>
+    <string name="pref_Widgets_EventInfo_summary">Які деталі події та елементи віджета відображати за умовчанням</string>
 
     <string name="pref_Widgets_EventInfo_None">Жодного</string>
     <string name="pref_Widgets_EventInfo_Border">Рамка вiджету</string>
@@ -579,14 +579,14 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Надпис (нижній ряд)</string>
-    <string name="pref_Widgets_BottomInfo_summary">Що показувати під фотографією</string>
+    <string name="pref_Widgets_BottomInfo_summary">Що відображати під фотографією у фотовіджетах</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Надпис (верхній ряд)</string>
-    <string name="pref_Widgets_BottomInfo2nd_summary">Що показувати під фотографією</string> <!--  непонятно под или над -->
+    <string name="pref_Widgets_BottomInfo2nd_summary">Що відображати під фотографією у фотовіджетах</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Прізвище Ім’я По-батькові</item>
-        <item>Прізвище І.П.</item>
+        <item>Прізвище І.П. (Ім’я, якщо немає прізвища)</item>
         <item>Ім’я По-батькові Прізвище</item>
         <item>Ім’я</item>
         <item>Псевдонім (Ім’я, якщо відсутня)</item>
