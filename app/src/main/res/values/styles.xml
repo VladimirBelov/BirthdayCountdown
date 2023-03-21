@@ -59,11 +59,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Меню главной активности -->
+    <!-- Меню главной активности и контекстное меню-->
     <style name="AppTheme.Green.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/theme_green_secondary</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:listDivider">@color/theme_green_status_transp</item>
     </style>
 
     <!-- Темы диалогов -->

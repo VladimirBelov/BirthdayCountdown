@@ -109,7 +109,7 @@
 
     <string name="msg_age_now">"Ahora: "</string>
     <string name="msg_age_was">"Tenía: "</string>
-    <string name="msg_age_could_be">"Sería ahora: "</string>
+    <string name="msg_age_could_be_now">"Sería ahora: "</string>
     <string name="msg_label_search">Ingrese parte del nombre completo, tipo de contacto, lugar de trabajo, puesto, fechas (se pueden ingresar múltiples valores separados por comas, se admite regexp):</string>
     <string name="msg_hint_search">Consulta de busqueda</string>
     <string name="msg_hint_global_search">Buscar eventos</string>

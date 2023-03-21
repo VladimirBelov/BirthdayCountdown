@@ -109,7 +109,7 @@
 
     <string name="msg_age_now">"Alter: "</string>
     <string name="msg_age_was">"Alter bei Tod: "</string>
-    <string name="msg_age_could_be">"Könnte jetzt sein: "</string>
+    <string name="msg_age_could_be_now">"Könnte jetzt sein: "</string>
     <string name="msg_label_search">Geben Sie einen Teil des Namens, des Kontakttyps, des Arbeitsorts, der Position und des Datums ein (mehrere Werte können durch Kommas getrennt eingegeben werden, unterstützt von regexp):</string>
     <string name="msg_hint_search">Suchanfrage</string>
     <string name="msg_hint_global_search">Suche nach Ereignissen</string>

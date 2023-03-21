@@ -65,25 +65,6 @@ class Person {
                     SecondName = Constants.STRING_EMPTY;
                 }
             }
-/*            //--
-            FIO_str = eventArray[ContactsEvents.Position_personFullName];
-            int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
-            if (spaceFirst == -1) { //Имя из одного слова
-                FirstName = FIO_str;
-                LastName = Constants.STRING_EMPTY;
-                SecondName = Constants.STRING_EMPTY;
-            } else {
-                int spaceLast = FIO_str.lastIndexOf(Constants.STRING_SPACE);
-                if (spaceFirst != spaceLast) { //Есть отчество
-                    FirstName = FIO_str.substring(0, spaceFirst);
-                    SecondName = FIO_str.substring(spaceFirst + 1, spaceLast);
-                    LastName = FIO_str.substring(spaceLast + 1);
-                } else {
-                    FirstName = FIO_str.substring(0, spaceFirst);
-                    LastName = FIO_str.substring(spaceFirst + 1);
-                    SecondName = Constants.STRING_EMPTY;
-                }
-            }*/
 
             try {
                 Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);

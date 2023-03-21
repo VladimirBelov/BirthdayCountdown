@@ -8,8 +8,6 @@
 
 package org.vovka.birthdaycountdown;
 
-import static org.vovka.birthdaycountdown.ContactsEvents.Position_eventDate;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -402,7 +400,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[Position_eventDate]);
+                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDate]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

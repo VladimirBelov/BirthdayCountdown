@@ -360,6 +360,7 @@
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Caption_summary"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
@@ -368,8 +369,8 @@
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom1_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:inputType="text"
                     android:textSize="16sp"
@@ -394,6 +395,7 @@
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Caption_summary"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
@@ -402,8 +404,8 @@
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom2_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:inputType="text"
                     android:textSize="16sp"
@@ -428,6 +430,7 @@
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Caption_summary"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
@@ -436,8 +439,8 @@
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom3_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:inputType="text"
                     android:textSize="16sp"
@@ -462,6 +465,7 @@
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Caption_summary"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
@@ -470,8 +474,8 @@
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom4_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:inputType="text"
                     android:textSize="16sp"
@@ -496,6 +500,7 @@
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Caption_key"
                     android:title="@string/pref_CustomEvents_Custom_Caption_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Caption_summary"
                     android:hint="@string/pref_CustomEvent_Caption_hint"
                     android:textSize="16sp"
                     android:inputType="textCapSentences"
@@ -504,8 +509,8 @@
 
                 <org.vovka.birthdaycountdown.CustomEditTextPreference
                     android:key="@string/pref_CustomEvents_Custom5_Labels_key"
-                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:title="@string/pref_CustomEvents_Custom_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Custom_Labels_summary"
                     android:hint="@string/pref_CustomEvents_hint"
                     android:inputType="text"
                     android:textSize="16sp"

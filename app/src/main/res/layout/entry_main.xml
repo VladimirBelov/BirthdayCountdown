@@ -89,7 +89,7 @@
                     android:id="@+id/entryEventIcon"
                     android:layout_width="15dip"
                     android:layout_height="25dip"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="top"
                     android:layout_marginEnd="2dp"
                     android:adjustViewBounds="false"
                     android:contentDescription="@string/hint_EventIcon"

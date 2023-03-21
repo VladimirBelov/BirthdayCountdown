@@ -51,6 +51,7 @@
     <string name="menu_context_share_as_image">как изображение</string>
     <string name="menu_context_share_as_text">как текст</string>
     <string name="menu_context_xDaysEvent_add">Добавить счётчик дней…</string>
+    <string name="menu_context_xDaysEvent_edit">Счётчик дней…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -110,7 +111,9 @@
 
     <string name="msg_age_now">"Сейчас: "</string>
     <string name="msg_age_was">"Было: "</string>
-    <string name="msg_age_could_be">"Было бы сейчас: "</string>
+    <string name="msg_age_could_be_now">"Было бы сейчас: "</string>
+    <string name="msg_age_will_be">"Будет: "</string>
+    <string name="msg_age_could_be">"Было бы: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_hint_global_search">Поиск событий</string>
@@ -163,6 +166,7 @@
     <string name="button_ok">OK</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_reset">Сбросить</string>
+    <string name="button_remove">Удалить</string>
     <string name="button_choose">Выбрать</string>
     <string name="button_rate">Оценить</string>
     <string name="button_mail">Написать</string>
@@ -337,6 +341,7 @@
 
     <string name="pref_CustomEvents_Custom_title">Пользовательское событие</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Заполните заголовок события, чтобы включить его использование</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Наименования событий</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">События с такой меткой будут идентифицированы как это событие</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Использовать год</string>
@@ -991,4 +996,9 @@
     <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
 
     <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
+    <string name="xDaysCounter_Dialog_Caption">Повторять событие:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">введите число дней</string>
+    <string name="xDaysCounter_Dialog_Hint">число дней, через которое нужно повторять событие. например: 1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Hint_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
 </resources>

@@ -100,6 +100,7 @@ final class Constants {
     static final int Storage_Calendar = 0;
     static final String STRING_STORAGE_FILE = "file";
     static final int Storage_File = 2;
+    static final String STRING_STORAGE_XDAYS = "x days";
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
     static final String PREFIX_FileEventID = "f";

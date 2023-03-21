@@ -9,7 +9,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical|start"
@@ -54,41 +53,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Повторять событие:"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="@string/xDaysCounter_Dialog_Caption"/>
 
             <EditText
                 android:id="@+id/repeats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
-                android:hint="введите число дней"
-                android:inputType="text"
+                android:inputType="phone"
+                android:digits="0123456789,"
                 android:textColorHint="?android:attr/textColorPrimary"
                 android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:hint="@string/xDaysCounter_Dialog_Repeats_Hint"
+                android:autofillHints="@string/xDaysCounter_Dialog_Hint_AutoFill" />
 
             <TextView
                 android:id="@+id/hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="число дней, через которое нужно повторять событие. например: 1000, 5000"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:text="@string/xDaysCounter_Dialog_Hint"/>
 
             <TextView
-                android:id="@+id/captionNextEvents"
+                android:id="@+id/captionNearestEvents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="Ближайшие повторы:"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="@string/xDaysCounter_Dialog_NearestEvents"/>
 
             <TextView
-                android:id="@+id/listNextEvents"
+                android:id="@+id/listNearestEvents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="08.10.2023: 2000 дней\n18.10.2033: 3000 дней\n18.10.2043: 4000 дней"
                 android:textSize="12sp" />
 
         </LinearLayout>

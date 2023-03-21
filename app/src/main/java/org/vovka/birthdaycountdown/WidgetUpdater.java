@@ -572,15 +572,14 @@ class WidgetUpdater {
 
                     strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
+                } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 
-                    Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleEventArray[ContactsEvents.Position_contactID]);
+                    Date birthDate = eventsData.birthdayDatesForIds.get(singleEventArray[ContactsEvents.Position_contactID]);
                     if (birthDate != null) {
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
                         strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, sdfYear.format(birthDate));
                     }
-
                 }
             }
 
@@ -602,23 +601,19 @@ class WidgetUpdater {
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))) {
 
-            //if (eventsData.preferences_widgets_event_info.contains(ContactsEvents.pref_Widgets_EventInfo_ZodiacYear)) {
-
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
                     strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
 
-                } else if (eventsData.set_events_birthdays.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
+                } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 
-                    Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                    final Date birthDate = eventsData.set_events_birthdays.get(singleEventArray[ContactsEvents.Position_contactID]);
+                    Date birthDate = eventsData.birthdayDatesForIds.get(singleEventArray[ContactsEvents.Position_contactID]);
                     if (birthDate != null) {
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
                         strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, sdfYear.format(birthDate));
                     }
-
                 }
-
             }
 
             if (!strZodiacYearInfo.isEmpty()) {
