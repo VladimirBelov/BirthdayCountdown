@@ -80,7 +80,7 @@
     <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
     <string name="msg_date_parse_error">"Fehler bei der Datumsanalyse: "</string>
     <string name="msg_event_parse_error">"Ereignisanalysefehler: "</string>
-    <string name="msg_type_parse_error">"Ereignistyp ist nicht definiert: "</string>
+    <string name="msg_type_parse_error">"Ereignistyp unbekannt: '%1$s' für '%2$s'"</string>
     <string name="msg_jump_to_event_error">Ereignis nicht gefunden! Aktivieren Sie weitere Ereignistypen in den App-Einstellungen</string>
     <string name="msg_errors_total">"Gesamtfehler: "</string>
     <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>
@@ -182,9 +182,9 @@
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
     <string name="events_scope_hidden">Ausgeblendet (%1$d)</string>
-    <string name="events_scope_hidden2">Ausgeblendet (%1$d, gesichert %2$d)</string>
+    <string name="events_scope_hidden_dead">Ausgeblendet (%1$d, gesichert %2$d)</string>
     <string name="events_scope_silenced">Ohne Benachrichtigung (%1$d)</string>
-    <string name="events_scope_silenced2">Ohne Benachrichtigung (%1$d, gesichert %2$d)</string>
+    <string name="events_scope_silenced_dead">Ohne Benachrichtigung (%1$d, gesichert %2$d)</string>
     <string name="events_scope_clear">Filter entfernen</string>
     <string name="events_scope_clean">Filter von toten Links reinigen</string>
 

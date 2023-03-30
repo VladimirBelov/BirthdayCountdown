@@ -12,12 +12,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String TAG = "AlarmReceiver";
-    private ContactsEvents eventsData;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -26,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             StringBuilder log = new StringBuilder();
 
-            eventsData = ContactsEvents.getInstance();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -51,13 +49,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             //Посылаем сообщения на обновление виджетов
             eventsData.updateWidgets(0);
-            log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(Constants.STRING_EOL);
+            log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
 
-            if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
+            ToastExpander.showInfoMsg(context, log.toString());
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

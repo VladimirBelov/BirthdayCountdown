@@ -17,14 +17,13 @@ import android.util.Log;
 public class QuizReceiver extends BroadcastReceiver {
 
     private static final String TAG = "QuizReceiver";
-    private ContactsEvents eventsData;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         try {
 
-            eventsData = ContactsEvents.getInstance();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
 
             Bundle extras = intent.getExtras();
@@ -39,7 +38,7 @@ public class QuizReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

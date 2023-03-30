@@ -80,7 +80,7 @@
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
     <string name="msg_date_parse_error">"Помилка розпізнавання дати: "</string>
     <string name="msg_event_parse_error">"Помилка розпізнавання події: "</string>
-    <string name="msg_type_parse_error">"Тип події не визначено: "</string>
+    <string name="msg_type_parse_error">"Тип події не розпізнано: '%1$s' за '%2$s'"</string>
     <string name="msg_jump_to_event_error">Подія не знайдено! Увімкніть більше типів подій у налаштуваннях програми</string>
     <string name="msg_errors_total">"Усього помилок: "</string>
     <string name="msg_errors_details">"акаунт=%1$s, тип події=%2$s, дата=%3$s"</string>
@@ -182,9 +182,9 @@
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
     <string name="events_scope_hidden">Приховані (%1$d)</string>
-    <string name="events_scope_hidden2">Приховані (%1$d, збережено %2$d)</string>
+    <string name="events_scope_hidden_dead">Приховані (%1$d, збережено %2$d)</string>
     <string name="events_scope_silenced">Без оповіщення (%1$d)</string>
-    <string name="events_scope_silenced2">Без оповіщення (%1$d, збережено %2$d)</string>
+    <string name="events_scope_silenced_dead">Без оповіщення (%1$d, збережено %2$d)</string>
     <string name="events_scope_clear">Видалити фільтри</string>
     <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 

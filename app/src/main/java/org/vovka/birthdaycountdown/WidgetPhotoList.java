@@ -130,14 +130,12 @@ public class WidgetPhotoList extends AppWidgetProvider {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", 0);
             }
 
-            if (eventsData.preferences_debug_on) {
-                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
-                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
-                                "\n widgetPref=" + widgetPref
-                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
-                );
-            }
+            ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                    widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
+                            ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
+                            "\n widgetPref=" + widgetPref
+                    : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
+            );
 
             //Запуск обновления
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -145,7 +143,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -179,7 +177,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

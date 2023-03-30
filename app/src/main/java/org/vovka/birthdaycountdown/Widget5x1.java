@@ -70,22 +70,20 @@ public class Widget5x1 extends AppWidgetProvider {
 
             RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
 
-            if (eventsData.preferences_debug_on) {
-                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
-                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
-                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref
-                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
-                );
-            }
+            ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                    widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
+                            ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
+                            "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
+                            "\n widgetPref=" + widgetPref
+                    : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
+            );
 
             new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -116,7 +114,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

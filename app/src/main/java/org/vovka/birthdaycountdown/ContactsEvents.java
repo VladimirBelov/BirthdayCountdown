@@ -75,6 +75,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -188,7 +191,7 @@ class ContactsEvents {
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
     //final Locale locale_en = new Locale(Constants.LANG_EN); //Все даты Android хранит в этой локали, типа 11 Jan 1991
-    final Locale locale_ru = new Locale(Constants.LANG_RU); //Skype хранит даты в той локале, которая указана в приложении Skype
+    final Locale locale_ru = new Locale(Constants.LANG_RU); //Skype хранит даты в той локали, которая указана в приложении Skype
     //final Locale locale_us = new Locale(Constants.LANG_US); // Jan 11, 1991
     final Locale locale_ukr = new Locale(Constants.LANG_UA);
     final SimpleDateFormat sdf_java = new SimpleDateFormat(Constants.DATE_JAVA, Locale.US);
@@ -214,7 +217,7 @@ class ContactsEvents {
     final SimpleDateFormat sdf_YYYYMMDD_noDiv = new SimpleDateFormat(Constants.DATE_NO_DIV, Locale.UK);
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final HashMap<String, String> map_contacts_data = new HashMap<>(); //кеш данных о контактах
-    private final HashMap<String, String> preferences_mergedIDs = new HashMap<>();
+    private final HashMap<String, String> preferences_mergedIDs = new HashMap<>(); //жёсткая привязка события к определённому контакту
     private final HashMap<String, String> preferences_xDaysEvents = new HashMap<>();
     List<String> eventListUnsorted = new ArrayList<>(); //Несортированный список
     int currentTheme = 0;
@@ -222,6 +225,7 @@ class ContactsEvents {
 
     //Настройки
     boolean preferences_debug_on;
+    boolean preferences_info_on;
     boolean preferences_extrafun;
     String preferences_language;
     String preferences_icon;
@@ -238,6 +242,7 @@ class ContactsEvents {
     int preferences_list_marging;
     int preferences_list_nameformat;
     int preferences_list_dateformat;
+    Set<String> preferences_list_age_format;
     int preferences_list_color_eventtoday;
     int preferences_list_color_eventsoon;
     int preferences_list_color_eventjubilee;
@@ -331,6 +336,7 @@ class ContactsEvents {
     Set<String> preferences_OtherEvent_files = new HashSet<>();
     Set<String> preferences_MultiType_files = new HashSet<>();
     private Set<String> pref_List_Event_Info_Default;
+    private Set<String> pref_List_Age_Format_Default;
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
 
@@ -648,6 +654,12 @@ class ContactsEvents {
         pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_EventCaption));
         pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_EventIcon));
         pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_FavoritesIcon));
+
+        pref_List_Age_Format_Default = new HashSet<>();
+        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_AddPostfix));
+        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_Convert000toK));
+        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_SeparateThousands));
+
     }
 
     @NonNull
@@ -691,8 +703,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -805,8 +816,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -839,8 +849,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -852,8 +861,7 @@ class ContactsEvents {
             return c.getTime();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return date;
         }
     }
@@ -890,8 +898,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -910,6 +917,7 @@ class ContactsEvents {
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
             preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), false);
+            preferences_info_on = preferences.getBoolean(context.getString(R.string.pref_Help_InfoMsg_On_key), true);
             preferences_extrafun = preferences.getBoolean(context.getString(R.string.pref_Help_ExtraFun_On_key), false);
             preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
@@ -927,6 +935,7 @@ class ContactsEvents {
             preferences_list_sad_photo = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default)));
             preferences_list_nameformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)));
             preferences_list_dateformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default)));
+            preferences_list_age_format = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_AgeFormat_key), pref_List_Age_Format_Default);
             preferences_list_custom_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomCaption_key), Constants.STRING_EMPTY);
             preferences_list_custom_todayevent_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomTodayEventCaption_key), Constants.STRING_EMPTY);
             preferences_list_color_eventtoday = getPreferenceInt(preferences, getResources().getString(R.string.pref_List_Color_EventToday_key), getResources().getColor(R.color.pref_List_Color_EventToday_default));
@@ -1268,8 +1277,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1314,8 +1322,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1330,13 +1337,14 @@ class ContactsEvents {
 
         //сделать так: https://stackoverflow.com/questions/39705739/android-n-change-language-programmatically/
         //для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
-        //посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
+        //todo: посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
+        // http://developer.alexanderklimov.ru/android/locale.php
+
         try {
 
-            // http://developer.alexanderklimov.ru/android/locale.php
-            if (force || !preferences_language.equals(currentLocale)) {
+            Configuration configuration = context.getResources().getConfiguration();
+            if (force || !preferences_language.equals(currentLocale) || !currentLocale.equals(configuration.locale.toString())) {
 
-                Configuration configuration = context.getResources().getConfiguration();
                 Locale locale;
                 if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
                     locale = new Locale(systemLocale);
@@ -1359,8 +1367,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1421,8 +1428,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -1661,7 +1667,7 @@ class ContactsEvents {
 
                     } catch (RuntimeException e) {
                         countErrors++;
-                        if (preferences_debug_on && countErrors < 3) {
+                        if (countErrors < 3) {
                             StringBuilder sb = new StringBuilder();
                             sb.append(getMethodName(3)).append(Constants.STRING_COLON_SPACE).append(e).append(Constants.STRING_EOL);
                             for (String name : cursor.getColumnNames()) {
@@ -1669,7 +1675,7 @@ class ContactsEvents {
                                 if (data != null && !data.equals(Constants.STRING_0))
                                     sb.append(name).append(Constants.STRING_COLON_SPACE).append(data).append(Constants.STRING_EOL);
                             }
-                            ToastExpander.showText(context, sb.toString());
+                            ToastExpander.showInfoMsg(context, sb.toString());
                         }
                     }
                 } while (cursor.moveToNext());
@@ -1704,16 +1710,14 @@ class ContactsEvents {
             dataList.clear();
             statTimeGetContactEvents = System.currentTimeMillis() - statCurrentModuleStart;
 
-            if (preferences_debug_on && countErrors > 1) {
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
-            }
+            if (countErrors > 1)
+                ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
 
             return true;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -1745,8 +1749,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
@@ -1789,8 +1792,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
@@ -1946,14 +1948,21 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
 
     @NonNull
-    private String addContactEventToEventList(@NonNull Cursor cursor, @NonNull TreeMap<Integer, String> userData, @NonNull List<String> dataList, @NonNull ColumnIndexCache cache, @NonNull HashMap<String, String> orgMap, @NonNull HashMap<String, String> titleMap, @NonNull HashMap<String, String> nickMap, @NonNull String eventKey) {
+    private String addContactEventToEventList(
+            @NonNull Cursor cursor,
+            @NonNull TreeMap<Integer, String> userData,
+            @NonNull List<String> dataList,
+            @NonNull ColumnIndexCache cache,
+            @NonNull HashMap<String, String> orgMap,
+            @NonNull HashMap<String, String> titleMap,
+            @NonNull HashMap<String, String> nickMap,
+            @NonNull String eventKey) {
 
         String eventKey_current = eventKey;
         String eventDate = null;
@@ -2083,9 +2092,8 @@ class ContactsEvents {
                 }
                 if (isEventLabel && eventCaption.isEmpty()) eventCaption = eventLabel;
 
-                if (eventIcon == 0 && preferences_debug_on) {
-                    ToastExpander.showText(context, resources.getString(R.string.msg_type_parse_error) + eventLabel);
-                }
+                if (eventIcon == 0)
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, contactName));
 
                 String eventKey_next = contactName.concat(Constants.STRING_COMMA).concat(eventType);
 
@@ -2190,8 +2198,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDate));
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDate));
         }
         return eventKey_current;
 
@@ -2213,7 +2220,7 @@ class ContactsEvents {
 
             ColumnIndexCache cache = new ColumnIndexCache();
             StringBuilder dataRow;
-            Event event = null;
+            Event event = new Event();
 
             if (map_calendars.isEmpty()) recieveCalendarList();
             final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_calendars_nameformat).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
@@ -2248,12 +2255,6 @@ class ContactsEvents {
             endTime.add(Calendar.MILLISECOND, zoneOffset);
             endTime.add(Calendar.SECOND, -1);
 
-            //String eventSubType = Constants.STRING_EMPTY;
-            //int eventIcon = 0;
-            //String eventEmoji = Constants.STRING_EMPTY;
-            //String eventCaption = Constants.STRING_EMPTY;
-
-            int importStorage;
             String[] arrRules;
             List<Matcher> matcherNames = new ArrayList<>();
             boolean useEventYear = false;
@@ -2261,29 +2262,24 @@ class ContactsEvents {
 
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
-                event = new Event();
                 event.caption = getResources().getString(R.string.event_type_birthday);
                 event.type = eventType;
                 event.subType = getEventType(Constants.Type_BirthDay);
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = "🎂";
                 event.needScanContacts = true;
-                importStorage = Constants.Storage_Contacts;
                 useEventYear = preferences_birthday_calendars_useyear;
 
             } else if (eventType.equals(getEventType(Constants.Type_Other))) {
 
-                event = new Event();
                 event.caption = getResources().getString(R.string.event_type_calendar);
                 event.type = eventType;
                 event.subType = getEventType(Constants.Type_CalendarEvent);
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "🗓️" : "\uD83D\uDCC6";
-                importStorage = Constants.Storage_Calendar;
 
             } else if (eventType.equals(Constants.Type_MultiEvent)) {
 
-                importStorage = Constants.Storage_Calendar;
                 useEventYear = true;
 
             } else {
@@ -2301,7 +2297,6 @@ class ContactsEvents {
                 }
             }
 
-            //todo: переделать на https://developer.android.com/reference/android/provider/CalendarContract.Instances
             StringBuilder calIDs = new StringBuilder();
             for (String calID : preferences_calendars) {
                 if (calIDs.length() > 0)
@@ -2350,7 +2345,9 @@ class ContactsEvents {
                         final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
                         idsWithCalendarEvent.add(eventID);
                         String calendarTitle = map_calendars.get(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID)));
-                        final String eventSource = calendarTitle != null ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0]) : getResources().getString(R.string.event_type_calendar);
+                        final String eventSource = calendarTitle != null
+                                ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
+                                : getResources().getString(R.string.event_type_calendar);
 
                         String contactID = null;
                         statEventsCountByType++;
@@ -2385,20 +2382,18 @@ class ContactsEvents {
                             }
 
                             if (eventType.equals(Constants.Type_MultiEvent)) {
-                                event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar);
-                                if (event.needScanContacts) {
-                                    importStorage = Constants.Storage_Contacts;
-                                }
+                                event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, eventTitle);
                             }
 
                         }
 
-                        if (importStorage == Constants.Storage_Contacts && !getMergedID(eventID).isEmpty()) {
+                        if (getMergedIDsCount() > 0) {
+                            final String mergedID = getMergedID(eventID);
+                            if (!mergedID.isEmpty() && idsWithContactEvent.contains(mergedID))
+                                contactID = mergedID;
+                        }
 
-                            contactID = getMergedID(eventID);
-
-                        } else if (importStorage == Constants.Storage_Contacts && matcherNames.size() > 0) {
-
+                        if (contactID == null && event.needScanContacts && matcherNames.size() > 0) {
                             String foundName;
                             for (Matcher matcherName : matcherNames) {
                                 if (matcherName.reset(eventTitle).find()) {
@@ -2436,7 +2431,7 @@ class ContactsEvents {
                             }
                         }
 
-                        if (contactID != null && event != null) {
+                        if (contactID != null) {
                             importMethod = importMethod_NewContactEvent;
                             userData.put(Position_contactID, contactID);
 
@@ -2542,7 +2537,7 @@ class ContactsEvents {
 
                         if (importMethod != importMethod_AdditionalDateToContactEvent) {
 
-                            if (event == null) continue;
+                            //if (event == null) continue;
                             if (importMethod != importMethod_NewContactEvent) {
                                 userData.put(Position_eventStorage, Constants.STRING_STORAGE_CALENDAR);
                             }
@@ -2609,20 +2604,16 @@ class ContactsEvents {
         } catch (SecurityException se) {
             return false;
         } catch (Exception e) {
-            if (preferences_debug_on) {
-                Log.e(TAG, e.getMessage(), e);
-                StringBuilder dataRow = new StringBuilder();
-                if (!userData.isEmpty()) {
-                    for (Map.Entry<Integer, String> entry : userData.entrySet()) {
-                        dataRow.append(Constants.STRING_EOL);
-                        dataRow.append(entry.getKey()).append("=");
-                        dataRow.append(entry.getValue());
-                    }
+            Log.e(TAG, e.getMessage(), e);
+            StringBuilder dataRow = new StringBuilder();
+            if (!userData.isEmpty()) {
+                for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                    dataRow.append(Constants.STRING_EOL);
+                    dataRow.append(entry.getKey()).append("=");
+                    dataRow.append(entry.getValue());
                 }
-
-                if (preferences_debug_on)
-                    ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + dataRow);
             }
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + dataRow);
             return false;
         } finally {
             userData.clear();
@@ -2669,8 +2660,7 @@ class ContactsEvents {
         } catch (Exception e) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2833,17 +2823,17 @@ class ContactsEvents {
 
                     }
 
-                    if (eventDate.isEmpty() && preferences_debug_on) {
+                    if (eventDate.isEmpty()) {
                         StringBuilder sb = new StringBuilder();
                         sb.append(resources.getString(R.string.msg_event_parse_error)).append(eventLine);
 
                         Log.i(TAG, sb.toString());
-                        ToastExpander.showText(context, sb.toString());
+                        ToastExpander.showInfoMsg(context, sb.toString());
                         continue;
                     }
 
                     if (!eventLabel_forSearch.isEmpty() && eventTypeToSearch.equals(Constants.Type_MultiEvent)) {
-                        event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File);
+                        event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle);
                     }
 
                     int indexDateNoYear = isBirthdaysPlusEvent ? eventDate.indexOf(Constants.STRING_BDP_NO_YEAR) : eventDate.indexOf(Constants.STRING_0000);
@@ -3136,13 +3126,12 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
 
-    @NonNull private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource) {
+    @NonNull private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, @NonNull String eventSubject) {
 
         String eventLabel_forSearch = eventLabel.toLowerCase();
         Event event = new Event();
@@ -3254,16 +3243,13 @@ class ContactsEvents {
                 event.needScanContacts = false;
 
                 if (preferences_otherevent_labels == null || !preferences_otherevent_labels.reset(eventLabel_forSearch).find()) {
-                    if (preferences_debug_on) {
-                        ToastExpander.showText(context, resources.getString(R.string.msg_type_parse_error) + eventLabel);
-                    }
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, eventSubject));
                 }
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return event;
     }
@@ -3289,14 +3275,11 @@ class ContactsEvents {
                 }
 
             } catch (java.lang.SecurityException se) {
-                if (preferences_debug_on) {
-                    handler.post(() -> Toast.makeText(context, resources.getText(R.string.msg_file_open_error) + getPath(context, uri), Toast.LENGTH_LONG).show());
-                }
+                ToastExpander.showInfoMsg(context, resources.getText(R.string.msg_file_open_error) + getPath(context, uri));
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return sb.toString();
     }
@@ -3475,8 +3458,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return null;
         }
     }
@@ -3535,8 +3517,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -3596,8 +3577,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return resultMap;
@@ -3637,8 +3617,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -3674,8 +3653,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -3720,8 +3698,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
 
             //Сортируем
@@ -4001,13 +3978,11 @@ class ContactsEvents {
 
             if (dayDiff == -1) {
 
-                if (preferences_debug_on) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(resources.getString(R.string.msg_date_parse_error)).append(singleEventArray[Position_dates]).append(Constants.STRING_COMMA_SPACE).append(singleEventArray[Position_personFullName]);
+                StringBuilder sb = new StringBuilder();
+                sb.append(resources.getString(R.string.msg_date_parse_error)).append(singleEventArray[Position_dates]).append(Constants.STRING_COMMA_SPACE).append(singleEventArray[Position_personFullName]);
 
-                    Log.i(TAG, sb.toString());
-                    ToastExpander.showText(context, sb.toString());
-                }
+                Log.i(TAG, sb.toString());
+                ToastExpander.showInfoMsg(context, sb.toString());
 
                 eventList.set(i, Constants.STRING_EMPTY);
                 return;
@@ -4020,7 +3995,7 @@ class ContactsEvents {
 
             if (Age > 0) { //Возраст больше 1 года
                 singleEventArray[Position_age] = Integer.toString(Age);
-                singleEventArray[Position_age_caption] = getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21);
+                singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21));
 
                 if (eventType.equals(getEventType(Constants.Type_Anniversary))) {
                     @Nullable String anCaption;
@@ -4034,7 +4009,7 @@ class ContactsEvents {
                     }
                 }
             } else if (countDaysDiff(eventDate_Date, BDay) > 0) { //Возраст до года
-                singleEventArray[Position_age_caption] = countDaysDiffText(eventDate_Date, BDay, 1);
+                singleEventArray[Position_age_caption] = setAgeFormatting(countDaysDiffText(eventDate_Date, BDay, 1));
             } else {
                 singleEventArray[Position_age] = Constants.STRING_MINUS1;
                 singleEventArray[Position_age_caption] = Constants.STRING_EMPTY;
@@ -4064,55 +4039,64 @@ class ContactsEvents {
 
             eventList.set(i, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
-            if (Age > 0 && eventType.equals(getEventType(Constants.Type_BirthDay))) {
+            if (Age > 0) {
 
-                //Вычисляем 5K даты
-                long days = countDaysDiff(eventDate_Date, currentDay);
-                long k = (days + 365) / 5000;
-                long mdays = (days + 365) % 5000;
+                if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
-                if (mdays >= 0 && mdays <= 365) {
-                    //Формируем новую запись
-                    Calendar cal5K = Calendar.getInstance();
-                    int magicDayDistance = (int) (365 - mdays);
-                    cal5K.add(Calendar.DATE, magicDayDistance);
+                    //Вычисляем 5K даты
+                    long days = countDaysDiff(eventDate_Date, currentDay);
+                    long k = (days + 365) / 5000;
+                    long mdays = (days + 365) % 5000;
 
-                    String[] singleEventArray5K = singleEventArray.clone();
+                    if (mdays >= 0 && mdays <= 365) {
+                        //Формируем новую запись
+                        Calendar cal5K = Calendar.getInstance();
+                        int magicDayDistance = (int) (365 - mdays);
+                        cal5K.add(Calendar.DATE, magicDayDistance);
 
-                    singleEventArray5K[Position_eventType] = getEventType(Constants.Type_5K);
-                    singleEventArray5K[Position_eventSubType] = getEventType(Constants.Type_5K);
-                    singleEventArray5K[Position_eventCaption] = "5K+";
-                    singleEventArray5K[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
-                    //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
-                    singleEventArray5K[Position_eventDate] = sdf_DDMMYYYY.format(cal5K.getTime());
-                    singleEventArray5K[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate_Date);
-                    singleEventArray5K[Position_age] = Integer.toString(Age);
-                    singleEventArray5K[Position_age_caption] = 5 * k + "K";
-                    singleEventArray5K[Position_eventDistance] = Integer.toString(magicDayDistance);
-                    singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
-                    singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
-                    singleEventArray5K[Position_eventEmoji] = "🏆";
-                    singleEventArray5K[Position_age_current] = countDaysDiffText(eventDate_Date, currentDay, 3); //Возраст текущий
-                    //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
+                        String[] singleEventArray5K = singleEventArray.clone();
 
-                    final String event5kKey = getEventKey(singleEventArray5K);
-                    singleEventArray5K[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
-                            + (checkIsHiddenEvent(event5kKey) ? "3" : checkIsSilencedEvent(event5kKey) ? "2" : "1") + "5";
+                        singleEventArray5K[Position_eventType] = getEventType(Constants.Type_5K);
+                        singleEventArray5K[Position_eventSubType] = getEventType(Constants.Type_5K);
+                        singleEventArray5K[Position_eventCaption] = "5K+";
+                        singleEventArray5K[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
+                        //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
+                        singleEventArray5K[Position_eventDate] = sdf_DDMMYYYY.format(cal5K.getTime());
+                        singleEventArray5K[Position_eventDateText] = sdf_DDMMYYYY.format(eventDate_Date);
+                        singleEventArray5K[Position_age] = Integer.toString(Age);
+                        singleEventArray5K[Position_age_caption] = setAgeFormatting(getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21));
+                        singleEventArray5K[Position_eventDistance] = Integer.toString(magicDayDistance);
+                        singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
+                        singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
+                        singleEventArray5K[Position_eventEmoji] = "🏆";
+                        singleEventArray5K[Position_age_current] = countDaysDiffText(eventDate_Date, currentDay, 3); //Возраст текущий
+                        //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
 
-                    magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
+                        final String event5kKey = getEventKey(singleEventArray5K);
+                        singleEventArray5K[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
+                                + (checkIsHiddenEvent(event5kKey) ? "3" : checkIsSilencedEvent(event5kKey) ? "2" : "1") + "5";
+
+                        magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
+                    }
                 }
 
                 //Счётчики дней
-                if (isXDaysEvent(eventKey)) {
-                    final String valuePeriods = getXDaysEvent(eventKey);
+                if (getXDaysEventsCount() > 0 && isXDaysEvent(eventKey)) {
+                    final List<String> valuePeriods = getXDaysEvent(eventKey);
+                    Calendar dateStart = ContactsEvents.removeTime(Calendar.getInstance());
                     Calendar dateEnd = ContactsEvents.removeTime(Calendar.getInstance());
                     dateEnd.add(Calendar.YEAR, 1);
+                    int toRepeat = 365;
+                    try {
+                        if (!valuePeriods.get(1).isEmpty()) toRepeat = - Integer.parseInt(valuePeriods.get(1));
+                    } catch (NumberFormatException e) { /**/ }
+
                     ArrayList<ContactsEvents.Event> events = getNextRepeatsForEvent(
                             ContactsEvents.removeTime(Calendar.getInstance()),
                             dateEnd,
                             ContactsEvents.getCalendarFromDate(eventDate_Date),
-                            valuePeriods,
-                            365
+                            valuePeriods.get(0),
+                            toRepeat
                     );
                     if (events != null && events.size() > 0) {
                         for(Event event: events) {
@@ -4121,7 +4105,7 @@ class ContactsEvents {
                             long xDaysDistance = countDaysDiff(currentDay, event.date);
 
                             singleEventArrayXdays[Position_eventDate] = sdf_DDMMYYYY.format(event.date);
-                            singleEventArrayXdays[Position_age_caption] = event.distance;
+                            singleEventArrayXdays[Position_age_caption] = setAgeFormatting(event.distance);
                             singleEventArrayXdays[Position_eventStorage] = Constants.STRING_STORAGE_XDAYS;
                             singleEventArrayXdays[Position_eventDistance] = Long.toString(xDaysDistance);
                             singleEventArrayXdays[Position_eventDistanceText] = getEventDistanceText(xDaysDistance, event.date);
@@ -4139,8 +4123,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
         }
     }
 
@@ -4195,8 +4178,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + dayDiff + Constants.STRING_EOL + eventDate);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + dayDiff + Constants.STRING_EOL + eventDate);
         }
         return eventDistance.toString();
     }
@@ -4305,7 +4287,7 @@ class ContactsEvents {
                         if (Age > 1) {
                             Age--;
                             singleEventArray[Position_age] = Integer.toString(Age);
-                            singleEventArray[Position_age_caption] = getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21);
+                            singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21));
 
                             if (singleEventArray[Position_eventType].equals(getEventType(Constants.Type_Anniversary))) {
                                 @Nullable String anCaption;
@@ -4335,8 +4317,7 @@ class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return result;
     }
@@ -4405,8 +4386,7 @@ class ContactsEvents {
                     if (channel != null && !channel.getSound().toString().equals(preferences_notifications_ringtone)) {
                         notificationManager.deleteNotificationChannel(channel_id);
                         channel = null;
-                        if (preferences_debug_on)
-                            log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(Constants.STRING_EOL);
+                        log.append(resources.getString(R.string.msg_deleted_channel, channel_id));
                     }
 
                     if (channel == null) {
@@ -4418,29 +4398,31 @@ class ContactsEvents {
                         if (preferences_notifications_ringtone != null)
                             channel.setSound(
                                     Uri.parse(preferences_notifications_ringtone),
-                                    new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
+                                    new AudioAttributes.Builder()
+                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                            .build()
                             );
                         channel.enableVibration(true);
                         notificationManager.createNotificationChannel(channel);
 
-                        if (preferences_debug_on) {
-                            log.append(Constants.MSG_CREATED_CHANNEL_).append(preferences_notification_channel_id).append(Constants.STRING_EOL);
-                            if (preferences_notifications_ringtone != null)
-                                log.append(Constants.MSG_RINGTONE).append(Uri.parse(preferences_notifications_ringtone)).append(Constants.STRING_EOL);
-                        }
+                        log.append(resources.getString(R.string.msg_created_channel, String.valueOf(preferences_notification_channel_id)));
+                        if (preferences_notifications_ringtone != null)
+                            log
+                                    .append(resources.getString(R.string.msg_ringtone))
+                                    .append(Uri.parse(preferences_notifications_ringtone))
+                                    .append(Constants.STRING_EOL);
                         savePreferences();
                     }
 
                 } else if (channel != null) {
                     notificationManager.deleteNotificationChannel(channel_id);
-                    if (preferences_debug_on)
-                        log.append(Constants.MSG_DELETED_CHANNEL_).append(channel_id).append(Constants.STRING_EOL);
+                    log.append(resources.getString(R.string.msg_deleted_channel, channel_id));
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4456,26 +4438,23 @@ class ContactsEvents {
                 //To enable Boot Receiver class
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    if (preferences_debug_on)
-                        log.append(Constants.MSG_NOTIFICATIONS_WERE_ENABLED).append(Constants.STRING_EOL);
+                    log.append(resources.getString(R.string.msg_notifications_were_enabled)).append(Constants.STRING_EOL);
                 }
 
             } else { //Disable Daily Notifications
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    if (preferences_debug_on)
-                        log.append(Constants.MSG_NOTIFICATIONS_WERE_DISABLED).append(Constants.STRING_EOL);
+                    log.append(resources.getString(R.string.msg_notifications_were_disabled)).append(Constants.STRING_EOL);
                 }
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
-    void initWidgetUpdate(StringBuilder log) {
+    void initWidgetUpdate(@NonNull StringBuilder log) {
 
         try {
 
@@ -4494,11 +4473,7 @@ class ContactsEvents {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     }
-
-                    if (preferences_debug_on) {
-                        if (log != null)
-                            log.append(Constants.MSG_NEXT_WIDGETUPDATE).append(sdf_DDMMYYYYHHMM.format(calendar.getTime())).append(Constants.STRING_EOL);
-                    }
+                    log.append(resources.getString(R.string.msg_next_widgetupdate, sdf_DDMMYYYYHHMM.format(calendar.getTime())));
                 }
 
             } else { //Disable
@@ -4509,13 +4484,12 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
 
-    void initNotifications(StringBuilder log) {
+    void initNotifications(@NonNull StringBuilder log) {
 
         try {
 
@@ -4541,9 +4515,7 @@ class ContactsEvents {
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     }
 
-                    if (preferences_debug_on) {
-                        log.append(Constants.MSG_NEXT_NOTIFICATION).append(sdf_DDMMYYYYHHMM.format(calendar.getTime())).append(Constants.STRING_EOL);
-                    }
+                    log.append(resources.getString(R.string.msg_next_notification, sdf_DDMMYYYYHHMM.format(calendar.getTime())));
                 }
 
             } else { //Disable Daily Notifications
@@ -4554,8 +4526,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4841,8 +4812,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4860,8 +4830,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return Constants.STRING_EMPTY;
     }
@@ -4906,8 +4875,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -4986,8 +4954,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -5004,8 +4971,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -5018,8 +4984,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -5032,8 +4997,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -5056,8 +5020,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -5089,8 +5052,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -5104,8 +5066,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -5118,8 +5079,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -5132,8 +5092,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -5156,8 +5115,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -5189,11 +5147,23 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
+    }
+
+    int getMergedIDsCount() {
+
+        try {
+
+            return preferences_mergedIDs.isEmpty() ? 0 : preferences_mergedIDs.size();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return 0;
+        }
     }
 
     @NonNull
@@ -5205,8 +5175,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -5242,26 +5211,44 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        }
+    }
+
+    int getXDaysEventsCount() {
+
+        try {
+
+            return preferences_xDaysEvents.isEmpty() ? 0 : preferences_xDaysEvents.size();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return 0;
         }
     }
 
     boolean isXDaysEvent(@NonNull String eventId) {return preferences_xDaysEvents.containsKey(eventId);}
 
     @NonNull
-    String getXDaysEvent(@NonNull String eventId) {
+    List<String> getXDaysEvent(@NonNull String eventId) {
 
+        List<String> result = new ArrayList<>();
         try {
 
-            return checkForNull(preferences_xDaysEvents.get(eventId));
+            final String eventData = preferences_xDaysEvents.get(eventId);
+            if (eventData != null)
+                result.addAll(Arrays.asList(eventData.split(Constants.STRING_PIPE, -1)));
+            while (result.size() < 2) {
+                result.add(Constants.STRING_EMPTY);
+            }
+            return result;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return Constants.STRING_EMPTY;
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return result;
         }
     }
 
@@ -5291,25 +5278,39 @@ class ContactsEvents {
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_xDaysEvents_key), someSets);
+
+            //Если удалили последнее событие - скидываем режим на стандартный
+            if (preferences_list_events_scope == Constants.pref_Events_Scope_XDays && preferences_xDaysEvents.isEmpty()) {
+                preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
+            }
+
             editor.apply();
             return true;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
 
-    ArrayList<Event> getNextRepeatsForEvent(Calendar startDate, Calendar endDate, @NonNull Calendar eventDate, @NonNull String periods, int toRepeat) {
+    /**
+     * @param startDate Start date for period
+     * @param endDate End date for period
+     * @param eventDate Original event date
+     * @param periods Events repeat periods (by comma)
+     * @param toRepeat Positive: how many events to return (total), Negative: how many events of every period to return (from startDate)
+     * @return Array of events inside [startDate] ... [endDate] period
+     */
+    ArrayList<Event> getNextRepeatsForEvent(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull Calendar eventDate, @NonNull String periods, int toRepeat) {
         try {
 
             ArrayList<Event> result = new ArrayList<>();
             Set<Long> selectedDates = new HashSet<>();
 
-            if (toRepeat <= 0) return result;
-            if (startDate != null && endDate != null && startDate.after(endDate)) return result;
+            if (toRepeat == 0) return result;
+            if (startDate.after(endDate)) return result;
 
             String[] allPeriods = periods.split(Constants.STRING_COMMA, -1);
             for (String period : allPeriods) {
@@ -5322,38 +5323,51 @@ class ContactsEvents {
                 if (days == 0) continue;
 
                 Calendar date = (Calendar) eventDate.clone();
-                boolean isContinue = true;
 
-                while (isContinue) {
-                    date.add(Calendar.DAY_OF_YEAR, days);
-                    incremented+=days;
-                    if (startDate != null && endDate != null) {
+                if (toRepeat > 0) {
+                    boolean isContinue = true;
+                    while (isContinue) {
+                        date.add(Calendar.DAY_OF_YEAR, days);
+                        incremented += days;
                         if (date.compareTo(startDate) >= 0) {
-                            if (date.compareTo(endDate) <= 0) { //Попали в период
+                            if (date.compareTo(endDate) <= 0) { //Inside period
                                 if (!selectedDates.contains(date.getTimeInMillis())) {
                                     repeated++;
                                     result.add(new Event(date.getTime(), countDaysDiffText(eventDate.getTime(), date.getTime(), 2)));
                                     selectedDates.add(date.getTimeInMillis());
                                     if (repeated >= toRepeat) isContinue = false;
                                 }
-                            } else { //Перелетели
+                            } else { //Over
                                 isContinue = false;
                             }
                         }
                     }
+
+                } else {
+                    for (int i = 1; i <= - toRepeat; i++) {
+                        date.add(Calendar.DAY_OF_YEAR, days);
+                        if (date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0) { //Inside period
+                            if (!selectedDates.contains(date.getTimeInMillis())) {
+                                result.add(new Event(date.getTime(), countDaysDiffText(eventDate.getTime(), date.getTime(), 2)));
+                                selectedDates.add(date.getTimeInMillis());
+                            }
+                        }
+                    }
                 }
+
             }
 
             Collections.sort(result, (o1, o2) -> o1.date.compareTo(o2.date));
-            while (result.size() > toRepeat) {
-                result.remove(result.size() - 1);
+            if (toRepeat > 0) {
+                while (result.size() > toRepeat) {
+                    result.remove(result.size() - 1);
+                }
             }
             return result;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return null;
         }
     }
@@ -5379,13 +5393,12 @@ class ContactsEvents {
             }
             if (toRemove.size() > 0) {
                 preferences_silentEvents.removeAll(toRemove);
-                ToastExpander.showText(context, context.getString(R.string.msg_filter_clean_silenced_result) + toRemove.size());
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_silenced_result) + toRemove.size());
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5410,13 +5423,12 @@ class ContactsEvents {
             }
             if (toRemove.size() > 0) {
                 preferences_hiddenEvents.removeAll(toRemove);
-                ToastExpander.showText(context, context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size());
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size());
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5429,14 +5441,11 @@ class ContactsEvents {
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putString(context.getString(R.string.widget_config_PrefName) + id, value);
             editor.apply();
-
-            if (preferences_debug_on)
-                ToastExpander.showText(context, String.format(Constants.MSG_WIDGET_PREFS_SAVED, id) + value);
+            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id)) + value);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -5471,8 +5480,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return defaultPref;
         }
 
@@ -5487,13 +5495,11 @@ class ContactsEvents {
         try {
 
             PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + id).apply();
-            if (preferences_debug_on)
-                ToastExpander.showText(context, String.format(Constants.MSG_WIDGET_PREFS_REMOVED, id));
+            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_removed, String.valueOf(id)));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -5610,8 +5616,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5643,8 +5648,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return msg;
     }
@@ -5900,8 +5904,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -5919,8 +5922,6 @@ class ContactsEvents {
                 NotificationChannel channel = notificationManager.getNotificationChannel(Integer.toString(Constants.defaultQuizID));
 
                 if (channel == null) {
-                    if (preferences_debug_on)
-                        handler.post(() -> Toast.makeText(context, "Create Quiz notification channel", Toast.LENGTH_LONG).show());
                     notificationManager.deleteNotificationChannel(Integer.toString(Constants.defaultQuizID));
                     channel = new NotificationChannel(Integer.toString(Constants.defaultQuizID), context.getString(R.string.pref_Notifications_Quiz_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                     channel.setSound(null, null);
@@ -5929,6 +5930,7 @@ class ContactsEvents {
                         channel.setAllowBubbles(true);
                     }
                     notificationManager.createNotificationChannel(channel);
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_created_quiz_channel));
                 }
             }
 
@@ -6087,8 +6089,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -6114,8 +6115,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question), Constants.quiz_error_button_OK);
         }
@@ -6215,8 +6215,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + Constants.STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
@@ -6312,8 +6311,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + Constants.STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
@@ -6431,8 +6429,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
 
             return new QuizQuestion(getResources().getString(R.string.quiz_msg_error_title), getResources().getString(R.string.quiz_msg_error_get_question) + Constants.STRING_COLON_SPACE + e, Constants.quiz_error_button_OK);
         }
@@ -6473,8 +6470,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return resultList;
@@ -6499,8 +6495,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return true;
         }
     }
@@ -6587,14 +6582,13 @@ class ContactsEvents {
             // File
             else if ("file".equalsIgnoreCase(uri.getScheme())) {
                 return uri.getPath();
-            } else if (preferences_debug_on) {
-                ToastExpander.showText(context, uri.toString());
+            } else {
+                ToastExpander.showInfoMsg(context, uri.toString());
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return Constants.STRING_EMPTY;
 
@@ -6635,8 +6629,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return null;
 
@@ -6657,8 +6650,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -6754,8 +6746,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -6803,8 +6794,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -6824,8 +6814,7 @@ class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return sb.toString();
     }
@@ -6865,26 +6854,26 @@ class ContactsEvents {
                 try {
                     final String activityName = BuildConfig.APPLICATION_ID + "." + iconID;
                     if (preferences_icon.equals(iconID)) {
+                        if (preferences_debug_on)
+                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));
                         pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                         atLeastOneActive = true;
-                        if (preferences_debug_on)
-                            ToastExpander.showText(context, Constants.MSG_ICON_CHANGED + iconID);
-                    } else
+                    } else {
                         pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                    }
                 } catch (IllegalArgumentException e) { /**/ }
             }
             if (!atLeastOneActive) {
                 try {
-                    pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, BuildConfig.APPLICATION_ID + "." + resources.getString(R.string.pref_Icon_default)), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                     if (preferences_debug_on)
-                        ToastExpander.showText(context, Constants.MSG_ICON_CHANGED + resources.getString(R.string.pref_Icon_default) + " (default)");
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed , resources.getString(R.string.pref_Icon_default) + " (default)"));
+                    pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, BuildConfig.APPLICATION_ID + "." + resources.getString(R.string.pref_Icon_default)), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                 } catch (IllegalArgumentException e) { /**/ }
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (preferences_debug_on)
-                ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -6964,4 +6953,36 @@ class ContactsEvents {
     }
 
     static boolean isRealContactEventID(String id) {return id != null && !id.startsWith(Constants.PREFIX_FileEventID);}
+
+    @NonNull String setAgeFormatting(@NonNull String strAge) {
+
+        try {
+
+            String result = strAge;
+
+            if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(Constants.STRING_000)) {
+                result = result.replace(Constants.STRING_000, "K");
+            } else if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_SeparateThousands))) {
+                //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
+                DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                symbols.setGroupingSeparator('\u00a0');
+                formatter.setDecimalFormatSymbols(symbols);
+                int indSpace = result.lastIndexOf(Constants.STRING_SPACE);
+                String postfix = result.substring(indSpace);
+                result = formatter.format(Integer.parseInt(result.substring(0, indSpace))).concat(postfix);
+            }
+            if (!preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_AddPostfix))) {
+                result = result.substring(0, result.lastIndexOf(Constants.STRING_SPACE));
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return strAge;
+        }
+
+    }
 }

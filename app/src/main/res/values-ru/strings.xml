@@ -77,12 +77,14 @@
     <string name="msg_stats_hidden_filtered_prefix">"скрытых событий найдено: "</string>
     <string name="msg_stats_silenced_prefix">"событий без уведомления: "</string>
     <string name="msg_stats_silenced_filtered_prefix">"событий без уведомления найдено: "</string>
+    <string name="msg_stats_xdays_prefix">"счётчиков дней: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"счётчиков дней найдено: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
     <string name="msg_date_parse_error">"Ошибка распознавания даты: "</string>
     <string name="msg_event_parse_error">"Ошибка распознавания события: "</string>
-    <string name="msg_type_parse_error">"Тип события не определён: "</string>
+    <string name="msg_type_parse_error">"Тип события не определён: '%1$s' для '%2$s'"</string>
     <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
     <string name="msg_errors_total">"Всего ошибок: "</string>
     <string name="msg_errors_details">"аккаунт=%1$s, тип события=%2$s, дата=%3$s"</string>
@@ -141,6 +143,18 @@
     <string name="msg_title_confirmation">Подтверждение</string>
     <string name="msg_title_settings">Сохранённые настроки</string>
     <string name="msg_no_selection">Пустой выбор! Нужно выбрать что-нибудь</string>
+    <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
+    <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
+    <string name="msg_widget_prefs_removed">"Настройка для виджета %1$s была удалена"</string>
+    <string name="msg_widget_prefs_saved">"Сохранена настройка виджета %1$s:\n"</string>
+    <string name="msg_ringtone">"Мелодия: "</string>
+    <string name="msg_deleted_channel">"Канал уведомений #%s был удалён\n"</string>
+    <string name="msg_created_channel">"Канал уведомений #%s был создан\n"</string>
+    <string name="msg_sent_widgets_update_request">Обновление виджетов…</string>
+    <string name="msg_next_notification">"Следующее уведомление: %1$s\n"</string>
+    <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
+    <string name="msg_no_action">Нет действий для события</string>
+    <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -148,7 +162,7 @@
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ФИО</string>
-    <string name="hint_Age">Возраст</string>
+    <string name="hint_Age">Годовщина</string>
     <string name="hint_Date">Дата</string>
     <string name="hint_EventDistance">До события</string>
     <string name="hint_EventDetails">Детали события</string>
@@ -187,9 +201,11 @@
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
     <string name="events_scope_hidden">Скрытые (%1$d)</string>
-    <string name="events_scope_hidden2">Скрытые (%1$d, сохранено %2$d)</string>
+    <string name="events_scope_hidden_dead">Скрытые (%1$d, сохранено %2$d)</string>
     <string name="events_scope_silenced">Без уведомления (%1$d)</string>
-    <string name="events_scope_silenced2">Без уведомления (%1$d, сохранено %2$d)</string>
+    <string name="events_scope_silenced_dead">Без уведомления (%1$d, сохранено %2$d)</string>
+    <string name="events_scope_xdays">Счётчики дней (%1$d)</string>
+    <string name="events_scope_xdays_dead">Счётчики дней (%1$d, сохранено %2$d)</string>
     <string name="events_scope_clear">Удалить фильтры</string>
     <string name="events_scope_clean">Удалить несуществующие связи в фильтрах</string>
 
@@ -423,6 +439,15 @@
         <item>Средне закруглённое</item>
         <item>Сильно закруглённое</item>
         <item>Круг</item>
+    </string-array>
+
+    <string name="pref_List_AgeFormat_title">Формат годовщины</string>
+    <string name="pref_List_AgeFormat_summary">Формат отображения годовщины (исполняющегося возраста)</string>
+
+    <string-array name="pref_List_AgeFormat_entries">
+        <item>Расшифровка числа (дни, месяцы, годы)</item>
+        <item>Заменять тысячи на \"K\" (5K, 10K)</item>
+        <item>Отделять тысячные разряды</item>
     </string-array>
 
     <string name="pref_List_Filling_title">Заполнение цветом (фон)</string>
@@ -812,6 +837,8 @@
     <string name="pref_CalendarAccess_summary">Запросить доступ к данным календарей…</string>
     <string name="pref_Debug_On_title">Отладочные сообщения</string>
     <string name="pref_Debug_On_hint">Нажмите ещё %1$d раз%2$s для %3$s отладочных сообщений</string>
+    <string name="pref_InfoMsg_On_title">Информационные сообщения</string>
+    <string name="pref_InfoMsg_On_summary">Показывать информационные сообщения о выполненных действиях или запуске фоновых операций</string>
     <string name="pref_Debug_On_summary">Показывать сообщения для отладки ошибок (рекомендуется включить, если некорректно отображаются виджеты или события, или не определяются какие-то даты, и прислать автору программы)</string>
     <string name="pref_ExtraFun_On_title">Доп. функции</string>
     <string name="pref_ExtraFun_On_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
@@ -996,9 +1023,12 @@
     <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
 
     <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
-    <string name="xDaysCounter_Dialog_Caption">Повторять событие:</string>
-    <string name="xDaysCounter_Dialog_Repeats_Hint">введите число дней</string>
-    <string name="xDaysCounter_Dialog_Hint">число дней, через которое нужно повторять событие. например: 1000, 5000</string>
-    <string name="xDaysCounter_Dialog_Hint_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Период(ы) повторения:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">дни</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">число дней, через которое нужно повторять событие. например: 1000, 5000 (через запятую)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Повторы:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">число повторов для каждого периода</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
 </resources>

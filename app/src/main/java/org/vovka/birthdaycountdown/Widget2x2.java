@@ -46,22 +46,20 @@ public class Widget2x2 extends AppWidgetProvider {
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
             RemoteViews views = getRemoteViews(context);
 
-            if (eventsData.preferences_debug_on) {
-                ToastExpander.showText(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
-                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
-                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref
-                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
-                );
-            }
+            ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                    widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
+                            ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
+                            "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
+                            "\n widgetPref=" + widgetPref
+                    : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
+            );
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -92,7 +90,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

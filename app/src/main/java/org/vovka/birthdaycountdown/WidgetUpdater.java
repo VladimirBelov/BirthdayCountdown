@@ -217,7 +217,7 @@ class WidgetUpdater {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -712,13 +712,20 @@ class WidgetUpdater {
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
 
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                String ageCaption = singleEventArray[ContactsEvents.Position_age_caption];
+                if (ageCaption.contains(Constants.STRING_SPACE)) {
+                    views.setTextViewText(id_widget_Age, ageCaption.substring(0, ageCaption.lastIndexOf(Constants.STRING_SPACE)));
+                } else {
+                    views.setTextViewText(id_widget_Age, ageCaption);
+                }
+
+                /*if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                     views.setTextViewText(id_widget_Age, singleEventArray[ContactsEvents.Position_age_caption]);
                 } else if (person.Age > -1) {
                     views.setTextViewText(id_widget_Age, Integer.toString(person.Age));
                 } else {
                     views.setTextViewText(id_widget_Age, Constants.STRING_EMPTY);
-                }
+                }*/
                 //views.setTextColor(resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + eventsDisplayed, Constants.STRING_ID, packageName), colorDefault);
                 views.setTextViewTextSize(id_widget_Age, COMPLEX_UNIT_SP, (float) ((eventDistance_Days == 0 ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
                 views.setViewVisibility(id_widget_Age, View.VISIBLE);
@@ -766,7 +773,7 @@ class WidgetUpdater {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

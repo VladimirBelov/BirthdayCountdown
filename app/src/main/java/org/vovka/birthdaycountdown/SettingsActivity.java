@@ -203,7 +203,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -282,7 +282,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -416,6 +416,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_AgeFormat_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Female_Names_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Male_Names_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
@@ -447,7 +448,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -472,7 +473,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -693,7 +694,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return false;
@@ -715,7 +716,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             super.onStop();
         }
@@ -814,7 +815,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }*/
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -912,7 +913,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -948,7 +949,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.showNotifications(true, testChannelId);
 
         } else {
-            ToastExpander.showText(this, getString(R.string.msg_notifications_disabled));
+            ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
         }
     }
 
@@ -1126,7 +1127,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1178,7 +1179,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
        } catch (Exception e) {
            Log.e(TAG, e.getMessage(), e);
-           if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+           ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
        }
     }
 
@@ -1224,7 +1225,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1271,7 +1272,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1347,7 +1348,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1373,7 +1374,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1456,7 +1457,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1569,7 +1570,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1597,7 +1598,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1804,7 +1805,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1848,7 +1849,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1902,7 +1903,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -1952,7 +1953,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -2028,7 +2029,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showText(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;

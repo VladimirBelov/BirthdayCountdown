@@ -46,13 +46,13 @@ public class DateReceiver extends BroadcastReceiver {
 
                 //Посылаем сообщения на обновление виджетов
                 eventsData.updateWidgets(0);
-                log.append(Constants.MSG_SENT_WIDGETS_UPDATE_REQUEST).append(Constants.STRING_EOL);
+                log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
 
                 if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
         }

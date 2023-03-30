@@ -29,7 +29,6 @@ class Person {
     private String FirstName;
     private String SecondName;
     int Age = -1;
-    String Age_str;
     String FIO_str;
     private Context context;
 
@@ -69,11 +68,10 @@ class Person {
             try {
                 Age = Integer.parseInt(eventArray[ContactsEvents.Position_age]);
             } catch (NumberFormatException e) { /**/ }
-            Age_str = eventArray[ContactsEvents.Position_age_caption];
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -109,7 +107,7 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -131,7 +129,7 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -158,7 +156,7 @@ class Person {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
@@ -196,7 +194,7 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return -1;
         }
 

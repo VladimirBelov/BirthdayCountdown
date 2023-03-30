@@ -483,7 +483,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
-            if (this.eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
         }
@@ -528,12 +528,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Проверки
 
             if (this.widgetId == 0) {
-                ToastExpander.showText(this, "widgetId is unknown!");
+                ToastExpander.showInfoMsg(this, "widgetId is unknown!");
                 return;
             }
 
             if (selectedItemPosition == -1) {
-                ToastExpander.showText(this, "selectedItemPosition is undefined!");
+                ToastExpander.showInfoMsg(this, "selectedItemPosition is undefined!");
                 return;
             }
 
@@ -571,7 +571,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             finish();
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
-            if (this.eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -628,7 +628,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             allSelectedItems.remove(getString(R.string.pref_Widgets_EventInfo_Border));
             if (allSelectedItems.isEmpty()) {
 
-                ToastExpander.showText(getApplicationContext(), getString(R.string.msg_no_selection));
+                ToastExpander.showInfoMsg(getApplicationContext(), getString(R.string.msg_no_selection));
 
             } else {
 

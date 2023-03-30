@@ -14,14 +14,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationManagerCompat;
 
 public class ActionReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ActionReceiver";
-    private ContactsEvents eventsData;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -29,7 +27,7 @@ public class ActionReceiver extends BroadcastReceiver {
         try {
 
             final String action = intent.getAction();
-            eventsData = ContactsEvents.getInstance();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.setLocale(true);
 
@@ -53,8 +51,7 @@ public class ActionReceiver extends BroadcastReceiver {
             if (action != null && action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on)
-                        Toast.makeText(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -68,8 +65,7 @@ public class ActionReceiver extends BroadcastReceiver {
             } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on)
-                        Toast.makeText(context, Constants.ACTION_SILENT + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_SILENT + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -81,8 +77,7 @@ public class ActionReceiver extends BroadcastReceiver {
             } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on)
-                        Toast.makeText(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -94,7 +89,7 @@ public class ActionReceiver extends BroadcastReceiver {
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 
                 if (notificationData.equals(Constants.STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on) Toast.makeText(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -103,8 +98,7 @@ public class ActionReceiver extends BroadcastReceiver {
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    if (eventsData.preferences_debug_on)
-                        Toast.makeText(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request", Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -134,7 +128,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

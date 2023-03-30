@@ -16,7 +16,6 @@ import android.widget.Toast;
 public class NotifyActivity extends Activity {
 
     private static final String TAG = "NotifyActivity";
-    private ContactsEvents eventsData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class NotifyActivity extends Activity {
 
             super.onCreate(savedInstanceState);
 
-            eventsData = ContactsEvents.getInstance();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.setLocale(true);
 
@@ -46,7 +45,7 @@ public class NotifyActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

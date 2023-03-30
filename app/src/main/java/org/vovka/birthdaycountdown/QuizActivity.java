@@ -15,7 +15,6 @@ import android.util.Log;
 public class QuizActivity extends Activity {
 
     private static final String TAG = "QuizActivity";
-    private ContactsEvents eventsData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +23,7 @@ public class QuizActivity extends Activity {
 
             super.onCreate(savedInstanceState);
 
-            eventsData = ContactsEvents.getInstance();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -38,7 +37,7 @@ public class QuizActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            if (eventsData.preferences_debug_on) ToastExpander.showText(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

@@ -49,28 +49,38 @@ public class ToastExpander {
         t.start();
     }
 
-    public static synchronized void showText(@NonNull Context context, @NonNull String text) {
+    private static synchronized void showText(@NonNull Context context, @NonNull String msg) {
 
         try {
-            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), text);
+            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
         } catch (Exception e) { /**/ }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             try {
                 if (eventsData.isUIopen && eventsData.coordinator != null) {
-                    final Snackbar snackbar = Snackbar.make(eventsData.coordinator, text, Snackbar.LENGTH_LONG);
+                    final Snackbar snackbar = Snackbar.make(eventsData.coordinator, msg, Snackbar.LENGTH_LONG);
                     try {
                         TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
                         snackbar.setBackgroundTint(ta.getColor(R.styleable.Theme_colorPrimary, 0));
                     } catch (Resources.NotFoundException e) {/**/}
                     snackbar.show();
+                } else {
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
                 }
             } catch (IllegalArgumentException e) {
-                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
             }
         } else {
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
         }
+    }
+
+    public static void showInfoMsg (@NonNull Context context, @NonNull String msg) {
+        if (ContactsEvents.getInstance().preferences_info_on) showText(context, msg);
+    }
+
+    public static void showDebugMsg (@NonNull Context context, @NonNull String msg) {
+        if (ContactsEvents.getInstance().preferences_debug_on) showText(context, msg);
     }
 
 }

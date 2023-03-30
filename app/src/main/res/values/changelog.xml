@@ -15,7 +15,9 @@
         <item>All name variations are used for searching contact names (with and w/o second names)</item>
         <item>Added the ability to add unrecorded male names (in addition to female ones)</item>
         <item>Added display of age in the main list for all events (not only birthday and death anniversary)</item>
-        <item>Added the ability to specify repetition periods for events (so far only for birthdays with the specified year)</item>
+        <item>Added the ability to specify repetition periods for events (only for events with specified year)</item>
+        <item>Added age format setting (numbers only, separate thousands places, replace 000 with \"K\")</item>
+        <item>Debug and informational messages are turning on by different switches (informational messages are enabled by default)</item>
         <item>Fixed duplicate results for Quick Search</item>
         <item>Fixed display of incomplete names (names lists are used for analysis)</item>
         <item>Fixed age calculation for calendar events that do not have a link to a contact</item>

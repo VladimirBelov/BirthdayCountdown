@@ -86,6 +86,17 @@
             android:dialogIcon="@android:drawable/ic_menu_month"
             android:negativeButtonText="@string/button_cancel"/>
 
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_List_AgeFormat_values_default"
+            android:entries="@array/pref_List_AgeFormat_entries"
+            android:entryValues="@array/pref_List_AgeFormat_values"
+            android:key="@string/pref_List_AgeFormat_key"
+            android:summary="@string/pref_List_AgeFormat_summary"
+            android:title="@string/pref_List_AgeFormat_title"
+            android:icon="@android:drawable/ic_menu_day"
+            android:dialogIcon="@android:drawable/ic_menu_day"
+            android:negativeButtonText="@string/button_cancel"/>
+
         <org.vovka.birthdaycountdown.CustomEditTextPreference
             android:key="@string/pref_Female_Names_key"
             android:summary="@string/pref_Female_Names_description"
@@ -940,6 +951,13 @@
             android:summary="@string/pref_FAQ_summary"
             android:title="@string/pref_FAQ_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
+
+        <SwitchPreference
+            android:key="@string/pref_Help_InfoMsg_On_key"
+            android:title="@string/pref_InfoMsg_On_title"
+            android:summary="@string/pref_InfoMsg_On_summary"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_menu_notifications"/>
 
         <SwitchPreference
             android:key="@string/pref_Help_Debug_On_key"

@@ -18,6 +18,7 @@ final class Constants {
     static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
+    static final String STRING_000 = "000";
     static final String STRING_0000 = "0000";
     static final String STRING_0000_MINUS = "0000-";
     static final String STRING_1 = "1";
@@ -220,6 +221,7 @@ final class Constants {
     static final int pref_Events_Scope_All = 1;
     static final int pref_Events_Scope_Hidden = 2;
     static final int pref_Events_Scope_Silenced = 3;
+    static final int pref_Events_Scope_XDays = 4;
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 
@@ -238,7 +240,6 @@ final class Constants {
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 5000;
-
     static final String account_google = "com.google";
     static final String account_skype = "com.skype.";
     static final String account_vk = "com.vkontakte.account";
@@ -246,22 +247,6 @@ final class Constants {
     static final String account_huawei = "com.android.huawei.phone";
     static final String account_sim = ".sim";
     static final String account_none = "none";
-
-    //Отладочные сообщения
-
-    //todo: переделать под ресурсы
-    static final String MSG_NOTIFICATIONS_WERE_ENABLED = "Notifications were enabled\n";
-    static final String MSG_NOTIFICATIONS_WERE_DISABLED = "Notifications were disabled\n";
-    static final String MSG_WIDGET_PREFS_REMOVED = "Preferences for widget #%s has been removed";
-    static final String MSG_WIDGET_PREFS_SAVED = "Saved widget #%s preferences:\n";
-    static final String MSG_RINGTONE = "Ringtone: ";
-    static final String MSG_DELETED_CHANNEL_ = "Deleted channel ";
-    static final String MSG_CREATED_CHANNEL_ = "Created channel ";
-    static final String MSG_SENT_WIDGETS_UPDATE_REQUEST = "Sent widgets update request";
-    static final String MSG_NEXT_NOTIFICATION = "Next notification: ";
-    static final String MSG_NEXT_WIDGETUPDATE = "Next widget update: ";
-    static final String MSG_NO_ACTION = "No action for event";
-    static final String MSG_ICON_CHANGED = "App icon set: ";
 
     static final String RULE_TAG_NAME = "[name]";
     //static final String RULE_TAG_ALIAS = "[alias]";
