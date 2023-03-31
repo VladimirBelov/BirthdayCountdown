@@ -45,8 +45,7 @@ public class DateReceiver extends BroadcastReceiver {
                 eventsData.initWidgetUpdate(log);
 
                 //Посылаем сообщения на обновление виджетов
-                eventsData.updateWidgets(0);
-                log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
+                eventsData.updateWidgets(0, log);
 
                 if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
 

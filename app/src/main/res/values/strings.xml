@@ -137,6 +137,8 @@
     <string name="msg_filter_clean_confirmation">Clean all filters from links to absent contacts or calendar events?</string>
     <string name="msg_filter_clean_silenced_result">"Cleared silenced events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_hidden_result">"Cleared hidden events for absent contacts and calendar events: "</string>
+    <string name="msg_filter_clean_XDays_result">"Removed day counters for non-existent events: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"No counter has been removed. If the event is not listed, check the event types enabled for display"</string>
     <string name="msg_account_info">"Event from account \"%1$s\""</string>
     <string name="msg_calendar_info">"Event from calendar \"%1$s\""</string>
     <string name="msg_file_info">"Event from file \"%1$s\""</string>
@@ -443,7 +445,7 @@
     </string-array>
 
     <string name="pref_List_AgeFormat_title">Age format</string>
-    <string name="pref_List_AgeFormat_summary">Age display format</string>
+    <string name="pref_List_AgeFormat_summary">Age display format for upcoming events</string>
 
     <string-array name="pref_List_AgeFormat_entries">
         <item>Age number description (days, months, years)</item>

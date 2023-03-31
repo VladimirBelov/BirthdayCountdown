@@ -11,6 +11,17 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.6</item>
+        <item>Todas las variaciones de nombre se utilizan para buscar nombres de contacto (con y sin segundo nombre)</item>
+        <item>Se agregó la capacidad de agregar nombres masculinos no registrados (además de los femeninos)</item>
+        <item>Se agregó visualización de edad en la lista principal para todos los eventos (no solo cumpleaños y aniversario de muerte)</item>
+        <item>Se agregó la capacidad de definir períodos de repetición (para eventos con un año completo)</item>
+        <item>Configuración de formato de edad agregada (solo números, separe los lugares de miles, reemplace 000 con \"K\")</item>
+        <item>Los mensajes informativos y de depuración se activan mediante diferentes interruptores (los mensajes informativos están habilitados de manera predeterminada)</item>
+        <item>Se corrigieron los resultados duplicados para la búsqueda rápida</item>
+        <item>Se corrigió la visualización de nombres incompletos (las listas de nombres se utilizan para el análisis)</item>
+        <item>Cálculo de edad fijo para eventos de calendario que no tienen un enlace a un contacto</item>
+
         <item>#1.7.5</item>
         <item>Se movió la selección de cuentas de contactos a la sección \"Configuración de eventos\", se agregó soporte para seleccionar cuentas locales y la capacidad de no usar eventos de la libreta de direcciones</item>
         <item>Se agregó soporte para archivos con múltiples tipos de eventos</item>

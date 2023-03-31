@@ -566,7 +566,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, intent);
 
             //Посылаем сообщение на обновление виджета
-            this.eventsData.updateWidgets(this.widgetId);
+            this.eventsData.updateWidgets(this.widgetId, null);
 
             finish();
         } catch (final Exception e) {

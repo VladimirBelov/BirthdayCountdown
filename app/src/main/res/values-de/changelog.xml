@@ -11,6 +11,17 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.6</item>
+        <item>Alle Namensvariationen werden für die Suche nach Kontaktnamen verwendet (mit und ohne Nachnamen)</item>
+        <item>Möglichkeit hinzugefügt, nicht aufgezeichnete männliche Namen hinzuzufügen (zusätzlich zu weiblichen)</item>
+        <item>Anzeige des Alters in der Hauptliste für alle Ereignisse (nicht nur Geburtstag und Todestag) hinzugefügt</item>
+        <item>Möglichkeit hinzugefügt, Wiederholungszeiträume zu definieren (für Ereignisse mit einem gefüllten Jahr)</item>
+        <item>Altersformateinstellung hinzugefügt (nur Zahlen, Tausenderstellen trennen, 000 durch \"K\" ersetzen)</item>
+        <item>Debug- und Informationsmeldungen werden durch verschiedene Schalter aktiviert (Informationsmeldungen sind standardmäßig aktiviert)</item>
+        <item>Doppelte Ergebnisse für die Schnellsuche behoben</item>
+        <item>Anzeige unvollständiger Namen korrigiert (Namenslisten werden zur Analyse verwendet)</item>
+        <item>Feste Altersberechnung für Kalenderereignisse, die keinen Link zu einem Kontakt haben</item>
+
         <item>#1.7.5</item>
         <item>Auswahl von Kontaktkonten in den Abschnitt \"Ereignisse einrichten\" verschoben, Unterstützung für die Auswahl aus lokalen Konten und die Möglichkeit, keine Adressbuchereignisse zu verwenden, hinzugefügt</item>
         <item>Unterstützung für Dateien mit mehreren Ereignistypen hinzugefügt</item>

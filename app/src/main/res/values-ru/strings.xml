@@ -137,6 +137,8 @@
     <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или события?</string>
     <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
+    <string name="msg_filter_clean_XDays_result">"Удалены счётчики дней для несуществующих событий: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"Ни одного счётчика не удалено. Если событие отсутствует в списке, проверьте типы событий, включённые для показа"</string>
     <string name="msg_account_info">"Событие из аккаунта \"%1$s\""</string>
     <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
@@ -155,6 +157,7 @@
     <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
+    <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>

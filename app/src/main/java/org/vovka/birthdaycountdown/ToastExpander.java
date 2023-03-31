@@ -17,15 +17,22 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class ToastExpander {
 
     public static final String TAG = "ToastExpander";
 
-    public static void showFor(final Toast aToast, final long durationInMilliseconds) {
+    private static final ToastExpander ourInstance = new ToastExpander();
+    FluentSnackbar mFluentSnackbar;
+
+    @NonNull
+    static ToastExpander getInstance() {
+        return ourInstance;
+    }
+
+        public static void showFor(final Toast aToast, final long durationInMilliseconds) {
 
         aToast.setDuration(Toast.LENGTH_SHORT);
 
@@ -49,7 +56,7 @@ public class ToastExpander {
         t.start();
     }
 
-    private static synchronized void showText(@NonNull Context context, @NonNull String msg) {
+    private synchronized void showText(@NonNull Context context, @NonNull String msg) {
 
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
@@ -58,12 +65,23 @@ public class ToastExpander {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             try {
                 if (eventsData.isUIopen && eventsData.coordinator != null) {
-                    final Snackbar snackbar = Snackbar.make(eventsData.coordinator, msg, Snackbar.LENGTH_LONG);
+
+                    if (mFluentSnackbar == null) {
+                        mFluentSnackbar = FluentSnackbar.create(ContactsEvents.getInstance().coordinator);
+                    }
+
+                    @ColorInt int colorBack = 0;
                     try {
                         TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                        snackbar.setBackgroundTint(ta.getColor(R.styleable.Theme_colorPrimary, 0));
-                    } catch (Resources.NotFoundException e) {/**/}
-                    snackbar.show();
+                        colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
+                    } catch (Resources.NotFoundException e) { /**/ }
+
+                    mFluentSnackbar
+                            .create(msg)
+                            .maxLines(5)
+                            .backgroundColor(colorBack)
+                            .important()
+                            .show();
                 } else {
                     new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
                 }
@@ -75,12 +93,12 @@ public class ToastExpander {
         }
     }
 
-    public static void showInfoMsg (@NonNull Context context, @NonNull String msg) {
-        if (ContactsEvents.getInstance().preferences_info_on) showText(context, msg);
+    static public void showInfoMsg(@NonNull Context context, @NonNull String msg) {
+        if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg);
     }
 
-    public static void showDebugMsg (@NonNull Context context, @NonNull String msg) {
-        if (ContactsEvents.getInstance().preferences_debug_on) showText(context, msg);
+    static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
+        if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg);
     }
 
 }

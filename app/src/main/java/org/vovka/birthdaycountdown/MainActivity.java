@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
-                    eventsData.updateWidgets(0);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -550,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
-                    eventsData.updateWidgets(0);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -582,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
-                    eventsData.updateWidgets(0);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
-                    eventsData.updateWidgets(0);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -611,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
-                    eventsData.updateWidgets(0);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -1446,21 +1446,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == R.id.menu_filter_events) {
 
-                List<String> filterVariants = new ArrayList<String>() {{
-                    add(getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents));
-                    add(getString(R.string.events_scope_all, statsAllEvents));
-                }};
+                List<String> filterVariants = new ArrayList<>();
+                List<Integer> filterValues = new ArrayList<>();
 
-                List<Integer> filterValues = new ArrayList<Integer>() {{
-                    add(Constants.pref_Events_Scope_NotHidden);
-                    add(Constants.pref_Events_Scope_All);
-                }};
+                filterVariants.add(getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents));
+                filterValues.add(Constants.pref_Events_Scope_NotHidden);
+
+                filterVariants.add(getString(R.string.events_scope_all, statsAllEvents));
+                filterValues.add(Constants.pref_Events_Scope_All);
 
                 //Анализ на мёртвые связи
                 boolean isDeadLinks = false;
+                final boolean isDebugOrExtraFun = eventsData.preferences_debug_on || eventsData.preferences_extrafun;
+
                 final int hiddenEventsCount = eventsData.getHiddenEventsCount();
                 if (hiddenEventsCount > 0) {
-                    if (statsHiddenEvents != hiddenEventsCount && eventsData.preferences_debug_on) {
+                    if (statsHiddenEvents != hiddenEventsCount && isDebugOrExtraFun) {
                         filterVariants.add(getString(R.string.events_scope_hidden_dead, statsHiddenEvents, hiddenEventsCount));
                         isDeadLinks = true;
                     } else
@@ -1469,7 +1470,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 final int silencedEventsCount = eventsData.getSilencedEventsCount();
                 if (silencedEventsCount > 0) {
-                    if (statsSilencedEvents != silencedEventsCount && eventsData.preferences_debug_on) {
+                    if (statsSilencedEvents != silencedEventsCount && isDebugOrExtraFun) {
                         filterVariants.add(getString(R.string.events_scope_silenced_dead, statsSilencedEvents, silencedEventsCount));
                         isDeadLinks = true;
                     } else
@@ -1478,20 +1479,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 final int xDaysEventsCount = eventsData.getXDaysEventsCount();
                 if (xDaysEventsCount > 0) {
-                    if (statsXDaysEvents != xDaysEventsCount && eventsData.preferences_debug_on) {
+                    if (statsXDaysEvents != xDaysEventsCount && isDebugOrExtraFun) {
                         filterVariants.add(getString(R.string.events_scope_xdays_dead, statsXDaysEvents, xDaysEventsCount));
                         isDeadLinks = true;
                     } else {
                         filterVariants.add(getString(R.string.events_scope_xdays, xDaysEventsCount));
-                        filterValues.add(Constants.pref_Events_Scope_XDays);
                     }
+                    filterValues.add(Constants.pref_Events_Scope_XDays);
                 }
 
-                if (eventsData.preferences_debug_on && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
+                if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
                     filterVariants.add(getString(R.string.events_scope_clear));
                     filterValues.add(Constants.pref_Events_Scope_Clear);
                 }
-                if (eventsData.preferences_debug_on && isDeadLinks) {
+                if (isDebugOrExtraFun && isDeadLinks) {
                     filterVariants.add(getString(R.string.events_scope_clean));
                     filterValues.add(Constants.pref_Events_Scope_Clean);
                 }
@@ -1537,8 +1538,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         .setIcon(android.R.drawable.ic_menu_help)
                                         .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
                                         .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
-                                            eventsData.clearDeadlinkHiddenEvents();
-                                            eventsData.clearDeadlinkSilencedEvents();
+                                            eventsData.clearDeadLinksHiddenEvents();
+                                            eventsData.clearDeadLinksSilencedEvents();
+                                            eventsData.clearDeadLinksXDaysEvents();
                                             eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
                                             eventsData.savePreferences();
                                             this.invalidateOptionsMenu();
@@ -1954,6 +1956,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsAllEvents = 0;
             statsHiddenEvents = 0;
             statsSilencedEvents = 0;
+            statsXDaysEvents = 0;
             int statsVisibleEvents = 0;
             eventsData.statEventsPrevEventsFound = 0;
             final List<String> eventList_toPrepare = new ArrayList<>(eventsData.eventList);
@@ -2121,7 +2124,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
 
                         this.invalidateOptionsMenu();
-                        eventsData.updateWidgets(0);
+                        eventsData.updateWidgets(0, null);
 
                         if (eventsData.isEmptyEventList())
                             showZeroEventsHints();
@@ -2140,7 +2143,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
 
                 this.invalidateOptionsMenu();
-                eventsData.updateWidgets(0);
+                eventsData.updateWidgets(0, null);
 
                 showZeroEventsHints();
             }

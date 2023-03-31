@@ -92,6 +92,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1693,7 +1694,7 @@ class ContactsEvents {
                     if (dataList.add(dataRow.toString())) { //Добавляем для поиска календарных событий (дни рождения)
                         String personID = userData.get(Position_contactID);
                         if (personID != null && !personID.isEmpty())
-                            map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + Constants.STRING_EOT + personID, dataList.size() - 1);
+                            map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + userData.get(Position_eventSubType), dataList.size() - 1);
                         //String personNameAlt = userData.get(Position_personFullNameAlt);
                         //if (personNameAlt != null && !personNameAlt.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + normalizeName(personNameAlt), dataList.size() - 1);
                     }
@@ -2117,7 +2118,7 @@ class ContactsEvents {
                         if (dataList.add(dataRow.toString())) {
                             String personID = userData.get(Position_contactID);
                             if (personID != null && !personID.isEmpty())
-                                map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + Constants.STRING_EOT + personID, dataList.size() - 1);
+                                map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + userData.get(Position_eventSubType), dataList.size() - 1);
                             //String personNameAlt = userData.get(Position_personFullNameAlt);
                             //if (personNameAlt != null && !personNameAlt.isEmpty()) map_eventsBySubtypeAndPersonID_offset.put(userData.get(Position_eventSubType) + STRING_2HASH + normalizeName(personNameAlt), dataList.size() - 1);
                         }
@@ -2436,7 +2437,7 @@ class ContactsEvents {
                             userData.put(Position_contactID, contactID);
 
                             //Ищем событие контакта в списке событий и добавляем в него
-                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(event.subType + Constants.STRING_EOT + contactID);
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                             if (eventIndex != null && eventIndex <= eventList.size() && !isInstance) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
@@ -2582,9 +2583,12 @@ class ContactsEvents {
                             if (!eventList.contains(eventData)) {
                                 eventList.add(eventData);
 
-                                if (importMethod == importMethod_NewContactEvent & !isInstance) {  //Добавляем событие
-                                    //map_eventsBySubtypeAndPersonID_offset.put(getEventType(Type_BirthDay) + STRING_EOT + contactID, eventList.size() - 1);
-                                    map_eventsBySubtypeAndPersonID_offset.put(event.subType + Constants.STRING_EOT + contactID, eventList.size() - 1);
+                                if (importMethod == importMethod_NewContactEvent) {  //Добавляем событие
+                                    if (!contactID.isEmpty()) {
+                                        map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
+                                    }
+                                } else {
+                                    map_eventsBySubtypeAndPersonID_offset.put(eventID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
                                 }
                             }
                         }
@@ -3023,7 +3027,7 @@ class ContactsEvents {
                         userData.put(Position_contactID, contactID);
 
                         //Ищем событие контакта в списке событий и добавляем в него
-                        Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(event.subType + Constants.STRING_EOT + contactID);
+                        Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                         if (eventIndex != null && eventIndex <= eventList.size()) {
 
                             List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
@@ -3114,7 +3118,9 @@ class ContactsEvents {
                         final String eventData = dataRow.toString();
                         if (!eventList.contains(eventData)) {
                             eventList.add(eventData);
-                            map_eventsBySubtypeAndPersonID_offset.put(event.subType + Constants.STRING_EOT + contactID, eventList.size() - 1);
+                            if (contactID != null && !contactID.isEmpty()) {
+                                map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
+                            }
                         }
                     }
                 }
@@ -3240,11 +3246,17 @@ class ContactsEvents {
 
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? "🗓️" : "\uD83D\uDCC6";
-                event.needScanContacts = false;
 
-                if (preferences_otherevent_labels == null || !preferences_otherevent_labels.reset(eventLabel_forSearch).find()) {
+                if (preferences_otherevent_labels != null && preferences_otherevent_labels.reset(eventLabel_forSearch).find()) {
+                    event.needScanContacts = false;
+                } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, eventSubject));
+                    event.needScanContacts = true;
                 }
+
+                /*if (preferences_otherevent_labels == null || !preferences_otherevent_labels.reset(eventLabel_forSearch).find()) {
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, eventSubject));
+                }*/
             }
 
         } catch (Exception e) {
@@ -3294,7 +3306,8 @@ class ContactsEvents {
             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
             String eventSubType = singleEventArray[Position_eventSubType];
 
-            if (eventSubType.equals(getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(getEventType(Constants.Type_FileEvent))) {
+            if (eventSubType.equals(getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(getEventType(Constants.Type_FileEvent))
+                    && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
                 return BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
             }
 
@@ -4322,47 +4335,64 @@ class ContactsEvents {
         return result;
     }
 
-    void updateWidgets(int widgetID) {
+    void updateWidgets(int widgetID, StringBuilder log) {
 
         if (context == null) return;
+        int countSentRequests = 0;
 
         //Посылаем сообщения на обновление виджетов
         // https://stackoverflow.com/questions/3455123/programmatically-update-widget-from-activity-service-receiver
 
-        int[] ids;
-        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
-        if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-            //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-            Widget2x2 myWidget = new Widget2x2();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-        }
+        try {
 
-        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
-        if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-            //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-            Widget5x1 myWidget = new Widget5x1();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-        }
+            int[] ids;
 
-        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
-        if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-            //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-            Widget4x1 myWidget = new Widget4x1();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-        }
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                Widget2x2 myWidget = new Widget2x2();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
 
-        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
-        if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-            //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-            WidgetList myWidget = new WidgetList();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-        }
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                Widget5x1 myWidget = new Widget5x1();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
 
-        ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
-        if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-            //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-            WidgetPhotoList myWidget = new WidgetPhotoList();
-            myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                Widget4x1 myWidget = new Widget4x1();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
+
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                WidgetList myWidget = new WidgetList();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
+
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                WidgetPhotoList myWidget = new WidgetPhotoList();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            if (log != null && countSentRequests > 0)
+                log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
         }
     }
 
@@ -5009,7 +5039,7 @@ class ContactsEvents {
             if (key.isEmpty() || preferences_hiddenEvents == null || !preferences_hiddenEvents.add(key))
                 return false;
 
-            //clearDeadlinkHiddenEvents();
+            //clearDeadLinksHiddenEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
@@ -5034,7 +5064,7 @@ class ContactsEvents {
             if (preferences_hiddenEvents == null || !preferences_hiddenEvents.remove(key))
                 return false;
 
-            //clearDeadlinkHiddenEvents();
+            //clearDeadLinksHiddenEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
@@ -5104,7 +5134,7 @@ class ContactsEvents {
             if (key.isEmpty() || preferences_silentEvents == null || !preferences_silentEvents.add(key))
                 return false;
 
-            //clearDeadlinkSilencedEvents();
+            //clearDeadLinksSilencedEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
@@ -5129,7 +5159,7 @@ class ContactsEvents {
             if (preferences_silentEvents == null || !preferences_silentEvents.remove(key))
                 return false;
 
-            //clearDeadlinkSilencedEvents();
+            //clearDeadLinksSilencedEvents();
 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
@@ -5372,7 +5402,7 @@ class ContactsEvents {
         }
     }
 
-    void clearDeadlinkSilencedEvents() {
+    void clearDeadLinksSilencedEvents() {
 
         try {
 
@@ -5402,7 +5432,7 @@ class ContactsEvents {
         }
     }
 
-    void clearDeadlinkHiddenEvents() {
+    void clearDeadLinksHiddenEvents() {
 
         try {
 
@@ -5424,6 +5454,52 @@ class ContactsEvents {
             if (toRemove.size() > 0) {
                 preferences_hiddenEvents.removeAll(toRemove);
                 ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size());
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void clearDeadLinksXDaysEvents() {
+
+        try {
+
+            if (getXDaysEventsCount() == 0) return;
+
+            int countRemoved = 0;
+
+            Iterator<Map.Entry<String,String>> iterator = preferences_xDaysEvents.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String,String> entry = iterator.next();
+                final String eventID = entry.getKey();
+                if (Constants.STRING_EMPTY.equals(eventID)) {
+                    iterator.remove();
+                    countRemoved++;
+                } else if (!map_eventsBySubtypeAndPersonID_offset.containsKey(eventID)) {
+                    iterator.remove();
+                    countRemoved++;
+                }
+            }
+
+            if (countRemoved > 0) {
+
+                Set<String> someSets = new HashSet<>();
+                for (String elementID : preferences_xDaysEvents.keySet()) {
+                    final String elementValue = preferences_xDaysEvents.get(elementID);
+                    if (elementValue != null) {
+                        someSets.add(elementID + Constants.STRING_COLON_SPACE + elementValue);
+                    }
+                }
+
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                editor.putStringSet(context.getString(R.string.pref_xDaysEvents_key), someSets);
+                editor.apply();
+
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_XDays_result) + countRemoved);
+            } else {
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_XDays_noresult));
             }
 
         } catch (Exception e) {
@@ -5471,7 +5547,7 @@ class ContactsEvents {
             String[] pref = strPref.split(Constants.STRING_COMMA, -1);
             List<String> prefWidget = new ArrayList<>(Arrays.asList(pref));
 
-            //Заполнение дефолтными значениями
+            //Заполнение значениями по умолчанию
             while (prefWidget.size() < defaultPref.size()) {
                 prefWidget.add(defaultPref.get(prefWidget.size()));
             }

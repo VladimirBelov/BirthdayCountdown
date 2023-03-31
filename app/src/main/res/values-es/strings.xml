@@ -50,6 +50,8 @@
     <string name="menu_context_share">Compartir evento…</string>
     <string name="menu_context_share_as_image">como imagen</string>
     <string name="menu_context_share_as_text">como texto</string>
+    <string name="menu_context_xDaysEvent_add">Añadir contador de días…</string>
+    <string name="menu_context_xDaysEvent_edit">Contador de días…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referencia</string>
     <string name="menu_help_events_calendar">Eventos del calendario</string>
@@ -75,6 +77,8 @@
     <string name="msg_stats_hidden_filtered_prefix">"eventos ocultos encontrados: "</string>
     <string name="msg_stats_silenced_prefix">"eventos sin notificación: "</string>
     <string name="msg_stats_silenced_filtered_prefix">"eventos silenciados encontrados: "</string>
+    <string name="msg_stats_xdays_prefix">"contadores de días: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"contadores de días encontrados: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
@@ -110,6 +114,8 @@
     <string name="msg_age_now">"Ahora: "</string>
     <string name="msg_age_was">"Tenía: "</string>
     <string name="msg_age_could_be_now">"Sería ahora: "</string>
+    <string name="msg_age_will_be">"Será: "</string>
+    <string name="msg_age_could_be">"Podría ser: "</string>
     <string name="msg_label_search">Ingrese parte del nombre completo, tipo de contacto, lugar de trabajo, puesto, fechas (se pueden ingresar múltiples valores separados por comas, se admite regexp):</string>
     <string name="msg_hint_search">Consulta de busqueda</string>
     <string name="msg_hint_global_search">Buscar eventos</string>
@@ -131,12 +137,27 @@
     <string name="msg_filter_clean_confirmation">¿Limpiar todos los filtros de enlaces a contactos ausentes o eventos de calendario?</string>
     <string name="msg_filter_clean_silenced_result">"Eventos silenciados borrados para contactos ausentes y eventos del calendario: "</string>
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos borrados para contactos ausentes y eventos del calendario: "</string>
+    <string name="msg_filter_clean_XDays_result">"Contadores de días eliminados para eventos inexistentes.: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"No se ha eliminado ningún contador. Si el evento no está en la lista, verifique los tipos de eventos habilitados para mostrar"</string>
     <string name="msg_account_info">"Evento de la cuenta \"%1$s\""</string>
     <string name="msg_calendar_info">"Evento de calendario \"%1$s\""</string>
     <string name="msg_file_info">"Evento de archivo \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmación</string>
     <string name="msg_title_settings">Configuraciones guardadas</string>
     <string name="msg_no_selection">¡Selección vacía! Necesito seleccionar cualquier cosa</string>
+    <string name="msg_notifications_were_enabled">"Las notificaciones fueron habilitadas\n"</string>
+    <string name="msg_notifications_were_disabled">"Las notificaciones fueron deshabilitadas\n"</string>
+    <string name="msg_widget_prefs_removed">"Se han eliminado las preferencias para el widget #%s"</string>
+    <string name="msg_widget_prefs_saved">"Widget guardado #%s preferencias:\n"</string>
+    <string name="msg_ringtone">"Tono de llamada: "</string>
+    <string name="msg_deleted_channel">"Notificar que el canal %1$s fue eliminado\n"</string>
+    <string name="msg_created_channel">"Notificar que se creó el canal %1$s\n"</string>
+    <string name="msg_sent_widgets_update_request">Solicitud de actualización de widgets enviada</string>
+    <string name="msg_next_notification">"Próxima notificación: %1$s\n"</string>
+    <string name="msg_next_widgetupdate">"Próxima actualización del widget: %1$s\n"</string>
+    <string name="msg_no_action">Ninguna acción para el evento</string>
+    <string name="msg_icon_changed">"Conjunto de iconos de aplicaciones: %1$s"</string>
+    <string name="msg_created_quiz_channel">Canal de notificación de cuestionario creado</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -162,6 +183,7 @@
     <string name="button_ok">Okay</string>
     <string name="button_cancel">Cancelación</string>
     <string name="button_reset">Reiniciar</string>
+    <string name="button_remove">Eliminar</string>
     <string name="button_choose">Escoger</string>
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
@@ -185,6 +207,8 @@
     <string name="events_scope_hidden_dead">Oculto (%1$d, salvado %2$d)</string>
     <string name="events_scope_silenced">Sin notificación (%1$d)</string>
     <string name="events_scope_silenced_dead">Sin notificación (%1$d, salvado %2$d)</string>
+    <string name="events_scope_xdays">Contadores de días (%1$d)</string>
+    <string name="events_scope_xdays_dead">Contadores de días (%1$d, salvado %2$d)</string>
     <string name="events_scope_clear">Quitar filtros</string>
     <string name="events_scope_clean">Limpiar filtros de enlaces muertos</string>
 
@@ -336,6 +360,7 @@
 
     <string name="pref_CustomEvents_Custom_title">Evento personalizado</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Título del evento</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Ingrese el título de este evento para comenzar a usarlo</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Los eventos de contacto con dicha etiqueta se identificarán como este evento</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Año de uso</string>
@@ -419,6 +444,15 @@
         <item>Círculo</item>
     </string-array>
 
+    <string name="pref_List_AgeFormat_title">Formato de edad</string>
+    <string name="pref_List_AgeFormat_summary">Formato de visualización de edad para próximos eventos</string>
+
+    <string-array name="pref_List_AgeFormat_entries">
+        <item>Descripción del número de edad (días, meses, años)</item>
+        <item>Reemplace miles con \"K\" (5K, 10K)</item>
+        <item>Separar miles de lugares</item>
+    </string-array>
+
     <string name="pref_List_Filling_title">Tipo de relleno</string>
     <string name="pref_List_Filling_summary">Establecer el tipo de relleno para el marcador de posición del evento (degradado)</string>
 
@@ -467,6 +501,10 @@
     <string name="pref_Female_Names_title">Nombres femeninos</string>
     <string name="pref_Female_Names_description">Nombres femeninos adicionales para la visualización correcta de los iconos de contacto sin una foto.</string>
     <string name="pref_Female_Names_hint">Ingrese nombres femeninos (separados por comas)</string>
+
+    <string name="pref_Male_Names_title">Nombres masculinos</string>
+    <string name="pref_Male_Names_description">Nombres masculinos adicionales para la visualización correcta de iconos de contacto sin foto y analizar nombres completos</string>
+    <string name="pref_Male_Names_hint">Ingrese nombres masculinos (por coma)</string>
 
     <string name="pref_List_EventInfo_title">Detalles del evento</string>
     <string name="pref_List_EventInfo_summary">Qué detalles adicionales del evento mostrar</string>
@@ -799,6 +837,8 @@
     <string name="pref_ContactsAccess_summary">Solicitar permiso para eventos de contactos…</string>
     <string name="pref_CalendarAccess_title">Sin acceso al calendario</string>
     <string name="pref_CalendarAccess_summary">Solicitar permiso para datos de calendarios…</string>
+    <string name="pref_InfoMsg_On_title">Mensajes informativos</string>
+    <string name="pref_InfoMsg_On_summary">Mostrar mensajes informativos sobre acciones realizadas u operaciones en segundo plano en la aplicación</string>
     <string name="pref_Debug_On_title">Mensajes de depuración</string>
     <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Presione %1$d veces más para %3$s las mensajes de depuración</string>
     <string name="pref_Debug_On_summary">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
@@ -979,4 +1019,14 @@
     <string name="quiz_age01_title_future">"¿Qué edad tendrá?"</string>
     <string name="quiz_age01_title_past">"¿Qué edad tiene ahora?"</string>
     <string name="quiz_age01_title_dead">"¿Qué edad tendría ahora?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Contador de días</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">ingrese la cantidad de días</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">cantidad de días después de los cuales se debe repetir el evento. ej: 1000, 5000 (por coma)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Horas:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">tiempo máximo de repetición de cada período</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Repeticiones más cercanas:</string>
 </resources>

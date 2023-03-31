@@ -50,6 +50,8 @@
     <string name="menu_context_share">Поділіться подією…</string>
     <string name="menu_context_share_as_image">як зображення</string>
     <string name="menu_context_share_as_text">як текст</string>
+    <string name="menu_context_xDaysEvent_add">Додати лічильник днів…</string>
+    <string name="menu_context_xDaysEvent_edit">Лічильник днів…</string>
     <string name="menu_ok">Добре</string>
     <!--<string name="menu_help" tools:ignore="MissingTranslation">Reference</string>-->
     <!--<string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>-->
@@ -75,6 +77,8 @@
     <string name="msg_stats_hidden_filtered_prefix">"знайдено прихованих подій: "</string>
     <string name="msg_stats_silenced_prefix">"подій без повідомлення: "</string>
     <string name="msg_stats_silenced_filtered_prefix">"знайдено замовчуваних подій: "</string>
+    <string name="msg_stats_xdays_prefix">"лічильники днів: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"знайдено лічильників днів: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
@@ -110,6 +114,8 @@
     <string name="msg_age_now">"Зараз: "</string>
     <string name="msg_age_was">"Було: "</string>
     <string name="msg_age_could_be_now">"Було б зараз: "</string>
+    <string name="msg_age_will_be">"Буде: "</string>
+    <string name="msg_age_could_be">"Може бути: "</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
     <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_hint_global_search">Пошук подій</string>
@@ -131,12 +137,27 @@
     <string name="msg_filter_clean_confirmation">Очистити всі фільтри від посилань на відсутні контакти чи події календаря?</string>
     <string name="msg_filter_clean_silenced_result">"Очищено приглушені події для відсутніх контактів та подій календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Видалено приховані події для відсутніх контактів та події календаря: "</string>
+    <string name="msg_filter_clean_XDays_result">"Видалено лічильники днів для неіснуючих подій: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"Жоден лічильник не видалено. Якщо події немає в списку, перевірте типи подій, увімкнені для відображення"</string>
     <string name="msg_account_info">"Подія з рахунку \"%1$s\""</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
     <string name="msg_title_confirmation">Підтвердження</string>
     <string name="msg_title_settings">Збережені налаштування</string>
     <string name="msg_no_selection">Вибір порожній! Треба що-небудь вибрати</string>
+    <string name="msg_notifications_were_enabled">"Сповіщення ввімкнено\n"</string>
+    <string name="msg_notifications_were_disabled">"Сповіщення вимкнено\n"</string>
+    <string name="msg_widget_prefs_removed">"Налаштування для віджета #%s видалено"</string>
+    <string name="msg_widget_prefs_saved">"Збережені параметри віджета #%s:\n"</string>
+    <string name="msg_ringtone">"Мелодія: "</string>
+    <string name="msg_deleted_channel">"Канал сповіщення %1$s видалено\n"</string>
+    <string name="msg_created_channel">"Канал сповіщення %1$s створено\n"</string>
+    <string name="msg_sent_widgets_update_request">Надіслано запит на оновлення віджетів</string>
+    <string name="msg_next_notification">"Наступне сповіщення: %1$s\n"</string>
+    <string name="msg_next_widgetupdate">"Наступне оновлення віджета: %1$s\n"</string>
+    <string name="msg_no_action">Немає дій для події</string>
+    <string name="msg_icon_changed">"Набір значків програми: %1$s"</string>
+    <string name="msg_created_quiz_channel">Створено канал сповіщень вікторини</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -162,6 +183,7 @@
     <string name="button_ok">OK</string>
     <string name="button_cancel">Відміна</string>
     <string name="button_reset">Скинути</string>
+    <string name="button_remove">Видалити</string>
     <string name="button_choose">Виберіть</string>
     <string name="button_rate">Оцінити</string>
     <string name="button_mail">Написати</string>
@@ -185,6 +207,8 @@
     <string name="events_scope_hidden_dead">Приховані (%1$d, збережено %2$d)</string>
     <string name="events_scope_silenced">Без оповіщення (%1$d)</string>
     <string name="events_scope_silenced_dead">Без оповіщення (%1$d, збережено %2$d)</string>
+    <string name="events_scope_xdays">Лічильники днів (%1$d)</string>
+    <string name="events_scope_xdays_dead">Лічильники днів (%1$d, збережено %2$d)</string>
     <string name="events_scope_clear">Видалити фільтри</string>
     <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 
@@ -336,6 +360,7 @@
 
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Введіть підпис для цієї події, щоб почати використовувати її</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Найменування подій</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як ця подія</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Використовувати рік</string>
@@ -419,6 +444,15 @@
         <item>Коло</item>
     </string-array>
 
+    <string name="pref_List_AgeFormat_title">Формат віку</string>
+    <string name="pref_List_AgeFormat_summary">Формат відображення віку для майбутніх подій</string>
+
+    <string-array name="pref_List_AgeFormat_entries">
+        <item>Опис номера віку (дні, місяці, роки)</item>
+        <item>Замініть тисячі на \"K\" (5K, 10K)</item>
+        <item>Відокремте тисячі місць</item>
+    </string-array>
+
     <string name="pref_List_Filling_title">Тип наповнення</string>
     <string name="pref_List_Filling_summary">Встановити тип заповнення для заповнювача події (градієнт)</string>
 
@@ -467,6 +501,10 @@
     <string name="pref_Female_Names_title">Жіночі імена</string>
     <string name="pref_Female_Names_description">Додаткові жіночі імена для коректного відображення піктограм контактів без фото</string>
     <string name="pref_Female_Names_hint">Введіть жіночі імена (через кому)</string>
+
+    <string name="pref_Male_Names_title">Чоловічі імена</string>
+    <string name="pref_Male_Names_description">Додаткові чоловічі імена для правильного відображення значків контактів без фото та розбору повних імен</string>
+    <string name="pref_Male_Names_hint">Введіть чоловічі імена (через кому)</string>
 
     <string name="pref_List_EventInfo_title">Деталі події</string>
     <string name="pref_List_EventInfo_summary">Що показувати під ім\'ям контакту</string>
@@ -799,6 +837,8 @@
     <string name="pref_ContactsAccess_summary">Запитати дозвіл на події контактів…</string>
     <string name="pref_CalendarAccess_title">Немає доступу до календаря</string>
     <string name="pref_CalendarAccess_summary">Запит на доступ до даних календарів…</string>
+    <string name="pref_InfoMsg_On_title">Інформаційні повідомлення</string>
+    <string name="pref_InfoMsg_On_summary">Показати інформаційні повідомлення про виконані дії або фонові операції в програмі</string>
     <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
     <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_summary">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
@@ -985,4 +1025,14 @@
     <string name="quiz_age01_title_future">"Скільки років виповниться?"</string>
     <string name="quiz_age01_title_past">"Скільки зараз років?"</string>
     <string name="quiz_age01_title_dead">"Скільки було б зараз років?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Лічильник днів</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Періоди:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">введіть кількість днів</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">кількість днів, після якої подія має повторюватися. наприклад: 1000, 5000 (через кому)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Час:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">максимальний час повторення кожного періоду</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Найближчі повтори:</string>
 </resources>
