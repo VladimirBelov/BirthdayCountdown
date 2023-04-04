@@ -79,6 +79,8 @@
     <string name="msg_stats_silenced_filtered_prefix">"знайдено замовчуваних подій: "</string>
     <string name="msg_stats_xdays_prefix">"лічильники днів: "</string>
     <string name="msg_stats_xdays_filtered_prefix">"знайдено лічильників днів: "</string>
+    <string name="msg_stats_unrecognized_prefix">"нерозпізнаних подій: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"нерозпізнаних подій знайдено: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
@@ -209,6 +211,7 @@
     <string name="events_scope_silenced_dead">Без оповіщення (%1$d, збережено %2$d)</string>
     <string name="events_scope_xdays">Лічильники днів (%1$d)</string>
     <string name="events_scope_xdays_dead">Лічильники днів (%1$d, збережено %2$d)</string>
+    <string name="events_scope_unrecognized">Нерозпізнано (%1$d)</string>
     <string name="events_scope_clear">Видалити фільтри</string>
     <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 
@@ -886,6 +889,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Події не відображаються</h2>Ця інформація може допомогти:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Типи подій: %1$s</p>
+        <p>Фільтр: %11$s</p>
          <h4>Події контактів:</h4><ul>%2$s
              <li>показати події з облікових записів: %3$s</li>
          </ul>

@@ -73,6 +73,7 @@
                 android:gravity="start|top"
                 android:hint="@string/xDaysCounter_Dialog_Repeats_Hint"
                 android:inputType="phone"
+                android:minHeight="48dp"
                 android:textColorHint="?android:attr/textColorPrimary"
                 android:textSize="14sp"
                 tools:ignore="VisualLintTextFieldSize" />
@@ -109,6 +110,7 @@
                 android:hint="@string/xDaysCounter_Dialog_Times_Hint"
                 android:importantForAutofill="no"
                 android:inputType="number"
+                android:minHeight="48dp"
                 android:textColorHint="?android:attr/textColorPrimary"
                 android:textSize="14sp"
                 tools:ignore="VisualLintTextFieldSize" />

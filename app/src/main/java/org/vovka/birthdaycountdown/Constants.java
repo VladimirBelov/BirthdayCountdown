@@ -222,6 +222,7 @@ final class Constants {
     static final int pref_Events_Scope_Hidden = 2;
     static final int pref_Events_Scope_Silenced = 3;
     static final int pref_Events_Scope_XDays = 4;
+    static final int pref_Events_Scope_Unrecognized = 5;
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 

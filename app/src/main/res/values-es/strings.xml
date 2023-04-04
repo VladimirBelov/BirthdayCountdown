@@ -79,6 +79,8 @@
     <string name="msg_stats_silenced_filtered_prefix">"eventos silenciados encontrados: "</string>
     <string name="msg_stats_xdays_prefix">"contadores de días: "</string>
     <string name="msg_stats_xdays_filtered_prefix">"contadores de días encontrados: "</string>
+    <string name="msg_stats_unrecognized_prefix">"eventos no reconocidos: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"se encontraron eventos no reconocidos: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
@@ -209,6 +211,7 @@
     <string name="events_scope_silenced_dead">Sin notificación (%1$d, salvado %2$d)</string>
     <string name="events_scope_xdays">Contadores de días (%1$d)</string>
     <string name="events_scope_xdays_dead">Contadores de días (%1$d, salvado %2$d)</string>
+    <string name="events_scope_unrecognized">No reconocido (%1$d)</string>
     <string name="events_scope_clear">Quitar filtros</string>
     <string name="events_scope_clean">Limpiar filtros de enlaces muertos</string>
 
@@ -886,6 +889,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No se muestran eventos</h2>Esta información puede ayudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Tipos de eventos: %1$s</p>
+        <p>Filtro: %11$s</p>
          <h4>Eventos de contactos:</h4><ul>%2$s
              <li>mostrar eventos de cuentas: %3$s</li>
          </ul>

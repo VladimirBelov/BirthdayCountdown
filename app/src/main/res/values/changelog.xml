@@ -17,6 +17,7 @@
         <item>Added display of age in the main list for all events (not only birthday and death anniversary)</item>
         <item>Added the ability to define repetition periods (for events with a filled year)</item>
         <item>Added age format setting (numbers only, separate thousands places, replace 000 with \"K\")</item>
+        <item>New filters added for day counters and unrecognized events ( ⋮ -> Filter… )</item>
         <item>Debug and informational messages are turning on by different switches (informational messages are enabled by default)</item>
         <item>Fixed duplicate results for Quick Search</item>
         <item>Fixed display of incomplete names (names lists are used for analysis)</item>

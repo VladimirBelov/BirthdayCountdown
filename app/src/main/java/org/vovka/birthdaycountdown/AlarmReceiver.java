@@ -39,7 +39,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     //Переинициализируем уведомления
                     eventsData.initNotifications(log);
-
                 }
 
             }
@@ -48,8 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             eventsData.initWidgetUpdate(log);
 
             //Посылаем сообщения на обновление виджетов
-            eventsData.updateWidgets(0);
-            log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
+            eventsData.updateWidgets(0, log);
 
             ToastExpander.showInfoMsg(context, log.toString());
 

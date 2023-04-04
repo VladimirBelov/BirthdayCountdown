@@ -79,6 +79,8 @@
     <string name="msg_stats_silenced_filtered_prefix">"событий без уведомления найдено: "</string>
     <string name="msg_stats_xdays_prefix">"счётчиков дней: "</string>
     <string name="msg_stats_xdays_filtered_prefix">"счётчиков дней найдено: "</string>
+    <string name="msg_stats_unrecognized_prefix">"нераспознанных событий: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"нераспознанных событий найдено: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
@@ -208,6 +210,7 @@
     <string name="events_scope_silenced">Без уведомления (%1$d)</string>
     <string name="events_scope_silenced_dead">Без уведомления (%1$d, сохранено %2$d)</string>
     <string name="events_scope_xdays">Счётчики дней (%1$d)</string>
+    <string name="events_scope_unrecognized">Не распознано (%1$d)</string>
     <string name="events_scope_xdays_dead">Счётчики дней (%1$d, сохранено %2$d)</string>
     <string name="events_scope_clear">Удалить фильтры</string>
     <string name="events_scope_clean">Удалить несуществующие связи в фильтрах</string>
@@ -887,6 +890,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Нет событий для показа</h2>Эта информация может помочь:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Типы событий: %1$s</p>
+        <p>Фильтр: %11$s</p>
         <h4>События контактов:</h4><ul>%2$s
             <li>показывать события из аккаунтов: %3$s</li>
         </ul>

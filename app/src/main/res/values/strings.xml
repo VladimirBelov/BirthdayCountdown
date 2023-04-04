@@ -79,6 +79,8 @@
     <string name="msg_stats_silenced_filtered_prefix">"silenced events found: "</string>
     <string name="msg_stats_xdays_prefix">"days counters: "</string>
     <string name="msg_stats_xdays_filtered_prefix">"days counters found: "</string>
+    <string name="msg_stats_unrecognized_prefix">"unrecognized events: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"unrecognized events found: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
     <string name="msg_color_parse_error">Color parsing error!</string>
@@ -209,6 +211,7 @@
     <string name="events_scope_silenced_dead">Silenced (%1$d, saved %2$d)</string>
     <string name="events_scope_xdays">Days counters (%1$d)</string>
     <string name="events_scope_xdays_dead">Days counters (%1$d, saved %2$d)</string>
+    <string name="events_scope_unrecognized">Unrecognized (%1$d)</string>
     <string name="events_scope_clear">Clear filters</string>
     <string name="events_scope_clean">Clean filters from dead links</string>
 
@@ -886,6 +889,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No events displayed</h2>This information may help:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Event types: %1$s</p>
+        <p>Filter: %11$s</p>
         <h4>Events from contacts:</h4><ul>%2$s
             <li>show events from accounts: %3$s</li>
         </ul>

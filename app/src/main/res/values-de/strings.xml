@@ -49,13 +49,13 @@
     <string name="menu_context_open_url">Weblink öffnen</string>
     <string name="menu_context_share">Ereignis teilen…</string>
     <string name="menu_context_share_as_image">als Bild</string>
-    <string name="menu_context_share_as_text">als Texte</string>
+    <string name="menu_context_share_as_text">als Text</string>
     <string name="menu_context_xDaysEvent_add">Tageszähler hinzufügen…</string>
     <string name="menu_context_xDaysEvent_edit">Tageszähler…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
-    <string name="menu_help_events_files">Lokale Dateiereignisse</string>
+    <string name="menu_help_events_files">Lokale Ereignisse aus Dateien</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
 <!--    <string name="msg_no_access_storage">Kein Zugriff auf externen Speicher</string>-->
@@ -77,8 +77,10 @@
     <string name="msg_stats_hidden_filtered_prefix">"Ausgeblendete Ereignisse gefunden: "</string>
     <string name="msg_stats_silenced_prefix">"Ereignisse ohne Benachrichtigung: "</string>
     <string name="msg_stats_silenced_filtered_prefix">"Ereignisse ohne Benachrichtigung gefunden: "</string>
-    <string name="msg_stats_xdays_prefix">"Tageszählere: "</string>
-    <string name="msg_stats_xdays_filtered_prefix">"Tageszählere gefunden: "</string>
+    <string name="msg_stats_xdays_prefix">"Tageszähler: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"Tageszähler gefunden: "</string>
+    <string name="msg_stats_unrecognized_prefix">"nicht erkannte Ereignisse: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"nicht erkannte Ereignisse gefunden: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
     <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
@@ -207,8 +209,9 @@
     <string name="events_scope_hidden_dead">Ausgeblendet (%1$d, gesichert %2$d)</string>
     <string name="events_scope_silenced">Ohne Benachrichtigung (%1$d)</string>
     <string name="events_scope_silenced_dead">Ohne Benachrichtigung (%1$d, gesichert %2$d)</string>
-    <string name="events_scope_xdays">Tageszählere (%1$d)</string>
-    <string name="events_scope_xdays_dead">Tageszählere (%1$d, gesichert %2$d)</string>
+    <string name="events_scope_xdays">Tageszähler (%1$d)</string>
+    <string name="events_scope_xdays_dead">Tageszähler (%1$d, gesichert %2$d)</string>
+    <string name="events_scope_unrecognized">Nicht erkannt (%1$d)</string>
     <string name="events_scope_clear">Filter entfernen</string>
     <string name="events_scope_clean">Filter von toten Links reinigen</string>
 
@@ -223,15 +226,15 @@
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_label_1_7">Für 1–7 Ereignisse</string>
-    <string name="appwidget_desc_1_7">Erweiterbares horizontales Foto-Widget</string>
+    <string name="appwidget_desc_1_7">Horizontal vergrößerbares Foto-Widget</string>
     <string name="appwidget_label_1">Für 1 Ereignis</string>
-    <string name="appwidget_desc_1">Foto-Widget in alle Richtungen erweiterbar für 1 Ereignis</string>
+    <string name="appwidget_desc_1">Foto-Widget in alle Richtungen vergrößerbar für 1 Ereignis</string>
     <string name="appwidget_label_5">Für 5 Ereignisse</string>
     <string name="appwidget_desc_5">Horizontales Foto-Widget für genau 5 Ereignisse</string>
     <string name="appwidget_label_List">Ereignisliste</string>
-    <string name="appwidget_desc_List">Erweiterbares vertikales Listen-Widget mit Ereignisanzeige-Konstruktor</string>
+    <string name="appwidget_desc_List">Vertikal vergrößerbares Listen-Widget mit Ereignisanzeige-Konstruktor</string>
     <string name="appwidget_label_PhotoList">Liste mit Foto</string>
-    <string name="appwidget_desc_PhotoList">Erweiterbares vertikales Widget mit Foto- und Ereignisdetails</string>
+    <string name="appwidget_desc_PhotoList">Vertikal vergrößerbares Widget mit Foto- und Ereignisdetails</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Name</string>
     <string name="widget_Date">Datum</string>
@@ -248,7 +251,7 @@
     <string name="pref_Theme_title">Farbschema</string>
     <string name="pref_Theme_description">Farbschema der Benutzeroberfläche</string>
     <string name="pref_Icon_title">Anwendungssymbol</string>
-    <string name="pref_Icon_description">Wählen Sie das Anwendungssymbol für den Systemstarter</string>
+    <string name="pref_Icon_description">Wählen Sie das Anwendungssymbol</string>
     <string name="pref_Accounts_title">Konten</string>
     <string name="pref_Accounts_summary">Scannen Sie nur diese Konten auf Ereignisse</string>
     <string name="pref_IconPack_title">Symbolpaket</string>
@@ -301,8 +304,8 @@
     </string-array>
 
     <string name="pref_CustomEvents_title">Ereignisse einrichten</string>
-    <string name="pref_CustomEvents_summary">Ereignisquellen, Typenklassifizierung, Anpassung von Etiketten</string>
-    <string name="pref_CustomEvents_hint">Ereignislabels eingeben (durch Komma)</string>
+    <string name="pref_CustomEvents_summary">Ereignisquellen, Typenklassifizierung, Anpassung von Bezeichnungen</string>
+    <string name="pref_CustomEvents_hint">Bezeichnung der Ereignisse eingeben (durch Komma getrennt)</string>
     <string name="pref_CustomEvent_Caption_hint">Bezeichnung des Ereignisses</string>
 
     <string name="pref_CustomEvents_Sources_title">Ereignisquellen</string>
@@ -311,13 +314,13 @@
     <string name="pref_CustomEvents_Rules_title">Importeinstellungen</string>
     <string name="pref_CustomEvents_Rules_summary">Verwenden Sie diese Einstellung beim Importieren von Ereignissen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Regeln für die Erkennungsregeln für Kontaktnamen aus dem Titel des Kalenderereignisses</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Regeln für die Erkennungsregeln von Kontaktnamen aus dem Titel des Kalenderereignisses</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Namensformat für Kalenderereignisse</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Kontakte in Kalenderereignissen werden in diesem Format aufgezeichnet</string>
-    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Namensformat für Dateiereignisse</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Namensformat für Ereignisse aus Dateien</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Kontakte in Ereignissen aus lokalen Dateien werden in diesem Format aufgezeichnet</string>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
@@ -360,7 +363,7 @@
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
-    <string name="pref_CustomEvents_Custom_Caption_summary">Geben Sie eine Beschriftung für dieses Ereignis ein, um es zu verwenden</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Geben Sie eine Bezeichnung für dieses Ereignis ein, um es zu verwenden</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Kontaktereignisse mit diesen Bezeichnungen werden als dieses Ereignis erkannt</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Verwenden Sie das Jahr</string>
@@ -445,12 +448,12 @@
     </string-array>
 
     <string name="pref_List_AgeFormat_title">Altersformat</string>
-    <string name="pref_List_AgeFormat_summary">Altersanzeigeformat für anstehende Veranstaltungen</string>
+    <string name="pref_List_AgeFormat_summary">Anzeigeformat des Alters für kommende Ereignisse</string>
 
     <string-array name="pref_List_AgeFormat_entries">
-        <item>Beschreibung der Altersnummer (Tage, Monate, Jahre)</item>
+        <item>Angabe des Alters (Tage, Monate, Jahre)</item>
         <item>Ersetzen Sie Tausende durch \"K\" (5K, 10K)</item>
-        <item>Tausende Stellen trennen</item>
+        <item>Tausender Stellen trennen</item>
     </string-array>
 
     <string name="pref_List_Filling_title">Füllung des Hintergrundes</string>
@@ -491,7 +494,7 @@
     <string name="pref_List_CustomCaption_summary">Benutzerdefinierte Beschriftung der Hauptereignisliste (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomCaption_hint">Titel eingeben</string>
 
-    <string name="pref_List_CustomTodayEventCaption_title">Benutzerdefinierter Titel für das heutige Ereignist</string>
+    <string name="pref_List_CustomTodayEventCaption_title">Benutzerdefinierter Titel für das heutige Ereignis</string>
     <string name="pref_List_CustomTodayEventCaption_summary">Benutzerdefinierte Beschriftung für das heutige Ereignis anstelle der \"heute\"-Nachricht (Emojis werden unterstützt 🎂)</string>
     <string name="pref_List_CustomTodayEventCaption_hint">Titel eingeben</string>
 
@@ -499,12 +502,12 @@
     <string name="pref_List_FastScroll_summary">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
 
     <string name="pref_Female_Names_title">Weibliche Namen</string>
-    <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto</string>
+    <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto und vollständige Namensanalyse</string>
     <string name="pref_Female_Names_hint">Geben Sie weibliche Namen ein (durch Komma getrennt)</string>
 
     <string name="pref_Male_Names_title">Männliche Namen</string>
     <string name="pref_Male_Names_description">Zusätzliche männliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto und vollständige Namensanalyse</string>
-    <string name="pref_Male_Names_hint">Geben Sie männliche Namen ein (durch Komma)</string>
+    <string name="pref_Male_Names_hint">Geben Sie männliche Namen ein (durch Komma getrennt)</string>
 
     <string name="pref_List_EventInfo_title">Ereignisdetails</string>
     <string name="pref_List_EventInfo_summary">Was soll unter dem Namen des Kontakts angezeigt werden</string>
@@ -547,7 +550,7 @@
     <string name="pref_List_Color_EventJubilee_summary">Farbe des Jubiläumsalters</string>
 
     <string name="pref_List_Margin_title">Horizontale Ränder</string>
-    <string name="pref_List_Margin_summary">Kompensieren Sie intransparente Smartphone-Bildschirmränder, indem Sie einige Ränder hinzufügen</string>
+    <string name="pref_List_Margin_summary">Kompensieren Sie intransparente Smartphone-Bildschirmränder, indem Sie Ränder hinzufügen</string>
     <string-array name="pref_List_Margin_entries">
         <item>Klein</item>
         <item>Mittel</item>
@@ -574,8 +577,8 @@
 
     <string name="pref_Widgets_EventInfo_None">Keine</string>
     <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
-    <string name="pref_Widgets_EventInfo_Dividers">Ereignisteiler</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig">Config-Taste</string>
+    <string name="pref_Widgets_EventInfo_Dividers">Teiler für Ereignisse</string>
+    <string name="pref_Widgets_EventInfo_ButtonConfig">Einstellungen-Taste</string>
     <string name="pref_Widgets_EventInfo_Photo">Kontaktfoto</string>
     <string name="pref_Widgets_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
     <string name="pref_Widgets_EventInfo_EventCaption">Ereignisdetails</string>
@@ -617,10 +620,10 @@
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo_summary">Was unter dem Foto angezeigt werden auf Foto-Widgets soll</string>
+    <string name="pref_Widgets_BottomInfo_summary">Was auf Foto-Widgets unter dem Foto angezeigt werden soll</string>
 
     <string name="pref_Widgets_BottomInfo2nd_title">Bildunterschrift (obere Reihe)</string>
-    <string name="pref_Widgets_BottomInfo2nd_summary">Was unter dem Foto angezeigt werden auf Foto-Widgets soll</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Was auf Foto-Widgets unter dem Foto angezeigt werden soll</string>
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Nachname Vorname(n)</item>
@@ -749,7 +752,7 @@
         <item>Jedes Ereignis in einer separaten Benachrichtigung</item>
         <item>Bei weniger als 3 Ereignissen -> getrennt, sonst -> allgemein</item>
         <item>Bei weniger als 4 Ereignissen -> getrennt, sonst -> allgemein</item>
-        <item>Die heutigen Ereignisse -> getrennt, andere -> allgemein</item>
+        <item>Die heutigen Ereignisse -> getrennt, sonst -> allgemein</item>
     </string-array>
 
     <string name="pref_Notifications_Days_title">Benachrichtigungsintervall</string>
@@ -763,14 +766,14 @@
         <item>4 Tage vorher</item>
         <item>5 Tage vorher</item>
         <item>6 Tage vorher</item>
-        <item>Eine Woche vorher</item>
+        <item>1 Woche vorher</item>
         <item>8 Tage vorher</item>
         <item>9 Tage vorher</item>
         <item>10 Tage vorher</item>
         <item>11 Tage vorher</item>
         <item>12 Tage vorher</item>
         <item>13 Tage vorher</item>
-        <item>Zwei Wochen vorher</item>
+        <item>2 Wochen vorher</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priorität der Benachrichtigungen</string>
@@ -834,9 +837,9 @@
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_summary">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
     <string name="pref_ContactsAccess_title">Kein Zugriff auf Kontaktereignisse</string>
-    <string name="pref_ContactsAccess_summary">Fordern Sie die Berechtigung für Kontaktereignisse an…</string>
+    <string name="pref_ContactsAccess_summary">Berechtigung für Zugriff auf Kontaktereignisse anfordern…</string>
     <string name="pref_CalendarAccess_title">Kein Zugriff auf den Kalender</string>
-    <string name="pref_CalendarAccess_summary">Berechtigung für Kalenderdaten anfordern…</string>
+    <string name="pref_CalendarAccess_summary">Berechtigung für Zugriff auf Kalender anfordern…</string>
     <string name="pref_InfoMsg_On_title">Informationsmeldungen</string>
     <string name="pref_InfoMsg_On_summary">Zeige Informationsmeldungen über ausgeführte Aktionen oder Hintergrundoperationen in der App</string>
     <string name="pref_Debug_On_title">Debug</string>
@@ -886,6 +889,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Ereignistypen: %1$s</p>
+        <p>Filter: %11$s</p>
         <h4>Kontaktereignisse:</h4><ul>%2$s
             <li>Ereignisse von Konten anzeigen: %3$s</li>
         </ul>
@@ -1024,7 +1028,7 @@
     <string name="xDaysCounter_Dialog_Title">Tageszähler</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Zeiträume:</string>
     <string name="xDaysCounter_Dialog_Repeats_Hint">Anzahl der Tage eingeben</string>
-    <string name="xDaysCounter_Dialog_Repeats_EditHint">Anzahl der Tage, nach denen das Ereignis wiederholt werden soll. Bsp.: 1000, 5000 (durch Komma)</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">Anzahl der Tage, nach denen das Ereignis wiederholt werden soll. z.B.: 1000, 5000 (durch Komma getrennt)</string>
     <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
     <string name="xDaysCounter_Dialog_Times_Caption">Zeiten:</string>
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>

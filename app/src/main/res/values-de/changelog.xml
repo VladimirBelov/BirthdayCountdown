@@ -15,8 +15,9 @@
         <item>Alle Namensvariationen werden für die Suche nach Kontaktnamen verwendet (mit und ohne Nachnamen)</item>
         <item>Möglichkeit hinzugefügt, nicht aufgezeichnete männliche Namen hinzuzufügen (zusätzlich zu weiblichen)</item>
         <item>Anzeige des Alters in der Hauptliste für alle Ereignisse (nicht nur Geburtstag und Todestag) hinzugefügt</item>
-        <item>Möglichkeit hinzugefügt, Wiederholungszeiträume zu definieren (für Ereignisse mit einem gefüllten Jahr)</item>
+        <item>Möglichkeit hinzugefügt, Wiederholungszeiträume zu definieren (für Ereignisse mit ausgefüllter Jahresangabe)</item>
         <item>Altersformateinstellung hinzugefügt (nur Zahlen, Tausenderstellen trennen, 000 durch \"K\" ersetzen)</item>
+        <item>Neue Filter für Tageszähler und nicht erkannte Ereignisse hinzugefügt ( ⋮ -> Filter… )</item>
         <item>Debug- und Informationsmeldungen werden durch verschiedene Schalter aktiviert (Informationsmeldungen sind standardmäßig aktiviert)</item>
         <item>Doppelte Ergebnisse für die Schnellsuche behoben</item>
         <item>Anzeige unvollständiger Namen korrigiert (Namenslisten werden zur Analyse verwendet)</item>
@@ -26,7 +27,7 @@
         <item>Auswahl von Kontaktkonten in den Abschnitt \"Ereignisse einrichten\" verschoben, Unterstützung für die Auswahl aus lokalen Konten und die Möglichkeit, keine Adressbuchereignisse zu verwenden, hinzugefügt</item>
         <item>Unterstützung für Dateien mit mehreren Ereignistypen hinzugefügt</item>
         <item>Unterstützung für Kalender mit mehreren Arten von Ereignissen hinzugefügt</item>
-        <item>Unterstützung für das Format der \"Bithdays\"-Anwendung hinzugefügt (Beschreibung in \"Fragen und Antworten\")</item>
+        <item>Unterstützung für das Format der \"Birthdays\"-Anwendung hinzugefügt (Beschreibung in \"Fragen und Antworten\")</item>
         <item>Anzeige der Anzahl der Ereignisse bei der Auswahl von Konten, Kalendern, Dateien hinzugefügt</item>
         <item>Schnelllinks (Schaltfläche \"?\") zu den entsprechenden \"Fragen und Antworten\"-Abschnitten einiger Einstellungsbildschirme hinzugefügt</item>
         <item>Ereignisimporteinstellungen wurden in eine separate Kategorie unter Ereignisquellen verschoben. Dort können Sie die Namensformate für den Import von Kalender- und Dateiereignissen festlegen</item>
@@ -43,7 +44,7 @@
         <item>#1.7.3</item>
         <item>Neue Elemente zu Listen-Widgets hinzugefügt: Ereignistrenner, Einstellungsschaltfläche, Datumsklammern, Sternzeichen usw.</item>
         <item>Neue Option zum Anzeigen von Benachrichtigungen: Die heutigen Ereignisse werden als separate Benachrichtigungen und alle anderen (für die angegebenen Tage) als zusammenfassende Liste angezeigt</item>
-        <item>Benachrichtigungsfristen auf 14 Tage verlängert (Sie können beliebige Tage wählen)</item>
+        <item>Benachrichtigungsfristen bis auf 14 Tage verlängert</item>
         <item>In den erweiterten Einstellungen der Ereignisliste ist es möglich, benutzerdefinierte Beschriftungen für heutige Ereignisse einzugeben</item>
         <item>Sie können die Berechtigung zum Zugriff auf Kontakte oder Kalender über Einstellungen->Hilfe erteilen</item>
         <item>Optimierungen und Fehlerbehebungen</item>

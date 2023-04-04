@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private int statsHiddenEvents = 0;
     private int statsSilencedEvents = 0;
     private int statsXDaysEvents = 0;
+    private int statsUnrecognizedEvents = 0;
     private boolean triggeredMsgNoEvents = false;
     private TypedArray ta = null;
     DisplayMetrics displayMetrics;
@@ -421,12 +422,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .setIcon(android.R.drawable.ic_menu_info_details);
             }
 
-            if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) { //selectedEvent[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))
+            if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
-                    MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
-                            .setIcon(android.R.drawable.ic_menu_myplaces);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                    if (!selectedEvent[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                        MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
+                                .setIcon(android.R.drawable.ic_menu_myplaces);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                        }
                     }
                 } else {
                     MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_edit))
@@ -865,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        valuesPeriods.setText(valuesPeriods.getText());
+                        valuesPeriods.setText(valuesPeriods.getText().toString());
                     }
                 });
             }
@@ -1401,6 +1404,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventsData.getHiddenEventsCount() > 0
                     || eventsData.getSilencedEventsCount() > 0
                     || eventsData.getXDaysEventsCount() > 0
+                    || statsUnrecognizedEvents > 0
             ));
             menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
 
@@ -1486,6 +1490,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         filterVariants.add(getString(R.string.events_scope_xdays, xDaysEventsCount));
                     }
                     filterValues.add(Constants.pref_Events_Scope_XDays);
+                }
+                if (statsUnrecognizedEvents > 0) {
+                    filterVariants.add(getString(R.string.events_scope_unrecognized, statsUnrecognizedEvents));
+                    filterValues.add(Constants.pref_Events_Scope_Unrecognized);
                 }
 
                 if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
@@ -1957,6 +1965,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsHiddenEvents = 0;
             statsSilencedEvents = 0;
             statsXDaysEvents = 0;
+            statsUnrecognizedEvents = 0;
             int statsVisibleEvents = 0;
             eventsData.statEventsPrevEventsFound = 0;
             final List<String> eventList_toPrepare = new ArrayList<>(eventsData.eventList);
@@ -1972,10 +1981,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                     String eventKey = eventsData.getEventKey(singleEventArray);
 
+                    boolean isUnrecognized = singleEventArray[ContactsEvents.Position_eventIcon].equals(Constants.STRING_0);
+                    boolean skipAdd = false;
+
+                    if (isUnrecognized) statsUnrecognizedEvents++;
+                    if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
+                        if (isUnrecognized) {
+                            dataList.add(event);
+                            skipAdd = true;
+                        }
+                    }
                     if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
                         statsAllEvents++;
+
                         if (hiddenEventsCount == 0 && silencedEventsCount == 0 && xDaysEventsCount == 0) { //Скрытых и без уведомлений нет
-                            dataList.add(event);
+                            if (!skipAdd) dataList.add(event);
                             statsVisibleEvents++;
                         } else {
 
@@ -1992,7 +2012,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
                                     (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
                                     eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
-                                dataList.add(event);
+                                if (!skipAdd) dataList.add(event);
                                 statsVisibleEvents++;
                             }
                         }
@@ -2030,6 +2050,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     setHint(resources.getString(R.string.msg_stats_silenced_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
                 } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays) {
                     setHint(resources.getString(R.string.msg_stats_xdays_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
+                } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
+                    setHint(resources.getString(R.string.msg_stats_unrecognized_prefix) + statsUnrecognizedEvents + Constants.STRING_SPACE);
                 } else {
                     setHint(resources.getString(R.string.msg_stats_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
                 }
@@ -2236,6 +2258,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         @NonNull
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
             View convertedView = convertView;
             ViewHolder holder;
             String[] singleEventArray;
@@ -2246,7 +2269,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
-                if (convertedView == null) {
+                if (convertView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                     convertedView = inflater.inflate(R.layout.entry_main, parent, false);
                     holder = createViewHolderFrom(convertedView);
@@ -2570,7 +2593,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 holder.EventIconImageView.setImageAlpha(255);
 
                 if (eventsData.statEventsPrevEventsFound > 0 && filterNames.isEmpty()) {
-
                     if (position <= eventsData.statEventsPrevEventsFound - 1) {
                         final float alphaPrev = (float) 0.6;
                         holder.NameTextView.setAlpha(alphaPrev);
@@ -2581,13 +2603,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.PhotoImageView.setImageAlpha((int)(255*alphaPrev));
                         holder.EventIconImageView.setImageAlpha((int)(255*alphaPrev));
                     }
-
-                    //if (position == eventsData.preferences_list_prev_events_found - 1)  convertView.setBackground(eventsData.context.getDrawable(R.drawableBack.prev_event_border));
-
                 }
 
-            } catch (InflateException ie) {
-                /**/
             } catch (Exception e) {
                 e.printStackTrace();
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
@@ -2599,7 +2616,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             try {
                 return inflater.inflate(R.layout.entry_main, parent, false);
             } catch (InflateException ie) {
-                return parent;
+                return convertView != null ? convertView : parent;
             }
         }
 
@@ -2618,16 +2635,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             DetailsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_details * 0.1)));
             DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
             CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
-
-            /*if (eventsData.preferences_list_marging > 0) {
-                LinearLayout main = view.findViewById(R.id.entryLayout);
-                *//*if (main != null)
-                    main.setPadding(
-                        main.getPaddingLeft() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
-                        main.getPaddingTop(),
-                        main.getPaddingRight() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
-                        main.getPaddingBottom());*//*
-            }*/
 
             return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, PhotoImageView, CounterTextView, EventIconImageView);
         }
@@ -2718,6 +2725,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays) {
                             setHint(
                                     (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_xdays_prefix) : resources.getString(R.string.msg_stats_xdays_filtered_prefix))
+                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
+                                            .concat(Constants.STRING_SPACE)
+                            );
+                        } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
+                            setHint(
+                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_unrecognized_prefix) : resources.getString(R.string.msg_stats_unrecognized_filtered_prefix))
                                             .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                             .concat(Constants.STRING_SPACE)
                             );
