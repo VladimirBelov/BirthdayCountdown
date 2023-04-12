@@ -55,7 +55,7 @@ public class SuggestionProvider extends ContentProvider{
 
         try {
 
-            if (!eventsData.isUIopen && query != null) {
+            if (!eventsData.isUIOpen && query != null) {
 
                 final String queryString = query.toLowerCase();
 

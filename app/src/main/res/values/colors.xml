@@ -82,9 +82,9 @@
     <color name="light_gray_darker">#FF505050</color>
     <color name="lighter_gray">#FFDDDDDD</color>
 
-    <color name="red_500">#F44336</color>
+    <!--<color name="red_500">#F44336</color>
     <color name="green_500">#4CAF50</color>
-    <color name="yellow_700">#FBC02D</color>
+    <color name="yellow_700">#FBC02D</color>-->
 
     <string-array name="default_color_choice_values" translatable="false">
         <item>@color/dark_red</item>

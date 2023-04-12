@@ -202,6 +202,7 @@
     <string name="button_close">Закрыть</string>
     <string name="button_prefs">Настройки</string>
     <string name="button_saved_preferences">[все сохранённые настройки]</string>
+    <string name="button_off">Выкл</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>

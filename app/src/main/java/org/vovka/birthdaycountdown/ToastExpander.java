@@ -23,9 +23,10 @@ import androidx.annotation.NonNull;
 public class ToastExpander {
 
     public static final String TAG = "ToastExpander";
-
     private static final ToastExpander ourInstance = new ToastExpander();
     FluentSnackbar mFluentSnackbar;
+    private static final int msgTypeDebug = 1;
+    private static final int msgTypeInfo = 2;
 
     @NonNull
     static ToastExpander getInstance() {
@@ -56,7 +57,7 @@ public class ToastExpander {
         t.start();
     }
 
-    private synchronized void showText(@NonNull Context context, @NonNull String msg) {
+    private synchronized void showText(@NonNull Context context, @NonNull String msg, int type) {
 
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
@@ -64,16 +65,18 @@ public class ToastExpander {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             try {
-                if (eventsData.isUIopen && eventsData.coordinator != null) {
+                if (eventsData.isUIOpen && eventsData.coordinator != null) {
 
                     if (mFluentSnackbar == null) {
                         mFluentSnackbar = FluentSnackbar.create(ContactsEvents.getInstance().coordinator);
                     }
 
                     @ColorInt int colorBack = 0;
+                    @ColorInt int colorAction = 0;
                     try {
                         TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
                         colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
+                        colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
                     } catch (Resources.NotFoundException e) { /**/ }
 
                     mFluentSnackbar
@@ -81,6 +84,18 @@ public class ToastExpander {
                             .maxLines(5)
                             .backgroundColor(colorBack)
                             .important()
+                            .actionText(context.getText(R.string.button_off).toString())
+                            .actionTextColor(colorAction)
+                            .action(v -> {
+                                if (type == msgTypeDebug) {
+                                    eventsData.setDebugMsg(false);
+                                    mFluentSnackbar.removeAllMessagesByType(type);
+                                } else if (type == msgTypeInfo) {
+                                    eventsData.setInfoMsg(false);
+                                    mFluentSnackbar.removeAllMessagesByType(type);
+                                }
+                            })
+                            .type(type)
                             .show();
                 } else {
                     new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
@@ -94,11 +109,11 @@ public class ToastExpander {
     }
 
     static public void showInfoMsg(@NonNull Context context, @NonNull String msg) {
-        if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg);
+        if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg.trim(), msgTypeInfo);
     }
 
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
-        if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg);
+        if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg.trim(), msgTypeDebug);
     }
 
 }

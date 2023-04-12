@@ -12,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DateReceiver extends BroadcastReceiver {
 
@@ -47,7 +46,7 @@ public class DateReceiver extends BroadcastReceiver {
                 //Посылаем сообщения на обновление виджетов
                 eventsData.updateWidgets(0, log);
 
-                if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
+                if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);

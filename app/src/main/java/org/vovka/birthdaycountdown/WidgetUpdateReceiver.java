@@ -39,7 +39,7 @@ public class WidgetUpdateReceiver extends BroadcastReceiver {
             //Посылаем сообщения на обновление виджетов
             eventsData.updateWidgets(0, log);
 
-            ToastExpander.showInfoMsg(context, log.toString());
+            if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

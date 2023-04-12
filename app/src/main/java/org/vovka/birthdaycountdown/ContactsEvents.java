@@ -362,7 +362,7 @@ class ContactsEvents {
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     float DisplayMetrics_density;
-    boolean isUIopen = false;
+    boolean isUIOpen = false;
     float dimen_List_details;
     float dimen_List_name;
     float dimen_list_date;
@@ -5978,7 +5978,7 @@ class ContactsEvents {
 
         try {
 
-            final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIopen;
+            final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIOpen;
 
             if (isNotifyInterface && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
 
@@ -6932,8 +6932,7 @@ class ContactsEvents {
                 try {
                     final String activityName = BuildConfig.APPLICATION_ID + "." + iconID;
                     if (preferences_icon.equals(iconID)) {
-                        if (preferences_debug_on)
-                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));
                         pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                         atLeastOneActive = true;
                     } else {
@@ -7068,5 +7067,45 @@ class ContactsEvents {
         if (text == null) return Constants.STRING_EMPTY;
         if (sep == null) return text;
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
+    }
+
+    public void setDebugMsg(boolean state) {
+
+        try {
+
+            preferences_debug_on = state;
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (preferences != null) {
+                preferences
+                        .edit()
+                        .putBoolean(resources.getString(R.string.pref_Help_Debug_On_key), preferences_debug_on)
+                        .apply();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+
+    }
+
+    public void setInfoMsg(boolean state) {
+
+        try {
+
+            preferences_info_on = state;
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (preferences != null) {
+                preferences
+                        .edit()
+                        .putBoolean(resources.getString(R.string.pref_Help_InfoMsg_On_key), preferences_info_on)
+                        .apply();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+
     }
 }

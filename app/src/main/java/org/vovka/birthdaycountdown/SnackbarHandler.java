@@ -58,7 +58,16 @@ final class SnackbarHandler extends Handler {
         removeLowPriorityMessages();
 
         if (!mQueue.isEmpty()) {
-            show(mQueue.peek());
+
+            final FluentSnackbar.Builder peek = mQueue.peek();
+            if (peek != null) {
+                if (peek.isImportant()) {
+                    show(peek);
+                } else {
+                    mQueue.poll();
+                }
+            }
+
         }
     }
 
@@ -73,6 +82,20 @@ final class SnackbarHandler extends Handler {
         while (hasItemsToRemove()) {
             mQueue.poll();
         }
+    }
+
+    public void setNotImportantByType(int type) {
+        //if (!mQueue.isEmpty()) removeMessages(type);
+
+        for (FluentSnackbar.Builder msg: mQueue) {
+            if (msg.getType() == type) {
+                msg.important(false);
+            }
+        }
+/*
+        while (!mQueue.isEmpty()) {
+            mQueue.poll();
+        }*/
     }
 
     private boolean hasItemsToRemove() {

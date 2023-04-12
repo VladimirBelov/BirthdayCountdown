@@ -52,11 +52,16 @@ public final class FluentSnackbar {
         mSnackbarHandler.sendMessage(message);
     }
 
+    public void removeAllMessagesByType(int type) {
+        mSnackbarHandler.setNotImportantByType(type);
+    }
+
     void showSnackbar(Builder builder) {
         @SuppressLint("ShowToast") final Snackbar snackbar = Snackbar.make(mView, builder.getText(), builder.getDuration());
         snackbar.addCallback(builder.mSnackbarCallbackListener);
         View view = snackbar.getView();
         view.setBackgroundColor(builder.getBackgroundColor());
+        view.setPadding(0, 0, 0, 0);
 
         TextView textView = view.findViewById(R.id.snackbar_text);
         textView.setMaxLines(builder.getMaxLines());
@@ -96,29 +101,21 @@ public final class FluentSnackbar {
 
     public class Builder {
         private final CharSequence mText;
-
         private int mMaxLines;
-
         @ColorInt
         private int mTextColor;
-
         @ColorInt
         private int mBackgroundColor;
-
         private boolean mIsImportant;
-
         private int mDuration;
-
         private CharSequence mActionText;
-
         private View.OnClickListener mActionListener;
-
         private Snackbar.Callback mSnackbarCallbackListener;
-
         @ColorInt
         private int mActionTextColor;
         private ColorStateList mActionColors;
         private boolean mHasActionTextColor;
+        private int mType;
 
         private Builder(CharSequence text) {
             mText = text;
@@ -127,7 +124,8 @@ public final class FluentSnackbar {
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.theme_grey_primary);
             mIsImportant = false;
             mDuration = Snackbar.LENGTH_LONG;
-            mActionText = "Action"; //mView.getContext().getString(R.string.default_action);
+            mActionText = "Action";
+            mType = 0;
         }
 
         public Builder maxLines(int maxLines) {
@@ -145,7 +143,7 @@ public final class FluentSnackbar {
             return this;
         }
 
-        public Builder successBackgroundColor() {
+        /*public Builder successBackgroundColor() {
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.green_500);
             return this;
         }
@@ -163,7 +161,7 @@ public final class FluentSnackbar {
         public Builder neutralBackgroundColor() {
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.theme_grey_primary);
             return this;
-        }
+        }*/
 
         public Builder backgroundColorRes(@ColorRes int color) {
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), color);
@@ -224,6 +222,11 @@ public final class FluentSnackbar {
             return this;
         }
 
+        public Builder type(int type) {
+            mType = type;
+            return this;
+        }
+
         public void show() {
             putToMessageQueue(this);
         }
@@ -280,5 +283,7 @@ public final class FluentSnackbar {
         boolean hasActionTextColors() {
             return mActionColors != null;
         }
+
+        public int getType() { return mType; }
     }
 }

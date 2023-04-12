@@ -12,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -34,7 +33,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                 eventsData.initNotifications(log);
                 eventsData.initWidgetUpdate(log);
 
-                if (eventsData.preferences_debug_on && log.length() > 0) Toast.makeText(context, log.toString(), Toast.LENGTH_LONG).show();
+                if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());
 
             }
 

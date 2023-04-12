@@ -1169,8 +1169,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             editor.putString(getString(R.string.pref_VersionCode_LastRun), Integer.toString(BuildConfig.VERSION_CODE));
             editor.apply();
 
-            if (eventsData.preferences_debug_on)
-                ToastExpander.showInfoMsg(this, "Set last run version: " + BuildConfig.VERSION_NAME);
+            ToastExpander.showDebugMsg(this, "Set last run version: " + BuildConfig.VERSION_NAME);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1215,8 +1214,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             eventsData.initWidgetUpdate(log);
 
-            if (log.length() > 0)
-                ToastExpander.showInfoMsg(this, log.deleteCharAt(log.length() - 1).toString());
+            if (log.length() > 0) ToastExpander.showDebugMsg(this, log.toString());
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -1239,7 +1238,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             super.onStart();
             if (eventsData != null) {
-                eventsData.isUIopen = true;
+                eventsData.isUIOpen = true;
                 eventsData.coordinator = this.findViewById(R.id.coordinator);
             }
 
@@ -1305,7 +1304,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onStop() {
         if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
         if (eventsData != null) {
-            eventsData.isUIopen = false;
+            eventsData.isUIOpen = false;
             eventsData.coordinator = null;
         }
         super.onStop();
@@ -1909,7 +1908,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //Тему не меняли, просто обновляем данные
             if (this.dataList.isEmpty() || eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
-                updateList(true, !eventsData.isUIopen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
                 //Уведомления
                 initNotifications();
@@ -2482,6 +2481,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     holder.PhotoImageView.setVisibility(View.GONE);
                 }
 
+                //Годовщина
                 if (person.Age > -1 && person.Age % 10 == 0) {
                     holder.CounterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);
                 } else {
