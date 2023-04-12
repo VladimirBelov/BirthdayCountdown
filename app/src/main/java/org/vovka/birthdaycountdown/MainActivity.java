@@ -1307,6 +1307,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.isUIOpen = false;
             eventsData.coordinator = null;
         }
+        ToastExpander.getInstance().dismissSnackBar();
         super.onStop();
     }
 

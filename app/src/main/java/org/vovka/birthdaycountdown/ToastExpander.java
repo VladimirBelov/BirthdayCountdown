@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ToastExpander {
 
     public static final String TAG = "ToastExpander";
     private static final ToastExpander ourInstance = new ToastExpander();
+    @Nullable
     FluentSnackbar mFluentSnackbar;
     private static final int msgTypeDebug = 1;
     private static final int msgTypeInfo = 2;
@@ -114,6 +116,10 @@ public class ToastExpander {
 
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
         if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg.trim(), msgTypeDebug);
+    }
+
+    void dismissSnackBar() {
+        if (mFluentSnackbar != null) mFluentSnackbar = null;
     }
 
 }
