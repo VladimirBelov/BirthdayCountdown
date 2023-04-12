@@ -7036,21 +7036,26 @@ class ContactsEvents {
         try {
 
             String result = strAge;
-
-            if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(Constants.STRING_000)) {
-                result = result.replace(Constants.STRING_000, "K");
+            final String replacementXK = Constants.STRING_000 + Constants.STRING_SPACE;
+            if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(replacementXK)) {
+                result = result.replace(replacementXK, "K ");
             } else if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_SeparateThousands))) {
-                //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
-                DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-                symbols.setGroupingSeparator('\u00a0');
-                formatter.setDecimalFormatSymbols(symbols);
-                int indSpace = result.lastIndexOf(Constants.STRING_SPACE);
-                String postfix = result.substring(indSpace);
-                result = formatter.format(Integer.parseInt(result.substring(0, indSpace))).concat(postfix);
+                int indFirstSpace = result.indexOf(Constants.STRING_SPACE);
+                int indLastSpace = result.lastIndexOf(Constants.STRING_SPACE);
+
+                if (indFirstSpace > -1 && indFirstSpace == indLastSpace) {
+                    //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                    symbols.setGroupingSeparator('\u00a0');
+                    formatter.setDecimalFormatSymbols(symbols);
+
+                    String postfix = result.substring(indLastSpace);
+                    result = formatter.format(Integer.parseInt(result.substring(0, indLastSpace))).concat(postfix);
+                }
             }
             if (!preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_AddPostfix))) {
-                result = result.substring(0, result.lastIndexOf(Constants.STRING_SPACE));
+                result = result.substring(0, result.indexOf(Constants.STRING_SPACE));
             }
 
             return result;
