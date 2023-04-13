@@ -917,9 +917,9 @@ class ContactsEvents {
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
-            preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), false);
-            preferences_info_on = preferences.getBoolean(context.getString(R.string.pref_Help_InfoMsg_On_key), true);
-            preferences_extrafun = preferences.getBoolean(context.getString(R.string.pref_Help_ExtraFun_On_key), false);
+            preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), resources.getBoolean(R.bool.pref_Help_Debug_On_default));
+            preferences_info_on = preferences.getBoolean(context.getString(R.string.pref_Help_InfoMsg_On_key), resources.getBoolean(R.bool.pref_Help_InfoMsg_On_default));
+            preferences_extrafun = preferences.getBoolean(context.getString(R.string.pref_Help_ExtraFun_On_key), resources.getBoolean(R.bool.pref_Help_ExtraFun_On_default));
             preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
@@ -3896,7 +3896,11 @@ class ContactsEvents {
                                                                     storedDate_Date = sdf_india_no_year.parse(storedDate);
                                                                     storedDate_isYear = false;
                                                                 } catch (ParseException e9) {
-                                                                    //Не получилось распознать
+                                                                    try {
+                                                                        storedDate_Date = sdf_DDMMYYYY.parse(storedDate);
+                                                                    } catch (ParseException e10) {
+                                                                        //Не получилось распознать
+                                                                    }
                                                                 }
                                                             }
                                                         }

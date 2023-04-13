@@ -58,7 +58,8 @@ android {
     }
 
     compileSdkVersion 33
-    buildToolsVersion '34.0.0 rc2'
+    buildToolsVersion '34.0.0 rc3' //https://developer.android.com/tools/releases/build-tools
+
     //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
     def versionPropsFile = rootProject.file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -77,8 +78,7 @@ android {
             minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
             //https://stackoverflow.com/questions/26694108/what-is-the-difference-between-compilesdkversion-and-targetsdkversion
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
-            targetSdkVersion 33
-            //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+            targetSdkVersion 33 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
             versionName "1.7.6"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
@@ -150,5 +150,5 @@ dependencies {
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation 'androidx.core:core:1.10.0' //https://developer.android.com/jetpack/androidx/releases/core
-    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation 'androidx.core:core-splashscreen:1.0.0' //https://developer.android.com/reference/androidx/core/splashscreen/SplashScreen
 }

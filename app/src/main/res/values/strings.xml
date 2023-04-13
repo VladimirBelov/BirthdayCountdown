@@ -1661,9 +1661,16 @@
     </string-array>
 
     <string name="pref_Help_key" translatable="false">Help</string>
+
     <string name="pref_Help_InfoMsg_On_key" translatable="false">InfoMsg</string>
+    <bool name="pref_Help_InfoMsg_On_default" translatable="false">false</bool>
+
     <string name="pref_Help_Debug_On_key" translatable="false">Debug</string>
+    <bool name="pref_Help_Debug_On_default" translatable="false">false</bool>
+
     <string name="pref_Help_ExtraFun_On_key" translatable="false">ExtraFun</string>
+    <bool name="pref_Help_ExtraFun_On_default" translatable="false">false</bool>
+
     <string name="pref_Help_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
     <string name="pref_Help_ContactsAccess_key" translatable="false">ContactsAccess</string>
     <string name="pref_Help_CalendarAccess_key" translatable="false">CalendarAccess</string>
