@@ -110,12 +110,14 @@ public class ColorPreference extends Preference {
     protected void onAttachedToActivity() {
         super.onAttachedToActivity();
 
-        Activity activity = (Activity) getContext();
-        ColorDialogFragment fragment = (ColorDialogFragment) activity
-                .getFragmentManager().findFragmentByTag(getFragmentTag());
-        if (fragment != null) {
-            // re-bind preference to fragment
-            fragment.setPreference(this);
+        if (getContext() instanceof Activity) {
+            Activity activity = (Activity) getContext();
+            ColorDialogFragment fragment = (ColorDialogFragment) activity
+                    .getFragmentManager().findFragmentByTag(getFragmentTag());
+            if (fragment != null) {
+                // re-bind preference to fragment
+                fragment.setPreference(this);
+            }
         }
     }
 
