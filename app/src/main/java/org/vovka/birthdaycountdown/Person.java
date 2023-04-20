@@ -18,11 +18,11 @@ class Person {
     private static final String TAG = "Person";
     private String LastName;
 
-    public String getFirstName() {
+    String getFirstName() {
         return FirstName;
     }
 
-    public String getSecondName() {
+    String getSecondName() {
         return SecondName;
     }
 
@@ -75,7 +75,7 @@ class Person {
         }
     }
 
-    public static String getAltName(@NonNull String fullName, int formatName, @NonNull Context context) {
+    static String getAltName(@NonNull String fullName, int formatName, @NonNull Context context) {
 
         try{
 
@@ -88,10 +88,9 @@ class Person {
                 if (Integer.toString(formatName).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast))) {
                     return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
                 } else {
-                    final String fullNameAlt = fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
-                    if (spaceFirst != spaceLast) { //Имя из 3+ слов
-                        return fullNameAlt;
-                    } else { //Имя из двух слов
+                    //if (spaceFirst != spaceLast) { //Имя из 3+ слов
+                        return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
+                    /*} else { //Имя из двух слов
                         final ContactsEvents contactsEvents = ContactsEvents.getInstance();
                         final String normalizedFirstName = ContactsEvents.normalizeName(fullName.substring(0, spaceFirst));
                         if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()
@@ -100,7 +99,7 @@ class Person {
                         } else {
                             return fullNameAlt;
                         }
-                    }
+                    }*/
                 }
 
             }
@@ -112,7 +111,8 @@ class Person {
         }
     }
 
-    public static String getShortName(@NonNull String fullName, @NonNull Context context) {
+    @NonNull
+    static String getShortName(@NonNull String fullName, @NonNull Context context) {
 
         try{
 

@@ -166,6 +166,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     eventsData.getPreferences();
                     //Toast.makeText(this, eventsData.preferences_notifications_ringtone, Toast.LENGTH_LONG).show();
+                    //todo: проверить для 13+
                     if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
                             eventsData.checkNoStorageAccess()) {
 

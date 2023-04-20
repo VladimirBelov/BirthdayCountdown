@@ -85,7 +85,7 @@
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
     <string name="msg_date_parse_error">"Помилка розпізнавання дати: "</string>
-    <string name="msg_event_parse_error">"Помилка розпізнавання події: "</string>
+    <string name="msg_event_parse_error">"Помилка розпізнавання події: '%1$s'"</string>
     <string name="msg_type_parse_error">"Тип події не розпізнано: '%1$s' за '%2$s'"</string>
     <string name="msg_jump_to_event_error">Подія не знайдено! Увімкніть більше типів подій у налаштуваннях програми</string>
     <string name="msg_errors_total">"Усього помилок: "</string>

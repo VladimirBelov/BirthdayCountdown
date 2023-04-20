@@ -85,7 +85,7 @@
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
     <string name="msg_date_parse_error">"Ошибка распознавания даты: "</string>
-    <string name="msg_event_parse_error">"Ошибка распознавания события: "</string>
+    <string name="msg_event_parse_error">"Ошибка распознавания события: '%1$s'"</string>
     <string name="msg_type_parse_error">"Тип события не определён: '%1$s' для '%2$s'"</string>
     <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
     <string name="msg_errors_total">"Всего ошибок: "</string>

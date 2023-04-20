@@ -484,7 +484,7 @@ class ContactsEvents {
 
     }
 
-    public static boolean contains(final int[] arr, final int key) {
+    static boolean contains(final int[] arr, final int key) {
         for (final int i : arr) {
             if (i == key) return true;
         }
@@ -552,7 +552,7 @@ class ContactsEvents {
 
     }
 
-    public static String toARGBString(int color) {
+    static String toARGBString(int color) {
         // format: #AARRGGBB
         String alpha = Integer.toHexString(Color.alpha(color));
         String red = Integer.toHexString(Color.red(color));
@@ -613,7 +613,7 @@ class ContactsEvents {
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return method name
      */
-    public static String getMethodName(final int depth) {
+    static String getMethodName(final int depth) {
         StackTraceElement[] ste = null;
         try {
             ste = Thread.currentThread().getStackTrace();
@@ -633,7 +633,7 @@ class ContactsEvents {
         return isSamsung() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
-    public Context getContext() {
+    Context getContext() {
         return context;
     }
 
@@ -664,7 +664,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    public Resources getResources() {
+    Resources getResources() {
         if (this.resources == null) this.resources = context.getResources();
         return this.resources;
     }
@@ -1821,47 +1821,58 @@ class ContactsEvents {
 
             for (String eventRow : eventsArray) {
 
-                String eventLine = eventRow;
-                while (eventLine.contains(Constants.STRING_COMMA_SPACE)) {
-                    eventLine = eventLine.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA);
-                }
-                if (eventLine.isEmpty()) continue;
+                String eventLine = eventRow.trim();
+                if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
 
                 String eventDate = Constants.STRING_EMPTY;
                 @Nullable Date dateEvent = null;
                 String eventNewDate = null;
-                String eventLabel = null;
+                String eventLabel = Constants.STRING_EMPTY;
                 boolean isEndless = true;
                 boolean isAD = true;
 
-                int indexDateEnd = eventLine.indexOf(Constants.STRING_SPACE);
+                int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
                 boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
                         && eventLine.endsWith(Constants.STRING_BDP_EOL);
 
-                //BirthdayPro, DarkBirthday: <Дата без пробелов>[,флаги] название праздника или ФИО [(должность)]
-                if (eventLine.charAt(0) != '#' && indexDateEnd > -1 && !isBirthdaysPlusEvent) {
+                //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги] название праздника или ФИО [(должность)]
+                if (!isBirthdaysPlusEvent) {
 
-                    eventDate = eventLine.substring(0, indexDateEnd);
+                    if (indexFirstSpace > -1) {
 
-                    //Флаги события
-                    final int indexOfComma = eventDate.indexOf(Constants.STRING_COMMA);
-                    if (indexOfComma > -1) {
-                        String flags = eventDate.substring(indexOfComma + 1);
-                        if (flags.contains(Constants.STRING_1)) {
-                            isEndless = false;
-                            flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                        final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+                        if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
+
+                            if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
+                                eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
+                                indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                                if (indexFirstSpace == -1) continue;
+                            }
+
+                            eventDate = eventLine.substring(0, indexComma);
+                            String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+
+                            if (!flags.isEmpty()) {
+                                if (flags.contains(Constants.STRING_1)) {
+                                    isEndless = false;
+                                    flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                                }
+                                if (flags.contains(Constants.STRING_BC)) {
+                                    isAD = false;
+                                    flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
+                                }
+                                eventLabel = flags;
+                            }
+
+                        } else {
+
+                            eventDate = eventLine.substring(0, indexFirstSpace);
+
                         }
-                        if (flags.contains(Constants.STRING_BC)) {
-                            isAD = false;
-                            flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
-                        }
-
-                        eventDate = eventDate.substring(0, indexOfComma);
-                        eventLabel = flags;
                     }
 
                 //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
-                } else if (isBirthdaysPlusEvent) {
+                } else {
 
                     final String[] eventBDPdetails = eventLine.split(Constants.STRING_BDP_DIV, -1);
 
@@ -1877,7 +1888,7 @@ class ContactsEvents {
                     }
                 }
 
-                if (eventDate.isEmpty() || (needEventLabel & TextUtils.isEmpty(eventLabel))) continue;
+                if (eventDate.isEmpty() || (needEventLabel & eventLabel.isEmpty())) continue;
 
                 int indexDateNoYear = isBirthdaysPlusEvent ? eventDate.indexOf(Constants.STRING_BDP_NO_YEAR) : eventDate.indexOf(Constants.STRING_0000);
                 if (indexDateNoYear == -1) { //С годом
@@ -2740,6 +2751,7 @@ class ContactsEvents {
             for (String file : fileList) {
 
                 String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (fileDetails.length < 2) continue;
                 Uri uri = null;
                 String[] eventsArray = null;
                 try {
@@ -2756,19 +2768,13 @@ class ContactsEvents {
                 for (String eventRow : eventsArray) {
 
                     String eventLine = eventRow.trim();
-                    while (eventLine.contains(Constants.STRING_COMMA_SPACE)) {
-                        eventLine = eventLine.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA);
-                    }
-                    if (eventLine.isEmpty()) continue;
-                    if (eventLine.startsWith("#")) continue;
-                    if (eventLine.startsWith("//")) continue;
+                    if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
 
                     userData.clear();
 
                     String eventLabel_forSearch = Constants.STRING_EMPTY;
                     String eventTitle = Constants.STRING_EMPTY;
                     String eventDate = Constants.STRING_EMPTY;
-                    //String eventLabel = Constants.STRING_EMPTY;
                     boolean useEventYear = true;
                     @Nullable Date dateEvent = null;
                     String eventNewDate;
@@ -2777,38 +2783,56 @@ class ContactsEvents {
                     boolean isEndless = true;
                     boolean isAD = true;
 
-                    int indexDateEnd = eventLine.indexOf(Constants.STRING_SPACE);
+                    int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
                     boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
                             && eventLine.endsWith(Constants.STRING_BDP_EOL);
 
-                    //BirthdayPro, DarkBirthday: <Дата без пробелов>[,флаги] название праздника или ФИО [(должность)]
-                    if (indexDateEnd > -1 && !isBirthdaysPlusEvent) {
+                    //todo: сделать поддержку дат до 1900 http://rsdn.org/forum/java/981164.all
+                    //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги] название праздника или ФИО [(должность)]
+                    if (!isBirthdaysPlusEvent) {
 
-                        eventTitle = eventLine.substring(indexDateEnd + 1).trim();
-                        eventDate = eventLine.substring(0, indexDateEnd);
-                        //eventLabel = Constants.STRING_EMPTY;
-                        //todo: сделать поддержку дат до 1900 http://rsdn.org/forum/java/981164.all
+                        if (indexFirstSpace > -1) {
 
-                        //Флаги события
-                        final int indexOfComma = eventDate.indexOf(Constants.STRING_COMMA);
-                        if (indexOfComma > -1) {
-                            String flags = eventDate.substring(indexOfComma + 1);
-                            if (flags.contains(Constants.STRING_1)) {
-                                isEndless = false;
-                                flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                            final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+                            if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
+
+                                if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
+                                    eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
+                                    indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                                    if (indexFirstSpace == -1) {
+                                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
+                                        continue;
+                                    }
+                                }
+
+                                eventDate = eventLine.substring(0, indexComma);
+                                String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                                eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
+                                if (!flags.isEmpty()) {
+                                    if (flags.contains(Constants.STRING_1)) {
+                                        isEndless = false;
+                                        flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                                    }
+                                    if (flags.contains(Constants.STRING_BC)) {
+                                        isAD = false;
+                                        flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
+                                    }
+                                    if (eventTypeToSearch.equals(Constants.Type_MultiEvent)) {
+                                        eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
+                                    }
+                                }
+
+                            } else {
+
+                                eventDate = eventLine.substring(0, indexFirstSpace);
+                                eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
                             }
-                            if (flags.contains(Constants.STRING_BC)) {
-                                isAD = false;
-                                flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
-                            }
-                            if (!flags.isEmpty() && eventTypeToSearch.equals(Constants.Type_MultiEvent)) {
-                                eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
-                            }
-                            eventDate = eventDate.substring(0, indexOfComma);
                         }
 
-                    //Birthdays Plus: ❙ДДДД-ММ-ДД❙ИОФ❙тип (Birthday, Anniversary, Custom)❙наименование события или null❚
-                    } else if (isBirthdaysPlusEvent) {
+                        //Birthdays Plus: ❙ДДДД-ММ-ДД❙ИОФ❙тип (Birthday, Anniversary, Custom)❙наименование события или null❚
+                    } else {
 
                         final String[] eventBDPdetails = eventLine.split(Constants.STRING_BDP_DIV, -1);
 
@@ -2827,11 +2851,7 @@ class ContactsEvents {
                     }
 
                     if (eventDate.isEmpty()) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(resources.getString(R.string.msg_event_parse_error)).append(eventLine);
-
-                        Log.i(TAG, sb.toString());
-                        ToastExpander.showInfoMsg(context, sb.toString());
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
                         continue;
                     }
 
@@ -2902,7 +2922,10 @@ class ContactsEvents {
                         if (dateEvent != null && now.after(getCalendarFromDate(dateEvent)))
                             dateEvent = addYear(dateEvent, 1);
                     }
-                    if (dateEvent == null || event == null) continue;
+                    if (dateEvent == null || event == null) {
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
+                        continue;
+                    }
 
                     eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE + (useEventYear ? isAD ? sdf_java.format(dateEvent) : sdf_java_G.format(dateEvent) : sdf_java_no_year.format(dateEvent));
 
@@ -3262,7 +3285,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    public String readFileToString(Uri uri, String delimeter) {
+    String readFileToString(Uri uri, String delimeter) {
 
         StringBuilder sb = new StringBuilder();
         String line;
@@ -3591,7 +3614,7 @@ class ContactsEvents {
         return resultMap;
     }
 
-    @NonNull
+    /*@NonNull
     String getContactFullNameShort(@NonNull Long contactId) {
 
         try {
@@ -3629,7 +3652,7 @@ class ContactsEvents {
             return Constants.STRING_EMPTY;
         }
 
-    }
+    }*/
 
     @NonNull
     String getContactPhone(@NonNull Long contactId) {
@@ -4635,8 +4658,8 @@ class ContactsEvents {
             StringBuilder textBig;
             if (listNotify.isEmpty() || //Тестовое уведомление
                     preferences_notifications_type == 0 || //Одно общее уведомление
-                    listNotify.size() >= 3 && preferences_notifications_type == 2 || //Если собыий меньше 3 -> отдельные, иначе - общее
-                    listNotify.size() >= 4 && preferences_notifications_type == 3 || //Если собыий меньше 4 -> отдельные, иначе - общее
+                    listNotify.size() >= 3 && preferences_notifications_type == 2 || //Если событий меньше 3 -> отдельные, иначе - общее
+                    listNotify.size() >= 4 && preferences_notifications_type == 3 || //Если событий меньше 4 -> отдельные, иначе - общее
                     preferences_notifications_type == 4 //За сегодня -> отдельные, остальные -> общее
             ) {
 
@@ -4700,8 +4723,8 @@ class ContactsEvents {
             }
 
             if (!listNotify.isEmpty() && (preferences_notifications_type == 1 || //Несколько отдельных уведомлений
-                    listNotify.size() < 3 && preferences_notifications_type == 2 || //Если собыий меньше 3 -> отдельные
-                    listNotify.size() < 4 && preferences_notifications_type == 3 || //Если собыий меньше 4 -> отдельные
+                    listNotify.size() < 3 && preferences_notifications_type == 2 || //Если событий меньше 3 -> отдельные
+                    listNotify.size() < 4 && preferences_notifications_type == 3 || //Если событий меньше 4 -> отдельные
                     preferences_notifications_type == 4 //За сегодня -> отдельные
             )) {
 
@@ -5623,7 +5646,7 @@ class ContactsEvents {
         this.preferences_notifications_alarm_minute = alarmMinute;
     }
 
-    public int getPreferences_IconPackNumber() {
+    int getPreferences_IconPackNumber() {
         return preferences_IconPackNumber;
     }
 
@@ -5722,7 +5745,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    String getDateFormated(String dateIn, FormatDate format) {
+    String getDateFormatted(String dateIn, FormatDate format) {
 
         String resultString = Constants.STRING_EMPTY;
         if (TextUtils.isEmpty(dateIn)) return resultString;
@@ -6596,7 +6619,7 @@ class ContactsEvents {
 
     @NonNull
     //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
-    public String getPath(Context context, Uri uri) {
+    String getPath(Context context, Uri uri) {
 
         try {
 
@@ -6678,7 +6701,7 @@ class ContactsEvents {
         return Constants.FilePrefix_GooglePhotos.equals(uri.getAuthority());
     }
 
-    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
 
         try {
 
@@ -6818,7 +6841,7 @@ class ContactsEvents {
         }
     }
 
-    public String getCurrentParams() {
+    String getCurrentParams() {
 
         try {
 
@@ -6997,7 +7020,7 @@ class ContactsEvents {
         }
     }
 
-    public boolean isContextHelpAvailable() {
+    boolean isContextHelpAvailable() {
 
         return !Locale.getDefault().getLanguage().equals(resources.getString(R.string.pref_Language_uk));
 
@@ -7072,17 +7095,18 @@ class ContactsEvents {
 
     }
 
-    @NonNull static public String substringBefore(String text, String sep) {
+    @NonNull
+    static String substringBefore(String text, String sep) {
         if (text == null) return Constants.STRING_EMPTY;
         if (sep == null) return text;
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
     }
 
-    public void setDebugMsg(boolean state) {
+    void disableDebugMsg() {
 
         try {
 
-            preferences_debug_on = state;
+            preferences_debug_on = false;
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             if (preferences != null) {
                 preferences
@@ -7098,11 +7122,11 @@ class ContactsEvents {
 
     }
 
-    public void setInfoMsg(boolean state) {
+    void disableInfoMsg() {
 
         try {
 
-            preferences_info_on = state;
+            preferences_info_on = false;
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             if (preferences != null) {
                 preferences

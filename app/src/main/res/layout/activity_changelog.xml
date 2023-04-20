@@ -159,7 +159,7 @@
 			android:layout_marginBottom="10dp"
 			android:layout_toStartOf="@+id/centerPoint"
 			android:background="?attr/backgroundColor"
-			android:drawableStart="@drawable/ic_huawei_appgalery"
+			android:drawableStart="@drawable/ic_huawei_appgallery"
 			android:paddingStart="10dp"
 			android:paddingEnd="10dp"
 			android:maxLines="1"

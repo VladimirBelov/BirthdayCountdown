@@ -90,10 +90,10 @@ public class ToastExpander {
                             .actionTextColor(colorAction)
                             .action(v -> {
                                 if (type == msgTypeDebug) {
-                                    eventsData.setDebugMsg(false);
+                                    eventsData.disableDebugMsg();
                                     mFluentSnackbar.removeAllMessagesByType(type);
                                 } else if (type == msgTypeInfo) {
-                                    eventsData.setInfoMsg(false);
+                                    eventsData.disableInfoMsg();
                                     mFluentSnackbar.removeAllMessagesByType(type);
                                 }
                             })

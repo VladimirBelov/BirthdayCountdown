@@ -182,25 +182,25 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithoutYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithoutYear);
                         sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                         sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithoutYear);
                         sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDate], ContactsEvents.FormatDate.WithYear);
                         sb.append(surround(dateColor != null ? String.format(Constants.HTML_COLOR, dateColor, eventDay) : eventDay, widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventShort_ID))) {

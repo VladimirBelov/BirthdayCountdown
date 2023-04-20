@@ -926,7 +926,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 StringBuilder sb = new StringBuilder();
                                 for (ContactsEvents.Event e: events) {
                                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
-                                    sb.append(eventsData.getDateFormated(eventsData.sdf_DDMMYYYY.format(e.date), ContactsEvents.FormatDate.WithYear));
+                                    sb.append(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(e.date), ContactsEvents.FormatDate.WithYear));
                                     sb.append(Constants.STRING_COLON_SPACE);
                                     sb.append(e.distance);
                                 }
@@ -1994,32 +1994,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
                         statsAllEvents++;
 
-                        if (hiddenEventsCount == 0 && silencedEventsCount == 0 && xDaysEventsCount == 0) { //Скрытых и без уведомлений нет
+                        boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey);
+                        boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey);
+                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_XDAYS);
+
+                        if (isHiddenEvent) statsHiddenEvents++;
+                        if (isSilencedEvent) statsSilencedEvents++;
+                        if (isXDayEvent) statsXDaysEvents++;
+
+                        if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
+                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
+                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
+                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
+                                eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
                             if (!skipAdd) dataList.add(event);
                             statsVisibleEvents++;
-                        } else {
-
-                            boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey);
-                            boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey);
-                            boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_XDAYS);
-
-                            if (isHiddenEvent) statsHiddenEvents++;
-                            if (isSilencedEvent) statsSilencedEvents++;
-                            if (isXDayEvent) statsXDaysEvents++;
-
-                            if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
-                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
-                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
-                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
-                                    eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
-                                if (!skipAdd) dataList.add(event);
-                                statsVisibleEvents++;
-                            }
                         }
                     }
                 }
             }
             if (dataList.isEmpty()) {
+                //todo: поставить проверку на обновление в фоне: если происходит обновление, то показываем предыдущие данные
 
                 findViewById(R.id.mainListView).setVisibility(View.GONE);
 
@@ -2320,7 +2315,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Дата оригинального события
-                holder.DateTextView.setText(eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear));
+                holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear));
 
                 switch (eventsData.preferences_list_nameformat) {
                     case 2: //Фамилия Имя Отчество

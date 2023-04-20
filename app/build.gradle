@@ -91,6 +91,7 @@ android {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
 
+            debuggable false
             minifyEnabled true
             shrinkResources true
             if (keystorePropertiesFile.exists()) {
@@ -104,15 +105,12 @@ android {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
 
-            debuggable true
+            debuggable false
             minifyEnabled false
             shrinkResources false
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
             }
-            //https://habr.com/ru/post/415499/
-            //https://www.guardsquare.com/en/products/proguard/manual/retrace
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"

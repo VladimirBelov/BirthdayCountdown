@@ -284,7 +284,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_2: //Дата события
-                    rowValue = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -292,12 +292,12 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
-                    if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
+                    /*if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
                             && ContactsEvents.isRealContactEventID(singleEventArray[ContactsEvents.Position_contactID])) {
                         rowValue = eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID]));
-                    } else {
+                    } else {*/
                         rowValue = person.getFullNameShort();
-                    }
+                    //}
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -391,7 +391,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_2: //Дата события
-                    rowValue = eventsData.getDateFormated(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
@@ -399,12 +399,12 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
-                    if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
+                    /*if (singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS)
                             && ContactsEvents.isRealContactEventID(singleEventArray[ContactsEvents.Position_contactID])) {
                         rowValue = eventsData.getContactFullNameShort(ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_contactID]));
-                    } else {
+                    } else {*/
                         rowValue = person.getFullNameShort();
-                    }
+                    //}
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);

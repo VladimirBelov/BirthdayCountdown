@@ -85,7 +85,7 @@
     <string name="msg_label_silenced">Silenced</string>
     <string name="msg_color_parse_error">Color parsing error!</string>
     <string name="msg_date_parse_error">"Date parsing error: "</string>
-    <string name="msg_event_parse_error">"Event parsing error: "</string>
+    <string name="msg_event_parse_error">"Event parsing error: '%1$s'"</string>
     <string name="msg_type_parse_error">"Event type unrecognized: '%1$s' for '%2$s'"</string>
     <string name="msg_jump_to_event_error">Event not found! Enable more event types in app settings</string>
     <string name="msg_errors_total">"Total errors: "</string>
