@@ -1399,13 +1399,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(!this.dataList.isEmpty());
 
-            //показывать, если есть скрытые или без уведомлений
-            menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(!eventsData.isEmptyEventList() && (
-                    eventsData.getHiddenEventsCount() > 0
-                    || eventsData.getSilencedEventsCount() > 0
-                    || eventsData.getXDaysEventsCount() > 0
-                    || statsUnrecognizedEvents > 0
-            ));
+            //показывать, если есть события или выбран фильтр
+            menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(
+                    !eventsData.isEmptyEventList() || eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_All);
+
             menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
 
         } catch (Exception e) {

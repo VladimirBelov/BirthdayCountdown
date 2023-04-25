@@ -18,10 +18,12 @@
         <item>Möglichkeit hinzugefügt, Wiederholungszeiträume zu definieren (für Ereignisse mit ausgefüllter Jahresangabe)</item>
         <item>Altersformateinstellung hinzugefügt (nur Zahlen, Tausenderstellen trennen, 000 durch \"K\" ersetzen)</item>
         <item>Neue Filter für Tageszähler und nicht erkannte Ereignisse hinzugefügt ( ⋮ -> Filter… )</item>
+        <item>Sternanzeige für Kalender- und Dateiereignisse hinzugefügt, die mit bevorzugten Kontakten verknüpft sind</item>
         <item>Debug- und Informationsmeldungen werden durch verschiedene Schalter aktiviert (Informationsmeldungen sind standardmäßig aktiviert)</item>
         <item>Doppelte Ergebnisse für die Schnellsuche behoben</item>
         <item>Anzeige unvollständiger Namen korrigiert (Namenslisten werden zur Analyse verwendet)</item>
         <item>Feste Altersberechnung für Kalenderereignisse, die keinen Link zu einem Kontakt haben</item>
+        <item>Fehler beim Lesen von UTF-8 BOM-kodierten Dateien behoben</item>
 
         <item>#1.7.5</item>
         <item>Auswahl von Kontaktkonten in den Abschnitt \"Ereignisse einrichten\" verschoben, Unterstützung für die Auswahl aus lokalen Konten und die Möglichkeit, keine Adressbuchereignisse zu verwenden, hinzugefügt</item>

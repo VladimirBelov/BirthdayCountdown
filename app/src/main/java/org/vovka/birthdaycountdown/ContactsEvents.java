@@ -1821,7 +1821,7 @@ class ContactsEvents {
 
             for (String eventRow : eventsArray) {
 
-                String eventLine = eventRow.trim();
+                String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
                 if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
 
                 String eventDate = Constants.STRING_EMPTY;
@@ -2098,6 +2098,12 @@ class ContactsEvents {
                         eventIcon = R.drawable.ic_event_crowning; //https://iconscout.com/icon/wedding-destination-romance-building-emoj-symbol
                         eventEmoji = "💒";
                         eventSubType = getEventType(Constants.Type_Crowning);
+
+                    } else {
+
+                        eventIcon = R.drawable.ic_event_other;
+                        eventEmoji = "🗓️";
+                        eventSubType = getEventType(Constants.Type_Other);
 
                     }
 
@@ -2510,9 +2516,18 @@ class ContactsEvents {
                             } else { //Такого события ещё не было
 
                                 //Добавляем данные контакта
-                                HashMap<String, String> contactDataMap = getContactDataMulti(parseToLong(contactID), new String[]{ContactsContract.Contacts.PHOTO_URI, ContactsContract.Data.DISPLAY_NAME, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE});
+                                HashMap<String, String> contactDataMap = getContactDataMulti(parseToLong(contactID), new String[]{
+                                        ContactsContract.Contacts.PHOTO_URI,
+                                        ContactsContract.Data.DISPLAY_NAME,
+                                        ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                                        ContactsContract.Contacts.STARRED
+                                });
 
                                 userData.put(Position_photo_uri, checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
+
+                                if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                                    userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
+                                }
 
                                 String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME));
                                 String contactTitle = checkForNull(map_contacts_titles.get(contactID));
@@ -2767,7 +2782,7 @@ class ContactsEvents {
 
                 for (String eventRow : eventsArray) {
 
-                    String eventLine = eventRow.trim();
+                    String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
                     if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
 
                     userData.clear();
@@ -2800,7 +2815,7 @@ class ContactsEvents {
                                     eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
                                     indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
                                     if (indexFirstSpace == -1) {
-                                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
+                                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventRow));
                                         continue;
                                     }
                                 }
@@ -2851,7 +2866,7 @@ class ContactsEvents {
                     }
 
                     if (eventDate.isEmpty()) {
-                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventRow));
                         continue;
                     }
 
@@ -2923,7 +2938,7 @@ class ContactsEvents {
                             dateEvent = addYear(dateEvent, 1);
                     }
                     if (dateEvent == null || event == null) {
-                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLine));
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventRow));
                         continue;
                     }
 
@@ -3106,11 +3121,18 @@ class ContactsEvents {
                             //Добавляем данные контакта
                             if (isRealContactEventID(contactID)) {
                                 final Long contactIDLong = parseToLong(contactID);
-                                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{ContactsContract.Contacts.PHOTO_URI, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE});
+                                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                        ContactsContract.Contacts.PHOTO_URI,
+                                        ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                                        ContactsContract.Contacts.STARRED
+                                });
 
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
                                 if (contactDataMap.containsKey(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)) {
                                     userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(Constants.STRING_COMMA, Constants.STRING_EMPTY));
+                                }
+                                if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                                    userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
                                 }
                                 contactDataMap.clear();
                             }

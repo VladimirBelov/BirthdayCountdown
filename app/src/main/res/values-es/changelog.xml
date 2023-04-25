@@ -18,10 +18,12 @@
         <item>Se agregó la capacidad de definir períodos de repetición (para eventos con un año completo)</item>
         <item>Configuración de formato de edad agregada (solo números, separe los lugares de miles, reemplace 000 con \"K\")</item>
         <item>Se agregaron nuevos filtros para contadores de días y eventos no reconocidos. ( ⋮ -> Filter… )</item>
+        <item>Se agregó visualización de estrellas para eventos de calendario y archivos vinculados a contactos favoritos</item>
         <item>Los mensajes informativos y de depuración se activan mediante diferentes interruptores (los mensajes informativos están habilitados de manera predeterminada)</item>
         <item>Se corrigieron los resultados duplicados para la búsqueda rápida</item>
         <item>Se corrigió la visualización de nombres incompletos (las listas de nombres se utilizan para el análisis)</item>
         <item>Cálculo de edad fijo para eventos de calendario que no tienen un enlace a un contacto</item>
+        <item>Error solucionado al leer archivos codificados UTF-8 BOM</item>
 
         <item>#1.7.5</item>
         <item>Se movió la selección de cuentas de contactos a la sección \"Configuración de eventos\", se agregó soporte para seleccionar cuentas locales y la capacidad de no usar eventos de la libreta de direcciones</item>

@@ -82,7 +82,7 @@ public class FAQActivity extends AppCompatActivity {
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
             }
 
-            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит дефолтный язык
+            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
             WebView webView = findViewById(R.id.webView);
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);
