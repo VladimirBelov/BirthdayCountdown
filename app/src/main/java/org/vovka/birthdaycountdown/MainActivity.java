@@ -2261,7 +2261,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
-                if (convertView == null) {
+                if (convertedView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                     convertedView = inflater.inflate(R.layout.entry_main, parent, false);
                     holder = createViewHolderFrom(convertedView);
@@ -2603,14 +2603,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
 
-            if (convertedView != null) return convertedView;
+            return convertedView != null ? convertedView : LayoutInflater.from(eventsData.getContext()).inflate(R.layout.entry_main, parent, false);
+            /*if (convertedView != null) return convertedView;
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
             try {
                 return inflater.inflate(R.layout.entry_main, parent, false);
             } catch (InflateException ie) {
                 return convertView != null ? convertView : parent;
-            }
+            }*/
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {

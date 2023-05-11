@@ -4087,7 +4087,7 @@ class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
 
             singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
-                    + (checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
+                    + (singleEventArray[Position_starred].equals(Constants.STRING_1) ? "0" : checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
                     + (eventType.equals(getEventType(Constants.Type_BirthDay)) ? "1"
                         : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
                         : eventType.equals(getEventType(Constants.Type_Custom)) ? "3"
