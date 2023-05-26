@@ -180,7 +180,6 @@
     <string name="hint_Version_History">Versionsverlauf</string>
     <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Google Play</string>
     <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der HUAWEI AppGallery</string>
-    <string name="hint_ShowPreferences">Alle gespeicherten Einstellungen anzeigen</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Abbrechen</string>
@@ -201,7 +200,6 @@
     <string name="button_question">Neue Frage mailen</string>
     <string name="button_close">Schließen</string>
     <string name="button_prefs">Einstellungen</string>
-    <string name="button_saved_preferences">[alle gespeicherten Einstellungen]</string>
     <string name="button_off">Abstellen</string>
 
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
@@ -850,6 +848,7 @@
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
 
     <string name="changelog_version"><![CDATA[Version: %1$s (%2$s)<br>Datum: %3$s]]></string>
+    <string name="changelog_installer"><![CDATA[<br>Installiert von %1$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Versionsverlauf:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Version: %1$s:</h2><ul>]]></string>
 

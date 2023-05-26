@@ -160,6 +160,8 @@
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
     <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
+    <string name="msg_prefs_import_askForClean_title">Подтверждение</string>
+    <string name="msg_prefs_import_askForClean_message">Очистить все сохранённые настройки перед импортированием новых?</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -180,9 +182,10 @@
     <string name="hint_Version_History">История версий</string>
     <string name="hint_Rate_PlayMarket">Оценить приложение на Google Play</string>
     <string name="hint_Rate_AppGallery">Оценить приложение на HUAWEI AppGallery</string>
-    <string name="hint_ShowPreferences">Просмотреть все сохранённые настройки</string>
 
     <string name="button_ok">OK</string>
+    <string name="button_yes">Да</string>
+    <string name="button_no">Нет</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_reset">Сбросить</string>
     <string name="button_remove">Удалить</string>
@@ -201,7 +204,6 @@
     <string name="button_question">Задать вопрос</string>
     <string name="button_close">Закрыть</string>
     <string name="button_prefs">Настройки</string>
-    <string name="button_saved_preferences">[все сохранённые настройки]</string>
     <string name="button_off">Выкл</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
@@ -850,7 +852,18 @@
     <string name="pref_ExtraFun_On_title">Доп. функции</string>
     <string name="pref_ExtraFun_On_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
 
+    <string name="pref_Tools_title">Инструменты</string>
+    <string name="pref_Tools_summary">Различные инструменты для манипуляций с данными</string>
+    <string name="pref_Tools_Preferences_title">Настройки</string>
+    <string name="pref_Tools_Preferences_summary">Инструменты для настроек приложения</string>
+    <string name="pref_Tools_Preferences_Show_title">Показать сохранённые настройки</string>
+    <string name="pref_Tools_Preferences_Export_title">Экспортировать настройки</string>
+    <string name="pref_Tools_Preferences_Export_result">Экспортировано настроек: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">Импортировать настройки</string>
+    <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d</string>
+
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
+    <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>История версий:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Версия: %1$s:</h2><ul>]]></string>
 

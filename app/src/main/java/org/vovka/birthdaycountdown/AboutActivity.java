@@ -26,16 +26,12 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -45,9 +41,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedSet;
 import java.util.TimeZone;
-import java.util.TreeSet;
 
 //todo: подсветка нововведений в интерфейсе
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
@@ -119,13 +113,15 @@ public class AboutActivity extends AppCompatActivity {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             //todo: добавить откуда поставили https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
             TextView txtInfo = findViewById(R.id.textVersionInfo);
-            txtInfo.setText(HtmlCompat.fromHtml(getString(R.string.changelog_version,
-                    BuildConfig.VERSION_NAME, Integer.toString(BuildConfig.VERSION_CODE), formatter.format(BuildConfig.BUILD_TIME)), 0));
+
+            txtInfo.setText(HtmlCompat.fromHtml(getString(
+                    R.string.changelog_version,
+                    BuildConfig.VERSION_NAME,
+                    Integer.toString(BuildConfig.VERSION_CODE),
+                    eventsData.getDateTimePreferable(BuildConfig.BUILD_TIME)
+                    ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), 0));
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
-
-            TextView tv = findViewById(R.id.textShowPreferences);
-            tv.setVisibility(eventsData.preferences_debug_on ? View.VISIBLE : View.GONE);
 
             //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
             //https://stackoverflow.com/questions/39036411/activitymanagercompat-islowramdevice-is-useless-is-always-returns-false
@@ -145,12 +141,12 @@ public class AboutActivity extends AppCompatActivity {
                 sb.append(getString(R.string.stats_speed_title));
                 try {
                     if (eventsData.statTimeGetContactEvents > 0)
-                        sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                        sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                     if (eventsData.statTimeGetCalendarEvents > 0)
-                        sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                        sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                     if (eventsData.statTimeGetFileEvents > 0)
-                        sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
-                    sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace("#", "")));
+                        sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                    sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                 } catch (Exception e) { /**/ }
                 sb.append(Constants.HTML_UL_END);
 
@@ -189,25 +185,25 @@ public class AboutActivity extends AppCompatActivity {
                 try {
 
                     sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_contacts, !eventsData.checkNoContactsAccess()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_calendar, !eventsData.checkNoCalendarAccess()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_files, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_notifications, NotificationManagerCompat.from(this).areNotificationsEnabled()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_battery, !eventsData.checkNoBatteryOptimization()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace("#", ""));
+                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
                     if (ContactsEvents.isXiaomi()) {
@@ -215,7 +211,7 @@ public class AboutActivity extends AppCompatActivity {
                         sb.append(getString(R.string.stats_permissions_xiaomi_autostart,
                                 state == State.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
                                         state == State.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
-                                                eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace("#", ""));
+                                                eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     }
 
@@ -348,39 +344,6 @@ public class AboutActivity extends AppCompatActivity {
                     mToast.show();
                 }
             }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    public void showPreferences (@SuppressWarnings("unused") android.view.View view) {
-
-        try {
-
-            StringBuilder sb = new StringBuilder();
-            Map<String, ?> prefs = PreferenceManager.getDefaultSharedPreferences(this).getAll();
-            SortedSet<String> keys = new TreeSet<>(prefs.keySet());
-            for (String key : keys) {
-                sb.append(key).append(Constants.STRING_COLON_SPACE).append(prefs.get(key)).append(Constants.HTML_BR);
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-            builder.setTitle(R.string.msg_title_settings);
-            builder.setIcon(android.R.drawable.ic_menu_info_details);
-            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
-            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-            AlertDialog alertToShow = builder.create();
-            alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
-            });
-            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            alertToShow.show();
-            TextView textView = alertToShow.findViewById(android.R.id.message);
-            if (textView != null) textView.setTextSize(11);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

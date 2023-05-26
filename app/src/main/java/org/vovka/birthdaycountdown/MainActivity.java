@@ -1347,6 +1347,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     return false;
                 }
             });
+
+            final boolean isItemQuizVisible = !this.dataList.isEmpty() && eventsData.preferences_extrafun;
+            //показывать, если есть события или выбран фильтр
+            final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
+                    (
+                            (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
+                            || (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_All && eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_NotHidden)
+                    );
+
             searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
             {
 
@@ -1367,13 +1376,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menu.getItem(Constants.MENU_MAIN_ADD_EVENT).setVisible(true);
                     menu.getItem(Constants.MENU_MAIN_REFRESH).setVisible(true);
                     menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(true);
-                    menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(true);
+                    menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
                     //показывать, если есть скрытые или без уведомлений
-                    menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(
-                            eventsData != null &&
-                                    !eventsData.isEmptyEventList() &&
-                                    (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
-                    );
+                    menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
                     menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
                     filterEventsList();
                     return true;
@@ -1397,11 +1402,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
             // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
 
-            menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(!this.dataList.isEmpty());
+            menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
 
-            //показывать, если есть события или выбран фильтр
-            menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(
-                    !eventsData.isEmptyEventList() || eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_All);
+            menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
 
             menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
 
@@ -1718,7 +1721,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (!arrFAQ[0].isEmpty()) {
 
                     int countHintLines = 0;
-                    String headerStart = "#".concat(getString(R.string.menu_search));
+                    String headerStart = Constants.STRING_HASH.concat(getString(R.string.menu_search));
 
                     for (String strLine : arrFAQ) {
 

@@ -24,6 +24,7 @@ final class Constants {
     static final String STRING_1 = "1";
     static final String STRING_10 = "10";
     static final String STRING_2 = "2";
+    static final String STRING_HASH = "#";
     static final String STRING_2HASH = "##";
     static final String STRING_2MINUS = "--";
     static final String STRING_2TILDA = "~~";
@@ -50,6 +51,7 @@ final class Constants {
     static final String STRING_PARENTHESIS_OPEN = " (";
     static final String STRING_PARENTHESIS_START = "(";
     static final String STRING_BRACKETS_OPEN = " [";
+    static final String STRING_BRACKETS_START = "[";
     static final String STRING_BRACKETS_CLOSE = "]";
     static final String STRING_PERIOD = ".";
     static final String STRING_PIPE = "\\|";
@@ -152,9 +154,11 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 = 106;
 
     static final int RESULT_PICK_CONTACT = 200;
-    static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_FILE = 201;
+    static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_RINGTONE = 203;
+    static final int RESULT_PICK_NEW_FILE = 204;
+    static final int RESULT_PICK_FILE_FOR_IMPORT = 205;
 
     static final int defaultNotificationID = 1000;
     static final int defaultQuizID = 2000;

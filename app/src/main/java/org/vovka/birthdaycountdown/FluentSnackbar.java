@@ -63,7 +63,7 @@ public final class FluentSnackbar {
         view.setBackgroundColor(builder.getBackgroundColor());
         view.setPadding(0, 0, 0, 0);
 
-        TextView textView = view.findViewById(R.id.snackbar_text);
+        TextView textView = view.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setMaxLines(builder.getMaxLines());
         textView.setTextColor(builder.getTextColor());
 

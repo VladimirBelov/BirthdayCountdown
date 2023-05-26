@@ -63,6 +63,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -562,7 +563,7 @@ class ContactsEvents {
         if (red.length() == 1) red = "0" + red;
         if (green.length() == 1) green = "0" + green;
         if (blue.length() == 1) blue = "0" + blue;
-        return "#" + alpha + red + green + blue;
+        return Constants.STRING_HASH + alpha + red + green + blue;
     }
 
     static Bitmap getBitmap(Drawable vectorDrawable) {
@@ -640,6 +641,7 @@ class ContactsEvents {
     void setContext(@NonNull Context con) {
         context = con;
         resources = con.getResources();
+        contentResolver = context.getContentResolver();
         DisplayMetrics_density = resources.getDisplayMetrics().density;
 
         pref_Widgets_EventInfo_Info_Default = new HashSet<>();
@@ -917,14 +919,14 @@ class ContactsEvents {
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
-            preferences_debug_on = preferences.getBoolean(context.getString(R.string.pref_Help_Debug_On_key), resources.getBoolean(R.bool.pref_Help_Debug_On_default));
-            preferences_info_on = preferences.getBoolean(context.getString(R.string.pref_Help_InfoMsg_On_key), resources.getBoolean(R.bool.pref_Help_InfoMsg_On_default));
-            preferences_extrafun = preferences.getBoolean(context.getString(R.string.pref_Help_ExtraFun_On_key), resources.getBoolean(R.bool.pref_Help_ExtraFun_On_default));
+            preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), resources.getBoolean(R.bool.pref_Help_Debug_On_default));
+            preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), resources.getBoolean(R.bool.pref_Help_InfoMsg_On_default));
+            preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), resources.getBoolean(R.bool.pref_Help_ExtraFun_On_default));
             preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
-            preferences_menustyle_compact = preferences.getBoolean(context.getString(R.string.pref_MenuStyle_key), resources.getBoolean(R.bool.pref_MenuStyle_default));
+            preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), resources.getBoolean(R.bool.pref_MenuStyle_default));
 
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
@@ -948,7 +950,7 @@ class ContactsEvents {
             preferences_list_magnify_details = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Details_key), 0);
             preferences_list_magnify_date = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Date_key), 0);
             preferences_list_magnify_age = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Age_key), 0);
-            preference_list_fastscroll = preferences.getBoolean(context.getString(R.string.pref_List_FastScroll_key), resources.getBoolean(R.bool.pref_List_FastScroll_default));
+            preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), resources.getBoolean(R.bool.pref_List_FastScroll_default));
 
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
@@ -976,7 +978,7 @@ class ContactsEvents {
             //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
 
             //День рождения
-            useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && TextUtils.isEmpty(customLabels)) {
                 preferences_birthday_labels = null;
@@ -990,11 +992,11 @@ class ContactsEvents {
                 }
             }
 
-            preferences_birthday_calendars_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_default)));
+            preferences_birthday_calendars_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_default)));
             preferences_Birthday_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key), new HashSet<>());
 
             //Свадьба
-            useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Anniversary_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_wedding_labels = null;
@@ -1009,7 +1011,7 @@ class ContactsEvents {
             }
 
             //Именины
-            useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_NameDay_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_nameday_labels = null;
@@ -1024,7 +1026,7 @@ class ContactsEvents {
             }
 
             //Венчание
-            useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Crowning_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_crowning_labels = null;
@@ -1039,7 +1041,7 @@ class ContactsEvents {
             }
 
             //Годовщина смерти
-            useInternal = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Death_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Death_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Death_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Death_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Death_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_death_labels = null;
@@ -1078,7 +1080,7 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent1_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Custom1_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent1_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom1_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //2
             preferences_customevent2_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom2_Caption_key), Constants.STRING_EMPTY).trim();
@@ -1093,7 +1095,7 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent2_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Custom2_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent2_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom2_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //3
             preferences_customevent3_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom3_Caption_key), Constants.STRING_EMPTY).trim();
@@ -1108,7 +1110,7 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent3_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Custom3_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent3_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom3_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //4
             preferences_customevent4_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom4_Caption_key), Constants.STRING_EMPTY).trim();
@@ -1123,7 +1125,7 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent4_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Custom4_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent4_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom4_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //5
             preferences_customevent5_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom5_Caption_key), Constants.STRING_EMPTY).trim();
@@ -1138,7 +1140,7 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent5_useyear = preferences.getBoolean(context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //Уведомления
             preferences_notifications_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Days_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_Days_values_default))));
@@ -1286,6 +1288,7 @@ class ContactsEvents {
     /**
      * Сохранение настроек в SharedPreferences
      */
+    @SuppressLint("ApplySharedPref")
     void savePreferences() {
 
         if (context == null) return;
@@ -1319,7 +1322,7 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
 
-            editor.apply();
+            editor.commit();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1375,9 +1378,9 @@ class ContactsEvents {
 
     synchronized boolean getEvents(Context in_context) {
 
-        if (in_context != null) context = in_context;
-        if (context == null) context = getContext().getApplicationContext();
-        if (context == null) return false;
+        if (in_context != null) setContext(in_context);
+        if (getContext() == null) setContext(getContext().getApplicationContext());
+        if (getContext() == null) return false;
 
         try {
 
@@ -1726,7 +1729,11 @@ class ContactsEvents {
     int getContactsEventsCount(String accountType, String accountName) {
 
         int count = 0;
+        if (checkNoContactsAccess()) return count;
+
         try {
+
+            if (contentResolver == null) contentResolver = context.getContentResolver();
 
             final StringBuilder selection = new StringBuilder();
             selection.append(ContactsContract.Data.MIMETYPE).append(" = '").append(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).append("' ");
@@ -1758,6 +1765,8 @@ class ContactsEvents {
     int getCalendarEventsCount(String calID) {
 
         int count = 0;
+        if (checkNoCalendarAccess()) return count;
+
         try {
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
@@ -1822,7 +1831,7 @@ class ContactsEvents {
             for (String eventRow : eventsArray) {
 
                 String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
+                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//")) continue;
 
                 String eventDate = Constants.STRING_EMPTY;
                 @Nullable Date dateEvent = null;
@@ -2783,7 +2792,7 @@ class ContactsEvents {
                 for (String eventRow : eventsArray) {
 
                     String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                    if (eventLine.isEmpty() || eventLine.startsWith("#") || eventLine.startsWith("//")) continue;
+                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//")) continue;
 
                     userData.clear();
 
@@ -3317,7 +3326,10 @@ class ContactsEvents {
             if (contentResolver == null) contentResolver = context.getContentResolver();
             contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            try (InputStream inputStream = contentResolver.openInputStream(uri); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            try (
+                    InputStream inputStream = contentResolver.openInputStream(uri);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
+            ) {
 
                 line = reader.readLine();
                 while (line != null) {
@@ -4211,7 +4223,7 @@ class ContactsEvents {
                     eventDistance
                             .append(getResources().getString(R.string.msg_before_event_prefix))
                             .append(getAgeString(dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21))
-                            .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : ""); //для немецкого "in 10 TageN"
+                            .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : Constants.STRING_EMPTY); //для немецкого "in 10 TageN"
                 } else if (dayDiff == -1) { //Вчера
                     eventDistance.append(getResources().getString(R.string.msg_yesterday));
                 } else if (dayDiff == -2) { //Позавчера
@@ -5925,6 +5937,67 @@ class ContactsEvents {
     }
 
     @NonNull
+    String getDateTimePreferable(@NonNull Date dateIn) {
+
+        String resultString = Constants.STRING_EMPTY;
+
+        try {
+
+            final Locale locale = Locale.forLanguageTag(currentLocale);
+            SimpleDateFormat sdfOut;
+            final String timeFormat = " HH:mm";
+
+            switch (preferences_list_dateformat) {
+
+                case 2: // DD.MM.YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MM + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 3: // MM.DD.YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 4: // DD/MM/YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_UK + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 5: // MM/DD/YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_IND + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 6: // DD MMM YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 7: // D MMMM YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                default:
+
+                    resultString = DateUtils.formatDateTime(context, dateIn.getTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
+
+            }
+
+        } catch (Exception e) { /**/ }
+
+        return resultString;
+    }
+
+
+    @NonNull
     String getZodiacInfo(ZodiacInfo requestInfo, String strBirthday) {
 
         //todo: сделать вариант получения знака по уточнённым в 2016 года датам
@@ -5957,7 +6030,7 @@ class ContactsEvents {
                                                                                         eventMonth != 9 && (eventMonth != 10 || eventDay > 23) ?
                                                                                                 eventMonth != 10 && (eventMonth != 11 || eventDay > 22) ?
                                                                                                         eventMonth != 11 && eventMonth != 12 ?
-                                                                                                                "" : "♐".concat(requestInfo == ZodiacInfo.SIGN_TITLE ? this.resources.getString(R.string.zodiac_sign_sagittarius) : Constants.STRING_EMPTY) :
+                                                                                                                Constants.STRING_EMPTY : "♐".concat(requestInfo == ZodiacInfo.SIGN_TITLE ? this.resources.getString(R.string.zodiac_sign_sagittarius) : Constants.STRING_EMPTY) :
                                                                                                         "♏".concat(requestInfo == ZodiacInfo.SIGN_TITLE ? this.resources.getString(R.string.zodiac_sign_scorpio) : Constants.STRING_EMPTY) :
                                                                                                 "♎".concat(requestInfo == ZodiacInfo.SIGN_TITLE ? this.resources.getString(R.string.zodiac_sign_libra) : Constants.STRING_EMPTY) :
                                                                                         "♍".concat(requestInfo == ZodiacInfo.SIGN_TITLE ? this.resources.getString(R.string.zodiac_sign_virgo) : Constants.STRING_EMPTY) :
@@ -6972,6 +7045,14 @@ class ContactsEvents {
         }
     }
 
+    boolean getPreferenceBoolean(@NonNull SharedPreferences preferences, @NonNull String key, boolean defValue) {
+        try {
+            return preferences.getBoolean(key, defValue);
+        } catch (Exception e) {
+            return defValue;
+        }
+    }
+
     void setAppIcon() {
         try {
             //https://stackoverflow.com/questions/54685889/using-activity-alias-does-not-reflect-on-app-icon
@@ -6981,8 +7062,11 @@ class ContactsEvents {
                 try {
                     final String activityName = BuildConfig.APPLICATION_ID + "." + iconID;
                     if (preferences_icon.equals(iconID)) {
-                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));
-                        pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        int state = pm.getComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName));
+                        if (state != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));
+                            pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        }
                         atLeastOneActive = true;
                     } else {
                         pm.setComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -7161,6 +7245,23 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+
+    }
+
+    String getInstallerInfo(@StringRes int decorString) {
+
+        //https://stackoverflow.com/questions/5841161/get-application-name-from-package-name
+        final PackageManager packageManager = context.getPackageManager();
+        String installer = null;
+        try {
+            installer = packageManager.getInstallerPackageName(context.getPackageName());
+        } catch (IllegalArgumentException ignored) { /**/ }
+        if (installer == null) return Constants.STRING_EMPTY;
+        try {
+            installer = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(installer, PackageManager.GET_META_DATA));
+        } catch (PackageManager.NameNotFoundException ignored) { /**/ }
+
+        return decorString != 0 ? context.getString(decorString, installer)  : installer;
 
     }
 }

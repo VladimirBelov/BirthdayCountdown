@@ -114,6 +114,10 @@ public class ToastExpander {
         if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg.trim(), msgTypeInfo);
     }
 
+    static public void showMsg(@NonNull Context context, @NonNull String msg) {
+        getInstance().showText(context, msg.trim(), msgTypeInfo);
+    }
+
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
         if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg.trim(), msgTypeDebug);
     }

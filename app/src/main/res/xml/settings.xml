@@ -10,7 +10,7 @@
 <!--suppress DeprecatedClassUsageInspection -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:key="pref_main">
+    android:key="@string/pref_Root_key">
 
     <!-- todo: добавить цвета категориям https://stackoverflow.com/a/34697171 -->
 	<!-- todo: обновлять значения в summary https://code.luasoftware.com/tutorials/android/create-settings-preference-activity-in-android/ -->
@@ -941,6 +941,28 @@
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/pref_Tools_key"
+        android:title="@string/pref_Tools_title"
+        android:layout="@layout/settings_category">
+
+        <Preference
+            android:key="@string/pref_Tools_Preferences_Show_key"
+            android:title="@string/pref_Tools_Preferences_Show_title"
+            android:icon="@android:drawable/ic_menu_info_details"/>
+
+        <Preference
+            android:key="@string/pref_Tools_Preferences_Export_key"
+            android:title="@string/pref_Tools_Preferences_Export_title"
+            android:icon="@android:drawable/ic_menu_set_as"/>
+
+        <Preference
+            android:key="@string/pref_Tools_Preferences_Import_key"
+            android:title="@string/pref_Tools_Preferences_Import_title"
+            android:icon="@android:drawable/ic_menu_upload"/>
 
     </PreferenceCategory>
 

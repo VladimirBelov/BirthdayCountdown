@@ -79,20 +79,7 @@
 					android:contentDescription="@string/hint_VersionNumberDetails"
 					android:textColor="?android:attr/textColorSecondary"
 					android:onClick="setDebug"
-					android:importantForAccessibility="no"
-					tools:ignore="SmallSp" />
-
-				<TextView
-					android:id="@+id/textShowPreferences"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingStart="40dp"
-					android:contentDescription="@string/hint_ShowPreferences"
-					android:textColor="?android:attr/textColorSecondary"
-					android:onClick="showPreferences"
-					android:text="@string/button_saved_preferences"
-					android:importantForAccessibility="no"
-					tools:ignore="SmallSp" />
+					android:importantForAccessibility="no"/>
 
 			</LinearLayout>
 

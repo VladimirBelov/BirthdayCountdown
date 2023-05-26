@@ -103,9 +103,9 @@ public class FAQActivity extends AppCompatActivity {
                     for (String strRow : arrFAQ) {
                         if (strRow.length() >= 3 && strRow.startsWith("###")) {
                             sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
-                        } else if (strRow.length() >= 2 && strRow.startsWith("##")) {
+                        } else if (strRow.length() >= 2 && strRow.startsWith(Constants.STRING_2HASH)) {
                             sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
-                        } else if (strRow.length() >= 1 && strRow.startsWith("#")) {
+                        } else if (strRow.length() >= 1 && strRow.startsWith(Constants.STRING_HASH)) {
                             sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
                         } else {
                             sb.append(strRow).append(Constants.HTML_BR);

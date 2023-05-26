@@ -180,7 +180,6 @@
     <string name="hint_Version_History">Історія версій</string>
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
     <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
-    <string name="hint_ShowPreferences">Переглянути всі збережені параметри</string>
 
     <string name="button_ok">OK</string>
     <string name="button_cancel">Відміна</string>
@@ -201,7 +200,6 @@
     <string name="button_question">Надіслати запитання</string>
     <string name="button_close">Закрити</string>
     <string name="button_prefs">Преференції</string>
-    <string name="button_saved_preferences">[всі збережені параметри]</string>
     <string name="button_off">Вимкнути</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
@@ -850,6 +848,7 @@
     <string name="pref_ExtraFun_On_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
+    <string name="changelog_installer"><![CDATA[<br>встановлено з %1$s]]></string>
     <string name="changelog_title"><![CDATA[<h1>Історія версій:</h1>]]></string>
     <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s:</h2><ul>]]></string>
 
