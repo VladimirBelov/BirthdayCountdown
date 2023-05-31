@@ -52,13 +52,13 @@
     <string name="menu_context_share_as_text">як текст</string>
     <string name="menu_context_xDaysEvent_add">Додати лічильник днів…</string>
     <string name="menu_context_xDaysEvent_edit">Лічильник днів…</string>
+    <string name="menu_context_set_eventype">Виберіть тип події…</string>
     <string name="menu_ok">Добре</string>
     <!--<string name="menu_help" tools:ignore="MissingTranslation">Reference</string>-->
     <!--<string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>-->
     <!--<string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>-->
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
-<!--    <string name="msg_no_access_storage">Немає доступу до зовнішнього сховища</string>-->
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_no_files_selected">"  - не вибрано -"</string>
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
@@ -145,6 +145,7 @@
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
     <string name="msg_title_confirmation">Підтвердження</string>
+    <string name="msg_title_success">Дія завершена</string>
     <string name="msg_title_settings">Збережені налаштування</string>
     <string name="msg_no_selection">Вибір порожній! Треба що-небудь вибрати</string>
     <string name="msg_notifications_were_enabled">"Сповіщення ввімкнено\n"</string>
@@ -160,6 +161,10 @@
     <string name="msg_no_action">Немає дій для події</string>
     <string name="msg_icon_changed">"Набір значків програми: %1$s"</string>
     <string name="msg_created_quiz_channel">Створено канал сповіщень вікторини</string>
+    <string name="msg_prefs_import_clear_confirmation">Очистити всі збережені налаштування перед імпортом нових?</string>
+    <string name="msg_eventtype_select_title">Виберіть тип події</string>
+    <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -182,6 +187,8 @@
     <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
 
     <string name="button_ok">OK</string>
+    <string name="button_yes">Так</string>
+    <string name="button_no">Ні</string>
     <string name="button_cancel">Відміна</string>
     <string name="button_reset">Скинути</string>
     <string name="button_remove">Видалити</string>
@@ -201,6 +208,8 @@
     <string name="button_close">Закрити</string>
     <string name="button_prefs">Преференції</string>
     <string name="button_off">Вимкнути</string>
+    <string name="button_open">Відкрити</string>
+    <string name="button_share">Поділитися</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -325,7 +334,7 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Використовувати стандартні найменування для визначення днів народжень</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свої найменування</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як дні народження</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Події з такими мітками будуть ідентифіковані як дні народження (через кому)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Показувати події днів народження з вибраних календарів</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Використовувати рік з події календаря для розрахунку річниць (не тільки день і місяць)</string>
@@ -334,27 +343,27 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Використовувати стандартні найменування для визначення річниць весіль</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Власнi найменування</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці весіль</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Події з такими мітками будуть ідентифіковані як річниці весіль (через кому)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Усі відомі назви ювілеїв (по роках)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Використовувати стандартні найменування для визначення іменин</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Власнi найменування</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як іменини</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Події з такими мітками будуть ідентифіковані як іменини (через кому)</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Використовувати стандартні найменування для визначення вінчань</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Власнi найменування</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як вінчання</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Події з такими мітками будуть ідентифіковані як вінчання (через кому)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Використовувати стандартні найменування для визначення річниць смерті</string>
     <string name="pref_CustomEvents_Death_Labels_title">Власнi найменування</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як річниці смерті</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Події з такими мітками будуть ідентифіковані як річниці смерті (через кому)</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
-    <string name="pref_CustomEvents_Other_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як інші події</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Події з такими мітками будуть ідентифіковані як інші події (через кому)</string>
     <string name="pref_CustomEvents_Calendars_title">Календарі</string>
     <string name="pref_CustomEvents_Calendars_summary">Показати події з обраних календарів</string>
     <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
@@ -364,7 +373,7 @@
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Введіть підпис для цієї події, щоб почати використовувати її</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Найменування подій</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">Події контактів з такою міткою будуть ідентифіковані як ця подія</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Події з такими мітками будуть ідентифіковані як ця подія (через кому)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Використовувати рік для розрахунку річниць (не тільки день і місяць)</string>
 
@@ -846,6 +855,15 @@
     <string name="pref_Debug_On_summary">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
     <string name="pref_ExtraFun_On_title">Додаткові функції</string>
     <string name="pref_ExtraFun_On_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
+
+    <string name="pref_Tools_title">Інструменти</string>
+    <string name="pref_Tools_summary">Різні інструменти для обробки даних</string>
+    <string name="pref_Tools_Preferences_title">Налаштування</string>
+    <string name="pref_Tools_Preferences_Show_title">Показати збережені параметри</string>
+    <string name="pref_Tools_Preferences_Export_title">Параметри експорту</string>
+    <string name="pref_Tools_Preferences_Export_result">Експортовано налаштувань: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">Параметри імпорту</string>
+    <string name="pref_Tools_Preferences_Import_result">Налаштування імпортовано: %1$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>встановлено з %1$s]]></string>

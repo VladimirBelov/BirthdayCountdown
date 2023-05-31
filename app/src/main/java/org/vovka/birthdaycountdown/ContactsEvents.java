@@ -5563,9 +5563,7 @@ class ContactsEvents {
 
         try {
 
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-            editor.putString(context.getString(R.string.widget_config_PrefName) + id, value);
-            editor.apply();
+            setPreferenceString(context.getString(R.string.widget_config_PrefName) + id, value);
             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id)) + value);
 
         } catch (Exception e) {
@@ -7028,6 +7026,22 @@ class ContactsEvents {
         }
     }
 
+    void setPreferenceString(@NonNull String key, String value) {
+        if (context == null) return;
+
+        try {
+
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putString(key, value)
+                    .apply();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     int getPreferenceInt(@NonNull SharedPreferences preferences, @NonNull String key, int defValue) {
         try {
             return preferences.getInt(key, defValue);
@@ -7262,6 +7276,83 @@ class ContactsEvents {
         } catch (PackageManager.NameNotFoundException ignored) { /**/ }
 
         return decorString != 0 ? context.getString(decorString, installer)  : installer;
+
+    }
+    @NonNull
+    String addLabelToEventType(int eventTypeId, @NonNull String eventLabel, String eventTitle) {
+
+        String resultInfo = Constants.STRING_EMPTY;
+        if (eventLabel.isEmpty()) return resultInfo;
+
+        try {
+
+            String keyForLabels;
+            String keyForTitle = null;
+
+            switch (eventTypeId) {
+                case 0:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Birthday_Labels_key);
+                    break;
+                case 1:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Anniversary_Labels_key);
+                    break;
+                case 2:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_NameDay_Labels_key);
+                    break;
+                case 3:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Crowning_Labels_key);
+                    break;
+                case 4:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Death_Labels_key);
+                    break;
+                case 5:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Other_Labels_key);
+                    break;
+                case 6:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Custom1_Labels_key);
+                    keyForTitle = context.getString(R.string.pref_CustomEvents_Custom1_Caption_key);
+                    break;
+                case 7:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Custom2_Labels_key);
+                    keyForTitle = context.getString(R.string.pref_CustomEvents_Custom2_Caption_key);
+                    break;
+                case 8:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Custom3_Labels_key);
+                    keyForTitle = context.getString(R.string.pref_CustomEvents_Custom3_Caption_key);
+                    break;
+                case 9:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Custom4_Labels_key);
+                    keyForTitle = context.getString(R.string.pref_CustomEvents_Custom4_Caption_key);
+                    break;
+                case 10:
+                    keyForLabels = context.getString(R.string.pref_CustomEvents_Custom5_Labels_key);
+                    keyForTitle = context.getString(R.string.pref_CustomEvents_Custom5_Caption_key);
+                    break;
+                default:
+                    return resultInfo;
+            }
+
+            if (keyForLabels != null) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                String customLabels = getPreferenceString(preferences, keyForLabels, Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
+                if (customLabels.isEmpty()) {
+                    setPreferenceString(keyForLabels, eventLabel);
+                    resultInfo = resources.getString(R.string.msg_eventtype_label_set, eventLabel);
+                } else {
+                    setPreferenceString(keyForLabels, customLabels.concat(Constants.STRING_COMMA).concat(eventLabel));
+                    resultInfo = resources.getString(R.string.msg_eventtype_label_added, eventLabel);
+                }
+            }
+
+            if (eventTypeId > 5 && eventTitle != null && keyForTitle != null) {
+                setPreferenceString(keyForTitle, eventTitle);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return resultInfo;
 
     }
 }

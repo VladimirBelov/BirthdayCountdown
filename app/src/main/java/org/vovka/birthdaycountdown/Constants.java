@@ -293,5 +293,6 @@ final class Constants {
     static final int ContextMenu_ShareAsImage = 17;
     static final int ContextMenu_ShareAsText = 18;
     static final int ContextMenu_xDaysEvent = 19;
+    static final int ContextMenu_SetEvenType = 20;
 
 }

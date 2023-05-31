@@ -52,13 +52,13 @@
     <string name="menu_context_share_as_text">as text</string>
     <string name="menu_context_xDaysEvent_add">Add days counter…</string>
     <string name="menu_context_xDaysEvent_edit">Days counter…</string>
+    <string name="menu_context_set_eventype">Choose event type…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>
     <string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
-<!--    <string name="msg_no_access_storage">No access to external storage</string>-->
     <string name="msg_no_events">Events not found</string>
     <string name="msg_no_files_selected">"  - not selected -"</string>
     <string name="msg_file_open_error">"Error opening file: "</string>
@@ -145,6 +145,7 @@
     <string name="msg_calendar_info">"Event from calendar \"%1$s\""</string>
     <string name="msg_file_info">"Event from file \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
+    <string name="msg_title_success">Action completed</string>
     <string name="msg_title_settings">Saved Settings</string>
     <string name="msg_no_selection">Empty selection! Need to select anything</string>
     <string name="msg_notifications_were_enabled">"Notifications were enabled\n"</string>
@@ -160,8 +161,10 @@
     <string name="msg_no_action">No action for event</string>
     <string name="msg_icon_changed">"App icon set: %1$s"</string>
     <string name="msg_created_quiz_channel">Created Quiz notification channel</string>
-    <string name="msg_prefs_import_askForClean_title">Confirmation</string>
-    <string name="msg_prefs_import_askForClean_message">Clean all saved preferences before import new one?</string>
+    <string name="msg_prefs_import_clear_confirmation">Clear all saved preferences before import new one?</string>
+    <string name="msg_eventtype_select_title">Select event type</string>
+    <string name="msg_eventtype_label_set">"Label set: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Label added: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -205,6 +208,8 @@
     <string name="button_close">Close</string>
     <string name="button_prefs">Preferences</string>
     <string name="button_off">Turn Off</string>
+    <string name="button_open">Open</string>
+    <string name="button_share">Share</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -329,7 +334,7 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use standard labels to detect birthday events</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Events with this label will be identified as birthdays</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Events with these labels will be identified as birthdays (by comma)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
@@ -338,27 +343,27 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Use standard labels to detect anniversary events</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Events with this label will be identified as anniversaries</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Events with these labels will be identified as anniversaries (by comma)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">List</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">All known anniversaries titles (by year)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Use standard labels to detect name days events</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Events with this label will be identified as name days</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Events with these labels will be identified as name days</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Use standard labels to detect crowning events</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Events with this label will be identified as crownings</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Events with these labels will be identified as crownings (by comma)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Use standard labels to detect death anniversary events</string>
     <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Events with this label will be identified as death anniversaries</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Events with these labels will be identified as death anniversaries (by comma)</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Other_Labels_summary">Events with this label will be identified as other events</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Events with these labels will be identified as other events (by comma)</string>
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
     <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
     <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
@@ -368,7 +373,7 @@
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Enter caption for this event to start using it</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">Events with this label will be identified as this event</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Events with these labels will be identified as this event (by comma)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Use full date info for event (not only day and month)</string>
 
@@ -848,13 +853,12 @@
     <string name="pref_Debug_On_title">Debug messages</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
     <string name="pref_Debug_On_summary">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
-    <string name="pref_ExtraFun_On_title">Extra features</string>
+    <string name="pref_ExtraFun_On_title">Extra features</string>а
     <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
 
     <string name="pref_Tools_title">Tools</string>
     <string name="pref_Tools_summary">Different tools for data manipulation</string>
     <string name="pref_Tools_Preferences_title">Preferences</string>
-    <string name="pref_Tools_Preferences_summary">Preferences tools</string>
     <string name="pref_Tools_Preferences_Show_title">Show saved preferences</string>
     <string name="pref_Tools_Preferences_Export_title">Export preferences</string>
     <string name="pref_Tools_Preferences_Export_result">Preferences exported: %1$d</string>

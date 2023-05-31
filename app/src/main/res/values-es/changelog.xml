@@ -11,6 +11,12 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.7</item>
+        <item>Exportación e importación agregadas de configuraciones (funciones extra)</item>
+        <item>Se agregó la capacidad de especificar rápidamente el tipo de un evento indefinido (toque prolongado en el evento)</item>
+        <item>El cuestionario se clasifica como una funciones extra</item>
+        <item>Se corrigieron errores menores y asperezas</item>
+
         <item>#1.7.6</item>
         <item>Todas las variaciones de nombre se utilizan para buscar nombres de contacto (con y sin segundo nombre)</item>
         <item>Se agregó la capacidad de agregar nombres masculinos no registrados (además de los femeninos)</item>

@@ -11,6 +11,12 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.7</item>
+        <item>Added export and import of settings (extra features)</item>
+        <item>Added the ability to quickly specify the type for an undefined event (long tap on the event)</item>
+        <item>The quiz is classified as an extra feature</item>
+        <item>Fixed minor bugs and roughness</item>
+
         <item>#1.7.6</item>
         <item>All name variations are used for searching contact names (with and w/o second names)</item>
         <item>Added the ability to add unrecorded male names (in addition to female ones)</item>

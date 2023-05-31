@@ -52,6 +52,7 @@
     <string name="menu_context_share_as_text">как текст</string>
     <string name="menu_context_xDaysEvent_add">Добавить счётчик дней…</string>
     <string name="menu_context_xDaysEvent_edit">Счётчик дней…</string>
+    <string name="menu_context_set_eventype">Указать тип события…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -145,6 +146,7 @@
     <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
     <string name="msg_title_confirmation">Подтверждение</string>
+    <string name="msg_title_success">Действие выполнено</string>
     <string name="msg_title_settings">Сохранённые настроки</string>
     <string name="msg_no_selection">Пустой выбор! Нужно выбрать что-нибудь</string>
     <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
@@ -160,8 +162,10 @@
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
     <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
-    <string name="msg_prefs_import_askForClean_title">Подтверждение</string>
-    <string name="msg_prefs_import_askForClean_message">Очистить все сохранённые настройки перед импортированием новых?</string>
+    <string name="msg_prefs_import_clear_confirmation">Удалить все сохранённые настройки перед импортированием новых?</string>
+    <string name="msg_eventtype_select_title">Выберите тип события</string>
+    <string name="msg_eventtype_label_set">"Метка установлена: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Метка добавлена: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -205,6 +209,8 @@
     <string name="button_close">Закрыть</string>
     <string name="button_prefs">Настройки</string>
     <string name="button_off">Выкл</string>
+    <string name="button_open">Открыть</string>
+    <string name="button_share">Поделиться</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -329,7 +335,7 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Использовать стандартные наименования для определения дней рождений</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">События с такой меткой будут идентифицированы как дни рождения</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">События с такими метками будут идентифицированы как дни рождения (через запятую)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Показывать дни рождения из выбранных календарей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Использовать год из события календаря для расчёта годовщин (не только день и месяц)</string>
@@ -338,27 +344,27 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Использовать стандартные наименования для определения годовщин свадеб</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">События с такой меткой будут идентифицированы как годовщины свадеб</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">События с такими метками будут идентифицированы как годовщины свадеб (через запятую)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Все именные годовщины свадеб (по годам)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Использовать стандартные наименования для определения именин</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">События с такой меткой будут идентифицированы как именины</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">События с такими метками будут идентифицированы как именины (через запятую)</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Использовать стандартные наименования для определения венчаний</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">События с такой меткой будут идентифицированы как венчания</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">События с такими метками будут идентифицированы как венчания (через запятую)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Использовать стандартные наименования для определения годовщин смерти</string>
     <string name="pref_CustomEvents_Death_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">События с такой меткой будут идентифицированы как годовщины смерти</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">События с такими метками будут идентифицированы как годовщины смерти (через запятую)</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Свои наименования</string>
-    <string name="pref_CustomEvents_Other_Labels_summary">События с такой меткой будут идентифицированы как другие события</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">События с такими метками будут идентифицированы как другие события (через запятую)</string>
     <string name="pref_CustomEvents_Calendars_title">Календари</string>
     <string name="pref_CustomEvents_Calendars_summary">Показывать события из выбранных календарей</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
@@ -368,7 +374,7 @@
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Заполните заголовок события, чтобы включить его использование</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Наименования событий</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">События с такой меткой будут идентифицированы как это событие</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">События с такими метками будут идентифицированы как это событие (через запятую)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Использовать год для расчёта годовщин (не только день и месяц)</string>
 
@@ -855,7 +861,6 @@
     <string name="pref_Tools_title">Инструменты</string>
     <string name="pref_Tools_summary">Различные инструменты для манипуляций с данными</string>
     <string name="pref_Tools_Preferences_title">Настройки</string>
-    <string name="pref_Tools_Preferences_summary">Инструменты для настроек приложения</string>
     <string name="pref_Tools_Preferences_Show_title">Показать сохранённые настройки</string>
     <string name="pref_Tools_Preferences_Export_title">Экспортировать настройки</string>
     <string name="pref_Tools_Preferences_Export_result">Экспортировано настроек: %1$d</string>

@@ -52,13 +52,13 @@
     <string name="menu_context_share_as_text">como texto</string>
     <string name="menu_context_xDaysEvent_add">Añadir contador de días…</string>
     <string name="menu_context_xDaysEvent_edit">Contador de días…</string>
+    <string name="menu_context_set_eventype">Elegir tipo de evento…</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referencia</string>
     <string name="menu_help_events_calendar">Eventos del calendario</string>
     <string name="menu_help_events_files">Eventos de archivos locales</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
-    <!--    <string name="msg_no_access_storage">Sin acceso a almacenamiento externo</string>-->
     <string name="msg_no_events">No se encontraron eventos</string>
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
@@ -145,6 +145,7 @@
     <string name="msg_calendar_info">"Evento de calendario \"%1$s\""</string>
     <string name="msg_file_info">"Evento de archivo \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmación</string>
+    <string name="msg_title_success">Acción completada</string>
     <string name="msg_title_settings">Configuraciones guardadas</string>
     <string name="msg_no_selection">¡Selección vacía! Necesito seleccionar cualquier cosa</string>
     <string name="msg_notifications_were_enabled">"Las notificaciones fueron habilitadas\n"</string>
@@ -160,6 +161,10 @@
     <string name="msg_no_action">Ninguna acción para el evento</string>
     <string name="msg_icon_changed">"Conjunto de iconos de aplicaciones: %1$s"</string>
     <string name="msg_created_quiz_channel">Canal de notificación de cuestionario creado</string>
+    <string name="msg_prefs_import_clear_confirmation">¿Borrar todas las preferencias guardadas antes de importar una nueva?</string>
+    <string name="msg_eventtype_select_title">Seleccionar tipo de evento</string>
+    <string name="msg_eventtype_label_set">"Conjunto de etiquetas: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Etiqueta agregada: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -182,6 +187,8 @@
     <string name="hint_Rate_AppGallery">Califique esta aplicación en la HUAWEI AppGallery</string>
 
     <string name="button_ok">Okay</string>
+    <string name="button_yes">Sí</string>
+    <string name="button_no">No</string>
     <string name="button_cancel">Cancelación</string>
     <string name="button_reset">Reiniciar</string>
     <string name="button_remove">Eliminar</string>
@@ -201,6 +208,8 @@
     <string name="button_close">Cerrar</string>
     <string name="button_prefs">Preferencias</string>
     <string name="button_off">Desactivar</string>
+    <string name="button_open">Abrir</string>
+    <string name="button_share">Compartir</string>
 
     <string name="events_scope_not_hidden">Todo no oculto (%1$d)</string>
     <string name="events_scope_all">Todas (%1$d)</string>
@@ -325,7 +334,7 @@
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use nombres estándar para los cumpleaños</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Los eventos de contactos con esta etiqueta se identificarán como cumpleaños (por coma)</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Eventos con estas etiquetas se identificarán como cumpleaños (separados por coma)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Mostrar eventos de cumpleaños de los calendarios elegidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Año de uso</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
@@ -334,27 +343,27 @@
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Utilice convenciones de nomenclatura estándar para aniversarios de bodas civil</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Los eventos de contacto con esta etiqueta se identificarán como aniversarios de bodas civil</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Eventos con estas etiquetas se identificarán como aniversarios de bodas civil (separados por coma)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Lista</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Todos los aniversarios de bodas personalizados (por año)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Use nombres estándar para los días del nombre</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Los eventos de contacto con esta etiqueta se identificarán como días de nombres</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Eventos con estas etiquetas se identificarán como días de nombres</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Utilice convenciones de nomenclatura estándar para aniversarios de bodas civil</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Los eventos de contacto con esta etiqueta se identificarán como aniversarios de bodas</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Eventos con estas etiquetas se identificarán como aniversarios de bodas (separados por coma)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Use nombres estándar para aniversarios de muerte</string>
     <string name="pref_CustomEvents_Death_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Los eventos de contacto con esta etiqueta se identificarán como aniversarios de muerte</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Eventos con estas etiquetas se identificarán como aniversarios de muerte (separados por coma)</string>
 
     <string name="pref_CustomEvents_Other_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Other_Labels_summary">Los eventos de contacto con esta etiqueta se identificarán como otros eventos</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Eventos con estas etiquetas se identificarán como otros eventos (separados por coma)</string>
     <string name="pref_CustomEvents_Calendars_title">Calendarios</string>
     <string name="pref_CustomEvents_Calendars_summary">Ver eventos de calendarios seleccionados</string>
     <string name="pref_CustomEvents_LocalFiles_title">Archivos locales</string>
@@ -364,7 +373,7 @@
     <string name="pref_CustomEvents_Custom_Caption_title">Título del evento</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Ingrese el título de este evento para comenzar a usarlo</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Etiquetas de eventos</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">Los eventos de contacto con dicha etiqueta se identificarán como este evento</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Eventos con estas etiquetas se identificarán como este evento (separados por coma)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Año de uso</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
 
@@ -846,6 +855,15 @@
     <string name="pref_Debug_On_summary">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
     <string name="pref_ExtraFun_On_title">Funciones extra</string>
     <string name="pref_ExtraFun_On_description">Habilite funciones adicionales para personalizar varios aspectos de la aplicación</string>
+
+    <string name="pref_Tools_title">Herramientas</string>
+    <string name="pref_Tools_summary">Diferentes herramientas para la manipulación de datos</string>
+    <string name="pref_Tools_Preferences_title">Preferencias</string>
+    <string name="pref_Tools_Preferences_Show_title">Mostrar preferencias guardadas</string>
+    <string name="pref_Tools_Preferences_Export_title">Preferencias de exportación</string>
+    <string name="pref_Tools_Preferences_Export_result">Preferencias exportadas: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">Preferencias de importación</string>
+    <string name="pref_Tools_Preferences_Import_result">Preferencias importadas: %1$d</string>
 
     <string name="changelog_version"><![CDATA[versión: %1$s (%2$s)<br>fecha: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalado desde %1$s]]></string>

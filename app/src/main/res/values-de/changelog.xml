@@ -11,6 +11,12 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.7</item>
+        <item>Export und Import von Einstellungen hinzugefügt (Extrafunktionen)</item>
+        <item>Möglichkeit hinzugefügt, den Typ für ein undefiniertes Ereignis schnell anzugeben (langes Tippen auf das Ereignis)</item>
+        <item>Das Quiz ist als Extrafunktionen klassifiziert</item>
+        <item>Kleinere Fehler und Unebenheiten behoben</item>
+
         <item>#1.7.6</item>
         <item>Alle Namensvariationen werden für die Suche nach Kontaktnamen verwendet (mit und ohne Nachnamen)</item>
         <item>Möglichkeit hinzugefügt, nicht aufgezeichnete männliche Namen hinzuzufügen (zusätzlich zu weiblichen)</item>
