@@ -59,7 +59,6 @@
     <string name="menu_help_events_files">События из локальных файлов</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
-<!--    <string name="msg_no_access_storage">Нет доступа к внешнему хранилищу</string>-->
     <string name="msg_no_events">События не найдены</string>
     <string name="msg_no_files_selected">"  - не выбраны -"</string>
     <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
@@ -163,6 +162,8 @@
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
     <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
     <string name="msg_prefs_import_clear_confirmation">Удалить все сохранённые настройки перед импортированием новых?</string>
+    <string name="msg_prefs_import_unknown">"Неизвестная настройка: %1$s"</string>
+    <string name="msg_prefs_import_error">"Ошибка импорта: %1$s"</string>
     <string name="msg_eventtype_select_title">Выберите тип события</string>
     <string name="msg_eventtype_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_eventtype_label_added">"Метка добавлена: %1$s"</string>
@@ -865,7 +866,7 @@
     <string name="pref_Tools_Preferences_Export_title">Экспортировать настройки</string>
     <string name="pref_Tools_Preferences_Export_result">Экспортировано настроек: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Импортировать настройки</string>
-    <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d, ошибок: %2$d</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>
@@ -898,7 +899,8 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>доступ к данным контактов: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>доступ к данным календарей: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>доступ к файлам внешнего хранилища: %1$s]]></string>
-    <string name="stats_permissions_notifications"><![CDATA[<li>уведомления: %1$s]]></string>
+    <string name="stats_permissions_notifications_access"><![CDATA[<li>доступ к отправке уведомлений: %1$s]]></string>
+    <string name="stats_permissions_notifications_on"><![CDATA[<li>уведомления: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>обновление виджетов (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимизация батареи: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>автозапуск (Xiaomi): %1$s]]></string>

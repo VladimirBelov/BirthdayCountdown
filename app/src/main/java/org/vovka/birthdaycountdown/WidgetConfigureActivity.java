@@ -129,6 +129,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+            if (widgetId > 0 && eventsData.preferences_debug_on) {
+                toolbar.setTitle(getString(R.string.window_widget_settings)
+                        .concat(Constants.STRING_PARENTHESIS_OPEN)
+                        .concat(Constants.STRING_ID)
+                        .concat(Constants.STRING_COLON_SPACE)
+                        .concat(String.valueOf(widgetId))
+                        .concat(Constants.STRING_PARENTHESIS_CLOSE)
+                );
+            }
 
             //Стартовый номер
             int prefStartingIndex = 1;

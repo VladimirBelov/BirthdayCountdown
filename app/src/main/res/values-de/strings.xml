@@ -162,6 +162,8 @@
     <string name="msg_icon_changed">"App-Symbolsatz: %1$s"</string>
     <string name="msg_created_quiz_channel">Quiz-Benachrichtigungskanal erstellt</string>
     <string name="msg_prefs_import_clear_confirmation">Alle gespeicherten Einstellungen löschen, bevor neue importiert werden?</string>
+    <string name="msg_prefs_import_unknown">"Unbekannte Präferenz: %1$s"</string>
+    <string name="msg_prefs_import_error">"Importfehler: %1$s"</string>
     <string name="msg_eventtype_select_title">Ereignistyp auswählen</string>
     <string name="msg_eventtype_label_set">"Labelsatz: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label hinzugefügt: %1$s"</string>
@@ -863,7 +865,7 @@
     <string name="pref_Tools_Preferences_Export_title">Exporteinstellungen</string>
     <string name="pref_Tools_Preferences_Export_result">Einstellungen exportiert: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Einstellungen importieren</string>
-    <string name="pref_Tools_Preferences_Import_result">Einstellungen importiert: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_result">Einstellungen importiert: %1$d, Fehler: %2$d</string>
 
     <string name="changelog_version"><![CDATA[Version: %1$s (%2$s)<br>Datum: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>Installiert von %1$s]]></string>
@@ -896,7 +898,8 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>Zugriff auf Kontaktdaten: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>Zugriff auf Kalenderdaten: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>Zugriff auf externe Speicherdateien: %1$s]]></string>
-    <string name="stats_permissions_notifications"><![CDATA[<li>Benachrichtigungen: %1$s]]></string>
+    <string name="stats_permissions_notifications_access"><![CDATA[<li>Zugriff auf die Benachrichtigungen: %1$s]]></string>
+    <string name="stats_permissions_notifications_on"><![CDATA[<li>Benachrichtigungen: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>Zugriff auf Widgets aktualisieren (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>Batterieoptimierung: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>Autostart (Xiaomi): %1$s]]></string>

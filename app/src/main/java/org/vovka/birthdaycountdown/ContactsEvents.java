@@ -67,6 +67,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -160,6 +161,7 @@ class ContactsEvents {
     static String getEventType(int eventID) {
         return checkForNull(eventTypesIDs.get(eventID));
     }
+
     private static final String TAG = "ContactsEvents";
     private static final ContactsEvents ourInstance = new ContactsEvents();
 
@@ -373,7 +375,8 @@ class ContactsEvents {
     private Context context;
     private Resources resources;
     private ContentResolver contentResolver;
-    @Nullable protected CoordinatorLayout coordinator;
+    @Nullable
+    protected CoordinatorLayout coordinator;
 
     private ContactsEvents() {
     }
@@ -931,20 +934,20 @@ class ContactsEvents {
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
             preferences_list_prev_events = getPreferenceString(preferences, context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
-            preferences_list_style = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default)));
-            preferences_list_photostyle = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default)));
-            preferences_list_filling = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default)));
-            preferences_list_marging = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default)));
-            preferences_list_sad_photo = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default)));
-            preferences_list_nameformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)));
-            preferences_list_dateformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default)));
+            preferences_list_style = getPreferenceInt(preferences, context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default));
+            preferences_list_photostyle = getPreferenceInt(preferences, context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default));
+            preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
+            preferences_list_marging = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
+            preferences_list_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
+            preferences_list_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+            preferences_list_dateformat = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));
             preferences_list_age_format = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_AgeFormat_key), pref_List_Age_Format_Default);
             preferences_list_custom_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomCaption_key), Constants.STRING_EMPTY);
             preferences_list_custom_todayevent_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomTodayEventCaption_key), Constants.STRING_EMPTY);
             preferences_list_color_eventtoday = getPreferenceInt(preferences, getResources().getString(R.string.pref_List_Color_EventToday_key), getResources().getColor(R.color.pref_List_Color_EventToday_default));
             preferences_list_color_eventsoon = getPreferenceInt(preferences, getResources().getString(R.string.pref_List_Color_EventSoon_key), getResources().getColor(R.color.pref_List_Color_EventSoon_default));
             preferences_list_color_eventjubilee = getPreferenceInt(preferences, getResources().getString(R.string.pref_List_Color_EventJubilee_key), getResources().getColor(R.color.pref_List_Color_EventJubilee_default));
-            preferences_list_on_click_action = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_List_OnClick_key), context.getString(R.string.pref_List_OnClick_default)));
+            preferences_list_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_List_OnClick_key), context.getString(R.string.pref_List_OnClick_default));
             preferences_list_magnify_distance = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Distance_key), 0);
             preferences_list_magnify_name = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Name_key), 0);
             preferences_list_magnify_details = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Details_key), 0);
@@ -955,9 +958,9 @@ class ContactsEvents {
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
             preferences_widgets_bottom_info_2nd = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
-            preferences_widgets_days_event_soon = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default)));
-            preferences_widgets_update_period = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_UpdateInterval_key), context.getString(R.string.pref_Widgets_UpdateInterval_default)));
-            preferences_widgets_on_click_action = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Widgets_OnClick_key), context.getString(R.string.pref_Widgets_OnClick_default)));
+            preferences_widgets_days_event_soon = getPreferenceInt(preferences, context.getString(R.string.pref_Widgets_Days_EventSoon_key), context.getString(R.string.pref_Widgets_Days_EventSoon_default));
+            preferences_widgets_update_period = getPreferenceInt(preferences, context.getString(R.string.pref_Widgets_UpdateInterval_key), context.getString(R.string.pref_Widgets_UpdateInterval_default));
+            preferences_widgets_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Widgets_OnClick_key), context.getString(R.string.pref_Widgets_OnClick_default));
             preferences_widgets_color_event_today = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventToday_key), getResources().getColor(R.color.pref_Widgets_Color_EventToday_default));
             preferences_widgets_color_event_soon = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventSoon_key), getResources().getColor(R.color.pref_Widgets_Color_EventSoon_default));
             preferences_widgets_color_event_far = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
@@ -1148,19 +1151,19 @@ class ContactsEvents {
                 add(Constants.STRING_EMPTY);
             }});
 
-            preferences_notifications_type = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Type_key), context.getString(R.string.pref_Notifications_Type_default)));
-            preferences_notifications_priority = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Priority_key), context.getString(R.string.pref_Notifications_Priority_default)));
-            preferences_notifications_alarm_hour = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default)));
+            preferences_notifications_type = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Type_key), context.getString(R.string.pref_Notifications_Type_default));
+            preferences_notifications_priority = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Priority_key), context.getString(R.string.pref_Notifications_Priority_default));
+            preferences_notifications_alarm_hour = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default));
             if (preferences_notifications_alarm_hour < 0)
                 preferences_notifications_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
-            preferences_notifications_alarm_minute = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default)));
+            preferences_notifications_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
             if (preferences_notifications_alarm_minute < 0)
                 preferences_notifications_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
             preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
             preferences_notifications_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types //По-умолчанию берём из списка событий
             );
             preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
-            preferences_notifications_on_click_action = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default)));
+            preferences_notifications_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
 
             //Имена
             preferences_first_names_female_custom = getPreferenceString(preferences, context.getString(R.string.pref_Female_Names_key), Constants.STRING_EMPTY);
@@ -1170,12 +1173,12 @@ class ContactsEvents {
 
             final String namesMale = preferences_first_names_male_custom.isEmpty() ?
                     context.getString(R.string.first_names_male) :
-                    context.getString(R.string.first_names_male).concat(Constants.STRING_COMMA).concat(preferences_first_names_male_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+                    context.getString(R.string.first_names_male).concat(Constants.STRING_COMMA).concat(preferences_first_names_male_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA));
             preferences_first_names_male = Pattern.compile(namesMale.replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
 
             final String namesFemale = preferences_first_names_female_custom.isEmpty() ?
                     context.getString(R.string.first_names_female) :
-                    context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(preferences_first_names_female_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA)) ;
+                    context.getString(R.string.first_names_female).concat(Constants.STRING_COMMA).concat(preferences_first_names_female_custom.toLowerCase().replace(Constants.STRING_COMMA_SPACE, Constants.STRING_COMMA));
             preferences_first_names_female = Pattern.compile(namesFemale.replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
 
             preferences_second_name_completions_male = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
@@ -1184,7 +1187,7 @@ class ContactsEvents {
             //Запоминаем информацию о темах
             preferences_theme = new MyTheme();
             try {
-                preferences_theme.prefNumber = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_Theme_key), context.getString(R.string.pref_Theme_default)));
+                preferences_theme.prefNumber = getPreferenceInt(preferences, context.getString(R.string.pref_Theme_key), context.getString(R.string.pref_Theme_default));
             } catch (ClassCastException e) {
                 preferences_theme.prefNumber = Integer.parseInt(context.getString(R.string.pref_Theme_default));
             }
@@ -1271,8 +1274,8 @@ class ContactsEvents {
             if (TextUtils.isEmpty(preferences_birthday_calendars_rules)) {
                 preferences_birthday_calendars_rules = context.getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default);
             }
-            preferences_rules_calendars_nameformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)));
-            preferences_rules_files_nameformat = Integer.parseInt(getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)));
+            preferences_rules_calendars_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+            preferences_rules_files_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
 
             dimen_List_details = resources.getDimension(R.dimen.event_details);
             dimen_List_name = resources.getDimension(R.dimen.event_name);
@@ -1831,7 +1834,8 @@ class ContactsEvents {
             for (String eventRow : eventsArray) {
 
                 String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//")) continue;
+                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//"))
+                    continue;
 
                 String eventDate = Constants.STRING_EMPTY;
                 @Nullable Date dateEvent = null;
@@ -1880,7 +1884,7 @@ class ContactsEvents {
                         }
                     }
 
-                //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
+                    //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
                 } else {
 
                     final String[] eventBDPdetails = eventLine.split(Constants.STRING_BDP_DIV, -1);
@@ -2440,7 +2444,7 @@ class ContactsEvents {
                                         //Ищем контакт
                                         final String personFullNameNormalized = normalizeName(foundName);
                                         String personFullNameAltNormalized = Constants.STRING_EMPTY;
-                                                contactID = map_contacts_names.get(personFullNameNormalized);
+                                        contactID = map_contacts_names.get(personFullNameNormalized);
                                         if (contactID == null) {
                                             personFullNameAltNormalized = normalizeName(personFullNameAlt);
                                             contactID = map_contacts_names.get(personFullNameAltNormalized);
@@ -2703,7 +2707,7 @@ class ContactsEvents {
         }
     }
 
-    static class Event{
+    static class Event {
         String caption = Constants.STRING_EMPTY;
         String label = Constants.STRING_EMPTY;
         String type = Constants.STRING_EMPTY;
@@ -2714,7 +2718,9 @@ class ContactsEvents {
         String distance;
         boolean needScanContacts;
 
-        public Event() {}
+        public Event() {
+        }
+
         public Event(Date date, String distance) {
             this.date = date;
             this.distance = distance;
@@ -2792,7 +2798,8 @@ class ContactsEvents {
                 for (String eventRow : eventsArray) {
 
                     String eventLine = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//")) continue;
+                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//"))
+                        continue;
 
                     userData.clear();
 
@@ -3189,7 +3196,8 @@ class ContactsEvents {
         }
     }
 
-    @NonNull private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, @NonNull String eventSubject) {
+    @NonNull
+    private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, @NonNull String eventSubject) {
 
         String eventLabel_forSearch = eventLabel.toLowerCase();
         Event event = new Event();
@@ -4101,9 +4109,9 @@ class ContactsEvents {
             singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
                     + (singleEventArray[Position_starred].equals(Constants.STRING_1) ? "0" : checkIsHiddenEvent(eventKey) ? "3" : checkIsSilencedEvent(eventKey) ? "2" : "1")
                     + (eventType.equals(getEventType(Constants.Type_BirthDay)) ? "1"
-                        : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
-                        : eventType.equals(getEventType(Constants.Type_Custom)) ? "3"
-                        : eventType.equals(getEventType(Constants.Type_Other)) ? "6" : "4");
+                    : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
+                    : eventType.equals(getEventType(Constants.Type_Custom)) ? "3"
+                    : eventType.equals(getEventType(Constants.Type_Other)) ? "6" : "4");
 
             eventList.set(i, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
@@ -4156,7 +4164,8 @@ class ContactsEvents {
                     dateEnd.add(Calendar.YEAR, 1);
                     int toRepeat = 365;
                     try {
-                        if (!valuePeriods.get(1).isEmpty()) toRepeat = - Integer.parseInt(valuePeriods.get(1));
+                        if (!valuePeriods.get(1).isEmpty())
+                            toRepeat = -Integer.parseInt(valuePeriods.get(1));
                     } catch (NumberFormatException e) { /**/ }
 
                     ArrayList<ContactsEvents.Event> events = getNextRepeatsForEvent(
@@ -4167,7 +4176,7 @@ class ContactsEvents {
                             toRepeat
                     );
                     if (events != null && events.size() > 0) {
-                        for(Event event: events) {
+                        for (Event event : events) {
 
                             String[] singleEventArrayXdays = singleEventArray.clone();
                             long xDaysDistance = countDaysDiff(currentDay, event.date);
@@ -4615,12 +4624,12 @@ class ContactsEvents {
         }
     }
 
-    @SuppressLint("MissingPermission")
     void showNotifications(boolean forceNoEventsMessage, String channelId) {
         //https://www.journaldev.com/15468/android-notification-styling
 
         try {
 
+            if (checkNoNotificationAccess()) return;
             Set<String> notifications_days = new HashSet<>(preferences_notifications_days); //За сколько дней уведомлять
             if (notifications_days.size() == 0) return;
 
@@ -4750,9 +4759,10 @@ class ContactsEvents {
                             builder.setSound(Uri.parse(preferences_notifications_ringtone));
                     }
 
-                    if (!checkNoNotificationAccess()) {
-                        notificationManager.notify(Constants.defaultNotificationID, builder.build());
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        return;
                     }
+                    notificationManager.notify(Constants.defaultNotificationID, builder.build());
                 }
             }
 
@@ -6699,7 +6709,11 @@ class ContactsEvents {
     }
 
     boolean checkNoStorageAccess() {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     boolean checkNoNotificationAccess() {
@@ -7046,7 +7060,27 @@ class ContactsEvents {
         try {
             return preferences.getInt(key, defValue);
         } catch (Exception e) {
-            return defValue;
+            try {
+                return Integer.parseInt(preferences.getString(key, Constants.STRING_0));
+            } catch (Exception e2) {
+                return defValue;
+            }
+        }
+    }
+
+    int getPreferenceInt(@NonNull SharedPreferences preferences, @NonNull String key, String defValue) {
+        int defValueInt = 0;
+        try {
+            defValueInt = Integer.parseInt(defValue);
+        } catch (NumberFormatException ignored) { /**/ }
+        try {
+            return preferences.getInt(key, defValueInt);
+        } catch (Exception e) {
+            try {
+                return Integer.parseInt(preferences.getString(key, Constants.STRING_0));
+            } catch (Exception e2) {
+                return defValueInt;
+            }
         }
     }
 

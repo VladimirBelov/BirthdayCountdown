@@ -941,6 +941,35 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:key="@string/pref_Tools_key"
+        android:title="@string/pref_Tools_title"
+        android:summary="@string/pref_Tools_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@android:drawable/ic_menu_manage">
+
+        <PreferenceCategory
+            android:key="@string/pref_Tools_Preferences_key"
+            android:title="@string/pref_Tools_Preferences_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@android:drawable/ic_menu_manage">
+
+            <Preference
+                android:key="@string/pref_Tools_Preferences_Show_key"
+                android:title="@string/pref_Tools_Preferences_Show_title"/>
+
+            <Preference
+                android:key="@string/pref_Tools_Preferences_Export_key"
+                android:title="@string/pref_Tools_Preferences_Export_title"/>
+
+            <Preference
+                android:key="@string/pref_Tools_Preferences_Import_key"
+                android:title="@string/pref_Tools_Preferences_Import_title"/>
+
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:key="@string/pref_Help_key"
         android:title="@string/pref_Help_title"
         android:summary="@string/pref_Help_summary"
@@ -987,35 +1016,6 @@
             android:title="@string/pref_CalendarAccess_title"
             android:icon="@android:drawable/ic_menu_info_details"
             android:layout="@layout/settings_item_red"/>
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:key="@string/pref_Tools_key"
-        android:title="@string/pref_Tools_title"
-        android:summary="@string/pref_Tools_summary"
-        android:layout="@layout/settings_category_with_icon"
-        android:icon="@android:drawable/ic_menu_manage">
-
-        <PreferenceCategory
-            android:key="@string/pref_Tools_Preferences_key"
-            android:title="@string/pref_Tools_Preferences_title"
-            android:layout="@layout/settings_category_with_icon"
-            android:icon="@android:drawable/ic_menu_manage">
-
-            <Preference
-                android:key="@string/pref_Tools_Preferences_Show_key"
-                android:title="@string/pref_Tools_Preferences_Show_title"/>
-
-            <Preference
-                android:key="@string/pref_Tools_Preferences_Export_key"
-                android:title="@string/pref_Tools_Preferences_Export_title"/>
-
-            <Preference
-                android:key="@string/pref_Tools_Preferences_Import_key"
-                android:title="@string/pref_Tools_Preferences_Import_title"/>
-
-        </PreferenceCategory>
 
     </PreferenceScreen>
 

@@ -162,6 +162,8 @@
     <string name="msg_icon_changed">"Набір значків програми: %1$s"</string>
     <string name="msg_created_quiz_channel">Створено канал сповіщень вікторини</string>
     <string name="msg_prefs_import_clear_confirmation">Очистити всі збережені налаштування перед імпортом нових?</string>
+    <string name="msg_prefs_import_unknown">"Невідомий параметр: %1$s"</string>
+    <string name="msg_prefs_import_error">"Помилка імпорту: %1$s"</string>
     <string name="msg_eventtype_select_title">Виберіть тип події</string>
     <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
     <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
@@ -863,7 +865,7 @@
     <string name="pref_Tools_Preferences_Export_title">Параметри експорту</string>
     <string name="pref_Tools_Preferences_Export_result">Експортовано налаштувань: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Параметри імпорту</string>
-    <string name="pref_Tools_Preferences_Import_result">Налаштування імпортовано: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_result">Налаштування імпортовано: %1$d, помилок: %2$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>встановлено з %1$s]]></string>
@@ -896,7 +898,8 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>доступ до даних контактів: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>доступ до даних календарів: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>доступ до файлів зовнішнього сховища: %1$s]]></string>
-    <string name="stats_permissions_notifications"><![CDATA[<li>повідомлення: %1$s]]></string>
+    <string name="stats_permissions_notifications_access"><![CDATA[<li>доступ до повідомлень: %1$s]]></string>
+    <string name="stats_permissions_notifications_on"><![CDATA[<li>повідомлення: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>доступ до оновлення віджетів (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимізація акумулятора: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>авто старт (Xiaomi): %1$s]]></string>
