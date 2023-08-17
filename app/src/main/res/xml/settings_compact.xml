@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 30.06.2022, 23:54
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 30.07.2023, 12:41
   ~  */
   -->
 
@@ -160,14 +160,24 @@
             android:layout="@layout/settings_category_with_icon"
             android:icon="@drawable/ic_launcher_android">
 
+            <ListPreference
+                android:key="@string/pref_CustomEvents_Rules_Unrecognized_key"
+                android:defaultValue="@string/pref_CustomEvents_Rules_Unrecognized_default"
+                android:entries="@array/pref_CustomEvents_Rules_Unrecognized_entries"
+                android:entryValues="@array/pref_CustomEvents_Rules_Unrecognized_values"
+                android:title="@string/pref_CustomEvents_Rules_Unrecognized_title"
+                android:summary="@string/pref_CustomEvents_Rules_Unrecognized_summary"
+                android:dialogIcon="@android:drawable/ic_menu_help"
+                android:negativeButtonText="@string/button_cancel"/>
+
             <Preference
                 android:key="@string/pref_CustomEvents_Birthday_Calendars_Rules_key"
                 android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
                 android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_summary"/>
 
             <ListPreference
-                android:defaultValue="@string/pref_List_NameFormat_default"
                 android:key="@string/pref_CustomEvents_Rules_Calendars_NameFormat_key"
+                android:defaultValue="@string/pref_List_NameFormat_default"
                 android:entries="@array/pref_List_NameFormat_entries"
                 android:entryValues="@array/pref_List_NameFormat_values"
                 android:title="@string/pref_CustomEvents_Rules_Calendars_NameFormat_title"
@@ -176,8 +186,8 @@
                 android:negativeButtonText="@string/button_cancel"/>
 
             <ListPreference
-                android:defaultValue="@string/pref_List_NameFormat_default"
                 android:key="@string/pref_CustomEvents_Rules_LocalFiles_NameFormat_key"
+                android:defaultValue="@string/pref_List_NameFormat_default"
                 android:entries="@array/pref_List_NameFormat_entries"
                 android:entryValues="@array/pref_List_NameFormat_values"
                 android:title="@string/pref_CustomEvents_Rules_LocalFiles_NameFormat_title"
@@ -667,6 +677,17 @@
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
+        <ListPreference
+            android:defaultValue="@string/pref_List_Jubilee_Algorithm_default"
+            android:entries="@array/pref_List_Jubilee_Algorithm_entries"
+            android:entryValues="@array/pref_List_Jubilee_Algorithm_values"
+            android:key="@string/pref_List_Jubilee_Algorithm_key"
+            android:summary="@string/pref_List_Jubilee_Algorithm_summary"
+            android:title="@string/pref_List_Jubilee_Algorithm_title"
+            android:icon="@android:drawable/ic_menu_week"
+            android:dialogIcon="@android:drawable/ic_menu_week"
+            android:negativeButtonText="@string/button_cancel"/>
+
         <org.vovka.birthdaycountdown.CustomEditTextPreference
             android:key="@string/pref_List_CustomCaption_key"
             android:summary="@string/pref_List_CustomCaption_summary"
@@ -951,7 +972,7 @@
             android:key="@string/pref_Tools_Preferences_key"
             android:title="@string/pref_Tools_Preferences_title"
             android:layout="@layout/settings_category_with_icon"
-            android:icon="@android:drawable/ic_menu_manage">
+            android:icon="@drawable/ic_sysbar_quicksettings">
 
             <Preference
                 android:key="@string/pref_Tools_Preferences_Show_key"

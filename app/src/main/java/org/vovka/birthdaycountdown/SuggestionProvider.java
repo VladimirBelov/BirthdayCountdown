@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 25.06.2022, 0:23
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 18.08.2023, 00:31
  *
  */
 
@@ -16,6 +16,8 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 // https://habr.com/ru/post/111961/
 // https://stackoverflow.com/questions/47917200/android-custom-suggestions-wont-show-up
@@ -32,10 +34,10 @@ public class SuggestionProvider extends ContentProvider{
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         eventsData = ContactsEvents.getInstance();
-        if (eventsData.getContext() == null) eventsData.setContext(getContext().getApplicationContext());
+        if (eventsData.getContext() == null && getContext() != null) eventsData.setContext(getContext().getApplicationContext());
 
         //to protect from running twice
         if (System.currentTimeMillis() - eventsData.statLastSearchSuggestion < 500) return null;
@@ -61,7 +63,7 @@ public class SuggestionProvider extends ContentProvider{
 
                 //Получаем данные
                 eventsData = ContactsEvents.getInstance();
-                if (eventsData.getContext() == null) eventsData.setContext(getContext().getApplicationContext());
+                if (eventsData.getContext() == null && getContext() != null) eventsData.setContext(getContext().getApplicationContext());
 
                 if (eventsData.isEmptyEventList()) {
                     if (eventsData.getEvents(null)) eventsData.computeDates();
@@ -74,7 +76,9 @@ public class SuggestionProvider extends ContentProvider{
                         if (event != null && event.toLowerCase().contains(queryString)) {
                             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
 
-                            if (eventsData.checkIsHiddenEvent(eventsData.getEventKey(singleEventArray))) {
+                            String eventKey = eventsData.getEventKey(singleEventArray);
+                            String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                            if (eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                                 eventNum--;
                             } else {
                                 final String[] eventDistance = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
@@ -113,22 +117,22 @@ public class SuggestionProvider extends ContentProvider{
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return SearchManager.SUGGEST_MIME_TYPE;
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException();
     }
 

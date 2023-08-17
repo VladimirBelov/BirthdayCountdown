@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 01.04.2022, 9:13
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 30.07.2023, 12:40
   ~  */
   -->
 
@@ -63,7 +63,7 @@
     <item
         android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
-        android:icon="@android:drawable/ic_menu_week" />
+        android:icon="@drawable/ic_sysbar_quicksettings" />
 
     <!-- 5 MENU_MAIN_FILTER -->
     <item

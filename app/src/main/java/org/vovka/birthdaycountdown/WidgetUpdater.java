@@ -1,14 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 13.09.2022, 18:50
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 18.08.2023, 00:36
  *
  */
 
 package org.vovka.birthdaycountdown;
-
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -24,9 +22,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +29,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 class WidgetUpdater {
 
@@ -233,6 +233,7 @@ class WidgetUpdater {
 
             final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
             final String eventKey = eventsData.getEventKey(singleEventArray);
+            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
             if  (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) ||
                     eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) { //пропускаем события календарей и из файлов
@@ -242,11 +243,11 @@ class WidgetUpdater {
                 if (eventsPrefList.size() > 0) {
                     useEventListPrefs = false;
                     isVisibleEvent = eventsPrefList.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
-                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey));
+                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
                 }
             }
             if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
-                    (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey));
+                    (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
 
             if (!isVisibleEvent) {
                 return;
@@ -643,7 +644,7 @@ class WidgetUpdater {
             //Иконка события без уведомления
             int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.STRING_ID, packageName);
             if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey)) {
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
 
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);

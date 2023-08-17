@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 15.09.2022, 21:54
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 12.08.2023, 11:11
  *
  */
 
@@ -30,18 +30,18 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
-
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
 
 //todo: подсветка нововведений в интерфейсе
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
@@ -111,7 +111,7 @@ public class AboutActivity extends AppCompatActivity {
             //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
             //https://stackoverflow.com/a/21119027/4928833
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
-            //todo: добавить откуда поставили https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
+            //https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
             TextView txtInfo = findViewById(R.id.textVersionInfo);
 
             txtInfo.setText(HtmlCompat.fromHtml(getString(
@@ -196,14 +196,18 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_files, !eventsData.checkNoStorageAccess()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        sb.append(getString(R.string.stats_permissions_notifications_access, ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
-                    }
-
                     sb.append(getString(R.string.stats_permissions_notifications_on, NotificationManagerCompat.from(this).areNotificationsEnabled()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        sb.append(getString(R.string.stats_permissions_post_notifications, ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    }
                     sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 

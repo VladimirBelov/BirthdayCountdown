@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:19
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 17.08.2023, 22:06
   ~  */
   -->
 
@@ -62,7 +62,8 @@
     <string name="msg_no_events">Events not found</string>
     <string name="msg_no_files_selected">"  - not selected -"</string>
     <string name="msg_file_open_error">"Error opening file: "</string>
-    <string name="msg_file_access_error">"Can't obtain write access to file. Try reselect file in application preference"</string>
+    <string name="msg_file_access_write_error">"Can't obtain write access to file. Try reselect file in application preference"</string>
+    <string name="msg_file_access_read_error">"Can't obtain read access to file: %1$s"</string>
     <string name="msg_before_event_prefix">"in "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>
@@ -167,6 +168,7 @@
     <string name="msg_eventtype_select_title">Select event type</string>
     <string name="msg_eventtype_label_set">"Label set: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label added: %1$s"</string>
+    <string name="msg_eventtype_label_absent">The event has no label!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -233,6 +235,7 @@
     <string name="event_type_nameday">Name day</string>
     <string name="event_type_calendar">Calendar event</string>
     <string name="event_type_file">File event</string>
+    <string name="event_type_unrecognized">Unrecognized event</string>
 
     <string name="appwidget_text">Loading…</string>
     <string name="appwidget_label_1_7">For 1–7 events</string>
@@ -332,6 +335,14 @@
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Contacts in calendar events are recorded in this format</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Name format for file events</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Contacts in events from local files are recorded in this format</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Unrecognized events</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">What to do with events whose type was not recognized</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Set as \'Other\' event type</item>
+        <item>Set as \'Unrecognized\' event type</item>
+        <item>Skip this event</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use standard labels to detect birthday events</string>
@@ -469,6 +480,9 @@
     <string name="pref_List_Filling_title">Background filling type</string>
     <string name="pref_List_Filling_summary">Set filling type for event placeholder (gradient)</string>
 
+    <string name="pref_List_Jubilee_Algorithm_title">Jubilee birthday</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">What is the principle of considering a birthday as an jubilee</string>
+
     <string-array name="pref_List_Filling_entries">
         <item>No filling</item>
         <item>Left to right</item>
@@ -477,6 +491,12 @@
         <item>From bottom to top</item>
         <item>From center</item>
         <item>To center</item>
+    </string-array>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Every 10 years</item>
+        <item>Every 5 years</item>
+        <item>Flexible (1, 3, 5, 10, 14, 18, 21, 30, 45, then every 5 years)</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Contact name format</string>
@@ -536,6 +556,7 @@
         <item>Zodiac sign</item>
         <item>Chinese calendar year</item>
         <item>Web link</item>
+        <item>Notes or Description</item>
         <item>Event account and raw date</item>
     </string-array>
 
@@ -898,8 +919,9 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>contacts access: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>calendar access: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>external storage access: %1$s]]></string>
-    <string name="stats_permissions_notifications_access"><![CDATA[<li>notifications access: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>permission to send notifications: %1$s]]></string>
     <string name="stats_permissions_notifications_on"><![CDATA[<li>notifications: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>permission to schedule notifications for a specific time: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>widgets update access (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>battery optimization: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autostart (Xiaomi): %1$s]]></string>
@@ -1141,8 +1163,11 @@
     <string name="pref_EventList_key" translatable="false">EventList</string>
     <string name="pref_List_Events_key" translatable="false">EventTypes</string>
     <string name="pref_Events_Hidden_key" translatable="false">HiddenEvents</string>
+    <string name="pref_Events_Hidden_rawIds_key" translatable="false">HiddenEventsRawIds</string>
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
+    <string name="pref_Events_Silent_rawIds_key" translatable="false">SilentEventsRawsIds</string>
     <string name="pref_MergedID_key" translatable="false">MergedIDs</string>
+    <string name="pref_MergedRawID_key" translatable="false">MergedRawIDs</string>
     <string name="pref_xDaysEvents_key" translatable="false">xDaysEvents</string>
 
     <string name="pref_EventTypes_Birthday" translatable="false">3</string>
@@ -1181,6 +1206,18 @@
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]"</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_key" translatable="false">CustomEvents_Rules_Calendars_NameFormat</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_key" translatable="false">CustomEvents_Rules_LocalFiles_NameFormat</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_key" translatable="false">CustomEvents_Rules_Unrecognized</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_default" translatable="false">@string/pref_CustomEvents_Rules_Unrecognized_Type_Other</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_Type_Other" translatable="false">1</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_Type_Unrecognized" translatable="false">2</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_Skip" translatable="false">3</string>
+
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_values">
+        <item>@string/pref_CustomEvents_Rules_Unrecognized_Type_Other</item>
+        <item>@string/pref_CustomEvents_Rules_Unrecognized_Type_Unrecognized</item>
+        <item>@string/pref_CustomEvents_Rules_Unrecognized_Skip</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_key" translatable="false">CustomEvents_Birthday</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_default" translatable="false">true</string>
@@ -1302,6 +1339,7 @@
     <string name="pref_List_EventInfo_URL" translatable="false">11</string>
     <string name="pref_List_EventInfo_EventIcon" translatable="false">12</string>
     <string name="pref_List_EventInfo_EventSource" translatable="false">13</string>
+    <string name="pref_List_EventInfo_Description" translatable="false">14</string>
     <string name="pref_List_EventInfo_DebugInfo" translatable="false">91</string>
 
     <string-array name="pref_List_EventInfo_values_default" translatable="false">
@@ -1328,6 +1366,7 @@
         <item>@string/pref_List_EventInfo_ZodiacSign</item> <!--Знак зодиака-->
         <item>@string/pref_List_EventInfo_ZodiacYear</item> <!--Зодиакальный год-->
         <item>@string/pref_List_EventInfo_URL</item> <!--Ссылка-->
+        <item>@string/pref_List_EventInfo_Description</item> <!--Заметки или описание-->
         <item>@string/pref_List_EventInfo_DebugInfo</item> <!--Тип аккаунта и хранимая дата-->
     </string-array>
 
@@ -1355,6 +1394,9 @@
 
     <string name="pref_List_Filling_key" translatable="false">List_Filling</string>
     <string name="pref_List_Filling_default" translatable="false">@string/pref_List_Filling_RightToLeft</string>
+
+    <string name="pref_List_Jubilee_Algorithm_key" translatable="false">List_Jubilee_Algorithm</string>
+    <string name="pref_List_Jubilee_Algorithm_default" translatable="false">@string/pref_List_Jubilee_Algorithm_Every_10</string>
 
     <string name="pref_List_SadPhoto_key" translatable="false">List_SadPhoto</string>
     <string name="pref_List_SadPhoto_default" translatable="false">2</string>
@@ -1415,6 +1457,15 @@
         <item>@string/pref_List_Filling_BottomToTop</item>
         <item>@string/pref_List_Filling_FromCenter</item>
         <item>@string/pref_List_Filling_ToCenter</item>
+    </string-array>
+    
+    <string name="pref_List_Jubilee_Algorithm_Every_10" translatable="false">1</string>
+    <string name="pref_List_Jubilee_Algorithm_Every_5" translatable="false">2</string>
+    <string name="pref_List_Jubilee_Algorithm_Every_Flex" translatable="false">3</string>
+    <string-array name="pref_List_Jubilee_Algorithm_values">
+        <item>@string/pref_List_Jubilee_Algorithm_Every_10</item>
+        <item>@string/pref_List_Jubilee_Algorithm_Every_5</item>
+        <item>@string/pref_List_Jubilee_Algorithm_Every_Flex</item>
     </string-array>
 
     <string name="pref_List_Margin_key" translatable="false">List_Margin</string>
@@ -1547,6 +1598,19 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
     </string-array>
 
     <string-array name="pref_Widgets_Days_EventSoon_values" translatable="false">

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 15.09.2022, 21:56
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 13.08.2023, 21:45
  *
  */
 
@@ -20,12 +20,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 
+import java.util.Locale;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-
-import java.util.Locale;
 
 public class FAQActivity extends AppCompatActivity {
 
@@ -99,17 +99,15 @@ public class FAQActivity extends AppCompatActivity {
                     arrFAQ = new String[]{};
                 }
 
-                if (arrFAQ.length > 0) {
-                    for (String strRow : arrFAQ) {
-                        if (strRow.length() >= 3 && strRow.startsWith("###")) {
-                            sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
-                        } else if (strRow.length() >= 2 && strRow.startsWith(Constants.STRING_2HASH)) {
-                            sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
-                        } else if (strRow.length() >= 1 && strRow.startsWith(Constants.STRING_HASH)) {
-                            sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
-                        } else {
-                            sb.append(strRow).append(Constants.HTML_BR);
-                        }
+                for (String strRow : arrFAQ) {
+                    if (strRow.length() >= 3 && strRow.startsWith("###")) {
+                        sb.append(Constants.HTML_BR).append(Constants.HTML_H1_START).append(strRow.substring(3)).append(Constants.HTML_H1_END);
+                    } else if (strRow.length() >= 2 && strRow.startsWith(Constants.STRING_2HASH)) {
+                        sb.append(Constants.HTML_BR).append(Constants.HTML_H2_START).append(strRow.substring(2)).append(Constants.HTML_H2_END);
+                    } else if (strRow.length() >= 1 && strRow.startsWith(Constants.STRING_HASH)) {
+                        sb.append(Constants.HTML_H3_START).append(strRow.substring(1)).append(Constants.HTML_H3_END);
+                    } else {
+                        sb.append(strRow).append(Constants.HTML_BR);
                     }
                 }
 

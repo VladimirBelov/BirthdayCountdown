@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:19
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 12.08.2023, 11:23
   ~  */
   -->
 
@@ -62,7 +62,7 @@
     <string name="msg_no_events">No se encontraron eventos</string>
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
-    <string name="msg_file_access_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
+    <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
     <string name="msg_before_event_prefix">"dentro de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -536,6 +536,7 @@
         <item>Signo del zodiaco</item>
         <item>Año del zodiaco</item>
         <item>Enlace web</item>
+        <item>Notas o Descripción</item>
         <item>Tipo de cuenta y fecha almacenada</item>
     </string-array>
 
@@ -898,8 +899,9 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>acceso a datos de contacto: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>acceso a los datos del calendario: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>acceso a archivos de almacenamiento externo: %1$s]]></string>
-    <string name="stats_permissions_notifications_access"><![CDATA[<li>acceso a las notificaciones: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>permiso para enviar notificaciones: %1$s]]></string>
     <string name="stats_permissions_notifications_on"><![CDATA[<li>notificaciones: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>permiso para programar notificaciones para una hora especifica: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>acceso a la actualización de widgets (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>optimización de la batería: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autoencendido (Xiaomi): %1$s]]></string>

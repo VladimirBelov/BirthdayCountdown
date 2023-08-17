@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 26.12.2021, 1:01
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 13.08.2023, 21:45
  *
  */
 
@@ -55,7 +55,8 @@ public class CustomEditTextPreference extends EditTextPreference {
         super.showDialog(state);
         TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
         final AlertDialog dialog = (AlertDialog) getDialog();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
+        if (dialog.getWindow() != null)
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
 
         /*int alertTitleId = getContext().getResources().getIdentifier("alertTitle", "id", "android");
         TextView alertTitle = (TextView) dialog.getWindow().getDecorView().findViewById(alertTitleId);

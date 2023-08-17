@@ -1,8 +1,10 @@
 /*
-* The MIT License (MIT)
-* Copyright (c) 2016 Anton Golovin
-* https://github.com/RGregat/FluentSnackbar/
-*/
+ * *
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 12.08.2023, 13:02
+ *
+ */
 
 package org.vovka.birthdaycountdown;
 
@@ -15,14 +17,14 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import org.vovka.birthdaycountdown.helper.ThreadHelper;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import org.vovka.birthdaycountdown.helper.ThreadHelper;
 
 public final class FluentSnackbar {
     private final View mView;
@@ -119,7 +121,7 @@ public final class FluentSnackbar {
 
         private Builder(CharSequence text) {
             mText = text;
-            mMaxLines = 1;
+            mMaxLines = 3;
             mTextColor = Color.WHITE;
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.theme_grey_primary);
             mIsImportant = false;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 25.06.2022, 1:08
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 30.07.2023, 12:41
  *
  */
 
@@ -11,7 +11,6 @@ package org.vovka.birthdaycountdown;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 public class NotifyActivity extends Activity {
 
@@ -36,7 +35,7 @@ public class NotifyActivity extends Activity {
 
                 } else {
 
-                    Toast.makeText(this, R.string.msg_notifications_disabled, Toast.LENGTH_LONG).show();
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
 
                 }
             }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 17.09.2022, 20:32
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 18.08.2023, 00:31
  *
  */
 
@@ -66,21 +66,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.text.HtmlCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
@@ -95,6 +80,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.text.HtmlCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -375,8 +375,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             final String eventKey = eventsData.getEventKey(selectedEvent);
+            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(selectedEvent);
             if (!eventKey.isEmpty()) {
-                if (eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
+                if (eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
 
                     menu.add(Menu.NONE, Constants.ContextMenu_UnhideEvent, Menu.NONE, getString(R.string.menu_context_unhide_event))
                             .setIcon(android.R.drawable.ic_menu_revert);
@@ -391,12 +392,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                if (eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
+                if (eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
 
                     menu.add(Menu.NONE, Constants.ContextMenu_UnsilentEvent, Menu.NONE, getString(R.string.menu_context_unsilent_event))
                             .setIcon(android.R.drawable.ic_menu_revert);
 
-                } else if (!eventsData.checkIsHiddenEvent(eventKey)) {
+                } else if (!eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event))
                             .setIcon(R.drawable.ic_menu_end_conversation);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -437,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            if (isUnrecognizedEvent(selectedEvent)) {
+            if (isUnrecognizedEvent(selectedEvent) && !Constants.STRING_EMPTY.equals(selectedEvent[ContactsEvents.Position_eventLabel])) {
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SetEvenType, Menu.NONE, getString(R.string.menu_context_set_eventype))
                         .setIcon(android.R.drawable.ic_menu_mylocation);
             }
@@ -447,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .setIcon(android.R.drawable.ic_menu_view);
             }
 
-            popupMenu.setOnMenuItemClickListener(item -> onPopupMenuItemSelected(listView, contactID, eventURLs, eventKey, item));
+            popupMenu.setOnMenuItemClickListener(item -> onPopupMenuItemSelected(listView, contactID, eventURLs, eventKey, eventKeyWithRawId, item));
             popupMenu.show();
             return true;
         } catch (Exception e) {
@@ -457,9 +458,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean onPopupMenuItemSelected(ListView listView, String contactID, String[] eventURLs, String eventKey, MenuItem item) {
+    private boolean onPopupMenuItemSelected(ListView listView, String contactID, String[] eventURLs, String eventKey, String eventKeyWithRawId, MenuItem item) {
         try {
-            final String eventKey1 = eventsData.getEventKey(selectedEvent);
+            //final String eventKey1 = eventsData.getEventKey(selectedEvent);
             int itemId = item.getItemId();
 
             if (itemId == Constants.ContextMenu_EditContact) {
@@ -542,9 +543,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_HideEvent) {
 
-                if (eventsData.setHiddenEvent(eventKey)) {
-                    if (eventsData.checkIsSilencedEvent(eventKey))
-                        eventsData.unsetSilencedEvent(eventKey); //Если скрываем - убираем из списка без уведомления
+                if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId))
+                        eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId); //Если скрываем - убираем из списка без уведомления
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -554,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_UnhideEvent) {
 
-                if (eventsData.unsetHiddenEvent(eventKey)) {
+                if (eventsData.unsetHiddenEvent(eventKey, eventKeyWithRawId)) {
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -586,7 +587,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_SilentEvent) {
 
-                if (eventsData.setSilencedEvent(eventKey)) {
+                if (eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -596,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_UnsilentEvent) {
 
-                if (eventsData.unsetSilencedEvent(eventKey)) {
+                if (eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId)) {
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -615,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_UnmergeEvent) {
 
-                if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], null)) {
+                if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], null, null)) {
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -766,6 +767,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_SetEvenType) {
 
+                if (Constants.STRING_EMPTY.equals(selectedEvent[ContactsEvents.Position_eventLabel])) {
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_eventtype_label_absent));
+                    return true;
+                }
+
                 List<String> eventNames = new ArrayList<>();
                 List<Integer> eventIcons = new ArrayList<>();
 
@@ -873,7 +879,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     alertForEventTypeDialog.dismiss();
-                    if (result[0] != null) {
+                    if (result[0] != null && !result[0].isEmpty()) {
                         ToastExpander.showInfoMsg(MainActivity.this, result[0]);
                         eventsData.getPreferences();
                         updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
@@ -1100,7 +1106,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             });
             dialog.show();
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            if (dialog.getWindow() != null)
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1459,18 +1466,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             MenuItem searchItem = menu.getItem(Constants.MENU_MAIN_SEARCH);
             SearchView searchView = (SearchView) searchItem.getActionView();
             searchItem.setVisible(!eventsData.isEmptyEventList());
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+            if (searchView != null) {
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    adapter.getFilter().filter(newText);
-                    return false;
-                }
-            });
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+            }
 
             final boolean isItemQuizVisible = !this.dataList.isEmpty() && eventsData.preferences_extrafun;
             //показывать, если есть события или выбран фильтр
@@ -1485,7 +1494,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             {
 
                 @Override
-                public boolean onMenuItemActionExpand(MenuItem item){
+                public boolean onMenuItemActionExpand(@NonNull MenuItem item){
                     menu.getItem(Constants.MENU_MAIN_ADD_EVENT).setVisible(false);
                     menu.getItem(Constants.MENU_MAIN_REFRESH).setVisible(false);
                     menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(false);
@@ -1497,7 +1506,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
                 @Override
-                public boolean onMenuItemActionCollapse(MenuItem item){
+                public boolean onMenuItemActionCollapse(@NonNull MenuItem item){
                     menu.getItem(Constants.MENU_MAIN_ADD_EVENT).setVisible(true);
                     menu.getItem(Constants.MENU_MAIN_REFRESH).setVisible(true);
                     menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(true);
@@ -1510,17 +1519,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
             });
-            searchView.setQueryHint(getString (R.string.msg_hint_search));
-            searchView.setMaxWidth(Integer.MAX_VALUE);
+
+            if (searchView != null) {
+                searchView.setQueryHint(getString (R.string.msg_hint_search));
+                searchView.setMaxWidth(Integer.MAX_VALUE);
+
+                //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            }
 
             menu.findItem(R.id.menu_open_file_with_events).setVisible(
                     !eventsData.preferences_Birthday_files.isEmpty()
                             || !eventsData.preferences_OtherEvent_files.isEmpty()
                             || !eventsData.preferences_MultiType_files.isEmpty());
-
-            //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
             // https://stackoverflow.com/questions/3721963/how-to-add-calendar-events-in-android
             // https://developer.android.com/training/contacts-provider/modify-data
@@ -1811,7 +1823,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         startActivity(intent);
                                     } catch (ActivityNotFoundException e) { /**/ }
                                 } catch (SecurityException se) {
-                                    ToastExpander.showInfoMsg(this, getText(R.string.msg_file_access_error).toString());
+                                    ToastExpander.showInfoMsg(this, getText(R.string.msg_file_access_write_error).toString());
                                 }
                             }
                         })
@@ -1895,8 +1907,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (contactUri != null) {
                     String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
                     if (!contactID.isEmpty() && !selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
-                        if (eventsData.setMergedID(selectedEvent[ContactsEvents.Position_eventID], contactID)) {
-                            updateList(true, true);
+                        if (eventsData.setMergedID(
+                                selectedEvent[ContactsEvents.Position_eventID],
+                                contactID,
+                                eventsData.map_contacts_ids.get(contactID))) {
+                            updateList(true, false);
                         }
                     }
                 }
@@ -1970,20 +1985,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //http://androidopentutorials.com/android-listview-fastscroll/
                 //https://stackoverflow.com/questions/33619453/scrollbar-touch-area-in-android-6
                 //https://stackoverflow.com/questions/6883785/android-sectionindexer-tutorial
-                //todo: разобраться. почему из-за FastScroll иногда падает приложение
-
-                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    listView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                        @Override
-                        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                            //включаем fast scroll, только когда скроллят
-                            if (!listView.isFastScrollEnabled()) {
-                                listView.setFastScrollEnabled(true);
-                                listView.postDelayed(() -> listView.setFastScrollEnabled(false), 4000);
-                            }
-                        }
-                    });
-                }*/
 
                 listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                     int mCurrentState = 0;
@@ -2105,6 +2106,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 for (String event : eventList_toPrepare) {
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                     String eventKey = eventsData.getEventKey(singleEventArray);
+                    String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
                     boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
                     boolean skipAdd = false;
@@ -2119,8 +2121,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
                         statsAllEvents++;
 
-                        boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey);
-                        boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey);
+                        boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
+                        boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
                         boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_XDAYS);
 
                         if (isHiddenEvent) statsHiddenEvents++;
@@ -2193,7 +2195,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private static boolean isUnrecognizedEvent(String[] singleEventArray) {
-        return singleEventArray[ContactsEvents.Position_eventIcon].equals(Constants.STRING_0);
+
+/*        return Constants.STRING_0.equals(singleEventArray[ContactsEvents.Position_eventIcon])
+                || ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);*/
+        return ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);
     }
 
     synchronized private void drawList() {
@@ -2456,7 +2461,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         break;
                 }
 
-                //Инфо под именем
+                //Информация под именем
                 StringBuilder eventDetails = new StringBuilder();
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
@@ -2564,17 +2569,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
 
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Description))) {
+                    final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                    if (eventDescription.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(eventDescription);
+                    }
+                }
+
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(singleEventArray[ContactsEvents.Position_dates].replace(Constants.STRING_2TILDA, Constants.HTML_BR).trim());
                 }
 
                 String eventKey = eventsData.getEventKey(singleEventArray);
-                if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey)) {
+                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED));
                 }
-                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey)) {
+                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_silenced), Constants.HTML_COLOR_BROWN));
                 }
@@ -2607,7 +2621,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Годовщина
-                if (person.Age > -1 && person.Age % 10 == 0) {
+                if (eventsData.isJubilee(person.Age, eventSubType)) {
                     holder.CounterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);
                 } else {
                     holder.CounterTextView.setTextColor(ta.getColor(R.styleable.Theme_eventAgeColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_grey_primary)));
@@ -2735,7 +2749,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
 
-            return convertedView != null ? convertedView : LayoutInflater.from(eventsData.getContext()).inflate(R.layout.entry_main, parent, false);
+            return convertedView; // != null ? convertedView : LayoutInflater.from(eventsData.getContext()).inflate(R.layout.entry_main, parent, false);
             /*if (convertedView != null) return convertedView;
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());

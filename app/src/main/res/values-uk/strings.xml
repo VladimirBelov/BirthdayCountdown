@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:20
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 12.08.2023, 11:22
   ~  */
   -->
 
@@ -62,7 +62,7 @@
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_no_files_selected">"  - не вибрано -"</string>
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
-    <string name="msg_file_access_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
+    <string name="msg_file_access_write_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
     <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -536,6 +536,7 @@
         <item>Знак зодіаку</item>
         <item>Східний календар</item>
         <item>Веб-посилання</item>
+        <item>Примітки або опис</item>
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
@@ -898,8 +899,9 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>доступ до даних контактів: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>доступ до даних календарів: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>доступ до файлів зовнішнього сховища: %1$s]]></string>
-    <string name="stats_permissions_notifications_access"><![CDATA[<li>доступ до повідомлень: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>дозвіл на надсилання повідомлень: %1$s]]></string>
     <string name="stats_permissions_notifications_on"><![CDATA[<li>повідомлення: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>дозвіл планувати повідомлення на точний час: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>доступ до оновлення віджетів (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимізація акумулятора: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>авто старт (Xiaomi): %1$s]]></string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 12.09.2022, 22:19
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 13.08.2023, 21:36
  *
  */
 
@@ -17,16 +17,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 // https://trinitytuts.com/tips/multiselect-spinner-item-in-android/
 public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
@@ -174,17 +173,18 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         Bundle args = fragment.getArguments();
         if (args != null) {
             final ArrayList<String> selected = args.getStringArrayList(Constants.EXTRA_RESULTS);
-            //Toast.makeText(getContext(), "Selected:\n" + selected.toString() , Toast.LENGTH_LONG).show();
-            if (!selected.isEmpty()) {
-                moveToBeginning(selected);
-                setSelection(selected);
-            }
-            if (!mNonSorted.isEmpty()) {
-                moveToBeginning(mNonSorted);
-                setSelection(selected);
+            if (selected != null) {
+                if (!selected.isEmpty()) {
+                    moveToBeginning(selected);
+                    setSelection(selected);
+                }
+                if (!mNonSorted.isEmpty()) {
+                    moveToBeginning(mNonSorted);
+                    setSelection(selected);
+                }
             }
         } else {
-            Toast.makeText(getContext(), "No results!" , Toast.LENGTH_LONG).show();
+            ToastExpander.showInfoMsg(getContext(), "No results!");
         }
     }
 

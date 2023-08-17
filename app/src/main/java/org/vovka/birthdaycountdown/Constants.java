@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 17.09.2022, 22:55
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 14.08.2023, 09:51
  *
  */
 
@@ -139,6 +139,7 @@ final class Constants {
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
     static final int Type_Xdays = 22;
+    static final int Type_Unrecognized = 99;
     static final String Type_MultiEvent = "30";
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
@@ -150,6 +151,7 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 103;
     static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 104;
+    static final int MY_PERMISSIONS_REQUEST_SCHEDULE_EXACT_ALARM = 107;
     static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_2 = 105;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 = 106;
 

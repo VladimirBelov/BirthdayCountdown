@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 25.06.2022, 1:08
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 18.08.2023, 00:34
  *
  */
 
@@ -37,6 +37,7 @@ public class ActionReceiver extends BroadcastReceiver {
             String notificationData = Constants.STRING_EMPTY;
             String[] singleEventArray = null;
             String eventKey = Constants.STRING_EMPTY;
+            String eventKeyWithRawId = Constants.STRING_EMPTY;
 
             if (extras != null) {
                 notificationID = extras.getInt(Constants.EXTRA_NOTIFICATION_ID, 0);
@@ -45,6 +46,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 if (!notificationData.equals(Constants.STRING_EMPTY)) {
                     singleEventArray = notificationData.split(Constants.STRING_EOT, -1);
                     eventKey = eventsData.getEventKey(singleEventArray);
+                    eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 }
             }
 
@@ -69,7 +71,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                eventsData.setSilencedEvent(eventKey);
+                eventsData.setSilencedEvent(eventKey, eventKeyWithRawId);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
@@ -81,7 +83,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                eventsData.setHiddenEvent(eventKey);
+                eventsData.setHiddenEvent(eventKey, eventKeyWithRawId);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 07.09.2022, 21:36
+ *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 30.07.2023, 12:41
  *
  */
 
@@ -83,7 +83,7 @@ public class ToastExpander {
 
                     mFluentSnackbar
                             .create(msg)
-                            .maxLines(5)
+                            .maxLines(8)
                             .backgroundColor(colorBack)
                             .important()
                             .actionText(context.getText(R.string.button_off).toString())

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 17.09.2022, 22:55
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 12.08.2023, 11:33
   ~  */
   -->
 
@@ -62,7 +62,8 @@
     <string name="msg_no_events">События не найдены</string>
     <string name="msg_no_files_selected">"  - не выбраны -"</string>
     <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
-    <string name="msg_file_access_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
+    <string name="msg_file_access_write_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
+    <string name="msg_file_access_read_error">"Не удалось получить доступ на чтение файла: %1$s"</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
@@ -167,6 +168,7 @@
     <string name="msg_eventtype_select_title">Выберите тип события</string>
     <string name="msg_eventtype_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_eventtype_label_added">"Метка добавлена: %1$s"</string>
+    <string name="msg_eventtype_label_absent">У события отсутствует метка!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -233,6 +235,7 @@
     <string name="event_type_nameday">Именины</string>
     <string name="event_type_calendar">Событие календаря</string>
     <string name="event_type_file">Событие из файла</string>
+    <string name="event_type_unrecognized">Нераспознанное событие</string>
 
     <string name="appwidget_text">Загрузка…</string>
     <string name="appwidget_label_1_7">На 1–7 событий</string>
@@ -332,6 +335,14 @@
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Контакты в календарных событиях записаны именно в таком формате</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Формат имени для файловых событий</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Контакты в событиях из локальных файлов записаны именно в таком формате</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Нераспознанные события</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Что делать с событиями, тип которых не удалось распознать</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Установить тип \'Другое событие\'</item>
+        <item>Установить тип \'Нераспознанное событие\'</item>
+        <item>Пропустить это событие</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартные наименования</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Использовать стандартные наименования для определения дней рождений</string>
@@ -469,6 +480,9 @@
     <string name="pref_List_Filling_title">Заполнение цветом (фон)</string>
     <string name="pref_List_Filling_summary">Вид градиента для заполнения цветом отдельного события</string>
 
+    <string name="pref_List_Jubilee_Algorithm_title">Алгоритм вычисления юбилеев</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">По какому принципу считать день рождения юбилейным</string>
+
     <string-array name="pref_List_Filling_entries">
         <item>Без заполнения</item>
         <item>Слева направо</item>
@@ -477,6 +491,12 @@
         <item>Снизу вверх</item>
         <item>Из центра</item>
         <item>В центр</item>
+    </string-array>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Каждые 10 лет</item>
+        <item>Каждые 5 лет</item>
+        <item>Гибко (1, 3, 5, 10, 14, 18, 21, 30, 45, затем каждые 5 лет)</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Формат для имени контакта</string>
@@ -536,6 +556,7 @@
         <item>Знак зодиака</item>
         <item>Животное в восточном календаре</item>
         <item>Web ссылка</item>
+        <item>Заметки или описание</item>
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
 
@@ -899,8 +920,9 @@
     <string name="stats_permissions_contacts"><![CDATA[<li>доступ к данным контактов: %1$s]]></string>
     <string name="stats_permissions_calendar"><![CDATA[<li>доступ к данным календарей: %1$s]]></string>
     <string name="stats_permissions_files"><![CDATA[<li>доступ к файлам внешнего хранилища: %1$s]]></string>
-    <string name="stats_permissions_notifications_access"><![CDATA[<li>доступ к отправке уведомлений: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>разрешение на отправку уведомлений: %1$s]]></string>
     <string name="stats_permissions_notifications_on"><![CDATA[<li>уведомления: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>разрешение планировать уведомления и обновления виджетов на точное время: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>обновление виджетов (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>оптимизация батареи: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>автозапуск (Xiaomi): %1$s]]></string>

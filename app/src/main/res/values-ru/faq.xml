@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 11.05.2022, 22:18
+  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 16.08.2023, 13:43
   ~  */
   -->
 
@@ -115,11 +115,14 @@
                 <item><![CDATA[Примеры файлов с событиями можно скачать со <a href="https://4pda.to/forum/index.php?showtopic=939391">страницы обсуждения приложения на 4PDA</a> или со страницы обсуждения <a href="https://4pda.to/forum/index.php?showtopic=71086&st=180#entry2033658">BirthdayPro</a><br>]]></item>
 
                 <item>#Импорт событий из социальных сетей</item>
-                <item>Большинство социальных сетей позволяют выгрузить дни рождения друзей в виде календаря iCalendar.</item>
+                <item><![CDATA[<s>Большинство социальных сетей позволяют выгрузить дни рождения друзей в виде календаря iCalendar</s>]]>.</item>
                 <item><![CDATA[Инструкция, как создать календарь дней рождения друзей из VK, Одноклассники, Мой мир: <a href="https://help.mail.ru/calendar-help/all/birthdays_social">ссылка</a>. Такие календари синхронизируются со смартфоном с помощью приложения <a href="https://help.mail.ru/calendar-help/synchronization/android/install">Mail.ru Календарь</a> (в данный момент недоступно)]]></item>
                 <item><![CDATA[Инструкция, как выгрузить дни рождения друзей из Facebook: <a href="https://4pda.to/forum/index.php?showtopic=939391&view=findpost&p=98641698">ссылка</a>]]></item>
+                <item><![CDATA[<br>Как посмотреть дни рождения онлайн:<ul>
+                <li>VK <a href="https://vk.com/friends?w=calendar">vk.com/friends?w=calendar</a>
+                <li>OK <a href="https://ok.ru/events">ok.ru/events</a>
+                </ul>]]></item>
 
-                <item> </item>
                 <item>###Общее</item>
 
                 <item>#Поиск</item>
