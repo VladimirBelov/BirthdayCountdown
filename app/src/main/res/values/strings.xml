@@ -480,9 +480,6 @@
     <string name="pref_List_Filling_title">Background filling type</string>
     <string name="pref_List_Filling_summary">Set filling type for event placeholder (gradient)</string>
 
-    <string name="pref_List_Jubilee_Algorithm_title">Jubilee birthday</string>
-    <string name="pref_List_Jubilee_Algorithm_summary">What is the principle of considering a birthday as an jubilee</string>
-
     <string-array name="pref_List_Filling_entries">
         <item>No filling</item>
         <item>Left to right</item>
@@ -492,6 +489,9 @@
         <item>From center</item>
         <item>To center</item>
     </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Jubilee birthday</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">What is the principle of considering a birthday as an jubilee</string>
 
     <string-array name="pref_List_Jubilee_Algorithm_entries">
         <item>Every 10 years</item>

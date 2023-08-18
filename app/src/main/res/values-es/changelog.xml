@@ -14,8 +14,13 @@
         <item>#1.7.7</item>
         <item>Exportación e importación agregadas de configuraciones (funciones extra)</item>
         <item>Se agregó la capacidad de especificar rápidamente el tipo de un evento indefinido (toque prolongado en el evento)</item>
-        <item>El cuestionario se clasifica como una funciones extra</item>
-        <item>Se corrigieron errores menores y asperezas</item>
+        <item>Se ha agregado una configuración sobre qué hacer con eventos no reconocidos a la configuración de importación</item>
+        <item>Se agregó la selección del algoritmo para configurar los cumpleaños como jubileo en la configuración de la lista de eventos (característica adicional). Cada 10 años por defecto</item>
+        <item>El cuestionario se clasifica como una función adicional</item>
+        <item>Se agregó la capacidad de mostrar notas de contacto y una descripción de los eventos del calendario (para la lista de eventos principales)</item>
+        <item>El índice máximo de inicio de eventos en la preferencia de widgets se ha incrementado de 7 a 20</item>
+        <item>Los eventos permanecen fusionados, ocultos o silenciosos incluso si un contacto de la libreta de direcciones se fusiona con un contacto de otro proveedor de contactos (WhatsApp, Telegram, Skype)</item>
+        <item>Corrección de errores menores</item>
 
         <item>#1.7.6</item>
         <item>Todas las variaciones de nombre se utilizan para buscar nombres de contacto (con y sin segundo nombre)</item>

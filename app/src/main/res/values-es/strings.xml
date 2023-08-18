@@ -63,6 +63,7 @@
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
     <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
+    <string name="msg_file_access_read_error">"No se pudo obtener acceso de lectura al archivo: %1$s"</string>
     <string name="msg_before_event_prefix">"dentro de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -167,6 +168,7 @@
     <string name="msg_eventtype_select_title">Seleccionar tipo de evento</string>
     <string name="msg_eventtype_label_set">"Conjunto de etiquetas: %1$s"</string>
     <string name="msg_eventtype_label_added">"Etiqueta agregada: %1$s"</string>
+    <string name="msg_eventtype_label_absent">¡Al evento le falta una etiqueta!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -233,6 +235,7 @@
     <string name="event_type_nameday">Día del nombre</string>
     <string name="event_type_calendar">Evento de calendario</string>
     <string name="event_type_file">Evento de archivo</string>
+    <string name="event_type_unrecognized">Evento no reconocido</string>
 
     <string name="appwidget_text">Cargando…</string>
     <string name="appwidget_label_1_7">Para 1–7 eventos</string>
@@ -332,6 +335,14 @@
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Los contactos en los eventos del calendario se registran en este formato</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Formato de nombre para eventos de archivo</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Los contactos en eventos de archivos locales se registran en este formato</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Eventos no reconocidos</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Qué hacer con eventos no reconocidos</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Establecer tipo \'Otro evento\'</item>
+        <item>Establecer tipo \'Evento no reconocido\'</item>
+        <item>Omitir este evento</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Nombres estándar</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use nombres estándar para los cumpleaños</string>
@@ -477,6 +488,15 @@
         <item>De abajo a arriba</item>
         <item>Desde el centro</item>
         <item>Al centro</item>
+    </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Algoritmo para calcular aniversarios</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">¿Cuál es el principio de considerar un cumpleaños como un aniversario</string>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Cada 10 años</item>
+        <item>Cada 5 años</item>
+        <item>Flexible (1, 3, 5, 10, 14, 18, 21, 30, 45, luego cada 5 años)</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Formato para el nombre del contacto</string>

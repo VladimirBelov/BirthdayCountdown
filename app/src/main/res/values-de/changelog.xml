@@ -14,8 +14,13 @@
         <item>#1.7.7</item>
         <item>Export und Import von Einstellungen hinzugefügt (Extrafunktionen)</item>
         <item>Möglichkeit hinzugefügt, den Typ für ein undefiniertes Ereignis schnell anzugeben (langes Tippen auf das Ereignis)</item>
-        <item>Das Quiz ist als Extrafunktionen klassifiziert</item>
-        <item>Kleinere Fehler und Unebenheiten behoben</item>
+        <item>Den Importeinstellungen wurde eine Einstellung hinzugefügt, was mit nicht erkannten Ereignissen geschehen soll</item>
+        <item>Auswahl des Algorithmus zum Festlegen von Geburtstagen als Jubiläum in den Ereignislisteneinstellungen hinzugefügt (Extrafunktion). Standardmäßig alle 10 Jahre</item>
+        <item>Das Quiz wird als Extrafunktion klassifiziert</item>
+        <item>Möglichkeit hinzugefügt, Kontaktnotizen und eine Beschreibung von Kalenderereignissen anzuzeigen (für die Hauptereignisliste)</item>
+        <item>Der maximale Ereignisstartindex in den Widget-Einstellungen wurde von 7 auf 20 erhöht</item>
+        <item>Ereignisse bleiben zusammengeführt, ausgeblendet oder stumm, selbst wenn ein Adressbuchkontakt mit einem Kontakt eines anderen Kontaktanbieters (WhatsApp, Telegram, Skype) zusammengeführt wird.</item>
+        <item>Kleinere Fehler behoben</item>
 
         <item>#1.7.6</item>
         <item>Alle Namensvariationen werden für die Suche nach Kontaktnamen verwendet (mit und ohne Nachnamen)</item>

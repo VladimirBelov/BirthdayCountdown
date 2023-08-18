@@ -480,9 +480,6 @@
     <string name="pref_List_Filling_title">Заполнение цветом (фон)</string>
     <string name="pref_List_Filling_summary">Вид градиента для заполнения цветом отдельного события</string>
 
-    <string name="pref_List_Jubilee_Algorithm_title">Алгоритм вычисления юбилеев</string>
-    <string name="pref_List_Jubilee_Algorithm_summary">По какому принципу считать день рождения юбилейным</string>
-
     <string-array name="pref_List_Filling_entries">
         <item>Без заполнения</item>
         <item>Слева направо</item>
@@ -492,6 +489,9 @@
         <item>Из центра</item>
         <item>В центр</item>
     </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Алгоритм вычисления юбилеев</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">По какому принципу считать день рождения юбилейным</string>
 
     <string-array name="pref_List_Jubilee_Algorithm_entries">
         <item>Каждые 10 лет</item>

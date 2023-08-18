@@ -63,6 +63,7 @@
     <string name="msg_no_files_selected">"  - не вибрано -"</string>
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
     <string name="msg_file_access_write_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
+    <string name="msg_file_access_read_error">"Неможливо отримати доступ до читання файлу: %1$s"</string>
     <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -167,6 +168,7 @@
     <string name="msg_eventtype_select_title">Виберіть тип події</string>
     <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
     <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
+    <string name="msg_eventtype_label_absent">У події відсутня мітка!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -233,6 +235,7 @@
     <string name="event_type_nameday">Іменини</string>
     <string name="event_type_calendar">Подія календаря</string>
     <string name="event_type_file">Подія з файлу</string>
+    <string name="event_type_unrecognized">Нерозпізнана подія</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_label_1_7">На 1–7 подій</string>
@@ -332,6 +335,14 @@
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Контакти у календарних подіях записані саме у такому форматі</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Формат імені для файлових подій</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Контакти у подіях з локальних файлів записані саме у такому форматі</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Нерозпізнані події</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Що робити з подіями, тип яких не вдалося розпізнати</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Встановити тип \'Інша подія\'</item>
+        <item>Встановити тип \'Нерозпізнана подія\'</item>
+        <item>Пропустити цю подію</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Використовувати стандартні найменування для визначення днів народжень</string>
@@ -477,6 +488,15 @@
         <item>Знизу вгору</item>
         <item>З центру</item>
         <item>До центру</item>
+    </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Алгоритм обчислення ювілеїв</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">За яким принципом вважати день народження ювілейним</string>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Кожні 10 років</item>
+        <item>Кожні 5 років</item>
+        <item>Гнучко (1, 3, 5, 10, 14, 18, 21, 30, 45, потім кожні 5 років)</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Формат вiдображення імені контакту</string>

@@ -63,6 +63,7 @@
     <string name="msg_no_files_selected">"  - nicht ausgewählt -"</string>
     <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>
+    <string name="msg_file_access_read_error">"Es konnte kein Lesezugriff auf Datei erhalten werden: %1$s"</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -167,6 +168,7 @@
     <string name="msg_eventtype_select_title">Ereignistyp auswählen</string>
     <string name="msg_eventtype_label_set">"Labelsatz: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label hinzugefügt: %1$s"</string>
+    <string name="msg_eventtype_label_absent">Ereignis fehlt eine Beschriftung!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -233,6 +235,7 @@
     <string name="event_type_nameday">Namenstag</string>
     <string name="event_type_calendar">Kalenderereignis</string>
     <string name="event_type_file">Dateiereignis</string>
+    <string name="event_type_unrecognized">Unerkanntes Ereignis</string>
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_label_1_7">Für 1–7 Ereignisse</string>
@@ -332,6 +335,14 @@
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Kontakte in Kalenderereignissen werden in diesem Format aufgezeichnet</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Namensformat für Ereignisse aus Dateien</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Kontakte in Ereignissen aus lokalen Dateien werden in diesem Format aufgezeichnet</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Unerkannte Ereignisse</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Was mit nicht erkannten Ereignissen zu tun ist</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Typ \'Anderes Ereignis\' festlegen</item>
+        <item>Typ \'Unerkanntes Ereignis\' festlegen</item>
+        <item>Dieses Ereignis überspringen</item>
+    </string-array>
 
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Geburtstage zu erkennen</string>
@@ -477,6 +488,15 @@
         <item>Von unten nach oben</item>
         <item>Von der Mitte</item>
         <item>Zur Mitte</item>
+    </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Algorithmus zur Berechnung von Jahrestagen</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">Was ist das Prinzip, einen Geburtstag als Jahrestag zu betrachten?</string>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Alle 10 Jahre</item>
+        <item>Alle 5 Jahre</item>
+        <item>Flexibel (1, 3, 5, 10, 14, 18, 21, 30, 45, dann alle 5 Jahre)</item>
     </string-array>
 
     <string name="pref_List_NameFormat_title">Format des Kontaktnamens</string>

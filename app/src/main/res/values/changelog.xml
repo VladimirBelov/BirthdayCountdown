@@ -15,12 +15,12 @@
         <item>Added export and import of settings (extra features)</item>
         <item>Added the ability to quickly specify the type for an undefined event (long tap on the event)</item>
         <item>A setting for what to do with unrecognized events has been added to the import settings</item>
-        <item>Added selection of the algorithm for setting birthdays and anniversaries as jubilee in the event list settings (extra feature). Every 5 years by default</item>
+        <item>Added selection of the algorithm for setting birthdays as jubilee in the event list settings (extra feature). Every 10 years by default</item>
         <item>The quiz is classified as an extra feature</item>
         <item>Added the ability to display contact notes and a description of calendar events (for the main events list)</item>
         <item>The maximum event start index in widget preference has been increased from 7 to 20</item>
-        <item>Events remain merged, hidden, or silent even if an address book contact is merged with a contact from another contact provider (WhatsApp, VK, OK, Telegram)</item>
-        <item>Fixed minor bugs and roughness</item>
+        <item>Events remain merged, hidden, or silent even if an address book contact is merged with a contact from another contact provider (WhatsApp, Telegram, Skype)</item>
+        <item>Fixed minor bugs</item>
 
         <item>#1.7.6</item>
         <item>All name variations are used for searching contact names (with and w/o second names)</item>
