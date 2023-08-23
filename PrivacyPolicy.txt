@@ -14,8 +14,10 @@ Permission android.permission.WAKE_LOCK (prevent device from sleeping) is necess
 Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notification.
 Permission android.permission.GET_ACCOUNTS is required to obtain data about user accounts. Information is not copied anywhere and does not change in any way.
 Permission android.permission.READ_EXTERNAL_STORAGE is necessary for playing notifications with a melody from external storage.
+Permission android.permission.READ_MEDIA_AUDIO is necessary for playing melody from external storage (Android 13+)
 Permission android.permission.READ_CALENDAR is required to read calendar events. Information is not copied anywhere else and does not change in any way.
 Permission android.permission.ACCESS_NOTIFICATION_POLICY is required to set high priority to quiz notifications on Android 7 and below.
+Permission android.permission.SCHEDULE_EXACT_ALARM is required to schedule notifications for a specific time (Android 13+)
 
 -------------------
 RU:
@@ -34,8 +36,10 @@ RU:
 Разрешение android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необходимо для корректировки времени появления уведомления о предстоящих событиях.
 Разрешение android.permission.GET_ACCOUNTS необходимо для получения данных о пользовательских учётных записях Android. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.READ_EXTERNAL_STORAGE необходимо для проигрывания уведомлений с мелодией из внешнего хранилища.
+Разрешение android.permission.READ_MEDIA_AUDIO необходимо для воспроизведения мелодии с внешнего хранилища (Android 13+)
 Разрешение android.permission.READ_CALENDAR необходимо для получения календарных событий. Информация больше никуда не копируется и никак не изменяется.
 Разрешение android.permission.ACCESS_NOTIFICATION_POLICY необходимо для выставления высокого приоритета уведомлениям викторины на Android 7 и младше.
+Разрешение android.permission.SCHEDULE_EXACT_ALARM требуется для планирования уведомлений на определенное время (Android 13+).
 
 -------------------
 DE:
@@ -54,8 +58,10 @@ Die Berechtigung android.permission.WAKE_LOCK (Standby-Modus des Geräts verhind
 Die Berechtigung android.permission.RECEIVE_BOOT_COMPLETED (wird beim Start ausgeführt) ist erforderlich, um den Zeitpunkt der Benachrichtigung über bevorstehende Ereignisse anzupassen.
 Die Berechtigung android.permission.GET_ACCOUNTS ist erforderlich, um Android-Benutzerkontodaten abzurufen. Informationen werden nirgendwo anders kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.READ_EXTERNAL_STORAGE ist erforderlich, um Benachrichtigungen mit einer Melodie aus einem externen Speicher abzuspielen.
+Die Berechtigung android.permission.READ_MEDIA_AUDIO ist zum Abspielen von Melodien aus einem externen Speicher erforderlich (Android 13+)
 Die Berechtigung android.permission.READ_CALENDAR ist erforderlich, um Kalenderereignisse zu empfangen. Informationen werden nirgendwo anders kopiert und ändern sich in keiner Weise.
 Die Berechtigung android.permission.ACCESS_NOTIFICATION_POLICY ist erforderlich, um Quizbenachrichtigungen unter Android 7 und niedriger eine hohe Priorität einzuräumen.
+Die Berechtigung android.permission.SCHEDULE_EXACT_ALARM ist erforderlich, um Benachrichtigungen für eine bestimmte Zeit zu planen (Android 13+).
 
 -------------------
 UKR:
@@ -74,8 +80,32 @@ UKR:
 Дозвіл android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необхідно для коригування часу появи повідомлення про майбутні події.
 Дозвіл android.permission.GET_ACCOUNTS необхідно для отримання даних про користувача облікових записах Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.READ_EXTERNAL_STORAGE необхідно для програвання повідомлень з мелодією з зовнішнього сховища.
+Дозвіл android.permission.READ_MEDIA_AUDIO необхідний для відтворення мелодії із зовнішнього накопичувача (Android 13+)
 Дозвіл android.permission.READ_CALENDAR необхідно для отримання календарних подій. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.ACCESS_NOTIFICATION_POLICY потрібен для встановлення високого пріоритету для повідомлень про вікторини на Android 7 і старіших версіях.
+Для планування сповіщень на певний час потрібен дозвіл android.permission.SCHEDULE_EXACT_ALARM (Android 13+)
+
+-------------------
+ESP:
+
+Política de privacidad: datos personales que la aplicación recibe, procesa o almacena:
+
+1. Ningún dato personal se almacena fuera del dispositivo del usuario, no se transfiere a ningún lugar ni se utiliza. La aplicación no tiene permisos para utilizar Internet.
+2. Si el usuario ha dado permiso para acceder a los datos de contacto, se lee la lista de cuentas de usuario de Android y se obtienen los datos de eventos de la libreta de direcciones. Los datos no se almacenan en ningún lugar, solo se muestran en la aplicación.
+3. Si el usuario ha dado permiso para acceder a los datos del calendario, se lee la lista de calendarios y eventos en los calendarios seleccionados. Los datos no se almacenan en ningún lugar, solo se muestran en la aplicación.
+4. Si el usuario especificó algún archivo para usar como origen de eventos, se leen los eventos de estos archivos. Los datos no se almacenan en ningún lugar, solo se muestran en la aplicación.
+
+Permisos que recibe la aplicación después de la instalación o que pueden solicitarse durante el proceso de configuración de la aplicación:
+
+Se requiere permiso android.permission.READ_CONTACTS para obtener datos de la libreta de direcciones de Android. La información no se copia en ninguna parte y no cambia de ninguna manera.
+El permiso android.permission.WAKE_LOCK (evitar que el dispositivo entre en suspensión) es necesario para actualizar automáticamente los widgets en Android 8+.
+El permiso android.permission.RECEIVE_BOOT_COMPLETED (ejecutar al inicio) es necesario para ajustar la hora de notificación de los próximos eventos.
+Se requiere permiso android.permission.GET_ACCOUNTS para obtener datos sobre cuentas de usuario. La información no se copia en ninguna parte y no cambia de ninguna manera.
+El permiso android.permission.READ_EXTERNAL_STORAGE es necesario para reproducir notificaciones con una melodía desde un almacenamiento externo.
+El permiso android.permission.READ_MEDIA_AUDIO es necesario para reproducir melodías desde un almacenamiento externo (Android 13+)
+Se requiere permiso android.permission.READ_CALENDAR para leer eventos del calendario. La información no se copia en ningún otro lugar y no cambia de ninguna manera.
+Se requiere permiso android.permission.ACCESS_NOTIFICATION_POLICY para establecer una alta prioridad para las notificaciones de cuestionarios en Android 7 y versiones anteriores.
+Se requiere permiso android.permission.SCHEDULE_EXACT_ALARM para programar notificaciones para una hora específica (Android 13+)
 
 -------------------
 CN:
@@ -93,5 +123,7 @@ CN:
 必须具有权限android.permission.WAKE_LOCK（防止设备进入休眠状态），才能在Android 8+上自动更新小部件。
 权限android.permission.RECEIVE_BOOT_COMPLETED（在启动时运行）对于调整即将发生的事件的通知时间是必需的。
 播放来自外部存储器的带有旋律的通知时，需要android.permission.READ_EXTERNAL_STORAGE权限。
+从外部存储播放旋律需要 android.permission.READ_MEDIA_AUDIO 权限（Android 13+）
 接收日历事件需要android.permission.READ_CALENDAR。 信息不会复制到其他任何地方，并且不会以任何方式更改。
 需要权限android.permission.ACCESS_NOTIFICATION_POLICY才能在Android 7及更低版本上为测验通知设置高优先级。
+需要 android.permission.SCHEDULE_EXACT_ALARM 权限才能安排特定时间的通知（Android 13+）

@@ -2510,6 +2510,7 @@ class ContactsEvents {
                         if (contactID != null) {
                             importMethod = importMethod_NewContactEvent;
                             userData.put(Position_contactID, contactID);
+                            userData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
 
                             //Ищем событие контакта в списке событий и добавляем в него
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
@@ -3145,6 +3146,7 @@ class ContactsEvents {
 
                     if (contactID != null) {
                         userData.put(Position_contactID, contactID);
+                        userData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
 
                         //Ищем событие контакта в списке событий и добавляем в него
                         Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
@@ -5259,18 +5261,16 @@ class ContactsEvents {
                 editor.putStringSet(context.getString(R.string.pref_Events_Hidden_rawIds_key), preferences_hiddenEventsRawIds);
             }
 
-            if (editor != null) editor.apply();
-
-            //clearDeadLinksHiddenEvents();
-            //if (preferences_debug_on) Toast.makeText(context, "Hided event: " + key, Toast.LENGTH_LONG).show();
-            return true;
+            if (editor != null) {
+                editor.apply();
+                return true;
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return false;
         }
-
+        return false;
     }
 
     boolean unsetHiddenEvent(@NonNull String key, String keyWithRawId) {
@@ -5285,7 +5285,7 @@ class ContactsEvents {
                 idremoved = preferences_hiddenEvents.remove(key);
 
             if (preferences_hiddenEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
-                idremoved = idremoved || preferences_hiddenEventsRawIds.remove(keyWithRawId);
+                idremoved = idremoved | preferences_hiddenEventsRawIds.remove(keyWithRawId);
 
             if (idremoved) {
 
@@ -5373,21 +5373,19 @@ class ContactsEvents {
             if (!TextUtils.isEmpty(keyWithRawId) && preferences_silentEventsRawIds != null) {
                 preferences_silentEventsRawIds.add(keyWithRawId);
                 if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                editor.putStringSet(context.getString(R.string.pref_Events_Silent_rawIds_key), preferences_silentEvents);
+                editor.putStringSet(context.getString(R.string.pref_Events_Silent_rawIds_key), preferences_silentEventsRawIds);
             }
 
-            if (editor != null) editor.apply();
-
-            //clearDeadLinksSilencedEvents();
-            //if (preferences_debug_on) Toast.makeText(context, "Silenced event: " + key, Toast.LENGTH_LONG).show();
-            return true;
+            if (editor != null) {
+                editor.apply();
+                return true;
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return false;
         }
-
+        return false;
     }
 
     boolean unsetSilencedEvent(@NonNull String key, String keyWithRawId) {
@@ -5402,7 +5400,7 @@ class ContactsEvents {
                 idremoved = preferences_silentEvents.remove(key);
 
             if (preferences_silentEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
-                idremoved = idremoved || preferences_silentEventsRawIds.remove(keyWithRawId);
+                idremoved = idremoved | preferences_silentEventsRawIds.remove(keyWithRawId);
 
             if (idremoved) {
 
@@ -5703,25 +5701,47 @@ class ContactsEvents {
 
         try {
 
-            if (getSilencedEventsCount() == 0) return;
+            int countRemoved = 0;
 
-            Set<String> toRemove = new HashSet<>();
+            //IDs
+            Set<String> toRemoveIds = new HashSet<>();
             for (String event : preferences_silentEvents) {
                 if (event.equals(Constants.STRING_EMPTY)) {
-                    toRemove.add(event);
+                    toRemoveIds.add(event);
                     continue;
                 }
                 final String[] keyParts = getKeyParts(event);
                 if (keyParts[1].equals(getEventType(Constants.Type_CalendarEvent))) {
-                    if (!idsAllCalendarEvents.contains(keyParts[0])) toRemove.add(event);
+                    if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
-                    if (!map_contacts_ids.containsKey(keyParts[0])) toRemove.add(event);
+                    if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
                 }
             }
-            if (toRemove.size() > 0) {
-                preferences_silentEvents.removeAll(toRemove);
-                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_silenced_result) + toRemove.size());
+            if (toRemoveIds.size() > 0) {
+                preferences_silentEvents.removeAll(toRemoveIds);
+                countRemoved += toRemoveIds.size();
             }
+
+            //RawIDs
+            Set<String> toRemoveRawIds = new HashSet<>();
+            for (String event : preferences_silentEventsRawIds) {
+                if (event.equals(Constants.STRING_EMPTY)) {
+                    toRemoveRawIds.add(event);
+                    continue;
+                }
+                final String[] keyParts = getKeyParts(event);
+                if (!map_contacts_rawIds.containsKey(keyParts[0])) toRemoveRawIds.add(event);
+            }
+            if (toRemoveRawIds.size() > 0) {
+                preferences_silentEventsRawIds.removeAll(toRemoveRawIds);
+                countRemoved += toRemoveRawIds.size();
+            }
+
+
+            if (countRemoved > 0) {
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_silenced_result) + countRemoved);
+            }
+
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -5733,24 +5753,44 @@ class ContactsEvents {
         //todo: добавить rawIds
         try {
 
-            if (getHiddenEventsCount() == 0) return;
+            int countRemoved = 0;
 
-            Set<String> toRemove = new HashSet<>();
+            //IDs
+            Set<String> toRemoveIds = new HashSet<>();
             for (String event : preferences_hiddenEvents) {
                 if (event.equals(Constants.STRING_EMPTY)) {
-                    toRemove.add(event);
+                    toRemoveIds.add(event);
                     continue;
                 }
                 final String[] keyParts = getKeyParts(event);
                 if (keyParts[1].equals(getEventType(Constants.Type_CalendarEvent))) {
-                    if (!idsAllCalendarEvents.contains(keyParts[0])) toRemove.add(event);
+                    if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
-                    if (!map_contacts_ids.containsKey(keyParts[0])) toRemove.add(event);
+                    if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
                 }
             }
-            if (toRemove.size() > 0) {
-                preferences_hiddenEvents.removeAll(toRemove);
-                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_hidden_result) + toRemove.size());
+            if (toRemoveIds.size() > 0) {
+                preferences_hiddenEvents.removeAll(toRemoveIds);
+                countRemoved += toRemoveIds.size();
+            }
+
+            //RawIDs
+            Set<String> toRemoveRawIds = new HashSet<>();
+            for (String event : preferences_hiddenEventsRawIds) {
+                if (event.equals(Constants.STRING_EMPTY)) {
+                    toRemoveRawIds.add(event);
+                    continue;
+                }
+                final String[] keyParts = getKeyParts(event);
+                if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveRawIds.add(event);
+            }
+            if (toRemoveRawIds.size() > 0) {
+                preferences_hiddenEventsRawIds.removeAll(toRemoveRawIds);
+                countRemoved += toRemoveRawIds.size();
+            }
+
+            if (countRemoved > 0) {
+                ToastExpander.showInfoMsg(context, context.getString(R.string.msg_filter_clean_hidden_result) + countRemoved);
             }
 
         } catch (Exception e) {
