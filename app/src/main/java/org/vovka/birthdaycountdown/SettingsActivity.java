@@ -1911,7 +1911,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_NEW_FILE);
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_EXPORT);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else {
@@ -2337,7 +2337,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                     eventsData.savePreferences();
                 }
-            } else if (requestCode == Constants.RESULT_PICK_NEW_FILE && resultCode == Activity.RESULT_OK) {
+            } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT && resultCode == Activity.RESULT_OK) {
                 if (resultData != null) {
                     Uri uri = resultData.getData();
                     if (uri != null) {

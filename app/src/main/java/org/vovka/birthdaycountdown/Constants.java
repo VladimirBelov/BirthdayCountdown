@@ -159,7 +159,7 @@ final class Constants {
     static final int RESULT_PICK_FILE = 201;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_RINGTONE = 203;
-    static final int RESULT_PICK_NEW_FILE = 204;
+    static final int RESULT_PICK_FILE_FOR_EXPORT = 204;
     static final int RESULT_PICK_FILE_FOR_IMPORT = 205;
 
     static final int defaultNotificationID = 1000;
