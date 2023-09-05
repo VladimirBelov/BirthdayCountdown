@@ -30,16 +30,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
@@ -189,19 +188,13 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
             alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
-
-                int colorNew = 0;
                 try {
-                    colorNew = Color.parseColor(textEdit.getText().toString());
-                } catch (Exception e) { /**/ }
-                if (colorNew == 0) {
-                    Toast.makeText(getContext(), getResources().getString(R.string.msg_color_parse_error), Toast.LENGTH_LONG).show();
-                    return;
+                    int colorNew = Color.parseColor(textEdit.getText().toString());
+                    setColor(colorNew);
+                    alertToShow.dismiss();
+                } catch (IllegalArgumentException e) {
+                    ToastExpander.showInfoMsg(getContext(), getResources().getString(R.string.msg_color_parse_error));
                 }
-
-                setColor(colorNew);
-                alertToShow.dismiss();
-
             });
 
         });

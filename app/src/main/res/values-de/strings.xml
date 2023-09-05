@@ -879,11 +879,11 @@
     <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
 
-    <string name="pref_Tools_title">Tools</string>
-    <string name="pref_Tools_summary">Verschiedene Tools zur Datenbearbeitung</string>
+    <string name="pref_Tools_title">Werkzeuge</string>
+    <string name="pref_Tools_summary">Verschiedene Werkzeuge zur Datenbearbeitung</string>
     <string name="pref_Tools_Preferences_title">Einstellungen</string>
     <string name="pref_Tools_Preferences_Show_title">Gespeicherte Einstellungen anzeigen</string>
-    <string name="pref_Tools_Preferences_Export_title">Exporteinstellungen</string>
+    <string name="pref_Tools_Preferences_Export_title">Einstellungen exportieren</string>
     <string name="pref_Tools_Preferences_Export_result">Einstellungen exportiert: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Einstellungen importieren</string>
     <string name="pref_Tools_Preferences_Import_result">Einstellungen importiert: %1$d, Fehler: %2$d</string>

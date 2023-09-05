@@ -1777,7 +1777,11 @@ class ContactsEvents {
             final StringBuilder selection = new StringBuilder();
             selection.append(ContactsContract.Data.MIMETYPE).append(" = '").append(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).append("' ");
             if (accountType != null) {
-                selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" = '").append(accountType).append("' ");
+                if (Constants.STRING_NULL.equalsIgnoreCase(accountType)) {
+                    selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" is null ");
+                } else {
+                    selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" = '").append(accountType).append("' ");
+                }
             }
             if (accountName != null) {
                 selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_NAME).append(" = '").append(accountName).append("' ");

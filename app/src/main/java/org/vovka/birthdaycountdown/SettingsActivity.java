@@ -1041,18 +1041,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         null,
                         null);
                 Set<String> accountsList = new HashSet<>();
-                if (cursor != null && cursor.getCount() >0) {
+                if (cursor != null && cursor.getCount() > 0) {
 
                     if (cursor.moveToFirst()) {
-                        final int columnName = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
-                        final int columnType = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
+                        final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
+                        final int indexTypeColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
                         do {
-                            String accountString = cursor.getString(columnName)
-                                    + Constants.STRING_PARENTHESIS_OPEN
-                                    + cursor.getString(columnType)
-                                    + Constants.STRING_PARENTHESIS_CLOSE;
+                            String accountName = cursor.getString(indexNameColumn);
+                            if (accountName == null) accountName = getString(R.string.account_type_local);
 
-                            accountsList.add(accountString);
+                            accountsList.add(
+                                    accountName
+                                    + Constants.STRING_PARENTHESIS_OPEN
+                                    + cursor.getString(indexTypeColumn)
+                                    + Constants.STRING_PARENTHESIS_CLOSE
+                            );
 
                         } while (cursor.moveToNext());
                         cursor.close();
@@ -1062,9 +1065,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 for (String accountString: accountsList) {
                     if (!accountNames.contains(accountString)) {
                         accountNames.add(accountString);
+                        final String accountType = accountString.substring(accountString.indexOf(Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_OPEN.length(), accountString.indexOf(Constants.STRING_PARENTHESIS_CLOSE));
+                        int accountEventsCount = eventsData.getContactsEventsCount(accountType, null);
+
                         choiceList.add(accountString
                                 + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getContactsEventsCount(accountString.substring(accountString.indexOf(Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_OPEN.length(), accountString.indexOf(Constants.STRING_PARENTHESIS_CLOSE)), null)
+                                + accountEventsCount
                                 + Constants.STRING_BRACKETS_CLOSE
                         );
                         if (accountString.toLowerCase().contains(Constants.account_sim)) {
@@ -1087,6 +1093,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (accountNames.size() > 0) {
                 ListAdapter adapter = new AccountsListAdapter(this, choiceList, accountIcons, accountPackages, ta);
 
+                int contactsEventsCount = eventsData.getContactsEventsCount(null, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_Accounts_title)
                         .setIcon(android.R.drawable.ic_menu_my_calendar)
@@ -1108,7 +1115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                         .setNeutralButton(getString(R.string.button_all) + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getContactsEventsCount(null, null)
+                                + contactsEventsCount
                                 + Constants.STRING_BRACKETS_CLOSE, (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
                             eventsData.savePreferences();

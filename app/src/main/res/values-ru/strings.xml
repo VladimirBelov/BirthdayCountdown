@@ -214,6 +214,7 @@
     <string name="button_off">Выкл</string>
     <string name="button_open">Открыть</string>
     <string name="button_share">Поделиться</string>
+    <string name="button_rgb">RGB цвет</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -236,6 +237,8 @@
     <string name="event_type_calendar">Событие календаря</string>
     <string name="event_type_file">Событие из файла</string>
     <string name="event_type_unrecognized">Нераспознанное событие</string>
+
+    <string name="account_type_local">Локальная</string>
 
     <string name="appwidget_text">Загрузка…</string>
     <string name="appwidget_label_1_7">На 1–7 событий</string>
@@ -635,6 +638,7 @@
     <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼‍📆📁 Иконка источника события</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
     <string name="pref_Widgets_EventInfo_DatesInBrackets">Окружать даты скобками</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Окрашивать цветом даты всё событие</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- новая строка -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- новая строка - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- новая строка -  "</string>

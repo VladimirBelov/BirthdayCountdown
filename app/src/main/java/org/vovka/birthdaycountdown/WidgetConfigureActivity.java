@@ -33,18 +33,18 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -258,6 +258,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
                     }
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear));
@@ -291,6 +292,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig_ID));
                         eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
                     }
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Photo));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Organization_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Organization));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_JobTitle_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_JobTitle));
@@ -369,6 +371,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
                     }
                     add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets));
+                    add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
                 spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем нескроллируемые вперёд

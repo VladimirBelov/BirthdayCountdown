@@ -161,7 +161,7 @@
         <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
         <item name="backgroundColor">@color/theme_black_primary</item>
         <item name="borderWindowColor">@color/lighter_gray</item>
-        <item name="colorAccent">@color/light_gray</item>
+        <item name="colorAccent">@color/lighter_gray</item>
         <item name="colorPrimary">@color/theme_black_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
         <item name="dialogButtonColor">@color/lighter_gray</item>

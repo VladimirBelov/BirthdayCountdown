@@ -23,8 +23,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import androidx.core.text.HtmlCompat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -32,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.core.text.HtmlCompat;
 
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
@@ -126,17 +126,6 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             } else {
 
-                switch (eventsData.preferences_list_nameformat) {
-                    case 2: //Фамилия Имя Отчество
-                        views.setTextViewText(R.id.eventCaption, singleEventArray[ContactsEvents.Position_personFullNameAlt]);
-                        break;
-                    case 1: //Имя Отчество Фамилия
-                    default:
-                        views.setTextViewText(R.id.eventCaption, singleEventArray[ContactsEvents.Position_personFullName]);
-                        break;
-                }
-
-
                 //Цвет даты события
                 String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
                 int eventDistance_Days;
@@ -145,7 +134,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 } catch (Exception e) {
                     eventDistance_Days = 365;
                 }
-                String colorDate = null;
+                String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
 
@@ -155,12 +144,22 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                         colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_soon & 0x00ffffff);
 
-                    } else { //Попозже
-
-                        colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
-
                     }
                 } catch (Resources.NotFoundException nfe) { /**/ }
+                final boolean colorizeEntireRow = widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID));
+
+                //Заголовок
+                String eventCaption;
+                if (eventsData.preferences_list_nameformat == 2) { //Фамилия Имя Отчество
+                    eventCaption = singleEventArray[ContactsEvents.Position_personFullNameAlt];
+                } else { //Имя Отчество Фамилия
+                    eventCaption = singleEventArray[ContactsEvents.Position_personFullName];
+                }
+                if (colorizeEntireRow) {
+                    views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(String.format(Constants.HTML_COLOR, colorDate, eventCaption), 0));
+                } else {
+                    views.setTextViewText(R.id.eventCaption, eventCaption);
+                }
 
                 StringBuilder sbDetails = new StringBuilder();
 
@@ -244,10 +243,17 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         }
                     }
 
-                    sbDetails.append(colorDate != null ? String.format(Constants.HTML_COLOR, colorDate, textDistance).concat(Constants.HTML_FONT_END) : textDistance.toString());
+                    sbDetails.append(String.format(Constants.HTML_COLOR, colorDate, textDistance).concat(Constants.HTML_FONT_END));
                 }
 
-                views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(sbDetails.toString(), 0));
+                String eventDetails;
+                if (colorizeEntireRow) {
+                    eventDetails = String.format(Constants.HTML_COLOR, colorDate, sbDetails);
+                } else {
+                    eventDetails = sbDetails.toString();
+                }
+
+                views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(eventDetails, 0));
 
                 //Фото
                 views.setImageViewBitmap(R.id.eventPhoto, null);

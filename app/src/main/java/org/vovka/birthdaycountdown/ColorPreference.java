@@ -26,12 +26,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.view.ContextThemeWrapper;
 
 public class ColorPreference extends Preference {
     private int[] mColorChoices = {};
@@ -144,10 +147,6 @@ public class ColorPreference extends Preference {
         private ColorGridAdapter mAdapter;
         private GridView mColorGrid;
 
-        @SuppressWarnings("deprecation")
-        public ColorDialogFragment() {
-        }
-
         public static ColorDialogFragment newInstance() {
             return new ColorDialogFragment();
         }
@@ -192,9 +191,42 @@ public class ColorPreference extends Preference {
 
             tryBindLists();
 
-            return new AlertDialog.Builder(getActivity())
-                    .setView(rootView)
-                    .create();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(getActivity())
+                    .setView(rootView);
+
+            if (eventsData.preferences_extrafun) {
+
+                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
+                    TypedArray ta = getActivity().getTheme().obtainStyledAttributes(R.styleable.Theme);
+                    final EditText textEdit = new EditText(getActivity());
+                    textEdit.setSingleLine();
+                    textEdit.setText(ContactsEvents.toARGBString(mPreference.getValue()));
+                    textEdit.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                    textEdit.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getActivity(), ContactsEvents.getInstance().preferences_theme.themeDialog))
+                            .setTitle(mPreference.mSelectDialogTitle)
+                            .setIcon(R.drawable.ic_menu_paste)
+                            .setView(textEdit)
+                            .setPositiveButton(R.string.button_ok, null)
+                            .setNegativeButton(R.string.button_cancel, (dialogM, whichM) -> dialogM.cancel());
+
+                    androidx.appcompat.app.AlertDialog alertToShow = builder.create();
+                    alertToShow.setOnDismissListener(dialogM -> ta.recycle());
+                    alertToShow.setOnShowListener(dialogM -> alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+                        try {
+                            int colorNew = Color.parseColor(textEdit.getText().toString());
+                            mPreference.setValue(colorNew);
+                            alertToShow.dismiss();
+                        } catch (IllegalArgumentException e) {
+                            ToastExpander.showInfoMsg(eventsData.getContext(), eventsData.getContext().getString(R.string.msg_color_parse_error));
+                        }
+                    }));
+                    alertToShow.show();
+                });
+            }
+
+            return colorDialogBuilder.create();
         }
 
         private void tryBindLists() {

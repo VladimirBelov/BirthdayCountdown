@@ -214,6 +214,7 @@
     <string name="button_off">Turn Off</string>
     <string name="button_open">Open</string>
     <string name="button_share">Share</string>
+    <string name="button_rgb">RGB color</string>
 
     <string name="events_scope_not_hidden">All not hidden (%1$d)</string>
     <string name="events_scope_all">All (%1$d)</string>
@@ -236,6 +237,8 @@
     <string name="event_type_calendar">Calendar event</string>
     <string name="event_type_file">File event</string>
     <string name="event_type_unrecognized">Unrecognized event</string>
+
+    <string name="account_type_local">Local</string>
 
     <string name="appwidget_text">Loading…</string>
     <string name="appwidget_label_1_7">For 1–7 events</string>
@@ -635,6 +638,7 @@
     <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Web link available</string>
     <string name="pref_Widgets_EventInfo_DatesInBrackets">Surround dates by brackets</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- new line -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- new line - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- new line -  "</string>
@@ -1532,6 +1536,7 @@
     <string name="pref_Widgets_EventInfo_DaysBeforeEventShort_ID" translatable="false">31</string>
     <string name="pref_Widgets_EventInfo_DatesInBrackets_ID" translatable="false">32</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_Widgets_EventInfo_Border_ID</item>
