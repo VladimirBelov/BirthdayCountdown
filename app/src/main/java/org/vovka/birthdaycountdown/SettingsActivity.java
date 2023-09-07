@@ -2158,6 +2158,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Widgets_UpdateInterval_key),
                         getString(R.string.pref_Widgets_OnClick_key),
                         getString(R.string.pref_Quiz_Interface_key),
+                        getString(R.string.pref_Colors_Resent_key),
                         getString(R.string.pref_CustomEvents_Birthday_Labels_key),
                         getString(R.string.pref_CustomEvents_Anniversary_Labels_key),
                         getString(R.string.pref_CustomEvents_NameDay_Labels_key),
@@ -2403,9 +2404,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setTextSize(16);
                 textView.setMaxLines(5);
 
-                //Context packageContext = this.context.createPackageContext(packages.get(position), 0);
-                //Resources resources = packageContext.getResources();
-                //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
                 Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
                 if (icon != null) {
                     Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

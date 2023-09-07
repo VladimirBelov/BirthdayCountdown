@@ -189,6 +189,7 @@
     <string name="hint_Version_History">История версий</string>
     <string name="hint_Rate_PlayMarket">Оценить приложение на Google Play</string>
     <string name="hint_Rate_AppGallery">Оценить приложение на HUAWEI AppGallery</string>
+    <string name="hint_Color">Значение в ARGB</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Да</string>
@@ -451,6 +452,12 @@
     <string name="pref_List_FontMagnify_seek_details">Детали:</string>
     <string name="pref_List_FontMagnify_seek_date">Дата:</string>
     <string name="pref_List_FontMagnify_seek_age">Возраст:</string>
+
+    <string name="pref_Color_title">Цвет:</string>
+    <string name="pref_Red_title">Красный:</string>
+    <string name="pref_Blue_title">Синий:</string>
+    <string name="pref_Green_title">Зелёный:</string>
+    <string name="pref_Alpha_title">Прозрачность:</string>
 
     <string name="pref_List_Style_title">Стиль отображения списка</string>
     <string name="pref_List_Style_summary">Варианты отображения списка событий</string>

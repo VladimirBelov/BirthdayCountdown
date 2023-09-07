@@ -189,6 +189,7 @@
     <string name="hint_Version_History">Version history</string>
     <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
     <string name="hint_Rate_AppGallery">Rate this app on HUAWEI AppGallery</string>
+    <string name="hint_Color">ARGB value</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Yes</string>
@@ -451,6 +452,12 @@
     <string name="pref_List_FontMagnify_seek_details">Event details:</string>
     <string name="pref_List_FontMagnify_seek_date">Date:</string>
     <string name="pref_List_FontMagnify_seek_age">Age:</string>
+
+    <string name="pref_Color_title">Color:</string>
+    <string name="pref_Red_title">Red:</string>
+    <string name="pref_Blue_title">Blue:</string>
+    <string name="pref_Green_title">Green:</string>
+    <string name="pref_Alpha_title">Transparency:</string>
 
     <string name="pref_List_Style_title">Event list style</string>
     <string name="pref_List_Style_summary">Set style of event list</string>
@@ -1778,4 +1785,6 @@
     <string name="faq_anchor_events_files" translatable="false">events_files</string>
     <string name="faq_anchor_widgets" translatable="false">widgets</string>
 
+    <string name="pref_Colors_Resent_key" translatable="false">ColorsResent</string>
+    <integer name="pref_Colors_Resent_max" translatable="false">10</integer>
 </resources>

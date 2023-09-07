@@ -359,6 +359,7 @@ class ContactsEvents {
     private Set<String> pref_List_Age_Format_Default;
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
+    List<Integer> preferences_RecentColors = new ArrayList<>();
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -1306,6 +1307,8 @@ class ContactsEvents {
             }
             preferences_rules_calendars_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
             preferences_rules_files_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+
+            getRecentColors();
 
             dimen_List_details = resources.getDimension(R.dimen.event_details);
             dimen_List_name = resources.getDimension(R.dimen.event_name);
@@ -7702,6 +7705,43 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        }
+    }
+
+    void getRecentColors() {
+
+        try {
+            preferences_RecentColors.clear();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            for (String value : getPreferenceString(preferences, context.getString(R.string.pref_Colors_Resent_key), Constants.STRING_EMPTY).split(Constants.STRING_COMMA_SPACE, -1)) {
+                try {
+                    preferences_RecentColors.add(Integer.parseInt(value));
+                } catch (NumberFormatException ignored) { /**/ }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void setRecentColor(int newValue) {
+
+        try {
+
+           if (!preferences_RecentColors.contains(newValue)) {
+               while(preferences_RecentColors.size() >= resources.getInteger(R.integer.pref_Colors_Resent_max)) {
+                   preferences_RecentColors.remove(0);
+               }
+               preferences_RecentColors.add(newValue);
+               SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+               editor.putString(context.getString(R.string.pref_Colors_Resent_key), TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_RecentColors));
+               editor.apply();
+           }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }
