@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.08.2023, 00:50
+ *  * Created by Vladimir Belov on 09.09.2023, 09:37
  *  * Copyright (c) 2018 - 2023. All rights reserved.
- *  * Last modified 18.08.2023, 00:31
+ *  * Last modified 08.09.2023, 23:09
  *
  */
 
@@ -359,7 +359,7 @@ class ContactsEvents {
     private Set<String> pref_List_Age_Format_Default;
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
-    List<Integer> preferences_RecentColors = new ArrayList<>();
+    final List<Integer> preferences_RecentColors = new ArrayList<>();
 
     //Статистика
     long statTimeGetContactEvents = 0;

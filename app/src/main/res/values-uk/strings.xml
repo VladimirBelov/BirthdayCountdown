@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
   ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 12.08.2023, 11:22
+  ~  * Last modified 09.09.2023, 09:33
   ~  */
   -->
 
@@ -189,6 +189,8 @@
     <string name="hint_Version_History">Історія версій</string>
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
     <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
+    <string name="hint_Color">Значення ARGB</string>
+    <string name="hint_widget_config_events_count_label">Установити кількість подій по горизонталі</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>
@@ -214,6 +216,7 @@
     <string name="button_off">Вимкнути</string>
     <string name="button_open">Відкрити</string>
     <string name="button_share">Поділитися</string>
+    <string name="button_rgb">Колір RGB</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -236,6 +239,8 @@
     <string name="event_type_calendar">Подія календаря</string>
     <string name="event_type_file">Подія з файлу</string>
     <string name="event_type_unrecognized">Нерозпізнана подія</string>
+
+    <string name="account_type_local">Локальна</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_label_1_7">На 1–7 подій</string>
@@ -449,6 +454,12 @@
     <string name="pref_List_FontMagnify_seek_date">Дата:</string>
     <string name="pref_List_FontMagnify_seek_age">Вік:</string>
 
+    <string name="pref_Color_title">Колір:</string>
+    <string name="pref_Red_title">Червоний:</string>
+    <string name="pref_Blue_title">Синій:</string>
+    <string name="pref_Green_title">Зелений:</string>
+    <string name="pref_Alpha_title">Прозорість:</string>
+
     <string name="pref_List_Style_title">Стиль списку подій</string>
     <string name="pref_List_Style_summary">Встановити стиль списку подій</string>
 
@@ -635,6 +646,7 @@
     <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Значок джерела події</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Веб-посилання доступне</string>
     <string name="pref_Widgets_EventInfo_DatesInBrackets">Візьміть дати в дужки</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Розфарбувати всі події кольором дати</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- новий рядок -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- новий рядок - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- новий рядок -  "</string>

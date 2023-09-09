@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:26
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 09.09.2023, 09:35
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
         <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+                <item>#1.7.8</item>
+                <item>Додано можливість розфарбувати весь рядок кольором дати (для віджета списку)</item>
+                <item>Додано можливість вказати значення RGB у налаштуваннях кольорів (додаткові функції) або вибрати один із останніх кольорів</item>
 
                 <item>#1.7.7</item>
                 <item>Додано експорт та імпорт налаштувань (додаткові функції)</item>

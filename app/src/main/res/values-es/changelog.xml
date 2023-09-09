@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:25
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 09.09.2023, 09:35
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.7.8</item>
+        <item>Se agregó la capacidad de colorear toda la fila con el color de la fecha (para el widget de lista)</item>
+        <item>Se agregó la capacidad de especificar valores RGB en la configuración de color (funciones extra) o elegir uno de los colores recientes</item>
 
         <item>#1.7.7</item>
         <item>Exportación e importación agregadas de configuraciones (funciones extra)</item>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 17.09.2022, 21:22
+ *  * Created by Vladimir Belov on 09.09.2023, 09:37
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 08.09.2023, 22:05
  *
  */
 
@@ -29,7 +29,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -396,32 +395,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
-
-            final SeekBar colorWidgetBackgroundAlpha = findViewById(R.id.colorWidgetBackgroundAlpha);
-            colorWidgetBackgroundAlpha.setProgress(Color.alpha(colorWidgetBackground));
-            colorWidgetBackgroundPicker.setAlphaSeekBar(colorWidgetBackgroundAlpha);
-
-            colorWidgetBackgroundAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(final SeekBar seekBar, final int progress, final boolean fromUser) {
-
-                    final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
-                    final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
-                    final int newColor = Color.argb(
-                            progress,
-                            Color.red(colorWidgetBackground),
-                            Color.green(colorWidgetBackground),
-                            Color.blue(colorWidgetBackground)
-                    );
-                    colorWidgetBackgroundPicker.setColor(newColor);
-                }
-
-                @Override
-                public void onStartTrackingTouch(final SeekBar seekBar) {}
-
-                @Override
-                public void onStopTrackingTouch(final SeekBar seekBar) {}
-            });
 
             //Скрываем недоступные параметры
 

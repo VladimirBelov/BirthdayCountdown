@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
   ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 12.08.2023, 11:22
+  ~  * Last modified 09.09.2023, 09:32
   ~  */
   -->
 
@@ -189,6 +189,8 @@
     <string name="hint_Version_History">Versionsverlauf</string>
     <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Google Play</string>
     <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der HUAWEI AppGallery</string>
+    <string name="hint_Color">ARGB-Wert</string>
+    <string name="hint_widget_config_events_count_label">Anzahl der Ereignisse horizontal festlegen</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Ja</string>
@@ -214,6 +216,7 @@
     <string name="button_off">Abstellen</string>
     <string name="button_open">Öffnen</string>
     <string name="button_share">Teilen</string>
+    <string name="button_rgb">RGB-Farbe</string>
 
     <string name="events_scope_not_hidden">Alles angezeigt (%1$d)</string>
     <string name="events_scope_all">Alle (%1$d)</string>
@@ -236,6 +239,8 @@
     <string name="event_type_calendar">Kalenderereignis</string>
     <string name="event_type_file">Dateiereignis</string>
     <string name="event_type_unrecognized">Unerkanntes Ereignis</string>
+
+    <string name="account_type_local">Lokal</string>
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_label_1_7">Für 1–7 Ereignisse</string>
@@ -449,6 +454,12 @@
     <string name="pref_List_FontMagnify_seek_date">Datum:</string>
     <string name="pref_List_FontMagnify_seek_age">Das Alter:</string>
 
+    <string name="pref_Color_title">Farbe:</string>
+    <string name="pref_Red_title">Rot:</string>
+    <string name="pref_Blue_title">Blau:</string>
+    <string name="pref_Green_title">Grün:</string>
+    <string name="pref_Alpha_title">Transparenz:</string>
+
     <string name="pref_List_Style_title">Stil der Ereignisliste</string>
     <string name="pref_List_Style_summary">Legen Sie den Stil der Ereignisliste fest</string>
 
@@ -635,6 +646,7 @@
     <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
     <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
     <string name="pref_Widgets_EventInfo_DatesInBrackets">Schließen Sie Datumsangaben in Klammern ein</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- neue Zeile -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- neue Zeile - "</string>
     <string name="pref_Widgets_EventInfo_NewLine3">"- neue Zeile -  "</string>

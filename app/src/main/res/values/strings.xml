@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
   ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 17.08.2023, 22:06
+  ~  * Last modified 08.09.2023, 23:37
   ~  */
   -->
 
@@ -190,6 +190,7 @@
     <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
     <string name="hint_Rate_AppGallery">Rate this app on HUAWEI AppGallery</string>
     <string name="hint_Color">ARGB value</string>
+    <string name="hint_widget_config_events_count_label">Set number of events horizontal</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Yes</string>

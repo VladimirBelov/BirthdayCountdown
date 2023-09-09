@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.08.2023, 00:50
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
   ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 18.08.2023, 00:50
+  ~  * Last modified 08.09.2023, 22:49
   ~  */
   -->
 
@@ -13,7 +13,7 @@
 
         <item>#1.7.8</item>
         <item>Added the ability to colorize the entire row with the date color (for list widget)</item>
-        <item>Added the ability to specify RGB values in the color settings (extra features)</item>
+        <item>Added the ability to specify RGB values in the color settings (extra features) or choose one of recent colors</item>
 
         <item>#1.7.7</item>
         <item>Added export and import of settings (extra features)</item>

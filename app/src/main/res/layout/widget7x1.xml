@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 13.05.2022, 16:57
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 08.09.2023, 23:37
   ~  */
   -->
 
@@ -18,14 +18,15 @@
         android:id="@+id/appwidget_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:contentDescription="@string/appwidget_text"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/appwidget_text"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        tools:ignore="TextContrastCheck"/>
+        tools:ignore="TextContrastCheck,VisualLintOverlap"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/events"

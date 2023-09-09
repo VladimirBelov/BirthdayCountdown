@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 25.06.2022, 1:08
+ *  * Created by Vladimir Belov on 09.09.2023, 09:37
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 09.09.2023, 09:37
  *
  */
 
@@ -16,6 +16,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,12 +26,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,25 +53,29 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
     private String mSelectDialogTitle = "";
     private int mSelectDialogIcon;
     private ColorGridAdapter mAdapter;
-    private SeekBar mAlphaSeekBar;
+    private final Context context;
 
     public ColorPicker(@NonNull Context context) {
         super(context);
+        this.context = context;
         initAttrs(null, 0, 0);
     }
 
     public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         initAttrs(attrs, 0, 0);
     }
 
     public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         initAttrs(attrs, defStyleAttr, 0);
     }
 
     public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        this.context = context;
         initAttrs(attrs, defStyleAttr, defStyleRes);
     }
 
@@ -121,17 +128,6 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 }
             }
 
-            int idRGB = getResources().getIdentifier("text1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
-            if (idRGB > 0) {
-                View rgbView = findViewById(idRGB);
-                if (rgbView != null) {
-                    if (!ContactsEvents.getInstance().preferences_extrafun) {
-                        rgbView.setVisibility(GONE);
-                    } else {
-                        rgbView.setOnClickListener(v -> setColorManual());
-                    }
-                }
-            }
             setColor(mValue);
 
         } catch (Exception e) {
@@ -152,64 +148,184 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (view != null) {
                 setColorViewValue(view, mValue);
             }
-            if (mAlphaSeekBar != null) {
-                mAlphaSeekBar.setProgress(Color.alpha(mValue));
-            }
-            int idRGB = getResources().getIdentifier("text1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
-            if (idRGB > 0) {
-                TextView rgbView = findViewById(idRGB);
-                if (rgbView != null) {
-                    rgbView.setText(ContactsEvents.toARGBString(mValue));
-                }
-            }
         }
     }
 
-    public void setColorManual() {
+    private void selectRGBColor(ContactsEvents eventsData) {
 
-        TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
-        final EditText textEdit = new EditText(getContext());
-        textEdit.setSingleLine();
-        textEdit.setText(ContactsEvents.toARGBString(mValue));
-        textEdit.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
-        textEdit.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog))
-                .setTitle(mSelectDialogTitle)
-                .setIcon(R.drawable.ic_menu_paste)
-                .setView(textEdit)
-                .setPositiveButton(R.string.button_ok, null)
-                .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+        try {
 
-        AlertDialog alertToShow = builder.create();
+            TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
 
+            final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
 
-        alertToShow.setOnShowListener(dialog -> {
-            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-            alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            if (eventsData.preferences_theme.themeEditText != 0) {
+                builder.getContext().setTheme(eventsData.preferences_theme.themeEditText);
+            } else {
+                builder.getContext().setTheme(ContactsEvents.themeEditText_default);
+            }
 
-            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
-                try {
-                    int colorNew = Color.parseColor(textEdit.getText().toString());
-                    setColor(colorNew);
-                    alertToShow.dismiss();
-                } catch (IllegalArgumentException e) {
-                    ToastExpander.showInfoMsg(getContext(), getResources().getString(R.string.msg_color_parse_error));
+            androidx.appcompat.app.AlertDialog dialog = builder.create();
+            View view = View.inflate(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
+            dialog.setView(view);
+
+            if (mSelectDialogTitle.isEmpty()) {
+                View caption = view.findViewById(R.id.caption);
+                caption.setVisibility(View.GONE);
+            } else {
+                TextView titleView = view.findViewById(R.id.title);
+                titleView.setText(mSelectDialogTitle);
+            }
+            ImageView icon = view.findViewById(R.id.icon);
+            if (mSelectDialogIcon != 0) {
+                icon.setImageResource(mSelectDialogIcon);
+            } else {
+                icon.setVisibility(View.GONE);
+            }
+
+            TextView color_label = view.findViewById(R.id.color_label);
+            color_label.setText(context.getString(R.string.pref_Color_title));
+
+            final int[] colorValue = {mValue};
+            TextView color_edit = view.findViewById(R.id.color_edit);
+            color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+            color_edit.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+            color_edit.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+
+            ImageView color_preview = view.findViewById(R.id.color_preview);
+            setColorViewValue(color_preview, colorValue[0]);
+
+            TextView seek1_label = view.findViewById(R.id.seek1_label);
+            seek1_label.setText(context.getString(R.string.pref_Red_title));
+            SeekBar seek1 = view.findViewById(R.id.seek1);
+            seek1.setProgress(Color.red(colorValue[0]));
+            TextView seek1_progress = view.findViewById(R.id.seek1_progress);
+            seek1_progress.setText(String.valueOf(seek1.getProgress()));
+
+            TextView seek2_label = view.findViewById(R.id.seek2_label);
+            seek2_label.setText(context.getString(R.string.pref_Green_title));
+            SeekBar seek2 = view.findViewById(R.id.seek2);
+            seek2.setProgress(Color.green(colorValue[0]));
+            TextView seek2_progress = view.findViewById(R.id.seek2_progress);
+            seek2_progress.setText(String.valueOf(Color.green(colorValue[0])));
+
+            TextView seek3_label = view.findViewById(R.id.seek3_label);
+            seek3_label.setText(context.getString(R.string.pref_Blue_title));
+            SeekBar seek3 = view.findViewById(R.id.seek3);
+            seek3.setProgress(Color.blue(colorValue[0]));
+            TextView seek3_progress = view.findViewById(R.id.seek3_progress);
+            seek3_progress.setText(String.valueOf(Color.blue(colorValue[0])));
+
+            TextView seek4_label = view.findViewById(R.id.seek4_label);
+            seek4_label.setText(context.getString(R.string.pref_Alpha_title));
+            SeekBar seek4 = view.findViewById(R.id.seek4);
+            seek4.setProgress(255 - Color.alpha(colorValue[0]));
+            TextView seek4_progress = view.findViewById(R.id.seek4_progress);
+            seek4_progress.setText(String.valueOf(255 - Color.alpha(colorValue[0])));
+
+            color_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) { /**/ }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try {
+                        String colorString = color_edit.getText().toString();
+                        if (!colorString.startsWith(Constants.STRING_HASH) && colorString.matches("\\d+")) colorString = Constants.STRING_HASH + colorString;
+                        int colorInt = Color.parseColor(colorString);
+                        colorValue[0] = colorInt;
+                        seek1.setProgress(Color.red(colorInt));
+                        seek2.setProgress(Color.green(colorInt));
+                        seek3.setProgress(Color.blue(colorInt));
+                        seek4.setProgress(255 - Color.alpha(colorInt));
+                        setColorViewValue(color_preview, colorInt);
+                    } catch (Exception e) { /**/ }
                 }
             });
 
-        });
+            seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    seek1_progress.setText(String.valueOf(progress));
+                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    setColorViewValue(color_preview, colorValue[0]);
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
 
-        alertToShow.setOnDismissListener(dialog -> ta.recycle());
+            seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    seek2_progress.setText(String.valueOf(progress));
+                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    setColorViewValue(color_preview, colorValue[0]);
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
 
-        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertToShow.show();
+            seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    seek3_progress.setText(String.valueOf(progress));
+                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    setColorViewValue(color_preview, colorValue[0]);
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    seek4_progress.setText(String.valueOf(progress));
+                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    setColorViewValue(color_preview, colorValue[0]);
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            dialog.setOnShowListener(arg0 -> {
+                final Button buttonPositive = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+                buttonPositive.setOnClickListener(v -> {
+                    try {
+                        String colorString = color_edit.getText().toString();
+                        if (!colorString.startsWith(Constants.STRING_HASH)) colorString = Constants.STRING_HASH + colorString;
+                        int colorInt = Color.parseColor(colorString);
+                        setColor(colorInt);
+                        eventsData.setRecentColor(colorInt);
+                        dialog.dismiss();
+                    } catch (IllegalArgumentException e) {
+                        ToastExpander.showInfoMsg(eventsData.getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
+                    }
+                });
+                final View buttonBar = (View) buttonPositive.getParent();
+                buttonBar.setBackgroundColor(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0));
+            });
+
+            dialog.setOnDismissListener(dialogM -> ta.recycle());
+            dialog.show();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     public int getColor() {return mValue;}
-
-    public void setAlphaSeekBar(SeekBar seekBarView) {
-        mAlphaSeekBar = seekBarView;
-    }
 
     public void onClick(View v) {
 
@@ -221,12 +337,20 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             mAdapter = new ColorGridAdapter(getContext());
             mAdapter.setSelectedColor(mValue);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog))
+            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(mSelectDialogTitle)
                     .setIcon(mSelectDialogIcon)
                     .setView(rootView);
 
-            AlertDialog alertToShow = builder.create();
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            if (eventsData.preferences_extrafun) {
+                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
+                    dialog.dismiss();
+                    selectRGBColor(eventsData);
+                });
+            }
+
+            AlertDialog alertToShow = colorDialogBuilder.create();
 
             GridView mColorGrid = rootView.findViewById(R.id.color_grid);
             if (mColorGrid != null) {
@@ -235,6 +359,14 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 mColorGrid.setOnItemClickListener((listView, view, position, itemId) -> {
                     setColor(mAdapter.getItem(position));
                     alertToShow.dismiss();
+                });
+                mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
+                    Toast.makeText(context,
+                            context.getString(R.string.pref_Color_title) +
+                                    Constants.STRING_SPACE +
+                                    ContactsEvents.toARGBString(mAdapter.getItem(position))
+                            , Toast.LENGTH_SHORT).show();
+                    return true;
                 });
             }
             View mCaptionView = rootView.findViewById(R.id.caption);
@@ -280,10 +412,10 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                         Color.green(color) * 192 / 256,
                         Color.blue(color) * 192 / 256);
 
+
                 colorChoiceDrawable.setSize(radius, radius);
                 colorChoiceDrawable.setColor(color);
-                colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 1, res.getDisplayMetrics()), darkenedColor);
+                colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, res.getDisplayMetrics()), darkenedColor);
                 imageView.setImageDrawable(colorChoiceDrawable);
                 imageView.setContentDescription(Integer.toString(color));
 
@@ -301,8 +433,34 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         private int mSelectedColor;
 
         private ColorGridAdapter(Context context) {
-            for (int color : mColorChoices) {
-                mChoices.add(color);
+
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+
+            try {
+                for (int color : mColorChoices) {
+                    mChoices.add(color);
+                }
+
+                //Добавляем текущий и недавние цвета
+                if (!mChoices.contains(mValue)) {
+                    mChoices.add(mValue);
+                }
+
+                int numToFillRecent = Math.min(mChoices.size() % mNumColumns == 0 ? mNumColumns : mNumColumns - (mChoices.size() % mNumColumns), eventsData.preferences_RecentColors.size());
+                int numFilled = 0;
+                int currentIndex = eventsData.preferences_RecentColors.size() - 1;
+                while(currentIndex >= 0 && numFilled < numToFillRecent) {
+                    int valueInt = eventsData.preferences_RecentColors.get(currentIndex);
+                    if (!mChoices.contains(valueInt)) {
+                        mChoices.add(valueInt);
+                        numFilled++;
+                    }
+                    currentIndex--;
+                }
+
+            } catch (final Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
         }
 

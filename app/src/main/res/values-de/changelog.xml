@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.09.2022, 8:26
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 18.09.2022, 8:25
+  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 09.09.2023, 09:37
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.7.8</item>
+        <item>Möglichkeit hinzugefügt, die gesamte Zeile mit der Datumsfarbe einzufärben (für das Listen-Widget)</item>
+        <item>Möglichkeit hinzugefügt, RGB-Werte in den Farbeinstellungen anzugeben (Extrafunktionen) oder eine der aktuellen Farben auszuwählen</item>
 
         <item>#1.7.7</item>
         <item>Export und Import von Einstellungen hinzugefügt (Extrafunktionen)</item>

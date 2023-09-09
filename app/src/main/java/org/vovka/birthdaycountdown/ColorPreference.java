@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.09.2022, 8:26
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 24.01.2022, 20:58
+ *  * Created by Vladimir Belov on 09.09.2023, 09:37
+ *  * Copyright (c) 2018 - 2023. All rights reserved.
+ *  * Last modified 08.09.2023, 22:42
  *
  */
 
@@ -15,6 +15,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -34,6 +36,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +209,15 @@ public class ColorPreference extends Preference {
                 mColorGrid.setOnItemClickListener((listView, view, position, itemId) -> {
                     mPreference.setValue(mAdapter.getItem(position));
                     dismiss();
+                });
+
+                mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
+                    Toast.makeText(getActivity(),
+                            getActivity().getString(R.string.pref_Color_title) +
+                                    Constants.STRING_SPACE +
+                                    ContactsEvents.toARGBString(mAdapter.getItem(position))
+                            , Toast.LENGTH_SHORT).show();
+                    return true;
                 });
 
                 tryBindLists();
@@ -495,7 +507,14 @@ public class ColorPreference extends Preference {
         if (view instanceof ImageView) {
             ImageView imageView = (ImageView) view;
             Resources res = imageView.getContext().getResources();
+            int radius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, res.getDisplayMetrics());
 
+            if (Color.alpha(color) == 0) {
+                Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.transparent);
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bm, radius, radius, false));
+                bm.recycle();
+                return;
+            }
             Drawable currentDrawable = imageView.getDrawable();
             GradientDrawable colorChoiceDrawable;
             if (currentDrawable instanceof GradientDrawable) {
