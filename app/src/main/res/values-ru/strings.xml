@@ -182,6 +182,7 @@
     <string name="hint_EventDetails">Детали события</string>
     <string name="hint_VersionNumberDetails">Детали номера версии</string>
     <string name="hint_EventIcon">Иконка</string>
+    <string name="hint_EditText">Ввод текста</string>
     <string name="hint_SearchPanel">Панель поиска</string>
     <string name="hint_AlertDialog">Диалог оповещения</string>
     <string name="hint_AlertDialogIcon">Иконка диалога</string>
@@ -1093,4 +1094,8 @@
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">число повторов для каждого периода</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
+
+    <string name="Event_Easter">Пасха</string>
+    <string name="Event_CatholicEaster">К_Пасха</string>
+    <string name="Event_NY">НГ</string>
 </resources>

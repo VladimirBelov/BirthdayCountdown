@@ -71,7 +71,7 @@ public class CustomEditTextPreference extends EditTextPreference {
             //в светлой теме получилось выставить editTextPreference color только таким способом
             editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
             editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
-            //editText.setContentDescription(getContext().getString(R.string.widget_EditText));
+            editText.setContentDescription(getContext().getString(R.string.hint_EditText));
             //final float scale = getContext().getResources().getDisplayMetrics().density;
             //editText.setMinimumHeight((int) (48 * scale + 0.5f));
             //todo: сделать опциональный MaxLine

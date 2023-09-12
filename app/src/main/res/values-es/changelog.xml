@@ -14,6 +14,7 @@
         <item>#1.7.8</item>
         <item>Se agregó la capacidad de colorear toda la fila con el color de la fecha (para el widget de lista)</item>
         <item>Se agregó la capacidad de especificar valores RGB en la configuración de color (funciones extra) o elegir uno de los colores recientes</item>
+        <item>Se admiten fechas flotantes para eventos de archivos (+ Pascua ortodoxa, Pascua católica, día XX desde el comienzo del año)</item>
 
         <item>#1.7.7</item>
         <item>Exportación e importación agregadas de configuraciones (funciones extra)</item>

@@ -182,6 +182,7 @@
     <string name="hint_EventDetails">Details</string>
     <string name="hint_VersionNumberDetails">Version number details</string>
     <string name="hint_EventIcon">Icon</string>
+    <string name="hint_EditText">Edit text</string>
     <string name="hint_SearchPanel">Search panel</string>
     <string name="hint_AlertDialog">Alert dialog</string>
     <string name="hint_AlertDialogIcon">Alert dialog icon</string>
@@ -1090,6 +1091,10 @@
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">max repeat times of every period</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Nearest repeats:</string>
+
+    <string name="Event_Easter">Easter</string>
+    <string name="Event_CatholicEaster">Catholic_Easter</string>
+    <string name="Event_NY">NY</string>
 
     <!-- COMMON STRINGS -->
 

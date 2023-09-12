@@ -14,6 +14,7 @@
         <item>#1.7.8</item>
         <item>Möglichkeit hinzugefügt, die gesamte Zeile mit der Datumsfarbe einzufärben (für das Listen-Widget)</item>
         <item>Möglichkeit hinzugefügt, RGB-Werte in den Farbeinstellungen anzugeben (Extrafunktionen) oder eine der aktuellen Farben auszuwählen</item>
+        <item>Gleitende Daten werden für Ereignisse aus Dateien unterstützt (+ orthodoxes Ostern, katholisches Ostern, XX. Tag ab Jahresbeginn)</item>
 
         <item>#1.7.7</item>
         <item>Export und Import von Einstellungen hinzugefügt (Extrafunktionen)</item>

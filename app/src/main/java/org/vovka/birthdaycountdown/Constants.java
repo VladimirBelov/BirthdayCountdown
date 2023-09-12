@@ -16,6 +16,7 @@ final class Constants {
     static final String REGEX_INTER = "\\Z|";
     static final String REGEX_LAST = "\\Z";
     static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
+    static final String REGEX_PERIOD = "\\.";
     static final String STRING_0 = "0";
     static final String STRING_00 = "00";
     static final String STRING_000 = "000";
@@ -27,6 +28,8 @@ final class Constants {
     static final String STRING_HASH = "#";
     static final String STRING_2HASH = "##";
     static final String STRING_2MINUS = "--";
+    static final String STRING_MINUS = "-";
+    static final String STRING_PLUS = "+";
     static final String STRING_2TILDA = "~~";
     static final String STRING_3 = "3";
     static final String STRING_4 = "4";
@@ -44,7 +47,6 @@ final class Constants {
     static final String STRING_EOL = "\n";
     static final String STRING_EOT = "\u0004";
     static final String STRING_EQ = "=?";
-    static final String STRING_MINUS = "-";
     static final String STRING_MINUS1 = "-1";
     static final String STRING_NULL = "null";
     static final String STRING_PARENTHESIS_CLOSE = ")";
@@ -62,6 +64,9 @@ final class Constants {
     static final String STRING_BDP_EOL = "❚";
     static final String STRING_BDP_NO_YEAR = "1900";
     static final String STRING_BDP_CUSTOM = "Custom";
+
+    static final String STRING_Z = "Z";
+    static final String STRING_Y = "Y";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";

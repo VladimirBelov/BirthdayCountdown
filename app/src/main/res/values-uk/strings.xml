@@ -182,6 +182,7 @@
     <string name="hint_EventDetails">Деталі</string>
     <string name="hint_VersionNumberDetails">Деталі номера версії</string>
     <string name="hint_EventIcon">Значок</string>
+    <string name="hint_EditText">Редагувати текст</string>
     <string name="hint_SearchPanel">Панель пошуку</string>
     <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
     <string name="hint_AlertDialogIcon">Значок діалогового вікна сповіщення</string>
@@ -1094,4 +1095,8 @@
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">максимальний час повторення кожного періоду</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Найближчі повтори:</string>
+
+    <string name="Event_Easter">Великдень</string>
+    <string name="Event_CatholicEaster">Католицький_Великдень</string>
+    <string name="Event_NY">НР</string>
 </resources>

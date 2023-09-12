@@ -384,7 +384,8 @@
                 android:textSize="16sp"
                 android:inputType="textCapSentences"
                 android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
+                android:negativeButtonText="@string/button_cancel"
+                android:importantForAccessibility="no"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Custom1_Labels_key"
@@ -419,7 +420,8 @@
                 android:textSize="16sp"
                 android:inputType="textCapSentences"
                 android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
+                android:negativeButtonText="@string/button_cancel"
+                android:importantForAccessibility="no"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Custom2_Labels_key"
@@ -454,7 +456,8 @@
                 android:textSize="16sp"
                 android:inputType="textCapSentences"
                 android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
+                android:negativeButtonText="@string/button_cancel"
+                android:importantForAccessibility="no"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Custom3_Labels_key"
@@ -489,7 +492,8 @@
                 android:textSize="16sp"
                 android:inputType="textCapSentences"
                 android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
+                android:negativeButtonText="@string/button_cancel"
+                android:importantForAccessibility="no"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Custom4_Labels_key"
@@ -524,7 +528,8 @@
                 android:textSize="16sp"
                 android:inputType="textCapSentences"
                 android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
+                android:negativeButtonText="@string/button_cancel"
+                android:importantForAccessibility="no"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Custom5_Labels_key"
