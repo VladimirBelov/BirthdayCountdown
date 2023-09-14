@@ -57,6 +57,8 @@ final class Constants {
     static final String STRING_BRACKETS_CLOSE = "]";
     static final String STRING_PERIOD = ".";
     static final String STRING_PIPE = "\\|";
+    static final String STRING_SLASH = "/";
+    static final String STRING_DSLASH = "//";
     static final String STRING_SPACE = " ";
     static final String STRING_BC = "BC";
     static final String STRING_UNDERSCORE = "_";

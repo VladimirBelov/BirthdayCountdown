@@ -482,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 createContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, selectedEvent[ContactsEvents.Position_personFullName]);
                 createContactIntent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, selectedEvent[ContactsEvents.Position_title]);
                 createContactIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, selectedEvent[ContactsEvents.Position_organization]);
-                createContactIntent.putExtra(ContactsContract.Intents.Insert.NOTES, selectedEvent[ContactsEvents.Position_eventDateText]);
+                createContactIntent.putExtra(ContactsContract.Intents.Insert.NOTES, selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
 
                 try {
                     startActivity(createContactIntent);
@@ -702,7 +702,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .append(Constants.STRING_EOL)
                         .append(selectedEvent[ContactsEvents.Position_eventEmoji])
                         .append(Constants.STRING_SPACE)
-                        .append(selectedEvent[ContactsEvents.Position_eventDate])
+                        .append(selectedEvent[ContactsEvents.Position_eventDateThisTime])
                         .append(Constants.STRING_SPACE)
                         .append(selectedEvent[ContactsEvents.Position_eventCaption]);
                 if (!TextUtils.isEmpty(selectedEvent[ContactsEvents.Position_age_caption].trim()))
@@ -729,7 +729,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
                             Locale locale_en = new Locale(Constants.LANG_EN);
                             SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateText]);
+                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null && birthDate != null) {
                                 if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
                                 textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
@@ -737,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else { //Другие события
                             Locale locale_en = new Locale(Constants.LANG_EN);
                             SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDate]);
+                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateThisTime]);
                             Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
                             if (eventDate != null && birthDate != null) {
                                 if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
@@ -1027,7 +1027,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         ArrayList<ContactsEvents.Event> events = null;
                         try {
-                            Date eventDate = eventsData.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateText]);
+                            Date eventDate = eventsData.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null) {
                                 Calendar dateEnd = ContactsEvents.removeTime(Calendar.getInstance());
                                 dateEnd.add(Calendar.YEAR, 15);
@@ -1905,7 +1905,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Uri contactUri = data.getData();
                 if (contactUri != null) {
-                    String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf("/") + 1);
+                    String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
                     if (!contactID.isEmpty() && !selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
                         if (eventsData.setMergedID(
                                 selectedEvent[ContactsEvents.Position_eventID],
@@ -2449,7 +2449,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Дата оригинального события
-                holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear));
+                holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear));
 
                 switch (eventsData.preferences_list_nameformat) {
                     case 2: //Фамилия Имя Отчество
@@ -2529,7 +2529,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
                             Locale locale_en = new Locale(Constants.LANG_EN);
                             SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDateText]);
+                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null && birthDate != null) {
                                 if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                                 eventDetails.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
@@ -2537,7 +2537,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else { //Другие события
                             Locale locale_en = new Locale(Constants.LANG_EN);
                             SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDate]);
+                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
                             if (eventDate != null && birthDate != null) {
                                 if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                                 if (eventsData.idsWithDeathEvent.contains(contactID)) { //Но есть годовщина смерти

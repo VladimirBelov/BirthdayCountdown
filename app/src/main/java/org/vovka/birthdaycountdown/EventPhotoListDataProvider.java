@@ -406,7 +406,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDate]);
+                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

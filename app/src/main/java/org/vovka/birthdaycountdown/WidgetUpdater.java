@@ -285,7 +285,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_2: //Дата события
-                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -392,7 +392,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_2: //Дата события
-                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateText], ContactsEvents.FormatDate.WithYear);
+                    rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);
@@ -571,7 +571,7 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
-                    strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
+                    strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
                 } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 
@@ -604,7 +604,7 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
-                    strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[ContactsEvents.Position_eventDateText]); //нам нужна только иконка
+                    strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
                 } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 

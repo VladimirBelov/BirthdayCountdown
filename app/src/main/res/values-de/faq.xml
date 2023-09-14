@@ -90,13 +90,38 @@
                 <li>Wenn die Datei nur Ereignisse eines bestimmten Typs auflistet (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Sonstiges Ereignis), müssen solche Dateien im Einstellungsbereich entsprechend ihrem Typ angegeben werden
                 <li>Dateien mit unterschiedlichen Arten von Ereignissen sind im Abschnitt <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Ereignisquellen angegeben. Der Ereignistyp wird durch das Flag bestimmt (unten ist das Format und Beispiele)
                 <li>für alle Ereignistypen außer <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis, sucht nach einem Kontakt im Adressbuch, um es mit doppelten Ereignissen zusammenzuführen oder Web hinzuzufügen Verknüpfungen
+                <li>Wenn zusätzliche Funktionen aktiviert sind, können Sie festlegen, wie mit Ereignissen umgegangen werden soll, deren Typ nicht bestimmt werden konnte: Einstellungen -> Ereignisse einrichten -> Importeinstellungen (standardmäßig: Als Breite <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis)
                 <li>Um Ereignisse aus Geburtstagen zu verwenden, müssen sie in eine Datei exportiert werden: Synchronisierung -> Auf SD-Karte speichern
                 </ul>]]></item>
 
                 <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>-Ereignisformat</b> (in eckigen Klammern - optionale Parameter):<br>]]></item>
                 <item><![CDATA[<b></b># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME oder EREIGNISTITEL</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>EREIGNISTITEL</b>&gt; [WEBLINK]<br><br>]]></item>
-                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>Ereignisbezeichnung - Bei Dateien, die Ereignisse unterschiedlicher Art enthalten, wird die Ereignisart durch diese Bezeichnung bestimmt. Wenn das Label ein Leerzeichen enthält, muss es durch einen Unterstrich \"_\" ersetzt werden.<br><br>zum Beispiel:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (Nachbar)<br>01.01.2022, 1 Anfang 2022<br>15.3.44,BC Yu.Caesar wurde getötet<br>02.03.1819,Geburtstag Nemo (Kapitän)<br>]]></item>
+                <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>Ereignisbezeichnung - Bei Dateien, die Ereignisse unterschiedlicher Art enthalten, wird die Ereignisart durch diese Bezeichnung bestimmt. Wenn das Label ein Leerzeichen enthält, muss es durch einen Unterstrich \"_\" ersetzt werden.
+                <br><br>Beispiele:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (Nachbar)<br>01.01.2022,1 Anfang 2022<br>15.3.44,BC Yu.Caesar wurde getötet<br>02.03.1819,Geburtstag Nemo (Kapitän)<br>]]></item>
+
+                <item><![CDATA[<b>Ereignisse mit gleitendem Datumsformat</b>:<br>]]></item>
+                <item><![CDATA[<b>NWW</b>[+-VERSETZT]<b>.MM.JJJJ</b>[,flags] <b>EREIGNISTITEL</b>
+                <br><br>N – Wochennummer (1..5, Y – vorletzte, Z – letzte)
+                <br>WW – Wochentag (MO, TU, WE, DO, FR, SA, SO)
+                <br>VERSETZT – nach Tag eingestellt (+ oder – Zeichen)
+                <ul><li>Anstelle von NWW können Sie die Schlüsselwörter „Easter“, „Katholisches_Ostern“ oder „NО“ verwenden.
+                <li>Kurznamen der Wochentage (WW), „Ostern“, „NJ“ hängen von der Sprache der Anwendung ab
+                 <li>Wenn das Jahr nicht 0000 ist, wird die Anzahl der Jahre ab Beginn des Feiertags gezählt
+                <li>Flags – oben beschrieben</ul>
+                <br>Beispiele:
+                <br>2SO.02.0000 Zweiter Sonntag im Februar
+                <br>3MI.03.1974 Der dritte Mittwoch im März, seit 1974 gefeiert
+                <br>ZSO.11.0000 Letzter Sonntag im November
+                <br>5SO.9.0000 fünfter Sonntag im September
+                <br>1DO+1.10.0000 am nächsten Tag nach dem ersten Donnerstag im Oktober
+                <br>3DI-10.08.0000 Noch 10 Tage bis zum dritten Dienstag im August
+                <br>YSA.06.0000 vorletzter Samstag im Juni
+                <br>NJ+255.0000 Programmierertag (256. Tag des Jahres)
+                <br>Ostern.0000 Orthodoxes Ostern
+                <br>Ostern+49.0000 Orthodoxe Dreifaltigkeit
+                <br>Katholisches_Ostern.0000 Katholisches Ostern
+                <br>]]></item>
 
                 <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>-Ereignisformat</b>:<br>]]></item>
                 <item><![CDATA[❙JJJJ-MM-TT❙Name❙Ereignistyp (Geburtstag, Jubiläum, Benutzerdefiniert)❙Ereignisbezeichnung oder null❚<br><br>zum Beispiel:<br> ❙1900–02–04❙John Doe❙Birthday❙null❚<br>❙2009–03–09❙John Doe❙Custom❙Todes❚<br>]]></item>
