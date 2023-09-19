@@ -182,7 +182,6 @@
     <string name="hint_EventDetails">Detalles</string>
     <string name="hint_VersionNumberDetails">Detalles del número de versión</string>
     <string name="hint_EventIcon">Icono</string>
-    <string name="hint_EditText">Editartext</string>
     <string name="hint_SearchPanel">Barra de búsqueda</string>
     <string name="hint_AlertDialog">Diálogo de alerta</string>
     <string name="hint_AlertDialogIcon">Icono de diálogo de alerta</string>

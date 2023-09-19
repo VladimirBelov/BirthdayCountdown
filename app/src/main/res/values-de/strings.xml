@@ -182,7 +182,6 @@
     <string name="hint_EventDetails">Einzelheiten</string>
     <string name="hint_VersionNumberDetails">Details zur Versionsnummer</string>
     <string name="hint_EventIcon">Icon</string>
-    <string name="hint_EditText">Text bearbeiten</string>
     <string name="hint_SearchPanel">Suchfeld</string>
     <string name="hint_AlertDialog">Warndialog</string>
     <string name="hint_AlertDialogIcon">Icon für Warndialog</string>

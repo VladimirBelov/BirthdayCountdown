@@ -182,7 +182,6 @@
     <string name="hint_EventDetails">Детали события</string>
     <string name="hint_VersionNumberDetails">Детали номера версии</string>
     <string name="hint_EventIcon">Иконка</string>
-    <string name="hint_EditText">Ввод текста</string>
     <string name="hint_SearchPanel">Панель поиска</string>
     <string name="hint_AlertDialog">Диалог оповещения</string>
     <string name="hint_AlertDialogIcon">Иконка диалога</string>

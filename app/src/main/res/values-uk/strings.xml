@@ -182,7 +182,6 @@
     <string name="hint_EventDetails">Деталі</string>
     <string name="hint_VersionNumberDetails">Деталі номера версії</string>
     <string name="hint_EventIcon">Значок</string>
-    <string name="hint_EditText">Редагувати текст</string>
     <string name="hint_SearchPanel">Панель пошуку</string>
     <string name="hint_AlertDialog">Діалогове вікно сповіщення</string>
     <string name="hint_AlertDialogIcon">Значок діалогового вікна сповіщення</string>

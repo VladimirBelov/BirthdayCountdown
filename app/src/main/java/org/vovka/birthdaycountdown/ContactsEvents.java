@@ -2063,6 +2063,7 @@ class ContactsEvents {
             String eventSubType = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE)));
             String accountType = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_TYPE));
             String accountName = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_NAME));
+            if (accountName == null) accountName = getResources().getString(R.string.account_type_local);
             accountKey = accountName + Constants.STRING_PARENTHESIS_OPEN + accountType + Constants.STRING_PARENTHESIS_CLOSE;
 
             if (eventDate != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
@@ -3807,7 +3808,7 @@ class ContactsEvents {
 
             @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
 
-            final boolean needAddMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
+            final boolean addMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
                     (preferences_list_sad_photo == 2 && idsWithDeathEvent.contains(contactID));
 
             if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
@@ -3921,17 +3922,27 @@ class ContactsEvents {
 
             }
 
-            if (needAddMourningTape) {
+            if (addMourningTape) {
                 //Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
                 Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setColor(Color.BLACK);
-                paint.setStrokeWidth((float) bm.getWidth() / 6);
                 canvas.drawBitmap(bm, new Matrix(), null);
-                canvas.drawLine((float) (bm.getWidth() * 1.25), (float) bm.getHeight() / 2, (float) bm.getWidth() / 2, (float) (bm.getHeight() * 1.25), paint);
+
+                Paint paintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paintFill.setStyle(Paint.Style.FILL);
+                paintFill.setColor(Color.BLACK);
+                float width = (float) bm.getWidth() / 12;
+                paintFill.setStrokeWidth(width * 2);
+                canvas.drawLine((float) (bm.getWidth() * 1.25), (float) bm.getHeight() / 2, (float) bm.getWidth() / 2, (float) (bm.getHeight() * 1.25), paintFill);
+
+                Paint paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paintStroke.setStyle(Paint.Style.STROKE);
+                paintStroke.setColor(Color.WHITE);
+                paintStroke.setStrokeWidth(3);
+                canvas.drawLine((float) (bm.getWidth() * 1.25 - width * 1.4), (float) bm.getHeight() / 2, (float) (bm.getWidth() / 2 - width * 1.4), (float) (bm.getHeight() * 1.25), paintStroke);
+                canvas.drawLine((float) (bm.getWidth() * 1.25 + width * 1.4), (float) bm.getHeight() / 2, (float) (bm.getWidth() / 2 + width * 1.4), (float) (bm.getHeight() * 1.25), paintStroke);
+
                 bm.recycle();
                 bm = bmOverlay;
             }
