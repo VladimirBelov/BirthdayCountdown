@@ -1651,7 +1651,7 @@ class ContactsEvents {
                             map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME, checkForNull(personName));
 
                             //ИФ
-                            final String personNameShortNormalized = Person.getShortName(personNameNormalized, context);
+                            final String personNameShortNormalized = Person.getShortName(personNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context);
                             if (!map_contacts_names.containsKey(personNameShortNormalized)) {
                                 map_contacts_names.put(personNameShortNormalized, personID);
                             }
@@ -1667,7 +1667,7 @@ class ContactsEvents {
                             map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE, checkForNull(personNameAlt));
 
                             //ФИ
-                            final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, context);
+                            final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context);
                             if (!map_contacts_names.containsKey(personNameAltShortNormalized)) {
                                 map_contacts_names.put(personNameAltShortNormalized, personID);
                             }
@@ -2505,6 +2505,8 @@ class ContactsEvents {
 
                         String mergedID = getMergedID(eventID);
                         if (!mergedID.isEmpty()) contactID = mergedID;
+                        String contactTitle = Constants.STRING_EMPTY;
+                        boolean namedFromEvent = false;
 
                         if (contactID == null && event.needScanContacts && matcherNames.size() > 0) {
                             String foundName;
@@ -2514,31 +2516,50 @@ class ContactsEvents {
 
                                     if (foundName != null) {
 
+                                        //всё, что внутри скобок в имени - в должность
+                                        int pStart = foundName.indexOf(Constants.STRING_PARENTHESIS_START);
+                                        int pEnd = foundName.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                                        if (pStart > -1 && pEnd > pStart) {
+                                            contactTitle = foundName.substring(pStart + 1, pEnd);
+                                            foundName = foundName.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY);
+                                        }
+
+                                        String personFullNameNormalized;
+                                        String personFullNameAltNormalized;
                                         final String personFullNameAlt = Person.getAltName(foundName, preferences_rules_calendars_nameformat, context);
                                         if (isFirstSecondLastFormat) {
+                                            personFullNameNormalized = normalizeName(foundName);
+                                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
                                             userData.put(Position_personFullName, foundName);
                                             userData.put(Position_personFullNameAlt, personFullNameAlt);
                                         } else {
-                                            userData.put(Position_personFullNameAlt, foundName);
+                                            personFullNameNormalized = normalizeName(personFullNameAlt);
+                                            personFullNameAltNormalized = normalizeName(foundName);
                                             userData.put(Position_personFullName, personFullNameAlt);
+                                            userData.put(Position_personFullNameAlt, foundName);
                                         }
+                                        namedFromEvent = true;
 
                                         //Ищем контакт
-                                        final String personFullNameNormalized = normalizeName(foundName);
-                                        String personFullNameAltNormalized = Constants.STRING_EMPTY;
                                         contactID = map_contacts_names.get(personFullNameNormalized);
-                                        if (contactID == null) {
-                                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
                                             contactID = map_contacts_names.get(personFullNameAltNormalized);
                                         }
                                         if (contactID == null) {
-                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, context));
+                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
                                         }
-                                        if (contactID == null) {
-                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, context));
+                                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
                                         }
 
-                                        if (contactID != null) break;
+                                        if (contactID != null) {
+
+                                            if (contactTitle.isEmpty()) {
+                                                contactTitle = checkForNull(map_contacts_titles.get(contactID));
+                                            }
+
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -2638,20 +2659,11 @@ class ContactsEvents {
                                     userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
                                 }
 
-                                String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME));
-                                String contactTitle = checkForNull(map_contacts_titles.get(contactID));
-                                if (!contactTitle.isEmpty()) {
-                                    //всё, что внутри скобок в имени - в должность
-                                    int pStart = contactFIO.indexOf(Constants.STRING_PARENTHESIS_START);
-                                    int pEnd = contactFIO.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                                    if (pStart > -1 && pEnd > pStart) {
-                                        contactTitle = contactFIO.substring(pStart + 1, pEnd);
-                                        contactFIO = contactFIO.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY);
-                                    }
+                                if (!namedFromEvent) {
+                                    String contactFIO = checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME));
+                                    userData.put(Position_personFullName, contactFIO);
+                                    userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(Constants.STRING_COMMA, Constants.STRING_EMPTY));
                                 }
-
-                                userData.put(Position_personFullName, contactFIO);
-                                userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(Constants.STRING_COMMA, Constants.STRING_EMPTY));
                                 userData.put(Position_title, contactTitle);
                                 userData.put(Position_organization, checkForNull(map_organizations.get(contactID)));
                                 userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
@@ -3154,28 +3166,31 @@ class ContactsEvents {
 
                         }
 
+                        String personFullNameNormalized;
+                        String personFullNameAltNormalized;
                         final String personFullNameAlt = Person.getAltName(eventTitle, preferences_rules_files_nameformat, context);
                         if (isFirstSecondLastFormat) {
+                            personFullNameNormalized = normalizeName(eventTitle);
+                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
                             userData.put(Position_personFullName, eventTitle);
                             userData.put(Position_personFullNameAlt, personFullNameAlt);
                         } else {
-                            userData.put(Position_personFullNameAlt, eventTitle);
+                            personFullNameNormalized = normalizeName(personFullNameAlt);
+                            personFullNameAltNormalized = normalizeName(eventTitle);
                             userData.put(Position_personFullName, personFullNameAlt);
+                            userData.put(Position_personFullNameAlt, eventTitle);
                         }
 
-                        //Ищем в контактах
-                        final String personFullNameNormalized = normalizeName(eventTitle);
-                        String personFullNameAltNormalized = Constants.STRING_EMPTY;
+                        //Ищем контакт
                         contactID = map_contacts_names.get(personFullNameNormalized);
-                        if (contactID == null && !personFullNameAlt.equals(eventTitle)) {
-                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
                             contactID = map_contacts_names.get(personFullNameAltNormalized);
                         }
                         if (contactID == null) {
-                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, context));
+                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
                         }
-                        if (contactID == null && !personFullNameAlt.equals(eventTitle)) {
-                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, context));
+                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
                         }
 
                         //hashCode -> ID
@@ -3269,14 +3284,14 @@ class ContactsEvents {
                                 final Long contactIDLong = parseToLong(contactID);
                                 HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
                                         ContactsContract.Contacts.PHOTO_URI,
-                                        ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                                        //ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
                                         ContactsContract.Contacts.STARRED
                                 });
 
                                 userData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                                if (contactDataMap.containsKey(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)) {
+                                /*if (contactDataMap.containsKey(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE) && !userData.containsKey(Position_personFullNameAlt)) {
                                     userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(Constants.STRING_COMMA, Constants.STRING_EMPTY));
-                                }
+                                }*/
                                 if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
                                     userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
                                 }
@@ -3339,6 +3354,7 @@ class ContactsEvents {
             int eventYear = now.get(Calendar.YEAR);
 
             //Именные события
+            //https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
             String eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
             String eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
             String eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
@@ -3882,35 +3898,44 @@ class ContactsEvents {
                 bm = getBitmap(context, idPhoto);
                 if (bm == null) return null;
 
+                int bmWidth = bm.getWidth();
+                int bmHeight = bm.getHeight();
+                if (bmHeight > bmWidth) {
+                    //noinspection SuspiciousNameCombination
+                    bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
+                } else {
+                    //noinspection SuspiciousNameCombination
+                    bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+                }
             }
 
             int roundingRadiusX = 0;
             int roundingRadiusY = 0;
+            int bmWidth = bm.getWidth();
+            int bmHeight = bm.getHeight();
             if (roundingFactor > 1) {
 
-                final int width = bm.getWidth();
-                final int height = bm.getHeight();
                 final String roundingFactorStr = String.valueOf(roundingFactor);
                 if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded1))) {
-                    roundingRadiusX = width / 12;
-                    roundingRadiusY = height / 12;
+                    roundingRadiusX = bmWidth / 12;
+                    roundingRadiusY = bmHeight / 12;
                 } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded2))) {
-                    roundingRadiusX = width / 8;
-                    roundingRadiusY = height / 8;
+                    roundingRadiusX = bmWidth / 8;
+                    roundingRadiusY = bmHeight / 8;
                 } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded3))) {
-                    roundingRadiusX = width / 4;
-                    roundingRadiusY = height / 4;
+                    roundingRadiusX = bmWidth / 4;
+                    roundingRadiusY = bmHeight / 4;
                 } else if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Circle))) {
-                    roundingRadiusX = width / 2;
-                    roundingRadiusY = height / 2;
+                    roundingRadiusX = bmWidth / 2;
+                    roundingRadiusY = bmHeight / 2;
                     makeSquared = true;
                 }
 
             }
 
             if (makeSquared) {
-                final int bmWidth = bm.getWidth();
-                final int bmHeight = bm.getHeight();
+                //final int bmWidth = bmWidth;
+                //final int bmHeight = bmHeight;
 
                 if (bmHeight > bmWidth) {
                     //noinspection SuspiciousNameCombination
@@ -3920,28 +3945,30 @@ class ContactsEvents {
                     bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                 }
 
+                bmWidth = bm.getWidth();
+                bmHeight = bm.getHeight();
             }
 
             if (addMourningTape) {
                 //Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
-                Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawBitmap(bm, new Matrix(), null);
 
                 Paint paintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paintFill.setStyle(Paint.Style.FILL);
                 paintFill.setColor(Color.BLACK);
-                float width = (float) bm.getWidth() / 12;
-                paintFill.setStrokeWidth(width * 2);
-                canvas.drawLine((float) (bm.getWidth() * 1.25), (float) bm.getHeight() / 2, (float) bm.getWidth() / 2, (float) (bm.getHeight() * 1.25), paintFill);
+                float widthCorrection = (float) bmWidth / 12;
+                paintFill.setStrokeWidth(widthCorrection * 2);
+                canvas.drawLine((float) (bmWidth * 1.25), (float) bmHeight / 2, (float) bmWidth / 2, (float) (bmHeight * 1.25), paintFill);
 
                 Paint paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paintStroke.setStyle(Paint.Style.STROKE);
                 paintStroke.setColor(Color.WHITE);
                 paintStroke.setStrokeWidth(3);
-                canvas.drawLine((float) (bm.getWidth() * 1.25 - width * 1.4), (float) bm.getHeight() / 2, (float) (bm.getWidth() / 2 - width * 1.4), (float) (bm.getHeight() * 1.25), paintStroke);
-                canvas.drawLine((float) (bm.getWidth() * 1.25 + width * 1.4), (float) bm.getHeight() / 2, (float) (bm.getWidth() / 2 + width * 1.4), (float) (bm.getHeight() * 1.25), paintStroke);
+                canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) (bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
+                canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) (bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
 
                 bm.recycle();
                 bm = bmOverlay;
@@ -3950,7 +3977,7 @@ class ContactsEvents {
             //Добавление иконки избранного
             if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon)) && singleEventArray[Position_starred].equals(Constants.STRING_1)) {
 
-                Bitmap bmOverlay = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawBitmap(bm, new Matrix(), null);
                 bm.recycle();
@@ -4049,11 +4076,10 @@ class ContactsEvents {
         try {
 
             if (contactId == 0 || columnNames.length == 0) return resultMap;
-            if (contentResolver == null) contentResolver = context.getContentResolver();
 
             Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
 
-            //Собираем собранное ранее
+            //Получаем собранное ранее
             List<String> columnNamesToFind = new ArrayList<>();
             for (String columnName : columnNames) {
                 if (map_contacts_data.containsKey(contactId + columnName)) {
@@ -4071,6 +4097,7 @@ class ContactsEvents {
             //Запрос новых данных
             Uri dataUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Data.CONTENT_DIRECTORY);
             String contactData;
+            if (contentResolver == null) contentResolver = context.getContentResolver();
             Cursor dataCursor = contentResolver.query(
                     dataUri,
                     columnNamesToFind.toArray(new String[0]),

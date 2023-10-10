@@ -66,6 +66,8 @@ public class SuggestionProvider extends ContentProvider{
                 if (eventsData.getContext() == null && getContext() != null) eventsData.setContext(getContext().getApplicationContext());
 
                 if (eventsData.isEmptyEventList()) {
+                    eventsData.getPreferences();
+                    eventsData.setLocale(true);
                     if (eventsData.getEvents(null)) eventsData.computeDates();
                 }
 

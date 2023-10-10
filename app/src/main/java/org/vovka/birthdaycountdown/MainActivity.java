@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
-            //https://medium.com/@pkjvit/https-medium-com-pkjvit-android-multi-theme-night-mode-and-material-design-c186bf9fd678
+            //https-medium-com-pkjvit-android-multi-theme-night-mode-and-material-design-c186bf9fd678
             //https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
 
             this.setTheme(eventsData.preferences_theme.themeMain);
@@ -1563,7 +1563,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (itemId == R.id.menu_refresh) {
 
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
-                //https://medium.com/@elye.project/swipe-to-refresh-not-showing-why-96b76c5c93e7
+                //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
                     swipeRefresh.post(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME));
                 }

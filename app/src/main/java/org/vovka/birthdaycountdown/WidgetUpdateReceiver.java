@@ -28,10 +28,7 @@ public class WidgetUpdateReceiver extends BroadcastReceiver {
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
-
-            if (eventsData.getEvents(context)) {
-                eventsData.computeDates();
-            }
+            if (eventsData.getEvents(context)) eventsData.computeDates();
 
             //Переинициализируем обновления виджетов
             eventsData.initWidgetUpdate(log);

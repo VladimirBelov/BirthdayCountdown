@@ -148,6 +148,8 @@ final class Constants {
     static final int Type_Xdays = 22;
     static final int Type_Unrecognized = 99;
     static final String Type_MultiEvent = "30";
+    static final int pref_List_NameFormat_FirstSecondLast = 1;
+    static final int pref_List_NameFormat_LastFirstSecond = 2;
 
     static final String ColumnNames_CONTACT_ID = "contact_id";
     static final String ColumnNames_ACCOUNT_TYPE = "account_type";

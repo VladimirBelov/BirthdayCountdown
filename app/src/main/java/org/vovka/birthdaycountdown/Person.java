@@ -85,7 +85,7 @@ class Person {
             } else {
                 final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
 
-                if (Integer.toString(formatName).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast))) {
+                if (formatName == Constants.pref_List_NameFormat_FirstSecondLast) {
                     return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
                 } else {
                     //if (spaceFirst != spaceLast) { //Имя из 3+ слов
@@ -112,7 +112,7 @@ class Person {
     }
 
     @NonNull
-    static String getShortName(@NonNull String fullName, @NonNull Context context) {
+    static String getShortName(@NonNull String fullName, int formatName, @NonNull Context context) {
 
         try{
 
@@ -124,7 +124,12 @@ class Person {
 
                 if (spaceFirst == spaceLast) return fullName; //Уже короткое
 
-                return fullName.substring(0, spaceFirst) + fullName.substring(spaceLast);
+                if (formatName == Constants.pref_List_NameFormat_FirstSecondLast) {
+                    return fullName.substring(0, spaceFirst) + fullName.substring(spaceLast);
+                } else {
+                    return fullName.substring(0, spaceLast);
+                }
+
             }
 
         } catch (Exception e) {
