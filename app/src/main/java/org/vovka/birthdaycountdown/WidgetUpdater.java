@@ -78,7 +78,6 @@ class WidgetUpdater {
         intentView.setAction(Constants.ACTION_LAUNCH);
         views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
 
-        //Получаем данные
         if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
@@ -86,7 +85,6 @@ class WidgetUpdater {
             if (eventsData.getEvents(context)) eventsData.computeDates();
         }
 
-        //Отрисовываем события
         try {
             //Скрываем все события
             resources = context.getResources();

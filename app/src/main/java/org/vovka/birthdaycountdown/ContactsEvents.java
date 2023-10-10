@@ -395,6 +395,13 @@ class ContactsEvents {
     @Nullable
     protected CoordinatorLayout coordinator;
 
+    //Зависимые от языка константы
+
+    String[] weekDaysShort;
+    String eventNameNY;
+    String eventNameEaster;
+    String eventNameCatholicEaster;
+
     private ContactsEvents() {
     }
 
@@ -1377,8 +1384,8 @@ class ContactsEvents {
 
         //сделать так: https://stackoverflow.com/questions/39705739/android-n-change-language-programmatically/
         //для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
-        //todo: посмотреть https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android и сделать нормальным переключение языков
-        // http://developer.alexanderklimov.ru/android/locale.php
+        //http://developer.alexanderklimov.ru/android/locale.php
+        //https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
 
         try {
 
@@ -1402,6 +1409,11 @@ class ContactsEvents {
                 DisplayMetrics_density = resources.getDisplayMetrics().density;
                 resources.updateConfiguration(configuration, resources.getDisplayMetrics());
                 currentLocale = preferences_language;
+
+                weekDaysShort = resources.getStringArray(R.array.weekDaysShort);
+                eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
+                eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
+                eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
 
             }
 
@@ -3345,7 +3357,6 @@ class ContactsEvents {
 
         try {
 
-            String[] weekDays = resources.getStringArray(R.array.weekDaysShort);
             String[] eventDateComponents = eventDateString.split(Constants.REGEX_PERIOD, -1);
             final String eventDayString = eventDateComponents[0].toLowerCase();
             Calendar now = Calendar.getInstance();
@@ -3354,10 +3365,6 @@ class ContactsEvents {
             int eventYear = now.get(Calendar.YEAR);
 
             //Именные события
-            //https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
-            String eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
-            String eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
-            String eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
 
             if (eventDateComponents.length == 2 && eventDayString.startsWith(eventNameEaster)) {
 
@@ -3460,8 +3467,8 @@ class ContactsEvents {
             //Определяем день недели
             int weekDayToGet = 0;
             int indexWeekDay = -1;
-            for (int i = 1; i <= weekDays.length; i++) {
-                String weekDayName = weekDays[i - 1].toLowerCase();
+            for (int i = 1; i <= weekDaysShort.length; i++) {
+                String weekDayName = weekDaysShort[i - 1].toLowerCase();
                 if (eventDayString.contains(weekDayName)) {
                     weekDayToGet = i - 1;
                     if (weekDayToGet == 0) weekDayToGet = 7;
