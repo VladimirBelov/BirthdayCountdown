@@ -23,15 +23,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 // Список событий масштабируемый
 public class WidgetList extends AppWidgetProvider {
@@ -62,6 +62,7 @@ public class WidgetList extends AppWidgetProvider {
             }
 
             RemoteViews views;
+            //todo: https://stackoverflow.com/questions/9953892/how-to-put-divider-at-particular-position-in-an-android-list-view
             if (widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Dividers_ID))) {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
             } else {

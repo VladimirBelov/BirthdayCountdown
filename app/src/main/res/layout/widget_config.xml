@@ -370,6 +370,7 @@
                     android:inputType="text"
                     android:hint="@string/widget_config_custom_zero_events_hint"
                     android:autofillHints=""
+                    android:textColorHint="?attr/dialogHintColor"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     tools:ignore="VisualLintTextFieldSize" />
 
