@@ -499,7 +499,7 @@ class WidgetUpdater {
                 }
             }
 
-            Bitmap photo = eventsData.getContactPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
+            Bitmap photo = eventsData.getEventPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID)), true, true, roundingFactor);
             if (photo != null) {
 
@@ -533,7 +533,7 @@ class WidgetUpdater {
                     Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
                     views.setImageViewBitmap(id_Photo, photo_small);
                 } else {
-                    Bitmap photo_icon = eventsData.getContactPhoto(event, false, true, true, roundingFactor);
+                    Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, true, roundingFactor);
                     views.setImageViewBitmap(id_Photo, photo_icon);
 
                 }
@@ -637,7 +637,7 @@ class WidgetUpdater {
             //Иконка фаворита
             int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.STRING_ID, packageName);
             if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) && singleEventArray[ContactsEvents.Position_starred].equals(Constants.STRING_1)) {
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
 
                 views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
 

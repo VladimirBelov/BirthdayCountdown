@@ -53,6 +53,8 @@
     <string name="menu_context_xDaysEvent_add">Додати лічильник днів…</string>
     <string name="menu_context_xDaysEvent_edit">Лічильник днів…</string>
     <string name="menu_context_set_eventype">Виберіть тип події…</string>
+    <string name="menu_context_favorites_add">Додати до вибраного</string>
+    <string name="menu_context_favorites_remove">Видалити з вибраного</string>
     <string name="menu_ok">Добре</string>
     <!--<string name="menu_help" tools:ignore="MissingTranslation">Reference</string>-->
     <!--<string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>-->
@@ -82,6 +84,8 @@
     <string name="msg_stats_xdays_filtered_prefix">"знайдено лічильників днів: "</string>
     <string name="msg_stats_unrecognized_prefix">"нерозпізнаних подій: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"нерозпізнаних подій знайдено: "</string>
+    <string name="msg_stats_favorite_prefix">"улюблені події: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"знайдено улюблені події: "</string>
     <string name="msg_label_hidden">Приховано</string>
     <string name="msg_label_silenced">Без повідомлення</string>
     <string name="msg_color_parse_error">Помилка аналізу кольору!</string>
@@ -169,6 +173,7 @@
     <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
     <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
     <string name="msg_eventtype_label_absent">У події відсутня мітка!</string>
+    <string name="msg_debug_activity_recreate">"Відновити основну діяльність через помилку: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -227,6 +232,7 @@
     <string name="events_scope_xdays">Лічильники днів (%1$d)</string>
     <string name="events_scope_xdays_dead">Лічильники днів (%1$d, збережено %2$d)</string>
     <string name="events_scope_unrecognized">Нерозпізнано (%1$d)</string>
+    <string name="events_scope_favorite">Улюблений (%1$d)</string>
     <string name="events_scope_clear">Видалити фільтри</string>
     <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 
@@ -296,6 +302,7 @@
     <string-array name="pref_Icon_entries">
         <item>Весна</item>
         <item>Літо</item>
+        <item>Осінь</item>
         <item>Зима</item>
         <item>Сіра</item>
         <item>Чорна</item>
@@ -918,6 +925,7 @@
     <string name="stats_counters_contacts_events"><![CDATA[<li>подій контактів: %1$d]]></string>
     <string name="stats_counters_calendars_events"><![CDATA[<li>події календаря: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>події з файлів: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>улюблені події: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>контактів: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>посад: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>організацій: %1$d]]></string>

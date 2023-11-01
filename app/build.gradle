@@ -80,7 +80,7 @@ android {
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 34 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.7.8"
+            versionName "1.7.9"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {

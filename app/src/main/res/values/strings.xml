@@ -53,6 +53,8 @@
     <string name="menu_context_xDaysEvent_add">Add days counter…</string>
     <string name="menu_context_xDaysEvent_edit">Days counter…</string>
     <string name="menu_context_set_eventype">Choose event type…</string>
+    <string name="menu_context_favorites_add">Add to favorites</string>
+    <string name="menu_context_favorites_remove">Remove from favorites</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>
@@ -82,6 +84,8 @@
     <string name="msg_stats_xdays_filtered_prefix">"days counters found: "</string>
     <string name="msg_stats_unrecognized_prefix">"unrecognized events: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"unrecognized events found: "</string>
+    <string name="msg_stats_favorite_prefix">"favorite events: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"favorite events found: "</string>
     <string name="msg_label_hidden">Hidden</string>
     <string name="msg_label_silenced">Silenced</string>
     <string name="msg_color_parse_error">Color parsing error!</string>
@@ -169,6 +173,7 @@
     <string name="msg_eventtype_label_set">"Label set: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label added: %1$s"</string>
     <string name="msg_eventtype_label_absent">The event has no label!</string>
+    <string name="msg_debug_activity_recreate">"Recreate main activity due error: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
@@ -227,6 +232,7 @@
     <string name="events_scope_xdays">Days counters (%1$d)</string>
     <string name="events_scope_xdays_dead">Days counters (%1$d, saved %2$d)</string>
     <string name="events_scope_unrecognized">Unrecognized (%1$d)</string>
+    <string name="events_scope_favorite">Favorite (%1$d)</string>
     <string name="events_scope_clear">Clear filters</string>
     <string name="events_scope_clean">Clean filters from dead links</string>
 
@@ -296,6 +302,7 @@
     <string-array name="pref_Icon_entries">
         <item>Spring</item>
         <item>Summer</item>
+        <item>Autumn</item>
         <item>Winter</item>
         <item>Grey</item>
         <item>Black</item>
@@ -918,6 +925,7 @@
     <string name="stats_counters_contacts_events"><![CDATA[<li>events from contacts: %1$d]]></string>
     <string name="stats_counters_calendars_events"><![CDATA[<li>events from calendars: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>events from files: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>favorite events: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contacts: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>contacts titles: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
@@ -1099,6 +1107,7 @@
 
     <drawable name="app_icon">@mipmap/ic_launcher_spring_round</drawable>
     <drawable name="app_icon_summer">@mipmap/ic_launcher_summer_round</drawable>
+    <drawable name="app_icon_autumn">@mipmap/ic_launcher_autumn_round</drawable>
     <drawable name="app_icon_winter">@mipmap/ic_launcher_winter_round</drawable>
     <drawable name="app_icon_grey">@mipmap/ic_launcher_grey_round</drawable>
     <drawable name="app_icon_black">@mipmap/ic_launcher_black_round</drawable>
@@ -1140,6 +1149,7 @@
     <string name="pref_Icon_default" translatable="false">@string/pref_Icon_Spring</string>
     <string name="pref_Icon_Spring" translatable="false">Spring</string>
     <string name="pref_Icon_Summer" translatable="false">Summer</string>
+    <string name="pref_Icon_Autumn" translatable="false">Autumn</string>
     <string name="pref_Icon_Winter" translatable="false">Winter</string>
     <string name="pref_Icon_Grey" translatable="false">Grey</string>
     <string name="pref_Icon_Black" translatable="false">Black</string>
@@ -1147,6 +1157,7 @@
     <string-array name="pref_Icon_values" translatable="false">
         <item>@string/pref_Icon_Spring</item>
         <item>@string/pref_Icon_Summer</item>
+        <item>@string/pref_Icon_Autumn</item>
         <item>@string/pref_Icon_Winter</item>
         <item>@string/pref_Icon_Grey</item>
         <item>@string/pref_Icon_Black</item>
@@ -1182,6 +1193,8 @@
     <string name="pref_Events_Hidden_rawIds_key" translatable="false">HiddenEventsRawIds</string>
     <string name="pref_Events_Silent_key" translatable="false">SilentEvents</string>
     <string name="pref_Events_Silent_rawIds_key" translatable="false">SilentEventsRawsIds</string>
+    <string name="pref_Events_Favorite_key" translatable="false">FavoriteEvents</string>
+    <string name="pref_Events_Favorite_rawIds_key" translatable="false">FavoriteEventsRawsIds</string>
     <string name="pref_MergedID_key" translatable="false">MergedIDs</string>
     <string name="pref_MergedRawID_key" translatable="false">MergedRawIDs</string>
     <string name="pref_xDaysEvents_key" translatable="false">xDaysEvents</string>

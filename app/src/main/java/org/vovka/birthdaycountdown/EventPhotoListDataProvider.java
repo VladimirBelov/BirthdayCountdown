@@ -271,7 +271,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         }
                     }
 
-                    photo = eventsData.getContactPhoto(eventInfo, true, true, true, roundingFactor);
+                    photo = eventsData.getEventPhoto(eventInfo, true, true, true, roundingFactor);
                 }
                 if (photo != null) {
                     int outWidth;

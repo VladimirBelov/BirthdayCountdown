@@ -11,6 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.9</item>
+        <item>Se agregaron íconos de aplicaciones temáticos (Android 12+) y de otoño</item>
+        <item>Se agregó la posibilidad de agregar cualquier evento a favoritos. Filtro agregado para eventos favoritos</item>
+
         <item>#1.7.8</item>
         <item>Se agregó la capacidad de colorear toda la fila con el color de la fecha (para el widget de lista)</item>
         <item>Se agregó la capacidad de especificar valores RGB en la configuración de color (funciones extra) o elegir uno de los colores recientes</item>

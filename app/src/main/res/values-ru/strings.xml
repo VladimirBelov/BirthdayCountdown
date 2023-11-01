@@ -53,6 +53,8 @@
     <string name="menu_context_xDaysEvent_add">Добавить счётчик дней…</string>
     <string name="menu_context_xDaysEvent_edit">Счётчик дней…</string>
     <string name="menu_context_set_eventype">Указать тип события…</string>
+    <string name="menu_context_favorites_add">Добавить в избранные</string>
+    <string name="menu_context_favorites_remove">Удалить из избранных</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -82,6 +84,8 @@
     <string name="msg_stats_xdays_filtered_prefix">"счётчиков дней найдено: "</string>
     <string name="msg_stats_unrecognized_prefix">"нераспознанных событий: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"нераспознанных событий найдено: "</string>
+    <string name="msg_stats_favorite_prefix">"избранных событий: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"избранных сбытий найдено: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
@@ -169,6 +173,7 @@
     <string name="msg_eventtype_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_eventtype_label_added">"Метка добавлена: %1$s"</string>
     <string name="msg_eventtype_label_absent">У события отсутствует метка!</string>
+    <string name="msg_debug_activity_recreate">"Пересоздание основной активности из-за ошибки: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -226,6 +231,7 @@
     <string name="events_scope_silenced_dead">Без уведомления (%1$d, сохранено %2$d)</string>
     <string name="events_scope_xdays">Счётчики дней (%1$d)</string>
     <string name="events_scope_unrecognized">Не распознано (%1$d)</string>
+    <string name="events_scope_favorite">Избранные (%1$d)</string>
     <string name="events_scope_xdays_dead">Счётчики дней (%1$d, сохранено %2$d)</string>
     <string name="events_scope_clear">Удалить фильтры</string>
     <string name="events_scope_clean">Удалить несуществующие связи в фильтрах</string>
@@ -296,6 +302,7 @@
     <string-array name="pref_Icon_entries">
         <item>Весна</item>
         <item>Лето</item>
+        <item>Осень</item>
         <item>Зима</item>
         <item>Серая</item>
         <item>Чёрная</item>
@@ -919,6 +926,7 @@
     <string name="stats_counters_contacts_events"><![CDATA[<li>событий контактов: %1$d]]></string>
     <string name="stats_counters_calendars_events"><![CDATA[<li>событий из календарей: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>событий из файлов: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>избранных событий: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>контактов: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>должностей: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>организаций: %1$d]]></string>

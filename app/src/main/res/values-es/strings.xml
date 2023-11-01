@@ -53,6 +53,8 @@
     <string name="menu_context_xDaysEvent_add">Añadir contador de días…</string>
     <string name="menu_context_xDaysEvent_edit">Contador de días…</string>
     <string name="menu_context_set_eventype">Elegir tipo de evento…</string>
+    <string name="menu_context_favorites_add">Agregar a favoritos</string>
+    <string name="menu_context_favorites_remove">Eliminar de favoritos</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referencia</string>
     <string name="menu_help_events_calendar">Eventos del calendario</string>
@@ -82,6 +84,8 @@
     <string name="msg_stats_xdays_filtered_prefix">"contadores de días encontrados: "</string>
     <string name="msg_stats_unrecognized_prefix">"eventos no reconocidos: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"se encontraron eventos no reconocidos: "</string>
+    <string name="msg_stats_favorite_prefix">"eventos favoritos: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"eventos favoritos encontrados: "</string>
     <string name="msg_label_hidden">Está oculto</string>
     <string name="msg_label_silenced">Sin notificación</string>
     <string name="msg_color_parse_error">¡Error al analizar el color!</string>
@@ -169,6 +173,7 @@
     <string name="msg_eventtype_label_set">"Conjunto de etiquetas: %1$s"</string>
     <string name="msg_eventtype_label_added">"Etiqueta agregada: %1$s"</string>
     <string name="msg_eventtype_label_absent">¡Al evento le falta una etiqueta!</string>
+    <string name="msg_debug_activity_recreate">"Error debido al error al volver a crear la actividad principal: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>
@@ -227,6 +232,7 @@
     <string name="events_scope_xdays">Contadores de días (%1$d)</string>
     <string name="events_scope_xdays_dead">Contadores de días (%1$d, salvado %2$d)</string>
     <string name="events_scope_unrecognized">No reconocido (%1$d)</string>
+    <string name="events_scope_favorite">Favorito (%1$d)</string>
     <string name="events_scope_clear">Quitar filtros</string>
     <string name="events_scope_clean">Limpiar filtros de enlaces muertos</string>
 
@@ -296,19 +302,20 @@
     <string-array name="pref_Icon_entries">
         <item>Primavera</item>
         <item>Verano</item>
+        <item>Otoño</item>
         <item>Invierno</item>
         <item>Gris</item>
         <item>Negro</item>
     </string-array>
 
     <string-array name="weekDays">
+        <item>"en el domingo"</item>
         <item>"en el lunes"</item>
         <item>"en el martes"</item>
         <item>"en el miércoles"</item>
         <item>"en el jueves"</item>
         <item>"en el viernes"</item>
         <item>"en el sábado"</item>
-        <item>"en el domingo"</item>
     </string-array>
 
     <string-array name="weekDaysShort">
@@ -918,6 +925,7 @@
     <string name="stats_counters_contacts_events"><![CDATA[<li>eventos de contacto: %1$d]]></string>
     <string name="stats_counters_calendars_events"><![CDATA[<li>eventos del calendario: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>eventos de archivos: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>eventos favoritos: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>contactos: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>publicaciones: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>organizaciones: %1$d]]></string>

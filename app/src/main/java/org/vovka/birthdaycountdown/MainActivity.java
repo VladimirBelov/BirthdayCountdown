@@ -170,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем тему
             //https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e
-            //https-medium-com-pkjvit-android-multi-theme-night-mode-and-material-design-c186bf9fd678
             //https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
 
             this.setTheme(eventsData.preferences_theme.themeMain);
@@ -342,17 +341,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) { //(selectedEvent[Position_eventStorage].equals(STRING_STORAGE_CALENDAR)) {
-                menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event))
-                        .setIcon(android.R.drawable.ic_menu_month);
+            if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
 
-                if (selectedEvent[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
+                if (Constants.STRING_STORAGE_CALENDAR.equals(selectedEvent[ContactsEvents.Position_eventStorage])) {
+                    menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event))
+                            .setIcon(android.R.drawable.ic_menu_month);
+                }
+
+                if (ContactsEvents.getEventType(Constants.Type_BirthDay).equals(selectedEvent[ContactsEvents.Position_eventSubType])) {
                     if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
-                    } else if (selectedEvent[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
+                    } else if (Constants.STRING_STORAGE_CALENDAR.equals(selectedEvent[ContactsEvents.Position_eventStorage]) && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
                     }
@@ -376,7 +378,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             final String eventKey = eventsData.getEventKey(selectedEvent);
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(selectedEvent);
+            MenuItem menuItem;
             if (!eventKey.isEmpty()) {
+
+                if (!Constants.STRING_1.equals(selectedEvent[ContactsEvents.Position_starred])) {
+                    if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, selectedEvent[ContactsEvents.Position_starred])) {
+                        menu.add(Menu.NONE, Constants.ContextMenu_RemoveFromFavorites, Menu.NONE, getString(R.string.menu_context_favorites_remove))
+                                .setIcon(R.drawable.ic_menu_star);
+                    } else {
+                        menuItem = menu.add(Menu.NONE, Constants.ContextMenu_AddToFavorites, Menu.NONE, getString(R.string.menu_context_favorites_add))
+                                .setIcon(R.drawable.ic_menu_star);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_yellow)));
+                        }
+                    }
+                }
+
                 if (eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
 
                     menu.add(Menu.NONE, Constants.ContextMenu_UnhideEvent, Menu.NONE, getString(R.string.menu_context_unhide_event))
@@ -384,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 } else {
 
-                    MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_HideEvent, Menu.NONE, getString(R.string.menu_context_hide_event))
+                    menuItem = menu.add(Menu.NONE, Constants.ContextMenu_HideEvent, Menu.NONE, getString(R.string.menu_context_hide_event))
                             .setIcon(R.drawable.ic_menu_block);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
@@ -398,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             .setIcon(android.R.drawable.ic_menu_revert);
 
                 } else if (!eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
-                    MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event))
+                    menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SilentEvent, Menu.NONE, getString(R.string.menu_context_silent_event))
                             .setIcon(R.drawable.ic_menu_end_conversation);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
@@ -426,20 +443,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
                     if (!selectedEvent[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_5K))) {
-                        MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
+                        menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
                                 .setIcon(android.R.drawable.ic_menu_myplaces);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
                         }
                     }
                 } else {
-                    MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_edit))
+                    menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_edit))
                             .setIcon(android.R.drawable.ic_menu_myplaces);
                 }
             }
 
             if (isUnrecognizedEvent(selectedEvent) && !Constants.STRING_EMPTY.equals(selectedEvent[ContactsEvents.Position_eventLabel])) {
-                MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SetEvenType, Menu.NONE, getString(R.string.menu_context_set_eventype))
+                menu.add(Menu.NONE, Constants.ContextMenu_SetEvenType, Menu.NONE, getString(R.string.menu_context_set_eventype))
                         .setIcon(android.R.drawable.ic_menu_mylocation);
             }
 
@@ -526,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(selectedEvent[ContactsEvents.Position_personFullName])
-                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(selectedEvent_str, true, false, true, roundingFactor)))
+                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, true, roundingFactor)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
 
@@ -539,6 +556,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 TextView textView = alertToShow.findViewById(android.R.id.message);
                 if (textView != null) textView.setTextSize(14);
 
+                return true;
+
+            } else if (itemId == Constants.ContextMenu_AddToFavorites) {
+
+                if (eventsData.setFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                    this.invalidateOptionsMenu();
+                    filterEventsList();
+                    drawList();
+                    eventsData.updateWidgets(0, null);
+                }
+                return true;
+
+            } else if (itemId == Constants.ContextMenu_RemoveFromFavorites) {
+
+                if (eventsData.unsetFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                    this.invalidateOptionsMenu();
+                    filterEventsList();
+                    drawList();
+                    eventsData.updateWidgets(0, null);
+                }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_HideEvent) {
@@ -1488,6 +1525,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
                                     || (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_All && eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_NotHidden)
                                     || statsUnrecognizedEvents > 0
+                                    || eventsData.statFavoriteEventsCount > 0
                     );
 
             searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
@@ -1627,6 +1665,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         filterVariants.add(getString(R.string.events_scope_xdays, xDaysEventsCount));
                     }
                     filterValues.add(Constants.pref_Events_Scope_XDays);
+                }
+                if (eventsData.statFavoriteEventsCount > 0) {
+                    filterVariants.add(getString(R.string.events_scope_favorite, eventsData.statFavoriteEventsCount));
+                    filterValues.add(Constants.pref_Events_Scope_Favorite);
                 }
                 if (statsUnrecognizedEvents > 0) {
                     filterVariants.add(getString(R.string.events_scope_unrecognized, statsUnrecognizedEvents));
@@ -2123,7 +2165,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
                         boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
-                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].equals(Constants.STRING_STORAGE_XDAYS);
+                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !Constants.STRING_STORAGE_XDAYS.equals(singleEventArray[ContactsEvents.Position_eventStorage]);
+                        boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
 
                         if (isHiddenEvent) statsHiddenEvents++;
                         if (isSilencedEvent) statsSilencedEvents++;
@@ -2133,6 +2176,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
+                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite && isFavoriteEvent) || //Показывать только избранные
                                 eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
                             if (!skipAdd) dataList.add(event);
                             statsVisibleEvents++;
@@ -2174,6 +2218,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     setHint(resources.getString(R.string.msg_stats_xdays_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
                 } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
                     setHint(resources.getString(R.string.msg_stats_unrecognized_prefix) + statsUnrecognizedEvents + Constants.STRING_SPACE);
+                } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite) {
+                    setHint(resources.getString(R.string.msg_stats_favorite_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
                 } else {
                     setHint(resources.getString(R.string.msg_stats_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
                 }
@@ -2613,7 +2659,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         roundingFactor = eventsData.preferences_list_photostyle;
                     }
 
-                    holder.PhotoImageView.setImageBitmap(eventsData.getContactPhoto(event, true, false, false, roundingFactor));
+                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, false, roundingFactor));
                     holder.PhotoImageView.setVisibility(View.VISIBLE);
                 } else {
                     holder.PhotoImageView.setImageBitmap(null);
@@ -2743,21 +2789,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.EventIconImageView.setImageAlpha((int)(255*alphaPrev));
                     }
                 }
-
+                return convertedView;
+            } catch (android.view.InflateException e) {
+                ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
+                getParent().recreate();
             } catch (Exception e) {
                 e.printStackTrace();
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
-
-            return convertedView; // != null ? convertedView : LayoutInflater.from(eventsData.getContext()).inflate(R.layout.entry_main, parent, false);
-            /*if (convertedView != null) return convertedView;
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
-            try {
-                return inflater.inflate(R.layout.entry_main, parent, false);
-            } catch (InflateException ie) {
-                return convertView != null ? convertView : parent;
-            }*/
+            return parent;
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {
@@ -2871,6 +2911,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
                             setHint(
                                     (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_unrecognized_prefix) : resources.getString(R.string.msg_stats_unrecognized_filtered_prefix))
+                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
+                                            .concat(Constants.STRING_SPACE)
+                            );
+                        } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite) {
+                            setHint(
+                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_favorite_prefix) : resources.getString(R.string.msg_stats_favorite_filtered_prefix))
                                             .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                             .concat(Constants.STRING_SPACE)
                             );

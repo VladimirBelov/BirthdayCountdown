@@ -11,6 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.7.9</item>
+        <item>Added themed (Android 12+) and autumn application icons</item>
+        <item>Added the ability to add any event to favorites. Added filter for favorite events</item>
+
         <item>#1.7.8</item>
         <item>Added the ability to colorize the entire row with the date color (for list widget)</item>
         <item>Added the ability to specify RGB values in the color settings (extra features) or choose one of recent colors</item>

@@ -239,6 +239,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                        //sb.append("<div style=\"text-align: end;\">");
                         sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDistanceInfo[0]));
 
                     } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar_ID))) {

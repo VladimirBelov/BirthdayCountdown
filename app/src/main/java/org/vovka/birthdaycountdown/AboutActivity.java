@@ -169,6 +169,8 @@ public class AboutActivity extends AppCompatActivity {
                         sb.append(getString(R.string.stats_counters_calendars_events, eventsData.statCalendarsEventCount));
                     if (eventsData.statFilesEventCount > 0)
                         sb.append(getString(R.string.stats_counters_files_events, eventsData.statFilesEventCount));
+                    if (eventsData.statFavoriteEventsCount > 0)
+                        sb.append(getString(R.string.stats_counters_favorite_events, eventsData.statFavoriteEventsCount));
                     sb.append(Constants.HTML_UL_END);
 
                     if (eventsData.statEventTypes.entrySet().size() > 0) {

@@ -53,6 +53,8 @@
     <string name="menu_context_xDaysEvent_add">Tageszähler hinzufügen…</string>
     <string name="menu_context_xDaysEvent_edit">Tageszähler…</string>
     <string name="menu_context_set_eventype">Ereignistyp auswählen…</string>
+    <string name="menu_context_favorites_add">Zu Favoriten hinzufügen</string>
+    <string name="menu_context_favorites_remove">Aus Favoriten entfernen</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
@@ -82,6 +84,8 @@
     <string name="msg_stats_xdays_filtered_prefix">"Tageszähler gefunden: "</string>
     <string name="msg_stats_unrecognized_prefix">"nicht erkannte Ereignisse: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"nicht erkannte Ereignisse gefunden: "</string>
+    <string name="msg_stats_favorite_prefix">"Lieblingsereignisse: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"Lieblingsereignisse gefunden: "</string>
     <string name="msg_label_hidden">Ausgeblendet</string>
     <string name="msg_label_silenced">Stummgeschaltet</string>
     <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
@@ -169,6 +173,7 @@
     <string name="msg_eventtype_label_set">"Labelsatz: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label hinzugefügt: %1$s"</string>
     <string name="msg_eventtype_label_absent">Ereignis fehlt eine Beschriftung!</string>
+    <string name="msg_debug_activity_recreate">"Hauptaktivität aufgrund eines Fehlers neu erstellen: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -227,6 +232,7 @@
     <string name="events_scope_xdays">Tageszähler (%1$d)</string>
     <string name="events_scope_xdays_dead">Tageszähler (%1$d, gesichert %2$d)</string>
     <string name="events_scope_unrecognized">Nicht erkannt (%1$d)</string>
+    <string name="events_scope_favorite">Favorit (%1$d)</string>
     <string name="events_scope_clear">Filter entfernen</string>
     <string name="events_scope_clean">Filter von toten Links reinigen</string>
 
@@ -296,6 +302,7 @@
     <string-array name="pref_Icon_entries">
         <item>Frühling</item>
         <item>Sommer</item>
+        <item>Herbst</item>
         <item>Winter</item>
         <item>Grau</item>
         <item>Schwarz</item>
@@ -918,6 +925,7 @@
     <string name="stats_counters_contacts_events"><![CDATA[<li>Kontakt Ereignisse: %1$d]]></string>
     <string name="stats_counters_calendars_events"><![CDATA[<li>Kalenderereignisse: %1$d]]></string>
     <string name="stats_counters_files_events"><![CDATA[<li>Ereignisse aus Dateien: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>Lieblingsereignisse: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
     <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>

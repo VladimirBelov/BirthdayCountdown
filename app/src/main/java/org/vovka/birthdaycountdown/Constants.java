@@ -238,6 +238,7 @@ final class Constants {
     static final int pref_Events_Scope_Silenced = 3;
     static final int pref_Events_Scope_XDays = 4;
     static final int pref_Events_Scope_Unrecognized = 5;
+    static final int pref_Events_Scope_Favorite = 6;
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 
@@ -305,5 +306,7 @@ final class Constants {
     static final int ContextMenu_ShareAsText = 18;
     static final int ContextMenu_xDaysEvent = 19;
     static final int ContextMenu_SetEvenType = 20;
+    static final int ContextMenu_AddToFavorites = 21;
+    static final int ContextMenu_RemoveFromFavorites = 22;
 
 }

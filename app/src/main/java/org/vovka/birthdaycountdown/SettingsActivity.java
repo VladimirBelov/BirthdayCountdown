@@ -1285,6 +1285,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<Integer> iconImages = new ArrayList<>();
             iconImages.add(R.mipmap.ic_launcher_spring_round);
             iconImages.add(R.mipmap.ic_launcher_summer_round);
+            iconImages.add(R.mipmap.ic_launcher_autumn_round);
             iconImages.add(R.mipmap.ic_launcher_winter_round);
             iconImages.add(R.mipmap.ic_launcher_grey_round);
             iconImages.add(R.mipmap.ic_launcher_black_round);
@@ -2203,6 +2204,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
+                        getString(R.string.pref_Events_Favorite_key),
+                        getString(R.string.pref_Events_Favorite_rawIds_key),
                         getString(R.string.pref_List_EventInfo_key),
                         getString(R.string.pref_List_AgeFormat_key),
                         getString(R.string.pref_MergedID_key),

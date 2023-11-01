@@ -12,6 +12,7 @@
     <color name="dark_red">#FFbb0000</color>
     <color name="brown">#FF873A07</color>
     <color name="yellow">#FFFFEE00</color>
+    <color name="dark_yellow">#E1D200</color>
     <color name="green">#FF2ED70E</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->

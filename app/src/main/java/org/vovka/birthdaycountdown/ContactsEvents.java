@@ -348,6 +348,8 @@ class ContactsEvents {
     private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
     private Set<String> preferences_silentEvents = new HashSet<>();
     private Set<String> preferences_silentEventsRawIds = new HashSet<>();
+    private Set<String> preferences_favoriteEvents = new HashSet<>();
+    private Set<String> preferences_favoriteEventsRawIds = new HashSet<>();
     private Set<String> preferences_Accounts = new HashSet<>();
     Set<String> preferences_BirthDay_calendars = new HashSet<>();
     private Set<String> preferences_OtherEvent_calendars = new HashSet<>();
@@ -379,6 +381,7 @@ class ContactsEvents {
     int statEventsCount = 0;
     long statLastPausedForOtherActivity = 0;
     int statEventsPrevEventsFound = 0;
+    int statFavoriteEventsCount = 0;
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     float DisplayMetrics_density;
@@ -1271,6 +1274,9 @@ class ContactsEvents {
             preferences_silentEvents = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_key), new HashSet<>());
             preferences_silentEventsRawIds = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_rawIds_key), new HashSet<>());
 
+            preferences_favoriteEvents = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_key), new HashSet<>());
+            preferences_favoriteEventsRawIds = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_rawIds_key), new HashSet<>());
+
             preferences_mergedIDs.clear();
             for (String element : getPreferenceStringSet(preferences, context.getString(R.string.pref_MergedID_key), new HashSet<>())) {
                 int indexDiv = element.indexOf(Constants.STRING_COLON_SPACE);
@@ -1460,6 +1466,7 @@ class ContactsEvents {
             statTimeGetContactEvents = 0;
             statTimeGetCalendarEvents = 0;
             statTimeGetFileEvents = 0;
+            statFavoriteEventsCount = 0;
 
             needUpdateEventList = false;
 
@@ -1472,13 +1479,17 @@ class ContactsEvents {
             final String idBirthday = getEventType(Constants.Type_BirthDay);
             final String idOther = getEventType(Constants.Type_Other);
 
-            return getContactsEvents()
+            boolean result = getContactsEvents()
                     | getCalendarEvents(idBirthday)
                     | getCalendarEvents(idOther)
                     | getFileEvents(idBirthday)
                     | getFileEvents(idOther)
                     | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
                     | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent));
+
+            statFavoriteEventsCount += preferences_favoriteEvents.size();
+
+            return result;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2301,7 +2312,10 @@ class ContactsEvents {
                     userData.put(Position_dates, newEventDate);
                     userData.put(Position_eventIcon, Integer.toString(eventIcon));
                     userData.put(Position_eventEmoji, eventEmoji);
-                    userData.put(Position_starred, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)));
+                    if (Constants.STRING_1.equals(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)))) {
+                        userData.put(Position_starred, Constants.STRING_1);
+                        statFavoriteEventsCount++;
+                    }
                     userData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
                     userData.put(Position_eventStorage, Constants.STRING_STORAGE_CONTACTS); //Где искать событие по ID
                     userData.put(Position_eventSource, getResources().getString(R.string.msg_account_info, accountName));
@@ -2668,7 +2682,10 @@ class ContactsEvents {
                                 userData.put(Position_photo_uri, checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
 
                                 if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                                    userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
+                                    if (Constants.STRING_1.equals(checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                        userData.put(Position_starred, Constants.STRING_1);
+                                        statFavoriteEventsCount++;
+                                    }
                                 }
 
                                 if (!namedFromEvent) {
@@ -3208,7 +3225,7 @@ class ContactsEvents {
                         //hashCode -> ID
                         if (contactID == null) {
                             int divIndex = file.indexOf(Constants.STRING_BAR);
-                            if (divIndex < 0) divIndex = file.length();
+                            if (divIndex < 0) divIndex = 0; //file.length();
                             contactID = Constants.PREFIX_FileEventID + Math.abs((file.substring(divIndex) + eventTitle).hashCode());
                         }
 
@@ -3216,6 +3233,9 @@ class ContactsEvents {
 
                         userData.put(Position_personFullName, eventTitle);
                         userData.put(Position_personFullNameAlt, eventTitle);
+                        int divIndex = file.indexOf(Constants.STRING_BAR);
+                        if (divIndex < 0) divIndex = 0;
+                        userData.put(Position_eventID, Constants.PREFIX_FileEventID + Math.abs((file.substring(divIndex) + eventTitle).hashCode()));
 
                     }
 
@@ -3305,7 +3325,10 @@ class ContactsEvents {
                                     userData.put(Position_personFullNameAlt, checkForNull(contactDataMap.get(ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)).replace(Constants.STRING_COMMA, Constants.STRING_EMPTY));
                                 }*/
                                 if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                                    userData.put(Position_starred, checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)));
+                                    if (Constants.STRING_1.equals(checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                        userData.put(Position_starred, Constants.STRING_1);
+                                        statFavoriteEventsCount++;
+                                    }
                                 }
                                 contactDataMap.clear();
                             }
@@ -3811,9 +3834,10 @@ class ContactsEvents {
         return sb.toString();
     }
 
-    Bitmap getContactPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean forWidget, int roundingFactor) {
+    Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean forWidget, int roundingFactor) {
 
         boolean makeSquared = suggestSquared;
+        boolean addMourningTape = false;
         Bitmap bm = null;
 
         try {
@@ -3823,96 +3847,101 @@ class ContactsEvents {
             String eventSubType = singleEventArray[Position_eventSubType];
 
             if (eventType.equals(getEventType(Constants.Type_Unrecognized))) {
-                return BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
+
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
+
             } else if (eventSubType.equals(getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(getEventType(Constants.Type_FileEvent))
                     && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
-                return BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
-            }
 
-            @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
 
-            final boolean addMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
-                    (preferences_list_sad_photo == 2 && idsWithDeathEvent.contains(contactID));
+            } else {
 
-            if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
-                //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                if (contentResolver == null) contentResolver = context.getContentResolver();
-                Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
-                InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
-                if (photo_stream != null) {
-                    BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                    bm = BitmapFactory.decodeStream(buf);
-                    buf.close();
-                    photo_stream.close();
+                @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
+
+                addMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
+                        (preferences_list_sad_photo == 2 && idsWithDeathEvent.contains(contactID));
+
+                if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
+                    //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+                    if (contentResolver == null) contentResolver = context.getContentResolver();
+                    Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
+                    InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
+                    if (photo_stream != null) {
+                        BufferedInputStream buf = new BufferedInputStream(photo_stream);
+                        bm = BitmapFactory.decodeStream(buf);
+                        buf.close();
+                        photo_stream.close();
+                    }
                 }
-            }
 
-            if (bm == null) {
-                //Если событие - не день рождения, пытаемся достать возраст из дня рождения
-                if (!eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
-                    Date birthDate = birthdayDatesForIds.get(contactID);
-                    Date BDay = null;
-                    try {
-                        BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
-                    } catch (ParseException e) { /**/ }
+                if (bm == null) {
+                    //Если событие - не день рождения, пытаемся достать возраст из дня рождения
+                    if (!eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
+                        Date birthDate = birthdayDatesForIds.get(contactID);
+                        Date BDay = null;
+                        try {
+                            BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
+                        } catch (ParseException e) { /**/ }
 
-                    List<String> singleRowList = Arrays.asList(singleEventArray);
-                    if (birthDate != null && BDay != null) {
-                        final int countYearsDiff = countYearsDiff(birthDate, BDay);
-                        if (countYearsDiff > 0) {
-                            singleRowList.set(Position_age, String.valueOf(countYearsDiff));
+                        List<String> singleRowList = Arrays.asList(singleEventArray);
+                        if (birthDate != null && BDay != null) {
+                            final int countYearsDiff = countYearsDiff(birthDate, BDay);
+                            if (countYearsDiff > 0) {
+                                singleRowList.set(Position_age, String.valueOf(countYearsDiff));
+                            } else {
+                                //если день рождения без года - мы об этом никак не узнаем
+                                singleRowList.set(Position_age, Constants.STRING_MINUS1);
+                            }
+                            singleEventArray = singleRowList.toArray(new String[0]);
+                        }
+                    }
+
+                    //Случайное фото с соответствии с возрастом и полом
+                    Person person = new Person(context, singleEventArray);
+                    int gender = person.getGender();
+
+                    //По-умолчанию
+                    Integer idPhoto = R.drawable.ic_pack00_m1;
+                    if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
+                        idPhoto = preferences_IconPackImages_F.get(0);
+                    } else if (preferences_IconPackImages_M.get(0) != null) {
+                        idPhoto = preferences_IconPackImages_M.get(0);
+                    }
+
+                    //Если определён возраст
+                    if (person.Age >= 0) {
+                        if (gender == 2) {
+                            for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
+                                int beforeAge = entry.getKey();
+                                if (beforeAge > 0 && person.Age <= beforeAge) {
+                                    idPhoto = preferences_IconPackImages_F.get(beforeAge);
+                                    break;
+                                }
+                            }
                         } else {
-                            //если день рождения без года - мы об этом никак не узнаем
-                            singleRowList.set(Position_age, Constants.STRING_MINUS1);
-                        }
-                        singleEventArray = singleRowList.toArray(new String[0]);
-                    }
-                }
-
-                //Случайное фото с соответствии с возрастом и полом
-                Person person = new Person(context, singleEventArray);
-                int gender = person.getGender();
-
-                //По-умолчанию
-                Integer idPhoto = R.drawable.ic_pack00_m1;
-                if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
-                    idPhoto = preferences_IconPackImages_F.get(0);
-                } else if (preferences_IconPackImages_M.get(0) != null) {
-                    idPhoto = preferences_IconPackImages_M.get(0);
-                }
-
-                //Если определён возраст
-                if (person.Age >= 0) {
-                    if (gender == 2) {
-                        for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
-                            int beforeAge = entry.getKey();
-                            if (beforeAge > 0 && person.Age <= beforeAge) {
-                                idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                break;
+                            for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
+                                int beforeAge = entry.getKey();
+                                if (beforeAge > 0 && person.Age <= beforeAge) {
+                                    idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                    break;
+                                }
                             }
                         }
+                    }
+                    if (idPhoto == null) return null;
+                    bm = getBitmap(context, idPhoto);
+                    if (bm == null) return null;
+
+                    int bmWidth = bm.getWidth();
+                    int bmHeight = bm.getHeight();
+                    if (bmHeight > bmWidth) {
+                        //noinspection SuspiciousNameCombination
+                        bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
                     } else {
-                        for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
-                            int beforeAge = entry.getKey();
-                            if (beforeAge > 0 && person.Age <= beforeAge) {
-                                idPhoto = preferences_IconPackImages_M.get(beforeAge);
-                                break;
-                            }
-                        }
+                        //noinspection SuspiciousNameCombination
+                        bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                     }
-                }
-                if (idPhoto == null) return null;
-                bm = getBitmap(context, idPhoto);
-                if (bm == null) return null;
-
-                int bmWidth = bm.getWidth();
-                int bmHeight = bm.getHeight();
-                if (bmHeight > bmWidth) {
-                    //noinspection SuspiciousNameCombination
-                    bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
-                } else {
-                    //noinspection SuspiciousNameCombination
-                    bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                 }
             }
 
@@ -3982,18 +4011,24 @@ class ContactsEvents {
             }
 
             //Добавление иконки избранного
-            if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon)) && singleEventArray[Position_starred].equals(Constants.STRING_1)) {
+            final String eventKey = getEventKey(singleEventArray);
+            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+            if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon)) && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
 
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawBitmap(bm, new Matrix(), null);
                 bm.recycle();
                 Bitmap bmStar = BitmapFactory.decodeResource(getResources(), R.drawable.fav_star);
-                final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4, bmOverlay.getHeight() / 4, true);
+                final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4 - (bmOverlay.getWidth() - bmOverlay.getHeight()) / 4, bmOverlay.getHeight() / 4, true);
 
-                if (roundingFactor < 9) { //Не круг - рисуем в левом нижнем углу
+                if (roundingFactor < 3) { //Не круг - рисуем в левом нижнем углу
 
-                    canvas.drawBitmap(bmStarScaled, 2, (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+                    canvas.drawBitmap(bmStarScaled, 2 + (float)((bmOverlay.getWidth() - bmOverlay.getHeight()) / 4), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+
+                } else if (roundingFactor < 9) { //Закругление - рисуем в левом нижнем углу правее
+
+                    canvas.drawBitmap(bmStarScaled, 10 + (float)((bmOverlay.getWidth() - bmOverlay.getHeight())/8), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
 
                 } else { //Круг - рисуем внизу по центру
 
@@ -4589,8 +4624,9 @@ class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawIs = getEventKeyWithRawId(singleEventArray);
 
+            boolean isFavoriteEvent = Constants.STRING_1.equals(singleEventArray[Position_starred]);
             singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
-                    + (singleEventArray[Position_starred].equals(Constants.STRING_1) ? "0" : checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1")
+                    + (isFavoriteEvent ? "0" : checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1")
                     + (eventType.equals(getEventType(Constants.Type_BirthDay)) ? "1"
                     : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
                     : eventType.equals(getEventType(Constants.Type_Custom)) ? "3"
@@ -5240,7 +5276,7 @@ class ContactsEvents {
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                             .setColor(this.getResources().getColor(R.color.dark_green))
-                            .setSmallIcon(R.drawable.ic_birthdaycountdown_icon).setContentText(textSmall)
+                            .setSmallIcon(R.drawable.ic_icon_notify).setContentText(textSmall)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)) //Ограничение 5120 символов https://stackoverflow.com/questions/27124887/whats-the-max-size-of-a-bigtextstyle-notification
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setContentIntent(pendingIntent)
@@ -5288,7 +5324,7 @@ class ContactsEvents {
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
-                                .setSmallIcon(R.drawable.ic_birthdaycountdown_icon)
+                                .setSmallIcon(R.drawable.ic_icon_notify)
                                 .setContentText(textBig)
                                 .setContentTitle(event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
@@ -5383,7 +5419,7 @@ class ContactsEvents {
                         } else {
                             roundingFactor = preferences_list_photostyle;
                         }
-                        builder.setLargeIcon(getContactPhoto(eventAsString, true, true, false, roundingFactor));
+                        builder.setLargeIcon(getEventPhoto(eventAsString, true, true, false, roundingFactor));
 
                         if (preferences_notifications_priority > 2) {
                             builder.setOngoing(true);
@@ -5515,7 +5551,7 @@ class ContactsEvents {
 
                 int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                 final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId).setColor(this.getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.ic_birthdaycountdown_icon).setContentText(textBig).setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1]).setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)).setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId).setColor(this.getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.ic_icon_notify).setContentText(textBig).setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1]).setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)).setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = null;
@@ -5551,7 +5587,7 @@ class ContactsEvents {
                 } else {
                     roundingFactor = preferences_list_photostyle;
                 }
-                builder.setLargeIcon(getContactPhoto(dataNotify, true, true, false, roundingFactor));
+                builder.setLargeIcon(getEventPhoto(dataNotify, true, true, false, roundingFactor));
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 if (!checkNoNotificationAccess()) {
                     notificationManager.notify(notificationID, builder.build());
@@ -5791,6 +5827,93 @@ class ContactsEvents {
 
             //clearDeadLinksSilencedEvents();
             //if (preferences_debug_on) Toast.makeText(context, "Unsilenced event: " + key, Toast.LENGTH_LONG).show();
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
+        }
+
+    }
+
+    boolean checkIsFavoriteEvent(@NonNull String key, String keyWithRawId, String isFavoriteContactEvent) {
+
+        try {
+
+            return (!key.isEmpty() && preferences_favoriteEvents != null && preferences_favoriteEvents.contains(key))
+                    || (keyWithRawId != null && !keyWithRawId.isEmpty() && preferences_favoriteEventsRawIds != null && preferences_favoriteEventsRawIds.contains(keyWithRawId))
+                    || (Constants.STRING_1.equals(isFavoriteContactEvent));
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
+        }
+    }
+
+    boolean setFavoriteEvent(@NonNull String key, String keyWithRawId) {
+
+        try {
+
+            SharedPreferences.Editor editor = null;
+
+            if (!key.isEmpty() && preferences_favoriteEvents != null) {
+                preferences_favoriteEvents.add(key);
+                editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
+            }
+
+            if (!TextUtils.isEmpty(keyWithRawId) && preferences_favoriteEventsRawIds != null) {
+                preferences_favoriteEventsRawIds.add(keyWithRawId);
+                if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_rawIds_key), preferences_favoriteEventsRawIds);
+            }
+
+            statFavoriteEventsCount++;
+            if (editor != null) {
+                editor.apply();
+                return true;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return false;
+    }
+
+    boolean unsetFavoriteEvent(@NonNull String key, String keyWithRawId) {
+
+        try {
+
+            //if (!checkIsFavoriteEvent(key, keyWithRawId)) return false;
+
+            boolean idremoved = false;
+
+            if (preferences_favoriteEvents != null)
+                idremoved = preferences_favoriteEvents.remove(key);
+
+            if (preferences_favoriteEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
+                idremoved = idremoved | preferences_favoriteEventsRawIds.remove(keyWithRawId);
+
+            if (idremoved) {
+
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
+                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_rawIds_key), preferences_favoriteEventsRawIds);
+
+                //Если удалили последнее событие - переключаем режим на стандартный
+                statFavoriteEventsCount--;
+                if (preferences_list_events_scope == Constants.pref_Events_Scope_Favorite && statFavoriteEventsCount == 0) {
+                    preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                    editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
+                }
+
+                editor.apply();
+
+            }
+
             return true;
 
         } catch (Exception e) {
@@ -6842,7 +6965,7 @@ class ContactsEvents {
                 builder.setContentIntent(pendingIntent);
 
                 if (!TextUtils.isEmpty(quest.event)) {
-                    builder.setLargeIcon(getContactPhoto(quest.event, true, true, false, preferences_list_photostyle));
+                    builder.setLargeIcon(getEventPhoto(quest.event, true, true, false, preferences_list_photostyle));
 
                     String[] eventInfo = quest.event.split(Constants.STRING_EOT, -1);
                     intent = new Intent(Intent.ACTION_VIEW);
@@ -6892,7 +7015,7 @@ class ContactsEvents {
                 builder.setTitle(quest.type);
                 builder.setMessage(Constants.STRING_EOL + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getContactPhoto(quest.event, true, true, false, preferences_list_photostyle)));
+                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(quest.event, true, true, false, preferences_list_photostyle)));
                 }
 
                 for (int i = 0; i < quest.actions.size(); i++) {
