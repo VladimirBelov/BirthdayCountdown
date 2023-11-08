@@ -236,6 +236,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
+            //Заголовок виджета
+            String prefWidgetCaption = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 9) prefWidgetCaption = widgetPref.get(9).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+            EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
+            editCustomWidgetCaption.setText(prefWidgetCaption);
+
             //Сообщение при отсутствии событий
             String prefZeroEventsMessage = Constants.STRING_EMPTY;
             if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
@@ -449,6 +455,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
                 findViewById(R.id.hintEventShift).setVisibility(View.GONE);
 
+                //Скрываем заголовок виджета
+                findViewById(R.id.dividerCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.captionCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.editCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.hintCustomWidgetCaption).setVisibility(View.GONE);
+
                 //Скрываем своё сообщение об отсутствии событий
                 findViewById(R.id.dividerCustomZeroEventsMessage).setVisibility(View.GONE);
                 findViewById(R.id.captionCustomZeroEventsMessage).setVisibility(View.GONE);
@@ -483,6 +495,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
+            final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
             final EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
             final int selectedItemPosition = spinnerIndex.getSelectedItemPosition();
 
@@ -504,7 +517,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
                 if (spinnerScopeEvents.getSelectedItemPosition() != 0 || spinnerScopeDays.getSelectedItemPosition() != 0) { //Есть ограничения
-                    scopeInfo.append(Constants.STRING_COMMA);
                     scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
                     scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
                 }
@@ -543,7 +555,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .concat(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())) //Стиль фото
                     .concat(Constants.STRING_COMMA)
                     .concat(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)) //Сообщение, когда нет событий
+                    .concat(Constants.STRING_COMMA)
                     .concat(this.isListWidget ? scopeInfo.toString() : Constants.STRING_EMPTY) //Объём событий
+                    .concat(Constants.STRING_COMMA)
+                    .concat(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)) //Заголовок виджета
+                    .concat(Constants.STRING_COMMA)
             );
 
             final Intent intent = new Intent();

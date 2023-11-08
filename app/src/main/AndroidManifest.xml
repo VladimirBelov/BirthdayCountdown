@@ -22,6 +22,7 @@
     <!-- <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> позволяет запрашивать игнорирование оптимизации батареи для этого приложения (для обновления виджетов) https://developer.android.com/reference/android/provider/Settings#ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- для Android 13+ нужно для отправки уведомлений -->
     <!--<uses-permission android:name="android.permission.USE_EXACT_ALARM"/> https://support.google.com/googleplay/android-developer/answer/12253906#exact_alarm_preview -->
+
     <queries> <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
         <intent>
             <action android:name="android.intent.action.MAIN"/>

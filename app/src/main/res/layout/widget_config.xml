@@ -347,6 +347,42 @@
                     app:dialogIcon="@drawable/ic_menu_paste" />
 
                 <View
+                    android:id="@+id/dividerCustomWidgetCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionCustomWidgetCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_custom_widget_caption_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
+
+                <EditText
+                    android:id="@+id/editCustomWidgetCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/widget_config_custom_widget_caption_hint"
+                    android:autofillHints=""
+                    android:textColorHint="?attr/dialogHintColor"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    tools:ignore="VisualLintTextFieldSize" />
+
+                <TextView
+                    android:id="@+id/hintCustomWidgetCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_custom_widget_caption_description"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:ignore="VisualLintLongText" />
+
+                <View
                     android:id="@+id/dividerCustomZeroEventsMessage"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

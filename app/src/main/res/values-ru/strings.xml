@@ -716,6 +716,9 @@
     <string name="pref_Widgets_Color_EventCaption_title">Основной цвет</string>
     <string name="pref_Widgets_Color_EventCaption_summary">Основной цвет элементов виджета (заголовки событий, возраст)</string>
 
+    <string name="pref_Widgets_Color_WidgetCaption_title">Цвет заголовка</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Цвет заголовка виджета</string>
+
     <string name="pref_Widgets_Color_EventToday_title">Возраст</string>
     <string name="pref_Widgets_Color_EventToday_summary">Цвет возраста для событий сегодня</string>
 
@@ -770,6 +773,10 @@
         <item>Сильно закруглённое</item>
         <item>Круг</item>
     </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Заголовок виджета</string>
+    <string name="widget_config_custom_widget_caption_description">Свой заголовок для этого виджета (поддерживаются эмодзи 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Введите сообщение…</string>
 
     <string name="widget_config_custom_zero_events_label">Сообщение при отсутствии событий</string>
     <string name="widget_config_custom_zero_events_description">Своё сообщение вместо стандартного, если нет событий для отображения (поддерживаются эмодзи 🎂). Введите пробел для невидимости виджета, оставьте пустым для стандартного сообщения</string>

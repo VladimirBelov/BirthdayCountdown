@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -98,6 +99,20 @@ public class WidgetList extends AppWidgetProvider {
                         + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
+            }
+
+            String prefWidgetCaption = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 9) {
+                prefWidgetCaption = widgetPref.get(9);
+            }
+            if (prefWidgetCaption.isEmpty()) {
+                views.setViewVisibility(R.id.caption, View.INVISIBLE);
+            } else {
+                views.setViewVisibility(R.id.caption, View.VISIBLE);
+                views.setTextViewText(R.id.caption, prefWidgetCaption);
+                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+                views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics()), 0, 0);
+                views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             }
 
             //Реакция на нажатие

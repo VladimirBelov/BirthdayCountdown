@@ -20,11 +20,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +30,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 // Список событий масштабируемый (с фото)
 public class WidgetPhotoList extends AppWidgetProvider {
@@ -90,13 +91,26 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
-
             if (eventsData.preferences_debug_on) {
 
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
                         + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
+            }
+
+            String prefWidgetCaption = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 9) {
+                prefWidgetCaption = widgetPref.get(9);
+            }
+            if (prefWidgetCaption.isEmpty()) {
+                views.setViewVisibility(R.id.caption, View.INVISIBLE);
+            } else {
+                views.setViewVisibility(R.id.caption, View.VISIBLE);
+                views.setTextViewText(R.id.caption, prefWidgetCaption);
+                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+                views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics()), 0, 0);
+                views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             }
 
             //Реакция на нажатие

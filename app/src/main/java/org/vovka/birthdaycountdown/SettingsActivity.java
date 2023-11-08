@@ -448,6 +448,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Color_WidgetCaption_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
@@ -2114,6 +2115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Widgets_Color_EventSoon_key),
                         getString(R.string.pref_Widgets_Color_EventFar_key),
                         getString(R.string.pref_Widgets_Color_EventCaption_key),
+                        getString(R.string.pref_Widgets_Color_WidgetCaption_key),
                         getString(R.string.pref_Events_Scope),
                         getString(R.string.pref_Notifications_ChannelID)
                 ));

@@ -23,10 +23,23 @@
             tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="98"
+                    android:gravity="start|top"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/info"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="-8dp"
+                    android:layout_weight="3"
                     android:alpha="0.7"
+                    android:gravity="top"
                     android:paddingEnd="2dp"
                     android:textColor="@color/white"
                     android:textSize="8sp"
@@ -35,11 +48,12 @@
                 <ImageView
                     android:id="@+id/config_button"
                     android:layout_width="20dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="20dp"
                     android:layout_gravity="left"
+                    android:layout_weight="1"
                     android:alpha="0.8"
                     android:contentDescription="@string/button_prefs"
-                    android:gravity="top|end"
+                    android:gravity="center|end"
                     android:src="@drawable/ic_sysbar_quicksettings"
                     tools:ignore="ImageContrastCheck" />
 

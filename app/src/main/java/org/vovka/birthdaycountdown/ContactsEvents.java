@@ -272,6 +272,7 @@ class ContactsEvents {
     String preferences_widgets_bottom_info_2nd;
     int preferences_widgets_days_event_soon;
     @ColorInt int preferences_widgets_color_default;
+    @ColorInt int preferences_widgets_color_widget_caption;
     @ColorInt int preferences_widgets_color_event_today;
     @ColorInt int preferences_widgets_color_event_soon;
     @ColorInt int preferences_widgets_color_event_far;
@@ -993,6 +994,7 @@ class ContactsEvents {
             preferences_widgets_color_event_soon = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventSoon_key), getResources().getColor(R.color.pref_Widgets_Color_EventSoon_default));
             preferences_widgets_color_event_far = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
             preferences_widgets_color_default = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
+            preferences_widgets_color_widget_caption = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_WidgetCaption_key), getResources().getColor(R.color.pref_Widgets_Color_WidgetCaption_default));
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
             preferences_notification_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
             preferences_quiz_interface = getPreferenceString(preferences, getResources().getString(R.string.pref_Quiz_Interface_key), Constants.STRING_EMPTY);
@@ -8230,5 +8232,48 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    float getTextSizeForWidgetText(List<String> widgetPref, int sizeFactor, double fontMagnify) {
+        try {
+
+            if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
+                switch (widgetPref.get(1)) {
+                    case Constants.STRING_1:
+                        fontMagnify = fontMagnify * 0.5;
+                        break;
+                    case Constants.STRING_2:
+                        fontMagnify = fontMagnify * 0.65;
+                        break;
+                    case Constants.STRING_3:
+                        fontMagnify = fontMagnify * 0.75;
+                        break;
+                    case Constants.STRING_4:
+                        fontMagnify = fontMagnify * 0.85;
+                        break;
+                    case Constants.STRING_5:
+                        fontMagnify = fontMagnify * 1;
+                        break;
+                    case Constants.STRING_6:
+                        fontMagnify = fontMagnify * 1.2;
+                        break;
+                    case Constants.STRING_7:
+                        fontMagnify = fontMagnify * 1.5;
+                        break;
+                    case Constants.STRING_8:
+                        fontMagnify = fontMagnify * 1.75;
+                        break;
+                    case Constants.STRING_9:
+                        fontMagnify = fontMagnify * 2.0;
+                        break;
+                }
+            }
+            return (float) (sizeFactor * fontMagnify);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return sizeFactor;
     }
 }

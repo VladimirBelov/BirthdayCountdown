@@ -824,6 +824,17 @@
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
         <org.vovka.birthdaycountdown.ColorPreference
+            android:key="@string/pref_Widgets_Color_WidgetCaption_key"
+            android:title="@string/pref_Widgets_Color_WidgetCaption_title"
+            android:summary="@string/pref_Widgets_Color_WidgetCaption_summary"
+            android:defaultValue="@color/pref_Widgets_Color_WidgetCaption_default"
+            android:icon="@drawable/ic_menu_paste"
+            app:numColumns="4"
+            app:itemLayout="@layout/item_color"
+            app:dialogTitle="@string/pref_Widgets_Color_WidgetCaption_title"
+            app:dialogIcon="@drawable/ic_menu_paste"/>
+
+        <org.vovka.birthdaycountdown.ColorPreference
             android:key="@string/pref_Widgets_Color_EventToday_key"
             android:title="@string/pref_Widgets_Color_EventToday_title"
             android:summary="@string/pref_Widgets_Color_EventToday_summary"

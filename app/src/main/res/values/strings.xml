@@ -716,6 +716,9 @@
     <string name="pref_Widgets_Color_EventCaption_title">Primary color</string>
     <string name="pref_Widgets_Color_EventCaption_summary">Primary color for widget elements (event captions, age)</string>
 
+    <string name="pref_Widgets_Color_WidgetCaption_title">Widget caption color</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">The color for widget caption</string>
+
     <string name="pref_Widgets_Color_EventToday_title">Age</string>
     <string name="pref_Widgets_Color_EventToday_summary">Color of age for today events</string>
 
@@ -769,6 +772,10 @@
         <item>Strongly rounded</item>
         <item>Circle</item>
     </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Custom widget caption</string>
+    <string name="widget_config_custom_widget_caption_description">Custom caption for this widget (Emojis are supported 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Enter message…</string>
 
     <string name="widget_config_custom_zero_events_label">Custom message for zero events</string>
     <string name="widget_config_custom_zero_events_description">Custom message when no events is found (Emojis are supported 🎂). Enter space to make widget transparent, clear text for show standard message</string>
@@ -968,6 +975,7 @@
     <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
+    <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Paper</string>
     <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Cotton</string>
     <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Leather</string>
@@ -1620,6 +1628,9 @@
     <string name="pref_Widgets_Color_EventCaption_key" translatable="false">Widget_Color_EventCaption</string>
     <color name="pref_Widgets_Color_EventCaption_default" translatable="false">@color/white</color>
 
+    <string name="pref_Widgets_Color_WidgetCaption_key" translatable="false">Widget_Color_WidgetCaption</string>
+    <color name="pref_Widgets_Color_WidgetCaption_default" translatable="false">@color/white</color>
+
     <string-array name="widget_config_numbers" translatable="false">
         <item>1</item>
         <item>2</item>
@@ -1660,8 +1671,8 @@
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,</string>
-    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,</string>
-    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,</string>
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>

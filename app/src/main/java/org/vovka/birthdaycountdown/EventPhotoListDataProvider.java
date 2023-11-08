@@ -78,40 +78,8 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         try {
 
             //Размер
-            double fontMagnify = 1.2;
-            if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
-                switch (widgetPref.get(1)) {
-                    case Constants.STRING_1:
-                        fontMagnify = fontMagnify * 0.5;
-                        break;
-                    case Constants.STRING_2:
-                        fontMagnify = fontMagnify * 0.65;
-                        break;
-                    case Constants.STRING_3:
-                        fontMagnify = fontMagnify * 0.75;
-                        break;
-                    case Constants.STRING_4:
-                        fontMagnify = fontMagnify * 0.85;
-                        break;
-                    case Constants.STRING_5:
-                        fontMagnify = fontMagnify * 1;
-                        break;
-                    case Constants.STRING_6:
-                        fontMagnify = fontMagnify * 1.2;
-                        break;
-                    case Constants.STRING_7:
-                        fontMagnify = fontMagnify * 1.5;
-                        break;
-                    case Constants.STRING_8:
-                        fontMagnify = fontMagnify * 1.75;
-                        break;
-                    case Constants.STRING_9:
-                        fontMagnify = fontMagnify * 2.0;
-                        break;
-                }
-            }
-            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_SMALL * fontMagnify));
-            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
+            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_SMALL, 1.2));
+            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
 
             views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
             views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
@@ -281,7 +249,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
                         outWidth = displayMetrics.widthPixels / 7;
                     }
-                    outWidth *= fontMagnify;
+                    outWidth *= 1.2;
 
                     int inWidth = photo.getWidth();
                     int inHeight = photo.getHeight();
