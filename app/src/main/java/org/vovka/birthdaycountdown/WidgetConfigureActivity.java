@@ -8,26 +8,42 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AuthenticatorDescription;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,12 +52,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
@@ -55,6 +74,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventTypesValues;
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
+    List<String> widgetPref;
+    private static DisplayMetrics displayMetrics;
+    private final List<String> eventSourcesIds = new ArrayList<>();
+    private final List<String> eventSourcesTitles = new ArrayList<>();
+    private final List<String> eventSourcesPackages = new ArrayList<>();
+    private final List<String> eventSourcesHashes = new ArrayList<>();
+    private final List<Integer> eventSourcesIcons = new ArrayList<>();
+    private List<String> eventSourcesSelected = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,10 +113,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
             eventsData.setLocale(true);
-            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
+            setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.widget_config);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -127,7 +154,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
             }
 
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+            widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
                         .concat(Constants.STRING_PARENTHESIS_OPEN)
@@ -379,7 +406,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
-                spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем нескроллируемые вперёд
+                spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
 
             } else {
                 spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
@@ -401,6 +428,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+
+            //Источники событий
+            if (widgetPref.size() > 10) {
+                String pref = widgetPref.get(10);
+                if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
+            }
+            getEventSources();
+            updateEventSources();
+            TextView listEventSources = findViewById(R.id.listEventSources);
+            listEventSources.setOnClickListener(v -> selectEventSources());
 
             //Скрываем недоступные параметры
 
@@ -467,6 +504,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.editCustomZeroEventsMessage).setVisibility(View.GONE);
                 findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(View.GONE);
 
+                //Скрываем источники событий
+                findViewById(R.id.dividerEventSources).setVisibility(View.GONE);
+                findViewById(R.id.captionEventSources).setVisibility(View.GONE);
+                findViewById(R.id.listEventSources).setVisibility(View.GONE);
+                findViewById(R.id.hintEventSources).setVisibility(View.GONE);
+
             }
 
             if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
@@ -483,6 +526,31 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
+        }
+    }
+
+    private void updateEventSources() {
+        try {
+
+            TextView listEventSources = findViewById(R.id.listEventSources);
+            StringBuilder sb = new StringBuilder();
+            for (String source: eventSourcesSelected) {
+                int ind = eventSourcesHashes.indexOf(source);
+                if (ind > -1) {
+                    if (sb.length() > 0) sb.append(Constants.STRING_EOL);
+                    sb.append(eventSourcesTitles.get(ind));
+                }
+            }
+
+            if (sb.length() == 0) {
+                listEventSources.setText(R.string.widget_config_event_sources_empty);
+            } else {
+                listEventSources.setText(sb.toString());
+            }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -520,6 +588,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
                     scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
                 }
+            }
+
+            final StringBuilder eventSources = new StringBuilder();
+            for(final String item: eventSourcesSelected) {
+                if (eventSources.length() > 0) eventSources.append("+");
+                eventSources.append(item);
             }
 
             //Проверки
@@ -560,6 +634,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .concat(Constants.STRING_COMMA)
                     .concat(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)) //Заголовок виджета
                     .concat(Constants.STRING_COMMA)
+                    .concat(eventSources.toString())
             );
 
             final Intent intent = new Intent();
@@ -657,5 +732,265 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void getEventSources() {
+        try {
+
+            //Контакты
+            final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
+            if (!eventsData.checkNoContactsAccess()) {
+                AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
+                if (preferences_accounts.size() > 0) {
+                    for (String account : preferences_accounts) {
+                        String accountType = ContactsEvents.substringBefore(ContactsEvents.substringAfter(account, Constants.STRING_PARENTHESIS_OPEN), Constants.STRING_PARENTHESIS_CLOSE);
+                        for (AuthenticatorDescription desc : descriptions) {
+                            if (accountType.equals(desc.type)) {
+                                eventSourcesIds.add(Constants.eventSourceContactPrefix + account);
+                                eventSourcesTitles.add(account);
+                                eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
+                                eventSourcesPackages.add(desc.packageName);
+                                eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + account));
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    Account[] accounts = AccountManager.get(this).getAccounts();
+                    for (Account account : accounts) {
+                        final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                        for (AuthenticatorDescription desc : descriptions) {
+                            if (account.type.equals(desc.type)) {
+                                eventSourcesIds.add(Constants.eventSourceContactPrefix + accountName);
+                                eventSourcesTitles.add(accountName);
+                                eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
+                                eventSourcesPackages.add(desc.packageName);
+                                eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + accountName));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Календари
+            if (!eventsData.checkNoCalendarAccess()){
+                if (eventsData.map_calendars.isEmpty()) eventsData.recieveCalendarList();
+                List<String> allCalendars = new ArrayList<>();
+                allCalendars.addAll(eventsData.preferences_MultiType_calendars);
+                allCalendars.addAll(eventsData.preferences_BirthDay_calendars);
+                allCalendars.addAll(eventsData.preferences_OtherEvent_calendars);
+                if (allCalendars.size() > 0) {
+                    for (String calendar: allCalendars) {
+                        if (eventsData.map_calendars.containsKey(calendar)) {
+                            eventSourcesTitles.add(ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
+                            eventSourcesIds.add(Constants.eventSourceCalendarPrefix + calendar);
+                            eventSourcesIcons.add(android.R.drawable.ic_menu_month);
+                            eventSourcesPackages.add(getPackageName());
+                            eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar));
+                        }
+                    }
+                }
+            }
+
+            //Файлы
+            if (eventsData.preferences_MultiType_files.size() > 0) {
+                for (String file: eventsData.preferences_MultiType_files) {
+                    eventSourcesIds.add(Constants.eventSourceMultiFilePrefix + file);
+                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
+                    eventSourcesPackages.add(getPackageName());
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
+                }
+            }
+            if (eventsData.preferences_Birthday_files.size() > 0) {
+                for (String file: eventsData.preferences_Birthday_files) {
+                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
+                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
+                    eventSourcesPackages.add(getPackageName());
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
+                }
+            }
+            if (eventsData.preferences_OtherEvent_files.size() > 0) {
+                for (String file: eventsData.preferences_OtherEvent_files) {
+                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
+                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
+                    eventSourcesPackages.add(getPackageName());
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
+                }
+            }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void selectEventSources() {
+        try {
+
+            if (eventSourcesIds.size() > 0) {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                List<String> sourceChoices = new ArrayList<>();
+
+                for (int i = 0; i < eventSourcesIds.size(); i++) {
+                    String sourceId = eventSourcesIds.get(i);
+                    String sourceTitle = eventSourcesTitles.get(i);
+
+                    if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
+
+                        String accountType = ContactsEvents.substringBefore(ContactsEvents.substringAfter(sourceId, Constants.STRING_PARENTHESIS_OPEN), Constants.STRING_PARENTHESIS_CLOSE);
+                        sourceChoices.add(sourceTitle
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getContactsEventsCount(accountType, ContactsEvents.substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
+                                + Constants.STRING_BRACKETS_CLOSE);
+
+                    } else if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
+
+                        sourceChoices.add(sourceTitle
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getCalendarEventsCount(ContactsEvents.substringAfter(sourceId, Constants.eventSourceCalendarPrefix))
+                                + Constants.STRING_BRACKETS_CLOSE);
+
+                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
+
+                        sourceChoices.add(sourceTitle
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getFileEventsCount(sourceId, sourceId.startsWith(Constants.eventSourceMultiFilePrefix))
+                                + Constants.STRING_BRACKETS_CLOSE);
+                    }
+
+                }
+
+                ListAdapter adapter = new EventSourcesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                        .setTitle(R.string.widget_config_events_sources_label)
+                        .setIcon(R.drawable.btn_zoom_page_press)
+                        .setAdapter(adapter, null)
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                            //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
+                            SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                            eventSourcesSelected.clear();
+                            for (int i = 0; i < checked.size(); i++) {
+                                if (checked.get(checked.keyAt(i))) {
+                                    eventSourcesSelected.add(eventSourcesHashes.get(checked.keyAt(i)));
+                                }
+                            }
+                            updateEventSources();
+
+                        })
+                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                        .setCancelable(true);
+
+                AlertDialog alertToShow = builder.create();
+
+                ListView listView = alertToShow.getListView();
+                listView.setItemsCanFocus(false);
+                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+                alertToShow.setOnShowListener(arg0 -> {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                    //Только здесь работает
+
+                    for (int i = 0; i < sourceChoices.size(); i++) {
+                        String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
+                        if (eventSourcesTitles.contains(title)) {
+                            if (eventSourcesSelected.contains(eventSourcesHashes.get(eventSourcesTitles.indexOf(title)))) {
+                                listView.setItemChecked(i, true);
+                            }
+                        }
+                    }
+
+                    /*final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
+                    for (int i = 0; i < sourceTitles.size(); i++) {
+                        if (preferences_accounts.isEmpty() || preferences_accounts.contains(sourceTitles.get(i))) {
+                            listView.setItemChecked(i, true);
+                        }
+                    }
+                    if (preferences_accounts.isEmpty()) {
+                        listView.setItemChecked(sourceTitles.size() - 1, false);
+                    }
+
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
+                        if (position == listView.getCount() - 1) {
+                            for (int i = 0; i < sourceTitles.size(); i++) {
+                                listView.setItemChecked(i, i >= sourceTitles.size() - 1);
+                            }
+                        } else {
+                            listView.setItemChecked(sourceTitles.size() - 1, false);
+                        }
+                    });*/
+                });
+
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
+            }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private static class EventSourcesAdapter extends ArrayAdapter<String> {
+
+        private static final String TAG = "EventSourcesAdapter";
+        private final List<Integer> images;
+        private final List<String> packages;
+        private final TypedArray ta;
+        private final PackageManager pm = getContext().getPackageManager();
+
+        EventSourcesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
+            super(context, R.layout.settings_list_item_multiple_choice, items);
+            this.images = images;
+            this.packages = packages;
+            this.ta = theme;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            try {
+
+                if (this.images.size() < position - 1 || this.packages.size() < position - 1) return view;
+
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
+
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
+
+                if (images.get(position) != null && images.get(position) != 0) {
+                    Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
+                    if (icon != null) {
+                        Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(bmp);
+                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        icon.draw(canvas);
+                        Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
+                        bmp.recycle();
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                    }
+                    textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            }
+
+            return view;
+        }
+
+    }
+
+    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 }

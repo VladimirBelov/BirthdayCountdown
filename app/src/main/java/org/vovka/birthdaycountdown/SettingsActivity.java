@@ -366,64 +366,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
-            /*
-            //Динамическое скрытие настроек
-            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Birthday_key));
-            if (prefCat != null) {
-
-                if (eventsData.preferences_BirthDay_calendars.size() == 0
-                        && eventsData.preferences_MultiType_calendars.size() == 0) {
-
-                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                } else {
-
-                    if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key)) == null) {
-                        pref = new CustomEditTextPreference(eventsData.getContext());
-                        pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_title));
-                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary));
-                        pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
-                        prefCat.addPreference(pref);
-                    }
-
-                    //Удаляем "Файлы", чтобы они могли (ниже) создастся после календарных настроек
-                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                }
-
-                if (eventsData.preferences_BirthDay_calendars.size() == 0) {
-
-                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                } else {
-
-                    if (findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key)) == null) {
-                        pref = new SwitchPreference(eventsData.getContext());
-                        pref.setTitle(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_title));
-                        pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_description));
-                        pref.setKey(getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key));
-                        prefCat.addPreference(pref);
-                    }
-
-                    //Удаляем "Файлы", чтобы они могли (ниже) создасться после календарных настроек
-                    pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                }
-
-                if (findPreference(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key)) == null) {
-                    pref = new Preference(eventsData.getContext());
-                    pref.setTitle(getString(R.string.pref_CustomEvents_LocalFiles_title));
-                    pref.setSummary(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_description));
-                    pref.setKey(getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key));
-                    prefCat.addPreference(pref);
-                }
-
-            }*/
-
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_AgeFormat_key);

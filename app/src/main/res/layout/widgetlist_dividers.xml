@@ -55,7 +55,8 @@
                     android:contentDescription="@string/button_prefs"
                     android:gravity="center|end"
                     android:src="@drawable/ic_sysbar_quicksettings"
-                    tools:ignore="ImageContrastCheck" />
+                    tools:ignore="ImageContrastCheck"
+                    tools:visibility="gone" />
 
         </LinearLayout>
 

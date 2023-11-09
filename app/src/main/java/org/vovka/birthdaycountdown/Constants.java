@@ -309,4 +309,9 @@ final class Constants {
     static final int ContextMenu_AddToFavorites = 21;
     static final int ContextMenu_RemoveFromFavorites = 22;
 
+    static final String eventSourceContactPrefix = "contact:";
+    static final String eventSourceCalendarPrefix = "calendar:";
+    static final String eventSourceFilePrefix = "file:";
+    static final String eventSourceMultiFilePrefix = "multifile:";
+
 }

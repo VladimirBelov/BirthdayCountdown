@@ -353,7 +353,7 @@ class ContactsEvents {
     private Set<String> preferences_favoriteEventsRawIds = new HashSet<>();
     private Set<String> preferences_Accounts = new HashSet<>();
     Set<String> preferences_BirthDay_calendars = new HashSet<>();
-    private Set<String> preferences_OtherEvent_calendars = new HashSet<>();
+    Set<String> preferences_OtherEvent_calendars = new HashSet<>();
     Set<String> preferences_MultiType_calendars = new HashSet<>();
     Set<String> preferences_Birthday_files = new HashSet<>();
     Set<String> preferences_OtherEvent_files = new HashSet<>();
@@ -3228,7 +3228,7 @@ class ContactsEvents {
                         if (contactID == null) {
                             int divIndex = file.indexOf(Constants.STRING_BAR);
                             if (divIndex < 0) divIndex = 0; //file.length();
-                            contactID = Constants.PREFIX_FileEventID + Math.abs((file.substring(divIndex) + eventTitle).hashCode());
+                            contactID = Constants.PREFIX_FileEventID + getHash(file.substring(divIndex) + eventTitle);
                         }
 
                     } else { //Просто событие
@@ -3237,7 +3237,7 @@ class ContactsEvents {
                         userData.put(Position_personFullNameAlt, eventTitle);
                         int divIndex = file.indexOf(Constants.STRING_BAR);
                         if (divIndex < 0) divIndex = 0;
-                        userData.put(Position_eventID, Constants.PREFIX_FileEventID + Math.abs((file.substring(divIndex) + eventTitle).hashCode()));
+                        userData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(divIndex) + eventTitle));
 
                     }
 
@@ -8035,6 +8035,13 @@ class ContactsEvents {
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
     }
 
+    @NonNull
+    static String substringAfter(String text, String sep) {
+        if (text == null) return Constants.STRING_EMPTY;
+        if (sep == null) return text;
+        return text.contains(sep) ? text.substring(text.indexOf(sep) + sep.length()) : text;
+    }
+
     void disableDebugMsg() {
 
         try {
@@ -8235,45 +8242,51 @@ class ContactsEvents {
     }
 
     float getTextSizeForWidgetText(List<String> widgetPref, int sizeFactor, double fontMagnify) {
+        double magnify = fontMagnify;
         try {
 
             if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
                 switch (widgetPref.get(1)) {
                     case Constants.STRING_1:
-                        fontMagnify = fontMagnify * 0.5;
+                        magnify = magnify * 0.5;
                         break;
                     case Constants.STRING_2:
-                        fontMagnify = fontMagnify * 0.65;
+                        magnify = magnify * 0.65;
                         break;
                     case Constants.STRING_3:
-                        fontMagnify = fontMagnify * 0.75;
+                        magnify = magnify * 0.75;
                         break;
                     case Constants.STRING_4:
-                        fontMagnify = fontMagnify * 0.85;
+                        magnify = magnify * 0.85;
                         break;
                     case Constants.STRING_5:
-                        fontMagnify = fontMagnify * 1;
+                        magnify = magnify * 1;
                         break;
                     case Constants.STRING_6:
-                        fontMagnify = fontMagnify * 1.2;
+                        magnify = magnify * 1.2;
                         break;
                     case Constants.STRING_7:
-                        fontMagnify = fontMagnify * 1.5;
+                        magnify = magnify * 1.5;
                         break;
                     case Constants.STRING_8:
-                        fontMagnify = fontMagnify * 1.75;
+                        magnify = magnify * 1.75;
                         break;
                     case Constants.STRING_9:
-                        fontMagnify = fontMagnify * 2.0;
+                        magnify = magnify * 2.0;
                         break;
                 }
             }
-            return (float) (sizeFactor * fontMagnify);
+            return (float) (sizeFactor * magnify);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return sizeFactor;
+    }
+
+    @NonNull
+    static String getHash(String in) {
+        return String.valueOf(Math.abs(in.hashCode()));
     }
 }

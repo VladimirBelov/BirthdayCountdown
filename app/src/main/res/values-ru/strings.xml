@@ -717,7 +717,7 @@
     <string name="pref_Widgets_Color_EventCaption_summary">Основной цвет элементов виджета (заголовки событий, возраст)</string>
 
     <string name="pref_Widgets_Color_WidgetCaption_title">Цвет заголовка</string>
-    <string name="pref_Widgets_Color_WidgetCaption_summary">Цвет заголовка виджета</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Цвет заголовка спискового виджета</string>
 
     <string name="pref_Widgets_Color_EventToday_title">Возраст</string>
     <string name="pref_Widgets_Color_EventToday_summary">Цвет возраста для событий сегодня</string>
@@ -737,6 +737,10 @@
     <string name="widget_config_event_types_description">Какие события отображать на виджете</string>
 
     <string name="widget_config_event_types_empty">Как в списке событий</string>
+
+    <string name="widget_config_events_sources_label">Источники событий</string>
+    <string name="widget_config_events_sources_description">Какие истоники событий использовать при отображении событий</string>
+    <string name="widget_config_event_sources_empty">Все события</string>
 
     <string name="widget_config_index_label">Стартовый номер событий</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>

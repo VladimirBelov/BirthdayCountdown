@@ -46,7 +46,6 @@
                 android:orientation="vertical"
                 android:isScrollContainer="true">
 
-
                 <TextView
                     android:id="@+id/hintBatteryOptimization"
                     android:layout_width="match_parent"
@@ -58,8 +57,6 @@
                     android:textColor="@color/dark_red"
                     android:textStyle="bold"
                     tools:ignore="VisualLintLongText" />
-
-                <!---->
 
                 <TextView
                     android:id="@+id/captionEventTypes"
@@ -85,8 +82,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_event_types_description"
                     android:textColor="?android:attr/textColorSecondary" />
-
-                <!---->
 
                 <View
                     android:id="@+id/dividerEventInfo"
@@ -192,6 +187,39 @@
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_events_sources_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/listEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/hintEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_events_sources_description"
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <View
                     android:id="@+id/dividerEventsCount"

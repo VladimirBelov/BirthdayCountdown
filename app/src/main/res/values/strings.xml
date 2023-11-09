@@ -717,7 +717,7 @@
     <string name="pref_Widgets_Color_EventCaption_summary">Primary color for widget elements (event captions, age)</string>
 
     <string name="pref_Widgets_Color_WidgetCaption_title">Widget caption color</string>
-    <string name="pref_Widgets_Color_WidgetCaption_summary">The color for widget caption</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">The color for list widget caption</string>
 
     <string name="pref_Widgets_Color_EventToday_title">Age</string>
     <string name="pref_Widgets_Color_EventToday_summary">Color of age for today events</string>
@@ -737,6 +737,10 @@
     <string name="widget_config_event_types_description">What kind of events to display on this widget</string>
 
     <string name="widget_config_event_types_empty">Same with event list</string>
+
+    <string name="widget_config_events_sources_label">Event sources</string>
+    <string name="widget_config_events_sources_description">What sources of evets to use</string>
+    <string name="widget_config_event_sources_empty">All events</string>
 
     <string name="widget_config_index_label">Event start index to display</string>
     <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
@@ -1670,7 +1674,7 @@
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
