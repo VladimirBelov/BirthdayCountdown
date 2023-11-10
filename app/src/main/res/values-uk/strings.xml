@@ -246,7 +246,7 @@
     <string name="event_type_file">Подія з файлу</string>
     <string name="event_type_unrecognized">Нерозпізнана подія</string>
 
-    <string name="account_type_local">Локальна</string>
+    <string name="account_type_local">Локальний акаунт</string>
 
     <string name="appwidget_text">Завантаження…</string>
     <string name="appwidget_label_1_7">На 1–7 подій</string>
@@ -716,6 +716,9 @@
     <string name="pref_Widgets_Color_EventCaption_title">Основний колір</string>
     <string name="pref_Widgets_Color_EventCaption_summary">Основний колір елементів віджета (заголовки подій, вік)</string>
 
+    <string name="pref_Widgets_Color_WidgetCaption_title">Колір підпису віджета</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Колір підпису віджета списку</string>
+
     <string name="pref_Widgets_Color_EventToday_title">Вік</string>
     <string name="pref_Widgets_Color_EventToday_summary">Колір віку для сьогоднішньої події</string>
 
@@ -734,6 +737,10 @@
     <string name="widget_config_event_types_description">Які події будуть відображенi на віджеті</string>
 
     <string name="widget_config_event_types_empty">Як в списку подій</string>
+
+    <string name="widget_config_events_sources_label">Джерела подій</string>
+    <string name="widget_config_events_sources_description">Які джерела подій використовувати</string>
+    <string name="widget_config_event_sources_empty">Усі джерела (вибрані в установках програми)</string>
 
     <string name="widget_config_index_label">Початковий номер події</string>
     <string name="widget_config_index_description">Значення 1 означає, що події будуть відображатися з початку списку, 2 - з другого і так далі … Ви можете додавати на екран кілька віджетів з різними значеннями в даному полі, щоб отримати бажану конфігурацію</string>
@@ -769,6 +776,10 @@
         <item>Сильно закруглені</item>
         <item>Коло</item>
     </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Користувацький підпис віджета</string>
+    <string name="widget_config_custom_widget_caption_description">Користувацький підпис для цього віджета (підтримуються Emojis 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Введіть повідомлення…</string>
 
     <string name="widget_config_custom_zero_events_label">Спеціальне повідомлення для нульових подій</string>
     <string name="widget_config_custom_zero_events_description">Спеціальне повідомлення, коли події не знайдено (підтримуються Emojis 🎂). Введіть пробіл, щоб зробити віджет прозорим, чіткий текст для показу стандартного повідомлення</string>

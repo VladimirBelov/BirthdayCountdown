@@ -246,7 +246,7 @@
     <string name="event_type_file">Событие из файла</string>
     <string name="event_type_unrecognized">Нераспознанное событие</string>
 
-    <string name="account_type_local">Локальная</string>
+    <string name="account_type_local">Локальный аккаунт</string>
 
     <string name="appwidget_text">Загрузка…</string>
     <string name="appwidget_label_1_7">На 1–7 событий</string>
@@ -740,7 +740,7 @@
 
     <string name="widget_config_events_sources_label">Источники событий</string>
     <string name="widget_config_events_sources_description">Какие истоники событий использовать при отображении событий</string>
-    <string name="widget_config_event_sources_empty">Все события</string>
+    <string name="widget_config_event_sources_empty">Все источники (выбранные в настройках приложения)</string>
 
     <string name="widget_config_index_label">Стартовый номер событий</string>
     <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>

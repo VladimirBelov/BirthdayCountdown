@@ -15,12 +15,14 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,6 +30,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -736,37 +739,85 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void getEventSources() {
         try {
 
-            //Контакты
+            //Online аккаунты
             final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
             if (!eventsData.checkNoContactsAccess()) {
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
-                if (preferences_accounts.size() > 0) {
+                if (preferences_accounts.size() > 0) { //Только из настроек
                     for (String account : preferences_accounts) {
-                        String accountType = ContactsEvents.substringBefore(ContactsEvents.substringAfter(account, Constants.STRING_PARENTHESIS_OPEN), Constants.STRING_PARENTHESIS_CLOSE);
-                        for (AuthenticatorDescription desc : descriptions) {
-                            if (accountType.equals(desc.type)) {
-                                eventSourcesIds.add(Constants.eventSourceContactPrefix + account);
-                                eventSourcesTitles.add(account);
-                                eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
-                                eventSourcesPackages.add(desc.packageName);
-                                eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + account));
-                                break;
+                        String accountType = ContactsEvents.substringBetween(account, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                        if (!accountType.equals(Constants.STRING_NULL)) {
+                            for (AuthenticatorDescription desc : descriptions) {
+                                if (accountType.equals(desc.type)) {
+                                    eventSourcesIds.add(Constants.eventSourceContactPrefix + account);
+                                    eventSourcesTitles.add(account);
+                                    eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
+                                    eventSourcesPackages.add(desc.packageName);
+                                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + account));
+                                    break;
+                                }
                             }
+                        } else {
+
+                            eventSourcesIds.add(Constants.eventSourceLocalPrefix + account);
+                            eventSourcesTitles.add(account);
+                            if (account.toLowerCase().contains(Constants.account_sim)) {
+                                eventSourcesIcons.add(R.drawable.sim_card);
+                            } else {
+                                eventSourcesIcons.add(R.drawable.emo_im_happy);
+                            }
+                            eventSourcesPackages.add(getPackageName());
+                            eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceLocalPrefix + account));
+
                         }
                     }
-                } else {
+                } else { //Перебираем все аккаунты
                     Account[] accounts = AccountManager.get(this).getAccounts();
                     for (Account account : accounts) {
                         final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
                         for (AuthenticatorDescription desc : descriptions) {
                             if (account.type.equals(desc.type)) {
-                                eventSourcesIds.add(Constants.eventSourceContactPrefix + accountName);
+                                String eventId = Constants.eventSourceContactPrefix + accountName;
+                                eventSourcesIds.add(eventId);
                                 eventSourcesTitles.add(accountName);
                                 eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
                                 eventSourcesPackages.add(desc.packageName);
-                                eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + accountName));
+                                eventSourcesHashes.add(ContactsEvents.getHash(eventId));
                                 break;
                             }
+                        }
+                    }
+
+                    //Raw аккаунты
+                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                    Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
+                            new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
+                            "deleted=0",
+                            null,
+                            null);
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
+                            final int indexTypeColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
+                            do {
+                                String sysAccountName = cursor.getString(indexNameColumn);
+                                if (sysAccountName == null) sysAccountName = getString(R.string.account_type_local);
+                                String accountName = sysAccountName + Constants.STRING_PARENTHESIS_OPEN
+                                        + cursor.getString(indexTypeColumn) + Constants.STRING_PARENTHESIS_CLOSE;
+                                if (!eventSourcesTitles.contains(accountName)) {
+                                    String eventId = Constants.eventSourceLocalPrefix + accountName;
+                                    eventSourcesIds.add(eventId);
+                                    eventSourcesTitles.add(accountName);
+                                    if (eventId.toLowerCase().contains(Constants.account_sim)) {
+                                        eventSourcesIcons.add(R.drawable.sim_card);
+                                    } else {
+                                        eventSourcesIcons.add(R.drawable.emo_im_happy);
+                                    }
+                                    eventSourcesPackages.add(getPackageName());
+                                    eventSourcesHashes.add(ContactsEvents.getHash(eventId));
+                                }
+                            } while (cursor.moveToNext());
+                            cursor.close();
                         }
                     }
                 }
@@ -840,10 +891,18 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                     if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
 
-                        String accountType = ContactsEvents.substringBefore(ContactsEvents.substringAfter(sourceId, Constants.STRING_PARENTHESIS_OPEN), Constants.STRING_PARENTHESIS_CLOSE);
+                        final String accountType = ContactsEvents.substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                         sourceChoices.add(sourceTitle
                                 + Constants.STRING_BRACKETS_OPEN
                                 + eventsData.getContactsEventsCount(accountType, ContactsEvents.substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
+                                + Constants.STRING_BRACKETS_CLOSE);
+
+                    } else if (sourceId.startsWith(Constants.eventSourceLocalPrefix)) {
+
+                        final String accountType = ContactsEvents.substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                        sourceChoices.add(sourceTitle
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.getContactsEventsCount(accountType, null)
                                 + Constants.STRING_BRACKETS_CLOSE);
 
                     } else if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {

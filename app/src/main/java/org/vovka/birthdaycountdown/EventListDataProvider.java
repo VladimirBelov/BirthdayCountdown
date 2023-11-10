@@ -394,7 +394,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             }
 
             if (maxEvents == 0 && maxDays == 0) {
-                eventListView.addAll(eventsData.getFilteredEventList(eventsData.eventList, widgetPref));
+                eventListView.addAll(filteredEventList);
             } else {
                 Calendar now = Calendar.getInstance();
                 Date currentDay = new Date(now.getTimeInMillis());

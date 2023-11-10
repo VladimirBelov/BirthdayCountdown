@@ -246,7 +246,7 @@
     <string name="event_type_file">Dateiereignis</string>
     <string name="event_type_unrecognized">Unerkanntes Ereignis</string>
 
-    <string name="account_type_local">Lokal</string>
+    <string name="account_type_local">Lokales Konto</string>
 
     <string name="appwidget_text">Laden…</string>
     <string name="appwidget_label_1_7">Für 1–7 Ereignisse</string>
@@ -716,6 +716,9 @@
     <string name="pref_Widgets_Color_EventCaption_title">Primärfarbe</string>
     <string name="pref_Widgets_Color_EventCaption_summary">Primärfarbe für Widget-Elemente (Ereignisbeschriftungen, Alter)</string>
 
+    <string name="pref_Widgets_Color_WidgetCaption_title">Widget-Beschriftungsfarbe</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Die Farbe für die Beschriftung des Listen-Widgets</string>
+
     <string name="pref_Widgets_Color_EventToday_title">Alter</string>
     <string name="pref_Widgets_Color_EventToday_summary">Farbe des Alters für heutige Ereignisse</string>
 
@@ -734,6 +737,10 @@
     <string name="widget_config_event_types_description">Welche Ereignisse im Widget angezeigt werden sollen </string>
 
     <string name="widget_config_event_types_empty">Wie in der Ereignisliste</string>
+
+    <string name="widget_config_events_sources_label">Ereignisquellen</string>
+    <string name="widget_config_events_sources_description">Welche Ereignisquellen verwendet werden sollen</string>
+    <string name="widget_config_event_sources_empty">Alle Ereignisse</string>
 
     <string name="widget_config_index_label">Ereignisstartnummer</string>
     <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>
@@ -769,6 +776,10 @@
         <item>Stark abgerundet</item>
         <item>Rund (Kreis)</item>
     </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Benutzerdefinierte Widget-Beschriftung</string>
+    <string name="widget_config_custom_widget_caption_description">Benutzerdefinierte Beschriftung für dieses Widget (Emojis werden unterstützt 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Nachricht eingeben…</string>
 
     <string name="widget_config_custom_zero_events_label">Benutzerdefinierte Nachricht für keine Ereignisse</string>
     <string name="widget_config_custom_zero_events_description">Benutzerdefinierte Nachricht, wenn keine Ereignisse gefunden werden (Emojis werden unterstützt 🎂). Geben Sie ein Leerzeichen ein, um das Widget transparent zu machen, löschen Sie allen Text für die Anzeige der Standardnachricht</string>

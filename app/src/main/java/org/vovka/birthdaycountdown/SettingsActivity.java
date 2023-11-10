@@ -955,24 +955,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 //user's online accounts
                 Account[] accounts = AccountManager.get(this).getAccounts();
                 for (Account account : accounts) {
-
-                    final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
-                    accountNames.add(accountName);
-                    choiceList.add(accountName
-                            + Constants.STRING_BRACKETS_OPEN
-                            + eventsData.getContactsEventsCount(account.type, account.name)
-                            + Constants.STRING_BRACKETS_CLOSE
-                    );
                     for (AuthenticatorDescription desc : descriptions) {
                         if (account.type.equals(desc.type)) {
+                            final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                            accountNames.add(accountName);
+                            choiceList.add(accountName
+                                    + Constants.STRING_BRACKETS_OPEN
+                                    + eventsData.getContactsEventsCount(account.type, account.name)
+                                    + Constants.STRING_BRACKETS_CLOSE
+                            );
                             accountIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
                             accountPackages.add(desc.packageName);
                             break;
                         }
-                    }
-                    if (accountNames.size() != accountIcons.size()) { //Не нашли иконку
-                        accountIcons.add(0);
-                        accountPackages.add(Constants.STRING_EMPTY);
                     }
                 }
 
@@ -1003,12 +998,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         } while (cursor.moveToNext());
                         cursor.close();
                     }
-
                 }
                 for (String accountString: accountsList) {
                     if (!accountNames.contains(accountString)) {
                         accountNames.add(accountString);
-                        final String accountType = accountString.substring(accountString.indexOf(Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_OPEN.length(), accountString.indexOf(Constants.STRING_PARENTHESIS_CLOSE));
+                        final String accountType = ContactsEvents.substringBetween(accountString, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                         int accountEventsCount = eventsData.getContactsEventsCount(accountType, null);
 
                         choiceList.add(accountString

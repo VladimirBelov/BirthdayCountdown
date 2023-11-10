@@ -47,17 +47,17 @@ class WidgetUpdater {
     private Resources resources;
     private String packageName;
     private double fontMagnify;
-
     private int colorDefault;
     private int colorEventToday;
     private int colorEventSoon;
     private int colorEventFar;
-
     private int eventsDisplayed;
     private int eventsToShow;
     private int eventsToSkip;
     private List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
+    private List<String> eventsPrefList = new ArrayList<>();
+    private List<String> sourcesPrefList = new ArrayList<>();
 
     final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
 
@@ -104,16 +104,24 @@ class WidgetUpdater {
                 if (widgetPref.size() > 0) startingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
-            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
-            }
-
             if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
 
                 views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
                 return;
 
+            }
+
+            if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
+                eventsPrefList = Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
+            }
+
+            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
+            }
+
+            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
             }
 
             eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
@@ -234,19 +242,28 @@ class WidgetUpdater {
             final String eventKey = eventsData.getEventKey(singleEventArray);
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
+            //Типы событий
             if  (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) ||
                     eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
-            } else if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
-                List<String> eventsPrefList =  Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
-                if (eventsPrefList.size() > 0) {
-                    useEventListPrefs = false;
-                    isVisibleEvent = eventsPrefList.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
-                            (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
-                }
+            } else if (eventsPrefList.size() > 0) {
+                useEventListPrefs = false;
+                isVisibleEvent = eventsPrefList.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
+                        (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
             }
             if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
                     (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
+
+            if (isVisibleEvent && sourcesPrefList.size() > 0) {
+                final String eventDates = singleEventArray[ContactsEvents.Position_dates];
+                isVisibleEvent = false;
+                for (String source: sourcesPrefList) {
+                    if (eventDates.contains(source)) {
+                        isVisibleEvent = true;
+                        break;
+                    }
+                }
+            }
 
             if (!isVisibleEvent) {
                 return;

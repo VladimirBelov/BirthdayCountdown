@@ -246,7 +246,7 @@
     <string name="event_type_file">Evento de archivo</string>
     <string name="event_type_unrecognized">Evento no reconocido</string>
 
-    <string name="account_type_local">Local</string>
+    <string name="account_type_local">Cuenta local</string>
 
     <string name="appwidget_text">Cargando…</string>
     <string name="appwidget_label_1_7">Para 1–7 eventos</string>
@@ -716,6 +716,9 @@
     <string name="pref_Widgets_Color_EventCaption_title">Color primario</string>
     <string name="pref_Widgets_Color_EventCaption_summary">Color primario de los elementos del widget (encabezados de eventos, edad)</string>
 
+    <string name="pref_Widgets_Color_WidgetCaption_title">Color del título del widget</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">El color del título del widget de lista</string>
+
     <string name="pref_Widgets_Color_EventToday_title">Edad</string>
     <string name="pref_Widgets_Color_EventToday_summary">Color de edad para los eventos de hoy</string>
 
@@ -734,6 +737,10 @@
     <string name="widget_config_event_types_description">Qué eventos mostrar en el widget</string>
 
     <string name="widget_config_event_types_empty">Como en la lista de eventos</string>
+
+    <string name="widget_config_events_sources_label">Fuentes de eventos</string>
+    <string name="widget_config_events_sources_description">Qué fuentes de eventos usar</string>
+    <string name="widget_config_event_sources_empty">Todas las fuentes</string>
 
     <string name="widget_config_index_label">Número de inicio del evento</string>
     <string name="widget_config_index_description">Un valor de 1 significa que los eventos se mostrarán desde el principio de la lista, 2 - desde el segundo, y así sucesivamente … Puede agregar varios widgets a la pantalla con diferentes valores en este campo para obtener la configuración deseada</string>
@@ -769,6 +776,10 @@
         <item>Fuertemente redondeado</item>
         <item>Círculo</item>
     </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Título del widget personalizado</string>
+    <string name="widget_config_custom_widget_caption_description">Título personalizado para este widget (se admiten emojis 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Ingresar mensaje…</string>
 
     <string name="widget_config_custom_zero_events_label">Mensaje personalizado para cero eventos</string>
     <string name="widget_config_custom_zero_events_description">Mensaje personalizado cuando no se encuentran eventos (se admiten emojis 🎂). Ingrese un espacio para hacer que el widget sea transparente, texto claro para mostrar el mensaje estándar</string>

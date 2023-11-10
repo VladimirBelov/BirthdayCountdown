@@ -246,7 +246,7 @@
     <string name="event_type_file">File event</string>
     <string name="event_type_unrecognized">Unrecognized event</string>
 
-    <string name="account_type_local">Local</string>
+    <string name="account_type_local">Local account</string>
 
     <string name="appwidget_text">Loading…</string>
     <string name="appwidget_label_1_7">For 1–7 events</string>
@@ -739,8 +739,8 @@
     <string name="widget_config_event_types_empty">Same with event list</string>
 
     <string name="widget_config_events_sources_label">Event sources</string>
-    <string name="widget_config_events_sources_description">What sources of evets to use</string>
-    <string name="widget_config_event_sources_empty">All events</string>
+    <string name="widget_config_events_sources_description">What sources of events to use</string>
+    <string name="widget_config_event_sources_empty">All sources (selected in app settings)</string>
 
     <string name="widget_config_index_label">Event start index to display</string>
     <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
