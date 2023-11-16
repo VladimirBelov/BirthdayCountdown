@@ -15,5 +15,6 @@
     <locale android:name="ru"/>
     <locale android:name="es"/>
     <locale android:name="uk"/>
+    <locale android:name="pt"/>
 
 </locale-config>

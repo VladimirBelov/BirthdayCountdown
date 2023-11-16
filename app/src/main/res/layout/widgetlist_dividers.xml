@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="98"
                     android:gravity="start|top"
+                    android:paddingStart="4dp"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />

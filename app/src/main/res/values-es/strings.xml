@@ -294,6 +294,7 @@
         <item>Lenguaje del sistema</item>
         <item>🇬🇧 Inglés</item>
         <item>🇩🇪 Aleman</item>
+        <item>🇵🇹 Portugués</item>
         <item>🇷🇺 Ruso</item>
         <item>🇪🇸 Español</item>
         <item>🇺🇦 Ucraniano</item>
@@ -319,13 +320,13 @@
     </string-array>
 
     <string-array name="weekDaysShort">
+        <item>do</item>
         <item>lu</item>
         <item>ma</item>
         <item>mi</item>
         <item>ju</item>
         <item>vi</item>
         <item>sá</item>
-        <item>do</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Configuración de eventos</string>
@@ -739,8 +740,8 @@
     <string name="widget_config_event_types_empty">Como en la lista de eventos</string>
 
     <string name="widget_config_events_sources_label">Fuentes de eventos</string>
-    <string name="widget_config_events_sources_description">Qué fuentes de eventos usar</string>
-    <string name="widget_config_event_sources_empty">Todas las fuentes</string>
+    <string name="widget_config_events_sources_description">Qué fuentes de eventos seleccionadas en la configuración de la aplicación usar en este widget</string>
+    <string name="widget_config_event_sources_empty">♻️ Todas las fuentes</string>
 
     <string name="widget_config_index_label">Número de inicio del evento</string>
     <string name="widget_config_index_description">Un valor de 1 significa que los eventos se mostrarán desde el principio de la lista, 2 - desde el segundo, y así sucesivamente … Puede agregar varios widgets a la pantalla con diferentes valores en este campo para obtener la configuración deseada</string>

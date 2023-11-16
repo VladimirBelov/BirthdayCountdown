@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.11.2023, 01:17
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 16.11.2023, 01:17
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="faq" tools:ignore="InconsistentArrays">
+
+        <item>###Geral</item>
+        <item>Esta seção não está disponível no idioma selecionado nas configurações. Mude para o idioma inglês da interface do programa e use o Google Tradutor.</item>
+
+        <item>#Procurar</item>
+        <item><![CDATA[Para pesquisar vários parâmetros, separe-os com vírgulas (qualquer valor) ou \"+\" (todos os valores), por exemplo:<ul>
+         <li>\"Francisco, Maria\" - exibirá eventos de contato com os nomes Francisco ou Maria
+         <li>"\Francisco+Gêmeos\" - exibirá eventos de contatos com o nome Francisco e o signo do zodíaco Gêmeos
+         </ul>]]></item>
+        <item>A pesquisa utiliza todos os dados do evento (para verificar: habilite \"Depuração de mensagens\" nas configurações da aplicação, segure o evento, aponte \"Dados do evento\")</item>
+        <item> </item>
+
+        <item>#Idiomas do aplicativo</item>
+        <item>Se você quiser ajudar a traduzir este programa para um idioma próximo a você ou se encontrar alguma imprecisão na tradução - escreva para o e-mail (botão abaixo).</item>
+
+    </string-array>
+
+</resources>

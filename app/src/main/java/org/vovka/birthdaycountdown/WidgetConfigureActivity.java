@@ -541,6 +541,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 int ind = eventSourcesHashes.indexOf(source);
                 if (ind > -1) {
                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
+
+                    String sourceId = ContactsEvents.checkForNull(eventSourcesIds.get(ind));
+                    if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
+                        sb.append("📆 ");
+                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
+                        sb.append("📁 ");
+                    } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
+                        sb.append("👨‍💼 ");
+                    }
                     sb.append(eventSourcesTitles.get(ind));
                 }
             }
@@ -955,7 +964,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
                     //Только здесь работает
-
                     for (int i = 0; i < sourceChoices.size(); i++) {
                         String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
                         if (eventSourcesTitles.contains(title)) {
@@ -964,26 +972,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             }
                         }
                     }
-
-                    /*final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
-                    for (int i = 0; i < sourceTitles.size(); i++) {
-                        if (preferences_accounts.isEmpty() || preferences_accounts.contains(sourceTitles.get(i))) {
-                            listView.setItemChecked(i, true);
-                        }
-                    }
-                    if (preferences_accounts.isEmpty()) {
-                        listView.setItemChecked(sourceTitles.size() - 1, false);
-                    }
-
-                    listView.setOnItemClickListener((parent, view, position, id) -> {
-                        if (position == listView.getCount() - 1) {
-                            for (int i = 0; i < sourceTitles.size(); i++) {
-                                listView.setItemChecked(i, i >= sourceTitles.size() - 1);
-                            }
-                        } else {
-                            listView.setItemChecked(sourceTitles.size() - 1, false);
-                        }
-                    });*/
                 });
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

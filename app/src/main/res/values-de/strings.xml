@@ -294,6 +294,7 @@
         <item>Systemsprache</item>
         <item>🇬🇧 Englisch</item>
         <item>🇩🇪 Deutsch</item>
+        <item>🇵🇹 Portugiesisch</item>
         <item>🇷🇺 Russisch</item>
         <item>🇪🇸 Spanisch</item>
         <item>🇺🇦 Ukrainisch</item>
@@ -739,8 +740,8 @@
     <string name="widget_config_event_types_empty">Wie in der Ereignisliste</string>
 
     <string name="widget_config_events_sources_label">Ereignisquellen</string>
-    <string name="widget_config_events_sources_description">Welche Ereignisquellen verwendet werden sollen</string>
-    <string name="widget_config_event_sources_empty">Alle Ereignisse</string>
+    <string name="widget_config_events_sources_description">Welche Ereignisquellen in den App-Einstellungen zur Verwendung in diesem Widget ausgewählt wurden</string>
+    <string name="widget_config_event_sources_empty">♻️ Alle Quellen</string>
 
     <string name="widget_config_index_label">Ereignisstartnummer</string>
     <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>

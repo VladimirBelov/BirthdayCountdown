@@ -2613,6 +2613,8 @@ class ContactsEvents {
 
                                 if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
                                     singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
+                                    singleRowList.set(ContactsEvents.Position_eventStorage, singleRowList.get(ContactsEvents.Position_eventStorage)
+                                            + Constants.STRING_COMMA_SPACE + Constants.STRING_STORAGE_CALENDAR);
                                     needUpdate = true;
                                 }
                                 if (singleRowList.get(ContactsEvents.Position_eventID).isEmpty()) {
@@ -3276,6 +3278,8 @@ class ContactsEvents {
 
                             if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
                                 singleRowList.set(ContactsEvents.Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
+                                singleRowList.set(ContactsEvents.Position_eventStorage, singleRowList.get(ContactsEvents.Position_eventStorage)
+                                        + Constants.STRING_COMMA_SPACE + Constants.STRING_STORAGE_FILE);
                                 needUpdate = true;
                             }
 
@@ -5566,9 +5570,9 @@ class ContactsEvents {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = null;
-                if (singleEventArray[Position_eventStorage].equals(Constants.STRING_STORAGE_CONTACTS) && !TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CONTACTS) && !TextUtils.isEmpty(singleEventArray[Position_contactID])) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (singleEventArray[Position_eventStorage].equals(Constants.STRING_STORAGE_CALENDAR) && !TextUtils.isEmpty(singleEventArray[Position_eventID])) {
+                } else if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR) && !TextUtils.isEmpty(singleEventArray[Position_eventID])) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
                 }
                 if (uri != null) {

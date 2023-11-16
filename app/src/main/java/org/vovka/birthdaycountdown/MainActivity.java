@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
 
-                if (Constants.STRING_STORAGE_CALENDAR.equals(selectedEvent[ContactsEvents.Position_eventStorage])) {
+                if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)) {
                     menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event))
                             .setIcon(android.R.drawable.ic_menu_month);
                 }
@@ -354,7 +354,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
-                    } else if (Constants.STRING_STORAGE_CALENDAR.equals(selectedEvent[ContactsEvents.Position_eventStorage]) && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
+                    } else if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)
+                            && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
                     }
@@ -2165,7 +2166,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
                         boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
-                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !Constants.STRING_STORAGE_XDAYS.equals(singleEventArray[ContactsEvents.Position_eventStorage]);
+                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                         boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
 
                         if (isHiddenEvent) statsHiddenEvents++;

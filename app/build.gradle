@@ -36,7 +36,7 @@ android {
 
     defaultConfig {
         buildToolsVersion  = "34.0.0" //https://developer.android.com/tools/releases/build-tools
-        resConfigs 'en', 'de', 'ru', 'es', 'uk'
+        resConfigs 'en', 'de', 'ru', 'es', 'uk', 'pt'
     }
 
     bundle {
