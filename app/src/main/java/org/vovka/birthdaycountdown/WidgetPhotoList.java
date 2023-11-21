@@ -130,7 +130,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
                 try {
                     colorWidgetBackground = Color.parseColor(widgetPref.get(5));
-                } catch (Exception e) { /* */}
+                } catch (Exception e) { /**/ }
             }
             if (colorWidgetBackground == 0) {
                 colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
