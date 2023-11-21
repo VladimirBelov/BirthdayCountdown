@@ -129,7 +129,8 @@
     <string name="msg_notifications_soon_no_events">No hay eventos para los días elegidos</string>
     <string name="msg_notifications_count">"Eventos pronto - "</string>
     <string name="msg_notifications_soon">"Eventos - "</string>
-    <string name="msg_notifications_disabled">Notificaciones desactivadas</string>
+    <string name="msg_notifications_disabled">Notificaciones desactivadas\n</string>
+    <string name="msg_exact_alarms_disabled">Alarmas exactas deshabilitadas\n</string>
     <string name="msg_no_events_hint">No se encontraron eventos. Para mostrar eventos, deben ser llenados en las tarjetas de sus contactos o en calendarios seleccionados o en archivos seleccionados</string>
     <string name="msg_no_accounts_hint">Cuentas no encontradas o no les ha dado acceso</string>
     <string name="msg_no_calendars_hint">No se encontraron calendarios disponibles o no les ha dado acceso</string>
@@ -272,6 +273,7 @@
     <string name="pref_Common_summary">Lengua, tema de color y otras configuraciones</string>
     <string name="pref_Language_title">Lengua</string>
     <string name="pref_Language_description">Idioma de la interfaz y datos mostrados</string>
+    <string name="pref_Language_System">Idioma del sistema</string>
     <string name="pref_Theme_title">Tema de color</string>
     <string name="pref_Theme_description">Tema de color de la interfaz</string>
     <string name="pref_Icon_title">Icono de la aplicación</string>
@@ -288,16 +290,6 @@
         <item>De colores</item>
         <item>En blanco y negro</item>
         <item>Chacoteros</item>
-    </string-array>
-
-    <string-array name="pref_Language_entries">
-        <item>Lenguaje del sistema</item>
-        <item>🇬🇧 Inglés</item>
-        <item>🇩🇪 Aleman</item>
-        <item>🇵🇹 Portugués</item>
-        <item>🇷🇺 Ruso</item>
-        <item>🇪🇸 Español</item>
-        <item>🇺🇦 Ucraniano</item>
     </string-array>
 
     <string-array name="pref_Icon_entries">
@@ -1047,12 +1039,38 @@
     <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Platino</string>
     <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">Jazmín</string>
     <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">Chinchilla</string>
+    <string name="event_type_wedding_68" tools:keep="@string/event_type_wedding_68">""</string>
+    <string name="event_type_wedding_69" tools:keep="@string/event_type_wedding_69">""</string>
     <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Titanio</string>
+    <string name="event_type_wedding_71" tools:keep="@string/event_type_wedding_71">""</string>
+    <string name="event_type_wedding_72" tools:keep="@string/event_type_wedding_72">""</string>
+    <string name="event_type_wedding_73" tools:keep="@string/event_type_wedding_73">""</string>
+    <string name="event_type_wedding_74" tools:keep="@string/event_type_wedding_74">""</string>
     <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Brillantes</string>
+    <string name="event_type_wedding_76" tools:keep="@string/event_type_wedding_76">""</string>
+    <string name="event_type_wedding_77" tools:keep="@string/event_type_wedding_77">""</string>
+    <string name="event_type_wedding_78" tools:keep="@string/event_type_wedding_78">""</string>
+    <string name="event_type_wedding_79" tools:keep="@string/event_type_wedding_79">""</string>
     <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Roble</string>
+    <string name="event_type_wedding_81" tools:keep="@string/event_type_wedding_81">""</string>
+    <string name="event_type_wedding_82" tools:keep="@string/event_type_wedding_82">""</string>
+    <string name="event_type_wedding_83" tools:keep="@string/event_type_wedding_83">""</string>
+    <string name="event_type_wedding_84" tools:keep="@string/event_type_wedding_84">""</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">Mármol</string>
+    <string name="event_type_wedding_86" tools:keep="@string/event_type_wedding_86">""</string>
+    <string name="event_type_wedding_87" tools:keep="@string/event_type_wedding_87">""</string>
+    <string name="event_type_wedding_88" tools:keep="@string/event_type_wedding_88">""</string>
+    <string name="event_type_wedding_89" tools:keep="@string/event_type_wedding_89">""</string>
     <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Alabastro</string>
+    <string name="event_type_wedding_91" tools:keep="@string/event_type_wedding_91">""</string>
+    <string name="event_type_wedding_92" tools:keep="@string/event_type_wedding_92">""</string>
+    <string name="event_type_wedding_93" tools:keep="@string/event_type_wedding_93">""</string>
+    <string name="event_type_wedding_94" tools:keep="@string/event_type_wedding_94">""</string>
     <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">Ónix</string>
+    <string name="event_type_wedding_96" tools:keep="@string/event_type_wedding_96">""</string>
+    <string name="event_type_wedding_97" tools:keep="@string/event_type_wedding_97">""</string>
+    <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
+    <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Hueso</string>
 
     <string name="zodiac_sign_aries">" Aries"</string>

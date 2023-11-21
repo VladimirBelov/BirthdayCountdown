@@ -11,10 +11,11 @@
 
     <!--https://android-developers.googleblog.com/2022/11/per-app-language-preferences-part-1.html-->
     <locale android:name="en"/>
+    <locale android:name="fr"/>
     <locale android:name="de"/>
-    <locale android:name="ru"/>
     <locale android:name="es"/>
-    <locale android:name="uk"/>
     <locale android:name="pt"/>
+    <locale android:name="ru"/>
+    <locale android:name="uk"/>
 
 </locale-config>

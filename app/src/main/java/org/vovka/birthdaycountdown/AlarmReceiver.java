@@ -38,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     eventsData.showNotifications(false, Integer.toString(eventsData.preferences_notification_channel_id));
 
                     //Переинициализируем уведомления
-                    eventsData.initNotifications(log);
+                    eventsData.initNotificationSchedule(log);
                 }
 
             }

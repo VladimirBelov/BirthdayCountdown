@@ -11,11 +11,14 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.7.9</item>
-        <item>Primeiro lançamento em português</item>
         <item>Adicionados ícones de aplicativos temáticos (Android 12+) e de outono</item>
         <item>Adicionada a capacidade de adicionar qualquer evento aos favoritos. Adicionado filtro para eventos favoritos</item>
         <item>Adicionada a capacidade de especificar uma legenda para o widget de lista (recursos extras)</item>
         <item>Adicionada a capacidade de especificar fontes de eventos para cada widget (recursos extras)</item>
+        <item>Adicionadas traduções para português e francês</item>
+        <item>Otimizações para Android 14</item>
+
+        <item>#Para visualizar o histórico das versões anteriores, mude para inglês ou espanhol nas configurações do aplicativo</item>
 
     </string-array>
 

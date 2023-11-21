@@ -129,7 +129,8 @@
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
     <string name="msg_notifications_count">"Незабаром подій - "</string>
     <string name="msg_notifications_soon">"Подій - "</string>
-    <string name="msg_notifications_disabled">Повідомлення вимкнені</string>
+    <string name="msg_notifications_disabled">Повідомлення вимкнені\n</string>
+    <string name="msg_exact_alarms_disabled">Точні будильники вимкнено\n</string>
     <string name="msg_no_events_hint">Не знайдено жодної події. Для відображення подій вони мають бути заповнені у картках Ваших контактів або у вибраних календарях або у вибраних файлах</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
@@ -272,6 +273,7 @@
     <string name="pref_Common_summary">Мова, колірна тема та інші налаштування</string>
     <string name="pref_Language_title">Мова</string>
     <string name="pref_Language_description">Мова інтерфейсу та відображених даних</string>
+    <string name="pref_Language_System">Мова системи</string>
     <string name="pref_Theme_title">Тема</string>
     <string name="pref_Theme_description">Кольорова тема інтерфейсу</string>
     <string name="pref_Icon_title">Значок програми</string>
@@ -288,16 +290,6 @@
         <item>Кольорові</item>
         <item>Чорно-білі</item>
         <item>Пустотливі</item>
-    </string-array>
-
-    <string-array name="pref_Language_entries">
-        <item>Системна мова</item>
-        <item>🇬🇧 Англійська</item>
-        <item>🇩🇪 Німецька</item>
-        <item>🇵🇹 Португальська</item>
-        <item>🇷🇺 Російська</item>
-        <item>🇪🇸 Іспанська</item>
-        <item>🇺🇦 Українська</item>
     </string-array>
 
     <string-array name="pref_Icon_entries">
@@ -1052,13 +1044,38 @@
     <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Залізне</string>
     <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
     <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
-    <!-- Камяне весiлля — 67,5 рокiв -->
+    <string name="event_type_wedding_68" tools:keep="@string/event_type_wedding_68">""</string>
+    <string name="event_type_wedding_69" tools:keep="@string/event_type_wedding_69">""</string>
     <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Платинове,Вдячне,Благодатне</string>
+    <string name="event_type_wedding_71" tools:keep="@string/event_type_wedding_71">""</string>
+    <string name="event_type_wedding_72" tools:keep="@string/event_type_wedding_72">""</string>
+    <string name="event_type_wedding_73" tools:keep="@string/event_type_wedding_73">""</string>
+    <string name="event_type_wedding_74" tools:keep="@string/event_type_wedding_74">""</string>
     <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Коронне</string>
+    <string name="event_type_wedding_76" tools:keep="@string/event_type_wedding_76">""</string>
+    <string name="event_type_wedding_77" tools:keep="@string/event_type_wedding_77">""</string>
+    <string name="event_type_wedding_78" tools:keep="@string/event_type_wedding_78">""</string>
+    <string name="event_type_wedding_79" tools:keep="@string/event_type_wedding_79">""</string>
     <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Дубове</string>
+    <string name="event_type_wedding_81" tools:keep="@string/event_type_wedding_81">""</string>
+    <string name="event_type_wedding_82" tools:keep="@string/event_type_wedding_82">""</string>
+    <string name="event_type_wedding_83" tools:keep="@string/event_type_wedding_83">""</string>
+    <string name="event_type_wedding_84" tools:keep="@string/event_type_wedding_84">""</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
+    <string name="event_type_wedding_86" tools:keep="@string/event_type_wedding_86">""</string>
+    <string name="event_type_wedding_87" tools:keep="@string/event_type_wedding_87">""</string>
+    <string name="event_type_wedding_88" tools:keep="@string/event_type_wedding_88">""</string>
+    <string name="event_type_wedding_89" tools:keep="@string/event_type_wedding_89">""</string>
     <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Гранітне</string>
+    <string name="event_type_wedding_91" tools:keep="@string/event_type_wedding_91">""</string>
+    <string name="event_type_wedding_92" tools:keep="@string/event_type_wedding_92">""</string>
+    <string name="event_type_wedding_93" tools:keep="@string/event_type_wedding_93">""</string>
+    <string name="event_type_wedding_94" tools:keep="@string/event_type_wedding_94">""</string>
     <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
+    <string name="event_type_wedding_96" tools:keep="@string/event_type_wedding_96">""</string>
+    <string name="event_type_wedding_97" tools:keep="@string/event_type_wedding_97">""</string>
+    <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
+    <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Червоне</string>
 
     <string name="zodiac_sign_aries">" Овен"</string> <!-- Баран -->

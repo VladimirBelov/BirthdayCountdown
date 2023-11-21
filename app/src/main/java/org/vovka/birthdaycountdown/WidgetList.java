@@ -105,14 +105,15 @@ public class WidgetList extends AppWidgetProvider {
             if (widgetPref.size() > 9) {
                 prefWidgetCaption = widgetPref.get(9);
             }
-            if (prefWidgetCaption.isEmpty()) {
-                views.setViewVisibility(R.id.caption, View.INVISIBLE);
-            } else {
+            if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
                 views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
-                views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics()), 0, 0);
+                views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, context.getResources().getDisplayMetrics()), 0, 0);
                 views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
+            } else {
+                views.setViewVisibility(R.id.caption, View.INVISIBLE);
+                views.setViewPadding(R.id.widget_layout, 0, 0, 0, 0);
             }
 
             //Реакция на нажатие
@@ -136,6 +137,8 @@ public class WidgetList extends AppWidgetProvider {
             if (colorWidgetBackground == 0) {
                 colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             }
+            //Иначе не скрывается caption_bar
+            views.setInt(R.id.caption_bar, "setBackgroundColor", !prefWidgetCaption.isEmpty() ? colorWidgetBackground : 0);
             views.setInt(R.id.widget_list,"setBackgroundColor", colorWidgetBackground);
 
             //Если события есть - рисуем бордюр, иначе - прозрачность

@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else {
                 toolbar.setTitle(eventsData.preferences_list_custom_caption);
             }
-
             setSupportActionBar(toolbar);
 
             swipeRefresh = findViewById(R.id.swiperefresh);
@@ -1368,29 +1367,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private void initNotifications() {
-        //https://stackoverflow.com/questions/51343550/how-to-give-notifications-on-android-on-specific-time-in-android-oreo/51645875#51645875
-
-        try {
-            StringBuilder log = new StringBuilder();
-
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                log.append(getString(R.string.msg_notifications_disabled));
-            } else {
-                eventsData.initNotificationChannel(log); //для Android 8+
-                eventsData.initBootReceiver(log);
-                eventsData.initNotifications(log);
-            }
-            eventsData.initWidgetUpdate(log);
-
-            if (log.length() > 0) ToastExpander.showDebugMsg(this, log.toString());
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
     public void onRefresh() {
         if (swipeRefreshListener == null) return;
         try {
@@ -2081,7 +2057,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
                 //Уведомления
-                initNotifications();
+                eventsData.initNotifications();
 
             }
 
@@ -2097,15 +2073,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-
+            if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) return;
 
             if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    registerForContextMenu(findViewById(R.id.mainListView));
-                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-                    showWelcomeScreen();
-                }
+                registerForContextMenu(findViewById(R.id.mainListView));
+                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                showWelcomeScreen();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
@@ -2115,9 +2089,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
 
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initNotifications();
-                }
+                eventsData.initNotifications();
 
             }
         } catch (Exception e) {
@@ -2625,8 +2597,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(singleEventArray[ContactsEvents.Position_dates].replace(Constants.STRING_2TILDA, Constants.HTML_BR).trim());
+                    String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                    if (dates.length > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        for (int i = 0; i < dates.length; i++) {
+                            if (i > 0) eventDetails.append(Constants.HTML_BR);
+                            String date = dates[i];
+                            int ind = date.lastIndexOf(Constants.STRING_COLON_SPACE);
+                            eventDetails.append((ind > -1 ? date.substring(0, ind) : date).trim());
+                        }
+                    }
                 }
 
                 String eventKey = eventsData.getEventKey(singleEventArray);

@@ -129,7 +129,8 @@
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die ausgewählte Tage</string>
     <string name="msg_notifications_count">"Ereignisse in Kürze - "</string>
     <string name="msg_notifications_soon">"Ereignisse - "</string>
-    <string name="msg_notifications_disabled">Benachrichtigungen aus</string>
+    <string name="msg_notifications_disabled">Benachrichtigungen aus\n</string>
+    <string name="msg_exact_alarms_disabled">Exakte Alarme deaktiviert\n</string>
     <string name="msg_no_events_hint">Keine Ereignisse gefunden. Um Ereignisse anzuzeigen, müssen sie in den Karten Ihrer Kontakte oder in ausgewählten Kalendern oder in ausgewählten Dateien ausgefüllt werden</string>
     <string name="msg_no_accounts_hint">"Es wurden keine Konten gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_calendars_hint">"Es wurden keine verfügbaren Kalender gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
@@ -272,6 +273,7 @@
     <string name="pref_Common_summary">Sprache, Farbthema und andere Einstellungen</string>
     <string name="pref_Language_title">Sprache</string>
     <string name="pref_Language_description">Sprache der Benutzeroberfläche</string>
+    <string name="pref_Language_System">Systemsprache</string>
     <string name="pref_Theme_title">Farbschema</string>
     <string name="pref_Theme_description">Farbschema der Benutzeroberfläche</string>
     <string name="pref_Icon_title">Anwendungssymbol</string>
@@ -288,16 +290,6 @@
         <item>Farbig</item>
         <item>Schwarz-Weiß</item>
         <item>Spaßig</item>
-    </string-array>
-
-    <string-array name="pref_Language_entries">
-        <item>Systemsprache</item>
-        <item>🇬🇧 Englisch</item>
-        <item>🇩🇪 Deutsch</item>
-        <item>🇵🇹 Portugiesisch</item>
-        <item>🇷🇺 Russisch</item>
-        <item>🇪🇸 Spanisch</item>
-        <item>🇺🇦 Ukrainisch</item>
     </string-array>
 
     <string-array name="pref_Icon_entries">
@@ -1048,12 +1040,38 @@
     <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Eiserne Hochzeit</string>
     <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
     <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
+    <string name="event_type_wedding_68" tools:keep="@string/event_type_wedding_68">""</string>
+    <string name="event_type_wedding_69" tools:keep="@string/event_type_wedding_69">""</string>
     <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Gnadenhochzeit</string>
+    <string name="event_type_wedding_71" tools:keep="@string/event_type_wedding_71">""</string>
+    <string name="event_type_wedding_72" tools:keep="@string/event_type_wedding_72">""</string>
+    <string name="event_type_wedding_73" tools:keep="@string/event_type_wedding_73">""</string>
+    <string name="event_type_wedding_74" tools:keep="@string/event_type_wedding_74">""</string>
     <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Kronjuwelenhochzeit</string>
+    <string name="event_type_wedding_76" tools:keep="@string/event_type_wedding_76">""</string>
+    <string name="event_type_wedding_77" tools:keep="@string/event_type_wedding_77">""</string>
+    <string name="event_type_wedding_78" tools:keep="@string/event_type_wedding_78">""</string>
+    <string name="event_type_wedding_79" tools:keep="@string/event_type_wedding_79">""</string>
     <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Eichenhochzeit</string>
+    <string name="event_type_wedding_81" tools:keep="@string/event_type_wedding_81">""</string>
+    <string name="event_type_wedding_82" tools:keep="@string/event_type_wedding_82">""</string>
+    <string name="event_type_wedding_83" tools:keep="@string/event_type_wedding_83">""</string>
+    <string name="event_type_wedding_84" tools:keep="@string/event_type_wedding_84">""</string>
     <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">Engelshochzeit</string>
+    <string name="event_type_wedding_86" tools:keep="@string/event_type_wedding_86">""</string>
+    <string name="event_type_wedding_87" tools:keep="@string/event_type_wedding_87">""</string>
+    <string name="event_type_wedding_88" tools:keep="@string/event_type_wedding_88">""</string>
+    <string name="event_type_wedding_89" tools:keep="@string/event_type_wedding_89">""</string>
     <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Marmorhochzeit</string>
+    <string name="event_type_wedding_91" tools:keep="@string/event_type_wedding_91">""</string>
+    <string name="event_type_wedding_92" tools:keep="@string/event_type_wedding_92">""</string>
+    <string name="event_type_wedding_93" tools:keep="@string/event_type_wedding_93">""</string>
+    <string name="event_type_wedding_94" tools:keep="@string/event_type_wedding_94">""</string>
     <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
+    <string name="event_type_wedding_96" tools:keep="@string/event_type_wedding_96">""</string>
+    <string name="event_type_wedding_97" tools:keep="@string/event_type_wedding_97">""</string>
+    <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
+    <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Himmelshochzeit</string>
 
     <string name="zodiac_sign_aries">" Widder"</string>

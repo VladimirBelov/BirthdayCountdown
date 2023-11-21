@@ -30,7 +30,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                 if (eventsData.getContext() == null) eventsData.setContext(context);
                 eventsData.getPreferences();
                 eventsData.setLocale(true);
-                eventsData.initNotifications(log);
+                eventsData.initNotificationSchedule(log);
                 eventsData.initWidgetUpdate(log);
 
                 if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());

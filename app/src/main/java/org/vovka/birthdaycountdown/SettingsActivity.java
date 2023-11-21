@@ -762,19 +762,44 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (eventsData.preferences_notifications_days.size() > 0) {
                     //Уведомления выключены
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+
+                        //https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        //for Android 5-7
+                        intent.putExtra("app_package", getPackageName());
+                        intent.putExtra("app_uid", getApplicationInfo().uid);
+
+                        // for Android 8 and above
+                        intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+
                         try {
-                            startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                            //startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                            startActivity(intent);
                         } catch (ActivityNotFoundException e) { /**/ }
                     }
                     //Нет доступа на отправку уведомлений
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && eventsData.checkNoNotificationAccess()) {
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-                    }
-                    //Нет доступа планировать уведомления и обновления виджетов на точное время
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, Constants.MY_PERMISSIONS_REQUEST_SCHEDULE_EXACT_ALARM);
-                    }
+                        String[] permissions;
+                        if (!eventsData.checkCanExactAlarm()) {
+                            permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
+                        } else {
+                            permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
+                        }
+                        ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !eventsData.checkCanExactAlarm()) {
 
+                            //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
+                            //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+                        }
+                    }
                 }
 
                 if (eventsData.preferences_menustyle_compact) {
@@ -820,6 +845,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
 
             updateVisibility();
+
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
+
+            eventsData.initNotifications();
 
         }
 

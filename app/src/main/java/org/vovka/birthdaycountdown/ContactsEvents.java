@@ -917,16 +917,26 @@ class ContactsEvents {
                 ageMinus100 = ageMinus100 - 100;
             }
 
-            if (ageMinus100 == 1) { //Единственное число
-                result.append(getResources().getString(id_prefix_1));
-            } else if (ageMinus100 > 4 && ageMinus100 < 21) {
-                result.append(getResources().getString(id_prefix_4_21));
-            } else if (count_end.equals(Constants.STRING_1)) { //Если заканчивается на 1, но не между 5-20
-                result.append(getResources().getString(id_prefix_1_));
-            } else if (isEnd234) { //Если заканчивается на 2, 3, 4
-                result.append(getResources().getString(id_prefix_2_3_4));
-            } else {
-                result.append(getResources().getString(id_prefix_4_21));
+            if (!getResources().getString(R.string.pref_Language_fr).equals(preferences_language)) {
+                if (ageMinus100 == 1) { //Единственное число
+                    result.append(getResources().getString(id_prefix_1));
+                } else if (ageMinus100 > 4 && ageMinus100 < 21) { //Больше 4, но меньше 21
+                    result.append(getResources().getString(id_prefix_4_21));
+                } else if (count_end.equals(Constants.STRING_1)) { //Если заканчивается на 1, но не между 5-20
+                    result.append(getResources().getString(id_prefix_1_));
+                } else if (isEnd234) { //Если заканчивается на 2, 3, 4
+                    result.append(getResources().getString(id_prefix_2_3_4));
+                } else {
+                    result.append(getResources().getString(id_prefix_4_21));
+                }
+            } else { //Французский
+                if (ageMinus100 == 1) { //Единственное число
+                    result.append(getResources().getString(id_prefix_1));
+                } else if ((ageMinus100 >= 3 && ageMinus100 <= 5) || (ageMinus100 >= 8 && ageMinus100 <= 10)) { //3-5,8-10
+                    result.append(getResources().getString(id_prefix_1_));
+                } else {
+                    result.append(getResources().getString(id_prefix_4_21));
+                }
             }
             return result.toString();
 
@@ -2850,6 +2860,29 @@ class ContactsEvents {
             if (cursor != null && !cursor.isClosed()) cursor.close();
         } catch (Exception e) {
             if (cursor != null && !cursor.isClosed()) cursor.close();
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void initNotifications() {
+        //https://stackoverflow.com/questions/51343550/how-to-give-notifications-on-android-on-specific-time-in-android-oreo/51645875#51645875
+
+        try {
+            StringBuilder log = new StringBuilder();
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                log.append(context.getString(R.string.msg_notifications_disabled));
+            } else {
+                initNotificationChannel(log); //для Android 8+
+                initBootReceiver(log);
+                initNotificationSchedule(log);
+            }
+            initWidgetUpdate(log);
+
+            if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());
+
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
@@ -5101,9 +5134,13 @@ class ContactsEvents {
                 if (alarmManager != null) {
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * preferences_widgets_update_period, pendingIntent);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        try {
-                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        } catch (SecurityException se) {
+                        if (checkCanExactAlarm()) {
+                            try {
+                                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            } catch (SecurityException se) {
+                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            }
+                        } else {
                             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                         }
                     }
@@ -5123,7 +5160,7 @@ class ContactsEvents {
 
     }
 
-    void initNotifications(@NonNull StringBuilder log) {
+    void initNotificationSchedule(@NonNull StringBuilder log) {
 
         try {
 
@@ -5131,7 +5168,17 @@ class ContactsEvents {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentMutable);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+            boolean needToNotify = false;
+            boolean canExactAlarm = false;
             if (preferences_notifications_days.size() > 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+                canExactAlarm = checkCanExactAlarm();
+                if (!canExactAlarm) {
+                    log.append(context.getString(R.string.msg_exact_alarms_disabled));
+                }
+                needToNotify = true;
+            }
+
+            if (needToNotify) {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
@@ -5146,9 +5193,13 @@ class ContactsEvents {
                 if (alarmManager != null) {
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        try {
-                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        } catch (SecurityException se) {
+                        if (canExactAlarm) {
+                            try {
+                                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            } catch (SecurityException se) {
+                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            }
+                        } else {
                             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                         }
                     }
@@ -5522,9 +5573,13 @@ class ContactsEvents {
             if (alarmManager != null) {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    try {
-                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
-                    } catch (SecurityException se) {
+                    if (checkCanExactAlarm()) {
+                        try {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
+                        } catch (SecurityException se) {
+                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
+                        }
+                    } else {
                         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
                     }
                 }
@@ -7531,6 +7586,20 @@ class ContactsEvents {
         } else {
             return false;
         }
+    }
+
+    boolean checkCanExactAlarm() {
+        boolean canExact = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager.canScheduleExactAlarms()) {
+            //if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
+                canExact = true;
+            }
+        } else {
+            canExact = true;
+        }
+        return canExact;
     }
 
     @NonNull

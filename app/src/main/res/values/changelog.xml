@@ -16,7 +16,8 @@
         <item>Added the ability to add any event to favorites. Added filter for favorite events</item>
         <item>Added the ability to specify a caption for list widget (extra features)</item>
         <item>Added the ability to specify event sources for each widget (extra features)</item>
-        <item>Added Portuguese translation</item>
+        <item>Added Portuguese and French translations</item>
+        <item>Optimizations for Android 14</item>
 
         <item>#1.7.8</item>
         <item>Added the ability to colorize the entire row with the date color (for list widget)</item>

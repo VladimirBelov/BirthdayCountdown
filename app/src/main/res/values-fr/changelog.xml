@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 21.11.2023, 02:22
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 21.11.2023, 02:22
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+<string-array name="changelog" tools:ignore="InconsistentArrays">
+
+    <item>#1.7.9</item>
+    <item>"Ajout d'icônes thématiques (Android 12+) et d'application d'automne"</item>
+    <item>"Ajout de la possibilité d'ajouter n'importe quel événement aux favoris. Filtre ajouté pour les événements favoris"</item>
+    <item>Ajout de la possibilité de spécifier une légende pour le widget de liste (fonctionnalités supplémentaires)</item>
+    <item>"Ajout de la possibilité de spécifier des sources d'événements pour chaque widget (fonctionnalités supplémentaires)"</item>
+    <item>Ajout de traductions en portugais et en français</item>
+    <item>Optimisations pour Android 14</item>
+
+    <item>"#Pour consulter l'historique des versions précédentes, passez en anglais dans les paramètres de l'application"</item>
+
+</string-array>
+
+</resources>

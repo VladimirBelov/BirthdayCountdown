@@ -21,6 +21,7 @@
 		android:layout_height="wrap_content"
 		android:background="?attr/backgroundColor">
 
+		<!--https://stackoverflow.com/questions/26455027/android-api-21-toolbar-padding-->
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
@@ -28,7 +29,9 @@
 			android:background="@drawable/border_bottom"
 			android:theme="@style/AppTheme.ActionBar"
 			app:popupTheme="@style/AppTheme.Black.PopupOverlay"
-			app:titleTextAppearance="@style/ActivityTitleStyle"/>
+			app:titleTextAppearance="@style/ActivityTitleStyle"
+			android:contentInsetStart="6dp"
+			app:contentInsetStart="6dp"/>
 
 	</com.google.android.material.appbar.AppBarLayout>
 

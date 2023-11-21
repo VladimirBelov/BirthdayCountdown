@@ -38,7 +38,7 @@ public class DateReceiver extends BroadcastReceiver {
                 eventsData.setLocale(true);
 
                 //Переинициализируем уведомления
-                eventsData.initNotifications(log);
+                eventsData.initNotificationSchedule(log);
 
                 //Переинициализируем обновления виджетов
                 eventsData.initWidgetUpdate(log);
