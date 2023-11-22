@@ -117,11 +117,21 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 final boolean colorizeEntireRow = widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID));
 
                 //Заголовок
+                final String eventKey = eventsData.getEventKey(singleEventArray);
+                final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 String eventCaption;
                 if (eventsData.preferences_list_nameformat == 2) { //Фамилия Имя Отчество
                     eventCaption = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else { //Имя Отчество Фамилия
                     eventCaption = singleEventArray[ContactsEvents.Position_personFullName];
+                }
+                //Иконка избранного
+                if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) {
+                    if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+                        eventCaption = eventCaption
+                                .concat(Constants.STRING_SPACE)
+                                .concat(ContactsEvents.substringBefore(resources.getString(R.string.pref_Widgets_EventInfo_FavIcon), Constants.STRING_SPACE));
+                    }
                 }
                 if (colorizeEntireRow) {
                     views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(String.format(Constants.HTML_COLOR, colorDate, eventCaption), 0));
@@ -132,7 +142,6 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 StringBuilder sbDetails = new StringBuilder();
 
                 //Организация и должность
-
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_Organization_ID))) {
                     final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());

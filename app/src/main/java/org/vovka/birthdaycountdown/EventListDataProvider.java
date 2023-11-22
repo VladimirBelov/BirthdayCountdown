@@ -119,6 +119,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 //Составление события
                 final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
+                final String eventKey = eventsData.getEventKey(singleEventArray);
+                final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                 boolean colorizeEntireRow = false;
 
@@ -128,6 +130,14 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
                         sb.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) {
+
+                        if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                            sb.append(ContactsEvents.substringBefore(resources.getString(R.string.pref_Widgets_EventInfo_FavIcon), Constants.STRING_SPACE))
+                                    .append(Constants.STRING_SPACE);
+                        }
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
 
