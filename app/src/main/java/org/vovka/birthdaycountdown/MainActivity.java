@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (!Constants.STRING_1.equals(selectedEvent[ContactsEvents.Position_starred])) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, selectedEvent[ContactsEvents.Position_starred])) {
                         menu.add(Menu.NONE, Constants.ContextMenu_RemoveFromFavorites, Menu.NONE, getString(R.string.menu_context_favorites_remove))
-                                .setIcon(R.drawable.ic_menu_star);
+                                .setIcon(R.drawable.ic_menu_unstar);
                     } else {
                         menuItem = menu.add(Menu.NONE, Constants.ContextMenu_AddToFavorites, Menu.NONE, getString(R.string.menu_context_favorites_add))
                                 .setIcon(R.drawable.ic_menu_star);

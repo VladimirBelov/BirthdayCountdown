@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 24.11.2023, 23:43
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 24.11.2023, 23:42
+  ~  */
+  -->
+<!--https://developer.alexanderklimov.ru/android/theory/drawable.php#layer-list-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap android:gravity="left" android:src="@drawable/ic_menu_star"/>
+    </item>
+    <item>
+        <rotate
+            android:fromDegrees="50"
+            android:pivotX="45%"
+            android:pivotY="49%">
+            <shape android:shape="line">
+                <stroke android:color="@color/medium_dark_gray_trans_80" android:width="30dp"/>
+                <solid android:color="@android:color/transparent"/>
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

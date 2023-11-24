@@ -77,6 +77,7 @@
     <color name="medium_dark_gray">#FF232323</color>
 	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->
 	<color name="medium_dark_gray_trans_25">#40232323</color>
+	<color name="medium_dark_gray_trans_80">#CC191919</color>
 
     <color name="light_gray">#FF808080</color>
     <color name="light_gray_transp">#33808080</color>

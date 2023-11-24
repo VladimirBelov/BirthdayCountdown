@@ -3258,18 +3258,18 @@ class ContactsEvents {
 
                         //Ищем контакт
                         contactID = map_contacts_names.get(personFullNameNormalized);
-                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                        if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
                             contactID = map_contacts_names.get(personFullNameAltNormalized);
                         }
-                        if (contactID == null) {
+                        if (TextUtils.isEmpty(contactID)) {
                             contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
                         }
-                        if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                        if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
                             contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
                         }
 
                         //hashCode -> ID
-                        if (contactID == null) {
+                        if (TextUtils.isEmpty(contactID)) {
                             int divIndex = file.indexOf(Constants.STRING_BAR);
                             if (divIndex < 0) divIndex = 0; //file.length();
                             contactID = Constants.PREFIX_FileEventID + getHash(file.substring(divIndex) + eventTitle);
@@ -3297,7 +3297,7 @@ class ContactsEvents {
                             contactID = null;
                     }
 
-                    if (contactID != null) {
+                    if (!TextUtils.isEmpty(contactID)) {
                         userData.put(Position_contactID, contactID);
                         userData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
 
