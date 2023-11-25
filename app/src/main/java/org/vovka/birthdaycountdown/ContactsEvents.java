@@ -2972,6 +2972,8 @@ class ContactsEvents {
                 String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
                 final String eventSource = !fileName.isEmpty() ? getResources().getString(R.string.msg_file_info, fileName) :
                         getResources().getString(R.string.event_type_file);
+                int indexFileNameEnd = file.indexOf(Constants.STRING_BAR);
+                if (indexFileNameEnd < 0) indexFileNameEnd = 0;
 
                 for (String eventRow : eventsArray) {
 
@@ -3270,18 +3272,14 @@ class ContactsEvents {
 
                         //hashCode -> ID
                         if (TextUtils.isEmpty(contactID)) {
-                            int divIndex = file.indexOf(Constants.STRING_BAR);
-                            if (divIndex < 0) divIndex = 0; //file.length();
-                            contactID = Constants.PREFIX_FileEventID + getHash(file.substring(divIndex) + eventTitle);
+                            contactID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
                         }
 
                     } else { //Просто событие
 
                         userData.put(Position_personFullName, eventTitle);
                         userData.put(Position_personFullNameAlt, eventTitle);
-                        int divIndex = file.indexOf(Constants.STRING_BAR);
-                        if (divIndex < 0) divIndex = 0;
-                        userData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(divIndex) + eventTitle));
+                        userData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
 
                     }
 
@@ -3293,8 +3291,11 @@ class ContactsEvents {
                         titleFile = checkForNull(userData.get(Position_title)).trim();
                         String orgNameContact = checkForNull(map_organizations.get(contactID)).trim().toLowerCase();
 
-                        if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile))
+                        //Организации не совпадают
+                        if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile)) {
                             contactID = null;
+                            userData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
+                        }
                     }
 
                     if (!TextUtils.isEmpty(contactID)) {
