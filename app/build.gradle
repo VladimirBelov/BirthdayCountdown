@@ -47,6 +47,7 @@ android {
 
     buildFeatures {
         dataBinding false
+        buildConfig true
     }
 
     packagingOptions {

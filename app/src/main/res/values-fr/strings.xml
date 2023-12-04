@@ -13,7 +13,7 @@
     <string name="window_settings">Paramètres</string>
     <string name="window_widget_settings">Paramètres du widget</string>
     <string name="window_about">"À propos de l'application"</string>
-    <string name="window_faq">Questions fréquemment posées</string>
+    <string name="window_faq">Questions et réponses</string>
     <string name="window_search_hints">Astuces de recherche</string>
 
     <string name="activity_title_events_scope">Filtre</string>
@@ -27,72 +27,72 @@
     <string name="menu_open_file_with_events">Ouvrir le fichier avec les événements…</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
-    <string name="menu_search">Recherche</string>
+    <string name="menu_search">Rechercher</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filtre…</string>
     <string name="menu_hints">Astuces de recherche…</string>
     <string name="menu_context_edit_contact">Modifier le contact</string>
     <string name="menu_context_create_contact">Créer un contact…</string>
-    <string name="menu_context_edit_event">"Afficher l'événement du calendrier"</string>
-    <string name="menu_context_event_info">"Données d'événement"</string>
+    <string name="menu_context_edit_event">"Événement du calendrier ouvert"</string>
+    <string name="menu_context_event_info">"Données sur l'événement"</string>
     <string name="menu_context_hide_event">"Masquer l'événement"</string>
-    <string name="menu_context_unhide_event">"Afficher l'événement"</string>
+    <string name="menu_context_unhide_event">"Affichage de l'événement de retour"</string>
     <string name="menu_context_remind">Rappeler…</string>
-    <string name="menu_context_remind_1h">Dans une heure</string>
-    <string name="menu_context_remind_morning">Le lendemain matin</string>
-    <string name="menu_context_anniversary_list">"Tous les titres d'anniversaires de mariage"</string>
+    <string name="menu_context_remind_1h">Dans 1 heure</string>
+    <string name="menu_context_remind_morning">Demain matin</string>
+    <string name="menu_context_anniversary_list">"Tous les anniversaires de mariage"</string>
     <string name="menu_context_silent_event">Ne pas notifier</string>
     <string name="menu_context_unsilent_event">Reprendre la notification</string>
-    <string name="menu_context_merge_event">Lien vers le contact…</string>
-    <string name="menu_context_unmerge_event">Dissocier du contact</string>
-    <string name="menu_context_remerge_event">Lien vers un autre contact…</string>
+    <string name="menu_context_merge_event">Attacher à un contact…</string>
+    <string name="menu_context_unmerge_event">Déconnecter du contact</string>
+    <string name="menu_context_remerge_event">Attacher à un autre contact…</string>
     <string name="menu_context_open_url">Ouvrir le lien Web</string>
     <string name="menu_context_share">"Partager l'événement…"</string>
-    <string name="menu_context_share_as_image">"en tant qu'image"</string>
-    <string name="menu_context_share_as_text">sous forme de texte</string>
+    <string name="menu_context_share_as_image">comme une image</string>
+    <string name="menu_context_share_as_text">en tant que texte</string>
     <string name="menu_context_xDaysEvent_add">Ajouter un compteur de jours…</string>
     <string name="menu_context_xDaysEvent_edit">Compteur de jours…</string>
-    <string name="menu_context_set_eventype">"Choisissez le type d'événement…"</string>
+    <string name="menu_context_set_eventype">"Spécifier le type d'événement…"</string>
     <string name="menu_context_favorites_add">Ajouter aux favoris</string>
     <string name="menu_context_favorites_remove">Supprimer des favoris</string>
     <string name="menu_ok">OK</string>
-    <string name="menu_help" tools:ignore="MissingTranslation">Référence</string>
+    <string name="menu_help" tools:ignore="MissingTranslation">Aide</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Événements du calendrier</string>
-    <string name="menu_help_events_files" tools:ignore="MissingTranslation">Événements de fichiers locaux</string>
+    <string name="menu_help_events_files" tools:ignore="MissingTranslation">Événements des fichiers locaux</string>
 
     <string name="msg_no_access_contacts">Aucun accès aux contacts</string>
-    <string name="msg_no_events">Événements introuvables</string>
-    <string name="msg_no_files_selected">" - non sélectionné -"</string>
-    <string name="msg_file_open_error">"Erreur à l'ouverture du fichier: "</string>
-    <string name="msg_file_access_write_error">"Impossible d'obtenir l'accès en écriture au fichier. Essayez de resélectionner le fichier dans les préférences de l'application"</string>
-    <string name="msg_file_access_read_error">"Impossible d'obtenir l'accès en lecture au fichier: %1$s"</string>
-    <string name="msg_before_event_prefix">"en "</string>
+    <string name="msg_no_events">Aucun événement trouvé</string>
+    <string name="msg_no_files_selected">" - pas sélectionné -"</string>
+    <string name="msg_file_open_error">"Erreur d'ouverture du fichier: "</string>
+    <string name="msg_file_access_write_error">"Impossible d'accéder à la modification du fichier. Réinitialisez le fichier dans les paramètres de l'application"</string>
+    <string name="msg_file_access_read_error">"Impossible d'accéder à la lecture du fichier : %1$s"</string>
+    <string name="msg_before_event_prefix">"dans "</string>
     <string name="msg_after_event_postfix">""</string>
-    <string name="msg_after_event_prefix">"il y a "</string>
+    <string name="msg_after_event_prefix">"en arrière "</string>
     <string name="msg_today">"Aujourd'hui"</string>
     <string name="msg_tomorrow">Demain</string>
     <string name="msg_yesterday">Hier</string>
     <string name="msg_before_yesterday">Avant-hier</string>
     <string name="msg_day_after_tomorrow">Après-demain</string>
     <string name="msg_stats_prefix">"événements: "</string>
-    <string name="msg_stats_filtered_prefix">"événements trouvés: "</string>
+    <string name="msg_stats_filtered_prefix">"événements ont été trouvés: "</string>
     <string name="msg_stats_hidden_prefix">"événements cachés: "</string>
-    <string name="msg_stats_hidden_filtered_prefix">"événements masqués trouvés: "</string>
-    <string name="msg_stats_silenced_prefix">"Événements silencieux: "</string>
-    <string name="msg_stats_silenced_filtered_prefix">"Événements silencieux trouvés: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"événements cachés trouvés: "</string>
+    <string name="msg_stats_silenced_prefix">"Événements sans notification: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"Événements sans notification trouvés: "</string>
     <string name="msg_stats_xdays_prefix">"compteurs de jours: "</string>
     <string name="msg_stats_xdays_filtered_prefix">"compteurs de jours trouvés: "</string>
     <string name="msg_stats_unrecognized_prefix">"événements non reconnus: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"événements non reconnus trouvés: "</string>
-    <string name="msg_stats_favorite_prefix">"événements favoris: "</string>
-    <string name="msg_stats_favorite_filtered_prefix">"événements favoris trouvés: "</string>
-    <string name="msg_label_hidden">Masqué</string>
-    <string name="msg_label_silenced">Mise au silence</string>
-    <string name="msg_color_parse_error">"Erreur d'analyse des couleurs!"</string>
-    <string name="msg_date_parse_error">"Erreur d'analyse de date: "</string>
-    <string name="msg_event_parse_error">"Erreur d'analyse d'événement: '%1$s'"</string>
-    <string name="msg_type_parse_error">"Type d'événement non reconnu: '%1$s' pour '%2$s'"</string>
-    <string name="msg_jump_to_event_error">"Événement introuvable! Activer davantage de types d'événements dans les paramètres de l'application"</string>
+    <string name="msg_stats_favorite_prefix">"événements sélectionnés: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"événements sélectionnés trouvés: "</string>
+    <string name="msg_label_hidden">Caché</string>
+    <string name="msg_label_silenced">Sans notification</string>
+    <string name="msg_color_parse_error">"Erreur de reconnaissance de couleur!"</string>
+    <string name="msg_date_parse_error">"Erreur de reconnaissance de date: "</string>
+    <string name="msg_event_parse_error">"Erreur de reconnaissance d'événement: '%1$s'"</string>
+    <string name="msg_type_parse_error">"Type d'événement non défini: '%1$s' pour '%2$s'"</string>
+    <string name="msg_jump_to_event_error">"Aucun événement trouvé ! Activer plus de types des événements dans les paramètres de l'application"</string>
     <string name="msg_errors_total">"Total des erreurs: "</string>
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">Tous</string>
@@ -104,7 +104,7 @@
     <string name="msg_after_year_prefix_4_21">" ans"</string> <!--fr: 2,6,7-->
     <string name="msg_after_year_prefix_1_">" années"</string> <!--21, 31, 41, ...--> <!--fr: 3-5,8-10-->
     <string name="msg_after_year_prefix_2_3_4">" années"</string>
-    <string name="msg_after_year_bc">" av. J.-C."</string>
+    <string name="msg_after_year_bc">" avant J.C."</string>
 
     <string name="msg_after_month_prefix_1">" mois"</string>
     <string name="msg_after_month_prefix_2_3_4">" mois"</string>
@@ -122,62 +122,62 @@
     <string name="msg_age_was">"Âge du décès: "</string>
     <string name="msg_age_could_be_now">"Peut être maintenant: "</string>
     <string name="msg_age_will_be">"Sera: "</string>
-    <string name="msg_age_could_be">"Peut être: "</string>
-    <string name="msg_label_search">"Entrez une partie du nom complet, le type de contact, le poste, le titre, une partie de la date de l'événement (plusieurs valeurs saisies par virgule, expression rationnelle prise en charge):"</string>
+    <string name="msg_age_could_be">"Aurait été: "</string>
+    <string name="msg_label_search">"Entrez une partie du nom complet, le type de contact, le poste, le titre, une partie de la date de l'événement (séparé par des virgules):"</string>
     <string name="msg_hint_search">Valeur de recherche</string>
     <string name="msg_hint_global_search">Rechercher des anniversaires et des événements</string>
-    <string name="msg_notifications_soon_no_events">Aucun événement pour les jours choisis</string>
+    <string name="msg_notifications_soon_no_events">Aucun événement pour les jours sélectionnés</string>
     <string name="msg_notifications_count">"Événements - "</string>
     <string name="msg_notifications_soon">"Événements bientôt - "</string>
-    <string name="msg_notifications_disabled">Notifications désactivées\n</string>
-    <string name="msg_exact_alarms_disabled">Alarmes exactes désactivées\n</string>
-    <string name="msg_no_events_hint">Aucun événement trouvé. Pour afficher les événements, ils doivent être renseignés dans vos fiches de contacts ou dans les agendas sélectionnés ou dans les fichiers sélectionnés</string>
+    <string name="msg_notifications_disabled">Notifications sont désactivées\n</string>
+    <string name="msg_exact_alarms_disabled">"Notifications à l'heure exacte sont interdites\n"</string>
+    <string name="msg_no_events_hint">"Aucun événement n'a été trouvé. Pour afficher les événements, ils doivent être remplis dans vos cartes de contact ou dans les calendriers sélectionnés ou dans les fichiers sélectionnés"</string>
     <string name="msg_no_accounts_hint">"Aucun compte n'a été trouvé ou vous n'y avez pas donné accès"</string>
-    <string name="msg_no_calendars_hint">"Aucun calendrier visible n'a été trouvé ou vous n'y avez pas donné accès"</string>
-    <string name="msg_no_events_check_prefs">"Aucun événement trouvé. Vérifiez l'élément \"%1$s\" dans la section \"%2$s\" des paramètres du programme"</string>
+    <string name="msg_no_calendars_hint">"Les calendriers disponibles n'ont pas été trouvés ou vous n'y avez pas donné accès"</string>
+    <string name="msg_no_events_check_prefs">"Aucun événement à afficher. Vérifiez le paragraphe \"%1$s\" de la section \"%2$s\" dans les paramètres du programme"</string>
     <string name="msg_no_access_storage_hint">"Aucun accès au stockage externe. Vérifier les autorisations de l'application"</string>
     <string name="msg_welcome_title">Bienvenue !</string>
-    <string name="msg_welcome_text">"Merci d'avoir installé ce programme. Bien que la plupart des fonctions soient configurées de la manière la plus informative et la moins gênante possible, il est recommandé de vérifier les paramètres de l'application. Par exemple, vous pouvez y activer les notifications d'événements à venir ou définir des paramètres pour les widgets. Bonne utilisation!"</string>
-    <string name="msg_new_version_title">"Quoi de neuf dans la version %1$s:"</string>
-    <string name="msg_snoozed_until">"En attente jusqu'à %1$s"</string>
-    <string name="msg_notify_time">"La notification est définie sur %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Vraiment effacer tous les filtres?</string>
-    <string name="msg_filter_clean_confirmation">Nettoyer tous les filtres des liens vers les contacts absents ou les événements du calendrier?</string>
+    <string name="msg_welcome_text">"Merci d'avoir installé ce programme. Bien que la plupart des fonctionnalités soient configurées de la manière la plus informative et la moins gênante possible, il est recommandé de vérifier les paramètres de l'application. Par exemple, vous pouvez activer les notifications des événements à venir ou définir des paramètres pour les widgets. Bon usage !"</string>
+    <string name="msg_new_version_title">"Modifications apportées à la version %1$s:"</string>
+    <string name="msg_snoozed_until">"Ajournée jusqu'au %1$s"</string>
+    <string name="msg_notify_time">"Notification est fixée à  %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Voulez-vous supprimer tous les filtres ?</string>
+    <string name="msg_filter_clean_confirmation">Effacer tous les filtres des liens vers des contacts ou des événements inexistants ?</string>
     <string name="msg_filter_clean_silenced_result">"Événements silencieux effacés pour les contacts absents et les événements de calendrier: "</string>
-    <string name="msg_filter_clean_hidden_result">"Événements masqués effacés pour les contacts absents et les événements du calendrier: "</string>
-    <string name="msg_filter_clean_XDays_result">"Compteurs de jours supprimés pour les événements inexistants: "</string>
-    <string name="msg_filter_clean_XDays_noresult">"Aucun compteur n'a été supprimé. Si l'événement n'est pas répertorié, vérifiez les types d'événements activés pour l'affichage"</string>
+    <string name="msg_filter_clean_hidden_result">"Événements désactivés pour les contacts manquants et les événements de calendrier ont été supprimés : "</string>
+    <string name="msg_filter_clean_XDays_result">"Compteurs de jours ont été supprimés pour les événements inexistants : "</string>
+    <string name="msg_filter_clean_XDays_noresult">"Aucun compteur n'a été supprimé. Si l'événement n'est pas dans la liste, vérifiez les types d'événement activés pour l'affichage"</string>
     <string name="msg_account_info">"Événement du compte \"%1$s\""</string>
     <string name="msg_calendar_info">"Événement du calendrier \"%1$s\""</string>
     <string name="msg_file_info">"Événement du fichier \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
-    <string name="msg_title_success">Action terminée</string>
+    <string name="msg_title_success">Action exécutée</string>
     <string name="msg_title_settings">Paramètres enregistrés</string>
-    <string name="msg_no_selection">Sélection vide! Besoin de sélectionner quoi que ce soit</string>
+    <string name="msg_no_selection">Un choix vide ! Il faut choisir quelque chose</string>
     <string name="msg_notifications_were_enabled">"Les notifications ont été activées\n"</string>
     <string name="msg_notifications_were_disabled">"Les notifications ont été désactivées\n"</string>
-    <string name="msg_widget_prefs_removed">"Les préférences du widget #%s ont été supprimées"</string>
-    <string name="msg_widget_prefs_saved">"Widget enregistré #%s préférences:\n"</string>
-    <string name="msg_ringtone">"Sonnerie: "</string>
-    <string name="msg_deleted_channel">"Notifier le canal %1$s a été supprimé\n"</string>
-    <string name="msg_created_channel">"Notifier le canal %1$s a été créé\n"</string>
-    <string name="msg_sent_widgets_update_request">Demande de mise à jour des widgets envoyée</string>
-    <string name="msg_next_notification">"Prochaine notification: %1$s\n"</string>
+    <string name="msg_widget_prefs_removed">"Configuration du widget #%s a été supprimée"</string>
+    <string name="msg_widget_prefs_saved">"Configuration du widget enregistrée:\n"</string>
+    <string name="msg_ringtone">"Mélodie: "</string>
+    <string name="msg_deleted_channel">"Canal de notification %1$s a été supprimé\n"</string>
+    <string name="msg_created_channel">"Canal de notification %1$s a été créé\n"</string>
+    <string name="msg_sent_widgets_update_request">Mise à jour des widgets…</string>
+    <string name="msg_next_notification">"Notification suivant: %1$s\n"</string>
     <string name="msg_next_widgetupdate">"Prochaine mise à jour du widget: %1$s\n"</string>
-    <string name="msg_no_action">"Aucune action pour l'événement"</string>
-    <string name="msg_icon_changed">"Jeu d'icônes d'application: %1$s"</string>
-    <string name="msg_created_quiz_channel">"Création d'un canal de notification Quiz"</string>
-    <string name="msg_prefs_import_clear_confirmation">"Effacer toutes les préférences enregistrées avant d'en importer une nouvelle?"</string>
-    <string name="msg_prefs_import_unknown">"Préférence inconnue: %1$s"</string>
+    <string name="msg_no_action">"Pas d'action pour l'événement"</string>
+    <string name="msg_icon_changed">"Icône installée: %1$s"</string>
+    <string name="msg_created_quiz_channel">"Création d'un canal de notification pour le Quiz"</string>
+    <string name="msg_prefs_import_clear_confirmation">"Voulez-vous supprimer tous les paramètres enregistrés avant d'en importer de nouveaux?"</string>
+    <string name="msg_prefs_import_unknown">"Configuration inconnue: %1$s"</string>
     <string name="msg_prefs_import_error">"Erreur d'importation: %1$s"</string>
     <string name="msg_eventtype_select_title">"Sélectionner le type d'événement"</string>
     <string name="msg_eventtype_label_set">"Jeu d'étiquettes: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Étiquette ajoutée: %1$s"</string>
-    <string name="msg_eventtype_label_absent">"l'événement n'a pas de label !"</string>
-    <string name="msg_debug_activity_recreate">"Erreur due à la recréation de l'activité principale: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Étiquette est ajoutée: %1$s"</string>
+    <string name="msg_eventtype_label_absent">"l'événement n'a pas d'étiquette!"</string>
+    <string name="msg_debug_activity_recreate">"Réapprovisionnement de l'activité principale en raison d'une erreur: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Événements à venir</string>
-    <string name="pref_Notifications_Notification_Channel_Description">Afficher les notifications pour les événements à venir</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Afficher les notifications des événements à venir</string>
     <string name="pref_Notifications_Quiz_Channel_Name">Quiz</string>
 
     <string name="hint_ContactIcon">Photo</string>
@@ -185,63 +185,62 @@
     <string name="hint_Age">Âge</string>
     <string name="hint_Date">Date</string>
     <string name="hint_EventDistance">"Avant l'événement"</string>
-    <string name="hint_EventDetails">Détails</string>
+    <string name="hint_EventDetails">"Détails de l'événement"</string>
     <string name="hint_VersionNumberDetails">Détails du numéro de version</string>
     <string name="hint_EventIcon">Icône</string>
-    <string name="hint_SearchPanel">Panneau de recherche</string>
-    <string name="hint_AlertDialog">"Boîte de dialogue d'alerte"</string>
-    <string name="hint_AlertDialogIcon">"Icône de boîte de dialogue d'alerte"</string>
+    <string name="hint_SearchPanel">Pannelle de recherche</string>
+    <string name="hint_AlertDialog">"Dialogue d'alerte"</string>
+    <string name="hint_AlertDialogIcon">"Icône de dialogue"</string>
     <string name="hint_DragItem">Élément déplaçable</string>
     <string name="hint_Version_History">Historique des versions</string>
-    <string name="hint_Rate_PlayMarket">Évaluez cette application sur Google Play</string>
-    <string name="hint_Rate_AppGallery">Évaluez cette application sur HUAWEI AppGallery</string>
-    <string name="hint_Color">Valeur ARVB</string>
-    <string name="hint_widget_config_events_count_label">"Définir le nombre d'événements horizontalement"</string>
+    <string name="hint_Rate_PlayMarket">"Évaluez l'application sur Google Play"</string>
+    <string name="hint_Rate_AppGallery">"Évaluez l'application sur HUAWEI AppGallery"</string>
+    <string name="hint_Color">Valeur dans ARVB</string>
+    <string name="hint_widget_config_events_count_label">"Définir le nombre des événements par largeur"</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Oui</string>
     <string name="button_no">Non</string>
-    <string name="button_cancel">Annuler</string>
-    <string name="button_reset">Réinitialiser</string>
+    <string name="button_cancel">Suppression</string>
+    <string name="button_reset">Enlever</string>
     <string name="button_remove">Supprimer</string>
     <string name="button_choose">Choisir</string>
     <string name="button_rate">"Évaluer l'application"</string>
-    <string name="button_mail">Courrier</string>
+    <string name="button_mail">Écrire</string>
     <string name="button_discuss">Discuter</string>
     <!--<string name="button_open_addressbook">Ouvrir le carnet d'adresses…</string>-->
     <string name="button_open_app_settings">Ouvrir les paramètres…</string>
     <string name="button_open_version_history">Historique des versions</string>
     <string name="button_all">Tous</string>
     <string name="button_snooze">Rappeler</string>
-    <string name="button_hide">Masquer</string>
+    <string name="button_hide">Cacher</string>
     <string name="button_silent">Ne pas notifier</string>
-    <string name="button_dial">Composer</string>
-    <string name="button_question">Envoyer une nouvelle question</string>
+    <string name="button_dial">Téléphoner</string>
+    <string name="button_question">Poser une question</string>
     <string name="button_close">Fermer</string>
-    <string name="button_prefs">Préférences</string>
-    <string name="button_off">Désactiver</string>
+    <string name="button_prefs">Réglages</string>
+    <string name="button_off">Couper</string>
     <string name="button_open">Ouvrir</string>
     <string name="button_share">Partager</string>
-    <string name="button_rgb">Couleur RVB</string>
-
-    <string name="events_scope_not_hidden">Tous non masqués (%1$d)</string>
+    <string name="button_rgb">Couleur RGB</string>
+    <string name="events_scope_not_hidden">"Tout n'est pas caché (%1$d)"</string>
     <string name="events_scope_all">Tous (%1$d)</string>
-    <string name="events_scope_hidden">Masqué (%1$d)</string>
-    <string name="events_scope_hidden_dead">Masqué (%1$d, %2$d enregistré)</string>
-    <string name="events_scope_silenced">Silence (%1$d)</string>
-    <string name="events_scope_silenced_dead">Silence (%1$d, %2$d enregistré)</string>
+    <string name="events_scope_hidden">Cachés (%1$d)</string>
+    <string name="events_scope_hidden_dead">Cachés (%1$d, %2$d est gardé)</string>
+    <string name="events_scope_silenced">Sans notification (%1$d)</string>
+    <string name="events_scope_silenced_dead">Sans notification (%1$d, %2$d est gardé)</string>
     <string name="events_scope_xdays">Compteurs de jours (%1$d)</string>
-    <string name="events_scope_xdays_dead">Compteurs de jours (%1$d, %2$d sauvegardés)</string>
+    <string name="events_scope_xdays_dead">Compteurs de jours (%1$d, %2$d est gardé)</string>
     <string name="events_scope_unrecognized">Non reconnu (%1$d)</string>
-    <string name="events_scope_favorite">Favoris (%1$d)</string>
-    <string name="events_scope_clear">Effacer les filtres</string>
-    <string name="events_scope_clean">Nettoyer les filtres des liens morts</string>
+    <string name="events_scope_favorite">Sélectionnés (%1$d)</string>
+    <string name="events_scope_clear">Supprimer les filtres</string>
+    <string name="events_scope_clean">Supprimer les liens inexistants dans les filtres</string>
 
     <string name="event_type_birthday">Anniversaire</string>
     <string name="event_type_anniversary">Anniversaire de mariage</string>
     <string name="event_type_other">Autre événement</string>
     <string name="event_type_death">Anniversaire de la mort</string>
-    <string name="event_type_crowning">Couronnement</string>
+    <string name="event_type_crowning">Mariage religieux</string>
     <string name="event_type_nameday">Jour du nom</string>
     <string name="event_type_calendar">Événement de calendrier</string>
     <string name="event_type_file">Événement de fichier</string>
@@ -265,14 +264,14 @@
     <string name="widget_Date">Date</string>
     <string name="widget_Age">AA</string>
     <string name="widget_TypeIcon">Icône</string>
-    <string name="widget_Distance">DD</string>
+    <string name="widget_Distance">JJ</string>
     <string name="widget_msg_updated">"mis à jour: "</string>
     <string name="widget_msg_events">"événements: "</string>
 
-    <string name="pref_Common_title">Paramètres communs</string>
+    <string name="pref_Common_title">Paramètres généraux</string>
     <string name="pref_Common_summary">Langue, thème de couleur et autres paramètres utiles</string>
     <string name="pref_Language_title">Langue</string>
-    <string name="pref_Language_description">"Langage de l'interface et des données"</string>
+    <string name="pref_Language_description">"Langage de l'interface et des données affichées"</string>
     <string name="pref_Language_System">Langue du système</string>
     <string name="pref_Theme_title">Thème de couleur</string>
     <string name="pref_Theme_description">"Thème de couleurs de l'interface"</string>
@@ -280,16 +279,16 @@
     <string name="pref_Icon_description">"Choisissez l'icône de l'application pour le lanceur du système"</string>
     <string name="pref_Accounts_title">Comptes</string>
     <string name="pref_Accounts_summary">Analyser uniquement ces comptes de contacts pour les événements</string>
-    <string name="pref_IconPack_title">"Pack d'icônes"</string>
-    <string name="pref_IconPack_description">"Utiliser le pack d'icônes sélectionné pour afficher la silhouette du contact"</string>
+    <string name="pref_IconPack_title">"Ensemble d'icônes"</string>
+    <string name="pref_IconPack_description">"Utiliser l'ensemble d'icônes sélectionné pour afficher la silhouette du contact"</string>
     <string name="pref_MenuStyle_title">Menu compacté</string>
     <string name="pref_MenuStyle_description">Utilisez un menu compacté à plusieurs niveaux ou un menu étendu avec des catégories</string>
 
     <string-array name="pref_IconPack_entries">
         <item>Standard</item>
-        <item>Couleur</item>
-        <item>Noir/blanc</item>
-        <item>Facétieux</item>
+        <item>Colorés</item>
+        <item>Blanc-et-noirs</item>
+        <item>Espiègles</item>
     </string-array>
 
     <string-array name="pref_Icon_entries">
@@ -302,40 +301,40 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>"le dimanche"</item>
-        <item>"le lundi"</item>
-        <item>"le mardi"</item>
-        <item>"le mercredi"</item>
-        <item>"le jeudi"</item>
-        <item>"le vendredi"</item>
-        <item>"le samedi"</item>
+        <item>"dimanche"</item>
+        <item>"lundi"</item>
+        <item>"mardi"</item>
+        <item>"mercredi"</item>
+        <item>"jeudi"</item>
+        <item>"vendredi"</item>
+        <item>"samedi"</item>
     </string-array>
 
     <string-array name="weekDaysShort">
-        <item>di</item>
-        <item>lu</item>
-        <item>ma</item>
-        <item>me</item>
-        <item>je</item>
-        <item>ve</item>
-        <item>sa</item>
+        <item>dim</item>
+        <item>lun</item>
+        <item>mar</item>
+        <item>mer</item>
+        <item>jeu</item>
+        <item>ven</item>
+        <item>sam</item>
     </string-array>
 
     <string name="pref_CustomEvents_title">Configuration des événements</string>
-    <string name="pref_CustomEvents_summary">"Sources d'événements, classification des types, personnalisation des étiquettes"</string>
-    <string name="pref_CustomEvents_hint">Entrez les étiquettes des événements (par virgule)</string>
-    <string name="pref_CustomEvent_Caption_hint">"Légende de l'événement"</string>
+    <string name="pref_CustomEvents_summary">"Sources des événements, classification des types, personnalisation des étiquettes"</string>
+    <string name="pref_CustomEvents_hint">Entrez les noms (par virgule)</string>
+    <string name="pref_CustomEvent_Caption_hint">"Titre de l'événement"</string>
 
-    <string name="pref_CustomEvents_Sources_title">"Sources d'événements"</string>
-    <string name="pref_CustomEvents_Sources_summary">"Utilisez ces sources pour des événements de différents types (le type est spécifié dans les événements ou déterminé par les 'Étiquettes d'événements' ci-dessous)"</string>
+    <string name="pref_CustomEvents_Sources_title">"Sources des événements"</string>
+    <string name="pref_CustomEvents_Sources_summary">"Utilisez ces sources pour rechercher différents types des événements (le type est indiqué dans l'événement lui-même ou est défini par les noms ci-dessous)s)"</string>
 
     <string name="pref_CustomEvents_Rules_title">"Paramètres d'importation"</string>
-    <string name="pref_CustomEvents_Rules_summary">"Utiliser ces paramètres lors de l'importation d'événements"</string>
+    <string name="pref_CustomEvents_Rules_summary">"Utiliser ces paramètres lors de l'importation des événements"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Règles de reconnaissance de nom</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">"Règles pour les règles de reconnaissance du nom des contacts à partir du titre de l'événement du calendrier"</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Saisissez les règles de reconnaissance du nom du contact à partir du titre de l'événement du calendrier. Plusieurs règles sont séparées par \"|\". La règle doit contenir la balise [nom] entourée d'un autre texte (facultatif). Règle \"[nom ]\" ne peut pas être le dernier (s'il y en a plusieurs):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Saisissez les règles de reconnaissance du nom du contact à partir du titre de l'événement du calendrier. Plusieurs règles sont séparées par \"|\". La règle doit contenir le tag [nom] entourée d'un autre texte (facultatif). Règle \"[nom ]\" ne peut pas être le dernier (s'il y en a plusieurs):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags introuvables!</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Format incorrect! Le délimiteur doit être | symbole</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Format incorrect! Le délimiteur doit être symbole |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Format de nom pour les événements du calendrier</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Les contacts dans les événements du calendrier sont enregistrés dans ce format</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Format de nom pour les événements de fichier</string>
@@ -349,57 +348,57 @@
         <item>Passer cet événement</item>
     </string-array>
 
-    <string name="pref_CustomEvents_Birthday_UseInternal_title">Utiliser des étiquettes standards</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Étiquettes standards</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">"Utiliser des étiquettes standard pour détecter les événements d'anniversaire"</string>
-    <string name="pref_CustomEvents_Birthday_Labels_title">"Étiquettes d'événements"</string>
-    <string name="pref_CustomEvents_Birthday_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires (par une virgule)</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_summary">"Afficher les événements d'anniversaire des calendriers choisis"</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">"Étiquettes des événements"</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires (par virgule)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_summary">"Afficher les anniversaires à partir des calendriers sélectionnés"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">"Utiliser la date avec l'année"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">"Afficher les événements d'anniversaire à partir des fichiers choisis"</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Utiliser des étiquettes standards</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">"Utiliser des étiquettes standard pour détecter les événements d'anniversaire de mariage"</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_title">"Libellés d'événements"</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires de mariage (par une virgule)</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">"Ses étiquettes"</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires de mariage (par virgule)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Liste</string>
-    <string name="pref_CustomEvents_Anniversary_List_summary">"Tous les titres d'anniversaires de mariage connus (par année)"</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">"Tous les titres d'anniversaires des mariages (par année)"</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Utiliser des étiquettes standards</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Utiliser des étiquettes standard pour détecter les événements de jours de nom</string>
-    <string name="pref_CustomEvents_NameDay_Labels_title">"Libellés d'événements"</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Les événements avec ces étiquettes seront identifiés comme jours de nom</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Utiliser des étiquettes standard pour détecter les fêtes</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">"Ses étiquettes"</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Les événements avec ces étiquettes seront identifiés comme les fêtes</string>
 
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Utiliser des étiquettes standards</string>
-    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Utiliser des étiquettes standard pour détecter les événements de couronnement</string>
-    <string name="pref_CustomEvents_Crowning_Labels_title">"Libellés d'événements"</string>
-    <string name="pref_CustomEvents_Crowning_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des couronnements (par une virgule)</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Utiliser des étiquettes standard pour détecter les événements des mariages religieux</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">"Ses étiquettes"</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des mariages religieux (par virgule)</string>
 
     <string name="pref_CustomEvents_Death_UseInternal_title">Utiliser des étiquettes standards</string>
-    <string name="pref_CustomEvents_Death_UseInternal_summary">"Utilisez des étiquettes standards pour détecter les événements d'anniversaire de décès"</string>
-    <string name="pref_CustomEvents_Death_Labels_title">"Étiquettes d'événements"</string>
-    <string name="pref_CustomEvents_Death_Labels_summary">Les événements portant ces étiquettes seront identifiés comme anniversaires de décès (par une virgule)</string>
+    <string name="pref_CustomEvents_Death_UseInternal_summary">"Utilisez des étiquettes standards pour détecter les événements des anniversaires de mort"</string>
+    <string name="pref_CustomEvents_Death_Labels_title">"Ses étiquettes"</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Les événements portant ces étiquettes seront identifiés comme anniversaires de mort (par virgule)</string>
 
-    <string name="pref_CustomEvents_Other_Labels_title">"Libellés d'événements"</string>
-    <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par une virgule)"</string>
+    <string name="pref_CustomEvents_Other_Labels_title">"Ses étiquettes"</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par virgule)"</string>
     <string name="pref_CustomEvents_Calendars_title">Calendriers</string>
     <string name="pref_CustomEvents_Calendars_summary">Afficher les événements des calendriers choisis</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Fichiers locaux</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Fichiers</string>
     <string name="pref_CustomEvents_Other_LocalFiles_summary">Afficher les événements des fichiers choisis</string>
 
-    <string name="pref_CustomEvents_Custom_title">"Événement défini par l'utilisateur"</string>
-    <string name="pref_CustomEvents_Custom_Caption_title">"Légende de l'événement"</string>
-    <string name="pref_CustomEvents_Custom_Caption_summary">"Entrez la légende de cet événement pour commencer à l'utiliser"</string>
-    <string name="pref_CustomEvents_Custom_Labels_title">"Libellés d'événements"</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">Les événements avec ces étiquettes seront identifiés comme cet événement (par une virgule)</string>
+    <string name="pref_CustomEvents_Custom_title">"Événement personnalisé"</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">"Titre de l'événement"</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">"Remplissez le titre de l'événement pour activer son utilisation"</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">"Noms des événements"</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Les événements avec ces étiquettes seront identifiés comme cet événement (par virgule)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">"Utiliser la date avec l'année"</string>
-    <string name="pref_CustomEvents_Custom_UseYear_summary">"Utiliser les informations complètes sur la date de l'événement (pas seulement le jour et le mois)"</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">"Utiliser l'année pour calculer les anniversaires (pas seulement le jour et le mois)"</string>
 
     <string-array name="pref_Theme_entries">
-        <item>Marron</item>
+        <item>Brun</item>
         <item>Orange</item>
         <item>Vert</item>
-        <item>Sarcelle</item>
+        <item>Turquoise</item>
         <item>Bleu</item>
         <item>Indigo</item>
         <item>Bleu-Gris</item>
@@ -407,8 +406,8 @@
         <item>Noir</item>
     </string-array>
 
-    <string name="pref_List_EventTypes_title">"Types d'événements"</string>
-    <string name="pref_List_EventTypes_summary">"Quels types d'événements inclure dans la liste"</string>
+    <string name="pref_List_EventTypes_title">"Types des événements"</string>
+    <string name="pref_List_EventTypes_summary">"Quels types des événements inclure dans la liste"</string>
 
     <string-array name="pref_EventTypes_entries">
         <item>Anniversaires</item>
@@ -428,13 +427,13 @@
     </string-array>
 
     <string name="pref_EventList_title">Liste des événements</string>
-    <string name="pref_EventList_summary">"Personnalisation de la liste d'événements principale"</string>
+    <string name="pref_EventList_summary">"Personnalisation de la liste des événements principale"</string>
 
     <string name="pref_List_PrevEvents_title">Événements précédents</string>
     <string name="pref_List_PrevEvents_summary">Afficher les événements précédents en haut de la liste des événements</string>
 
     <string-array name="pref_List_PrevEvents_entries">
-        <item>Aucun</item>
+        <item>Ne pas montrer</item>
         <item>"Événements d'hier"</item>
         <item>Événements des 2 jours précédents</item>
         <item>Événements des 3 jours précédents</item>
@@ -445,10 +444,10 @@
         <item>Trois événements précédents</item>
     </string-array>
 
-    <string name="pref_List_FontMagnify_title">Taille de la police</string>
-    <string name="pref_List_FontMagnify_summary">"Définir la taille de la police des éléments d'événement"</string>
+    <string name="pref_List_FontMagnify_title">Taille de police</string>
+    <string name="pref_List_FontMagnify_summary">"Définir la taille de police des éléments d'événement"</string>
     <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
-    <string name="pref_List_FontMagnify_seek_distance">"Distance de l'événement:"</string>
+    <string name="pref_List_FontMagnify_seek_distance">"Durée jusqu'à l'événement:"</string>
     <string name="pref_List_FontMagnify_seek_name">"Nom ou titre de l'événement:"</string>
     <string name="pref_List_FontMagnify_seek_details">"Détails de l'événement:"</string>
     <string name="pref_List_FontMagnify_seek_date">Date:</string>
@@ -460,11 +459,11 @@
     <string name="pref_Green_title">Vert:</string>
     <string name="pref_Alpha_title">Transparence:</string>
 
-    <string name="pref_List_Style_title">"Style de liste d'événements"</string>
-    <string name="pref_List_Style_summary">"Définir le style de la liste d'événements"</string>
+    <string name="pref_List_Style_title">"Style de liste des événements"</string>
+    <string name="pref_List_Style_summary">"Définir le style de la liste des événements"</string>
 
     <string-array name="pref_List_Style_entries">
-        <item>Plat</item>
+        <item>Liste plate</item>
         <item>Cartes</item>
     </string-array>
 
@@ -501,7 +500,7 @@
         <item>Au centre</item>
     </string-array>
 
-    <string name="pref_List_Jubilee_Algorithm_title">Anniversaire du jubilé</string>
+    <string name="pref_List_Jubilee_Algorithm_title">Algorithme de calcul des jubilé</string>
     <string name="pref_List_Jubilee_Algorithm_summary">Quel est le principe de considérer un anniversaire comme un jubilé</string>
 
     <string-array name="pref_List_Jubilee_Algorithm_entries">
@@ -531,47 +530,47 @@
         <item>J MMMM AAAA</item>
     </string-array>
 
-    <string name="pref_List_CustomCaption_title">"Légende personnalisée de la liste d'événements"</string>
-    <string name="pref_List_CustomCaption_summary">Légende personnalisée de la liste des événements principaux (les Emojis 🎂 sont pris en charge)</string>
-    <string name="pref_List_CustomCaption_hint">Entrer une légende personnalisée</string>
+    <string name="pref_List_CustomCaption_title">"Votre titre pour la liste des événements"</string>
+    <string name="pref_List_CustomCaption_summary">"Votre propre titre pour la liste principale des événements (l'emoji 🎂 pris en charge)"</string>
+    <string name="pref_List_CustomCaption_hint">Entrez le titre</string>
 
-    <string name="pref_List_CustomTodayEventCaption_title">"Légende personnalisée pour l'événement d'aujourd'hui"</string>
-    <string name="pref_List_CustomTodayEventCaption_summary">"Légende personnalisée pour l'événement d'aujourd'hui au lieu du message \"aujourd'hui\" (les Emojis 🎂 sont pris en charge)"</string>
-    <string name="pref_List_CustomTodayEventCaption_hint">Entrez une légende personnalisée</string>
+    <string name="pref_List_CustomTodayEventCaption_title">"Votre titre pour l'événement aujourd'hui"</string>
+    <string name="pref_List_CustomTodayEventCaption_summary">"Votre titre pour l'événement aujourd'hui au lieu du message \"aujourd'hui\" (l'emoji 🎂 pris en charge)"</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Entrez le titre</string>
 
     <string name="pref_List_FastScroll_title">Défilement rapide</string>
-    <string name="pref_List_FastScroll_summary">"Activer le défilement rapide de la liste d'événements tout en touchant le côté droit de l'écran"</string>
+    <string name="pref_List_FastScroll_summary">"Activer le défilement rapide de la liste des événements en touchant le côté droit de l'écran"</string>
 
     <string name="pref_Female_Names_title">Noms féminins</string>
-    <string name="pref_Female_Names_description">"Noms féminins supplémentaires pour l'affichage correct des icônes de contact sans photo et analyse des noms complets"</string>
+    <string name="pref_Female_Names_description">"Noms féminins supplémentaires pour afficher correctement les icônes des contacts sans photo et définir les noms complets"</string>
     <string name="pref_Female_Names_hint">Entrez les prénoms féminins (par virgule)</string>
 
     <string name="pref_Male_Names_title">Noms masculins</string>
-    <string name="pref_Male_Names_description">"Noms masculins supplémentaires pour l'affichage correct des icônes de contact sans photo et analyse des noms complets"</string>
+    <string name="pref_Male_Names_description">"Noms masculins supplémentaires pour afficher correctement les icônes des contacts sans photo et définir les noms complets"</string>
     <string name="pref_Male_Names_hint">Entrez les noms masculins (par virgule)</string>
 
     <string name="pref_List_EventInfo_title">"Détails de l'événement"</string>
-    <string name="pref_List_EventInfo_summary">"Quels détails supplémentaires sur l'événement afficher"</string>
+    <string name="pref_List_EventInfo_summary">"Quels sont les détails supplémentaires de l'événement à afficher"</string>
 
     <string-array name="pref_List_EventInfo_entries">
         <item>Photo</item>
-        <item>Titre</item>
-        <item>Travail</item>
-        <item>Pseudo</item>
+        <item>Emploi</item>
+        <item>Organisation</item>
+        <item>Pseudonyme</item>
         <item>"Type d'événement"</item>
         <item>"Étiquette d'événement originale"</item>
         <item>"Source de l'événement"</item>
         <item>"Icône de type d'événement"</item>
-        <item>Icône Favoris</item>
+        <item>Icône du contact sélectionné</item>
         <item>Âge</item>
         <item>Signe du zodiaque</item>
-        <item>Année civile chinoise</item>
+        <item>Animal dans le calendrier oriental</item>
         <item>Lien Web</item>
         <item>Notes ou description</item>
         <item>"Compte d'événement et date brute"</item>
     </string-array>
 
-    <string name="pref_List_OnClick_title">Action au clic</string>
+    <string name="pref_List_OnClick_title">Action sur le clic</string>
     <string name="pref_List_OnClick_summary">Que faire en cas de clic sur un événement</string>
     <string-array name="pref_List_OnClick_entries">
         <item>"Ouvrir la fiche de contact, en cas d'absence - événement du calendrier, en cas d'absence - lien Web"</item>
@@ -579,7 +578,7 @@
         <item>"Ouvrir le lien Web, en cas d'absence - fiche de contact, en cas d'absence - événement du calendrier"</item>
         <item>"Ouvrir la fiche de contact, en cas d'absence - lien web, en cas d'absence - événement du calendrier"</item>
         <item>Ouvrir le menu contextuel</item>
-        <item>Rien</item>
+        <item>Ne rien faire</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">"Événements d'aujourd'hui"</string>
@@ -592,7 +591,7 @@
     <string name="pref_List_Color_EventJubilee_summary">"Couleur de l'âge du jubilé"</string>
 
     <string name="pref_List_Margin_title">Marges horizontales</string>
-    <string name="pref_List_Margin_summary">"Compensez les bords non transparents de l'écran du smartphone en ajoutant quelques marges"</string>
+    <string name="pref_List_Margin_summary">"Compensation les bords non transparents de l'écran du smartphone en ajoutant quelques marges"</string>
     <string-array name="pref_List_Margin_entries">
         <item>Petit</item>
         <item>Moyen</item>
@@ -600,13 +599,13 @@
     </string-array>
 
     <string name="pref_Widgets_title">Widgets</string>
-    <string name="pref_Widgets_summary">Préférences communes des widgets</string>
+    <string name="pref_Widgets_summary">Paramètres généraux des widgets</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Intervalle de mise à jour</string>
     <string name="pref_Widgets_UpdateInterval_summary">Intervalle de mise à jour forcée du widget</string>
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
-        <item>Automatiquement (contrôlé par Android)</item>
+        <item>Automatiquement (géré par Android)</item>
         <item>Toutes les heures</item>
         <item>Toutes les 2 heures</item>
         <item>Toutes les 4 heures</item>
@@ -619,37 +618,37 @@
 
     <string name="pref_Widgets_EventInfo_None">Aucun</string>
     <string name="pref_Widgets_EventInfo_Border">Bordure du widget</string>
-    <string name="pref_Widgets_EventInfo_Dividers">"Diviseurs d'événements"</string>
+    <string name="pref_Widgets_EventInfo_Dividers">"Diviseurs des événements"</string>
     <string name="pref_Widgets_EventInfo_ButtonConfig">Bouton de configuration</string>
     <string name="pref_Widgets_EventInfo_Photo">Photo du contact</string>
     <string name="pref_Widgets_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
     <string name="pref_Widgets_EventInfo_EventCaption">"Détails de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Icône Favoris</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">"🚫 Icône d'événement silencieux"</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Icône du contact sélectionné</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">"🚫 Icône de l'événement sans préavis"</string>
     <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Signe du zodiaque</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Année civile chinoise</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">"Date originale de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">"Date originale de l'événement avec année"</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Animal dans le calendrier oriental</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">"Date de l'événement originale"</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">"Date de l'événement originale avec année"</string>
     <string name="pref_Widgets_EventInfo_EventDate">"Date de l'événement"</string>
     <string name="pref_Widgets_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
     <string name="pref_Widgets_EventInfo_EventTitle">"Titre de l'événement"</string>
     <string name="pref_Widgets_EventInfo_Age">Âge (anniversaire)</string>
     <string name="pref_Widgets_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">"Jours avant l'événement (format court)"</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">"Jours avant l'événement (pas à proximité de l'événement)"</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">"Jours avant l'événement (brièvement)"</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">"Jours avant l'événement (si l'événement n'est pas le plus proche)"</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeek">"Jour de la semaine de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">"Jour de la semaine de l'événement (format court)"</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">"Jour de la semaine de l'événement (pas à proximité de l'événement)"</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">"Jour de la semaine de l'événement (brièvement)"</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">"Jour de la semaine de l'événement (si l'événement n'est pas le plus proche)"</string>
     <string name="pref_Widgets_EventInfo_Organization">Organisation</string>
-    <string name="pref_Widgets_EventInfo_JobTitle">Titre</string>
+    <string name="pref_Widgets_EventInfo_JobTitle">Emploi</string>
     <string name="pref_Widgets_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Lien Web disponible</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets">Entourer les dates entre parenthèses</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Coloriser tous les événements par couleur de date</string>
+    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
+    <string name="pref_Widgets_EventInfo_DatesInBrackets">Entourer les dates de parenthèses</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
     <string name="pref_Widgets_EventInfo_NewLine1">"- nouvelle ligne -"</string>
     <string name="pref_Widgets_EventInfo_NewLine2">"- nouvelle ligne - "</string>
-    <string name="pref_Widgets_EventInfo_NewLine3">"- nouvelle ligne - "</string>
+    <string name="pref_Widgets_EventInfo_NewLine3">"- nouvelle ligne -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_Widgets_EventInfo_Border</item>
@@ -695,7 +694,7 @@
         <item>14</item>
     </string-array>
 
-    <string name="pref_Widgets_OnClick_title">"Action lors d'un clic"</string>
+    <string name="pref_Widgets_OnClick_title">"Action sur le clic"</string>
     <string name="pref_Widgets_OnClick_summary">Que faire en cas de clic sur un événement</string>
     <string-array name="pref_Widgets_OnClick_entries">
         <item>"Ouvrir la fiche de contact, en cas d'absence - événement du calendrier, en cas d'absence - lien Web"</item>
@@ -703,49 +702,49 @@
         <item>"Ouvrir le lien Web, en cas d'absence - fiche de contact, en cas d'absence - événement du calendrier"</item>
         <item>"Ouvrir la fiche de contact, en cas d'absence - lien web, en cas d'absence - événement du calendrier"</item>
         <item>Ouvrir la liste des événements</item>
-        <item>Rien</item>
+        <item>Ne rien faire</item>
     </string-array>
 
-    <string name="pref_Widgets_Color_EventCaption_title">Couleur primaire</string>
-    <string name="pref_Widgets_Color_EventCaption_summary">Couleur principale des éléments du widget (légendes des événements, âge)</string>
+    <string name="pref_Widgets_Color_EventCaption_title">Couleur de base</string>
+    <string name="pref_Widgets_Color_EventCaption_summary">Couleur de base des éléments du widget (titres des événements, âge)</string>
 
-    <string name="pref_Widgets_Color_WidgetCaption_title">Couleur de la légende du widget</string>
-    <string name="pref_Widgets_Color_WidgetCaption_summary">La couleur de la légende du widget de liste</string>
+    <string name="pref_Widgets_Color_WidgetCaption_title">Couleur du titre</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">La couleur du titre du widget de liste</string>
 
     <string name="pref_Widgets_Color_EventToday_title">Âge</string>
     <string name="pref_Widgets_Color_EventToday_summary">"Couleur de l'âge pour les événements d'aujourd'hui"</string>
 
     <string name="pref_Widgets_Color_EventSoon_title">"Jours avant l'événement (proche)"</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Couleur du nombre de jours pour les événements proches</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Couleur du compteur de jours pour les événements proches</string>
 
     <string name="pref_Widgets_Color_EventFar_title">"Jours avant l'événement (loin)"</string>
-    <string name="pref_Widgets_Color_EventFar_summary">Couleur du nombre de jours pour les événements distants</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Couleur du compteur de jours pour les événements lointains</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">Pendant combien de jours les événements sont considérés comme les plus proches</string>
-    <string name="pref_Widgets_Days_EventSoon_title">"Montant des jours d'événements les plus proches"</string>
+    <string name="pref_Widgets_Days_EventSoon_title">"Événements proches"</string>
 
-    <string name="widget_config_hint_battery_optimization_title">"L'optimisation de la batterie pour cette application est activée. Cela peut empêcher la mise à jour des widgets ou l'apparition de notifications. Éteignez-le…"</string>
+    <string name="widget_config_hint_battery_optimization_title">"L'optimisation de la batterie pour cette application est activée. Cela peut affecter la mise à jour des widgets et le fonctionnement des notifications. Désactiver l'optimisation…"</string>
 
-    <string name="widget_config_event_types_title">"Types d'événements"</string>
-    <string name="widget_config_event_types_description">"Quels types d'événements afficher sur ce widget"</string>
+    <string name="widget_config_event_types_title">"Types des événements"</string>
+    <string name="widget_config_event_types_description">"Quels événements afficher sur le widget"</string>
 
-    <string name="widget_config_event_types_empty">"Idem avec la liste d'événements"</string>
+    <string name="widget_config_event_types_empty">"Comme dans la liste des événements"</string>
 
-    <string name="widget_config_events_sources_label">"Sources d'événements"</string>
-    <string name="widget_config_events_sources_description">"Quelles sources d'événements sélectionnées dans les paramètres de l'application utiliser dans ce widget"</string>
+    <string name="widget_config_events_sources_label">"Sources des événements"</string>
+    <string name="widget_config_events_sources_description">"Quelles sources des événements sélectionnées dans les paramètres de l'application utiliser dans le widget"</string>
     <string name="widget_config_event_sources_empty">♻️ Toutes les sources</string>
 
     <string name="widget_config_index_label">"Index de début d'événement à afficher"</string>
-    <string name="widget_config_index_description">"La valeur 1 signifie que le premier événement de la liste sera le point de départ, 2 - le deuxième, et ainsi de suite… Vous pouvez ajouter à l'écran plusieurs widgets avec différents index de début d'événement pour obtenir la configuration souhaitée"</string>
+    <string name="widget_config_index_description">"La valeur 1 signifie que les événements seront affichés à partir du début de la liste, 2 à partir de la deuxième et ainsi de suite… Vous pouvez ajouter à l'écran plusieurs widgets avec des valeurs différentes dans ce champ pour obtenir la configuration souhaitée"</string>
 
     <string name="widget_config_scope_label">Limite de portée des événements</string>
-    <string name="widget_config_scope_events_label">"Nombre maximum d'événements:"</string>
-    <string name="widget_config_scope_days_label">Nombre maximum de jours:</string>
+    <string name="widget_config_scope_events_label">"Quantité (maximum):"</string>
+    <string name="widget_config_scope_days_label">Jours:</string>
     <string name="widget_config_scope_events_items">Tous,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_scope_days_items">Tous,1,2,3,4,5,6,7,14,21,30</string>
 
-    <string name="widget_config_font_label">"Facteur d'agrandissement de la police"</string>
-    <string name="widget_config_font_description">"Multiplicateur d'échelle de police pour l'âge, la distance de l'événement et le texte d'information sous la photo"</string>
+    <string name="widget_config_font_label">"Facteur de mise à l'échelle de la taille de police"</string>
+    <string name="widget_config_font_description">"Utilisé lors de la mise à l'échelle du widget pour augmenter la taille de la police d'âge, la distance à l'événement et les informations sous la photo"</string>
     <string-array name="widget_config_font">
         <item>Auto</item>
         <item>x0,5</item>
@@ -761,25 +760,25 @@
 
     <string name="widget_config_photostyle_label">Style des photos</string>
     <string name="widget_config_photostyle_description">Style des photos des contacts</string>
-    <string name="widget_config_photostyle_with_align_description">Style des photos des contacts. Alignement: original– remplir la cellule entière, arrondi– aligné verticalement vers le haut, cercle– centré verticalement</string>
+    <string name="widget_config_photostyle_with_align_description">Style des photos des contacts. Alignement: original– la photo remplit toute la cellule, arrondi – au bord supérieur, cercle - au centre</string>
     <string-array name="widget_config_photostyle">
         <item>Original</item>
-        <item>Légèrement arrondi</item>
+        <item>Un peu arrondi</item>
         <item>Moyen arrondi</item>
         <item>Fortement arrondi</item>
         <item>Cercle</item>
     </string-array>
 
-    <string name="widget_config_custom_widget_caption_label">Légende du widget personnalisée</string>
-    <string name="widget_config_custom_widget_caption_description">Légende personnalisée pour ce widget (les emojis sont pris en charge 🎂)</string>
-    <string name="widget_config_custom_widget_caption_hint">Entrez le message…</string>
+    <string name="widget_config_custom_widget_caption_label">Titre du widget</string>
+    <string name="widget_config_custom_widget_caption_description">"Votre titre pour ce widget (l'emoji pris en charge 🎂)"</string>
+    <string name="widget_config_custom_widget_caption_hint">Entrez un message…</string>
 
-    <string name="widget_config_custom_zero_events_label">Message personnalisé pour zéro événement</string>
-    <string name="widget_config_custom_zero_events_description">"Message personnalisé lorsqu'aucun événement n'est trouvé (les emojis sont pris en charge 🎂). Entrez un espace pour rendre le widget transparent, texte clair pour afficher le message standard"</string>
-    <string name="widget_config_custom_zero_events_hint">Entrez le message…</string>
+    <string name="widget_config_custom_zero_events_label">"Message en l'absence des événements"</string>
+    <string name="widget_config_custom_zero_events_description">"Votre message au lieu d'un message standard s'il n'y a pas d'événement à afficher (l'emoji pris en charge 🎂). Entrez un espace pour l'invisibilité du widget, laissez vide pour le message standard"</string>
+    <string name="widget_config_custom_zero_events_hint">Entrez un message…</string>
 
-    <string name="widget_config_events_count_label">"Nombre d'événements horizontaux"</string>
-    <string name="widget_config_events_count_description">"S'il y a trop de \'étroit\' ou de 'lâche\' pour les événements sur le widget, ajustez le nombre d'événements"</string>
+    <string name="widget_config_events_count_label">"Nombre des événements horizontaux"</string>
+    <string name="widget_config_events_count_description">"Si les événements sont trop \'étroit\' ou \'lâche\' dans le widget, ajustez le nombre des événements"</string>
     <string-array name="widget_config_events_count">
         <item>Auto</item>
         <item>-2</item>
@@ -792,30 +791,30 @@
 
     <string name="widget_config_event_info_empty">Utiliser les paramètres communs</string>
 
-    <string name="widget_config_color_back_label">"Couleur d'arrière-plan du widget"</string>
-    <string name="widget_config_color_back_description">"Couleur d'arrière-plan du widget"</string>
+    <string name="widget_config_color_back_label">"Couleur d'arrière-plan"</string>
+    <string name="widget_config_color_back_description">"Couleur du substrat du widget"</string>
 
     <string name="pref_Notifications_title">Notifications</string>
-    <string name="pref_Notifications_summary">"Quand et comment afficher les notifications d'événements"</string>
+    <string name="pref_Notifications_summary">Quand et comment afficher les notifications des événements</string>
 
     <string name="pref_Notifications_Type_title">Style des notifications</string>
     <string name="pref_Notifications_Type_summary">À quoi ressembleront les notifications</string>
 
     <string-array name="pref_Notifications_Type_entries">
-        <item>Une notification récapitulative</item>
+        <item>Une notification générale</item>
         <item>Chaque événement dans une notification individuelle</item>
-        <item>Événements moins 3 -> individuels, sinon -> résumé</item>
-        <item>Événements moins 4 -> individuels, sinon -> résumé</item>
-        <item>"Événements d'aujourd'hui -> individuel, autres -> résumé"</item>
+        <item>Événements moins 3 -> individuels, sinon -> générale</item>
+        <item>Événements moins 4 -> individuels, sinon -> générale</item>
+        <item>"Événements d'aujourd'hui -> individuel, autres -> générale"</item>
     </string-array>
 
     <string name="pref_Notifications_Priority_title">Priorité des notifications</string>
-    <string name="pref_Notifications_Priority_summary">Les notifications infermables de haute priorité sont toujours en haut. Pour les masquer cliquez dessus</string>
+    <string name="pref_Notifications_Priority_summary">Les notifications hautement prioritaires échouées sont toujours en haut de la liste des notifications. Pour masquer une telle notification, cliquez dessus</string>
 
     <string-array name="pref_Notifications_Priority_entries">
-        <item>Standard</item>
-        <item>Seule la notification récapitulative est hautement prioritaire</item>
-        <item>Toutes les notifications sont hautement prioritaires et ne peuvent pas être fermées</item>
+        <item>Priorité standard</item>
+        <item>Seule la notification générale sera échouable</item>
+        <item>Toutes les notifications échouables et hautement prioritaires</item>
     </string-array>
 
     <string name="pref_Notifications_Days_title">Période de notification</string>
@@ -839,11 +838,11 @@
         <item>2 semaines avant</item>
     </string-array>
 
-    <string name="pref_Notifications_EventTypes_title">"Types d'événements"</string>
-    <string name="pref_Notifications_EventTypes_summary">"Quels types d'événements inclure dans les notifications"</string>
+    <string name="pref_Notifications_EventTypes_title">"Types des événements"</string>
+    <string name="pref_Notifications_EventTypes_summary">"Quels événements inclure dans les notifications"</string>
 
-    <string name="pref_Notifications_AlarmHour_title">"Heure de l'alarme"</string>
-    <string name="pref_Notifications_AlarmHour_summary">Quelle heure doit-on notifier</string>
+    <string name="pref_Notifications_AlarmHour_title">"Heure de la notification"</string>
+    <string name="pref_Notifications_AlarmHour_summary">À quelle heure signaler les événements</string>
 
     <string name="pref_Notifications_Ringtone_title">Son de notification</string>
     <string name="pref_Notifications_Ringtone_summary">Son des événements à venir</string>
@@ -859,14 +858,14 @@
         <item>Fermer (pour les notifications de haute priorité)</item>
     </string-array>
 
-    <string name="pref_Notifications_OnClick_title">"Action lors d'un clic"</string>
-    <string name="pref_Notifications_OnClick_summary">Que faire en cas de clic de notification unique</string>
+    <string name="pref_Notifications_OnClick_title">"Action sur le clic"</string>
+    <string name="pref_Notifications_OnClick_summary">Que faire lorsque vous cliquez sur une seule notification</string>
     <string-array name="pref_Notifications_OnClick_entries">
         <item>"Ouvrir la fiche de contact, en cas d'absence - événement du calendrier, en cas d'absence - lien Web"</item>
         <item>"Ouvrir l'événement du calendrier, en cas d'absence - fiche de contact, en cas d'absence - lien Web"</item>
         <item>"Ouvrir le lien Web, en cas d'absence - fiche de contact, en cas d'absence - événement du calendrier"</item>
         <item>"Ouvrir la fiche de contact, en cas d'absence - lien web, en cas d'absence - événement du calendrier"</item>
-        <item>"Ouvrir la liste des événements principaux"</item>
+        <item>"Ouvrir la liste principale des événements"</item>
         <item>Fermer la notification</item>
     </string-array>
 
@@ -874,26 +873,26 @@
     <string name="pref_Notifications_NotifyTest_summary">"Cliquez pour afficher la notification d'aujourd'hui"</string>
 
     <string name="pref_Quiz_title">Quiz</string>
-    <string name="pref_Quiz_summary">Préférences du quiz</string>
+    <string name="pref_Quiz_summary">Paramètres du quiz</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
     <string name="pref_Quiz_Interface_summary">Quelle interface utiliser pour les questions</string>
 
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Notifications (vous pouvez vous arrêter à tout moment et partir chercher la bonne réponse)</item>
-        <item>"Dialogue (vous ne pouvez pas vous précipiter pour répondre, mais vous ne pouvez pas chercher d'indices)"</item>
-    </string-array>
+<string-array name="pref_Quiz_Interface_entries">
+          <item>Notifications (vous pouvez vous arrêter à tout moment et aller chercher la bonne réponse)</item>
+          <item>"Dialogue (vous n'êtes pas obligé de vous précipiter pour répondre, mais vous ne pouvez pas chercher d'indices)"</item>
+      </string-array>
 
     <string name="pref_FAQ_title">Questions et Réponses</string>
-    <string name="pref_FAQ_summary">"Si quelque chose ne fonctionne pas correctement ou si vous ne savez tout simplement pas comment régler certaines préférences d'application, cette page est faite pour vous"</string>
+    <string name="pref_FAQ_summary">"Si quelque chose ne fonctionne pas correctement ou si vous ne savez pas comment configurer une fonction du programme - Vous dans cette section"</string>
     <string name="pref_Help_title">Aide</string>
     <string name="pref_Help_summary">Parfois, cela peut aider…</string>
-    <string name="pref_About_summary">Historique des versions, statistiques des événements, liens vers les appstores</string>
+    <string name="pref_About_summary">"Historique des versions, statistiques des événements liens vers les magasins d'applications"</string>
     <string name="pref_BatteryOptimization_title">"L'optimisation de la batterie est activée"</string>
     <string name="pref_BatteryOptimization_summary">"Ouvrez le paramètre et désactivez L'optimisation…"</string>
-    <string name="pref_ContactsAccess_title">Aucun accès aux événements de contacts</string>
-    <string name="pref_ContactsAccess_summary">"Demander l'autorisation d'accéder aux événements de contacts…"</string>
+    <string name="pref_ContactsAccess_title">Aucun accès aux contacts</string>
+    <string name="pref_ContactsAccess_summary">"Demander l'accès aux données de contacts…"</string>
     <string name="pref_CalendarAccess_title">Aucun accès au calendrier</string>
-    <string name="pref_CalendarAccess_summary">"Demander l'autorisation d'accéder aux données des calendriers…"</string>
+    <string name="pref_CalendarAccess_summary">"Demander l'accès aux données des calendriers…"</string>
     <string name="pref_InfoMsg_On_title">"Messages d'information"</string>
     <string name="pref_InfoMsg_On_summary">"Afficher des messages d'information sur les actions effectuées ou les opérations en arrière-plan dans l'application"</string>
     <string name="pref_Debug_On_title">Messages de débogage</string>
@@ -904,12 +903,12 @@
 
     <string name="pref_Tools_title">Outils</string>
     <string name="pref_Tools_summary">Différents outils de manipulation des données</string>
-    <string name="pref_Tools_Preferences_title">Préférences</string>
-    <string name="pref_Tools_Preferences_Show_title">Afficher les préférences enregistrées</string>
-    <string name="pref_Tools_Preferences_Export_title">"Préférences d'exportation"</string>
-    <string name="pref_Tools_Preferences_Export_result">Préférences exportées: %1$d</string>
-    <string name="pref_Tools_Preferences_Import_title">"Préférences d'importation"</string>
-    <string name="pref_Tools_Preferences_Import_result">Préférences importées: %1$d, erreurs: %2$d</string>
+    <string name="pref_Tools_Preferences_title">Paramètres</string>
+    <string name="pref_Tools_Preferences_Show_title">Afficher les paramètres enregistrés</string>
+    <string name="pref_Tools_Preferences_Export_title">"Paramètre d'exportation"</string>
+    <string name="pref_Tools_Preferences_Export_result">Paramètre exportées: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">"Paramètre d'importation"</string>
+    <string name="pref_Tools_Preferences_Import_result">Paramètre importées: %1$d, erreurs: %2$d</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>construit: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installé à partir de %1$s]]></string>
@@ -955,7 +954,7 @@
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Aucun événement affiché</h2>Cette information peut aider:<br>]]></string>
     <string name="msg_zero_events_body">"<![CDATA[
-         <p>Types d'événements: %1$s</p>
+         <p>Types des événements: %1$s</p>
          <p>Filtre: %11$s</p>
          <h4>Événements des contacts:</h4><ul>%2$s
              <li>afficher les événements des comptes: %3$s</li>
@@ -969,7 +968,7 @@
              <li>autres événements: %9$s</li>
              <li>Événements multitypes: %10$s</li>
          </ul>]]>"</string>
-    <string name="msg_zero_events_footer">"<![CDATA[<h4>Si ces informations vous sont inutiles, envoyez-moi un e-mail (cliquez sur le titre de l'application et recherchez le bouton \"mail\" là-bas)</h4>]]>"</string>
+    <string name="msg_zero_events_footer">"<![CDATA[<h4>Si ces informations n'ont pas aidé à trouver la raison de l'absence des événements, écrivez-moi un e-mail (cliquez sur le titre de l'application et là sur le bouton \"Écrire\")</h4>]]>"</string>
 
     <!--https://fr.wikipedia.org/wiki/Anniversaire_de_mariage-->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Coton</string>
@@ -1106,25 +1105,25 @@
     <string name="msg_unknown">INCONNU</string>
 
     <string name="quiz_msg_error_title">"Erreur"</string>
-    <string name="quiz_msg_error_get_question">"Erreur lors de la réception de la prochaine question !"</string>
+    <string name="quiz_msg_error_get_question">"Erreur d'obtention de la question suivante!"</string>
 
-    <string name="quiz_answer_true">"Droite, %1$s (%2$s)"</string>
+    <string name="quiz_answer_true">"Correctement, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Réponse: %1$s\nBonne réponse: %2$s (%3$s)"</string>
 
     <string name="quiz_month01_title">"Quel est le mois de naissance ?"</string>
 
     <string name="quiz_year01_title">"Quelle est l'année de naissance ?"</string>
 
-    <string name="quiz_age01_title_future">"Quel âge aura-t-il ?"</string>
-    <string name="quiz_age01_title_past">"Quel âge a-t-il ?"</string>
-    <string name="quiz_age01_title_dead">"Quel âge aurait-il/elle maintenant ?"</string>
+    <string name="quiz_age01_title_future">"Quel âge ça va avoir?"</string>
+    <string name="quiz_age01_title_past">"Quel âge est-il maintenant?"</string>
+    <string name="quiz_age01_title_dead">"Quel âge aurait-il/elle maintenant?"</string>
 
     <string name="xDaysCounter_Dialog_Title">Compteur de jours</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Périodes:</string>
     <string name="xDaysCounter_Dialog_Repeats_Hint">entrez le nombre de jours</string>
     <string name="xDaysCounter_Dialog_Repeats_EditHint">"nombre de jours après lequel l'événement doit être répété. ex: 1000, 5000 (par virgule)"</string>
     <string name="xDaysCounter_Dialog_Repeats_AutoFill">1 000, 5 000</string>
-    <string name="xDaysCounter_Dialog_Times_Caption">Heures:</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Répétitions:</string>
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">temps de répétition maximum de chaque période</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Répétitions les plus proches:</string>

@@ -33,7 +33,7 @@
     <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_create_contact">Create contact…</string>
-    <string name="menu_context_edit_event">Show calendar event</string>
+    <string name="menu_context_edit_event">Open calendar event</string>
     <string name="menu_context_event_info">Event data</string>
     <string name="menu_context_hide_event">Hide event</string>
     <string name="menu_context_unhide_event">Unhide event</string>
@@ -123,7 +123,7 @@
     <string name="msg_age_could_be_now">"Could be now: "</string>
     <string name="msg_age_will_be">"Will be: "</string>
     <string name="msg_age_could_be">"Could be: "</string>
-    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (several values enter by comma, regexp supported):</string>
+    <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (by comma):</string>
     <string name="msg_hint_search">Search value</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>
     <string name="msg_notifications_soon_no_events">No events for chosen days</string>

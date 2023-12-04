@@ -123,7 +123,7 @@
     <string name="msg_age_could_be_now">"Pode ser agora: "</string>
     <string name="msg_age_will_be">"Será: "</string>
     <string name="msg_age_could_be">"Pode ser: "</string>
-    <string name="msg_label_search">Insira parte do nome completo, tipo de contato, cargo, cargo, alguma parte da data do evento (vários valores inseridos por vírgula, regexp suportado):</string>
+    <string name="msg_label_search">Insira parte do nome completo, tipo de contato, cargo, cargo, alguma parte da data do evento (separados por vírgulas):</string>
     <string name="msg_hint_search">Valor de pesquisa</string>
     <string name="msg_hint_global_search">Pesquisar aniversários e eventos</string>
     <string name="msg_notifications_soon_no_events">Nenhum evento nos dias escolhidos</string>

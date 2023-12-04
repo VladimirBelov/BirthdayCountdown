@@ -33,7 +33,7 @@
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_create_contact">Создать контакт…</string>
-    <string name="menu_context_edit_event">Показать событие в календаре</string>
+    <string name="menu_context_edit_event">Открыть событие в календаре</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
     <string name="menu_context_unhide_event">Вернуть показ события</string>
@@ -85,14 +85,14 @@
     <string name="msg_stats_unrecognized_prefix">"нераспознанных событий: "</string>
     <string name="msg_stats_unrecognized_filtered_prefix">"нераспознанных событий найдено: "</string>
     <string name="msg_stats_favorite_prefix">"избранных событий: "</string>
-    <string name="msg_stats_favorite_filtered_prefix">"избранных сбытий найдено: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"избранных событий найдено: "</string>
     <string name="msg_label_hidden">Скрыто</string>
     <string name="msg_label_silenced">Без уведомления</string>
     <string name="msg_color_parse_error">Ошибка распознавания цвета!</string>
     <string name="msg_date_parse_error">"Ошибка распознавания даты: "</string>
     <string name="msg_event_parse_error">"Ошибка распознавания события: '%1$s'"</string>
     <string name="msg_type_parse_error">"Тип события не определён: '%1$s' для '%2$s'"</string>
-    <string name="msg_jump_to_event_error">Событие на найдено! Включите больше типов событий в настройках приложения</string>
+    <string name="msg_jump_to_event_error">Событие не найдено! Включите больше типов событий в настройках приложения</string>
     <string name="msg_errors_total">"Всего ошибок: "</string>
     <string name="msg_errors_details">"аккаунт=%1$s, тип события=%2$s, дата=%3$s"</string>
     <string name="msg_all">Все</string>
@@ -123,7 +123,7 @@
     <string name="msg_age_could_be_now">"Было бы сейчас: "</string>
     <string name="msg_age_will_be">"Будет: "</string>
     <string name="msg_age_could_be">"Было бы: "</string>
-    <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (несколько значений можно вводить через запятую, поддерживается regexp):</string>
+    <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (через запятую):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
@@ -152,15 +152,15 @@
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
     <string name="msg_title_confirmation">Подтверждение</string>
     <string name="msg_title_success">Действие выполнено</string>
-    <string name="msg_title_settings">Сохранённые настроки</string>
+    <string name="msg_title_settings">Сохранённые настройки</string>
     <string name="msg_no_selection">Пустой выбор! Нужно выбрать что-нибудь</string>
     <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
     <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
     <string name="msg_widget_prefs_removed">"Настройка для виджета %1$s была удалена"</string>
     <string name="msg_widget_prefs_saved">"Сохранена настройка виджета %1$s:\n"</string>
     <string name="msg_ringtone">"Мелодия: "</string>
-    <string name="msg_deleted_channel">"Канал уведомений #%s был удалён\n"</string>
-    <string name="msg_created_channel">"Канал уведомений #%s был создан\n"</string>
+    <string name="msg_deleted_channel">"Канал уведомлений #%s был удалён\n"</string>
+    <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
     <string name="msg_sent_widgets_update_request">Обновление виджетов…</string>
     <string name="msg_next_notification">"Следующее уведомление: %1$s\n"</string>
     <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
@@ -193,8 +193,8 @@
     <string name="hint_AlertDialogIcon">Иконка диалога</string>
     <string name="hint_DragItem">Перетаскиваемый элемент</string>
     <string name="hint_Version_History">История версий</string>
-    <string name="hint_Rate_PlayMarket">Оценить приложение на Google Play</string>
-    <string name="hint_Rate_AppGallery">Оценить приложение на HUAWEI AppGallery</string>
+    <string name="hint_Rate_PlayMarket">Оценить приложение в Google Play</string>
+    <string name="hint_Rate_AppGallery">Оценить приложение в HUAWEI AppGallery</string>
     <string name="hint_Color">Значение в ARGB</string>
     <string name="hint_widget_config_events_count_label">Установка количества событий в ширину</string>
 
@@ -494,7 +494,7 @@
     <string-array name="pref_List_Filling_entries">
         <item>Без заполнения</item>
         <item>Слева направо</item>
-        <item>Справо налево</item>
+        <item>Справа налево</item>
         <item>Сверху вниз</item>
         <item>Снизу вверх</item>
         <item>Из центра</item>

@@ -2483,11 +2483,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Информация под именем
                 StringBuilder eventDetails = new StringBuilder();
 
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
                     final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
                 }
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
                     final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_COMMA_SPACE);
@@ -2773,7 +2773,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 return convertedView;
             } catch (android.view.InflateException e) {
                 ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
-                getParent().recreate();
+                if (getParent() != null) {
+                    getParent().recreate();
+                } else {
+                    try {
+                        startActivity(new Intent(eventsData.getContext(), MainActivity.class));
+                    } catch (android.content.ActivityNotFoundException ignored) { /**/ }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
@@ -2904,7 +2910,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else {
                             setHint(
                                     (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_prefix) : resources.getString(R.string.msg_stats_filtered_prefix))
-                                    .concat(filterNames.isEmpty() ? ""+(statsAllEvents - statsHiddenEvents) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
+                                    .concat(filterNames.isEmpty() ? String.valueOf(statsAllEvents - statsHiddenEvents) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
                                     .concat(Constants.STRING_SPACE)
                             );
                         }

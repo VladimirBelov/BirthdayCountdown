@@ -123,7 +123,7 @@
     <string name="msg_age_could_be_now">"Було б зараз: "</string>
     <string name="msg_age_will_be">"Буде: "</string>
     <string name="msg_age_could_be">"Може бути: "</string>
-    <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (кілька значень можна вводити через кому, підтримується regexp):</string>
+    <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (через кому):</string>
     <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_hint_global_search">Пошук подій</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>

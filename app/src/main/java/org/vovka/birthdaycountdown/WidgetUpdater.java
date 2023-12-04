@@ -291,6 +291,7 @@ class WidgetUpdater {
             //RemoteViews TextView не понимает gravity, но LinearLayout - понимает
             //https://stackoverflow.com/questions/7825508/remoteviews-textview-setgravity
 
+            int indSpace;
             switch (eventsData.preferences_widgets_bottom_info) {
                 case Constants.STRING_1: //Фамилия Имя Отчество
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
@@ -326,7 +327,7 @@ class WidgetUpdater {
                     break;
                 case Constants.STRING_5: //Имя
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
-                    int indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
@@ -438,7 +439,7 @@ class WidgetUpdater {
                     break;
                 case Constants.STRING_5: //Имя
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
-                    int indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }

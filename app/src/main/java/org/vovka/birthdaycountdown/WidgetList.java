@@ -90,6 +90,7 @@ public class WidgetList extends AppWidgetProvider {
                 intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
                 views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
             }
+            //todo: https://stackoverflow.com/questions/5070413/widget-double-click
 
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
