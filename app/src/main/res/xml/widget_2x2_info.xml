@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ /**
   ~  * Created by Vladimir Belov on 18.09.2022, 8:26
@@ -10,17 +11,17 @@
 <!-- minWidth: 70 * n - 30 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"
+    android:description="@string/appwidget_desc_1"
     android:initialKeyguardLayout="@layout/widget2x2"
     android:initialLayout="@layout/widget2x2"
-    android:minWidth="110dp"
     android:minHeight="110dp"
-    android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"
+    android:minResizeWidth="40dp"
+    android:minWidth="110dp"
     android:previewImage="@drawable/preview_widget2x2"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen"
-    android:configure="org.vovka.birthdaycountdown.WidgetConfigureActivity"
     android:widgetFeatures="reconfigurable"
-    tools:targetApi="p"
-    android:description="@string/appwidget_desc_1"/>
+    tools:targetApi="p" />

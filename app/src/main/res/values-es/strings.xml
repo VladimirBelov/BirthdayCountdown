@@ -157,7 +157,7 @@
     <string name="msg_notifications_were_enabled">"Las notificaciones fueron habilitadas\n"</string>
     <string name="msg_notifications_were_disabled">"Las notificaciones fueron deshabilitadas\n"</string>
     <string name="msg_widget_prefs_removed">"Se han eliminado las preferencias para el widget #%s"</string>
-    <string name="msg_widget_prefs_saved">"Widget guardado #%s preferencias:\n"</string>
+    <string name="msg_widget_prefs_saved">"Widget guardado #%1$s preferencias:\n"</string>
     <string name="msg_ringtone">"Tono de llamada: "</string>
     <string name="msg_deleted_channel">"Notificar que el canal %1$s fue eliminado\n"</string>
     <string name="msg_created_channel">"Notificar que se creó el canal %1$s\n"</string>

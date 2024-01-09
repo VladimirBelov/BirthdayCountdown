@@ -85,6 +85,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private final List<String> eventSourcesHashes = new ArrayList<>();
     private final List<Integer> eventSourcesIcons = new ArrayList<>();
     private List<String> eventSourcesSelected = new ArrayList<>();
+    //todo private AppCompatActivity thisActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             super.onCreate(savedInstanceState);
-
+            //todo thisActivity = this;
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
@@ -175,7 +176,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (Exception e) {/**/}
 
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
-            spinnerIndex.setSelection(prefStartingIndex - 1);
+            spinnerIndex.setSelection(prefStartingIndex - 1, true);
 
             //Коэффициент масштабирования размера шрифта
             int prefMagnifyIndex = 0;
@@ -184,7 +185,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (Exception e) {/**/}
 
             Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-            spinnerMagnify.setSelection(prefMagnifyIndex);
+            spinnerMagnify.setSelection(prefMagnifyIndex, true);
 
             //Стиль фото
             int prefPhotoStyle = 0;
@@ -193,7 +194,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (Exception e) {/**/}
 
             Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
-            spinnerPhotoStyle.setSelection(prefPhotoStyle);
+            spinnerPhotoStyle.setSelection(prefPhotoStyle, true);
 
             //Количество событий в ширину (фото виджет)
             int prefEventsCountIndex = 0;
@@ -202,7 +203,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (Exception e) {/**/}
 
             Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
-            spinnerEventsCount.setSelection(prefEventsCountIndex);
+            spinnerEventsCount.setSelection(prefEventsCountIndex, true);
 
             //Типы событий
             eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
@@ -249,7 +250,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             if (scopeEvents.equals(Constants.STRING_0)){ //Без ограничений
                                 spinnerScopeEvents.setSelection(0);
                             } else if (spinnerScopeEventsItems.contains(scopeEvents)){
-                                spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents));
+                                spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
                             }
                         }
                         final String scopeDays = matchScopes.group(2);
@@ -257,7 +258,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             if (scopeDays.equals(Constants.STRING_0)){ //Без ограничений
                                 spinnerScopeDays.setSelection(0);
                             } else if (spinnerScopeDaysItems.contains(scopeDays)){
-                                spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays));
+                                spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
                             }
                         }
                     }
@@ -335,6 +336,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventCaption));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_CurrentAge));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
                     eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
                     this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID));
@@ -586,9 +588,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 eventTypes.append(this.eventTypesIDs.get(this.eventTypesValues.indexOf(item)));
             }
 
-            final StringBuilder eventInfo = new StringBuilder();
+            StringBuilder eventInfo = new StringBuilder();
             for(final String item: spinnerEventInfo.getSelectedStrings()) {
-                if (eventInfo.length() > 0) eventInfo.append("+");
+                if (eventInfo.length() > 0) eventInfo.append(Constants.STRING_PLUS);
                 eventInfo.append(this.eventInfoIDs.get(this.eventInfoValues.indexOf(item)));
             }
 
@@ -603,11 +605,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            final StringBuilder eventSources = new StringBuilder();
+            /*final StringBuilder eventSources = new StringBuilder();
             for(final String item: eventSourcesSelected) {
                 if (eventSources.length() > 0) eventSources.append("+");
                 eventSources.append(item);
-            }
+            }*/
+            final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             //Проверки
 
@@ -616,7 +619,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 return;
             }
 
-            if (selectedItemPosition == -1) {
+            if (selectedItemPosition ==  android.widget.AdapterView.INVALID_POSITION) {
                 ToastExpander.showInfoMsg(this, "selectedItemPosition is undefined!");
                 return;
             }
@@ -624,31 +627,24 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
 
-            //Сохраняем настройки
+            //Сохранение настроек
 
-            this.eventsData.setWidgetPreference(this.widgetId,
-                    spinnerIndex.getItemAtPosition(selectedItemPosition).toString() //Стартовый номер события
-                    .concat(Constants.STRING_COMMA)
-                    .concat(String.valueOf(spinnerMagnify.getSelectedItemPosition())) //Коэффициент масштабирования (позиция в списке выбора)
-                    .concat(Constants.STRING_COMMA)
-                    .concat(String.valueOf(spinnerEventsCount.getSelectedItemPosition())) //Количество событий (позиция в списке выбора)
-                    .concat(Constants.STRING_COMMA)
-                    .concat(eventTypes.toString()) //Типы событий (через +)
-                    .concat(Constants.STRING_COMMA)
-                    .concat(eventInfo.toString()) //Детали события (через +)
-                    .concat(Constants.STRING_COMMA)
-                    .concat(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY) //Цвет подложки
-                    .concat(Constants.STRING_COMMA)
-                    .concat(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())) //Стиль фото
-                    .concat(Constants.STRING_COMMA)
-                    .concat(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)) //Сообщение, когда нет событий
-                    .concat(Constants.STRING_COMMA)
-                    .concat(this.isListWidget ? scopeInfo.toString() : Constants.STRING_EMPTY) //Объём событий
-                    .concat(Constants.STRING_COMMA)
-                    .concat(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)) //Заголовок виджета
-                    .concat(Constants.STRING_COMMA)
-                    .concat(eventSources.toString())
-            );
+            List<String> prefsToStore = new ArrayList<>();
+
+            prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
+            prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
+            prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
+            prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
+            prefsToStore.add(eventInfo.toString()); //Детали события (через +)
+            prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
+            prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
+            prefsToStore.add(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
+            //prefsToStore.add(this.isListWidget ? scopeInfo.toString() : Constants.STRING_EMPTY); //Объём событий
+            prefsToStore.add(scopeInfo.toString()); //Объём событий
+            prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
+            prefsToStore.add(eventSources); //Источники событий (через +)
+
+            this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 
             final Intent intent = new Intent();
             intent.putExtra(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
@@ -973,6 +969,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+                    /* todo listView.setOnItemLongClickListener((parent, view, position, id) -> {
+                        ToastExpander.showInfoMsg(getApplicationContext(), "long click: " + position);
+                        ColorPicker picker = new ColorPicker(thisActivity);
+                        picker.selectRGBColor(eventsData);
+                        return true;
+                    });*/
                 });
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

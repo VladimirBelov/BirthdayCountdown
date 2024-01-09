@@ -179,8 +179,9 @@ class ContactsEvents {
     }};
     final List<String> eventList = new ArrayList<>(); //Список всех событий
     final String systemLocale = Locale.getDefault().getLanguage();
-    final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
-    final HashMap<String, Date> birthdayDatesForIds = new HashMap<>(); //дни рождения
+    //final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
+    final HashMap<String, Date> deathDatesForIds = new HashMap<>(); //Даты годовщин смерти по ID
+    final HashMap<String, Date> birthdayDatesForIds = new HashMap<>(); //Даты дней рождений по ID
     //final HashSet<String> idsAllContacts = new HashSet<>(); //ID всех контактов в адресной книге
     final HashSet<String> idsAllCalendarEvents = new HashSet<>(); //ID всех найденных событий календаря
     final HashMap<String, String> map_contacts_names = new HashMap<>(); //связка имён контактов с ID
@@ -1458,7 +1459,7 @@ class ContactsEvents {
             map_contacts_data.clear();
             map_contacts_ids.clear();
             map_contacts_rawIds.clear();
-            idsWithDeathEvent.clear();
+            deathDatesForIds.clear();
             birthdayDatesForIds.clear();
             map_events_weblinks.clear();
             map_notes.clear();
@@ -3909,7 +3910,7 @@ class ContactsEvents {
                 @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
 
                 addMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
-                        (preferences_list_sad_photo == 2 && idsWithDeathEvent.contains(contactID));
+                        (preferences_list_sad_photo == 2 && deathDatesForIds.containsKey(contactID));
 
                 if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
                     //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
@@ -4370,6 +4371,7 @@ class ContactsEvents {
             final String eventCaption = singleEventArray[Position_eventCaption];
             final String eventType = singleEventArray[Position_eventType];
             final String eventSubType = singleEventArray[Position_eventSubType];
+            @NonNull final String contactID = checkForNull(singleEventArray[ContactsEvents.Position_contactID]);
 
             if (TextUtils.isEmpty(singleEventArray[Position_eventDateThisTime])) {
                 //перебираем все даты и находим максимальную
@@ -4608,12 +4610,11 @@ class ContactsEvents {
                 if (eventDateFirstTime != null) {
                     dayDiff = countDaysDiff(currentDay, eventDateThisTime);
                     Age = countYearsDiff(eventDateFirstTime, eventDateThisTime); //Считаем, сколько будет лет
-                    final String contactID = singleEventArray[Position_contactID];
                     if (!TextUtils.isEmpty(contactID)) {
                         if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !birthdayDatesForIds.containsKey(contactID)) {
                             birthdayDatesForIds.put(contactID, eventDateFirstTime);
                         } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
-                            idsWithDeathEvent.add(contactID);
+                            deathDatesForIds.put(contactID, eventDateFirstTime);
                         }
                     }
                 }}
@@ -4656,10 +4657,13 @@ class ContactsEvents {
                 singleEventArray[Position_age] = Constants.STRING_MINUS1;
                 singleEventArray[Position_age_caption] = Constants.STRING_EMPTY;
             }
-            if (eventDateFirstTime != null && !eventSubType.equals(getEventType(Constants.Type_Death)) && isYear) {
+            /*if (eventDateFirstTime != null && !eventSubType.equals(getEventType(Constants.Type_Death)) && isYear) {
                 singleEventArray[Position_age_current] = countDaysDiffText(eventDateFirstTime, currentDay, 3);
             } else {
                 singleEventArray[Position_age_current] = Constants.STRING_EMPTY;
+            }*/
+            if (eventDateFirstTime != null && isYear) {
+                singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay);
             }
 
             if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
@@ -4713,7 +4717,8 @@ class ContactsEvents {
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
                         singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = "🏆";
-                        singleEventArray5K[Position_age_current] = countDaysDiffText(eventDateFirstTime, currentDay, 3); //Возраст текущий
+                        //singleEventArray5K[Position_age_current] = countDaysDiffText(eventDateFirstTime, currentDay, 3); //Возраст текущий
+                        singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay); //Возраст текущий
                         //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
 
                         final String event5kKey = getEventKey(singleEventArray5K);
@@ -4772,6 +4777,72 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
         }
+    }
+
+    private String fillCurrentAge(@NonNull String[] singleEventArray, @NonNull String eventSubType, @NonNull String currentAge, Date today) {
+
+        String age = "";
+        try {
+
+            @NonNull final String contactID = checkForNull(singleEventArray[Position_contactID]);
+
+            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) || eventSubType.equals(getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
+                if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
+                    if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
+                        age = resources.getString(R.string.msg_age_could_be_now);
+
+                        //Если годовщина смерти попалась раньше дня рождения, то у неё currentAge будет пустой - надо заполнить
+                        final String key = contactID + Constants.STRING_2HASH + getEventType(Constants.Type_Death);
+                        Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
+                        if (eventIndex != null && eventIndex <= eventList.size()) {
+                            List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            if (TextUtils.isEmpty(singleRowList.get(Position_age_current))) {
+                                Date birthDate = birthdayDatesForIds.get(contactID);
+                                Date deathDate = deathDatesForIds.get(contactID);
+                                if (birthDate != null && deathDate != null) {
+                                    final String wasAge = countDaysDiffText(birthDate, deathDate, 3);
+                                    singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
+                                    eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                                }
+                            }
+                        }
+
+                    } else {
+                        age = resources.getString(R.string.msg_age_now);
+                    }
+                    age = age.concat(currentAge);
+                }
+            } else if (birthdayDatesForIds.containsKey(contactID)) {
+                Date birthDate = birthdayDatesForIds.get(contactID);
+                if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                    Locale locale_en = new Locale(Constants.LANG_EN);
+                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                    Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateFirstTime]);
+                    if (eventDate != null && birthDate != null) {
+                        age = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
+                    }
+                } else { //Другие события
+                    Locale locale_en = new Locale(Constants.LANG_EN);
+                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                    Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateThisTime]);
+                    if (eventDate != null && birthDate != null) {
+                        if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
+                            age = resources.getString(R.string.msg_age_could_be);
+                        } else if (eventDate.compareTo(today) == 0) {
+                            age = resources.getString(R.string.msg_age_now);
+                        } else {
+                            age = resources.getString(R.string.msg_age_will_be);
+                        }
+                        age = age.concat(countDaysDiffText(birthDate, eventDate, 3));
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + String.join(Constants.STRING_EOT, singleEventArray));
+        }
+        return age;
     }
 
     private void increaseStatForAccountType(@NonNull String accountType) {
@@ -5017,6 +5088,14 @@ class ContactsEvents {
             if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
                 //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                 WidgetPhotoList myWidget = new WidgetPhotoList();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                countSentRequests++;
+            }
+
+            ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
+            if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                WidgetCalendar myWidget = new WidgetCalendar();
                 myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
                 countSentRequests++;
             }
@@ -6434,6 +6513,8 @@ class ContactsEvents {
             defaultPrefString = context.getString(R.string.widget_config_defaultPref_List);
         } else if (widgetType != null && widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
             defaultPrefString = context.getString(R.string.widget_config_defaultPref_PhotoList);
+        } else if (widgetType != null && widgetType.equals(Constants.WIDGET_TYPE_CALENDAR)) {
+            defaultPrefString = context.getString(R.string.widget_config_defaultPref_Calendar);
         } else {
             defaultPrefString = context.getString(R.string.widget_config_defaultPref);
         }
@@ -7399,7 +7480,7 @@ class ContactsEvents {
 
             //Формируем информацию о персоне
             Date currentDay = removeTime(Calendar.getInstance()).getTime();
-            boolean isDead = idsWithDeathEvent.contains(eventInfo[Position_contactID]); //Но есть годовщина смерти
+            boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
             //ToastExpander.showFor(Toast.makeText(context, getCalendarFromDate(eventDay).get(YEAR) + "!=" + Calendar.getInstance().get(YEAR) + "=" + isPassedBDay, Toast.LENGTH_LONG), 7000);
 

@@ -174,6 +174,15 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                     }
                 }
+                //Текущий возраст
+                if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_CurrentAge_ID))) {
+                    final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                    if (!TextUtils.isEmpty(currentAge)) {
+                        if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                        int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        sbDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
+                    }
+                }
 
                 //Знак зодиака и животное в восточном календаре
                 String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];

@@ -157,7 +157,7 @@
     <string name="msg_notifications_were_enabled">"Notifications were enabled\n"</string>
     <string name="msg_notifications_were_disabled">"Notifications were disabled\n"</string>
     <string name="msg_widget_prefs_removed">"Preferences for widget #%s has been removed"</string>
-    <string name="msg_widget_prefs_saved">"Saved widget #%s preferences:\n"</string>
+    <string name="msg_widget_prefs_saved">"Saved widget #%1$s preferences:\n"</string>
     <string name="msg_ringtone">"Ringtone: "</string>
     <string name="msg_deleted_channel">"Notify channel %1$s was deleted\n"</string>
     <string name="msg_created_channel">"Notify channel %1$s was created\n"</string>
@@ -260,6 +260,8 @@
     <string name="appwidget_desc_List">Expandable vertical list widget with constructor for event info</string>
     <string name="appwidget_label_PhotoList">List with photos</string>
     <string name="appwidget_desc_PhotoList">Expandable vertical widget with photo and event info</string>
+    <string name="appwidget_label_Calendar">Calendar</string>
+    <string name="appwidget_desc_Calendar">Calendar widget for 1..12 months</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
     <string name="widget_Date">Date</string>
@@ -634,6 +636,7 @@
     <string name="pref_Widgets_EventInfo_EventDate_WithYear">Event date with year</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Event title</string>
     <string name="pref_Widgets_EventInfo_Age">Age (anniversary)</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge">Current age</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Wedding anniversary name</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Days before event</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Days before event (short format)</string>
@@ -794,6 +797,46 @@
 
     <string name="widget_config_color_back_label">Widget background color</string>
     <string name="widget_config_color_back_description">Background color for widget</string>
+
+    <string name="widget_config_layout_title">Months layout</string>
+    <string name="widget_config_layout_description">How many months to display</string>
+    <string name="widget_config_month_events_sources_label">Event sources</string>
+    <string name="widget_config_month_events_sources_description">Sources to determine type of day: working day, day off, holiday</string>
+    <string name="widget_config_month_shift_title">Starting month</string>
+    <string name="widget_config_month_shift_label">Shift:</string>
+    <string name="widget_config_starting_month_position_label">Position:</string>
+    <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Automatically (by widget size)</item>
+        <item>1 month</item>
+        <item>2 months (horizontally)</item>
+        <item>3 months (horizontally)</item>
+        <item>2 months (vertically)</item>
+        <item>3 months (vertically)</item>
+        <item>4 months (2x2)</item>
+        <item>6 months (3x2)</item>
+        <item>9 months (3x3)</item>
+        <item>12 months (3x4)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Current month</string>
+    <string name="widget_config_month_shift_january">Begin of year</string>
+
+    <string-array name="widget_config_month_shift_values">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_values">
+        <item>Top left corner</item>
+        <item>Top center</item>
+        <item>Center</item>
+    </string-array>
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">When and how to show event notifications</string>
@@ -1133,6 +1176,10 @@
     <string name="Event_Easter">Easter</string>
     <string name="Event_CatholicEaster">Catholic_Easter</string>
     <string name="Event_NY">NY</string>
+
+    <string name="previous_month">Previous month</string>
+    <string name="month_title">Month title</string>
+    <string name="next_month">Next month</string>
 
     <!-- COMMON STRINGS -->
 
@@ -1607,6 +1654,7 @@
     <string name="pref_Widgets_EventInfo_DatesInBrackets_ID" translatable="false">32</string>
     <string name="pref_Widgets_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
     <string name="pref_Widgets_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge_ID" translatable="false">35</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_Widgets_EventInfo_Border_ID</item>
@@ -1710,6 +1758,7 @@
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">1,1,0,1,,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
@@ -1856,4 +1905,7 @@
 
     <string name="pref_Colors_Resent_key" translatable="false">ColorsResent</string>
     <integer name="pref_Colors_Resent_max" translatable="false">10</integer>
+
+    <string name="previous_month_arrow" translatable="false">˄</string>
+    <string name="next_month_arrow" translatable="false">˅</string>
 </resources>

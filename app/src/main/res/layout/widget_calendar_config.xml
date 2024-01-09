@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 31.12.2023, 17:52
+  ~  * Copyright (c) 2018 - 2023. All rights reserved.
+  ~  * Last modified 26.11.2023, 20:05
+  ~  */
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WidgetConfigureActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorPrimary"	>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="4dp"
+        android:background="?attr/backgroundColor">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="true"
+            android:fadeScrollbars="true"
+            android:layout_above="@id/layout_buttons"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:isScrollContainer="true">
+
+                <TextView
+                    android:id="@+id/hintBatteryOptimization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:onClick="openBatteryOptimisationsSettings"
+                    android:paddingBottom="20dp"
+                    android:text="@string/widget_config_hint_battery_optimization_title"
+                    android:textColor="@color/dark_red"
+                    android:textStyle="bold"
+                    tools:ignore="VisualLintLongText" />
+
+                <TextView
+                    android:id="@+id/captionMonthsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_layout_title"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerMonthsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/widget_config_layout_title"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:entries="@array/widget_config_layout_entries"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+
+                <TextView
+                    android:id="@+id/hintMonthsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_layout_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <View
+                    android:id="@+id/dividerShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/blockcaptionMonthsShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_month_shift_title"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/blockMonthsShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionMonthsShift"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_month_shift_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerMonthsShift"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_month_shift_label"
+                        android:textAlignment="textEnd"
+                        android:entries="@array/widget_config_month_shift_values"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blockStartingMonthPosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionStartingMonthPosition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_starting_month_position_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerStartingMonthPosition"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_starting_month_position_label"
+                        android:entries="@array/widget_config_starting_month_position_values"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_month_events_sources_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/listEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/hintEventSources"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_month_events_sources_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <View
+                    android:id="@+id/dividerFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_font_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"  />
+
+                <Spinner
+                    android:id="@+id/spinnerFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/widget_config_font_label"
+                    android:entries="@array/widget_config_font"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+
+                <TextView
+                    android:id="@+id/hintFontMagnify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_month_font_magnify_description"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:ignore="VisualLintLongText" />
+
+                <View
+                    android:id="@+id/dividerWidgetBackgroundColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <org.vovka.birthdaycountdown.ColorPicker
+                    android:id="@+id/colorWidgetBackgroundColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="10dp"
+                    app:title="@string/widget_config_color_back_label"
+                    app:summary="@string/widget_config_color_back_description"
+                    app:defaultValue="@color/pref_Widgets_Color_WidgetBackground_default"
+                    app:choices="@array/default_color_background_values"
+                    app:icon="@null"
+                    app:numColumns="4"
+                    app:itemLayout="@layout/item_color"
+                    app:dialogTitle="@string/widget_config_color_back_label"
+                    app:dialogIcon="@drawable/ic_menu_paste" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:onClick="buttonCancelOnClick"
+                android:text="@string/button_cancel"
+                android:textColor="?attr/windowStatusbarColor"
+                tools:ignore="ButtonStyle,VisualLintButtonSize" />
+
+            <Button
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:onClick="buttonOkOnClick"
+                android:text="@string/button_ok"
+                android:textColor="?attr/windowStatusbarColor"
+                tools:ignore="ButtonStyle,VisualLintButtonSize" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

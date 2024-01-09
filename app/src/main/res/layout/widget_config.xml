@@ -489,6 +489,7 @@
 
     </RelativeLayout>
 
+    <!--Для дочерних активностей-->
     <FrameLayout
         android:id="@+id/layout_fragment"
         android:layout_width="match_parent"

@@ -157,7 +157,7 @@
     <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
     <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
     <string name="msg_widget_prefs_removed">"Настройка для виджета %1$s была удалена"</string>
-    <string name="msg_widget_prefs_saved">"Сохранена настройка виджета %1$s:\n"</string>
+    <string name="msg_widget_prefs_saved">"Сохранена настройка виджета #%1$s:\n"</string>
     <string name="msg_ringtone">"Мелодия: "</string>
     <string name="msg_deleted_channel">"Канал уведомлений #%s был удалён\n"</string>
     <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
@@ -260,6 +260,8 @@
     <string name="appwidget_desc_List">Расширяемый вертикальный списковый виджет с конструктором выводимой информации о событии</string>
     <string name="appwidget_label_PhotoList">Список с фото</string>
     <string name="appwidget_desc_PhotoList">Расширяемый вертикальный виджет с фото и деталями события</string>
+    <string name="appwidget_label_Calendar">Календарь</string>
+    <string name="appwidget_desc_Calendar">Календарный виджет на 1..12 месяцев</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ФИО</string>
     <string name="widget_Date">Дата</string>
@@ -634,6 +636,7 @@
     <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата события с годом</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Заголовок события</string>
     <string name="pref_Widgets_EventInfo_Age">Возраст (годовщина)</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge">Текущий возраст</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Название годовщины свадьбы</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дней до события</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Дней до события (кратко)</string>
@@ -795,6 +798,46 @@
 
     <string name="widget_config_color_back_label">Цвет фона</string>
     <string name="widget_config_color_back_description">Цвет подложки виджета</string>
+
+    <string name="widget_config_layout_title">Количество месяцев</string>
+    <string name="widget_config_layout_description">Сколько месяцев отображать</string>
+    <string name="widget_config_month_events_sources_label">Источники событий</string>
+    <string name="widget_config_month_events_sources_description">Источники, по которым определять рабочие, выходные и праздничные дни</string>
+    <string name="widget_config_month_shift_title">Стартовый месяц</string>
+    <string name="widget_config_month_shift_label">Смещение:</string>
+    <string name="widget_config_starting_month_position_label">Положение:</string>
+    <string name="widget_config_month_font_magnify_description">Изменение размера шрифта для всех элементов</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Автоматически (по размеру виджета)</item>
+        <item>1 месяц</item>
+        <item>2 месяца (горизонтально)</item>
+        <item>3 месяца (горизонтально)</item>
+        <item>2 месяца (вертикально)</item>
+        <item>3 месяца (вертикально)</item>
+        <item>4 месяца (2x2)</item>
+        <item>6 месяцев (3x2)</item>
+        <item>9 месяцев (3x3)</item>
+        <item>12 месяцев (3x4)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Текущий месяц</string>
+    <string name="widget_config_month_shift_january">Начало года</string>
+
+    <string-array name="widget_config_month_shift_values">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_values">
+        <item>Верхний левый угол</item>
+        <item>Вверху по центру</item>
+        <item>По центру</item>
+    </string-array>
 
     <string name="pref_Notifications_title">Уведомления</string>
     <string name="pref_Notifications_summary">Когда и как показывать уведомления о событиях</string>

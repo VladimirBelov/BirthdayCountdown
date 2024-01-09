@@ -151,7 +151,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    private void selectRGBColor(ContactsEvents eventsData) {
+    public void selectRGBColor(ContactsEvents eventsData) {
 
         try {
 
@@ -171,7 +171,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             View view = View.inflate(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
             dialog.setView(view);
 
-            if (mSelectDialogTitle.isEmpty()) {
+            if (mSelectDialogTitle == null || mSelectDialogTitle.isEmpty()) {
                 View caption = view.findViewById(R.id.caption);
                 caption.setVisibility(View.GONE);
             } else {

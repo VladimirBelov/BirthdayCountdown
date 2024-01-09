@@ -135,4 +135,10 @@
         <item>@color/dark_gray_transp</item>
     </string-array>
 
+    <color name="foreground_full">#fff</color>
+    <color name="foreground_today">#111</color>
+    <color name="foreground_semi">#4fff</color>
+    <color name="background_full">#1fff</color>
+    <color name="background_today">#fff</color>
+
 </resources>

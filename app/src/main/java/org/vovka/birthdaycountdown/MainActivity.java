@@ -754,7 +754,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         final String currentAge = selectedEvent[ContactsEvents.Position_age_current];
                         if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            if (eventsData.idsWithDeathEvent.contains(selectedEvent[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
+                            if (eventsData.deathDatesForIds.containsKey(selectedEvent[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
                                 textBig.append(getString(R.string.msg_age_could_be_now));
                             } else {
                                 textBig.append(getString(R.string.msg_age_now));
@@ -778,7 +778,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
                             if (eventDate != null && birthDate != null) {
                                 if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                                if (eventsData.idsWithDeathEvent.contains(contactID)) { //Но есть годовщина смерти
+                                if (eventsData.deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                                     textBig.append(getString(R.string.msg_age_could_be));
                                 } else if (eventDate.compareTo(today) == 0) {
                                     textBig.append(getString(R.string.msg_age_now));
@@ -2530,7 +2530,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
-                    @NonNull final String contactID = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_contactID]);
+                    final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                    if (!currentAge.isEmpty() && !currentAge.contains(": 0")) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(currentAge);
+                    }
+                    /*@NonNull final String contactID = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_contactID]);
 
                     if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
                         final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
@@ -2569,7 +2574,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 eventDetails.append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
                             }
                         }
-                    }
+                    }*/
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {

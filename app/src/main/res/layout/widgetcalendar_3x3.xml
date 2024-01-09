@@ -1,0 +1,188 @@
+<!--<LinearLayout
+    android:id="@+id/calendarAll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/calendar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/calendar1x1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/calendar1x2div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar1x2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/calendar1x3div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar1x3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" />
+
+  <!--  </LinearLayout>-->
+
+ <!--   <LinearLayout
+        android:id="@+id/calendar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/calendar2x1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="2dp" />
+
+        <TextView
+            android:id="@+id/calendar2x2div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:id="@+id/calendar2x2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/calendar2x3div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar2x3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="2dp"
+            android:paddingStart="0dp" />
+
+    </LinearLayout>-->
+
+ <!--   <LinearLayout
+        android:id="@+id/calendar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/calendar3x1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="2dp" />
+
+        <TextView
+            android:id="@+id/calendar3x2div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:id="@+id/calendar3x2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/calendar3x3div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar3x3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="2dp"
+            android:paddingStart="0dp" />
+
+    </LinearLayout>-->
+
+  <!--  <LinearLayout
+        android:id="@+id/calendar4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/calendar4x1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="4dp" />
+
+        <TextView
+            android:id="@+id/calendar4x2div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar4x2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/calendar4x3div"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/calendar4x3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:paddingEnd="4dp"
+            android:paddingStart="0dp" />
+
+    </LinearLayout>-->
+
+<!--    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@color/background_calendar"/>-->
+
+</LinearLayout>

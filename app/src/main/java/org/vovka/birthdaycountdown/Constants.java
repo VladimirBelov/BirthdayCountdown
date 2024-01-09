@@ -172,14 +172,14 @@ final class Constants {
 
     static final int defaultNotificationID = 1000;
     static final int defaultQuizID = 2000;
-    static final String ACTION_SNOOZE = "ACTION_SNOOZE";
-    static final String ACTION_NOTIFY = "ACTION_NOTIFY";
-    static final String ACTION_LAUNCH = "LAUNCH_ACTIVITY";
-    static final String ACTION_HIDE = "ACTION_HIDE";
-    static final String ACTION_SILENT = "ACTION_SILENT";
-    static final String ACTION_DIAL = "ACTION_DIAL";
-    static final String ACTION_CLOSE = "ACTION_CLOSE";
-    static final String ACTION_CLICK = "ACTION_CLICK";
+    static final String ACTION_SNOOZE = "action.SNOOZE";
+    static final String ACTION_NOTIFY = "action.NOTIFY";
+    static final String ACTION_LAUNCH = "action.LAUNCH_ACTIVITY";
+    static final String ACTION_HIDE = "action.HIDE";
+    static final String ACTION_SILENT = "action.SILENT";
+    static final String ACTION_DIAL = "action.DIAL";
+    static final String ACTION_CLOSE = "action.CLOSE";
+    static final String ACTION_CLICK = "action.CLICK";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
@@ -273,6 +273,7 @@ final class Constants {
     static final String WIDGET_TYPE_5X1 = "Widget5x1";
     static final String WIDGET_TYPE_4X1 = "Widget4x1";
     static final String WIDGET_TYPE_2X2 = "Widget2x2";
+    static final String WIDGET_TYPE_CALENDAR = "WidgetCalendar";
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String FilePrefix_Media = "com.android.providers.media.documents";
