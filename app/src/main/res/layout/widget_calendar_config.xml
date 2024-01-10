@@ -157,6 +157,39 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/dividerElements"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionElements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_elements_title"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold" />
+
+                <org.vovka.birthdaycountdown.MultiSelectionSpinner
+                    android:id="@+id/spinnerElements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/widget_config_elements_title"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+
+                <TextView
+                    android:id="@+id/hintElements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_elements_description"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <View
                     android:id="@+id/dividerEventSources"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

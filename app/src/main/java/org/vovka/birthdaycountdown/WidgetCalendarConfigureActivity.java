@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
@@ -21,14 +22,18 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
@@ -122,7 +127,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Стартовый месяц
 
+            //Элементы календаря
+
+            List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
+            List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
+
+            MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerElements);
+            spinnerEventTypes.setItems(elementsValues);
+
             //Источники событий
+
+            TextView eventSources = findViewById(R.id.listEventSources);
+            eventSources.setText(HtmlCompat.fromHtml("Субботы<br>Воскресенья<br>\uD83C\uDDF7\uD83C\uDDFA Производственный календарь", 0));
 
             //Коэффициент масштабирования размера шрифта
 
@@ -140,6 +156,30 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
 
+    public void buttonOkOnClick(@SuppressWarnings("unused") final View view) {
+        try {
+
+
+
+            final Intent intent = new Intent();
+            intent.putExtra(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+            setResult(Activity.RESULT_OK, intent);
+
+            //Посылаем сообщение на обновление виджета
+            this.eventsData.updateWidgets(this.widgetId, null);
+
+            finish();
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public void buttonCancelOnClick(@SuppressWarnings("unused") final View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
         final Intent intent = new Intent();
@@ -147,6 +187,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         try {
             startActivity(intent);
         } catch (final android.content.ActivityNotFoundException e) { /**/ }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putInt(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
     }
 
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}

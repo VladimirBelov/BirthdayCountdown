@@ -315,4 +315,7 @@ final class Constants {
     static final String eventSourceFilePrefix = "file:";
     static final String eventSourceMultiFilePrefix = "multifile:";
 
+    public static final String SHORTCUT_QUIZ = "Quiz";
+    public static final String SHORTCUT_SETTINGS = "Settings";
+    public static final String SHORTCUT_NOTIFY = "Notify";
 }

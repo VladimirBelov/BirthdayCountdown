@@ -20,6 +20,7 @@
 
     <string name="shortcut_notify">Today notifications</string>
     <string name="shortcut_quiz">Quiz</string>
+    <string name="shortcut_settings">Settings</string>
 
     <string name="menu_add_event">Add event</string>
     <string name="menu_add_event_to_contact">Add event to contact…</string>
@@ -820,6 +821,19 @@
         <item>12 months (3x4)</item>
     </string-array>
 
+    <string-array name="widget_config_layout_values" translatable="false">
+        <item>0</item>
+        <item>1r1c</item>
+        <item>1r2c</item>
+        <item>1r3c</item>
+        <item>2r1c</item>
+        <item>3r1c</item>
+        <item>2r2c</item>
+        <item>2r3c</item>
+        <item>3r3c</item>
+        <item>4r3c</item>
+    </string-array>
+
     <string name="widget_config_month_shift_current_month">Current month</string>
     <string name="widget_config_month_shift_january">Begin of year</string>
 
@@ -836,6 +850,19 @@
         <item>Top left corner</item>
         <item>Top center</item>
         <item>Center</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Calendar elements</string>
+    <string name="widget_config_elements_description">Which advance calendar element to show</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Month title</item>
+        <item>Weekdays labels</item>
+    </string-array>
+
+    <string-array name="widget_config_elements_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string name="pref_Notifications_title">Notifications</string>

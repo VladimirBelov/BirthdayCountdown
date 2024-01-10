@@ -20,6 +20,7 @@
 
     <string name="shortcut_notify">Уведомления</string>
     <string name="shortcut_quiz">Викторина</string>
+    <string name="shortcut_settings">Настройки</string>
 
     <string name="menu_add_event">Добавить событие</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
@@ -837,6 +838,14 @@
         <item>Верхний левый угол</item>
         <item>Вверху по центру</item>
         <item>По центру</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Элементы календаря</string>
+    <string name="widget_config_elements_description">Какие дополнительные элементы календаря отображать</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Наименование месяца</item>
+        <item>Дни недели</item>
     </string-array>
 
     <string name="pref_Notifications_title">Уведомления</string>

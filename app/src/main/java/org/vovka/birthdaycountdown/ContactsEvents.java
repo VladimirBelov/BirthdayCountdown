@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -105,6 +106,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.text.HtmlCompat;
 
 class ContactsEvents {
@@ -1340,11 +1344,65 @@ class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
+            updateShortCuts(preferences_extrafun);
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    private void updateShortCuts(boolean enableExtraShortcuts) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+
+                Intent intentNotify = new Intent(context, NotifyActivity.class);
+                intentNotify.setAction(Intent.ACTION_VIEW);
+                ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
+                        .setShortLabel(resources.getString(R.string.shortcut_notify))
+                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
+                        .setIntent(intentNotify)
+                        .setRank(1)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+
+                if (enableExtraShortcuts) {
+
+                    Intent intentQuiz = new Intent(context, QuizActivity.class);
+                    intentQuiz.setAction(Intent.ACTION_VIEW);
+                    ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
+                            .setShortLabel(resources.getString(R.string.shortcut_quiz))
+                            .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_quiz))
+                            .setIntent(intentQuiz)
+                            .setRank(2)
+                            .build();
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
+
+                    Intent intentSettings = new Intent(context, SettingsActivity.class);
+                    intentSettings.setAction(Intent.ACTION_VIEW);
+                    ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)
+                            .setShortLabel(resources.getString(R.string.shortcut_settings))
+                            .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_settings))
+                            .setIntent(intentSettings)
+                            .setRank(3)
+                            .build();
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+
+                } else {
+
+                    List<String> shortcutIds = new ArrayList<>();
+                    shortcutIds.add(Constants.SHORTCUT_QUIZ);
+                    shortcutIds.add(Constants.SHORTCUT_SETTINGS);
+                    context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutIds);
+
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     /**

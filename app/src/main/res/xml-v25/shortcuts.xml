@@ -8,27 +8,27 @@
   -->
 
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+        <shortcut
+            android:shortcutId="Notify"
+            android:enabled="true"
+            android:icon="@drawable/shortcut_notify"
+            android:shortcutShortLabel="@string/shortcut_notify" >
 
-    <shortcut
-        android:shortcutId="Notify"
-        android:enabled="true"
-        android:icon="@drawable/shortcut_notify"
-        android:shortcutShortLabel="@string/shortcut_notify" >
+            <intent android:action="android.intent.action.VIEW"
+                    android:targetPackage="org.vovka.birthdaycountdown"
+                    android:targetClass="org.vovka.birthdaycountdown.Notitivity" />
+        </shortcut>
 
-        <intent android:action="android.intent.action.VIEW"
+        <shortcut
+            android:shortcutId="Quiz"
+            android:enabled="true"
+            android:icon="@drawable/shortcut_quiz"
+            android:shortcutShortLabel="@string/shortcut_quiz" >
+
+            <intent android:action="android.intent.action.VIEW"
                 android:targetPackage="org.vovka.birthdaycountdown"
-                android:targetClass="org.vovka.birthdaycountdown.NotifyActivity" />
-    </shortcut>
-
-    <shortcut
-        android:shortcutId="Quiz"
-        android:enabled="true"
-        android:icon="@drawable/shortcut_quiz"
-        android:shortcutShortLabel="@string/shortcut_quiz" >
-
-        <intent android:action="android.intent.action.VIEW"
-            android:targetPackage="org.vovka.birthdaycountdown"
-            android:targetClass="org.vovka.birthdaycountdown.QuizActivity" />
-    </shortcut>
-
+                android:targetClass="org.vovka.birthdaycountdown.QuizActivity" />
+        </shortcut>
+    -->
 </shortcuts>
