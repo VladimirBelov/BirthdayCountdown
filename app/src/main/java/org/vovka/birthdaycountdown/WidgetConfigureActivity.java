@@ -16,34 +16,24 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -78,14 +68,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
     List<String> widgetPref;
-    private static DisplayMetrics displayMetrics;
     private final List<String> eventSourcesIds = new ArrayList<>();
     private final List<String> eventSourcesTitles = new ArrayList<>();
     private final List<String> eventSourcesPackages = new ArrayList<>();
     private final List<String> eventSourcesHashes = new ArrayList<>();
     private final List<Integer> eventSourcesIcons = new ArrayList<>();
     private List<String> eventSourcesSelected = new ArrayList<>();
-    //todo private AppCompatActivity thisActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +83,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             super.onCreate(savedInstanceState);
-            //todo thisActivity = this;
+
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
@@ -119,8 +107,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
-
-            setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.widget_config);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -136,9 +122,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (eventsData.preferences_list_marging > 0) {
                 RelativeLayout main = findViewById(R.id.layout_main);
                 main.setPadding(
-                        main.getPaddingLeft() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                        main.getPaddingLeft() + (int) (eventsData.preferences_list_marging * eventsData.displayMetrics_density + 0.5f),
                         main.getPaddingTop(),
-                        main.getPaddingRight() + (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                        main.getPaddingRight() + (int) (eventsData.preferences_list_marging * eventsData.displayMetrics_density + 0.5f),
                         main.getPaddingBottom()
                 );
             }
@@ -928,7 +914,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 }
 
-                ListAdapter adapter = new EventSourcesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
+                ListAdapter adapter = new ContactsEvents.MultiCheckoxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.widget_config_events_sources_label)
@@ -969,13 +955,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             }
                         }
                     }
-
-                    /* todo listView.setOnItemLongClickListener((parent, view, position, id) -> {
-                        ToastExpander.showInfoMsg(getApplicationContext(), "long click: " + position);
-                        ColorPicker picker = new ColorPicker(thisActivity);
-                        picker.selectRGBColor(eventsData);
-                        return true;
-                    });*/
                 });
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -987,61 +966,5 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
-
-    private static class EventSourcesAdapter extends ArrayAdapter<String> {
-
-        private static final String TAG = "EventSourcesAdapter";
-        private final List<Integer> images;
-        private final List<String> packages;
-        private final TypedArray ta;
-        private final PackageManager pm = getContext().getPackageManager();
-
-        EventSourcesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
-            super(context, R.layout.settings_list_item_multiple_choice, items);
-            this.images = images;
-            this.packages = packages;
-            this.ta = theme;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            View view = super.getView(position, convertView, parent);
-
-            try {
-
-                if (this.images.size() < position - 1 || this.packages.size() < position - 1) return view;
-
-                CheckedTextView textView = view.findViewById(android.R.id.text1);
-
-                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
-                textView.setTextSize(16);
-                textView.setMaxLines(5);
-
-                if (images.get(position) != null && images.get(position) != 0) {
-                    Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
-                    if (icon != null) {
-                        Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(bmp);
-                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                        icon.draw(canvas);
-                        Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
-                        bmp.recycle();
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
-                    }
-                    textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            }
-
-            return view;
-        }
-
-    }
-
-    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 }

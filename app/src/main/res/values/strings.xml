@@ -802,7 +802,7 @@
     <string name="widget_config_layout_title">Months layout</string>
     <string name="widget_config_layout_description">How many months to display</string>
     <string name="widget_config_month_events_sources_label">Event sources</string>
-    <string name="widget_config_month_events_sources_description">Sources to determine type of day: working day, day off, holiday</string>
+    <string name="widget_config_month_events_sources_description">Sources to determine type of day: working day, day off, holiday. Long click on item to select color</string>
     <string name="widget_config_month_shift_title">Starting month</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
@@ -821,8 +821,9 @@
         <item>12 months (3x4)</item>
     </string-array>
 
+    <string name="widget_config_layout_default" translatable="false">0</string>
     <string-array name="widget_config_layout_values" translatable="false">
-        <item>0</item>
+        <item>@string/widget_config_layout_default</item>
         <item>1r1c</item>
         <item>1r2c</item>
         <item>1r3c</item>
@@ -837,7 +838,7 @@
     <string name="widget_config_month_shift_current_month">Current month</string>
     <string name="widget_config_month_shift_january">Begin of year</string>
 
-    <string-array name="widget_config_month_shift_values">
+    <string-array name="widget_config_month_shift_entries">
         <item>-2</item>
         <item>-1</item>
         <item>@string/widget_config_month_shift_current_month</item>
@@ -845,6 +846,8 @@
         <item>+2</item>
         <item>@string/widget_config_month_shift_january</item>
     </string-array>
+    <string name="widget_config_month_shift_current_month_id" translatable="false">0</string>
+    <string name="widget_config_month_shift_january_id" translatable="false">99</string>
 
     <string-array name="widget_config_starting_month_position_values">
         <item>Top left corner</item>
@@ -1207,6 +1210,11 @@
     <string name="previous_month">Previous month</string>
     <string name="month_title">Month title</string>
     <string name="next_month">Next month</string>
+
+    <string name="month_event_saturdays">Saturdays</string>
+    <string name="month_event_sundays">Sundays</string>
+
+    <string name="widget_config_month_sources_empty">-None-</string>
 
     <!-- COMMON STRINGS -->
 
@@ -1785,7 +1793,7 @@
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">1,1,0,1,,,,,,,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,1,1+2,01+02,1,0,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
@@ -1935,4 +1943,31 @@
 
     <string name="previous_month_arrow" translatable="false">˄</string>
     <string name="next_month_arrow" translatable="false">˅</string>
+
+    <string-array name="holidays1" translatable="false">
+        <item>🇷🇺 Производственный календарь</item>
+        <item>//2024 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2024/  https://hh.ru/calendar
+        01.01.2024,!
+        02.01.2024,!
+        03.01.2024,!
+        04.01.2024,!
+        05.01.2024,!
+        06.01.2024,!
+        07.01.2024,!
+        08.01.2024,!
+        32.02.2024,!
+        08.03.2024,!
+        27.04.2024,?
+        29.04.2024,!
+        30.04.2024,!
+        01.05.2024,!
+        09.05.2024,!
+        10.05.2024,!
+        12.06.2024,!
+        02.11.2024,?
+        04.11.2024,!
+        28.12.2024,?
+        30.12.2024,!
+        31.12.2024,!</item>
+    </string-array>
 </resources>

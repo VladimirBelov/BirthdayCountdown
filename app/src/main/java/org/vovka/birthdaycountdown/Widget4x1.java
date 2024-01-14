@@ -41,7 +41,7 @@ public class Widget4x1 extends AppWidgetProvider {
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget4x1bc);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_4x1bc);
 
             if (eventsData.preferences_debug_on) {
 

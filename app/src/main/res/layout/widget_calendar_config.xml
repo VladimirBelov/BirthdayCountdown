@@ -85,7 +85,7 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
-                    android:id="@+id/dividerShift"
+                    android:id="@+id/dividerStartingMonths"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
@@ -93,7 +93,7 @@
                     android:background="?attr/listDividerColor" />
 
                 <TextView
-                    android:id="@+id/blockcaptionMonthsShift"
+                    android:id="@+id/captionStartingMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_month_shift_title"
@@ -124,7 +124,7 @@
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_month_shift_label"
                         android:textAlignment="textEnd"
-                        android:entries="@array/widget_config_month_shift_values"
+                        android:entries="@array/widget_config_month_shift_entries"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>

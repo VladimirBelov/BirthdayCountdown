@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -56,9 +55,14 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -390,7 +394,8 @@ class ContactsEvents {
     int statFavoriteEventsCount = 0;
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
-    float DisplayMetrics_density;
+    private static DisplayMetrics displayMetrics;
+    float displayMetrics_density;
     boolean isUIOpen = false;
     float dimen_List_details;
     float dimen_List_name;
@@ -678,7 +683,8 @@ class ContactsEvents {
         context = con;
         resources = con.getResources();
         contentResolver = context.getContentResolver();
-        DisplayMetrics_density = resources.getDisplayMetrics().density;
+        setDisplayMetrics(this.getResources().getDisplayMetrics());
+        displayMetrics_density = displayMetrics.density;
 
         pref_Widgets_EventInfo_Info_Default = new HashSet<>();
         pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID));
@@ -1354,6 +1360,7 @@ class ContactsEvents {
     }
 
     private void updateShortCuts(boolean enableExtraShortcuts) {
+        //https://habr.com/ru/articles/593863/
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
 
@@ -1394,7 +1401,8 @@ class ContactsEvents {
                     List<String> shortcutIds = new ArrayList<>();
                     shortcutIds.add(Constants.SHORTCUT_QUIZ);
                     shortcutIds.add(Constants.SHORTCUT_SETTINGS);
-                    context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutIds);
+                    ShortcutManagerCompat.removeDynamicShortcuts(context, shortcutIds);
+                    //context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutIds);
 
                 }
             }
@@ -1483,7 +1491,8 @@ class ContactsEvents {
                 }
                 Locale.setDefault(locale);
                 resources = context.getResources();
-                DisplayMetrics_density = resources.getDisplayMetrics().density;
+                setDisplayMetrics(this.getResources().getDisplayMetrics());
+                displayMetrics_density = displayMetrics.density;
                 resources.updateConfiguration(configuration, resources.getDisplayMetrics());
                 currentLocale = preferences_language;
 
@@ -8534,4 +8543,60 @@ class ContactsEvents {
     static String getHash(String from) {
         return String.valueOf(Math.abs(from.hashCode()));
     }
+
+    static class MultiCheckoxesAdapter extends ArrayAdapter<String> {
+
+        private static final String TAG = "EventSourcesAdapter";
+        private final List<Integer> images;
+        private final List<String> packages;
+        private final TypedArray ta;
+        private final PackageManager pm = getContext().getPackageManager();
+
+        MultiCheckoxesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
+            super(context, R.layout.settings_list_item_multiple_choice, items);
+            this.images = images;
+            this.packages = packages;
+            this.ta = theme;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            try {
+
+                if (this.images.size() < position - 1 || this.packages.size() < position - 1) return view;
+
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
+
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
+
+                if (images.get(position) != null && images.get(position) != 0) {
+                    Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
+                    if (icon != null) {
+                        Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(bmp);
+                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        icon.draw(canvas);
+                        Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
+                        bmp.recycle();
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                    }
+                    textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            }
+
+            return view;
+        }
+
+    }
+
+    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 }

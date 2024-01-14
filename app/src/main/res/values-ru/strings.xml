@@ -803,7 +803,7 @@
     <string name="widget_config_layout_title">Количество месяцев</string>
     <string name="widget_config_layout_description">Сколько месяцев отображать</string>
     <string name="widget_config_month_events_sources_label">Источники событий</string>
-    <string name="widget_config_month_events_sources_description">Источники, по которым определять рабочие, выходные и праздничные дни</string>
+    <string name="widget_config_month_events_sources_description">Источники, по которым определять рабочие, выходные и праздничные дни. Долгое нажатие на элементе списка для выбора цвета</string>
     <string name="widget_config_month_shift_title">Стартовый месяц</string>
     <string name="widget_config_month_shift_label">Смещение:</string>
     <string name="widget_config_starting_month_position_label">Положение:</string>
@@ -825,7 +825,7 @@
     <string name="widget_config_month_shift_current_month">Текущий месяц</string>
     <string name="widget_config_month_shift_january">Начало года</string>
 
-    <string-array name="widget_config_month_shift_values">
+    <string-array name="widget_config_month_shift_entries">
         <item>-2</item>
         <item>-1</item>
         <item>@string/widget_config_month_shift_current_month</item>
@@ -1186,4 +1186,13 @@
     <string name="Event_Easter">Пасха</string>
     <string name="Event_CatholicEaster">К_Пасха</string>
     <string name="Event_NY">НГ</string>
+
+    <string name="previous_month">Предыдущий месяц</string>
+    <string name="month_title">Наименование месяца</string>
+    <string name="next_month">Следующий месяц</string>
+
+    <string name="month_event_saturdays">Субботы</string>
+    <string name="month_event_sundays">Воскресенья</string>
+
+    <string name="widget_config_month_sources_empty">-Не выбрано-</string>
 </resources>

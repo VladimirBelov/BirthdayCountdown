@@ -124,13 +124,13 @@ public class Widget5x1 extends AppWidgetProvider {
             case -1:
             case 0:
             case 1:
-                    return new RemoteViews(context.getPackageName(), R.layout.widget1x1);
-            case 2:  return new RemoteViews(context.getPackageName(), R.layout.widget2x1);
-            case 3:  return new RemoteViews(context.getPackageName(), R.layout.widget3x1);
-            case 4:  return new RemoteViews(context.getPackageName(), R.layout.widget4x1);
-            case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget5x1);
-            case 6:  return new RemoteViews(context.getPackageName(), R.layout.widget6x1);
-            default:  return new RemoteViews(context.getPackageName(), R.layout.widget7x1);
+                    return new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
+            case 2:  return new RemoteViews(context.getPackageName(), R.layout.widget_2x1);
+            case 3:  return new RemoteViews(context.getPackageName(), R.layout.widget_3x1);
+            case 4:  return new RemoteViews(context.getPackageName(), R.layout.widget_4x1);
+            case 5:  return new RemoteViews(context.getPackageName(), R.layout.widget_5x1);
+            case 6:  return new RemoteViews(context.getPackageName(), R.layout.widget_6x1);
+            default:  return new RemoteViews(context.getPackageName(), R.layout.widget_7x1);
         }
 
     }

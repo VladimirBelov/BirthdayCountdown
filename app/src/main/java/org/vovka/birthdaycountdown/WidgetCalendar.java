@@ -171,7 +171,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
-            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widgetcalendar_3x3);
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
             //rv.setInt(R.id.calendarAll,"setBackgroundResource", R.color.background_calendar);
   //          rv.setInt(R.id.calendarAll,"setBackgroundColor", R.color.background_calendar);
 

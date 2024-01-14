@@ -1621,9 +1621,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            int dimen_details = (int) (eventsData.dimen_List_details / eventsData.DisplayMetrics_density);
-            int dimen_name = (int) (eventsData.dimen_List_name / eventsData.DisplayMetrics_density);
-            int dimen_date = (int) (eventsData.dimen_list_date / eventsData.DisplayMetrics_density);
+            int dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
+            int dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
+            int dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)

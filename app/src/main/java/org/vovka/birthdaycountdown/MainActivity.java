@@ -2396,9 +2396,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             resources = eventsData.getContext().getResources();
 
             listAll = new ArrayList<>(eventsListFull);
-            dimen_details = (int) (eventsData.dimen_List_details / eventsData.DisplayMetrics_density);
-            dimen_name = (int) (eventsData.dimen_List_name / eventsData.DisplayMetrics_density);
-            dimen_date = (int) (eventsData.dimen_list_date / eventsData.DisplayMetrics_density);
+            dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
+            dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
+            dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
             today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
         }

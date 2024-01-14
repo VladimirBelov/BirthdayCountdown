@@ -96,7 +96,7 @@ public class Widget2x2 extends AppWidgetProvider {
 
     static private RemoteViews getRemoteViews(@NonNull Context context) {
 
-        return new RemoteViews(context.getPackageName(), R.layout.widget2x2);
+        return new RemoteViews(context.getPackageName(), R.layout.widget_2x2);
 
     }
 
