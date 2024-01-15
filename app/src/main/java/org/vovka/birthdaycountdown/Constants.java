@@ -104,6 +104,7 @@ final class Constants {
 
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
+    static final String STRING_TYPE_HOLIDAY = "holidays";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final int Storage_Contacts = 1;
     static final String STRING_STORAGE_CALENDAR = "calendar";
@@ -285,6 +286,7 @@ final class Constants {
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
     static final String RES_TYPE_STRING = "string";
+    static final String RES_TYPE_STRING_ARRAY = "array";
     static final String URI_PACKAGE = "package:";
 
     static final int ContextMenu_EditContact = 1;

@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
@@ -148,11 +149,18 @@ public class WidgetCalendar extends AppWidgetProvider {
             Log.i("columnsToDraw", "columnsToDraw=" + columnsToDraw);
 
             //Цвета
-            int colorBack = Color.argb((int) (255 * 0.5), 0, 0, 0);
-            int colorSaturday = res.getColor(R.color.dark_yellow);
-            int colorSaturdayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday));
-            int colorSunday = res.getColor(R.color.dark_red);
-            int colorSundayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday));
+            @ColorInt int colorBack = Color.argb((int) (255 * 0.5), 0, 0, 0);
+            @ColorInt int colorToday = res.getColor(R.color.foreground_today);
+            @ColorInt int colorCommon = res.getColor(R.color.foreground_full);
+            @ColorInt int colorCommonOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
+            @ColorInt int colorMonthTitle = colorCommon;
+            @ColorInt int colorArrows = colorCommon;
+            @ColorInt int colorWeeks = Color.argb((int) (255 * 0.4), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
+
+            @ColorInt int colorSaturday = res.getColor(R.color.dark_yellow);
+            @ColorInt int colorSaturdayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday));
+            @ColorInt int colorSunday = res.getColor(R.color.dark_red);
+            @ColorInt int colorSundayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday));
 
             Calendar cal = Calendar.getInstance();
             cal.setMinimalDaysInFirstWeek(1);
@@ -219,6 +227,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                     thisMonth = cal.get(Calendar.MONTH);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
                     //https://stackoverflow.com/questions/26642720/proper-russian-month-string-translation-java
+                    calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
+                    calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
+                    calendarRv.setTextColor(R.id.next_month_button, colorArrows);
                     calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
                     calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12);
                     //calendarRv.setInt(R.id.calendarMonth,"setBackgroundColor", R.color.background_calendar);
@@ -235,6 +246,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weeks);
                     for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
                         RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_weeks);
+                        dayRv.setTextColor(android.R.id.text1, colorWeeks);
                         dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
                         dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10);
                         headerRowRv.addView(R.id.row_container, dayRv);
@@ -252,15 +264,17 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                             RemoteViews cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                             if (isToday) {
-                                cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.foreground_today));
+                                cellRv.setTextColor(android.R.id.text1, colorToday);
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_today);
                                 atLeastOneDayInMonth = true;
                             } else if (inMonth) {
-                                cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.foreground_full));
+                                cellRv.setTextColor(android.R.id.text1, colorCommon);
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day_this_month);
                                 atLeastOneDayInMonth = true;
+                            } else {
+                                cellRv.setTextColor(android.R.id.text1, colorCommonOutMonth);
+                                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
                             }
-
 
                             Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                             builder.appendPath("time");

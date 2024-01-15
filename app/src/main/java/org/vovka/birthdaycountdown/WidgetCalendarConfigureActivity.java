@@ -330,15 +330,35 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             eventSourcesIds.add("01");
             eventSourcesTitles.add(getString(R.string.month_event_saturdays));
-            eventSourcesIcons.add(android.R.drawable.ic_menu_day);
+            eventSourcesIcons.add(null);
             eventSourcesPackages.add(getPackageName());
 
             eventSourcesIds.add("02");
             eventSourcesTitles.add(getString(R.string.month_event_sundays));
-            eventSourcesIcons.add(android.R.drawable.ic_menu_day);
+            eventSourcesIcons.add(null);
             eventSourcesPackages.add(getPackageName());
 
-            //todo: справочники
+            //Справочники
+            int eventsPackCount = 1;
+            int packIdent = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packIdent > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packIdent);
+
+                    eventSourcesIds.add(String.valueOf(eventsPack[0].hashCode()));
+                    eventSourcesTitles.add(eventsPack[0]);
+                    eventSourcesIcons.add(null);
+                    eventSourcesPackages.add(getPackageName());
+
+                    // for (String eventsArray: eventsPack) {
+                    //    String eventArrayTitle = eventsArray.split(Constants.STRING_EOL, -1)[0];
+                    //    Log.i(String.valueOf(packIdent), eventArrayTitle);
+                    //}
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packIdent = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
