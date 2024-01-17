@@ -807,6 +807,16 @@
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
     <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
+    <string name="widget_config_month_color_common_label">Common days color</string>
+    <string name="widget_config_month_color_common_description">Color of common days</string>
+    <string name="widget_config_month_color_header_label">Month header color</string>
+    <string name="widget_config_month_color_header_description">Color of month header</string>
+    <string name="widget_config_month_color_header_back_label">Header background</string>
+    <string name="widget_config_month_color_header_back_description">Color of month header background</string>
+    <string name="widget_config_month_color_arrows_label">Arrows color</string>
+    <string name="widget_config_month_color_arrows_description">Color of month selector arrows</string>
+    <string name="widget_config_month_color_weeks_label">Weekdays color</string>
+    <string name="widget_config_month_color_weeks_description">Color of weekdays</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automatically (by widget size)</item>
@@ -821,20 +831,6 @@
         <item>12 months (3x4)</item>
     </string-array>
 
-    <string name="widget_config_layout_default" translatable="false">0</string>
-    <string-array name="widget_config_layout_values" translatable="false">
-        <item>@string/widget_config_layout_default</item>
-        <item>1r1c</item>
-        <item>1r2c</item>
-        <item>1r3c</item>
-        <item>2r1c</item>
-        <item>3r1c</item>
-        <item>2r2c</item>
-        <item>2r3c</item>
-        <item>3r3c</item>
-        <item>4r3c</item>
-    </string-array>
-
     <string name="widget_config_month_shift_current_month">Current month</string>
     <string name="widget_config_month_shift_january">Begin of year</string>
 
@@ -846,8 +842,6 @@
         <item>+2</item>
         <item>@string/widget_config_month_shift_january</item>
     </string-array>
-    <string name="widget_config_month_shift_current_month_id" translatable="false">0</string>
-    <string name="widget_config_month_shift_january_id" translatable="false">99</string>
 
     <string-array name="widget_config_starting_month_position_values">
         <item>Top left corner</item>
@@ -861,11 +855,7 @@
     <string-array name="widget_config_elements_entries">
         <item>Month title</item>
         <item>Weekdays labels</item>
-    </string-array>
-
-    <string-array name="widget_config_elements_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
+        <item>External side margins</item>
     </string-array>
 
     <string name="pref_Notifications_title">Notifications</string>
@@ -1793,8 +1783,16 @@
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,1,1+2,01+02,1,0,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,1+2+3,01+02,0,,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
+    <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
+    <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
+    <color name="pref_Widgets_Color_Calendar_Common_default" translatable="false">@color/white</color>
+    <color name="pref_Widgets_Color_Calendar_Today_default" translatable="false">@color/black</color>
+    <color name="pref_Widgets_Color_Calendar_Header_default" translatable="false">@color/white</color>
+    <color name="pref_Widgets_Color_Calendar_Arrows_default" translatable="false">@color/white</color>
+    <color name="pref_Widgets_Color_Calendar_Weeks_default" translatable="false">@color/white_semi</color>
+    <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/dark_green</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
@@ -1940,6 +1938,30 @@
 
     <string name="pref_Colors_Resent_key" translatable="false">ColorsResent</string>
     <integer name="pref_Colors_Resent_max" translatable="false">10</integer>
+
+    <!-- Calendar widget -->
+    <string name="widget_config_month_shift_current_month_id" translatable="false">0</string>
+    <string name="widget_config_month_shift_january_id" translatable="false">99</string>
+
+    <string name="widget_config_layout_default" translatable="false">0</string>
+    <string-array name="widget_config_layout_values" translatable="false">
+        <item>@string/widget_config_layout_default</item>
+        <item>1r1c</item>
+        <item>1r2c</item>
+        <item>1r3c</item>
+        <item>2r1c</item>
+        <item>3r1c</item>
+        <item>2r2c</item>
+        <item>2r3c</item>
+        <item>3r3c</item>
+        <item>4r3c</item>
+    </string-array>
+
+    <string-array name="widget_config_elements_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 
     <string name="previous_month_arrow" translatable="false">˄</string>
     <string name="next_month_arrow" translatable="false">˅</string>

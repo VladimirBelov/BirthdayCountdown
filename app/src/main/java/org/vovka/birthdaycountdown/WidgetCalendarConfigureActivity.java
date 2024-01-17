@@ -133,7 +133,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         .concat(Constants.STRING_PARENTHESIS_CLOSE)
                 );
             }
-//0,0,1,1+2,01+02,1,,
+
             //Количество месяцев
             String prefLayout = getString(R.string.widget_config_layout_default);
             try {
@@ -197,10 +197,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
-
-            //TextView eventSources = findViewById(R.id.listEventSources);
-            //eventSources.setText(HtmlCompat.fromHtml("Субботы<br>Воскресенья<br>\uD83C\uDDF7\uD83C\uDDFA Производственный календарь", 0));
-
             //Коэффициент масштабирования размера шрифта
             int prefMagnifyIndex = 0;
             try {
@@ -211,6 +207,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             spinnerMagnify.setSelection(prefMagnifyIndex, true);
 
             //Цвета
+
+            //Фон виджета
             int colorWidgetBackground = 0;
             if (widgetPref.size() > 6 && !widgetPref.get(6).isEmpty()) {
                 try {
@@ -218,20 +216,95 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 } catch (final Exception e) { /* */}
             }
             if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
+                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
             }
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
+            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
 
-            //Скрываем недоступные параметры
+            //Обычные дни
+            int colorCommon = 0;
+            if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
+                try {
+                    colorCommon = Color.parseColor(widgetPref.get(7));
+                } catch (final Exception e) { /* */}
+            }
+            if (colorCommon == 0) {
+                colorCommon = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Common_default);
+            }
+            final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
+            colorCommonPicker.setColor(colorCommon);
 
-            if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
+            //Заголовок
+            int colorHeader = 0;
+            if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
+                try {
+                    colorHeader = Color.parseColor(widgetPref.get(8));
+                } catch (final Exception e) { /* */}
+            }
+            if (colorHeader == 0) {
+                colorHeader = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Header_default);
+            }
+            final ColorPicker colorHeaderPicker = findViewById(R.id.colorHeader);
+            colorHeaderPicker.setColor(colorHeader);
+
+            //Фон заголовка
+            int colorHeaderBack = 0;
+            if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
+                try {
+                    colorHeaderBack = Color.parseColor(widgetPref.get(9));
+                } catch (final Exception e) { /* */}
+            }
+            if (colorHeaderBack == 0) {
+                colorHeaderBack = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
+            }
+            final ColorPicker colorHeaderBackPicker = findViewById(R.id.colorHeaderBack);
+            colorHeaderBackPicker.setColor(colorHeaderBack);
+
+            //Стрелки
+            int colorArrows = 0;
+            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                try {
+                    colorArrows = Color.parseColor(widgetPref.get(10));
+                } catch (final Exception e) { /* */}
+            }
+            if (colorArrows == 0) {
+                colorArrows = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Arrows_default);
+            }
+            final ColorPicker colorArrowsPicker = findViewById(R.id.colorArrows);
+            colorArrowsPicker.setColor(colorArrows);
+
+            //Дни недели
+            int colorWeeks = 0;
+            if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
+                try {
+                    colorWeeks = Color.parseColor(widgetPref.get(11));
+                } catch (final Exception e) { /* */}
+            }
+            if (colorWeeks == 0) {
+                colorWeeks = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Weeks_default);
+            }
+            final ColorPicker colorWeeksPicker = findViewById(R.id.colorWeeks);
+            colorWeeksPicker.setColor(colorWeeks);
+
+            //Обновляем видимость элементов
+            updateVisibility();
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
+        }
+    }
+
+    private void updateVisibility() {
+        try {
+
+            if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -268,8 +341,35 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             final Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
 
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
+            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
+            final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Back_default)
+                    ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
+            final int colorCommon = colorCommonPicker.getColor();
+            final String selectedCommon = colorCommon != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Common_default)
+                    ? ContactsEvents.toARGBString(colorCommon) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorHeaderPicker = findViewById(R.id.colorHeader);
+            final int colorHeader = colorHeaderPicker.getColor();
+            final String selectedHeader = colorHeader != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Header_default)
+                    ? ContactsEvents.toARGBString(colorHeader) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorHeaderBackPicker = findViewById(R.id.colorHeaderBack);
+            final int colorHeaderBack = colorHeaderBackPicker.getColor();
+            final String selectedHeaderBack = colorHeaderBack != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_HeaderBack_default)
+                    ? ContactsEvents.toARGBString(colorHeaderBack) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorArrowsPicker = findViewById(R.id.colorArrows);
+            final int colorArrows = colorArrowsPicker.getColor();
+            final String selectedArrows = colorArrows != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Arrows_default)
+                    ? ContactsEvents.toARGBString(colorArrows) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorWeeksPicker = findViewById(R.id.colorWeeks);
+            final int colorWeeks = colorWeeksPicker.getColor();
+            final String selectedWeeks = colorWeeks != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Weeks_default)
+                    ? ContactsEvents.toARGBString(colorWeeks) : Constants.STRING_EMPTY;
 
             //Сохранение настроек
 
@@ -281,7 +381,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedElements.toString()); //Элементы
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
-            prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
+            prefsToStore.add(selectedWidgetBackground); //Цвет подложки
+            prefsToStore.add(selectedCommon); //Обычные дни
+            prefsToStore.add(selectedHeader); //Заголовок
+            prefsToStore.add(selectedHeaderBack); //Фон заголовка
+            prefsToStore.add(selectedArrows); //Стрелки
+            prefsToStore.add(selectedWeeks); //Дни недели
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 

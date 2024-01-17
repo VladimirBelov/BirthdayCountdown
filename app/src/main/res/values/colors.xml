@@ -15,7 +15,10 @@
     <color name="dark_yellow">#E1D200</color>
     <color name="green">#FF2ED70E</color>
     <color name="black">#FF000000</color>
+    <color name="black_transp">#80000000</color>
     <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
+    <color name="white_transp">#1fff</color>
+    <color name="white_semi">#4fff</color>
     <color name="ic_launcher_background">@color/dark_green</color>
 
     <color name="theme_secondary">#e1e2e1</color>
@@ -135,10 +138,6 @@
         <item>@color/dark_gray_transp</item>
     </string-array>
 
-    <color name="foreground_full">#fff</color>
-    <color name="foreground_today">#111</color>
     <color name="foreground_semi">#4fff</color>
-    <color name="background_full">#1fff</color>
-    <color name="background_today">#fff</color>
 
 </resources>

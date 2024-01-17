@@ -763,7 +763,6 @@
         <item>x2.0</item>
     </string-array>
 
-
     <string name="widget_config_photostyle_label">Стиль фото</string>
     <string name="widget_config_photostyle_description">Стиль фотографий контактов</string>
     <string name="widget_config_photostyle_with_align_description">Стиль фотографий контактов. Выравнивание: оригинал - фото заполняет всю ячейку, закругленное - по верхнему краю, круг - по центру</string>
@@ -808,6 +807,16 @@
     <string name="widget_config_month_shift_label">Смещение:</string>
     <string name="widget_config_starting_month_position_label">Положение:</string>
     <string name="widget_config_month_font_magnify_description">Изменение размера шрифта для всех элементов</string>
+    <string name="widget_config_month_color_common_label">Обычные дни</string>
+    <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
+    <string name="widget_config_month_color_header_label">Цвет заголовка</string>
+    <string name="widget_config_month_color_header_description">Цвет заголовка месяца</string>
+    <string name="widget_config_month_color_header_back_label">Фон заголовка</string>
+    <string name="widget_config_month_color_header_back_description">Цвет фона заголовка месяца</string>
+    <string name="widget_config_month_color_arrows_label">Стрелки</string>
+    <string name="widget_config_month_color_arrows_description">Цвет стрелок переключения месяцев</string>
+    <string name="widget_config_month_color_weeks_label">Дни недели</string>
+    <string name="widget_config_month_color_weeks_description">Цвет дней недели</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Автоматически (по размеру виджета)</item>
@@ -846,6 +855,7 @@
     <string-array name="widget_config_elements_entries">
         <item>Наименование месяца</item>
         <item>Дни недели</item>
+        <item>Внешние боковые отступы</item>
     </string-array>
 
     <string name="pref_Notifications_title">Уведомления</string>

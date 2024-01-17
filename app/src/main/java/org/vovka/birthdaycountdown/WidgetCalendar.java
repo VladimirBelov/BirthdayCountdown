@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -114,53 +117,107 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean isSamsung = Build.BRAND.toLowerCase().contains("samsung");
 
             Resources res = context.getResources();
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-            Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
+            //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-            if (widgetOptions != null) {
-                int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                int minWidthPixel = Dip2Px(res, minWidthDp);
-                int minHeightPixel = Dip2Px(res, minHeightDp);
-                float heightRatio = (float)res.getDisplayMetrics().heightPixels / minWidthPixel;
+            //Настройки
 
-                Log.i("SIZES", "minHeightDp=" + minHeightDp
-                        + ", screenHeight=" + res.getDisplayMetrics().heightPixels
-                        + ", ratioHeight=" + heightRatio
-                        + ", minHeightPixel=" + minHeightPixel
-                        + ", samsung=" + isSamsung
-                );
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
-                if (heightRatio > 4.5) {
-                    columnsToDraw = 1;
-                } else if (heightRatio > 3) {
-                    columnsToDraw = 2;
+            //Количество месяцев
+            String prefLayout = res.getString(R.string.widget_config_layout_default);
+            try {
+                if (widgetPref.size() > 0) prefLayout = widgetPref.get(0);
+            } catch (Exception e) {/**/}
+
+            if (prefLayout.equals(res.getString(R.string.widget_config_layout_default))) {
+
+                Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
+                if (widgetOptions != null) {
+                    int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                    int minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                    int minWidthPixel = Dip2Px(res, minWidthDp);
+                    int minHeightPixel = Dip2Px(res, minHeightDp);
+                    float heightRatio = (float)res.getDisplayMetrics().heightPixels / minWidthPixel;
+
+                    Log.i("SIZES", "minHeightDp=" + minHeightDp
+                            + ", screenHeight=" + res.getDisplayMetrics().heightPixels
+                            + ", ratioHeight=" + heightRatio
+                            + ", minHeightPixel=" + minHeightPixel
+                            + ", samsung=" + isSamsung
+                    );
+
+                    if (heightRatio > 4.5) {
+                        columnsToDraw = 1;
+                    } else if (heightRatio > 3) {
+                        columnsToDraw = 2;
+                    }
+
+                    if (minHeightDp < (isSamsung ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
+                        rowsToDraw = 1;
+                    } else if (minHeightDp < (isSamsung ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
+                        rowsToDraw = 2;
+                    } else if (minHeightDp < (isSamsung ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
+                        rowsToDraw = 3;
+                    }
                 }
 
-                if (minHeightDp < (isSamsung ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
-                    rowsToDraw = 1;
-                } else if (minHeightDp < (isSamsung ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
-                    rowsToDraw = 2;
-                } else if (minHeightDp < (isSamsung ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
-                    rowsToDraw = 3;
+            } else {
+
+                rowsToDraw = 1;
+                columnsToDraw = 1;
+
+                Matcher matchLayout = Pattern.compile(Constants.REGEX_CALENDAR_LAYOUT).matcher(prefLayout);
+                if (matchLayout.find()) {
+                    final String rows = matchLayout.group(1);
+                    if (rows != null) {
+                        try {
+                            rowsToDraw = Integer.parseInt(rows);
+                            if (rowsToDraw < 1) rowsToDraw = 1;
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
+                    final String columns = matchLayout.group(2);
+                    if (columns != null) {
+                        try {
+                            columnsToDraw = Integer.parseInt(columns);
+                            if (columnsToDraw < 1) columnsToDraw = 1;
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
                 }
             }
             Log.i("rowsToDraw", "rowsToDraw=" + rowsToDraw);
             Log.i("columnsToDraw", "columnsToDraw=" + columnsToDraw);
 
+            //Стартовый месяц
+            int prefMonthsShift = 0;
+            try {
+                if (widgetPref.size() > 1) prefMonthsShift = Integer.parseInt(widgetPref.get(1));
+            } catch (Exception e) {/**/}
+
+            //Положение
+            //todo
+
             //Цвета
-            @ColorInt int colorBack = Color.argb((int) (255 * 0.5), 0, 0, 0);
-            @ColorInt int colorToday = res.getColor(R.color.foreground_today);
-            @ColorInt int colorCommon = res.getColor(R.color.foreground_full);
+            @ColorInt int colorBack = res.getColor(R.color.pref_Widgets_Color_Calendar_Back_default);
+                    //Color.argb((int) (255 * 0.5), 0, 0, 0);
+            @ColorInt int colorHeaderBack = res.getColor(R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
+
+            @ColorInt int colorCommon = res.getColor(R.color.pref_Widgets_Color_Calendar_Common_default);
             @ColorInt int colorCommonOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
-            @ColorInt int colorMonthTitle = colorCommon;
-            @ColorInt int colorArrows = colorCommon;
-            @ColorInt int colorWeeks = Color.argb((int) (255 * 0.4), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
+            @ColorInt int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_Header_default);
+            @ColorInt int colorToday = res.getColor(R.color.pref_Widgets_Color_Calendar_Today_default);
+            @ColorInt int colorArrows = res.getColor(R.color.pref_Widgets_Color_Calendar_Arrows_default);
+            @ColorInt int colorWeeks = res.getColor(R.color.pref_Widgets_Color_Calendar_Weeks_default);
+                    //Color.argb((int) (255 * 0.4), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
 
             @ColorInt int colorSaturday = res.getColor(R.color.dark_yellow);
             @ColorInt int colorSaturdayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday));
             @ColorInt int colorSunday = res.getColor(R.color.dark_red);
             @ColorInt int colorSundayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday));
+
+            int sidePadding = 0;
 
             Calendar cal = Calendar.getInstance();
             cal.setMinimalDaysInFirstWeek(1);
@@ -175,7 +232,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 weekdays = listWeekDays.toArray(new String[0]);
             }
 
-            int monthOffset = sp.getInt(DAYS_OFFSET,0);
+            //int monthOffset = sp.getInt(DAYS_OFFSET,0);
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
@@ -200,9 +257,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 rv.setViewVisibility(id, View.VISIBLE);
                                 rv.setViewVisibility(idDiv, View.VISIBLE);
                                 if (column == 1) { //Отступ слева
-                                    rv.setViewPadding(id, Dip2Px(res,4), 0, 0, Dip2Px(res, 4));
+                                    rv.setViewPadding(id, Dip2Px(res, sidePadding), 0, 0, Dip2Px(res, 4));
                                 } else if (column == columnsToDraw) { //Отступ справа
-                                    rv.setViewPadding(id, 0, 0, Dip2Px(res,4), Dip2Px(res, 4));
+                                    rv.setViewPadding(id, 0, 0, Dip2Px(res, sidePadding), Dip2Px(res, 4));
                                 } else {
                                     rv.setViewPadding(id, 0, 0, 0, Dip2Px(res, 4));
                                 }
@@ -215,7 +272,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             for (int row = 1; row <= rowsToDraw; row++) {
                 for (int column = 1; column <= columnsToDraw; column++) {
-                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
+
                     //rv.removeAllViews(res.getIdentifier("calendar1x" + column, "id", context.getPackageName()));
                     if (column * row > 1) {
                         cal = Calendar.getInstance();
@@ -223,15 +280,21 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cal.add(Calendar.MONTH, ((row - 1) * columnsToDraw) + column - 1);
                     }
                     int thisMonth;
-                    cal.add(Calendar.MONTH, monthOffset);
+                    cal.add(Calendar.MONTH, prefMonthsShift);
                     thisMonth = cal.get(Calendar.MONTH);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
-                    //https://stackoverflow.com/questions/26642720/proper-russian-month-string-translation-java
+
+                    //Шапка
+                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
+                    calendarRv.setInt(R.id.month_bar, "setBackgroundColor", colorHeaderBack);
                     calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
                     calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
                     calendarRv.setTextColor(R.id.next_month_button, colorArrows);
                     calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
                     calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12);
+                    if (row == rowsToDraw) {
+                        calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
+                    }
                     //calendarRv.setInt(R.id.calendarMonth,"setBackgroundColor", R.color.background_calendar);
 
                     cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -245,7 +308,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //Дни недели
                     RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weeks);
                     for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
-                        RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_weeks);
+                        RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                         dayRv.setTextColor(android.R.id.text1, colorWeeks);
                         dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
                         dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10);
