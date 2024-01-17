@@ -304,6 +304,30 @@
                     app:dialogIcon="@drawable/ic_menu_paste" />
 
                 <View
+                    android:id="@+id/dividerColorToday"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <org.vovka.birthdaycountdown.ColorPicker
+                    android:id="@+id/colorToday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="10dp"
+                    app:title="@string/widget_config_month_color_today_label"
+                    app:summary="@string/widget_config_month_color_today_description"
+                    app:defaultValue="@color/pref_Widgets_Color_Calendar_Today_default"
+                    app:choices="@array/default_color_background_values"
+                    app:icon="@null"
+                    app:numColumns="4"
+                    app:itemLayout="@layout/item_color"
+                    app:dialogTitle="@string/widget_config_month_color_today_label"
+                    app:dialogIcon="@drawable/ic_menu_paste" />
+
+                <View
                     android:id="@+id/dividerColorHeader"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -312,14 +336,14 @@
                     android:background="?attr/listDividerColor" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
-                    android:id="@+id/colorHeader"
+                    android:id="@+id/colorMonthTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="2dp"
                     android:paddingEnd="10dp"
                     app:title="@string/widget_config_month_color_header_label"
                     app:summary="@string/widget_config_month_color_header_description"
-                    app:defaultValue="@color/pref_Widgets_Color_Calendar_Header_default"
+                    app:defaultValue="@color/pref_Widgets_Color_Calendar_MonthTitle_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
                     app:numColumns="4"

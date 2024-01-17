@@ -182,6 +182,9 @@ final class Constants {
     static final String ACTION_DIAL = "action.DIAL";
     static final String ACTION_CLOSE = "action.CLOSE";
     static final String ACTION_CLICK = "action.CLICK";
+    static final String ACTION_PREVIOUS_MONTH = "action.PREVIOUS_MONTH";
+    static final String ACTION_NEXT_MONTH = "action.NEXT_MONTH";
+    static final String ACTION_RESET_MONTH = "action.RESET_MONTH";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
@@ -321,4 +324,5 @@ final class Constants {
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";
     public static final String SHORTCUT_NOTIFY = "Notify";
+
 }

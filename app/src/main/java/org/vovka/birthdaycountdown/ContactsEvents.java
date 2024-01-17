@@ -6563,7 +6563,7 @@ class ContactsEvents {
         try {
 
             setPreferenceString(context.getString(R.string.widget_config_PrefName) + id, value);
-            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id)) + value);
+            ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id)) + value);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

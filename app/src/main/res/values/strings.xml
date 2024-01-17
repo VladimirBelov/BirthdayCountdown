@@ -809,10 +809,12 @@
     <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
+    <string name="widget_config_month_color_today_label">Today color</string>
+    <string name="widget_config_month_color_today_description">Color of today (inside white square)</string>
     <string name="widget_config_month_color_header_label">Month header color</string>
-    <string name="widget_config_month_color_header_description">Color of month header</string>
+    <string name="widget_config_month_color_header_description">Color of month title</string>
     <string name="widget_config_month_color_header_back_label">Header background</string>
-    <string name="widget_config_month_color_header_back_description">Color of month header background</string>
+    <string name="widget_config_month_color_header_back_description">Color of calendar header background</string>
     <string name="widget_config_month_color_arrows_label">Arrows color</string>
     <string name="widget_config_month_color_arrows_description">Color of month selector arrows</string>
     <string name="widget_config_month_color_weeks_label">Weekdays color</string>
@@ -1783,13 +1785,13 @@
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,1+2+3,01+02,0,,,,,,,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3,01+02,0,,,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Common_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Today_default" translatable="false">@color/black</color>
-    <color name="pref_Widgets_Color_Calendar_Header_default" translatable="false">@color/white</color>
+    <color name="pref_Widgets_Color_Calendar_MonthTitle_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Arrows_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Weeks_default" translatable="false">@color/white_semi</color>
     <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/dark_green</color>
