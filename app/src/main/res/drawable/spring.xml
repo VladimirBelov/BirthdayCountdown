@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.10.2022, 1:55
-  ~  * Copyright (c) 2018 - 2022. All rights reserved.
-  ~  * Last modified 24.10.2022, 1:54
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 14.11.2022, 19:43
   ~  */
   -->
 <vector android:width="200dp" android:height="200dp" android:viewportWidth="640" android:viewportHeight="640" xmlns:android="http://schemas.android.com/apk/res/android">

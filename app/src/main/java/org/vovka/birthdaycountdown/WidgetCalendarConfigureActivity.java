@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.12.2023, 17:27
- *  * Copyright (c) 2018 - 2023. All rights reserved.
- *  * Last modified 31.12.2023, 17:27
+ *  * Created by Vladimir Belov on 17.01.2024, 23:29
+ *  * Copyright (c) 2018 - 2024. All rights reserved.
+ *  * Last modified 17.01.2024, 22:18
  *
  */
 
@@ -26,6 +26,7 @@ import android.view.Window;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -203,14 +204,28 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
-            //Коэффициент масштабирования размера шрифта
-            int prefMagnifyIndex = 0;
+            //Размер шрифта
+            int prefFontMagnify = 0;
             try {
-                if (widgetPref.size() > 6) prefMagnifyIndex = Integer.parseInt(widgetPref.get(6));
+                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
             } catch (Exception e) {/**/}
 
-            Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-            spinnerMagnify.setSelection(prefMagnifyIndex, true);
+            SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
+            seekFontMagnify.setMax(25);
+            seekFontMagnify.setProgress(prefFontMagnify + 5);
+
+            TextView valueFontMagnify = findViewById(R.id.valueFontMagnify);
+            valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+
+            seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
 
             //Цвета
 
@@ -358,7 +373,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
-            final Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
+            SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
 
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
@@ -405,7 +420,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(String.valueOf(customMonthShift)); //Ручное смещение месяцев
             prefsToStore.add(selectedElements.toString()); //Элементы
             prefsToStore.add(eventSources); //Источники событий (через +)
-            prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
+            prefsToStore.add(String.valueOf(seekFontMagnify.getProgress() - 5)); //Размер шрифта
             prefsToStore.add(selectedWidgetBackground); //Цвет подложки
             prefsToStore.add(selectedCommon); //Обычные дни
             prefsToStore.add(selectedMonthTitle); //Заголовок
@@ -471,10 +486,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Справочники
             int eventsPackCount = 1;
-            int packIdent = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
-            while (packIdent > 0) {
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
                 try {
-                    String[] eventsPack = getResources().getStringArray(packIdent);
+                    String[] eventsPack = getResources().getStringArray(packId);
 
                     eventSourcesIds.add(String.valueOf(eventsPack[0].hashCode()));
                     eventSourcesTitles.add(eventsPack[0]);
@@ -483,12 +498,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                     // for (String eventsArray: eventsPack) {
                     //    String eventArrayTitle = eventsArray.split(Constants.STRING_EOL, -1)[0];
-                    //    Log.i(String.valueOf(packIdent), eventArrayTitle);
+                    //    Log.i(String.valueOf(packId), eventArrayTitle);
                     //}
                 } catch (Resources.NotFoundException ignored) { /**/ }
 
                 eventsPackCount++;
-                packIdent = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
 
         } catch (final Exception e) {

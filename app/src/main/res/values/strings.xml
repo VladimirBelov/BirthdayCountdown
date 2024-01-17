@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
-  ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 08.09.2023, 23:37
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 17.01.2024, 22:39
   ~  */
   -->
 
@@ -806,6 +806,7 @@
     <string name="widget_config_month_shift_title">Starting month</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
+    <string name="widget_config_month_font_magnify_label">Font size</string>
     <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
@@ -1959,16 +1960,19 @@
         <item>4r3c</item>
     </string-array>
 
+    <string name="widget_config_elements_header" translatable="false">1</string>
+    <string name="widget_config_elements_weeks" translatable="false">2</string>
+    <string name="widget_config_elements_margins" translatable="false">3</string>
     <string-array name="widget_config_elements_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>@string/widget_config_elements_header</item>
+        <item>@string/widget_config_elements_weeks</item>
+        <item>@string/widget_config_elements_margins</item>
     </string-array>
 
     <string name="previous_month_arrow" translatable="false">˄</string>
     <string name="next_month_arrow" translatable="false">˅</string>
 
-    <string-array name="holidays1" translatable="false">
+    <string-array name="holidays1" translatable="false" tools:ignore="UnusedResources">
         <item>🇷🇺 Производственный календарь</item>
         <item>"//2023 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2023/
         02.01.2023,!

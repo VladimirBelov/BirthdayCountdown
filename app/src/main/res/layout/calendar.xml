@@ -1,4 +1,12 @@
 
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 17.01.2024, 23:16
+  ~  */
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/calendarMonth"
     android:layout_width="match_parent"

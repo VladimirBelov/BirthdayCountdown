@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.08.2023, 00:50
- *  * Copyright (c) 2018 - 2023. All rights reserved.
- *  * Last modified 18.08.2023, 00:31
+ *  * Created by Vladimir Belov on 17.01.2024, 23:29
+ *  * Copyright (c) 2018 - 2024. All rights reserved.
+ *  * Last modified 17.01.2024, 21:55
  *
  */
 
@@ -1668,15 +1668,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                     seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek1.getProgress() - 5) * 10)));
                     event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek1.getProgress() - 5) * 0.1)));
-
                 }
-
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
-
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
@@ -1696,15 +1692,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                     seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek2.getProgress() - 5) * 10)));
                     event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek2.getProgress() - 5) * 0.1)));
-
                 }
-
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
-
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
@@ -1724,15 +1716,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                     seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek3.getProgress() - 5) * 10)));
                     event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek3.getProgress() - 5) * 0.1)));
-
                 }
-
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
-
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
@@ -1753,15 +1741,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                     seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek4.getProgress() - 5) * 10)));
                     event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seek4.getProgress() - 5) * 0.1)));
-
                 }
-
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
-
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
@@ -1781,15 +1765,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             seek5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                     seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek5.getProgress() - 5) * 10)));
                     event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek5.getProgress() - 5) * 0.1)));
-
                 }
-
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
-
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });

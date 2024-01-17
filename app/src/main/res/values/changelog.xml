@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
-  ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 08.09.2023, 22:49
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 17.01.2024, 23:29
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.0</item>
+        <item>Added current age display on photo list widget</item>
+        <item>The \"Settings\" item has been added to application shortcuts. The shortcuts can be pinned to the launcher</item>
+        <item>Added calendar widget</item>
 
         <item>#1.7.9</item>
         <item>Added themed (Android 12+) and autumn application icons</item>

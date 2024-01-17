@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.12.2023, 17:52
-  ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 17.01.2024, 21:40
   ~  */
   -->
 
@@ -213,7 +213,7 @@
                     android:paddingEnd="8dp"
                     android:paddingStart="8dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/hintEventSources"
@@ -230,22 +230,39 @@
                     android:layout_marginBottom="10dip"
                     android:background="?attr/listDividerColor" />
 
-                <TextView
-                    android:id="@+id/captionFontMagnify"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/widget_config_font_label"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textStyle="bold"  />
+                    android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinnerFontMagnify"
+                    <TextView
+                        android:id="@+id/captionFontMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:text="@string/widget_config_month_font_magnify_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/valueFontMagnify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/widget_config_font_label"
-                    android:entries="@array/widget_config_font"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    android:contentDescription="@string/widget_config_month_font_magnify_label"
+                    android:maxHeight="50dp"
+                    android:minHeight="50dp"
+                    android:thumbTintMode="src_in" />
 
                 <TextView
                     android:id="@+id/hintFontMagnify"

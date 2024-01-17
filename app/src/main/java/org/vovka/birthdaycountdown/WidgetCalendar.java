@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 17.01.2024, 23:29
+ *  * Copyright (c) 2018 - 2024. All rights reserved.
+ *  * Last modified 17.01.2024, 23:18
+ *
+ */
+
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
@@ -33,7 +41,6 @@ import androidx.annotation.NonNull;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
-/** @noinspection deprecation*/
 public class WidgetCalendar extends AppWidgetProvider {
 
     private static final String TAG = "WidgetCalendar";
@@ -152,6 +159,13 @@ public class WidgetCalendar extends AppWidgetProvider {
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
+            //Размер шрифта
+            int prefFontMagnify = 0;
+            try {
+                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
+            } catch (Exception e) {/**/}
+            float fontMagnify = (float) (1 + prefFontMagnify * 0.1);
+
             //Количество месяцев
             String prefLayout = res.getString(R.string.widget_config_layout_default);
             try {
@@ -163,15 +177,15 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
                 if (widgetOptions != null) {
                     int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                    int minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                    float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify;
                     int minWidthPixel = Dip2Px(res, minWidthDp);
-                    int minHeightPixel = Dip2Px(res, minHeightDp);
-                    float heightRatio = (float)res.getDisplayMetrics().heightPixels / minWidthPixel;
+                    //int minHeightPixel = Dip2Px(res, minHeightDp);
+                    float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify / minWidthPixel;
 
                     Log.i("SIZES", "minHeightDp=" + minHeightDp
                             + ", screenHeight=" + res.getDisplayMetrics().heightPixels
                             + ", ratioHeight=" + heightRatio
-                            + ", minHeightPixel=" + minHeightPixel
+                            //+ ", minHeightPixel=" + minHeightPixel
                             + ", samsung=" + isSamsung
                     );
 
@@ -248,62 +262,71 @@ public class WidgetCalendar extends AppWidgetProvider {
             } catch (Exception e) {/**/}
             prefMonthsShift += customMonthShift * rowsToDraw * columnsToDraw;
 
+            //Элементы календаря
+            List<String> prefElements = new ArrayList<>();
+            try {
+                if (widgetPref.size() > 4) prefElements = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS, -1));
+             } catch (Exception e) {/**/}
+            boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_header));
+            boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
+            boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
+
             //Цвета
 
             //Фон виджета
             @ColorInt int colorWidgetBackground = res.getColor(R.color.pref_Widgets_Color_Calendar_Back_default);
-            if (widgetPref.size() > 6 && !widgetPref.get(6).isEmpty()) {
+            if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                 try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(6));
+                    colorWidgetBackground = Color.parseColor(widgetPref.get(7));
                 } catch (final Exception e) { /* */}
             }
 
             //Обычные дни
             @ColorInt int colorCommon = res.getColor(R.color.pref_Widgets_Color_Calendar_Common_default);
-            if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
+            if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
                 try {
-                    colorCommon = Color.parseColor(widgetPref.get(7));
+                    colorCommon = Color.parseColor(widgetPref.get(8));
                 } catch (final Exception e) { /* */}
             }
             @ColorInt int colorCommonOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
 
             //Сегодня
             @ColorInt int colorToday = res.getColor(R.color.pref_Widgets_Color_Calendar_Today_default);
-            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
+            if (widgetPref.size() > 13 && !widgetPref.get(13).isEmpty()) {
                 try {
-                    colorToday = Color.parseColor(widgetPref.get(12));
+                    colorToday = Color.parseColor(widgetPref.get(13));
                 } catch (final Exception e) { /* */}
             }
 
             //Заголовок
             @ColorInt int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
-            if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
+            if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
                 try {
-                    colorMonthTitle = Color.parseColor(widgetPref.get(8));
+                    colorMonthTitle = Color.parseColor(widgetPref.get(9));
                 } catch (final Exception e) { /* */}
             }
 
             //Фон заголовка
             @ColorInt int colorHeaderBack = res.getColor(R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
-            if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
+            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
                 try {
-                    colorHeaderBack = Color.parseColor(widgetPref.get(9));
+                    colorHeaderBack = Color.parseColor(widgetPref.get(10));
                 } catch (final Exception e) { /* */}
             }
 
             //Стрелки
             @ColorInt int colorArrows = res.getColor(R.color.pref_Widgets_Color_Calendar_Arrows_default);
-            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+            if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
                 try {
-                    colorArrows = Color.parseColor(widgetPref.get(10));
+                    colorArrows = Color.parseColor(widgetPref.get(11));
                 } catch (final Exception e) { /* */}
             }
 
             //Дни недели
             @ColorInt int colorWeeks = res.getColor(R.color.pref_Widgets_Color_Calendar_Weeks_default);
-            if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
                 try {
-                    colorWeeks = Color.parseColor(widgetPref.get(11));
+                    colorWeeks = Color.parseColor(widgetPref.get(12));
                 } catch (final Exception e) { /* */}
             }
 
@@ -313,7 +336,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             @ColorInt int colorSunday = res.getColor(R.color.dark_red);
             @ColorInt int colorSundayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday));
 
-            int sidePadding = 0;
+            int sidePadding = enabledMargins ? (int) (4 * fontMagnify) : 0 ;
 
             Calendar cal = Calendar.getInstance();
             cal.setMinimalDaysInFirstWeek(1);
@@ -328,7 +351,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                 weekdays = listWeekDays.toArray(new String[0]);
             }
 
-            //int monthOffset = sp.getInt(DAYS_OFFSET,0);
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
@@ -369,7 +391,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             for (int row = 1; row <= rowsToDraw; row++) {
                 for (int column = 1; column <= columnsToDraw; column++) {
 
-                    //rv.removeAllViews(res.getIdentifier("calendar1x" + column, "id", context.getPackageName()));
                     if (column * row > 1) {
                         cal = Calendar.getInstance();
                         cal.setMinimalDaysInFirstWeek(1);
@@ -380,19 +401,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     thisMonth = cal.get(Calendar.MONTH);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
 
-                    //Шапка
-                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
-                    calendarRv.setInt(R.id.month_bar, "setBackgroundColor", colorHeaderBack);
-                    calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
-                    calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
-                    calendarRv.setTextColor(R.id.next_month_button, colorArrows);
-                    calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
-                    calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12);
-                    if (row == rowsToDraw) {
-                        calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
-                    }
-                    //calendarRv.setInt(R.id.calendarMonth,"setBackgroundColor", R.color.background_calendar);
-
+                    //Первый день недели - ПН или ВСК
                     cal.set(Calendar.DAY_OF_MONTH, 1);
                     int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
                     if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
@@ -401,16 +410,44 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
                     }
 
-                    //Дни недели
-                    RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weeks);
-                    for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
-                        RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
-                        dayRv.setTextColor(android.R.id.text1, colorWeeks);
-                        dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
-                        dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10);
-                        headerRowRv.addView(R.id.row_container, dayRv);
+                    //Шапка
+                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
+                    calendarRv.setInt(R.id.month_bar, "setBackgroundColor", colorHeaderBack);
+
+                    if (enabledHeader) {
+                        calendarRv.setViewVisibility(R.id.month_bar, View.VISIBLE);
+                        calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
+                        calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
+                        calendarRv.setTextColor(R.id.next_month_button, colorArrows);
+                        calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
+                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        if (row == rowsToDraw) {
+                            calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify, COMPLEX_UNIT_SP);
+                            }
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            calendarRv.setViewLayoutMargin(R.id.month_bar, RemoteViews.MARGIN_BOTTOM, -12 * fontMagnify, COMPLEX_UNIT_SP);
+                            calendarRv.setViewLayoutMargin(R.id.days, RemoteViews.MARGIN_TOP, -2 + 4 * (fontMagnify - 1), COMPLEX_UNIT_SP);
+                        }
+                    } else {
+                        calendarRv.setViewVisibility(R.id.month_bar, View.GONE);
                     }
-                    calendarRv.addView(R.id.days, headerRowRv);
+
+                    //Дни недели
+                    if (enabledWeeks) {
+                        RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weeks);
+                        for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
+                            RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
+                            dayRv.setTextColor(android.R.id.text1, colorWeeks);
+                            dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
+                            dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
+                            headerRowRv.addView(R.id.row_container, dayRv);
+                        }
+                        calendarRv.addView(R.id.days, headerRowRv);
+                    }
 
                     //Дни
                     for (int week = 0; week < numWeeks; week++) {
@@ -445,7 +482,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                     PendingIntentImmutable));
 
                             cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
-                            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10);
+                            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
                             if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                                 if (inMonth) {
                                     cellRv.setTextColor(android.R.id.text1, colorSaturday);
@@ -472,7 +509,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     } else {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12);
+                        calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
                         calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, 0,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_PREVIOUS_MONTH)
@@ -485,7 +522,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     } else {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12);
+                        calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
                         calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, 0,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_NEXT_MONTH)

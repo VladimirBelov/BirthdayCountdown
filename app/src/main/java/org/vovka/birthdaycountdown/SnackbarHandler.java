@@ -1,7 +1,9 @@
 /*
- * The MIT License (MIT)
- * Copyright (c) 2016 Anton Golovin
- * https://github.com/RGregat/FluentSnackbar/
+ * *
+ *  * Created by Vladimir Belov on 17.01.2024, 23:29
+ *  * Copyright (c) 2018 - 2024. All rights reserved.
+ *  * Last modified 25.04.2023, 10:18
+ *
  */
 
 package org.vovka.birthdaycountdown;

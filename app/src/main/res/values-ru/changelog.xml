@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.09.2023, 09:37
-  ~  * Copyright (c) 2018 - 2023. All rights reserved.
-  ~  * Last modified 08.09.2023, 22:49
+  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 17.01.2024, 23:29
   ~  */
   -->
 
@@ -11,7 +11,10 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
-        <!--В списковый фото виджет добавлено отображение текущего возраста-->
+        <item>#1.8.0</item>
+        <item>В списковый фото виджет добавлено отображение текущего возраста</item>
+        <item>В ярлыки приложения добавлен пункт \"Настройки\". Ярлыки можно закреплять на рабочем столе</item>
+        <item>Добавлен календарный виджет</item>
 
         <item>#1.7.9</item>
         <item>Добавлена тематическая (Android 12+) и осенняя иконки приложения</item>
