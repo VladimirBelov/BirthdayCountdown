@@ -61,9 +61,6 @@ public class ToastExpander {
 
     private synchronized void showText(@NonNull Context context, @NonNull String msg, int type) {
 
-        try {
-            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception e) { /**/ }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             try {
@@ -111,14 +108,23 @@ public class ToastExpander {
     }
 
     static public void showInfoMsg(@NonNull Context context, @NonNull String msg) {
+        try {
+            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
+        } catch (Exception e) { /**/ }
         if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg.trim(), msgTypeInfo);
     }
 
     static public void showMsg(@NonNull Context context, @NonNull String msg) {
+        try {
+            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
+        } catch (Exception e) { /**/ }
         getInstance().showText(context, msg.trim(), msgTypeInfo);
     }
 
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
+        try {
+            Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
+        } catch (Exception e) { /**/ }
         if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg.trim(), msgTypeDebug);
     }
 

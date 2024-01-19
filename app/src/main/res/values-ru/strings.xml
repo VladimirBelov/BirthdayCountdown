@@ -158,7 +158,7 @@
     <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
     <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
     <string name="msg_widget_prefs_removed">"Настройка для виджета %1$s была удалена"</string>
-    <string name="msg_widget_prefs_saved">"Сохранена настройка виджета #%1$s:\n"</string>
+    <string name="msg_widget_prefs_saved">"Сохранена настройка виджета #%1$s:\n#%2$s"</string>
     <string name="msg_ringtone">"Мелодия: "</string>
     <string name="msg_deleted_channel">"Канал уведомлений #%s был удалён\n"</string>
     <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
@@ -830,6 +830,7 @@
         <item>3 месяца (вертикально)</item>
         <item>4 месяца (2x2)</item>
         <item>6 месяцев (3x2)</item>
+        <item>6 месяцев (2x3)</item>
         <item>9 месяцев (3x3)</item>
         <item>12 месяцев (3x4)</item>
     </string-array>

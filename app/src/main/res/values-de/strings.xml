@@ -157,7 +157,7 @@
     <string name="msg_notifications_were_enabled">"Benachrichtigungen wurden aktiviert\n"</string>
     <string name="msg_notifications_were_disabled">"Benachrichtigungen wurden deaktiviert\n"</string>
     <string name="msg_widget_prefs_removed">"Einstellungen für Widget #%s wurden entfernt"</string>
-    <string name="msg_widget_prefs_saved">"Widget #%1$s Einstellungen gespeichert:\n"</string>
+    <string name="msg_widget_prefs_saved">"Widget #%1$s Einstellungen gespeichert:\n#%2$s"</string>
     <string name="msg_ringtone">"Klingelton: "</string>
     <string name="msg_deleted_channel">"Benachrichtigen, dass Kanal %1$s gelöscht wurde\n"</string>
     <string name="msg_created_channel">"Benachrichtigen, dass Kanal %1$s erstellt wurde\n"</string>

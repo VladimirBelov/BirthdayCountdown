@@ -6,13 +6,14 @@
   ~  */
   -->
 
-<!--<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/calendarAll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">-->
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--1-->
+    <LinearLayout
         android:id="@+id/calendar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,9 +54,10 @@
             android:layout_weight="20"
             android:orientation="vertical" />
 
-  <!--  </LinearLayout>-->
+    </LinearLayout>
 
- <!--   <LinearLayout
+    <!--2-->
+    <LinearLayout
         android:id="@+id/calendar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,21 +65,22 @@
 
         <LinearLayout
             android:id="@+id/calendar2x1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="0dp"
-            android:paddingStart="2dp" />
+            android:orientation="vertical" >
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/calendar2x2div"
             android:layout_width="2dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
         <LinearLayout
             android:id="@+id/calendar2x2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:orientation="vertical" />
@@ -90,16 +93,15 @@
 
         <LinearLayout
             android:id="@+id/calendar2x3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="2dp"
-            android:paddingStart="0dp" />
+            android:orientation="vertical" />
 
-    </LinearLayout>-->
+    </LinearLayout>
 
- <!--   <LinearLayout
+    <!--3-->
+    <LinearLayout
         android:id="@+id/calendar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -107,21 +109,22 @@
 
         <LinearLayout
             android:id="@+id/calendar3x1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="0dp"
-            android:paddingStart="2dp" />
+            android:orientation="vertical" >
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/calendar3x2div"
             android:layout_width="2dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
         <LinearLayout
             android:id="@+id/calendar3x2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:orientation="vertical" />
@@ -134,16 +137,15 @@
 
         <LinearLayout
             android:id="@+id/calendar3x3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="2dp"
-            android:paddingStart="0dp" />
+            android:orientation="vertical" />
 
-    </LinearLayout>-->
+    </LinearLayout>
 
-  <!--  <LinearLayout
+    <!--4-->
+    <LinearLayout
         android:id="@+id/calendar4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -151,12 +153,12 @@
 
         <LinearLayout
             android:id="@+id/calendar4x1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="0dp"
-            android:paddingStart="4dp" />
+            android:orientation="vertical" >
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/calendar4x2div"
@@ -166,7 +168,7 @@
 
         <LinearLayout
             android:id="@+id/calendar4x2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:orientation="vertical" />
@@ -179,18 +181,11 @@
 
         <LinearLayout
             android:id="@+id/calendar4x3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:paddingEnd="4dp"
-            android:paddingStart="0dp" />
+            android:orientation="vertical" />
 
-    </LinearLayout>-->
-
-<!--    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:background="@color/background_calendar"/>-->
+    </LinearLayout>
 
 </LinearLayout>

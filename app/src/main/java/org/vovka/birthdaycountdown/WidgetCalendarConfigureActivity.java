@@ -56,6 +56,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private List<String> eventSourcesSelected = new ArrayList<>();
     private AppCompatActivity thisActivity;
     private int customMonthShift = 0;
+    private final List<String> eventsColors = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -428,6 +429,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedArrows); //Стрелки
             prefsToStore.add(selectedWeeks); //Дни недели
             prefsToStore.add(selectedToday); //Сегодня
+            prefsToStore.add(String.join(Constants.STRING_PLUS, eventsColors));
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 
@@ -474,24 +476,24 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void getEventSources() {
         try {
 
-            eventSourcesIds.add("01");
+            eventSourcesIds.add(getString(R.string.widget_config_month_events_saturday_id));
             eventSourcesTitles.add(getString(R.string.month_event_saturdays));
             eventSourcesIcons.add(null);
             eventSourcesPackages.add(getPackageName());
 
-            eventSourcesIds.add("02");
+            eventSourcesIds.add(getString(R.string.widget_config_month_events_sunday_id));
             eventSourcesTitles.add(getString(R.string.month_event_sundays));
             eventSourcesIcons.add(null);
             eventSourcesPackages.add(getPackageName());
 
-            //Справочники
+            //Справочники праздников и выходных
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             while (packId > 0) {
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(String.valueOf(eventsPack[0].hashCode()));
+                    eventSourcesIds.add(ContactsEvents.getHash(eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
                     eventSourcesIcons.add(null);
                     eventSourcesPackages.add(getPackageName());
@@ -550,7 +552,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     sourceChoices.add(sourceTitle);
                 }
 
-                ListAdapter adapter = new ContactsEvents.MultiCheckoxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
+                ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.widget_config_events_sources_label)

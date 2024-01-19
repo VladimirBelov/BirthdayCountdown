@@ -157,7 +157,7 @@
     <string name="msg_notifications_were_enabled">"Сповіщення ввімкнено\n"</string>
     <string name="msg_notifications_were_disabled">"Сповіщення вимкнено\n"</string>
     <string name="msg_widget_prefs_removed">"Налаштування для віджета #%s видалено"</string>
-    <string name="msg_widget_prefs_saved">"Збережені параметри віджета #%1$s:\n"</string>
+    <string name="msg_widget_prefs_saved">"Збережені параметри віджета #%1$s:\n%2$s"</string>
     <string name="msg_ringtone">"Мелодія: "</string>
     <string name="msg_deleted_channel">"Канал сповіщення %1$s видалено\n"</string>
     <string name="msg_created_channel">"Канал сповіщення %1$s створено\n"</string>

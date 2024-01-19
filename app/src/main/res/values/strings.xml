@@ -158,7 +158,7 @@
     <string name="msg_notifications_were_enabled">"Notifications were enabled\n"</string>
     <string name="msg_notifications_were_disabled">"Notifications were disabled\n"</string>
     <string name="msg_widget_prefs_removed">"Preferences for widget #%s has been removed"</string>
-    <string name="msg_widget_prefs_saved">"Saved widget #%1$s preferences:\n"</string>
+    <string name="msg_widget_prefs_saved">"Saved widget #%1$s preferences:\n#%2$s"</string>
     <string name="msg_ringtone">"Ringtone: "</string>
     <string name="msg_deleted_channel">"Notify channel %1$s was deleted\n"</string>
     <string name="msg_created_channel">"Notify channel %1$s was created\n"</string>
@@ -830,6 +830,7 @@
         <item>3 months (vertically)</item>
         <item>4 months (2x2)</item>
         <item>6 months (3x2)</item>
+        <item>6 months (2x3)</item>
         <item>9 months (3x3)</item>
         <item>12 months (3x4)</item>
     </string-array>
@@ -1795,7 +1796,7 @@
     <color name="pref_Widgets_Color_Calendar_MonthTitle_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Arrows_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Weeks_default" translatable="false">@color/white_semi</color>
-    <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/dark_green</color>
+    <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/light_green</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
@@ -1956,6 +1957,7 @@
         <item>3r1c</item>
         <item>2r2c</item>
         <item>2r3c</item>
+        <item>3r2c</item>
         <item>3r3c</item>
         <item>4r3c</item>
     </string-array>
@@ -1971,6 +1973,9 @@
 
     <string name="previous_month_arrow" translatable="false">˄</string>
     <string name="next_month_arrow" translatable="false">˅</string>
+
+    <string name="widget_config_month_events_saturday_id" translatable="false">01</string>
+    <string name="widget_config_month_events_sunday_id" translatable="false">02</string>
 
     <string-array name="holidays1" translatable="false" tools:ignore="UnusedResources">
         <item>🇷🇺 Производственный календарь</item>
@@ -2011,5 +2016,88 @@
         28.12.2024,?
         30.12.2024,!
         31.12.2024,!"</item>
+    </string-array>
+
+    <string-array name="holidays2" translatable="false" tools:ignore="UnusedResources">
+    <item>🇩🇪 Gesetzliche Feiertage</item>
+        <item>"//2023 https://ru-geld.de/de/holidays/
+        01.01.2023,!
+        07.04.2023,!
+        09.04.2023,!
+        10.04.2023,!
+        01.05.2023,!
+        18.05.2023,!
+        28.05.2023,!
+        29.05.2023,!
+        03.10.2023,!
+        25.12.2023,!
+        26.12.2023,!"</item>
+        <item>"//2024
+        01.01.2024,!
+        29.03.2024,!
+        31.03.2024,!
+        01.04.2024,!
+        01.05.2024,!
+        09.05.2024,!
+        19.05.2024,!
+        20.05.2024,!
+        03.10.2024,!
+        25.12.2024,!
+        26.12.2024,!"</item>
+    </string-array>
+
+    <string-array name="holidays3" translatable="false" tools:ignore="UnusedResources">
+        <item>🇺🇦 Виробничий календар</item>
+        <item>"//2023 https://ukraine.workingdays.org/RU/workingdays_holidays_2023.htm
+        02.01.2023,!
+        09.01.2023,!
+        08.03.2023,!
+        17.04.2023,!
+        01.05.2023,!
+        09.05.2023,!
+        05.06.2023,!
+        28.06.2023,!
+        28.07.2023,!
+        24.08.2023,!
+        16.10.2023,!
+        25.12.2023,!"</item>
+        <item>"//2024 https://www.buhoblik.org.ua/kadry-zarplata/vremya/4000-4000-osobennosti-kalendarya.html
+        //01.01.2024,!
+        //08.01.2024,!
+        08.03.2024,!
+        01.05.2024,!
+        06.05.2024,!
+        08.05.2024,!
+        24.06.2024,!
+        28.06.2024,!
+        15.07.2024,!
+        26.08.2024,!
+        01.10.2024,!
+        25.12.2024,!"</item>
+    </string-array>
+
+    <string-array name="holidays4" translatable="false" tools:ignore="UnusedResources">
+    <item>🇧🇾 Вытворчы каляндар</item>
+    <item>"//2023 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2023-god-31400/
+        02.01.2023,!
+        08.03.2023,!
+        25.04.2023,!
+        08.05.2023,!
+        09.05.2023,!
+        13.05.2023,?
+        03.07.2023,!
+        07.11.2023,!
+        11.11.2023,?
+        25.12.2023"</item>
+    <item>"//2024 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2024-god-36207/
+        01.01.2024,!
+        02.01.2024,!
+        08.03.2024,!
+        01.05.2024,!
+        09.05.2024,!
+        14.05.2024,!
+        03.07.2024,!
+        07.11.2024,!
+        25.12.2024,!"</item>
     </string-array>
 </resources>

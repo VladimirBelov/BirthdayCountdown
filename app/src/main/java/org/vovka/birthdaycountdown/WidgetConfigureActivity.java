@@ -914,7 +914,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 }
 
-                ListAdapter adapter = new ContactsEvents.MultiCheckoxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
+                ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, ta);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.widget_config_events_sources_label)

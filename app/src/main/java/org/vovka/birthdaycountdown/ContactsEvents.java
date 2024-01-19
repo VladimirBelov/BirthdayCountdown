@@ -208,6 +208,7 @@ class ContactsEvents {
     final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
+    final private Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
 
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
@@ -2975,6 +2976,19 @@ class ContactsEvents {
             this.distance = distance;
         }
 
+    }
+
+    static class DayType {
+        enum Type {
+            Holiday, Workday
+        }
+        String sourceId;
+        Type type;
+
+        public DayType(String sourceId, Type type) {
+            this.sourceId = sourceId;
+            this.type = type;
+        }
     }
 
     private boolean getFileEvents(@NonNull String eventTypeToSearch) {
@@ -6563,7 +6577,7 @@ class ContactsEvents {
         try {
 
             setPreferenceString(context.getString(R.string.widget_config_PrefName) + id, value);
-            ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id)) + value);
+            ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id), value));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -8540,11 +8554,11 @@ class ContactsEvents {
     }
 
     @NonNull
-    static String getHash(String from) {
+    static String getHash(@NonNull String from) {
         return String.valueOf(Math.abs(from.hashCode()));
     }
 
-    static class MultiCheckoxesAdapter extends ArrayAdapter<String> {
+    static class MultiCheckboxesAdapter extends ArrayAdapter<String> {
 
         private static final String TAG = "EventSourcesAdapter";
         private final List<Integer> images;
@@ -8552,7 +8566,7 @@ class ContactsEvents {
         private final TypedArray ta;
         private final PackageManager pm = getContext().getPackageManager();
 
-        MultiCheckoxesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
+        MultiCheckboxesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
             super(context, R.layout.settings_list_item_multiple_choice, items);
             this.images = images;
             this.packages = packages;
@@ -8599,4 +8613,89 @@ class ContactsEvents {
     }
 
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
+
+    DayType getDayType(@NonNull String day, @NonNull List<String> fromPacks) {
+        try {
+
+            fillDaysTypes();
+
+            for (String packId: fromPacks) {
+                final String key = packId.concat(Constants.STRING_COLON).concat(day);
+                if (preferences_DaysTypes.containsKey(key)) {
+                    return new DayType(packId, preferences_DaysTypes.get(key));
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return null;
+    }
+
+    private void fillDaysTypes() {
+        try {
+
+            if (!preferences_DaysTypes.isEmpty()) return;
+
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            while (packId > 0) {
+                try {
+
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    if (eventsPack.length > 1) {
+                        final String packHash = getHash(eventsPack[0]);
+                        for (int i = 1; i < eventsPack.length; i++) {
+                            String eventsArray = eventsPack[i];
+                            String[] days = eventsArray.split(Constants.STRING_EOL, -1);
+                            for (String eventLine: days) {
+                                String day = eventLine.trim();
+
+                                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+                                    continue;
+
+                                final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+                                if (indexComma < 7) continue;
+
+                                Date dateEvent = null;
+                                String eventDateString = eventLine.substring(0, indexComma);
+                                String flags = eventLine.substring(indexComma + 1);
+
+                                try {
+                                    dateEvent = sdf_DDMMYYYY.parse(eventDateString);
+                                } catch (ParseException e1) {
+                                    try {
+                                        dateEvent = sdf_india.parse(eventDateString);
+                                    } catch (ParseException e2) {
+                                        try {
+                                            dateEvent = sdf_uk.parse(eventDateString);
+                                        } catch (ParseException e3) {
+                                            try {
+                                                dateEvent = sdf_java.parse(eventDateString);
+                                            } catch (ParseException e4) {
+                                                //Не получилось распознать
+                                            }
+                                        }
+                                    }
+                                }
+                                if (dateEvent != null) {
+                                    DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
+                                    preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
+                                }
+                            }
+                        }
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
 }

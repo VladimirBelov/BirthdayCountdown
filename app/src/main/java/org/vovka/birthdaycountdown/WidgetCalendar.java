@@ -32,6 +32,7 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,6 +46,9 @@ public class WidgetCalendar extends AppWidgetProvider {
 
     private static final String TAG = "WidgetCalendar";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
+
+    final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
+    final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -80,6 +84,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             AppWidgetManager mgr = AppWidgetManager.getInstance(context);
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            Log.i("onReceive", "appWidgetId = " + appWidgetId);
             if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
             final AppWidgetProviderInfo appWidgetInfo = mgr.getAppWidgetInfo(appWidgetId);
@@ -95,7 +100,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             } catch (Exception e) {/**/}
 
             String action = intent.getAction();
-
+            Log.i("action", "action = " + action);
             if (Constants.ACTION_PREVIOUS_MONTH.equals(action)) {
                 customMonthShift--;
                 needSavePref = true;
@@ -179,15 +184,14 @@ public class WidgetCalendar extends AppWidgetProvider {
                     int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                     float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify;
                     int minWidthPixel = Dip2Px(res, minWidthDp);
-                    //int minHeightPixel = Dip2Px(res, minHeightDp);
                     float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify / minWidthPixel;
 
-                    Log.i("SIZES", "minHeightDp=" + minHeightDp
+                    /*Log.i("SIZES", "minHeightDp=" + minHeightDp
                             + ", screenHeight=" + res.getDisplayMetrics().heightPixels
                             + ", ratioHeight=" + heightRatio
                             //+ ", minHeightPixel=" + minHeightPixel
                             + ", samsung=" + isSamsung
-                    );
+                    );*/
 
                     if (heightRatio > 4.5) {
                         columnsToDraw = 1;
@@ -271,6 +275,17 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
 
+            //Источники событий
+            List<String> prefEvents = new ArrayList<>();
+            try {
+                if (widgetPref.size() > 5) prefEvents = Arrays.asList(widgetPref.get(5).split(Constants.REGEX_PLUS, -1));
+            } catch (Exception e) {/**/}
+            boolean colorizeSaturdays = prefEvents.contains(res.getString(R.string.widget_config_month_events_saturday_id));
+            boolean colorizeSundays = prefEvents.contains(res.getString(R.string.widget_config_month_events_sunday_id));
+            List<String> prefOtherEvents = new ArrayList<>(prefEvents);
+            prefOtherEvents.remove(res.getString(R.string.widget_config_month_events_saturday_id));
+            prefOtherEvents.remove(res.getString(R.string.widget_config_month_events_sunday_id));
+
             //Цвета
 
             //Фон виджета
@@ -278,7 +293,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                 try {
                     colorWidgetBackground = Color.parseColor(widgetPref.get(7));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
             //Обычные дни
@@ -286,7 +301,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
                 try {
                     colorCommon = Color.parseColor(widgetPref.get(8));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
             @ColorInt int colorCommonOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
 
@@ -295,7 +310,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 13 && !widgetPref.get(13).isEmpty()) {
                 try {
                     colorToday = Color.parseColor(widgetPref.get(13));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
             //Заголовок
@@ -303,7 +318,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
                 try {
                     colorMonthTitle = Color.parseColor(widgetPref.get(9));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
             //Фон заголовка
@@ -311,7 +326,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
                 try {
                     colorHeaderBack = Color.parseColor(widgetPref.get(10));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
             //Стрелки
@@ -319,7 +334,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
                 try {
                     colorArrows = Color.parseColor(widgetPref.get(11));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
             //Дни недели
@@ -327,14 +342,28 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
                 try {
                     colorWeeks = Color.parseColor(widgetPref.get(12));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/* */}
             }
 
-            //todo: в массив цветов
+            //Цвета дней
             @ColorInt int colorSaturday = res.getColor(R.color.dark_yellow);
-            @ColorInt int colorSaturdayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday));
+            eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_saturday_id), colorSaturday);
+            eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_saturday_id),
+                    Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday)));
             @ColorInt int colorSunday = res.getColor(R.color.dark_red);
-            @ColorInt int colorSundayOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday));
+            eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_sunday_id), colorSunday);
+            eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_sunday_id),
+                    Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday)));
+
+            @ColorInt int colorEvents = res.getColor(R.color.pref_Widgets_Color_Calendar_Events_default);
+            List<String> prefEventsColors = new ArrayList<>();
+            try {
+                if (widgetPref.size() > 14) prefEventsColors = Arrays.asList(widgetPref.get(14).split(Constants.REGEX_PLUS, -1));
+            } catch (Exception e) {/**/}
+            for (String eventId: prefOtherEvents) {
+                eventsColorsInMonth.put(eventId, colorEvents);
+                //todo: учитывать prefEventsColors
+            }
 
             int sidePadding = enabledMargins ? (int) (4 * fontMagnify) : 0 ;
 
@@ -385,6 +414,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                             }
                         }
                     }
+                } else {
+                    rv.setViewVisibility(id, View.GONE);
                 }
             }
 
@@ -400,15 +431,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                     cal.add(Calendar.MONTH, prefMonthsShift);
                     thisMonth = cal.get(Calendar.MONTH);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
-
-                    //Первый день недели - ПН или ВСК
-                    cal.set(Calendar.DAY_OF_MONTH, 1);
-                    int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-                    if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
-                        cal.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
-                    } else {
-                        cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
-                    }
 
                     //Шапка
                     RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
@@ -430,10 +452,23 @@ public class WidgetCalendar extends AppWidgetProvider {
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             calendarRv.setViewLayoutMargin(R.id.month_bar, RemoteViews.MARGIN_BOTTOM, -12 * fontMagnify, COMPLEX_UNIT_SP);
-                            calendarRv.setViewLayoutMargin(R.id.days, RemoteViews.MARGIN_TOP, -2 + 4 * (fontMagnify - 1), COMPLEX_UNIT_SP);
+                            calendarRv.setViewLayoutMargin(R.id.days, RemoteViews.MARGIN_TOP, -3 + 4 * (fontMagnify - 1), COMPLEX_UNIT_SP);
                         }
                     } else {
                         calendarRv.setViewVisibility(R.id.month_bar, View.GONE);
+                    }
+
+                    //Первый день недели - ПН или ВСК
+                    cal.set(Calendar.DAY_OF_MONTH, 1);
+                    int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+                    if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                        cal.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
+                    } else {
+                        if (monthStartDayOfWeek == 1) {
+                            cal.add(Calendar.DAY_OF_MONTH, -6);
+                        } else {
+                            cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
+                        }
                     }
 
                     //Дни недели
@@ -483,19 +518,36 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                             cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
                             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
-                            if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                                if (inMonth) {
-                                    cellRv.setTextColor(android.R.id.text1, colorSaturday);
-                                } else {
-                                    cellRv.setTextColor(android.R.id.text1, colorSaturdayOutMonth);
+
+                            //Цвет дня
+                            ContactsEvents.DayType dayType = eventsData.getDayType(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+                            @ColorInt Integer color = null;
+
+                            if (dayType != null) {
+                                if (dayType.type == ContactsEvents.DayType.Type.Holiday) {
+                                    color = eventsColorsInMonth.get(dayType.sourceId);
                                 }
-                            } else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                            } else if (colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                                 if (inMonth) {
-                                    cellRv.setTextColor(android.R.id.text1, colorSunday);
+                                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
                                 } else {
-                                    cellRv.setTextColor(android.R.id.text1, colorSundayOutMonth);
+                                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
+                                }
+                            } else if (colorizeSundays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                                if (inMonth) {
+                                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
+                                } else {
+                                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
                                 }
                             }
+                            if (color != null) {
+                                if (isToday) {
+                                    cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
+                                } else {
+                                    cellRv.setTextColor(android.R.id.text1, color);
+                                }
+                            }
+
                             rowRv.addView(R.id.row_container, cellRv);
                             cal.add(Calendar.DAY_OF_MONTH, 1);
                         }
@@ -510,11 +562,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
-                        calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, 0,
+                        calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_PREVIOUS_MONTH)
                                         .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                , PendingIntent.FLAG_MUTABLE));
+                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
                     }
 
                     if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
@@ -523,27 +575,26 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
-                        calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, 0,
+                        calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_NEXT_MONTH)
                                         .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                , PendingIntent.FLAG_MUTABLE));
+                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
                     }
 
-                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, 0,
+                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
                             new Intent(context, WidgetCalendar.class)
                                     .setAction(Constants.ACTION_RESET_MONTH)
                                     .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                            , PendingIntent.FLAG_MUTABLE));
+                            , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
 
 
                     //calendarRv.setViewVisibility(R.id.month_bar, numWeeks == 2 ? View.GONE : View.VISIBLE);
 
-                    int id = res.getIdentifier("calendar1x" + column, "id", context.getPackageName());
+                    int id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
                     if (id != 0) {
                         rv.addView(id, calendarRv);
                     }
-
                 }
             }
 
