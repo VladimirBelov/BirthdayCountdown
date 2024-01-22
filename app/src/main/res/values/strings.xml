@@ -1796,7 +1796,7 @@
     <color name="pref_Widgets_Color_Calendar_MonthTitle_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Arrows_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Weeks_default" translatable="false">@color/white_semi</color>
-    <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/light_green</color>
+    <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/green</color>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>

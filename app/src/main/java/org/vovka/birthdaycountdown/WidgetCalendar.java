@@ -543,6 +543,13 @@ public class WidgetCalendar extends AppWidgetProvider {
                             if (color != null) {
                                 if (isToday) {
                                     cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
+
+                                    if (Color.red(color) + Color.green(color) + Color.blue(color) > 128 * 3) {
+                                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
+                                    } else {
+                                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
+                                    }
+
                                 } else {
                                     cellRv.setTextColor(android.R.id.text1, color);
                                 }
