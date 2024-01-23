@@ -34,12 +34,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
@@ -151,7 +153,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    public void selectRGBColor(ContactsEvents eventsData) {
+    public void selectRGBColor(ContactsEvents eventsData, int initValue, int defaultValue, String methodToInvoke, String idToPass) {
 
         try {
 
@@ -160,6 +162,10 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+
+            if (defaultValue != 0) {
+                builder.setNeutralButton(R.string.button_reset, null);
+            }
 
             if (eventsData.preferences_theme.themeEditText != 0) {
                 builder.getContext().setTheme(eventsData.preferences_theme.themeEditText);
@@ -183,6 +189,10 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 icon.setImageResource(mSelectDialogIcon);
             } else {
                 icon.setVisibility(View.GONE);
+            }
+
+            if (initValue != 0) {
+                mValue = initValue;
             }
 
             TextView color_label = view.findViewById(R.id.color_label);
@@ -307,6 +317,13 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                         int colorInt = Color.parseColor(colorString);
                         setColor(colorInt);
                         eventsData.setRecentColor(colorInt);
+
+                        if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                            try {
+                                Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                                method.invoke(context, idToPass, colorInt);
+                            } catch (Exception ignored) {/**/}
+                        }
                         dialog.dismiss();
                     } catch (IllegalArgumentException e) {
                         ToastExpander.showInfoMsg(eventsData.getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
@@ -314,6 +331,19 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 });
                 final View buttonBar = (View) buttonPositive.getParent();
                 buttonBar.setBackgroundColor(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0));
+
+                if (defaultValue != 0) {
+                    final Button buttonNeutral = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                    buttonNeutral.setOnClickListener(v -> {
+                        colorValue[0] = defaultValue;
+                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        seek1.setProgress(Color.red(colorValue[0]));
+                        seek2.setProgress(Color.green(colorValue[0]));
+                        seek3.setProgress(Color.blue(colorValue[0]));
+                        seek4.setProgress(255 - Color.alpha(colorValue[0]));
+                        setColorViewValue(color_preview, colorValue[0]);
+                    });
+                }
             });
 
             dialog.setOnDismissListener(dialogM -> ta.recycle());
@@ -346,7 +376,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (eventsData.preferences_extrafun) {
                 colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
                     dialog.dismiss();
-                    selectRGBColor(eventsData);
+                    selectRGBColor(eventsData, 0, 0, null, null);
                 });
             }
 

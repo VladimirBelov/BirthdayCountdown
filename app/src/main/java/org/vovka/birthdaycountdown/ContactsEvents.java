@@ -52,6 +52,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
@@ -2982,8 +2983,8 @@ class ContactsEvents {
         enum Type {
             Holiday, Workday
         }
-        String sourceId;
-        Type type;
+        final String sourceId;
+        final Type type;
 
         public DayType(String sourceId, Type type) {
             this.sourceId = sourceId;
@@ -8563,13 +8564,15 @@ class ContactsEvents {
         private static final String TAG = "EventSourcesAdapter";
         private final List<Integer> images;
         private final List<String> packages;
+        private final List<Integer> colorDots;
         private final TypedArray ta;
         private final PackageManager pm = getContext().getPackageManager();
 
-        MultiCheckboxesAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, @NonNull List<String> packages, TypedArray theme) {
+        MultiCheckboxesAdapter(Context context, @NonNull List<String> items, List<Integer> images, List<String> packages, List<Integer> colorDots, TypedArray theme) {
             super(context, R.layout.settings_list_item_multiple_choice, items);
             this.images = images;
             this.packages = packages;
+            this.colorDots = colorDots;
             this.ta = theme;
         }
 
@@ -8580,26 +8583,32 @@ class ContactsEvents {
 
             try {
 
-                if (this.images.size() < position - 1 || this.packages.size() < position - 1) return view;
-
                 CheckedTextView textView = view.findViewById(android.R.id.text1);
 
                 if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
                 textView.setTextSize(16);
                 textView.setMaxLines(5);
 
-                if (images.get(position) != null && images.get(position) != 0) {
-                    Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
-                    if (icon != null) {
-                        Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(bmp);
-                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                        icon.draw(canvas);
-                        Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
-                        bmp.recycle();
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                if (this.colorDots != null && this.colorDots.size() >= position - 1 && this.colorDots.get(position) != null) {
+                    textView.setText(Html.fromHtml("<bold><font color=#"
+                            + Integer.toHexString(this.colorDots.get(position) & 0x00ffffff)
+                            + ">●</font></bold> " + textView.getText()));
+                }
+
+                if (this.images != null && this.packages != null && this.images.size() >= position - 1 && this.packages.size() >= position - 1) {
+                    if (this.images.get(position) != null && this.images.get(position) != 0) {
+                        Drawable icon = pm.getDrawable(this.packages.get(position), this.images.get(position), null);
+                        if (icon != null) {
+                            Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(bmp);
+                            icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                            icon.draw(canvas);
+                            Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
+                            bmp.recycle();
+                            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                        }
+                        textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
                     }
-                    textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
                 }
 
             } catch (Exception e) {

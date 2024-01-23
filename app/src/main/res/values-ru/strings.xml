@@ -801,17 +801,19 @@
 
     <string name="widget_config_layout_title">Количество месяцев</string>
     <string name="widget_config_layout_description">Сколько месяцев отображать</string>
-    <string name="widget_config_month_events_sources_label">Источники событий</string>
-    <string name="widget_config_month_events_sources_description">Источники, по которым определять рабочие, выходные и праздничные дни. Долгое нажатие на элементе списка для выбора цвета</string>
+    <string name="widget_config_month_events_sources_label">Источники праздников и событий</string>
+    <string name="widget_config_month_events_sources_description">"Источники, по которым определять рабочие, выходные и праздничные дни.
+Долгое нажатие на элементе списка для выбора цвета"</string>
     <string name="widget_config_month_shift_title">Стартовый месяц</string>
     <string name="widget_config_month_shift_label">Смещение:</string>
     <string name="widget_config_starting_month_position_label">Положение:</string>
+    <string name="widget_config_month_sources_empty">-Не выбрано-</string>
     <string name="widget_config_month_font_magnify_label">Размер шрифта</string>
     <string name="widget_config_month_font_magnify_description">Изменение размера шрифта для всех элементов</string>
     <string name="widget_config_month_color_common_label">Обычные дни</string>
     <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
     <string name="widget_config_month_color_today_label">Сегодня</string>
-    <string name="widget_config_month_color_today_description">Цвет для сегодня (внутри белого квадрата)</string>
+    <string name="widget_config_month_color_today_description">Цвет даты для сегодня (для обычных дней)</string>
     <string name="widget_config_month_color_header_label">Цвет заголовка</string>
     <string name="widget_config_month_color_header_description">Цвет наименования месяца</string>
     <string name="widget_config_month_color_header_back_label">Фон заголовка</string>
@@ -1208,5 +1210,4 @@
     <string name="month_event_saturdays">Субботы</string>
     <string name="month_event_sundays">Воскресенья</string>
 
-    <string name="widget_config_month_sources_empty">-Не выбрано-</string>
 </resources>

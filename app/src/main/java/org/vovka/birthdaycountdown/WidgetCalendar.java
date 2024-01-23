@@ -275,10 +275,38 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
 
-            //Источники событий
+            //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();
             try {
                 if (widgetPref.size() > 5) prefEvents = Arrays.asList(widgetPref.get(5).split(Constants.REGEX_PLUS, -1));
+
+                @ColorInt int colorSaturday_default = res.getColor(R.color.pref_Widgets_Color_Calendar_Events_Saturday_default);
+                @ColorInt int colorSunday_default = res.getColor(R.color.pref_Widgets_Color_Calendar_Events_Sunday_default);
+                @ColorInt int colorEvents_default = res.getColor(R.color.pref_Widgets_Color_Calendar_Events_default);
+
+                for (String eventId: prefEvents) {
+
+                    if (eventId.equals(res.getString(R.string.widget_config_month_events_saturday_id))) {
+
+                        eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_saturday_id), colorSaturday_default);
+                        eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_saturday_id),
+                                Color.argb((int) (255 * 0.6), Color.red(colorSaturday_default), Color.green(colorSaturday_default), Color.blue(colorSaturday_default)));
+
+                    } else if (eventId.equals(res.getString(R.string.widget_config_month_events_sunday_id))) {
+
+                        eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_sunday_id), colorSunday_default);
+                        eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_sunday_id),
+                                Color.argb((int) (255 * 0.6), Color.red(colorSunday_default), Color.green(colorSunday_default), Color.blue(colorSunday_default)));
+
+                    } else {
+
+                        eventsColorsInMonth.put(eventId, colorEvents_default);
+                        eventsColorsOutMonth.put(eventId,
+                                Color.argb((int) (255 * 0.6), Color.red(colorEvents_default), Color.green(colorEvents_default), Color.blue(colorEvents_default)));
+
+                    }
+
+                }
             } catch (Exception e) {/**/}
             boolean colorizeSaturdays = prefEvents.contains(res.getString(R.string.widget_config_month_events_saturday_id));
             boolean colorizeSundays = prefEvents.contains(res.getString(R.string.widget_config_month_events_sunday_id));
@@ -345,25 +373,28 @@ public class WidgetCalendar extends AppWidgetProvider {
                 } catch (final Exception e) {/* */}
             }
 
-            //Цвета дней
-            @ColorInt int colorSaturday = res.getColor(R.color.dark_yellow);
-            eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_saturday_id), colorSaturday);
-            eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_saturday_id),
-                    Color.argb((int) (255 * 0.6), Color.red(colorSaturday), Color.green(colorSaturday), Color.blue(colorSaturday)));
-            @ColorInt int colorSunday = res.getColor(R.color.dark_red);
-            eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_sunday_id), colorSunday);
-            eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_sunday_id),
-                    Color.argb((int) (255 * 0.6), Color.red(colorSunday), Color.green(colorSunday), Color.blue(colorSunday)));
-
-            @ColorInt int colorEvents = res.getColor(R.color.pref_Widgets_Color_Calendar_Events_default);
+            //Пользовательские цвета событий
             List<String> prefEventsColors = new ArrayList<>();
             try {
                 if (widgetPref.size() > 14) prefEventsColors = Arrays.asList(widgetPref.get(14).split(Constants.REGEX_PLUS, -1));
+
+                for (String color: prefEventsColors) {
+                    String[] colors = color.split(Constants.STRING_COLON, -1);
+                    if (colors.length == 2) {
+                        String eventId = colors[0];
+                        if (prefEvents.contains(eventId)) {
+                            try {
+
+                                int colorValue = Integer.parseInt(colors[1]);
+                                eventsColorsInMonth.put(eventId, colorValue);
+                                eventsColorsOutMonth.put(eventId,
+                                        Color.argb((int) (255 * 0.6), Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue)));
+
+                            } catch (NumberFormatException ignored) {/**/}
+                        }
+                    }
+                }
             } catch (Exception e) {/**/}
-            for (String eventId: prefOtherEvents) {
-                eventsColorsInMonth.put(eventId, colorEvents);
-                //todo: учитывать prefEventsColors
-            }
 
             int sidePadding = enabledMargins ? (int) (4 * fontMagnify) : 0 ;
 
