@@ -161,7 +161,15 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
-                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
+                        if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                            try {
+                                Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                                method.invoke(context, Constants.STRING_EMPTY, 0);
+                            } catch (Exception ignored) {/**/}
+                        }
+                        dialog.cancel();
+                    });
 
             if (defaultValue != 0) {
                 builder.setNeutralButton(R.string.button_reset, null);
@@ -324,7 +332,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                                 method.invoke(context, idToPass, colorInt);
                             } catch (Exception ignored) {/**/}
                         }
-                        dialog.dismiss();
+                        dialog.cancel();
                     } catch (IllegalArgumentException e) {
                         ToastExpander.showInfoMsg(eventsData.getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
                     }

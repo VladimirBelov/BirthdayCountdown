@@ -147,7 +147,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            int columnsMax = 3;
+            int columnsMax = 4;
             int columnsToDraw = 3;
             int rowsMax = 4;
             int rowsToDraw = 4;

@@ -703,9 +703,11 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void setCustomColor(String colorId, int colorValue) {
-        //ToastExpander.showInfoMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
-        eventSourcesColors.put(colorId, colorValue);
+    public void setCustomColor(@NonNull String colorId, int colorValue) {
+        if (!colorId.isEmpty()) {
+            ToastExpander.showDebugMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
+            eventSourcesColors.put(colorId, colorValue);
+        }
         selectEventSources();
     }
 

@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class androidx.core.app.CoreComponentFactory { *; }
+-keep class org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity { *; }
 
 #section for local images
 -keepclassmembers class **.R$* {

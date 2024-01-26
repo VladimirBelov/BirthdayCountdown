@@ -835,6 +835,7 @@
         <item>6 месяцев (2x3)</item>
         <item>9 месяцев (3x3)</item>
         <item>12 месяцев (3x4)</item>
+        <item>12 месяцев (4x3)</item>
     </string-array>
 
     <string name="widget_config_month_shift_current_month">Текущий месяц</string>
