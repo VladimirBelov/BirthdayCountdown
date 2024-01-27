@@ -11,6 +11,11 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+    <item>#1.8.0</item>
+    <item>"Ajout de l'affichage de l'âge actuel sur le widget de liste de photos"</item>
+    <item>"L'élément "Paramètres" a été ajouté aux raccourcis des applications. Les raccourcis peuvent être épinglés sur le lanceur"</item>
+    <item>Widget de calendrier ajouté</item>
+
     <item>#1.7.9</item>
     <item>"Ajout d'icônes thématiques (Android 12+) et d'application d'automne"</item>
     <item>"Ajout de la possibilité d'ajouter n'importe quel événement aux favoris. Filtre ajouté pour les événements favoris"</item>

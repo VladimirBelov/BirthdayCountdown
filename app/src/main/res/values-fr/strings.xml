@@ -20,6 +20,7 @@
 
     <string name="shortcut_notify">"Notifications d'aujourd'hui"</string>
     <string name="shortcut_quiz">Quiz</string>
+    <string name="shortcut_settings">Paramètres</string>
 
     <string name="menu_add_event">Ajouter un événement</string>
     <string name="menu_add_event_to_contact">Ajouter un événement au contact…</string>
@@ -223,6 +224,7 @@
     <string name="button_open">Ouvrir</string>
     <string name="button_share">Partager</string>
     <string name="button_rgb">Couleur RGB</string>
+
     <string name="events_scope_not_hidden">"Tout n'est pas caché (%1$d)"</string>
     <string name="events_scope_all">Tous (%1$d)</string>
     <string name="events_scope_hidden">Cachés (%1$d)</string>
@@ -259,6 +261,8 @@
     <string name="appwidget_desc_List">Widget de liste verticale extensible avec constructeur pour les informations sur les événements</string>
     <string name="appwidget_label_PhotoList">Liste avec photos</string>
     <string name="appwidget_desc_PhotoList">Widget vertical extensible avec informations sur les photos et les événements</string>
+    <string name="appwidget_label_Calendar">Calendrier</string>
+    <string name="appwidget_desc_Calendar">Widget Calendrier pour 1..12 mois</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Nom complet</string>
     <string name="widget_Date">Date</string>
@@ -633,6 +637,7 @@
     <string name="pref_Widgets_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
     <string name="pref_Widgets_EventInfo_EventTitle">"Titre de l'événement"</string>
     <string name="pref_Widgets_EventInfo_Age">Âge (anniversaire)</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge">Âge actuel</string>
     <string name="pref_Widgets_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">"Jours avant l'événement (brièvement)"</string>
@@ -793,6 +798,73 @@
 
     <string name="widget_config_color_back_label">"Couleur d'arrière-plan"</string>
     <string name="widget_config_color_back_description">"Couleur du substrat du widget"</string>
+
+    <string name="widget_config_layout_title">Disposition des mois</string>
+    <string name="widget_config_layout_description">Combien de mois afficher</string>
+    <string name="widget_config_month_events_sources_label">Sources des jours fériés et des événements</string>
+    <string name="widget_config_month_events_sources_description">"Sources pour déterminer le type de jour: jour ouvrable, jour de congé, jour férié.
+Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
+    <string name="widget_config_month_shift_title">Mois de début</string>
+    <string name="widget_config_month_shift_label">Maj:</string>
+    <string name="widget_config_starting_month_position_label">Position:</string>
+    <string name="widget_config_month_sources_empty">-Aucun-</string>
+    <string name="widget_config_month_font_magnify_label">Taille de police</string>
+    <string name="widget_config_month_font_magnify_description">"Multiplicateur d'échelle de police pour le titre du mois, les jours de la semaine et les jours"</string>
+    <string name="widget_config_month_color_common_label">Couleur des jours communs</string>
+    <string name="widget_config_month_color_common_description">Couleur des jours communs</string>
+    <string name="widget_config_month_color_today_label">Couleur du jour</string>
+    <string name="widget_config_month_color_today_description">"Couleur de la date d'aujourd'hui (pour les jours courants)"</string>
+    <string name="widget_config_month_color_header_label">"Couleur de l'en-tête du mois"</string>
+    <string name="widget_config_month_color_header_description">Couleur du titre du mois</string>
+    <string name="widget_config_month_color_header_back_label">"Arrière-plan de l'en-tête"</string>
+    <string name="widget_config_month_color_header_back_description">"Couleur de l'arrière-plan de l'en-tête du calendrier"</string>
+    <string name="widget_config_month_color_arrows_label">Couleur des flèches</string>
+    <string name="widget_config_month_color_arrows_description">Couleur des flèches de sélection du mois</string>
+    <string name="widget_config_month_color_weeks_label">Couleur des jours de la semaine</string>
+    <string name="widget_config_month_color_weeks_description">Couleur des jours de la semaine</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Automatiquement (par taille du widget)</item>
+        <item>1 mois</item>
+        <item>2 mois (horizontalement)</item>
+        <item>3 mois (horizontalement)</item>
+        <item>2 mois (verticalement)</item>
+        <item>3 mois (verticalement)</item>
+        <item>4 mois (2x2)</item>
+        <item>6 mois (3x2)</item>
+        <item>6 mois (2x3)</item>
+        <item>9 mois (3x3)</item>
+        <item>12 mois (3x4)</item>
+        <item>12 mois (4x3)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Mois en cours</string>
+    <string name="widget_config_month_shift_january">"Début de l'année"</string>
+
+    <string-array name="widget_config_month_shift_entries">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_values">
+        <item>Coin supérieur gauche</item>
+        <item>En haut au centre</item>
+        <item>Centre</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Éléments de calendrier</string>
+    <string name="widget_config_elements_description">Quel élément de calendrier avancé afficher</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Titre du mois</item>
+        <item>Année</item>
+        <item>Étiquettes des jours de la semaine</item>
+        <item>Marges latérales externes</item>
+    </string-array>
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">Quand et comment afficher les notifications des événements</string>
@@ -1132,4 +1204,10 @@
     <string name="Event_CatholicEaster">Catholique_Pâques</string>
     <string name="Event_NY">NA</string>
 
+    <string name="previous_month">Mois précédent</string>
+    <string name="month_title">Titre du mois</string>
+    <string name="next_month">Le mois prochain</string>
+
+    <string name="month_event_saturdays">Samedi</string>
+    <string name="month_event_sundays">Dimanche</string>
 </resources>

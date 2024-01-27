@@ -11,6 +11,11 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.0</item>
+        <item>Se agregó la visualización de la edad actual en el widget de lista de fotos</item>
+        <item>El elemento \"Configuraciones\" se ha agregado a los accesos directos de las aplicaciones. Los accesos directos se pueden anclar al iniciador</item>
+        <item>Widget de calendario agregado</item>
+
         <item>#1.7.9</item>
         <item>Se agregaron íconos de aplicaciones temáticos (Android 12+) y de otoño</item>
         <item>Se agregó la posibilidad de agregar cualquier evento a favoritos. Filtro agregado para eventos favoritos</item>

@@ -11,6 +11,11 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.0</item>
+        <item>Anzeige des aktuellen Alters im Fotolisten-Widget hinzugefügt</item>
+        <item>Das Element \"Einstellungen\" wurde zu den Anwendungsverknüpfungen hinzugefügt. Die Verknüpfungen können an den Launcher angeheftet werden</item>
+        <item>Kalender-Widget hinzugefügt</item>
+
         <item>#1.7.9</item>
         <item>Thematische (Android 12+) und herbstliche Anwendungssymbole hinzugefügt</item>
         <item>Möglichkeit hinzugefügt, jedes Ereignis zu den Favoriten hinzuzufügen. Filter für Lieblingsereignisse hinzugefügt</item>

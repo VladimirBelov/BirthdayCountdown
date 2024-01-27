@@ -861,6 +861,7 @@ Long click on item to select color"</string>
 
     <string-array name="widget_config_elements_entries">
         <item>Month title</item>
+        <item>Year</item>
         <item>Weekdays labels</item>
         <item>External side margins</item>
     </string-array>
@@ -1788,7 +1789,7 @@ Long click on item to select color"</string>
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3,01+02,0,,,,,,,,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4,01+02,0,,,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
@@ -1966,11 +1967,13 @@ Long click on item to select color"</string>
         <item>3r4c</item>
     </string-array>
 
-    <string name="widget_config_elements_header" translatable="false">1</string>
+    <string name="widget_config_elements_month" translatable="false">1</string>
+    <string name="widget_config_elements_year" translatable="false">4</string>
     <string name="widget_config_elements_weeks" translatable="false">2</string>
     <string name="widget_config_elements_margins" translatable="false">3</string>
     <string-array name="widget_config_elements_values" translatable="false">
-        <item>@string/widget_config_elements_header</item>
+        <item>@string/widget_config_elements_month</item>
+        <item>@string/widget_config_elements_year</item>
         <item>@string/widget_config_elements_weeks</item>
         <item>@string/widget_config_elements_margins</item>
     </string-array>

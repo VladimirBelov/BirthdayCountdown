@@ -155,10 +155,8 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean isSamsung = Build.BRAND.toLowerCase().contains("samsung");
 
             Resources res = context.getResources();
-            //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
             //Настройки
-
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
@@ -185,13 +183,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                     float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify;
                     int minWidthPixel = Dip2Px(res, minWidthDp);
                     float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify / minWidthPixel;
-
-                    /*Log.i("SIZES", "minHeightDp=" + minHeightDp
-                            + ", screenHeight=" + res.getDisplayMetrics().heightPixels
-                            + ", ratioHeight=" + heightRatio
-                            //+ ", minHeightPixel=" + minHeightPixel
-                            + ", samsung=" + isSamsung
-                    );*/
 
                     if (heightRatio > 4.5) {
                         columnsToDraw = 1;
@@ -271,7 +262,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             try {
                 if (widgetPref.size() > 4) prefElements = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS, -1));
              } catch (Exception e) {/**/}
-            boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_header));
+            boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
 
@@ -410,19 +401,24 @@ public class WidgetCalendar extends AppWidgetProvider {
                 listWeekDays.add(daySun);
                 weekdays = listWeekDays.toArray(new String[0]);
             }
+            //Убираем точки (pt, fr)
+            for (int i = 0, weekdaysLength = weekdays.length; i < weekdaysLength; i++) {
+                String day = weekdays[i];
+                if (day.contains(Constants.STRING_PERIOD)) {
+                    weekdays[i] = day.replace(Constants.STRING_PERIOD, Constants.STRING_EMPTY);
+                }
+            }
 
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
-            //rv.setInt(R.id.calendarAll,"setBackgroundResource", R.color.background_calendar);
-  //          rv.setInt(R.id.calendarAll,"setBackgroundColor", R.color.background_calendar);
+            rv.setInt(R.id.calendarAll,"setBackgroundColor", colorWidgetBackground);
 
             for (int row = 1; row <= rowsMax; row++) {
                 int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
-                    rv.setInt(id,"setBackgroundColor", colorWidgetBackground);
                     for (int column = 1; column <= columnsMax; column++) {
                         id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
                         int idDiv = res.getIdentifier("calendar" + row + "x" + column + "div", "id", context.getPackageName());
@@ -464,7 +460,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     cal.set(Calendar.DAY_OF_MONTH, 1);
 
                     //Шапка
-                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.calendar);
+                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar_month);
                     calendarRv.setInt(R.id.month_bar, "setBackgroundColor", colorHeaderBack);
 
                     if (enabledHeader) {
@@ -472,7 +468,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
                         calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
                         calendarRv.setTextColor(R.id.next_month_button, colorArrows);
-                        calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
+                        if (prefElements.contains(res.getString(R.string.widget_config_elements_year))) {
+                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
+                        } else {
+                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
+                        }
                         calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12 * fontMagnify);
                         if (row == rowsToDraw) {
                             calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
@@ -480,10 +480,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify, COMPLEX_UNIT_SP);
                             }
-                        }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            calendarRv.setViewLayoutMargin(R.id.month_bar, RemoteViews.MARGIN_BOTTOM, -12 * fontMagnify, COMPLEX_UNIT_SP);
-                            calendarRv.setViewLayoutMargin(R.id.days, RemoteViews.MARGIN_TOP, -3 + 4 * (fontMagnify - 1), COMPLEX_UNIT_SP);
                         }
                     } else {
                         calendarRv.setViewVisibility(R.id.month_bar, View.GONE);
@@ -511,6 +507,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                             dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
                             dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
                             headerRowRv.addView(R.id.row_container, dayRv);
+                        }
+                        headerRowRv.setInt(R.id.row_container,"setBackgroundColor", colorHeaderBack);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            headerRowRv.setViewLayoutMargin(R.id.row_container, RemoteViews.MARGIN_TOP, -4, COMPLEX_UNIT_SP);
                         }
                         calendarRv.addView(R.id.days, headerRowRv);
                     }
@@ -625,9 +625,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                                     .setAction(Constants.ACTION_RESET_MONTH)
                                     .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                             , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-
-
-                    //calendarRv.setViewVisibility(R.id.month_bar, numWeeks == 2 ? View.GONE : View.VISIBLE);
 
                     int id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
                     if (id != 0) {

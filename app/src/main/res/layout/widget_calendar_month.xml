@@ -17,13 +17,11 @@
         android:id="@+id/month_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-14dp"
-        android:layout_marginBottom="-12dp"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/prev_month_button"
-            style="?android:borderlessButtonStyle"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -36,9 +34,9 @@
             android:scaleX="2"
             android:layout_marginTop="2dp" />
 
-        <Button
+        <TextView
             android:id="@+id/month_label"
-            style="?android:borderlessButtonStyle"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
@@ -47,9 +45,9 @@
             android:gravity="center"
             android:padding="0dp" />
 
-        <Button
+        <TextView
             android:id="@+id/next_month_button"
-            style="?android:borderlessButtonStyle"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,9 +65,9 @@
         android:id="@+id/days"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="20"
         android:orientation="vertical"
-        android:layout_marginTop="-3dp"/>
+         />
 
     <LinearLayout
         android:id="@+id/bottom_divider"

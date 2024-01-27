@@ -861,6 +861,7 @@
 
     <string-array name="widget_config_elements_entries">
         <item>Наименование месяца</item>
+        <item>Год</item>
         <item>Дни недели</item>
         <item>Внешние боковые отступы</item>
     </string-array>

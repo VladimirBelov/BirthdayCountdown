@@ -20,6 +20,7 @@
 
     <string name="shortcut_notify">Повідомлення</string>
     <string name="shortcut_quiz">Вікторина</string>
+    <string name="shortcut_settings">Налаштування</string>
 
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
@@ -260,6 +261,8 @@
     <string name="appwidget_desc_List">Розширюваний вертикальний списковий віджет з конструктором інформації про подію, що виводиться</string>
     <string name="appwidget_label_PhotoList">Список з фото</string>
     <string name="appwidget_desc_PhotoList">Розширюваний вертикальний віджет з фото та деталями події</string>
+    <string name="appwidget_label_Calendar">Календар</string>
+    <string name="appwidget_desc_Calendar">Віджет календаря на 1..12 місяців</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
     <string name="widget_Date">Дата</string>
@@ -634,6 +637,7 @@
     <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата події з роком</string>
     <string name="pref_Widgets_EventInfo_EventTitle">Назва події</string>
     <string name="pref_Widgets_EventInfo_Age">Вік</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge">Поточний вік</string>
     <string name="pref_Widgets_EventInfo_WeddingName">Назва річниці весілля</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEvent">За дні до події</string>
     <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">За дні до події (короткий формат)</string>
@@ -794,6 +798,73 @@
 
     <string name="widget_config_color_back_label">Колір фону віджета</string>
     <string name="widget_config_color_back_description">Колір фону для віджета</string>
+
+    <string name="widget_config_layout_title">Макет місяців</string>
+    <string name="widget_config_layout_description">Скільки місяців відображати</string>
+    <string name="widget_config_month_events_sources_label">Джерела свят і подій</string>
+    <string name="widget_config_month_events_sources_description">"Джерела для визначення типу дня: робочий, вихідний, святковий.
+Довге клацання на елементі для вибору кольору"</string>
+    <string name="widget_config_month_shift_title">Місяць початку</string>
+    <string name="widget_config_month_shift_label">Shift:</string>
+    <string name="widget_config_starting_month_position_label">Посада:</string>
+    <string name="widget_config_month_sources_empty">-Немає-</string>
+    <string name="widget_config_month_font_magnify_label">Розмір шрифту</string>
+    <string name="widget_config_month_font_magnify_description">Множник масштабу шрифту для назви місяця, днів тижня та днів</string>
+    <string name="widget_config_month_color_common_label">Колір загальних днів</string>
+    <string name="widget_config_month_color_common_description">Колір звичайних днів</string>
+    <string name="widget_config_month_color_today_label">Колір сьогоднішнього дня</string>
+    <string name="widget_config_month_color_today_description">Колір сьогоднішньої дати (для звичайних днів)</string>
+    <string name="widget_config_month_color_header_label">Колір заголовка місяця</string>
+    <string name="widget_config_month_color_header_description">Колір назви місяця</string>
+    <string name="widget_config_month_color_header_back_label">Тло заголовка</string>
+    <string name="widget_config_month_color_header_back_description">Колір фону заголовка календаря</string>
+    <string name="widget_config_month_color_arrows_label">Колір стрілок</string>
+    <string name="widget_config_month_color_arrows_description">Колір стрілок вибору місяця</string>
+    <string name="widget_config_month_color_weeks_label">Колір днів тижня</string>
+    <string name="widget_config_month_color_weeks_description">Колір днів тижня</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Автоматично (за розміром віджета)</item>
+        <item>1 місяць</item>
+        <item>2 місяці (по горизонталі)</item>
+        <item>3 місяці (горизонтально)</item>
+        <item>2 місяці (по вертикалі)</item>
+        <item>3 місяці (по вертикалі)</item>
+        <item>4 місяці (2x2)</item>
+        <item>6 місяців (3x2)</item>
+        <item>6 місяців (2x3)</item>
+        <item>9 місяців (3x3)</item>
+        <item>12 місяців (3x4)</item>
+        <item>12 місяців (4x3)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Поточний місяць</string>
+    <string name="widget_config_month_shift_january">Початок року</string>
+
+    <string-array name="widget_config_month_shift_entries">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_values">
+        <item>Лівий верхній кут</item>
+        <item>Вгорі по центру</item>
+        <item>По центру</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Елементи календаря</string>
+    <string name="widget_config_elements_description">Який розширений елемент календаря показувати</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Назва місяця</item>
+        <item>Рік</item>
+        <item>Мітки днів тижня</item>
+        <item>Зовнішні бічні поля</item>
+    </string-array>
 
     <string name="pref_Notifications_title">Повідомлення</string>
     <string name="pref_Notifications_summary">Коли та як показувати сповіщення про події</string>
@@ -1135,4 +1206,11 @@
     <string name="Event_Easter">Великдень</string>
     <string name="Event_CatholicEaster">Католицький_Великдень</string>
     <string name="Event_NY">НР</string>
+
+    <string name="previous_month">Попередній місяць</string>
+    <string name="month_title">Назва місяця</string>
+    <string name="next_month">Наступного місяця</string>
+
+    <string name="month_event_saturdays">Суботи</string>
+    <string name="month_event_sundays">Неділі</string>
 </resources>
