@@ -600,6 +600,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        calendarRv.setInt(R.id.prev_month_button, "setBackgroundResource", R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_PREVIOUS_MONTH)
@@ -613,6 +614,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        calendarRv.setInt(R.id.next_month_button, "setBackgroundResource", R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_NEXT_MONTH)
@@ -620,6 +622,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
                     }
 
+                    calendarRv.setInt(R.id.month_label, "setBackgroundResource", R.drawable.cell_day);
                     calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
                             new Intent(context, WidgetCalendar.class)
                                     .setAction(Constants.ACTION_RESET_MONTH)

@@ -693,8 +693,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
-
         <item name="android:lines">1</item>
-    </style><!--<item name="android:textColor">@color/foreground_semi</item><item name="android:textSize">16sp</item>-->
+    </style>
 
 </resources>

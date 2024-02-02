@@ -851,7 +851,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
                     eventSourcesIcons.add(android.R.drawable.ic_menu_save);
                     eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                 }
             }
             if (eventsData.preferences_OtherEvent_files.size() > 0) {
@@ -860,7 +860,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
                     eventSourcesIcons.add(android.R.drawable.ic_menu_save);
                     eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                 }
             }
 
