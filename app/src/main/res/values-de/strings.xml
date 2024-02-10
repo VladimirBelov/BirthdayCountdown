@@ -241,6 +241,7 @@
     <string name="event_type_birthday">Geburtstag</string>
     <string name="event_type_anniversary">Hochzeitstag</string>
     <string name="event_type_other">Anderes Ereignis</string>
+    <string name="event_type_holiday">Feiertag</string>
     <string name="event_type_death">Todestag</string>
     <string name="event_type_crowning">Kirchlicher Hochzeitstag</string>
     <string name="event_type_nameday">Namenstag</string>
@@ -385,10 +386,6 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt (durch Komma getrennt)</string>
-    <string name="pref_CustomEvents_Calendars_title">Kalender</string>
-    <string name="pref_CustomEvents_Calendars_summary">Ereignisse aus ausgewählten Kalendern anzeigen</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
@@ -397,6 +394,11 @@
     <string name="pref_CustomEvents_Custom_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als dieses Ereignis erkannt (durch Komma getrennt)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Verwenden Sie das Jahr</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Verwenden Sie das Jahr, um Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Kalender</string>
+    <string name="pref_CustomEvents_Calendars_summary">Ereignisse aus ausgewählten Kalendern anzeigen</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>
@@ -414,11 +416,12 @@
     <string name="pref_List_EventTypes_summary">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Geburtstage</item>
-        <item>Hochzeitstage</item>
-        <item>Andere Ereignisse</item>
-        <item>Benutzerdefinierte Ereignisse</item>
-        <item>Besondere Geburtstage (Alle 5000 Tage)</item>
+        <item>🎂 Geburtstage</item>
+        <item>💑 Hochzeitstage</item>
+        <item>🗓️ Andere Ereignisse</item>
+        <item>🏖️ Feiertage</item>
+        <item>⏰ Benutzerdefinierte Ereignisse</item>
+        <item>🏆 Besondere Geburtstage (Alle 5000 Tage)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Trauerband</string>
@@ -1027,18 +1030,20 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Ereignistypen: %1$s</p>
-        <p>Filter: %11$s</p>
+        <p>Filter: %13$s</p>
         <h4>Kontaktereignisse:</h4><ul>%2$s
             <li>Ereignisse von Konten anzeigen: %3$s</li>
         </ul>
         <h4>Kalenderereignisse:</h4><ul>%4$s
              <li>Geburtstage: %5$s</li>
              <li>andere Ereignisse: %6$s</li>
-             <li>verschiedene Ereignisse: %7$s</li>
+             <li>Feiertage: %7$s</li>
+             <li>verschiedene Ereignisse: %8$s</li>
          </ul>
-         <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %8$s</li>
-             <li>andere Ereignisse: %9$s</li>
-             <li>verschiedene Ereignisse: %10$s</li>
+         <h4>Dateiereignisse:</h4><ul><li>Geburtstage: %9$s</li>
+             <li>andere Ereignisse: %10$s</li>
+             <li>Feiertage: %11$s</li>
+             <li>verschiedene Ereignisse: %12$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Wenn diese Informationen nicht geholfen haben, den Grund für das Ausbleiben von Veranstaltungen zu finden, schreiben Sie mir eine E-Mail (klicken Sie auf den Namen der Anwendung und dort auf die Schaltfläche \"Mail\")</h4>]]></string>
 

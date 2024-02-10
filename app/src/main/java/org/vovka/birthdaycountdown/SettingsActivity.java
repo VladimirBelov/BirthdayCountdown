@@ -546,6 +546,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     selectCalendars(this.eventTypeForSelect);
                 }
 
+            } else if (getString(R.string.pref_CustomEvents_Holiday_Calendars_key).equals(key)) { //Календари (Праздники)
+
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_HolidayEvent);
+
+                if (eventsData.checkNoCalendarAccess()) {
+
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
+                    return true;
+
+                } else {
+
+                    selectCalendars(this.eventTypeForSelect);
+                }
+
             } else if (getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)) { //Календари (Разные события)
 
                 this.eventTypeForSelect = Constants.Type_MultiEvent;
@@ -622,6 +636,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     filesList = new HashSet<>();
                 }
                 this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Other);
+                selectFiles(this.eventTypeForSelect);
+                return true;
+
+            } else if (getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key).equals(key)) {
+
+                if (eventsData.preferences_HolidayEvent_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_HolidayEvent_files);
+                } else {
+                    filesList = new HashSet<>();
+                }
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_HolidayEvent);
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -2106,13 +2131,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Widgets_UpdateInterval_key),
                         getString(R.string.pref_Widgets_OnClick_key),
                         getString(R.string.pref_Quiz_Interface_key),
-                        getString(R.string.pref_Colors_Resent_key),
+                        getString(R.string.pref_Colors_Recent_key),
                         getString(R.string.pref_CustomEvents_Birthday_Labels_key),
                         getString(R.string.pref_CustomEvents_Anniversary_Labels_key),
                         getString(R.string.pref_CustomEvents_NameDay_Labels_key),
                         getString(R.string.pref_CustomEvents_Crowning_Labels_key),
                         getString(R.string.pref_CustomEvents_Death_Labels_key),
                         getString(R.string.pref_CustomEvents_Other_Labels_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Labels_key),
                         getString(R.string.pref_CustomEvents_Custom1_Caption_key),
                         getString(R.string.pref_CustomEvents_Custom1_Labels_key),
                         getString(R.string.pref_CustomEvents_Custom2_Caption_key),
@@ -2144,9 +2170,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Accounts_key),
                         getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Other_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Birthday_Calendars_key),
                         getString(R.string.pref_CustomEvents_Other_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),

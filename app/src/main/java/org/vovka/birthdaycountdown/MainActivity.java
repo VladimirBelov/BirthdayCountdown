@@ -824,6 +824,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventIcons.add(R.drawable.ic_event_death);
                 eventNames.add(getString(R.string.event_type_other));
                 eventIcons.add(R.drawable.ic_event_other);
+                eventNames.add(getString(R.string.event_type_holiday));
+                eventIcons.add(R.drawable.ic_event_holiday);
                 eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent1_caption);
                 eventIcons.add(R.drawable.ic_event_custom1);
                 eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent2_caption);
@@ -2158,7 +2160,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
             if (dataList.isEmpty()) {
-                //todo: поставить проверку на обновление в фоне: если происходит обновление, то показываем предыдущие данные
 
                 findViewById(R.id.mainListView).setVisibility(View.GONE);
 

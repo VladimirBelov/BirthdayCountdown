@@ -13,7 +13,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -67,27 +66,19 @@ public class WidgetCalendar extends AppWidgetProvider {
         }
     }
 
-    private void redrawWidgets(Context context) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
-
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        super.onReceive(context, intent);
+        int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
         try {
 
-            super.onReceive(context, intent);
-
-            AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            Log.i("onReceive", "appWidgetId = " + appWidgetId);
+            //Log.i("onReceive", "appWidgetId = " + appWidgetId);
             if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
-            final AppWidgetProviderInfo appWidgetInfo = mgr.getAppWidgetInfo(appWidgetId);
+            final AppWidgetProviderInfo appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
@@ -100,7 +91,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             } catch (Exception e) {/**/}
 
             String action = intent.getAction();
-            Log.i("action", "action = " + action);
+            //Log.i("action", "action = " + action);
             if (Constants.ACTION_PREVIOUS_MONTH.equals(action)) {
                 customMonthShift--;
                 needSavePref = true;
@@ -125,7 +116,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            redrawWidgets(context);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -152,13 +143,23 @@ public class WidgetCalendar extends AppWidgetProvider {
             int rowsMax = 4;
             int rowsToDraw = 4;
             int numWeeks = 6;
-            boolean isSamsung = Build.BRAND.toLowerCase().contains("samsung");
+
+            AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            if (appWidgetInfo == null) return;
 
             Resources res = context.getResources();
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
+
+            //Прогресс обновления
+            rv.setInt(R.id.calendarAll,"setBackgroundColor", 0);
+            for (int row = 1; row <= rowsMax; row++) {
+                int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
+                rv.setViewVisibility(id, View.GONE);
+            }
+            rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
+            appWidgetManager.partiallyUpdateAppWidget(appWidgetId, rv);
 
             //Настройки
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
@@ -190,11 +191,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                         columnsToDraw = 2;
                     }
 
-                    if (minHeightDp < (isSamsung ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
+                    if (minHeightDp < (ContactsEvents.isSamsung() ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
                         rowsToDraw = 1;
-                    } else if (minHeightDp < (isSamsung ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
+                    } else if (minHeightDp < (ContactsEvents.isSamsung() ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
                         rowsToDraw = 2;
-                    } else if (minHeightDp < (isSamsung ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
+                    } else if (minHeightDp < (ContactsEvents.isSamsung() ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
                         rowsToDraw = 3;
                     }
                 }
@@ -222,8 +223,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
                 }
             }
-            Log.i("rowsToDraw", "rowsToDraw=" + rowsToDraw);
-            Log.i("columnsToDraw", "columnsToDraw=" + columnsToDraw);
+            //Log.i("rowsToDraw", "rowsToDraw=" + rowsToDraw);
+            //Log.i("columnsToDraw", "columnsToDraw=" + columnsToDraw);
 
             //Стартовый месяц
             int prefMonthsShift = 0;
@@ -281,19 +282,19 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                         eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_saturday_id), colorSaturday_default);
                         eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_saturday_id),
-                                Color.argb((int) (255 * 0.6), Color.red(colorSaturday_default), Color.green(colorSaturday_default), Color.blue(colorSaturday_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorSaturday_default), Color.green(colorSaturday_default), Color.blue(colorSaturday_default)));
 
                     } else if (eventId.equals(res.getString(R.string.widget_config_month_events_sunday_id))) {
 
                         eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_sunday_id), colorSunday_default);
                         eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_sunday_id),
-                                Color.argb((int) (255 * 0.6), Color.red(colorSunday_default), Color.green(colorSunday_default), Color.blue(colorSunday_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorSunday_default), Color.green(colorSunday_default), Color.blue(colorSunday_default)));
 
                     } else {
 
                         eventsColorsInMonth.put(eventId, colorEvents_default);
                         eventsColorsOutMonth.put(eventId,
-                                Color.argb((int) (255 * 0.6), Color.red(colorEvents_default), Color.green(colorEvents_default), Color.blue(colorEvents_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorEvents_default), Color.green(colorEvents_default), Color.blue(colorEvents_default)));
 
                     }
 
@@ -322,7 +323,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     colorCommon = Color.parseColor(widgetPref.get(8));
                 } catch (final Exception e) {/* */}
             }
-            @ColorInt int colorCommonOutMonth = Color.argb((int) (255 * 0.6), Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
+            @ColorInt int colorCommonOutMonth = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
 
             //Сегодня
             @ColorInt int colorToday = res.getColor(R.color.pref_Widgets_Color_Calendar_Today_default);
@@ -379,7 +380,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 int colorValue = Integer.parseInt(colors[1]);
                                 eventsColorsInMonth.put(eventId, colorValue);
                                 eventsColorsOutMonth.put(eventId,
-                                        Color.argb((int) (255 * 0.6), Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue)));
+                                        Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue)));
 
                             } catch (NumberFormatException ignored) {/**/}
                         }
@@ -412,7 +413,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
-            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
             rv.setInt(R.id.calendarAll,"setBackgroundColor", colorWidgetBackground);
 
             for (int row = 1; row <= rowsMax; row++) {
@@ -623,11 +623,18 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
 
                     calendarRv.setInt(R.id.month_label, "setBackgroundResource", R.drawable.cell_day);
-                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
-                            new Intent(context, WidgetCalendar.class)
-                                    .setAction(Constants.ACTION_RESET_MONTH)
-                                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                            , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                    if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
+                        Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
+                        intentConfig.setAction(Constants.ACTION_LAUNCH);
+                        intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+                        calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+                    } else {
+                        calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
+                                new Intent(context, WidgetCalendar.class)
+                                        .setAction(Constants.ACTION_RESET_MONTH)
+                                        .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                    }
 
                     int id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
                     if (id != 0) {
@@ -638,6 +645,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(context, widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref);
 
+            rv.setViewVisibility(R.id.progressUpdate, View.GONE);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
 
         } catch (Exception e) {

@@ -145,6 +145,7 @@ final class Constants {
     static final int Type_Custom3 = 10;
     static final int Type_Custom4 = 11;
     static final int Type_Custom5 = 12;
+    static final int Type_HolidayEvent = 23;
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
     static final int Type_Xdays = 22;
@@ -258,6 +259,7 @@ final class Constants {
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
     static final int WIDGET_EVENTS_MAX = 7;
+    static final int WIDGET_CALENDAR_OUT_MONTH_TINT = (int) (255 * 0.6);
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 5000;

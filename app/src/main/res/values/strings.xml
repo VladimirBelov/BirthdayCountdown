@@ -241,6 +241,7 @@
     <string name="event_type_birthday">Birthday</string>
     <string name="event_type_anniversary">Anniversary</string>
     <string name="event_type_other">Other event</string>
+    <string name="event_type_holiday">Holiday</string>
     <string name="event_type_death">Death anniversary</string>
     <string name="event_type_crowning">Crowning</string>
     <string name="event_type_nameday">Name day</string>
@@ -331,6 +332,7 @@
 
     <string name="pref_CustomEvents_Sources_title">Events sources</string>
     <string name="pref_CustomEvents_Sources_summary">Use these sources for events of different types (type is specified inside events or determined by \"Events labels\" below)</string>
+    <string name="pref_CustomEvents_Sources_hint">To include events sources for only one event type (only birthdays or holidays) use the settings for a specific event type (below)</string>
 
     <string name="pref_CustomEvents_Rules_title">Import settings</string>
     <string name="pref_CustomEvents_Rules_summary">Use these setting while importing events</string>
@@ -352,6 +354,7 @@
         <item>Skip this event</item>
     </string-array>
 
+    <string name="pref_CustomEvents_Birthday_title">Birthdays</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Use standard labels to detect birthday events</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Events labels</string>
@@ -361,6 +364,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files</string>
 
+    <string name="pref_CustomEvents_Anniversary_title">Anniversaries</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Use standard labels to detect anniversary events</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Events labels</string>
@@ -368,35 +372,46 @@
     <string name="pref_CustomEvents_Anniversary_List_title">List</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">All known anniversaries titles (by year)</string>
 
+    <string name="pref_CustomEvents_NameDay_title">Name days</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Use standard labels to detect name days events</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Events with these labels will be identified as name days</string>
 
+    <string name="pref_CustomEvents_Crowning_title">Crownings</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Use standard labels to detect crowning events</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Events with these labels will be identified as crownings (by comma)</string>
 
+    <string name="pref_CustomEvents_Death_title">Deaths anniversaries</string>
     <string name="pref_CustomEvents_Death_UseInternal_title">Use standard labels</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Use standard labels to detect death anniversary events</string>
     <string name="pref_CustomEvents_Death_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Events with these labels will be identified as death anniversaries (by comma)</string>
 
+    <string name="pref_CustomEvents_Other_title">Other events</string>
     <string name="pref_CustomEvents_Other_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Events with these labels will be identified as other events (by comma)</string>
-    <string name="pref_CustomEvents_Calendars_title">Calendars</string>
-    <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Show events from chosen files</string>
 
-    <string name="pref_CustomEvents_Custom_title">User-defined event</string>
+    <string name="pref_CustomEvents_Holiday_title">Holidays</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">Events labels</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Events with these labels will be identified as holidays (by comma)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Public holidays</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Show these public holidays</string>
+
+    <string name="pref_CustomEvents_Custom_title">User-defined events</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Enter caption for this event to start using it</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Events with these labels will be identified as this event (by comma)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Use full date info for event (not only day and month)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Calendars</string>
+    <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Show events from chosen files</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brown</item>
@@ -414,11 +429,12 @@
     <string name="pref_List_EventTypes_summary">What kind of events to include in list</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Birthdays</item>
-        <item>Anniversaries</item>
-        <item>Other events</item>
-        <item>Custom events</item>
-        <item>Round days count (5K, 10K, 15K days)</item>
+        <item>🎂 Birthdays</item>
+        <item>💑 Anniversaries</item>
+        <item>🗓️ Other events</item>
+        <item>🏖️ Holidays</item>
+        <item>⏰ Custom events</item>
+        <item>🏆 Round days count (5K, 10K, 15K days)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Mourning tape</string>
@@ -1027,18 +1043,20 @@ Long click on item to select color"</string>
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No events displayed</h2>This information may help:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Event types: %1$s</p>
-        <p>Filter: %11$s</p>
+        <p>Filter: %13$s</p>
         <h4>Events from contacts:</h4><ul>%2$s
             <li>show events from accounts: %3$s</li>
         </ul>
         <h4>Events from calendars:</h4><ul>%4$s
             <li>birthdays: %5$s</li>
             <li>other events: %6$s</li>
-            <li>multitype events: %7$s</li>
+            <li>holiday events: %7$s</li>
+            <li>multitype events: %8$s</li>
         </ul>
-        <h4>Events from files:</h4><ul><li>birthdays: %8$s</li>
-            <li>other events: %9$s</li>
-            <li>multitype events: %10$s</li>
+        <h4>Events from files:</h4><ul><li>birthdays: %9$s</li>
+            <li>other events: %10$s</li>
+            <li>holiday events: %11$s</li>
+            <li>multitype events: %12$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>If this information is useless for you send me a mail (click on app title and find button \"mail\" there)</h4>]]></string>
 
@@ -1238,6 +1256,21 @@ Long click on item to select color"</string>
     <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento,mort"</string>
     <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa,noce,couronnement"</string>
 
+    <string name="event_type_birthday_emoji" translatable="false">🎂</string>
+    <string name="event_type_wedding_emoji" translatable="false">💑</string>
+    <string name="event_type_other_emoji" translatable="false">🗓️</string>
+    <string name="event_type_custom1_emoji" translatable="false">🗓️</string>
+    <string name="event_type_custom2_emoji" translatable="false">🔔</string>
+    <string name="event_type_custom3_emoji" translatable="false">⏰</string>
+    <string name="event_type_custom4_emoji" translatable="false">❤️</string>
+    <string name="event_type_custom5_emoji" translatable="false">🎁</string>
+    <string name="event_type_nameday_emoji" translatable="false">🎈</string>
+    <string name="event_type_death_emoji" translatable="false">⚰️</string>
+    <string name="event_type_crowning_emoji" translatable="false">💒</string>
+    <string name="event_type_holiday_emoji" translatable="false">🏖️</string>
+    <string name="event_type_5k_emoji" translatable="false">🏆</string>
+    <string name="event_type_unknown_emoji" translatable="false">⁉️️</string>
+
     <string name="pref_Root_key" translatable="false">Pref</string>
     <string name="pref_Common_key" translatable="false">Common</string>
     <string name="pref_Language_key" translatable="false">Language</string>
@@ -1325,6 +1358,7 @@ Long click on item to select color"</string>
     <string name="pref_EventTypes_Birthday" translatable="false">3</string>
     <string name="pref_EventTypes_Anniversary" translatable="false">1</string>
     <string name="pref_EventTypes_Other" translatable="false">2</string>
+    <string name="pref_EventTypes_Holiday" translatable="false">4</string>
     <string name="pref_EventTypes_Custom" translatable="false">0</string>
     <string name="pref_EventTypes_RoundDays" translatable="false">11</string>
 
@@ -1332,6 +1366,7 @@ Long click on item to select color"</string>
         <item>@string/pref_EventTypes_Birthday</item>
         <item>@string/pref_EventTypes_Anniversary</item>
         <item>@string/pref_EventTypes_Other</item>
+        <item>@string/pref_EventTypes_Holiday</item>
         <item>@string/pref_EventTypes_Custom</item>
     </string-array>
 
@@ -1339,6 +1374,7 @@ Long click on item to select color"</string>
         <item>@string/pref_EventTypes_Birthday</item>
         <item>@string/pref_EventTypes_Anniversary</item>
         <item>@string/pref_EventTypes_Other</item>
+        <item>@string/pref_EventTypes_Holiday</item>
         <item>@string/pref_EventTypes_Custom</item>
         <item>@string/pref_EventTypes_RoundDays</item>
     </string-array>
@@ -1401,6 +1437,11 @@ Long click on item to select color"</string>
     <string name="pref_CustomEvents_Other_Labels_key" translatable="false">CustomEvents_Other_Labels</string>
     <string name="pref_CustomEvents_Other_Calendars_key" translatable="false">CustomEvents_Other_Calendars</string>
     <string name="pref_CustomEvents_Other_LocalFiles_key" translatable="false">CustomEvents_Other_LocalFiles</string>
+
+    <string name="pref_CustomEvents_Holiday_Labels_key" translatable="false">CustomEvents_Holiday_Labels</string>
+    <string name="pref_CustomEvents_Holiday_Calendars_key" translatable="false">CustomEvents_Holiday_Calendars</string>
+    <string name="pref_CustomEvents_Holiday_LocalFiles_key" translatable="false">CustomEvents_Holiday_LocalFiles</string>
+    <string name="pref_Holidays_key" translatable="false">Holidays</string>
 
     <string name="pref_CustomEvents_Custom1_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1</string>
     <string name="pref_CustomEvents_Custom2_key" translatable="false">CustomEvents_Custom2</string>
@@ -1944,8 +1985,8 @@ Long click on item to select color"</string>
     <string name="faq_anchor_events_files" translatable="false">events_files</string>
     <string name="faq_anchor_widgets" translatable="false">widgets</string>
 
-    <string name="pref_Colors_Resent_key" translatable="false">ColorsResent</string>
-    <integer name="pref_Colors_Resent_max" translatable="false">10</integer>
+    <string name="pref_Colors_Recent_key" translatable="false">ColorsRecent</string>
+    <integer name="pref_Colors_Recent_max" translatable="false">10</integer>
 
     <!-- Calendar widget -->
     <string name="widget_config_month_shift_current_month_id" translatable="false">0</string>
@@ -1984,387 +2025,4 @@ Long click on item to select color"</string>
     <string name="widget_config_month_events_saturday_id" translatable="false">01</string>
     <string name="widget_config_month_events_sunday_id" translatable="false">02</string>
 
-    <string-array name="holidays1" translatable="false" tools:ignore="UnusedResources">
-        <item>🇷🇺 Производственный календарь</item>
-        <item>"//2023 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2023/
-        02.01.2023,!
-        03.01.2023,!
-        04.01.2023,!
-        05.01.2023,!
-        06.01.2023,!
-        23.02.2023,!
-        24.02.2023,!
-        08.03.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        09.05.2023,!
-        12.06.2023,!
-        06.11.2023,!"</item>
-        <item>"//2024 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2024/  https://hh.ru/calendar
-        01.01.2024,!
-        02.01.2024,!
-        03.01.2024,!
-        04.01.2024,!
-        05.01.2024,!
-        06.01.2024,!
-        07.01.2024,!
-        08.01.2024,!
-        23.02.2024,!
-        08.03.2024,!
-        27.04.2024,?
-        29.04.2024,!
-        30.04.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        10.05.2024,!
-        12.06.2024,!
-        02.11.2024,?
-        04.11.2024,!
-        28.12.2024,?
-        30.12.2024,!
-        31.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays2" translatable="false" tools:ignore="UnusedResources">
-    <item>🇩🇪 Gesetzliche Feiertage</item>
-        <item>"//2023 https://ru-geld.de/de/holidays/
-        01.01.2023,!
-        07.04.2023,!
-        09.04.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        18.05.2023,!
-        28.05.2023,!
-        29.05.2023,!
-        03.10.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
-        <item>"//2024
-        01.01.2024,!
-        29.03.2024,!
-        31.03.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        19.05.2024,!
-        20.05.2024,!
-        03.10.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays3" translatable="false" tools:ignore="UnusedResources">
-        <item>🇺🇦 Виробничий календар</item>
-        <item>"//2023 https://ukraine.workingdays.org/RU/workingdays_holidays_2023.htm
-        02.01.2023,!
-        09.01.2023,!
-        08.03.2023,!
-        17.04.2023,!
-        01.05.2023,!
-        09.05.2023,!
-        05.06.2023,!
-        28.06.2023,!
-        28.07.2023,!
-        24.08.2023,!
-        16.10.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.buhoblik.org.ua/kadry-zarplata/vremya/4000-4000-osobennosti-kalendarya.html
-        //01.01.2024,!
-        //08.01.2024,!
-        08.03.2024,!
-        01.05.2024,!
-        06.05.2024,!
-        08.05.2024,!
-        24.06.2024,!
-        28.06.2024,!
-        15.07.2024,!
-        26.08.2024,!
-        01.10.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays4" translatable="false" tools:ignore="UnusedResources">
-    <item>🇧🇾 Вытворчы каляндар</item>
-    <item>"//2023 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2023-god-31400/
-        02.01.2023,!
-        08.03.2023,!
-        25.04.2023,!
-        08.05.2023,!
-        09.05.2023,!
-        13.05.2023,?
-        03.07.2023,!
-        07.11.2023,!
-        11.11.2023,?
-        25.12.2023"</item>
-    <item>"//2024 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2024-god-36207/
-        01.01.2024,!
-        02.01.2024,!
-        08.03.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        14.05.2024,!
-        03.07.2024,!
-        07.11.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays5" translatable="false" tools:ignore="UnusedResources">
-        <item>🇺🇸 Public holidays</item>
-        <item>"//2023 https://www.workingdays.us/EN/workingdays_holidays_2023.htm
-        01.01.2023,!
-        02.01.2023,!
-        16.01.2023,!
-        20.02.2023,!
-        29.05.2023,!
-        19.06.2023,!
-        04.07.2023,!
-        04.09.2023,!
-        09.10.2023,!
-        10.11.2023,!
-        11.11.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.workingdays.us/EN/workingdays_holidays_2024.htm
-        01.01.2024,!
-        15.01.2024,!
-        19.02.2024,!
-        27.05.2024,!
-        19.06.2024,!
-        04.07.2024,!
-        02.09.2024,!
-        14.10.2024,!
-        11.11.2024,!
-        28.11.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays6" translatable="false" tools:ignore="UnusedResources">
-        <item>🇬🇧 Public holidays</item>
-        <item>"//2023 https://www.workingdays.us/EN/workingdays_holidays_2023.htm
-        02.01.2023,!
-        07.04.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        29.05.2023,!
-        28.08.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
-        <item>"//2024 https://www.work-day.co.uk/workingdays_holidays_2024.htm
-        01.01.2024,!
-        29.03.2024,!
-        01.01.2024,!
-        06.05.2024,!
-        27.05.2024,!
-        26.08.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays7" translatable="false" tools:ignore="UnusedResources">
-        <item>🇮🇱 Public holidays</item>
-        <item>"//2023 https://israel.workingdays.org/workingdays_holidays_2023.htm
-        06.04.2023,!
-        12.04.2023,!
-        26.04.2023,!
-        26.05.2023,!
-        16.09.2023,!
-        17.09.2023,!
-        25.09.2023,!
-        30.09.2023,!
-        07.10.2023,!"</item>
-        <item>"//2024 https://israel.workingdays.org/workingdays_holidays_2024.htm
-        24.03.2024,!
-        23.04.2024,!
-        29.04.2024,!
-        14.05.2024,!
-        12.06.2024,!
-        03.10.2024,!
-        04.10.2024,!
-        12.10.2024,!
-        17.10.2024,!
-        24.10.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays8" translatable="false" tools:ignore="UnusedResources">
-        <item>🇦🇹 Gesetzliche Feiertage</item>
-        <item>"//2023 https://publicholidays.at/2023-dates/
-        01.01.2023,!
-        06.06.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        18.05.2023,!
-        29.05.2023,!
-        08.06.2023,!
-        15.08.2023,!
-        26.10.2023,!
-        01.11.2023,!
-        08.12.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
-        <item>"//2024 https://publicholidays.at/2024-dates/
-        01.01.2024,!
-        06.01.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        20.05.2024,!
-        30.05.2024,!
-        15.08.2024,!
-        26.10.2024,!
-        01.11.2024,!
-        08.12.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays9" translatable="false" tools:ignore="UnusedResources">
-        <item>🇧🇷 Feriados públicos</item>
-        <item>"//2023 https://www.dias-uteis.com/dias-uteis_feriados_2023.htm
-        01.01.2023,!
-        21.02.2023,!
-        07.03.2023,!
-        21.03.2023,!
-        01.05.2023,!
-        07.09.2023,!
-        12.10.2023,!
-        02.11.2023,!
-        15.11.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.dias-uteis.com/dias-uteis_feriados_2024.htm
-        01.01.2024,!
-        13.02.2024,!
-        29.03.2024,!
-        21.04.2024,!
-        01.05.2024,!
-        07.09.2024,!
-        12.10.2024,!
-        02.11.2024,!
-        15.11.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays10" translatable="false" tools:ignore="UnusedResources">
-        <item>🇪🇸 Feriados publicos</item>
-        <item>"//2023 https://www.dias-laborables.es/dias_laborables_feriados_2023.htm
-        01.01.2023,!
-        02.01.2023,!
-        06.01.2023,!
-        28.02.2023,!
-        06.04.2023,!
-        07.04.2023,!
-        01.05.2023,!
-        07.09.2023,!
-        15.08.2023,!
-        12.10.2023,!
-        01.11.2023,!
-        06.12.2023,!
-        08.12.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.dias-laborables.es/dias_laborables_feriados_2024.htm
-        01.01.2024,!
-        06.01.2024,!
-        28.02.2024,!
-        28.03.2024,!
-        29.03.2024,!
-        01.05.2024,!
-        15.08.2024,!
-        12.10.2024,!
-        01.11.2024,!
-        06.12.2024,!
-        08.12.2024,!
-        09.12.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays11" translatable="false" tools:ignore="UnusedResources">
-        <item>🇫🇷 Vacances publiques</item>
-        <item>"//2023 https://www.joursouvres.fr/joursouvres_joursferies_2023.htm
-        01.01.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        18.05.2023,!
-        29.05.2023,!
-        14.07.2023,!
-        15.08.2023,!
-        01.11.2023,!
-        11.11.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.joursouvres.fr/joursouvres_joursferies_2024.htm
-        01.01.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        08.05.2024,!
-        09.05.2024,!
-        20.05.2024,!
-        14.07.2024,!
-        15.08.2024,!
-        01.11.2024,!
-        11.11.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays12" translatable="false" tools:ignore="UnusedResources">
-        <item>🇮🇳 Public holidays</item>
-        <item>"//2023 https://www.workingdays.in/workingdays_holidays_2023.htm
-        01.01.2023,!
-        14.01.2023,!
-        26.01.2023,!
-        19.02.2023,!
-        07.04.2023,!
-        14.04.2023,!
-        15.08.2023,!
-        02.10.2023,!
-        24.12.2023,!
-        25.12.2023,!"</item>
-        <item>"//2024 https://www.workingdays.in/workingdays_holidays_2024.htm
-        01.01.2024,!
-        14.01.2024,!
-        26.01.2024,!
-        19.02.2024,!
-        29.03.2024,!
-        14.04.2024,!
-        15.08.2024,!
-        02.10.2024,!
-        24.12.2024,!
-        25.12.2024,!"</item>
-    </string-array>
-
-    <string-array name="holidays13" translatable="false" tools:ignore="UnusedResources">
-        <item>🇰🇿 Мемлекеттік мерекелер</item>
-        <item>"//2023 https://egov.kz/cms/ru/articles/calendar_2021
-        01.01.2023,!
-        02.01.2023,!
-        03.01.2023,!
-        08.03.2023,!
-        21.03.2023,!
-        22.03.2023,!
-        23.03.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        09.05.2023,!
-        28.06.2023,!
-        06.07.2023,!
-        07.07.2023,!
-        30.08.2023,!
-        25.10.2023,!
-        16.12.2023,!
-        18.12.2023,!"</item>
-        <item>"//2024 https://egov.kz/cms/ru/articles/employment_relations/holidays-calend
-        01.01.2024,!
-        02.01.2024,!
-        08.03.2024,!
-        21.03.2024,!
-        22.03.2024,!
-        23.03.2024,!
-        25.03.2024,!
-        01.05.2024,!
-        07.05.2024,!
-        09.05.2024,!
-        17.06.2024,!
-        08.07.2024,!
-        30.08.2024,!
-        25.10.2024,!
-        16.12.2024,!"</item>
-    </string-array>
 </resources>

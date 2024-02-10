@@ -140,6 +140,10 @@
                 android:icon="@drawable/btn_zoom_page_press">
 
                 <Preference
+                    android:summary="@string/pref_CustomEvents_Sources_hint"
+                    android:selectable="false"/>
+
+                <Preference
                     android:key="@string/pref_Accounts_key"
                     android:title="@string/pref_Accounts_title"
                     android:summary="@string/pref_Accounts_summary"/>
@@ -152,7 +156,7 @@
                 <Preference
                     android:key="@string/pref_CustomEvents_MultiType_LocalFiles_key"
                     android:title="@string/pref_CustomEvents_LocalFiles_title"
-                    android:summary="@string/pref_CustomEvents_Other_LocalFiles_summary"/>
+                    android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
 
             </PreferenceCategory>
 
@@ -202,7 +206,7 @@
 
             <PreferenceCategory
                 android:key="@string/pref_CustomEvents_Birthday_key"
-                android:title="@string/event_type_birthday"
+                android:title="@string/pref_CustomEvents_Birthday_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_birthday">
 
@@ -241,7 +245,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
-                android:title="@string/event_type_anniversary"
+                android:title="@string/pref_CustomEvents_Anniversary_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_wedding">
 
@@ -269,7 +273,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
-                android:title="@string/event_type_nameday"
+                android:title="@string/pref_CustomEvents_NameDay_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_nameday">
 
@@ -292,7 +296,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
-                android:title="@string/event_type_crowning"
+                android:title="@string/pref_CustomEvents_Crowning_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_crowning">
 
@@ -315,7 +319,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
-                android:title="@string/event_type_death"
+                android:title="@string/pref_CustomEvents_Death_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_death">
 
@@ -347,7 +351,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
-                android:title="@string/event_type_other"
+                android:title="@string/pref_CustomEvents_Other_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_other">
 
@@ -369,7 +373,39 @@
                 <Preference
                     android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
                     android:title="@string/pref_CustomEvents_LocalFiles_title"
-                    android:summary="@string/pref_CustomEvents_Other_LocalFiles_summary"/>
+                    android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
+
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_CustomEvents_Holiday_title"
+                android:layout="@layout/settings_category_with_icon"
+                android:icon="@drawable/ic_event_holiday">
+
+                <Preference
+                    android:key="@string/pref_Holidays_key"
+                    android:title="@string/pref_CustomEvents_Holiday_Public_Labels_title"
+                    android:summary="@string/pref_CustomEvents_Holiday_Public_Labels_summary"/>
+
+                <org.vovka.birthdaycountdown.CustomEditTextPreference
+                    android:key="@string/pref_CustomEvents_Holiday_Labels_key"
+                    android:summary="@string/pref_CustomEvents_Holiday_Labels_summary"
+                    android:title="@string/pref_CustomEvents_Holiday_Labels_title"
+                    android:hint="@string/pref_CustomEvents_hint"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:dialogIcon="@android:drawable/ic_menu_edit"
+                    android:negativeButtonText="@string/button_cancel"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Holiday_Calendars_key"
+                    android:title="@string/pref_CustomEvents_Calendars_title"
+                    android:summary="@string/pref_CustomEvents_Calendars_summary"/>
+
+                <Preference
+                    android:key="@string/pref_CustomEvents_Holiday_LocalFiles_key"
+                    android:title="@string/pref_CustomEvents_LocalFiles_title"
+                    android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
 
             </PreferenceCategory>
 

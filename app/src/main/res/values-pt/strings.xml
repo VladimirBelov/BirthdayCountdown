@@ -241,6 +241,7 @@
     <string name="event_type_birthday">Aniversário</string>
     <string name="event_type_anniversary">Aniversário de casamento</string>
     <string name="event_type_other">Outro evento</string>
+    <string name="event_type_holiday">Feriado</string>
     <string name="event_type_death">Aniversário de falecimento</string>
     <string name="event_type_crowning">Coroação</string>
     <string name="event_type_nameday">Nome do dia</string>
@@ -362,11 +363,11 @@
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de aniversário dos arquivos escolhidos</string>
 
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use rótulos padrão</string>
-    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Use rótulos padrão para detectar eventos de aniversário</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Use rótulos padrão para detectar aniversários casamento</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Rótulos de eventos</string>
-    <string name="pref_CustomEvents_Anniversary_Labels_summary">Eventos com esses rótulos serão identificados como aniversários (por vírgula)</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Eventos com esses rótulos serão identificados como aniversários casamento (por vírgula)</string>
     <string name="pref_CustomEvents_Anniversary_List_title">Lista</string>
-    <string name="pref_CustomEvents_Anniversary_List_summary">Todos os títulos de aniversários conhecidos (por ano)</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">Todos os títulos de aniversários casamento (por ano)</string>
 
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Usar rótulos padrão</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Use rótulos padrão para detectar eventos de dias de nome</string>
@@ -385,10 +386,6 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Rótulos de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Eventos com esses rótulos serão identificados como outros eventos (por vírgula)</string>
-    <string name="pref_CustomEvents_Calendars_title">Calendários</string>
-    <string name="pref_CustomEvents_Calendars_summary">Mostrar eventos dos calendários escolhidos</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Arquivos locais</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Mostrar eventos dos arquivos escolhidos</string>
 
     <string name="pref_CustomEvents_Custom_title">Evento definido pelo usuário</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Legenda do evento</string>
@@ -397,6 +394,11 @@
     <string name="pref_CustomEvents_Custom_Labels_summary">Eventos com esses rótulos serão identificados como este evento (por vírgula)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Usar data com ano</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Usar informações de data completa para o evento (não apenas dia e mês)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Calendários</string>
+    <string name="pref_CustomEvents_Calendars_summary">Mostrar eventos dos calendários escolhidos</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Arquivos locais</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Mostrar eventos dos arquivos escolhidos</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrom</item>
@@ -414,11 +416,12 @@
     <string name="pref_List_EventTypes_summary">Que tipo de eventos incluir na lista</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Aniversários</item>
-        <item>Aniversários</item>
-        <item>Outros eventos</item>
-        <item>Eventos personalizados</item>
-        <item>Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
+        <item>🎂 Aniversários</item>
+        <item>💑 Aniversários casamento</item>
+        <item>🗓️ Outros eventos</item>
+        <item>🏖️ Feriados</item>
+        <item>⏰ Eventos personalizados</item>
+        <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Fita de luto</string>
@@ -1027,18 +1030,20 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Nenhum evento exibido</h2>Essas informações podem ajudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
          <p>Tipos de eventos: %1$s</p>
-         <p>Filtro: %11$s</p>
+         <p>Filtro: %13$s</p>
          <h4>Eventos de contatos:</h4><ul>%2$s
              <li>mostrar eventos das contas: %3$s</li>
          </ul>
          <h4>Eventos de calendários:</h4><ul>%4$s
              <li>aniversários: %5$s</li>
              <li>outros eventos: %6$s</li>
-             <li>eventos multitipo: %7$s</li>
+             <li>feriados: %7$s</li>
+             <li>eventos multitipo: %8$s</li>
          </ul>
-         <h4>Eventos dos arquivos:</h4><ul><li>aniversários: %8$s</li>
-             <li>outros eventos: %9$s</li>
-             <li>eventos multitipo: %10$s</li>
+         <h4>Eventos dos arquivos:</h4><ul><li>aniversários: %9$s</li>
+             <li>outros eventos: %10$s</li>
+             <li>feriados: %11$s</li>
+             <li>eventos multitipo: %12$s</li>
          </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Se esta informação for inútil para você, envie-me um e-mail (clique no título do aplicativo e encontre o botão \"mail\" lá)</h4>]]></string>
 

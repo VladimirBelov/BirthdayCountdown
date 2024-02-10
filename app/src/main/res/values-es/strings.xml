@@ -241,6 +241,7 @@
     <string name="event_type_birthday">Cumpleaños</string>
     <string name="event_type_anniversary">Aniversario de bodas</string>
     <string name="event_type_other">Otro evento</string>
+    <string name="event_type_holiday">Feriado</string>
     <string name="event_type_death">Aniversario de la muerte</string>
     <string name="event_type_crowning">Boda</string>
     <string name="event_type_nameday">Día del nombre</string>
@@ -385,10 +386,6 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Eventos con estas etiquetas se identificarán como otros eventos (separados por coma)</string>
-    <string name="pref_CustomEvents_Calendars_title">Calendarios</string>
-    <string name="pref_CustomEvents_Calendars_summary">Ver eventos de calendarios seleccionados</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Archivos locales</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Mostrar eventos de archivos elegidos</string>
 
     <string name="pref_CustomEvents_Custom_title">Evento personalizado</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Título del evento</string>
@@ -397,6 +394,11 @@
     <string name="pref_CustomEvents_Custom_Labels_summary">Eventos con estas etiquetas se identificarán como este evento (separados por coma)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Año de uso</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Calendarios</string>
+    <string name="pref_CustomEvents_Calendars_summary">Ver eventos de calendarios seleccionados</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Archivos locales</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Mostrar eventos de archivos elegidos</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrón</item>
@@ -414,11 +416,12 @@
     <string name="pref_List_EventTypes_summary">Qué eventos mostrar en la lista</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Cumpleaños</item>
-        <item>Aniversario de bodas</item>
-        <item>Otros eventos</item>
-        <item>Eventos personalizados</item>
-        <item>Fechas redondas (5K días)</item>
+        <item>🎂 Cumpleaños</item>
+        <item>💑 Aniversario de bodas</item>
+        <item>🗓️ Otros eventos</item>
+        <item>🏖️ Vacaciones</item>
+        <item>⏰ Eventos personalizados</item>
+        <item>🏆 Fechas redondas (5K días)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Cinta de funeral</string>
@@ -1027,18 +1030,20 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No se muestran eventos</h2>Esta información puede ayudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Tipos de eventos: %1$s</p>
-        <p>Filtro: %11$s</p>
+        <p>Filtro: %13$s</p>
          <h4>Eventos de contactos:</h4><ul>%2$s
              <li>mostrar eventos de cuentas: %3$s</li>
          </ul>
          <h4>Calendarios de eventos:</h4><ul>%4$s
              <li>cumpleaños: %5$s</li>
-             <li>otros eventos : %6$s</li>
-             <li>varios eventos: %7$s</li>
+             <li>otros eventos: %6$s</li>
+             <li>vacaciones: %7$s</li>
+             <li>varios eventos: %8$s</li>
          </ul>
-         <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %8$s</li>
-             <li>otros eventos: %9$s</li>
-             <li>varios eventos: %10$s</li>
+         <h4>Archivos de eventos:</h4><ul><li>cumpleaños: %9$s</li>
+             <li>otros eventos: %10$s</li>
+             <li>vacaciones: %11$s</li>
+             <li>varios eventos: %12$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Si esta información no ayudó a encontrar el motivo de la ausencia de eventos, escríbame un correo electrónico (haga clic en el nombre de la aplicación y allí en el botón \"Escribe\")</h4>]]></string>
 

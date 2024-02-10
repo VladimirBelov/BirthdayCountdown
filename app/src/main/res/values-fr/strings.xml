@@ -241,6 +241,7 @@
     <string name="event_type_birthday">Anniversaire</string>
     <string name="event_type_anniversary">Anniversaire de mariage</string>
     <string name="event_type_other">Autre événement</string>
+    <string name="event_type_holiday">Vacance</string>
     <string name="event_type_death">Anniversaire de la mort</string>
     <string name="event_type_crowning">Mariage religieux</string>
     <string name="event_type_nameday">Jour du nom</string>
@@ -385,10 +386,6 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par virgule)"</string>
-    <string name="pref_CustomEvents_Calendars_title">Calendriers</string>
-    <string name="pref_CustomEvents_Calendars_summary">Afficher les événements des calendriers choisis</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Fichiers</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Afficher les événements des fichiers choisis</string>
 
     <string name="pref_CustomEvents_Custom_title">"Événement personnalisé"</string>
     <string name="pref_CustomEvents_Custom_Caption_title">"Titre de l'événement"</string>
@@ -397,6 +394,11 @@
     <string name="pref_CustomEvents_Custom_Labels_summary">Les événements avec ces étiquettes seront identifiés comme cet événement (par virgule)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">"Utiliser la date avec l'année"</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">"Utiliser l'année pour calculer les anniversaires (pas seulement le jour et le mois)"</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Calendriers</string>
+    <string name="pref_CustomEvents_Calendars_summary">Afficher les événements des calendriers choisis</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Fichiers</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Afficher les événements des fichiers choisis</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brun</item>
@@ -414,11 +416,12 @@
     <string name="pref_List_EventTypes_summary">"Quels types des événements inclure dans la liste"</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Anniversaires</item>
-        <item>Anniversaires de mariage</item>
-        <item>Autres événements</item>
-        <item>Événements personnalisés</item>
-        <item>Les jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
+        <item>🎂 Anniversaires</item>
+        <item>💑 Anniversaires de mariage</item>
+        <item>🗓️ Autres événements</item>
+        <item>🏖️ Vacances</item>
+        <item>⏰ Événements personnalisés</item>
+        <item>🏆 Les jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Bande de deuil</string>
@@ -1027,18 +1030,20 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Aucun événement affiché</h2>Cette information peut aider:<br>]]></string>
     <string name="msg_zero_events_body">"<![CDATA[
          <p>Types des événements: %1$s</p>
-         <p>Filtre: %11$s</p>
+         <p>Filtre: %13$s</p>
          <h4>Événements des contacts:</h4><ul>%2$s
              <li>afficher les événements des comptes: %3$s</li>
          </ul>
          <h4>Événements des calendriers:</h4><ul>%4$s
              <li>anniversaires: %5$s</li>
              <li>autres événements: %6$s</li>
-             <li>Événements multitypes: %7$s</li>
+             <li>vacances: %7$s</li>
+             <li>Événements multitypes: %8$s</li>
          </ul>
-         <h4>Événements des fichiers:</h4><ul><li>anniversaires: %8$s</li>
-             <li>autres événements: %9$s</li>
-             <li>Événements multitypes: %10$s</li>
+         <h4>Événements des fichiers:</h4><ul><li>anniversaires: %9$s</li>
+             <li>autres événements: %10$s</li>
+             <li>vacances: %11$s</li>
+             <li>Événements multitypes: %12$s</li>
          </ul>]]>"</string>
     <string name="msg_zero_events_footer">"<![CDATA[<h4>Si ces informations n'ont pas aidé à trouver la raison de l'absence des événements, écrivez-moi un e-mail (cliquez sur le titre de l'application et là sur le bouton \"Écrire\")</h4>]]>"</string>
 

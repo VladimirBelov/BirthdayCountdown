@@ -12,7 +12,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:configure="org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity"
     android:description="@string/appwidget_desc_Calendar"
-    android:initialLayout="@layout/widget_loading"
+    android:initialLayout="@layout/widget_calendar"
     android:minHeight="40dp"
     android:minResizeHeight="40dp"
     android:minResizeWidth="110dp"

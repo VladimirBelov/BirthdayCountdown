@@ -241,6 +241,7 @@
     <string name="event_type_birthday">День народження</string>
     <string name="event_type_anniversary">Річниця весілля</string>
     <string name="event_type_other">Інша подія</string>
+    <string name="event_type_holiday">Свято</string>
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Іменини</string>
@@ -385,10 +386,6 @@
 
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Події з такими мітками будуть ідентифіковані як інші події (через кому)</string>
-    <string name="pref_CustomEvents_Calendars_title">Календарі</string>
-    <string name="pref_CustomEvents_Calendars_summary">Показати події з обраних календарів</string>
-    <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
-    <string name="pref_CustomEvents_Other_LocalFiles_summary">Показувати події з вибраних файлів</string>
 
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
@@ -397,6 +394,11 @@
     <string name="pref_CustomEvents_Custom_Labels_summary">Події з такими мітками будуть ідентифіковані як ця подія (через кому)</string>
     <string name="pref_CustomEvents_Custom_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Використовувати рік для розрахунку річниць (не тільки день і місяць)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Календарі</string>
+    <string name="pref_CustomEvents_Calendars_summary">Показати події з обраних календарів</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Показувати події з вибраних файлів</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричнева</item>
@@ -414,11 +416,12 @@
     <string name="pref_List_EventTypes_summary">Які події відображати в списку подій</string>
 
     <string-array name="pref_EventTypes_entries">
-        <item>Дні народження</item>
-        <item>Річниці весілля</item>
-        <item>Інші події</item>
-        <item>Події користувача</item>
-        <item>Круглі дати (5K днів)</item>
+        <item>🎂 Дні народження</item>
+        <item>💑 Річниці весілля</item>
+        <item>🗓️ Інші події</item>
+        <item>🏖️ Свята</item>
+        <item>⏰ Події користувача</item>
+        <item>🏆 Круглі дати (5K днів)</item>
     </string-array>
 
     <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
@@ -1027,18 +1030,20 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Події не відображаються</h2>Ця інформація може допомогти:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Типи подій: %1$s</p>
-        <p>Фільтр: %11$s</p>
+        <p>Фільтр: %13$s</p>
          <h4>Події контактів:</h4><ul>%2$s
              <li>показати події з облікових записів: %3$s</li>
          </ul>
          <h4>Події в календарях:</h4><ul>%4$s
              <li>дні народження: %5$s</li>
              <li>інші події: %6$s</li>
-             <li>різні події: %7$s</li>
+             <li>свята: %7$s</li>
+             <li>різні події: %8$s</li>
          </ul>
-         <h4>Події файлів:</h4><ul><li>дні народження: %8$s</li>
-             <li>інші події: %9$s</li>
-             <li>різні події: %10$s</li>
+         <h4>Події файлів:</h4><ul><li>дні народження: %9$s</li>
+             <li>інші події: %10$s</li>
+             <li>свята: %11$s</li>
+             <li>різні події: %12$s</li>
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Якщо ця інформація не допомогла знайти причину відсутності подій, напишіть мені лист (натисніть назву програми і там на кнопку \"Написати\")</h4>]]></string>
 

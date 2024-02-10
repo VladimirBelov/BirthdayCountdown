@@ -822,6 +822,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 allCalendars.addAll(eventsData.preferences_MultiType_calendars);
                 allCalendars.addAll(eventsData.preferences_BirthDay_calendars);
                 allCalendars.addAll(eventsData.preferences_OtherEvent_calendars);
+                allCalendars.addAll(eventsData.preferences_HolidayEvent_calendars);
                 if (allCalendars.size() > 0) {
                     for (String calendar: allCalendars) {
                         if (eventsData.map_calendars.containsKey(calendar)) {
@@ -856,6 +857,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             if (eventsData.preferences_OtherEvent_files.size() > 0) {
                 for (String file: eventsData.preferences_OtherEvent_files) {
+                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
+                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
+                    eventSourcesPackages.add(getPackageName());
+                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                }
+            }
+            if (eventsData.preferences_HolidayEvent_files.size() > 0) {
+                for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
                     eventSourcesIcons.add(android.R.drawable.ic_menu_save);
