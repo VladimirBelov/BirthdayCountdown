@@ -377,6 +377,7 @@ class ContactsEvents {
     Set<String> preferences_OtherEvent_files = new HashSet<>();
     Set<String> preferences_HolidayEvent_files = new HashSet<>();
     Set<String> preferences_MultiType_files = new HashSet<>();
+    Set<String> preferences_HolidayEvent_ids = new HashSet<>();
     private Set<String> pref_List_Event_Info_Default;
     private Set<String> pref_List_Age_Format_Default;
     private Set<String> pref_Widgets_EventInfo_Info_Default;
@@ -1137,6 +1138,8 @@ class ContactsEvents {
             }
             preferences_HolidayEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), new HashSet<>());
 
+            preferences_HolidayEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key), new HashSet<>());
+
             //Файлы с разными типами событий
             preferences_MultiType_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key), new HashSet<>());
 
@@ -1468,6 +1471,7 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Other_LocalFiles_key), preferences_OtherEvent_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), preferences_HolidayEvent_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key), preferences_MultiType_files);
+            editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key), preferences_HolidayEvent_ids);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Distance_key), preferences_list_magnify_distance);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Name_key), preferences_list_magnify_name);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Details_key), preferences_list_magnify_details);
@@ -1592,7 +1596,8 @@ class ContactsEvents {
                     | getFileEvents(idOther)
                     | getFileEvents(idHoliday)
                     | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
-                    | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent));
+                    | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent))
+                    | getHolidayEvents();
 
             statFavoriteEventsCount += preferences_favoriteEvents.size();
 
@@ -2540,7 +2545,7 @@ class ContactsEvents {
                 event.type = eventType;
                 event.subType = getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6\uFE0F";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
 
             } else if (isMultiTypeSource) {
 
@@ -3084,7 +3089,7 @@ class ContactsEvents {
                 event.type = eventTypeToSearch;
                 event.subType = getEventType(Constants.Type_FileEvent);
                 event.icon = R.drawable.ic_event_holiday;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6\uFE0F";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
 
             } else if (isMultiTypeSource) {
@@ -3853,7 +3858,7 @@ class ContactsEvents {
                 event.caption = getResources().getString(R.string.event_type_holiday);
                 event.type = getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6\uFE0F";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
 
             } else if (!isEmptyLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel_forSearch).find()) {
@@ -6764,6 +6769,8 @@ class ContactsEvents {
             this.preferences_Birthday_files = preferences_Files;
         } else if (eventType.equals(getEventType(Constants.Type_Other))) {
             this.preferences_OtherEvent_files = preferences_Files;
+        } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+            this.preferences_HolidayEvent_files = preferences_Files;
         } else if (eventType.equals(Constants.Type_MultiEvent)) {
             this.preferences_MultiType_files = preferences_Files;
         }
@@ -8792,6 +8799,43 @@ class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private boolean getHolidayEvents() {
+        try {
+
+            Set<String> eventsPacksIds = preferences_HolidayEvent_ids;
+            if (eventsPacksIds.isEmpty()) return false;
+
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            while (packId > 0) {
+                try {
+
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    if (eventsPack.length > 1) {
+                        final String packHash = getHash(eventsPack[0]);
+                        if (eventsPacksIds.contains(packHash)) {
+
+
+
+                        }
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
         }
     }
 }

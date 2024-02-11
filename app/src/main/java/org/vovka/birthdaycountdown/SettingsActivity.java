@@ -12,6 +12,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -691,6 +692,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 importPreferences(importStage.selectFile, null);
                 return true;
 
+            } else if (getString(R.string.pref_Holidays_key).equals(key)) {
+
+                selectHolidays();
+                return true;
+
             }
 
         } catch (Exception e) {
@@ -699,6 +705,74 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
 
         return false;
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private void selectHolidays() {
+        try {
+
+            //Справочники праздников и выходных
+            final List<String> eventSourcesIds = new ArrayList<>();
+            final List<String> eventSourcesTitles = new ArrayList<>();
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packId);
+
+                    eventSourcesIds.add(ContactsEvents.getHash(eventsPack[0]));
+                    eventSourcesTitles.add(eventsPack[0]);
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
+
+            ArrayList<Boolean> eventSelected = new ArrayList<>();
+
+            Set<String> preferences_holidays = eventsData.preferences_HolidayEvent_ids;
+            boolean[] sel = new boolean[eventSourcesIds.size()];
+            int ind = 0;
+            for (String eventId: eventSourcesIds) {
+                sel[ind] = preferences_holidays.contains(eventId);
+                eventSelected.add(sel[ind]);
+                ind++;
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_Holiday_Public_Labels_title)
+                    .setIcon(R.drawable.ic_event_holiday)
+                    .setMultiChoiceItems(eventSourcesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventSelected.set(which, isChecked))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> toStore = new HashSet<>();
+                        for (int i = 0; i < eventSelected.size(); i++) {
+                            if (eventSelected.get(i)) toStore.add(eventSourcesIds.get(i));
+                        }
+
+                        eventsData.preferences_HolidayEvent_ids = toStore;
+                        eventsData.savePreferences();
+
+                        dialog.cancel();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @Override

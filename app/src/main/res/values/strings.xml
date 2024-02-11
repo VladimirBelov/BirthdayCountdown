@@ -1441,6 +1441,7 @@ Long click on item to select color"</string>
     <string name="pref_CustomEvents_Holiday_Labels_key" translatable="false">CustomEvents_Holiday_Labels</string>
     <string name="pref_CustomEvents_Holiday_Calendars_key" translatable="false">CustomEvents_Holiday_Calendars</string>
     <string name="pref_CustomEvents_Holiday_LocalFiles_key" translatable="false">CustomEvents_Holiday_LocalFiles</string>
+    <string name="pref_CustomEvents_Holiday_Public_Ids_key" translatable="false">CustomEvents_Holiday_Public</string>
     <string name="pref_Holidays_key" translatable="false">Holidays</string>
 
     <string name="pref_CustomEvents_Custom1_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1</string>

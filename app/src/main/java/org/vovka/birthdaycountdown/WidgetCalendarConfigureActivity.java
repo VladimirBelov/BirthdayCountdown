@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -513,6 +514,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
     }
 
+    @SuppressLint("DiscouragedApi")
     private void getEventSources() {
         try {
 
