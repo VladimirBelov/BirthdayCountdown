@@ -115,7 +115,9 @@ final class Constants {
     static final String STRING_STORAGE_XDAYS = "x days";
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
+    static final String EVENT_PREFIX_HOLIDAY_EVENT = "holiday";
     static final String PREFIX_FileEventID = "f";
+    static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";

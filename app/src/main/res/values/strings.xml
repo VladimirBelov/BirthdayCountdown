@@ -151,6 +151,7 @@
     <string name="msg_account_info">"Event from account \"%1$s\""</string>
     <string name="msg_calendar_info">"Event from calendar \"%1$s\""</string>
     <string name="msg_file_info">"Event from file \"%1$s\""</string>
+    <string name="msg_source_info">"Event from \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
     <string name="msg_title_success">Action completed</string>
     <string name="msg_title_settings">Saved Settings</string>

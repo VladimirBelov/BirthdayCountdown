@@ -96,8 +96,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -2543,7 +2541,7 @@ class ContactsEvents {
 
                 event.caption = getResources().getString(R.string.event_type_holiday);
                 event.type = eventType;
-                event.subType = getEventType(Constants.Type_HolidayEvent);
+                event.subType = eventType; //getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
 
@@ -3038,7 +3036,7 @@ class ContactsEvents {
         }
     }
 
-    private boolean getFileEvents(@NonNull String eventTypeToSearch) {
+    private boolean getFileEvents(@NonNull String eventType) {
 
         try {
 
@@ -3055,39 +3053,39 @@ class ContactsEvents {
             now.set(Calendar.MILLISECOND, 0);
             final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_nameformat).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
 
-            boolean isMultiTypeSource = eventTypeToSearch.equals(Constants.Type_MultiEvent);
-            if (eventTypeToSearch.equals(getEventType(Constants.Type_BirthDay))) {
+            boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
                 fileList = preferences_Birthday_files;
 
                 event = new Event();
                 event.caption = getResources().getString(R.string.event_type_birthday);
-                event.type = eventTypeToSearch;
+                event.type = eventType;
                 event.subType = getEventType(Constants.Type_BirthDay);
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
                 event.needScanContacts = true;
 
-            } else if (eventTypeToSearch.equals(getEventType(Constants.Type_Other))) {
+            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
 
                 fileList = preferences_OtherEvent_files;
 
                 event = new Event();
                 event.caption = getResources().getString(R.string.event_type_other);
-                event.type = eventTypeToSearch;
+                event.type = eventType;
                 event.subType = getEventType(Constants.Type_FileEvent);
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
                 event.needScanContacts = false;
 
-            } else if (eventTypeToSearch.equals(getEventType(Constants.Type_HolidayEvent))) {
+            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
 
                 fileList = preferences_HolidayEvent_files;
 
                 event = new Event();
                 event.caption = getResources().getString(R.string.event_type_holiday);
-                event.type = eventTypeToSearch;
-                event.subType = getEventType(Constants.Type_FileEvent);
+                event.type = eventType;
+                event.subType = eventType; //getEventType(Constants.Type_FileEvent);
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
@@ -5203,71 +5201,72 @@ class ContactsEvents {
         if (context == null) return;
         AtomicInteger countSentRequests = new AtomicInteger();
 
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-
         //Посылаем сообщения на обновление виджетов
-
         try {
 
-            executor.execute(() -> {
+            //https://stackoverflow.com/questions/21300924/difference-between-executors-newfixedthreadpool1-and-executors-newsinglethread
+            Thread t = new Thread() {
 
-                int[] ids;
+                public void run() {
 
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    Widget2x2 myWidget = new Widget2x2();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
+                    int[] ids;
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        Widget2x2 myWidget = new Widget2x2();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        Widget5x1 myWidget = new Widget5x1();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        Widget4x1 myWidget = new Widget4x1();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        WidgetList myWidget = new WidgetList();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        WidgetPhotoList myWidget = new WidgetPhotoList();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
+                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
+                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                        //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                        WidgetCalendar myWidget = new WidgetCalendar();
+                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                        countSentRequests.getAndIncrement();
+                    }
+
                 }
-
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    Widget5x1 myWidget = new Widget5x1();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
-                }
-
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    Widget4x1 myWidget = new Widget4x1();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
-                }
-
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    WidgetList myWidget = new WidgetList();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
-                }
-
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    WidgetPhotoList myWidget = new WidgetPhotoList();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
-                }
-
-                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
-                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                    //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                    WidgetCalendar myWidget = new WidgetCalendar();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    countSentRequests.getAndIncrement();
-                }
-
-            });
+            };
+            t.start();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            executor.shutdown();
             if (log != null && countSentRequests.get() > 0)
                 log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
         }
@@ -7972,7 +7971,6 @@ class ContactsEvents {
 
             for (int i = 0; i < Position_attrAmount; i++) {
                 if (!userData.containsKey(i)) {
-                    //userData.put(i, (i == Position_contactID || i == Position_eventID || i == Position_photo_uri) ? Constants.STRING_EMPTY : STRING_SPACE);
                     userData.put(i, Constants.STRING_EMPTY);
                 }
             }
@@ -8723,7 +8721,8 @@ class ContactsEvents {
 
             for (String packId: fromPacks) {
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
-                if (preferences_DaysTypes.containsKey(key)) {
+                final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
+                if (preferences_DaysTypes.containsKey(key) || preferences_DaysTypes.containsKey(key_noYear)) {
                     return new DayType(packId, preferences_DaysTypes.get(key));
                 }
             }
@@ -8759,11 +8758,19 @@ class ContactsEvents {
                                     continue;
 
                                 final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                                if (indexComma < 7) continue;
+                                if (indexComma == -1) continue;
+
+                                final int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                                String flags;
+                                if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
+                                    flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                                } else {
+                                    flags = eventLine.substring(indexComma + 1);
+                                }
 
                                 Date dateEvent = null;
                                 String eventDateString = eventLine.substring(0, indexComma);
-                                String flags = eventLine.substring(indexComma + 1);
+
 
                                 try {
                                     dateEvent = sdf_DDMMYYYY.parse(eventDateString);
@@ -8784,7 +8791,11 @@ class ContactsEvents {
                                 }
                                 if (dateEvent != null) {
                                     DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
-                                    preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
+                                    if (flags.contains(Constants.STRING_1)) {
+                                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
+                                    } else {
+                                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
+                                    }
                                 }
                             }
                         }
@@ -8808,6 +8819,8 @@ class ContactsEvents {
 
             Set<String> eventsPacksIds = preferences_HolidayEvent_ids;
             if (eventsPacksIds.isEmpty()) return false;
+            final TreeMap<Integer, String> userData = new TreeMap<>();
+            Calendar now = new GregorianCalendar();
 
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
@@ -8819,7 +8832,94 @@ class ContactsEvents {
                         final String packHash = getHash(eventsPack[0]);
                         if (eventsPacksIds.contains(packHash)) {
 
+                            for (int i = 1; i < eventsPack.length; i++) {
+                                String eventsArray = eventsPack[i];
+                                String[] days = eventsArray.split(Constants.STRING_EOL, -1);
+                                for (String eventLine: days) {
+                                    String day = eventLine.trim();
+                                    boolean isEndless = true;
 
+                                    if (day.isEmpty() || day.startsWith(Constants.STRING_HASH) || day.startsWith(Constants.STRING_DSLASH))
+                                        continue;
+
+                                    final int indexComma = day.indexOf(Constants.STRING_COMMA);
+                                    if (indexComma == -1) continue;
+
+                                    final int indexFirstSpace = day.indexOf(Constants.STRING_SPACE);
+                                    String flags;
+                                    String eventTitle = null;
+                                    if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
+                                        flags = day.substring(indexComma + 1, indexFirstSpace);
+                                        eventTitle = day.substring(indexFirstSpace + 1);
+                                    } else {
+                                        flags = day.substring(indexComma + 1);
+                                    }
+                                    if (flags.contains(Constants.STRING_1)) {
+                                        isEndless = false;
+                                    }
+
+                                    Date dateEvent = null;
+                                    String eventDateString = day.substring(0, indexComma);
+
+                                    try {
+                                        dateEvent = sdf_DDMMYYYY.parse(eventDateString);
+                                    } catch (ParseException e1) {
+                                        try {
+                                            dateEvent = sdf_india.parse(eventDateString);
+                                        } catch (ParseException e2) {
+                                            try {
+                                                dateEvent = sdf_uk.parse(eventDateString);
+                                            } catch (ParseException e3) {
+                                                try {
+                                                    dateEvent = sdf_java.parse(eventDateString);
+                                                } catch (ParseException e4) {
+                                                    //Не получилось распознать
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (dateEvent == null) continue;
+
+                                    if (!isEndless && now.after(getCalendarFromDate(dateEvent)))
+                                        continue; //Одиночное событие и оно прошло
+
+                                    if (TextUtils.isEmpty(eventTitle)) continue;
+
+                                    final String eventNewDate = Constants.EVENT_PREFIX_HOLIDAY_EVENT + Constants.STRING_COLON_SPACE
+                                            + sdf_java.format(dateEvent) + Constants.STRING_COLON_SPACE + packHash;
+
+                                    userData.put(Position_personFullName, eventTitle);
+                                    userData.put(Position_personFullNameAlt, eventTitle);
+                                    userData.put(Position_eventCaption, getResources().getString(R.string.event_type_holiday)); //Наименование события
+                                    userData.put(Position_eventType, getEventType(Constants.Type_HolidayEvent)); //Тип события
+                                    userData.put(Position_eventSubType, getEventType(Constants.Type_HolidayEvent)); //Подтип события
+                                    userData.put(Position_eventDateThisTime, eventDateString);
+                                    userData.put(Position_eventDateFirstTime, eventDateString);
+                                    userData.put(Position_dates, eventNewDate);
+                                    userData.put(Position_eventIcon, Integer.toString(R.drawable.ic_event_holiday));
+                                    userData.put(Position_eventEmoji, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️");
+                                    userData.put(Position_eventStorage, Constants.STRING_STORAGE_CONTACTS); //Где искать событие по ID
+                                    userData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
+                                    userData.put(Position_eventID, Constants.PREFIX_HolidayEventID + getHash(packHash + day));
+
+                                    fillEmptyUserData(userData);
+
+                                    StringBuilder dataRow = new StringBuilder();
+                                    int rNum = 0;
+                                    for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                                        rNum++;
+                                        if (rNum != 1) dataRow.append(Constants.STRING_EOT);
+                                        dataRow.append(entry.getValue());
+                                    }
+                                    final String eventData = dataRow.toString();
+                                    if (!eventList.contains(eventData)) {
+                                        eventList.add(eventData);
+                                    }
+                                    userData.clear();
+
+                                }
+                            }
 
                         }
                     }

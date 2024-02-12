@@ -1818,6 +1818,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         fileURIs.add(fileDetails[1]);
                     }
                 }
+                for (String file: eventsData.preferences_HolidayEvent_files) {
+                    String[] fileDetails = file.split(Constants.STRING_PIPE);
+                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                        fileNames.add(fileDetails[0]);
+                        fileURIs.add(fileDetails[1]);
+                    }
+                }
                 if (fileURIs.isEmpty()) return true;
 
                 builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
