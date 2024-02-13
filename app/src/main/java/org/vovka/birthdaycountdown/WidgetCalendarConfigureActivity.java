@@ -535,7 +535,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(ContactsEvents.getHash(eventsPack[0]));
+                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
@@ -543,6 +543,29 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 eventsPackCount++;
                 packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
+
+            //Календари
+            if (!eventsData.checkNoCalendarAccess()){
+                if (eventsData.map_calendars.isEmpty()) eventsData.recieveCalendarList();
+                List<String> allCalendars = new ArrayList<>(eventsData.preferences_HolidayEvent_calendars);
+                if (allCalendars.size() > 0) {
+                    for (String calendar: allCalendars) {
+                        if (eventsData.map_calendars.containsKey(calendar)) {
+                            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar));
+                            eventSourcesTitles.add("📆 " + ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
+                        }
+                    }
+                }
+            }
+
+            //Файлы
+            if (eventsData.preferences_HolidayEvent_files.size() > 0) {
+                for (String file: eventsData.preferences_HolidayEvent_files) {
+                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                    eventSourcesTitles.add("📁 " + ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                }
+            }
+
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -570,11 +593,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     if (colorValue != null) {
                         sb.append("<bold><font color=#")
                                 .append(Integer.toHexString(colorValue & 0x00ffffff))
-                                .append(">●</font></bold> ")
-                                .append(eventSourcesTitles.get(ind));
-                    } else {
-                        sb.append(eventSourcesTitles.get(ind));
+                                .append(">●</font></bold> ");
                     }
+                    sb.append(eventSourcesTitles.get(ind));
 
                 }
             }
@@ -601,8 +622,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                 for (int i = 0; i < eventSourcesIds.size(); i++) {
                     String sourceId = eventSourcesIds.get(i);
-                    String sourceTitle = eventSourcesTitles.get(i);
-                    sourceChoices.add(sourceTitle);
+                    sourceChoices.add(eventSourcesTitles.get(i));
 
                     if (eventSourcesColors.containsKey(sourceId)) {
                         colorDots.add(eventSourcesColors.get(sourceId));

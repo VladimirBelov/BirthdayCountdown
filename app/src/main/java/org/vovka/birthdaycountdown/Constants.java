@@ -324,6 +324,7 @@ final class Constants {
     static final String eventSourceCalendarPrefix = "calendar:";
     static final String eventSourceFilePrefix = "file:";
     static final String eventSourceMultiFilePrefix = "multifile:";
+    static final String eventSourceHolidayPrefix = "holiday:";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";

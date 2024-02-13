@@ -753,6 +753,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                         eventsData.preferences_HolidayEvent_ids = toStore;
                         eventsData.savePreferences();
+                        eventsData.preferences_DaysTypes.clear();
 
                         dialog.cancel();
                     })
@@ -1444,6 +1445,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                         eventsData.setPreferences_Calendars(eventType, toStore);
                         eventsData.savePreferences();
+                        eventsData.preferences_DaysTypes.clear();
 
                         dialog.cancel();
                     })
@@ -1630,6 +1632,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                         eventsData.setPreferences_Files(eventType, toStore);
                         eventsData.savePreferences();
+                        eventsData.preferences_DaysTypes.clear();
 
                         dialog.cancel();
                     })

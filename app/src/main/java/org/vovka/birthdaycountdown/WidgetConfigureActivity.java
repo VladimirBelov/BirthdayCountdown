@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -591,15 +592,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            /*final StringBuilder eventSources = new StringBuilder();
-            for(final String item: eventSourcesSelected) {
-                if (eventSources.length() > 0) eventSources.append("+");
-                eventSources.append(item);
-            }*/
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             //Проверки
-
             if (this.widgetId == 0) {
                 ToastExpander.showInfoMsg(this, "widgetId is unknown!");
                 return;
@@ -614,7 +609,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
 
             //Сохранение настроек
-
             List<String> prefsToStore = new ArrayList<>();
 
             prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
@@ -728,6 +722,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("DiscouragedApi")
     private void getEventSources() {
         try {
 
@@ -874,6 +869,28 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
+            //Справочники праздников и выходных
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    String packHash = ContactsEvents.getHash(eventsPack[0]);
+
+                    if (eventsData.preferences_HolidayEvent_ids.contains(packHash)) {
+                        eventSourcesIds.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        eventSourcesTitles.add(eventsPack[0]);
+                        eventSourcesIcons.add(R.drawable.ic_event_holiday);
+                        eventSourcesPackages.add(getPackageName());
+                        eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
+
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -920,6 +937,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                                 + Constants.STRING_BRACKETS_OPEN
                                 + eventsData.getFileEventsCount(sourceId, sourceId.startsWith(Constants.eventSourceMultiFilePrefix))
                                 + Constants.STRING_BRACKETS_CLOSE);
+
+                    } else if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
+
+                        //todo: добавить количество событий
+                        sourceChoices.add(sourceTitle);
+
                     }
 
                 }

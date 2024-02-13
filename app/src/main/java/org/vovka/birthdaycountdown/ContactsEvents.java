@@ -211,7 +211,7 @@ class ContactsEvents {
     final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
-    final private Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
+    final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
 
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
@@ -386,6 +386,7 @@ class ContactsEvents {
     long statTimeGetContactEvents = 0;
     long statTimeGetCalendarEvents = 0;
     long statTimeGetFileEvents = 0;
+    long statTimeGetHolidayEvents = 0;
     long statTimeComputeDates = 0;
     long statLastComputeDates = 0;
     long statLastSearchSuggestion = 0;
@@ -1572,6 +1573,7 @@ class ContactsEvents {
             statTimeGetContactEvents = 0;
             statTimeGetCalendarEvents = 0;
             statTimeGetFileEvents = 0;
+            statTimeGetHolidayEvents = 0;
             statFavoriteEventsCount = 0;
 
             needUpdateEventList = false;
@@ -1991,7 +1993,7 @@ class ContactsEvents {
         int count = 0;
         try {
 
-            String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL);
+            String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
             Calendar now = new GregorianCalendar();
@@ -3102,7 +3104,7 @@ class ContactsEvents {
             for (String file : fileList) {
 
                 String[] fileDetails = file.split(Constants.STRING_PIPE);
-                String[] eventsArray =  readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL);
+                String[] eventsArray =  readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
                 if (eventsArray[0].isEmpty()) {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                     continue;
@@ -8740,6 +8742,7 @@ class ContactsEvents {
 
             if (!preferences_DaysTypes.isEmpty()) return;
 
+            //Справочники праздников и выходных
             int eventsPackCount = 1;
             @SuppressLint("DiscouragedApi") int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
@@ -8747,57 +8750,11 @@ class ContactsEvents {
 
                     String[] eventsPack = getResources().getStringArray(packId);
                     if (eventsPack.length > 1) {
-                        final String packHash = getHash(eventsPack[0]);
+                        final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         for (int i = 1; i < eventsPack.length; i++) {
                             String eventsArray = eventsPack[i];
                             String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                            for (String eventLine: days) {
-                                String day = eventLine.trim();
-
-                                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
-                                    continue;
-
-                                final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                                if (indexComma == -1) continue;
-
-                                final int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                                String flags;
-                                if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
-                                    flags = eventLine.substring(indexComma + 1, indexFirstSpace);
-                                } else {
-                                    flags = eventLine.substring(indexComma + 1);
-                                }
-
-                                Date dateEvent = null;
-                                String eventDateString = eventLine.substring(0, indexComma);
-
-
-                                try {
-                                    dateEvent = sdf_DDMMYYYY.parse(eventDateString);
-                                } catch (ParseException e1) {
-                                    try {
-                                        dateEvent = sdf_india.parse(eventDateString);
-                                    } catch (ParseException e2) {
-                                        try {
-                                            dateEvent = sdf_uk.parse(eventDateString);
-                                        } catch (ParseException e3) {
-                                            try {
-                                                dateEvent = sdf_java.parse(eventDateString);
-                                            } catch (ParseException e4) {
-                                                //Не получилось распознать
-                                            }
-                                        }
-                                    }
-                                }
-                                if (dateEvent != null) {
-                                    DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
-                                    if (flags.contains(Constants.STRING_1)) {
-                                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
-                                    } else {
-                                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
-                                    }
-                                }
-                            }
+                            fillDaysTypesFromFiles(packHash, days);
                         }
                     }
 
@@ -8805,6 +8762,83 @@ class ContactsEvents {
 
                 eventsPackCount++;
                 packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            }
+
+            //Файлы
+            Set<String> fileList = preferences_HolidayEvent_files;
+            if (fileList == null || fileList.size() == 0) return;
+
+            for (String file : fileList) {
+
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                if (eventsArray[0].isEmpty()) {
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                    continue;
+                }
+                final String packHash = ContactsEvents.getHash(Constants.eventSourceFilePrefix + file);
+                fillDaysTypesFromFiles(packHash, eventsArray);
+
+            }
+
+            //Календари
+            //todo
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void fillDaysTypesFromFiles(String packHash, String[] days) {
+        try {
+
+            for (String eventLine: days) {
+                String day = eventLine.trim();
+
+                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+                    continue;
+
+                final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+                if (indexComma == -1) continue;
+
+                final int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                String flags;
+                if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
+                    flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                } else {
+                    flags = eventLine.substring(indexComma + 1);
+                }
+
+                Date dateEvent = null;
+                String eventDateString = eventLine.substring(0, indexComma);
+
+
+                try {
+                    dateEvent = sdf_DDMMYYYY.parse(eventDateString);
+                } catch (ParseException e1) {
+                    try {
+                        dateEvent = sdf_india.parse(eventDateString);
+                    } catch (ParseException e2) {
+                        try {
+                            dateEvent = sdf_uk.parse(eventDateString);
+                        } catch (ParseException e3) {
+                            try {
+                                dateEvent = sdf_java.parse(eventDateString);
+                            } catch (ParseException e4) {
+                                //Не получилось распознать
+                            }
+                        }
+                    }
+                }
+                if (dateEvent != null) {
+                    DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
+                    if (flags.contains(Constants.STRING_1)) {
+                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
+                    } else {
+                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -8816,6 +8850,8 @@ class ContactsEvents {
     @SuppressLint("DiscouragedApi")
     private boolean getHolidayEvents() {
         try {
+
+            long statCurrentModuleStart = System.currentTimeMillis();
 
             Set<String> eventsPacksIds = preferences_HolidayEvent_ids;
             if (eventsPacksIds.isEmpty()) return false;
@@ -8887,7 +8923,8 @@ class ContactsEvents {
                                     if (TextUtils.isEmpty(eventTitle)) continue;
 
                                     final String eventNewDate = Constants.EVENT_PREFIX_HOLIDAY_EVENT + Constants.STRING_COLON_SPACE
-                                            + sdf_java.format(dateEvent) + Constants.STRING_COLON_SPACE + packHash;
+                                            + sdf_java.format(dateEvent) + Constants.STRING_COLON_SPACE
+                                            + getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
 
                                     userData.put(Position_personFullName, eventTitle);
                                     userData.put(Position_personFullNameAlt, eventTitle);
@@ -8929,6 +8966,8 @@ class ContactsEvents {
                 eventsPackCount++;
                 packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             }
+
+            statTimeGetHolidayEvents += System.currentTimeMillis() - statCurrentModuleStart;
 
             return true;
 
