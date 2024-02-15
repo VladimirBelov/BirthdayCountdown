@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -81,6 +82,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         initAttrs(attrs, defStyleAttr, defStyleRes);
     }
 
+    @SuppressLint("DiscouragedApi")
     private void initAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 
         LayoutInflater.from(getContext()).inflate(R.layout.picker_color, this);

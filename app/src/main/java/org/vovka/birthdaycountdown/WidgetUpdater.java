@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -71,6 +72,7 @@ class WidgetUpdater {
         this.widgetId = widgetId;
     }
 
+    @SuppressLint("DiscouragedApi")
     void invokePhotoEventsUpdate() {
         //По нажатию на виджет открываем основное окно
         //http://flowovertop.blogspot.com/2013/04/android-widget-with-button-click-to.html
@@ -228,6 +230,7 @@ class WidgetUpdater {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     private void drawPhotoEvent(int i) {
         //Отрисовка одного события
         try {
