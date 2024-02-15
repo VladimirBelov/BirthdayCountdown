@@ -446,6 +446,41 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             }
 
+            //Определение периода показа дней
+            {
+                Calendar calFirstDay = (Calendar) cal.clone();
+                calFirstDay.add(Calendar.MONTH, prefMonthsShift);
+                calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
+                int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
+                Calendar calLastDay = (Calendar) calFirstDay.clone();
+                calLastDay.add(Calendar.MONTH, rowsToDraw * columnsToDraw - 1);
+                calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
+
+                if (calFirstDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                    calFirstDay.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
+                } else {
+                    if (monthStartDayOfWeek == 1) {
+                        calFirstDay.add(Calendar.DAY_OF_MONTH, -6);
+                    } else {
+                        calFirstDay.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
+                    }
+                }
+
+                if (calLastDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                    calLastDay.add(Calendar.DAY_OF_MONTH, 7 - calLastDay.get(Calendar.DAY_OF_WEEK));
+                } else {
+                    if (calLastDay.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                        calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
+                    }
+                }
+                Log.i("PERIOD", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
+
+                //Заполнение типов дней из календарей по периоду
+                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
+                //Заполнение типов дней из файлов
+                eventsData.fillDaysTypesFromFiles();
+            }
+
             for (int row = 1; row <= rowsToDraw; row++) {
                 for (int column = 1; column <= columnsToDraw; column++) {
 
@@ -488,6 +523,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //Первый день недели - ПН или ВСК
                     cal.set(Calendar.DAY_OF_MONTH, 1);
                     int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
                     if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
                         cal.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
                     } else {
@@ -495,6 +531,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             cal.add(Calendar.DAY_OF_MONTH, -6);
                         } else {
                             cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
+
                         }
                     }
 
@@ -551,12 +588,24 @@ public class WidgetCalendar extends AppWidgetProvider {
                             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
 
                             //Цвет дня
-                            ContactsEvents.DayType dayType = eventsData.getDayType(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+                            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
                             @ColorInt Integer color = null;
 
-                            if (dayType != null) {
-                                if (dayType.type == ContactsEvents.DayType.Type.Holiday) {
+                            if (!dayTypes.isEmpty()) {
+                                int maxTypeIndex = -1;
+                                ContactsEvents.DayType dayType = null;
+                                for (ContactsEvents.DayType type: dayTypes) {
+                                    if (prefOtherEvents.indexOf(type.sourceId) > maxTypeIndex) {
+                                        maxTypeIndex = prefOtherEvents.indexOf(type.sourceId);
+                                        dayType = type;
+                                    }
+                                }
+
+                                if (dayType != null && dayType.type == ContactsEvents.DayType.Type.Holiday) {
                                     color = eventsColorsInMonth.get(dayType.sourceId);
+                                    if (color != null && !inMonth) {
+                                        color = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(color), Color.green(color), Color.blue(color));
+                                    }
                                 }
                             } else if (colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                                 if (inMonth) {
