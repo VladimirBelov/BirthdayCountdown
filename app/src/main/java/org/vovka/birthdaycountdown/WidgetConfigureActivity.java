@@ -671,7 +671,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_widget_config, menu);
 
         final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-        spinnerEventInfo.menu = menu;
+        if (spinnerEventInfo != null) spinnerEventInfo.menu = menu;
 
         MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
         if (itemHelp != null) {
@@ -725,6 +725,28 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @SuppressLint("DiscouragedApi")
     private void getEventSources() {
         try {
+
+            //Справочники праздников и выходных
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    String packHash = ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+
+                    if (eventsData.preferences_HolidayEvent_ids.contains(packHash)) {
+                        eventSourcesIds.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        eventSourcesTitles.add(eventsPack[0]);
+                        eventSourcesIcons.add(R.drawable.ic_event_holiday);
+                        eventSourcesPackages.add(getPackageName());
+                        eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
 
             //Online аккаунты
             final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
@@ -867,28 +889,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesPackages.add(getPackageName());
                     eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                 }
-            }
-
-            //Справочники праздников и выходных
-            int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
-            while (packId > 0) {
-                try {
-                    String[] eventsPack = getResources().getStringArray(packId);
-                    String packHash = ContactsEvents.getHash(eventsPack[0]);
-
-                    if (eventsData.preferences_HolidayEvent_ids.contains(packHash)) {
-                        eventSourcesIds.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        eventSourcesTitles.add(eventsPack[0]);
-                        eventSourcesIcons.add(R.drawable.ic_event_holiday);
-                        eventSourcesPackages.add(getPackageName());
-                        eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
-                    }
-
-                } catch (Resources.NotFoundException ignored) { /**/ }
-
-                eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
 
         } catch (final Exception e) {

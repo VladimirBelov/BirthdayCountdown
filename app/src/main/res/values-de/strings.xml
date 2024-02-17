@@ -384,8 +384,11 @@
     <string name="pref_CustomEvents_Death_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Todestag" erkannt (durch Komma getrennt)</string>
 
+    <string name="pref_CustomEvents_Other_title">Anderes Ereignisse</string>
     <string name="pref_CustomEvents_Other_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt (durch Komma getrennt)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Feiertage</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
@@ -806,7 +809,8 @@
     <string name="widget_config_layout_description">Wie viele Monate werden angezeigt</string>
     <string name="widget_config_month_events_sources_label">Quellen für Feiertage und Ereignisse</string>
     <string name="widget_config_month_events_sources_description">"Quellen zur Bestimmung der Art des Tages: Arbeitstag, freier Tag, Feiertag.
-Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
+Klicken Sie lange auf das Element, um die Farbe auszuwählen.
+Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse einrichten->Feiertage angegeben werden"</string>
     <string name="widget_config_month_shift_title">Startmonat</string>
     <string name="widget_config_month_shift_label">Schicht:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
@@ -866,6 +870,7 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
         <item>Monatstitel</item>
         <item>Jahr</item>
         <item>Wochentagsbeschriftungen</item>
+        <item>Tage vor und nach dem Monat</item>
         <item>Außenseitenränder</item>
     </string-array>
 

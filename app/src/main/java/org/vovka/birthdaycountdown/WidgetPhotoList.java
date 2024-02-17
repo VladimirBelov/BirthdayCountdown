@@ -42,6 +42,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
+        long statCurrentModuleStart = System.currentTimeMillis();
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
         ContactsEvents eventsData = ContactsEvents.getInstance();
@@ -161,6 +162,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
         }
     }
 

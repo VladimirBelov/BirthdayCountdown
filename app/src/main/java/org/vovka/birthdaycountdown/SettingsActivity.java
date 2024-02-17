@@ -720,7 +720,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(ContactsEvents.getHash(eventsPack[0]));
+                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }

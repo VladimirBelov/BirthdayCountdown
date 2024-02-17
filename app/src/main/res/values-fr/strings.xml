@@ -384,8 +384,11 @@
     <string name="pref_CustomEvents_Death_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Les événements portant ces étiquettes seront identifiés comme anniversaires de mort (par virgule)</string>
 
+    <string name="pref_CustomEvents_Other_title">"D'autres événements"</string>
     <string name="pref_CustomEvents_Other_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par virgule)"</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Vacances</string>
 
     <string name="pref_CustomEvents_Custom_title">"Événement personnalisé"</string>
     <string name="pref_CustomEvents_Custom_Caption_title">"Titre de l'événement"</string>
@@ -806,7 +809,8 @@
     <string name="widget_config_layout_description">Combien de mois afficher</string>
     <string name="widget_config_month_events_sources_label">Sources des jours fériés et des événements</string>
     <string name="widget_config_month_events_sources_description">"Sources pour déterminer le type de jour: jour ouvrable, jour de congé, jour férié.
-Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
+Cliquez longuement sur l'élément pour sélectionner la couleur.
+Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées dans Paramètres->Configuration des événements->Vacances"</string>
     <string name="widget_config_month_shift_title">Mois de début</string>
     <string name="widget_config_month_shift_label">Maj:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
@@ -866,6 +870,7 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
         <item>Titre du mois</item>
         <item>Année</item>
         <item>Étiquettes des jours de la semaine</item>
+        <item>Jours avant et après le mois</item>
         <item>Marges latérales externes</item>
     </string-array>
 

@@ -129,6 +129,7 @@ public class WidgetCalendar extends AppWidgetProvider {
     @SuppressLint("DiscouragedApi")
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
+        long statCurrentModuleStart = System.currentTimeMillis();
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
@@ -266,6 +267,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
+            boolean enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
 
             //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();
@@ -584,7 +586,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                             cellRv.setOnClickPendingIntent(android.R.id.text1, PendingIntent.getActivity(context, 0, intent,
                                     PendingIntentImmutable));
 
-                            cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+                            if (enabledFillDays || inMonth) {
+                                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+                            }
                             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
 
                             //Цвет дня
@@ -700,6 +704,8 @@ public class WidgetCalendar extends AppWidgetProvider {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
         }
     }
 

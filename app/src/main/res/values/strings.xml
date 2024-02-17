@@ -820,7 +820,8 @@
     <string name="widget_config_layout_description">How many months to display</string>
     <string name="widget_config_month_events_sources_label">Sources of holidays and events</string>
     <string name="widget_config_month_events_sources_description">"Sources to determine type of day: working day, day off, holiday.
-Long click on item to select color"</string>
+Long click on item to select color.
+Additional sources (files, calendars) can be specified in Settings->Event setup->Holidays"</string>
     <string name="widget_config_month_shift_title">Starting month</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
@@ -880,6 +881,7 @@ Long click on item to select color"</string>
         <item>Month title</item>
         <item>Year</item>
         <item>Weekdays labels</item>
+        <item>Days before and after month</item>
         <item>External side margins</item>
     </string-array>
 
@@ -1011,6 +1013,7 @@ Long click on item to select color"</string>
     <string name="stats_speed_calendar"><![CDATA[<li>calendar scanning: %1$s msec]]></string>
     <string name="stats_speed_files"><![CDATA[<li>files scanning: %1$s msec]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>dates computing: %1$s msec]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>widgets updating: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Counters:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>events total: %1$d]]></string>
@@ -1832,7 +1835,7 @@ Long click on item to select color"</string>
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4,01+02,0,,,,,,,,</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
@@ -2014,10 +2017,12 @@ Long click on item to select color"</string>
     <string name="widget_config_elements_year" translatable="false">4</string>
     <string name="widget_config_elements_weeks" translatable="false">2</string>
     <string name="widget_config_elements_margins" translatable="false">3</string>
+    <string name="widget_config_elements_fill_days" translatable="false">5</string>
     <string-array name="widget_config_elements_values" translatable="false">
         <item>@string/widget_config_elements_month</item>
         <item>@string/widget_config_elements_year</item>
         <item>@string/widget_config_elements_weeks</item>
+        <item>@string/widget_config_elements_fill_days</item>
         <item>@string/widget_config_elements_margins</item>
     </string-array>
 

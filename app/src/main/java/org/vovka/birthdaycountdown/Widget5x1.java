@@ -17,9 +17,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 // На 1-7 событий масштабируемый
 public class Widget5x1 extends AppWidgetProvider {
@@ -29,6 +29,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
     private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
+        long statCurrentModuleStart = System.currentTimeMillis();
         ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
@@ -84,6 +85,8 @@ public class Widget5x1 extends AppWidgetProvider {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
         }
 
     }

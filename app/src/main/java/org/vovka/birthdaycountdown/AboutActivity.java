@@ -146,6 +146,8 @@ public class AboutActivity extends AppCompatActivity {
                         sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                     if (eventsData.statTimeGetFileEvents > 0)
                         sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                    if (eventsData.statTimeUpdateWidgets > 0)
+                        sb.append(getString(R.string.stats_speed_widgets, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeUpdateWidgets)), eventsData.statTimeUpdateWidgets > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                     sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                 } catch (Exception e) { /**/ }
                 sb.append(Constants.HTML_UL_END);

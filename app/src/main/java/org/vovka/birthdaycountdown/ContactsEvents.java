@@ -388,6 +388,7 @@ class ContactsEvents {
     long statTimeGetFileEvents = 0;
     long statTimeGetHolidayEvents = 0;
     long statTimeComputeDates = 0;
+    long statTimeUpdateWidgets = 0;
     long statLastComputeDates = 0;
     long statLastSearchSuggestion = 0;
     int statContactsEventCount = 0;
@@ -5203,6 +5204,7 @@ class ContactsEvents {
 
         if (context == null) return;
         AtomicInteger countSentRequests = new AtomicInteger();
+        statTimeUpdateWidgets = 0;
 
         //Посылаем сообщения на обновление виджетов
         try {
@@ -8127,7 +8129,8 @@ class ContactsEvents {
                             resources.getString(R.string.events_scope_hidden),
                             resources.getString(R.string.events_scope_silenced),
                             resources.getString(R.string.events_scope_xdays),
-                            resources.getString(R.string.events_scope_unrecognized)).get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END)
+                            resources.getString(R.string.events_scope_unrecognized),
+                            resources.getString(R.string.events_scope_favorite)).get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END)
             );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 return result;
@@ -8312,7 +8315,7 @@ class ContactsEvents {
 
     boolean isContextHelpAvailable() {
 
-        return !Locale.getDefault().getLanguage().equals(resources.getString(R.string.pref_Language_uk));
+        return true; //!Locale.getDefault().getLanguage().equals(resources.getString(R.string.pref_Language_uk));
 
     }
 
@@ -8717,6 +8720,9 @@ class ContactsEvents {
 
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
+    /**
+     * day - date in yyyy-MM-dd format
+     * */
     List<DayType> getDayTypes(@NonNull String day, @NonNull List<String> fromPacks) {
         try {
 
@@ -8724,8 +8730,10 @@ class ContactsEvents {
             for (String packId: fromPacks) {
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
-                if (preferences_DaysTypes.containsKey(key) || preferences_DaysTypes.containsKey(key_noYear)) {
+                if (preferences_DaysTypes.containsKey(key)){
                     types.add(new DayType(packId, preferences_DaysTypes.get(key)));
+                } else if (preferences_DaysTypes.containsKey(key_noYear)) {
+                    types.add(new DayType(packId, preferences_DaysTypes.get(key_noYear)));
                 }
             }
             return types;
@@ -8752,8 +8760,8 @@ class ContactsEvents {
                     String[] eventsPack = getResources().getStringArray(packId);
                     if (eventsPack.length > 1) {
                         final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        if (!preferences_DaysTypes.containsKey(packHash)) {
-                            Log.i("HOLIDAY", eventsPack[0]);
+                        if (!preferences_DaysTypes.containsKey(packHash) && preferences_HolidayEvent_ids.contains(packHash)) {
+                            Log.i("HOLIDAY", eventsPack[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                             for (int i = 1; i < eventsPack.length; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
@@ -8778,7 +8786,7 @@ class ContactsEvents {
                 final String packHash = getHash(Constants.eventSourceFilePrefix + file);
                 if (!preferences_DaysTypes.containsKey(packHash)) {
                     String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    Log.i("FILE", fileDetails[0]);
+                    Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                     String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
                     if (eventsArray[0].isEmpty()) {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
@@ -8804,36 +8812,38 @@ class ContactsEvents {
             for (String eventLine: days) {
                 String day = eventLine.trim();
 
-                if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+                if (day.isEmpty() || day.startsWith(Constants.STRING_HASH) || day.startsWith(Constants.STRING_DSLASH))
                     continue;
 
-                final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                if (indexComma == -1) continue;
+                final int indexComma = day.indexOf(Constants.STRING_COMMA);
+                if (indexComma == -1) {
+                    ToastExpander.showInfoMsg(getContext().getApplicationContext(), resources.getString(R.string.msg_event_parse_error, day));
+                    continue;
+                }
 
-                final int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                final int indexFirstSpace = day.indexOf(Constants.STRING_SPACE);
                 String flags;
                 if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
-                    flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                    flags = day.substring(indexComma + 1, indexFirstSpace);
                 } else {
-                    flags = eventLine.substring(indexComma + 1);
+                    flags = day.substring(indexComma + 1);
                 }
 
                 Date dateEvent = null;
-                String eventDateString = eventLine.substring(0, indexComma);
-
+                String eventDateString = day.substring(0, indexComma);
 
                 try {
                     dateEvent = sdf_DDMMYYYY.parse(eventDateString);
-                } catch (ParseException e1) {
+                } catch (Exception e1) {
                     try {
                         dateEvent = sdf_india.parse(eventDateString);
-                    } catch (ParseException e2) {
+                    } catch (Exception e2) {
                         try {
                             dateEvent = sdf_uk.parse(eventDateString);
-                        } catch (ParseException e3) {
+                        } catch (Exception e3) {
                             try {
                                 dateEvent = sdf_java.parse(eventDateString);
-                            } catch (ParseException e4) {
+                            } catch (Exception e4) {
                                 //Не получилось распознать
                             }
                         }
@@ -8846,9 +8856,10 @@ class ContactsEvents {
                     } else {
                         preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
                     }
+                } else {
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));
                 }
             }
-            preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -8867,7 +8878,7 @@ class ContactsEvents {
                 if (!preferences_DaysTypes.containsKey(calKey)) {
                     for (String calId: preferences_HolidayEvent_calendars) {
                         if (getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
-                            Log.i("CALENDAR", calId);
+                            Log.i("CALENDAR", calId + Constants.STRING_PARENTHESIS_OPEN + calHash + Constants.STRING_PARENTHESIS_CLOSE);
                             if (calIDs.length() > 0)
                                 calIDs.append(" OR " + CalendarContract.Events.CALENDAR_ID + " = ");
                             calIDs.append(calId);
@@ -8939,8 +8950,7 @@ class ContactsEvents {
 
             long statCurrentModuleStart = System.currentTimeMillis();
 
-            Set<String> eventsPacksIds = preferences_HolidayEvent_ids;
-            if (eventsPacksIds.isEmpty()) return false;
+            if (preferences_HolidayEvent_ids.isEmpty()) return false;
             final TreeMap<Integer, String> userData = new TreeMap<>();
             Calendar now = new GregorianCalendar();
 
@@ -8951,8 +8961,8 @@ class ContactsEvents {
 
                     String[] eventsPack = getResources().getStringArray(packId);
                     if (eventsPack.length > 1) {
-                        final String packHash = getHash(eventsPack[0]);
-                        if (eventsPacksIds.contains(packHash)) {
+                        final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        if (preferences_HolidayEvent_ids.contains(packHash)) {
 
                             for (int i = 1; i < eventsPack.length; i++) {
                                 String eventsArray = eventsPack[i];

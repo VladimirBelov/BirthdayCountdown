@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -23,6 +24,8 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListAdapter;
@@ -512,6 +515,38 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_widget_config, menu);
+
+        MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
+        if (itemHelp != null) {
+            itemHelp.setVisible(eventsData.isContextHelpAvailable());
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+
+        final int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_help_widgets) {
+
+            Intent intent = new Intent(this, FAQActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets));
+            try {
+                startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException e) { /**/ }
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("DiscouragedApi")

@@ -384,8 +384,11 @@
     <string name="pref_CustomEvents_Death_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Події з такими мітками будуть ідентифіковані як річниці смерті (через кому)</string>
 
+    <string name="pref_CustomEvents_Other_title">Iнші події</string>
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Події з такими мітками будуть ідентифіковані як інші події (через кому)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Свята</string>
 
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
@@ -806,7 +809,8 @@
     <string name="widget_config_layout_description">Скільки місяців відображати</string>
     <string name="widget_config_month_events_sources_label">Джерела свят і подій</string>
     <string name="widget_config_month_events_sources_description">"Джерела для визначення типу дня: робочий, вихідний, святковий.
-Довге клацання на елементі для вибору кольору"</string>
+Довге клацання на елементі для вибору кольору.
+Додаткові джерела (файли, календарі) можна вказати в Налаштування->Налаштування подій->Свята"</string>
     <string name="widget_config_month_shift_title">Місяць початку</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Посада:</string>
@@ -866,6 +870,7 @@
         <item>Назва місяця</item>
         <item>Рік</item>
         <item>Мітки днів тижня</item>
+        <item>Дні до і після місяця</item>
         <item>Зовнішні бічні поля</item>
     </string-array>
 

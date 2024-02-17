@@ -384,8 +384,11 @@
     <string name="pref_CustomEvents_Death_Labels_title">Rótulos de eventos</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Eventos com esses rótulos serão identificados como aniversários de falecimento (por vírgula)</string>
 
+    <string name="pref_CustomEvents_Other_title">Outros eventos</string>
     <string name="pref_CustomEvents_Other_Labels_title">Rótulos de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Eventos com esses rótulos serão identificados como outros eventos (por vírgula)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Feriados</string>
 
     <string name="pref_CustomEvents_Custom_title">Evento definido pelo usuário</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Legenda do evento</string>
@@ -806,7 +809,8 @@
     <string name="widget_config_layout_description">Quantos meses exibir</string>
     <string name="widget_config_month_events_sources_label">Fontes de feriados e eventos</string>
     <string name="widget_config_month_events_sources_description">"Fontes para determinar o tipo de dia: dia útil, dia de folga, feriado.
-Clique longamente no item para selecionar a cor"</string>
+Clique longamente no item para selecionar a cor.
+Fontes adicionais (arquivos, calendários) podem ser especificadas em Configurações->Configuração de eventos->Feriados"</string>
     <string name="widget_config_month_shift_title">Mês de início</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Posição:</string>
@@ -866,6 +870,7 @@ Clique longamente no item para selecionar a cor"</string>
         <item>Título do mês</item>
         <item>Ano</item>
         <item>Rótulos de dias da semana</item>
+        <item>Dias antes e depois do mês</item>
         <item>Margens laterais externas</item>
     </string-array>
 

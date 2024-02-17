@@ -384,8 +384,11 @@
     <string name="pref_CustomEvents_Death_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Eventos con estas etiquetas se identificarán como aniversarios de muerte (separados por coma)</string>
 
+    <string name="pref_CustomEvents_Other_title">Otros eventos</string>
     <string name="pref_CustomEvents_Other_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Eventos con estas etiquetas se identificarán como otros eventos (separados por coma)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Vacaciones</string>
 
     <string name="pref_CustomEvents_Custom_title">Evento personalizado</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Título del evento</string>
@@ -806,7 +809,8 @@
     <string name="widget_config_layout_description">Cuántos meses mostrar</string>
     <string name="widget_config_month_events_sources_label">Fuentes de días festivos y eventos</string>
     <string name="widget_config_month_events_sources_description">"Fuentes para determinar el tipo de día: día laborable, día libre, feriado.
-Haga clic largo en el elemento para seleccionar el color"</string>
+Haga clic largo en el elemento para seleccionar el color.
+Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraciones->Configuración de eventos->Vacaciones"</string>
     <string name="widget_config_month_shift_title">Mes de inicio</string>
     <string name="widget_config_month_shift_label">Cambio:</string>
     <string name="widget_config_starting_month_position_label">Posición:</string>
@@ -866,6 +870,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
         <item>Título del mes</item>
         <item>Año</item>
         <item>Etiquetas de días laborables</item>
+        <item>Días antes y después del mes</item>
         <item>Márgenes laterales externos</item>
     </string-array>
 
