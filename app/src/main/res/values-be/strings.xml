@@ -1,0 +1,1231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 20.02.2024, 12:16
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 20.02.2024, 12:16
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Дні нараджэння і падзеі</string>
+    <string name="window_settings">Наладкі</string>
+    <string name="window_widget_settings">Наладкі виджэту</string>
+    <string name="window_about">Аб праграме</string>
+    <string name="window_faq">Пытанні і адказы</string>
+    <string name="window_search_hints">Подказкі для пошуку</string>
+
+    <string name="activity_title_events_scope">Фільтр</string>
+
+    <string name="shortcut_notify">Паведамленні</string>
+    <string name="shortcut_quiz">Віктарына</string>
+    <string name="shortcut_settings">Наладкі</string>
+
+    <string name="menu_add_event">Дадаць падзею</string>
+    <string name="menu_add_event_to_contact">Дадаць падзею ў кантакт…</string>
+    <string name="menu_add_event_to_calendar">Дадаць падзею ў каляндар…</string>
+    <string name="menu_open_file_with_events">Адчыніць файл з падзеямі…</string>
+    <string name="menu_settings">Наладкі</string>
+    <string name="menu_refresh">Абнавіць</string>
+    <string name="menu_search">Пошук</string>
+    <string name="menu_quiz">Віктарына</string>
+    <string name="menu_filter_events">Фільтр…</string>
+    <string name="menu_hints">Падказкі для пошука…</string>
+    <string name="menu_context_edit_contact">Рэдагаваць кантакт</string>
+    <string name="menu_context_create_contact">Стварыць кантакт…</string>
+    <string name="menu_context_edit_event">Адкрыць падзею ў календары</string>
+    <string name="menu_context_event_info">Дадзеныя аб падзеі</string>
+    <string name="menu_context_hide_event">Схаваць падзею</string>
+    <string name="menu_context_unhide_event">Вярнуць падзею</string>
+    <string name="menu_context_remind">Нагадаць…</string>
+    <string name="menu_context_remind_1h">Праз 1 гадзіну</string>
+    <string name="menu_context_remind_morning">Заўтра раніцай</string>
+    <string name="menu_context_anniversary_list">Усе гадавіны вяселляў</string>
+    <string name="menu_context_silent_event">Не паведамляць</string>
+    <string name="menu_context_unsilent_event">Вярнуць паведамленне</string>
+    <string name="menu_context_merge_event">Далучыць да кантакту…</string>
+    <string name="menu_context_unmerge_event">Адлучыць ад кантакту</string>
+    <string name="menu_context_remerge_event">Далучыць да іншага кантакту…</string>
+    <string name="menu_context_open_url">Адкрыць Web спасылку</string>
+    <string name="menu_context_share">Падзяліцца падзеяй…</string>
+    <string name="menu_context_share_as_image">як выява</string>
+    <string name="menu_context_share_as_text">как тэкст</string>
+    <string name="menu_context_xDaysEvent_add">Дадаць лічыльнік дзён…</string>
+    <string name="menu_context_xDaysEvent_edit">Лічыльнік дзён…</string>
+    <string name="menu_context_set_eventype">Вызначыць тып падзеі…</string>
+    <string name="menu_context_favorites_add">Дадаць у абранае</string>
+    <string name="menu_context_favorites_remove">Выдаліць з абраных</string>
+    <string name="menu_ok">Добра</string>
+    <string name="menu_help">Даведка</string>
+    <string name="menu_help_events_calendar">Падзеі календара</string>
+    <string name="menu_help_events_files">Падзеі з лакальных файлаў</string>
+
+    <string name="msg_no_access_contacts">Адсутнічае доступ да кантактаў</string>
+    <string name="msg_no_events">Падзеі не знойдзены</string>
+    <string name="msg_no_files_selected">"  - не абраны -"</string>
+    <string name="msg_file_open_error">"Памылка адкрыцця файла: "</string>
+    <string name="msg_file_access_write_error">Не пашчасціла атрымаць доступ на рэдагаванне файла. Перавылучыце файл у наладах праграмы</string>
+    <string name="msg_file_access_read_error">"Не пашчасціла атрымаць доступ на чытанне файла: %1$s"</string>
+    <string name="msg_before_event_prefix">"праз "</string>
+    <string name="msg_after_event_prefix">""</string>
+    <string name="msg_after_event_postfix">" таму"</string>
+    <string name="msg_today">Сёння</string>
+    <string name="msg_tomorrow">Заўтра</string>
+    <string name="msg_yesterday">Учора</string>
+    <string name="msg_before_yesterday">Пазаўчора</string>
+    <string name="msg_day_after_tomorrow">Паслязаўтра</string>
+    <string name="msg_stats_prefix">"падзей: "</string>
+    <string name="msg_stats_filtered_prefix">"падзей знойдзена: "</string>
+    <string name="msg_stats_hidden_prefix">"утоеных падзей: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"утоеных падзей знойдзена: "</string>
+    <string name="msg_stats_silenced_prefix">"падзей без паведамлення: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"падзей без паведамлення знойдзена: "</string>
+    <string name="msg_stats_xdays_prefix">"лічыльнікаў дзён: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"лічыльнікаў дзён знойдзена: "</string>
+    <string name="msg_stats_unrecognized_prefix">"нераспазнаных падзей: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"нераспазнаных падзей знойдзена: "</string>
+    <string name="msg_stats_favorite_prefix">"абраных падзей: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"абраных падзей знойдзена: "</string>
+    <string name="msg_label_hidden">Утоена</string>
+    <string name="msg_label_silenced">Без паведамлення</string>
+    <string name="msg_color_parse_error">Памылка распазнання колеру!</string>
+    <string name="msg_date_parse_error">"Памылка распазнання даты: "</string>
+    <string name="msg_event_parse_error">"Памылка распазнання падзеі: '%1$s'"</string>
+    <string name="msg_type_parse_error">"Тып падзеі не вызначаны: '%1$s' для '%2$s'"</string>
+    <string name="msg_jump_to_event_error">Падзея не знойдзена! Уключыце больш тыпаў падзей у наладах праграмы</string>
+    <string name="msg_errors_total">"Усяго памылак: "</string>
+    <string name="msg_errors_details">"акаўнт=%1$s, тып падзеі=%2$s, дата=%3$s"</string>
+    <string name="msg_all">Усе</string>
+    <string name="msg_none">Ніякія</string>
+
+    <string name="msg_plural_postfix">а</string>
+
+    <string name="msg_after_year_prefix_1">" год"</string>
+    <string name="msg_after_year_prefix_2_3_4">" гады"</string>
+    <string name="msg_after_year_prefix_1_">" год"</string>
+    <string name="msg_after_year_prefix_5_20">" гадоў"</string>
+    <string name="msg_after_year_bc">" да н.э."</string>
+
+    <string name="msg_after_month_prefix_1">" месяц"</string>
+    <string name="msg_after_month_prefix_2_3_4">" месяцы"</string>
+    <string name="msg_after_month_prefix_1_">" месяц"</string>
+    <string name="msg_after_month_prefix_5_20">" месяцаў"</string>
+
+    <string name="msg_after_day_prefix_1">" дзень"</string>
+    <string name="msg_after_day_prefix_2_3_4">" дні"</string>
+    <string name="msg_after_day_prefix_1_">" дзень"</string>
+    <string name="msg_after_day_prefix_5_20">" дзён"</string>
+
+    <string name="msg_after_day_prefix_short">" дз."</string>
+
+    <string name="msg_age_now">"Зараз: "</string>
+    <string name="msg_age_was">"Было: "</string>
+    <string name="msg_age_could_be_now">"Было бы зараз: "</string>
+    <string name="msg_age_will_be">"Будзе: "</string>
+    <string name="msg_age_could_be">"Было бы: "</string>
+    <string name="msg_label_search">Увядзіце частку П.І.Імя па бацьку, тып кантакту, месца працы, пасада, даты (праз коску):</string>
+    <string name="msg_hint_search">Пошукавы запыт</string>
+    <string name="msg_hint_global_search">Пошук падзей</string>
+    <string name="msg_notifications_soon_no_events">Няма падзей у абраныя дні</string>
+    <string name="msg_notifications_count">"Падзей хутка - "</string>
+    <string name="msg_notifications_soon">"Падзей - "</string>
+    <string name="msg_notifications_disabled">Паведамленні выключаны\n</string>
+    <string name="msg_exact_alarms_disabled">Паведамленні ў дакладны час забаронены\n</string>
+    <string name="msg_no_events_hint">Не знойдзена ніводнай падзеі. Для адлюстравання падзей яны павінны быць запоўнены ў картках Вашых кантактаў ці ў абраных календарах ці ў абраных файлах</string>
+    <string name="msg_no_accounts_hint">Уліковыя запісы не знойдзены альбо Вы не далі да іх доступу</string>
+    <string name="msg_no_calendars_hint">Даступныя календары не знойдзены альбо Вы не далі да іх доступу</string>
+    <string name="msg_no_events_check_prefs">"Няма падзей для адлюстравання. Праверце ў наладах праграмы пункт \"%1$s\" у раздзеле \"%2$s\""</string>
+    <string name="msg_no_access_storage_hint">Няма доступу да вонкавага сховішча. Праверце дазволы праграмы</string>
+    <string name="msg_welcome_title">Сардэчна запрашаем!</string>
+    <string name="msg_welcome_text">Дзякуй, што ўсталявалі гэту праграму. Хоць большасць функцый наладжана максімальнае інфарматыўна і мінімальна надакучлівае, рэкамендуецца праверыць налады праграмы. Прыкладам, там можна ўключыць паведамленні пра хуткія падзеі альбо задаць параметры для віджэтаў. Прыемнага карыстання!</string>
+    <string name="msg_new_version_title">"Змены ў версіі %1$s:"</string>
+    <string name="msg_snoozed_until">"Адкладзена да %1$s"</string>
+    <string name="msg_notify_time">"Паведамленне ўсталявана на %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Выдаліць усе фільтры?</string>
+    <string name="msg_filter_clean_confirmation">Ачысціць усе фільтры ад спасылак на кантакты альбо падзеі, якія не існуюць?</string>
+    <string name="msg_filter_clean_silenced_result">"Выдалены адключаныя падзеі для адсутных кантактаў і падзей календара: "</string>
+    <string name="msg_filter_clean_hidden_result">"Выдалены ўтоеныя падзеі для адсутных кантактаў і падзей календара: "</string>
+    <string name="msg_filter_clean_XDays_result">"Выдалены лічыльнікі дзён для падзей якія не існуюць: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"Ніводнага лічыльніка не выдалена. Калі падзея адсутнічае ў спісе, праверце тыпы падзей, уключаныя для паказу"</string>
+    <string name="msg_account_info">"Падзея з акаўнта \"%1$s\""</string>
+    <string name="msg_calendar_info">"Падзея з календара \"%1$s\""</string>
+    <string name="msg_file_info">"Падзея з файла \"%1$s\""</string>
+    <string name="msg_source_info">"Падзея з \"%1$s\""</string>
+    <string name="msg_title_confirmation">Пацверджанне</string>
+    <string name="msg_title_success">Дзеянне выканана</string>
+    <string name="msg_title_settings">Захаваныя налады</string>
+    <string name="msg_no_selection">Пусты выбар! Трэба выбраць што-небудзь</string>
+    <string name="msg_notifications_were_enabled">"Паведамленні былі ўключаны\n"</string>
+    <string name="msg_notifications_were_disabled">"Паведамленні былі выключаны\n"</string>
+    <string name="msg_widget_prefs_removed">"Налада для віджэта %1$s была выдалена"</string>
+    <string name="msg_widget_prefs_saved">"Захавана налада віджэта #%1$s:\n#%2$s"</string>
+    <string name="msg_ringtone">"Мелодыя: "</string>
+    <string name="msg_deleted_channel">"Канал паведамленняў #%s быў выдалены\n"</string>
+    <string name="msg_created_channel">"Канал паведамленняў #%s быў створаны\n"</string>
+    <string name="msg_sent_widgets_update_request">Абнаўленне віджэтаў…</string>
+    <string name="msg_next_notification">"Наступнае паведамленне: %1$s\n"</string>
+    <string name="msg_next_widgetupdate">"Наступнае абнаўленне віджэтаў: %1$s\n"</string>
+    <string name="msg_no_action">Няма дзеянняў для падзеі</string>
+    <string name="msg_icon_changed">"Усталяваны абразок: %1$s"</string>
+    <string name="msg_created_quiz_channel">Створаны канал паведамленняў для віктарыны</string>
+    <string name="msg_prefs_import_clear_confirmation">Выдаліць усе захаваныя налады перад імпартаваннем новых?</string>
+    <string name="msg_prefs_import_unknown">"Невядомая налада: %1$s"</string>
+    <string name="msg_prefs_import_error">"Памылка імпарту: %1$s"</string>
+    <string name="msg_eventtype_select_title">Абярыце тып падзеі</string>
+    <string name="msg_eventtype_label_set">"Метка ўсталявана: %1$s"</string>
+    <string name="msg_eventtype_label_added">"Метка дададзена: %1$s"</string>
+    <string name="msg_eventtype_label_absent">У падзеі адсутнічае метка!</string>
+    <string name="msg_debug_activity_recreate">"Перастварэнне асноўнай актыўнасці з-за памылкі: %1$s"</string>
+
+    <string name="pref_Notifications_Notification_Channel_Name">Маючыя адбыцца падзеі</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Паказваць паведамлення аб маючых адбыцца падзеях</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Віктарына</string>
+
+    <string name="hint_ContactIcon">Фота</string>
+    <string name="hint_Name">П.І.Імя па бацьку</string>
+    <string name="hint_Age">Гадавіна</string>
+    <string name="hint_Date">Дата</string>
+    <string name="hint_EventDistance">Да падзеі</string>
+    <string name="hint_EventDetails">Дэталі падзеі</string>
+    <string name="hint_VersionNumberDetails">Дэталі нумара версіі</string>
+    <string name="hint_EventIcon">Абразок</string>
+    <string name="hint_SearchPanel">Панэль пошуку</string>
+    <string name="hint_AlertDialog">Дыялог абвяшчэння</string>
+    <string name="hint_AlertDialogIcon">Абразок дыялогу</string>
+    <string name="hint_DragItem">Перацягвальны элемент</string>
+    <string name="hint_Version_History">Гісторыя версій</string>
+    <string name="hint_Rate_PlayMarket">Ацаніць праграму ў Google Play</string>
+    <string name="hint_Rate_AppGallery">Ацаніць праграму ў HUAWEI AppGallery</string>
+    <string name="hint_Color">Значэнне ў ARGB</string>
+    <string name="hint_widget_config_events_count_label">Усталяванне колькасці падзей у шырыню</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_yes">Так</string>
+    <string name="button_no">Не</string>
+    <string name="button_cancel">Адмена</string>
+    <string name="button_reset">Скінуць</string>
+    <string name="button_remove">Выдаліць</string>
+    <string name="button_choose">Выбраць</string>
+    <string name="button_rate">Ацаніць</string>
+    <string name="button_mail">Напісаць</string>
+    <string name="button_discuss">Абмеркаваць</string>
+    <!--<string name="button_open_addressbook">Адкрыць адрасную кнігу…</string>-->
+    <string name="button_open_app_settings">Адкрыць налады…</string>
+    <string name="button_open_version_history">Гісторыя версій</string>
+    <string name="button_all">Усе</string>
+    <string name="button_snooze">Напомніць</string>
+    <string name="button_hide">Схаваць</string>
+    <string name="button_silent">Не паведамляць</string>
+    <string name="button_dial">Патэлефанаваць</string>
+    <string name="button_question">Задаць пытанне</string>
+    <string name="button_close">Зачыніць</string>
+    <string name="button_prefs">Налады</string>
+    <string name="button_off">Выкл</string>
+    <string name="button_open">Адкрыць</string>
+    <string name="button_share">Падзяліцца</string>
+    <string name="button_rgb">RGB колер</string>
+
+    <string name="events_scope_not_hidden">Усе не схаваныя (%1$d)</string>
+    <string name="events_scope_all">Усе (%1$d)</string>
+    <string name="events_scope_hidden">Схаваныя (%1$d)</string>
+    <string name="events_scope_hidden_dead">Схаваныя (%1$d, захавана %2$d)</string>
+    <string name="events_scope_silenced">Без паведамлення (%1$d)</string>
+    <string name="events_scope_silenced_dead">Без паведамлення (%1$d, захавана %2$d)</string>
+    <string name="events_scope_xdays">Лічыльнікі дзён (%1$d)</string>
+    <string name="events_scope_unrecognized">Не распазнана (%1$d)</string>
+    <string name="events_scope_favorite">Абраныя (%1$d)</string>
+    <string name="events_scope_xdays_dead">Лічыльнікі дзён (%1$d, захавана %2$d)</string>
+    <string name="events_scope_clear">Выдаліць фільтры</string>
+    <string name="events_scope_clean">Выдаліць ў фільтрах сувязі якія не існуюць</string>
+
+    <string name="event_type_birthday">Дзень нараджэння</string>
+    <string name="event_type_anniversary">Гадавіна вяселля</string>
+    <string name="event_type_other">Іншая падзея</string>
+    <string name="event_type_holiday">Свята</string>
+    <string name="event_type_death">Гадавіна смерці</string>
+    <string name="event_type_crowning">Вянчанне</string>
+    <string name="event_type_nameday">Імяніны</string>
+    <string name="event_type_calendar">Падзея календара</string>
+    <string name="event_type_file">Падзея з файла</string>
+    <string name="event_type_unrecognized">Нераспазнаная падзея</string>
+
+    <string name="account_type_local">Лакальны акаўнт</string>
+
+    <string name="appwidget_text">Загрузка…</string>
+    <string name="appwidget_label_1_7">На 1–7 падзей</string>
+    <string name="appwidget_desc_1_7">Гарызантальны фота віджэт які пашыраецца</string>
+    <string name="appwidget_label_1">На 1 падзею</string>
+    <string name="appwidget_desc_1">Фота віджэт на 1 падзею які пашыраецца ва ўсе бакі</string>
+    <string name="appwidget_label_5">На 5 падзей</string>
+    <string name="appwidget_desc_5">Гарызантальны фота віджэт роўна на 5 падзей</string>
+    <string name="appwidget_label_List">Спіс падзей</string>
+    <string name="appwidget_desc_List">Вертыкальны спісавы віджэт з канструктарам выводнай інфармацыі пра падзею які пашыраецца</string>
+    <string name="appwidget_label_PhotoList">Спіс з фота</string>
+    <string name="appwidget_desc_PhotoList">Вертыкальны віджэт з фота і дэталямі падзеі які пашыраецца</string>
+    <string name="appwidget_label_Calendar">Каляндар</string>
+    <string name="appwidget_desc_Calendar">Віджэт календара на 1..12 месяцаў</string>
+    <string name="widget_Photo">Фота</string>
+    <string name="widget_FIO">П.І.Імя па бацьку</string>
+    <string name="widget_Date">Дата</string>
+    <string name="widget_Age">ГГ</string>
+    <string name="widget_TypeIcon">Тып</string>
+    <string name="widget_Distance">Да</string>
+    <string name="widget_msg_updated">"абноўлена: "</string>
+    <string name="widget_msg_events">"падзей: "</string>
+
+    <string name="pref_Common_title">Агульныя налады</string>
+    <string name="pref_Common_summary">Мова, колеравая тэма і іншыя карысныя налады</string>
+    <string name="pref_Language_title">Мова</string>
+    <string name="pref_Language_description">Мова інтэрфейсу і адлюстраваных дадзеных</string>
+    <string name="pref_Language_System">Мова сістэмы</string>
+    <string name="pref_Theme_title">Колеравая тэма</string>
+    <string name="pref_Theme_description">Колеравая тэма інтэрфейсу</string>
+    <string name="pref_Icon_title">Абразок праграмы</string>
+    <string name="pref_Icon_description">Выбраць абразок для праграмы</string>
+    <string name="pref_Accounts_title">Уліковыя запісы</string>
+    <string name="pref_Accounts_summary">Шукаць падзеі толькі ў гэтых уліковых запісах кантактаў</string>
+    <string name="pref_IconPack_title">Набор абразкоў</string>
+    <string name="pref_IconPack_description">Скарыстаць абраны набор абразкоў для адлюстравання сілуэтаў кантактаў, калі ў апошніх няма фота</string>
+    <string name="pref_MenuStyle_title">Кампактнае меню</string>
+    <string name="pref_MenuStyle_description">Скарыстаць кампактнае меню з некалькімі ўзроўнямі ўкладзенасці альбо разгорнутае меню з катэгорыямі</string>
+
+    <string-array name="pref_IconPack_entries">
+        <item>Стандартныя</item>
+        <item>Каляровыя</item>
+        <item>Чорна-белыя</item>
+        <item>Гарэзныя</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Вясна</item>
+        <item>Лета</item>
+        <item>Восень</item>
+        <item>Зіма</item>
+        <item>Шэрая</item>
+        <item>Чорная</item>
+    </string-array>
+
+    <string-array name="weekDays">
+        <item>"у нядзелю"</item>
+        <item>"у панядзелак"</item>
+        <item>"у аўторак"</item>
+        <item>"у сераду"</item>
+        <item>"у чацвер"</item>
+        <item>"у пятніцу"</item>
+        <item>"у суботу"</item>
+    </string-array>
+
+    <string-array name="weekDaysShort">
+        <item>ндз</item>
+        <item>пн</item>
+        <item>аўт</item>
+        <item>сер</item>
+        <item>чц</item>
+        <item>пт</item>
+        <item>сб</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_title">Налада падзей</string>
+    <string name="pref_CustomEvents_summary">Крыніцы падзей, класіфікацыя тыпаў, налада пазнак</string>
+    <string name="pref_CustomEvents_hint">Увядзіце назвы (праз коску)</string>
+    <string name="pref_CustomEvent_Caption_hint">Загаловак падзеі</string>
+
+    <string name="pref_CustomEvents_Sources_title">Крыніцы падзей</string>
+    <string name="pref_CustomEvents_Sources_summary">Скарыстаць гэтыя крыніцы для пошуку падзей розных тыпаў (тып паказаны ў самай падзеі альбо вызначаецца па назвах, уведзенымі ніжэй)</string>
+
+    <string name="pref_CustomEvents_Rules_title">Налады імпарту</string>
+    <string name="pref_CustomEvents_Rules_summary">Скарыстаць гэтыя налады пры імпарце падзей</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правілы распазнання імёнаў</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Правілы распазнання імёнаў кантактаў з загалоўкаў каляндарных падзей</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Увядзіце правілы распазнання імя кантакту з загалоўка каляндарнай падзеі. Некалькі правілаў падзяляюцца \"|\". Правіла павінна ўтрымваць тэг [name], акружаны іншым тэкстам (апцыйнае). Правіла \"[name]\" не павінна быць апошнім (калі іх некалькі):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Тэгі не знойдзены!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некарэктны фармат правіл! Падзельнікам служыць сімвал |</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Фармат імя для каляндарных падзей</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Кантакты ў каляндарных падзеях запісаны менавіта ў такім фармаце</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Фармат імя для файлавых падзей</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Кантакты ў падзеях з лакальных файлаў запісаны менавіта ў такім фармаце</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Нераспазнаныя падзеі</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Што рабіць з падзеямі, тып якіх не атрымалася распазнаць</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Усталяваць тып \'Іншая падзея\'</item>
+        <item>Усталяваць тып \'Нераспазнаная падзея\'</item>
+        <item>Прапусціць гэту падзею</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартныя назвы</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_summary">Скарыстаць стандартныя назвы для вызначэння дзён нараджэнняў</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як дні нараджэння (праз коску)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_summary">Паказваць дні нараджэння з абраных календароў</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Выкарыстаць год</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Выкарыстаць год з падзеі календара для разліку гадавін (не толькі дзень і месяц)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Паказваць дні нараджэння з абраных файлаў</string>
+
+    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартныя назвы</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння гадавін вяселляў</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гадавіны вяселляў (праз коску)</string>
+    <string name="pref_CustomEvents_Anniversary_List_title">Спіс</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">Усе іменныя гадавіны вяселляў (па гадах)</string>
+
+    <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартныя назвы</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння імянін</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як імяніны (праз коску)</string>
+
+    <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартныя назвы</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння вянчанняў</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як вянчанні (праз коску)</string>
+
+    <string name="pref_CustomEvents_Death_UseInternal_title">Стандартныя назвы</string>
+    <string name="pref_CustomEvents_Death_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння гадавін смерці</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гадавіны смерці (праз коску)</string>
+
+    <string name="pref_CustomEvents_Other_title">Іншыя падзеі</string>
+    <string name="pref_CustomEvents_Other_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як іншыя падзеі (праз коску)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Святы</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">Свае назвы</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікавацца як святы (па косцы)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Дзяржаўныя святы</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Паказаць гэтыя дзяржаўныя святы</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Календары</string>
+    <string name="pref_CustomEvents_Calendars_summary">Паказваць падзеі з абраных календароў</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Паказваць падзеі з абраных файлаў</string>
+
+    <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Запоўніце загаловак падзеі, каб уключыць яго выкарыстанне</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Назвы падзей</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гэта падзея (праз коску)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Выкарыстаць год</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">Выкарыстаць год для разліку гадавін (не толькі дзень і месяц)</string>
+
+    <string-array name="pref_Theme_entries">
+        <item>Карычневая</item>
+        <item>Аранжавая</item>
+        <item>Зялёная</item>
+        <item>Бірузовая</item>
+        <item>Блакітная</item>
+        <item>Індыга</item>
+        <item>Шэра-блакітная</item>
+        <item>Цёмна-шэрая</item>
+        <item>Чорная</item>
+    </string-array>
+
+    <string name="pref_List_EventTypes_title">Тыпы падзей</string>
+    <string name="pref_List_EventTypes_summary">Якія падзеі адлюстроўваць у спісе</string>
+
+    <string-array name="pref_EventTypes_entries">
+        <item>🎂 Дні нараджэння</item>
+        <item>💑 Гадавіны вяселляў</item>
+        <item>🗓️ Іншыя падзеі</item>
+        <item>🏖️ Святы</item>
+        <item>⏰ Карыстальніцкія падзеі</item>
+        <item>🏆 Круглыя даты (5K дзён)</item>
+    </string-array>
+
+    <string name="pref_List_SadPhoto_title">Жалобная стужка</string>
+    <string name="pref_List_SadPhoto_summary">Адзначаць фатаграфіі памерлых кантактаў жалобнай стужкай</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Ніколі</item>
+        <item>Толькі для адной падзеі</item>
+        <item>Для ўсіх падзей кантакту</item>
+    </string-array>
+
+    <string name="pref_EventList_title">Спіс падзей</string>
+    <string name="pref_EventList_summary">Налады адлюстравання агульнага спіса падзей</string>
+
+    <string name="pref_List_PrevEvents_title">Папярэднія падзеі</string>
+    <string name="pref_List_PrevEvents_summary">Паказваць папярэднія падзеі ўверсе спіса</string>
+
+    <string-array name="pref_List_PrevEvents_entries">
+        <item>Не паказваць</item>
+        <item>Учорашнія падзеі</item>
+        <item>Падзеі за 2 папярэднія дні</item>
+        <item>Падзеі за 3 папярэднія дні</item>
+        <item>Падзеі за 3 папярэднія дні, але не больш за адное</item>
+        <item>Падзеі за 3 папярэднія дні, але не больш за два</item>
+        <item>Адна папярэдняя падзея</item>
+        <item>Дзве папярэднія падзеі</item>
+        <item>Тры папярэднія падзеі</item>
+    </string-array>
+
+    <string name="pref_List_FontMagnify_title">Велічыня шрыфту</string>
+    <string name="pref_List_FontMagnify_summary">Велічыня шрыфту для элементаў падзеі</string>
+    <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
+    <string name="pref_List_FontMagnify_seek_distance">Тэрмін да падзеі:</string>
+    <string name="pref_List_FontMagnify_seek_name">Імя альбо загаловак падзеі:</string>
+    <string name="pref_List_FontMagnify_seek_details">Дэталі:</string>
+    <string name="pref_List_FontMagnify_seek_date">Дата:</string>
+    <string name="pref_List_FontMagnify_seek_age">Узрост:</string>
+
+    <string name="pref_Color_title">Колер:</string>
+    <string name="pref_Red_title">Чырвоны:</string>
+    <string name="pref_Blue_title">Сіні:</string>
+    <string name="pref_Green_title">Зялёны:</string>
+    <string name="pref_Alpha_title">Празрыстасць:</string>
+
+    <string name="pref_List_Style_title">Стыль адлюстравання спіса</string>
+    <string name="pref_List_Style_summary">Варыянты адлюстравання спіса падзей</string>
+
+    <string-array name="pref_List_Style_entries">
+        <item>Плоскі спіс</item>
+        <item>Карткі</item>
+    </string-array>
+
+    <string name="pref_List_PhotoStyle_title">Стыль фота</string>
+    <string name="pref_List_PhotoStyle_summary">Стыль фатаграфій кантактаў у спісе падзей</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Арыгінал</item>
+        <item>Трохі закругленае</item>
+        <item>Сярэдняе закругленае</item>
+        <item>Моцна закругленае</item>
+        <item>Круг</item>
+    </string-array>
+
+    <string name="pref_List_AgeFormat_title">Фармат гадавіны</string>
+    <string name="pref_List_AgeFormat_summary">Фармат адлюстравання гадавіны (ўзрост, які выконваецца)</string>
+
+    <string-array name="pref_List_AgeFormat_entries">
+        <item>Расшыфроўка ліку (дні, месяцы, гады)</item>
+        <item>Замяняць тысячы на \"K\" (5K, 10K)</item>
+        <item>Адлучаць тысячныя разрады</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Запаўненне колерам (фон)</string>
+    <string name="pref_List_Filling_summary">Від градыента для запаўнення колерам асобнай падзеі</string>
+
+    <string-array name="pref_List_Filling_entries">
+        <item>Без запаўнення</item>
+        <item>Злева направа</item>
+        <item>Справа налева</item>
+        <item>Зверху ўніз</item>
+        <item>Знізу ўверх</item>
+        <item>З цэнтра</item>
+        <item>У цэнтр</item>
+    </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Алгарытм вылічэння юбілеяў</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">Па якім прынцыпе лічыць дзень нараджэння юбілейным</string>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Кожныя 10 гадоў</item>
+        <item>Кожныя 5 гадоў</item>
+        <item>Гнутка (1, 3, 5, 10, 14, 18, 21, 30, 45, потым кожныя 5 гадоў)</item>
+    </string-array>
+
+    <string name="pref_List_NameFormat_title">Фармат для імя кантакту</string>
+    <string name="pref_List_NameFormat_description">Наперадзе імя ці прозвішча</string>
+
+    <string-array name="pref_List_NameFormat_entries">
+        <item>Імя Імя па бацьку Прозвішча</item>
+        <item>Прозвішча Імя Імя па бацьку</item>
+    </string-array>
+
+    <string name="pref_List_DateFormat_title">Фармат даты</string>
+    <string name="pref_List_DateFormat_description">Фармат для дат, што адлюстроўваюцца ў спісе падзей і віджэтах</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>У адпаведнасці з мовай</item>
+        <item>ДД.ММ.ГГГГ</item>
+        <item>ММ.ДД.ГГГГ</item>
+        <item>ДД/ММ/ГГГГ</item>
+        <item>ММ/ДД/ГГГГ</item>
+        <item>ДД МММ ГГГГ</item>
+        <item>Д ММММ ГГГГ</item>
+    </string-array>
+
+    <string name="pref_List_CustomCaption_title">Свой загаловак для спіса падзей</string>
+    <string name="pref_List_CustomCaption_summary">Свой уласны загаловак для асноўнага спіса падзей (падтрымваюцца 🎂 эмаджы)</string>
+    <string name="pref_List_CustomCaption_hint">Увядзіце загаловак</string>
+
+    <string name="pref_List_CustomTodayEventCaption_title">Свой загаловак для падзеі сёння</string>
+    <string name="pref_List_CustomTodayEventCaption_summary">Свой загаловак для падзеі сёння замест надпісу \"сёння\" (падтрымваюцца 🎂 эмаджы)</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Увядзіце загаловак</string>
+
+    <string name="pref_List_FastScroll_title">Хуткая пракрутка</string>
+    <string name="pref_List_FastScroll_summary">Уключыць хуткую пракрутку спіса падзей, дакранаючыся правай часткі экрана</string>
+
+    <string name="pref_Female_Names_title">Жаночыя імёны</string>
+    <string name="pref_Female_Names_description">Дадатковыя жаночыя імёны для карэктнага адлюстравання піктаграм кантактаў без фота і вызначэння поўных імёнаў</string>
+    <string name="pref_Female_Names_hint">Увядзіце жаночыя імёны (праз коску)</string>
+
+    <string name="pref_Male_Names_title">Мужчынскія імёны</string>
+    <string name="pref_Male_Names_description">Дадатковыя мужчынскія імёны для карэктнага адлюстравання піктаграм кантактаў без фота і вызначэння поўных імёнаў</string>
+    <string name="pref_Male_Names_hint">Увядзіце мужчынскія імёны (праз коску)</string>
+
+    <string name="pref_List_EventInfo_title">Дэталі падзеі</string>
+    <string name="pref_List_EventInfo_summary">Якія дадатковыя дэталі падзеі паказваць</string>
+
+    <string-array name="pref_List_EventInfo_entries">
+        <item>Фота</item>
+        <item>Пасада</item>
+        <item>Арганізацыя</item>
+        <item>Псеўданім</item>
+        <item>Найменне падзеі</item>
+        <item>Выточная назва падзеі</item>
+        <item>Крыніца падзеі</item>
+        <item>Абразок тыпу падзеі</item>
+        <item>Абразок абранага кантакту</item>
+        <item>Узрост</item>
+        <item>Знак задыяка</item>
+        <item>Жывёла ва ўсходнім календары</item>
+        <item>Web спасылка</item>
+        <item>Нататкі ці апісанне</item>
+        <item>Тып акаўнта і захаваная дата</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">Дзеянне на націск</string>
+    <string name="pref_List_OnClick_summary">Што рабіць пры націску на падзею</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Адкрыць картку кантакту, калі не - падзея календара, калі не - web спасылку</item> <!--Кантакт, каляндар, спасылка-->
+        <item>Адкрыць падзею календара, калі не - картку кантакту, калі не - web спасылку</item> <!--Каляндар, кантакт, спасылка-->
+        <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзея календара</item> <!--Спасылка, кантакт, каляндар-->
+        <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзея календара</item> <!--Кантакт, спасылка, каляндар-->
+        <item>Адкрыць кантэкставае меню</item>
+        <item>Нічога не рабіць</item>
+    </string-array>
+
+    <string name="pref_List_Color_EventToday_title">Падзеі сёння</string>
+    <string name="pref_List_Color_EventToday_summary">Колер загалоўка дня для падзей сёння</string>
+
+    <string name="pref_List_Color_EventSoon_title">Блізкія падзеі</string>
+    <string name="pref_List_Color_EventSoon_summary">Колер для загалоўка дня для блізкіх падзей</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Юбілей</string>
+    <string name="pref_List_Color_EventJubilee_summary">Колер юбілейнага ўзросту</string>
+
+    <string name="pref_List_Margin_title">Гарызантальныя водступы</string>
+    <string name="pref_List_Margin_summary">Кампенсацыя бакавых непразрыстых краёў экрана даданнем водступаў</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Невялікія</item>
+        <item>Сярэднія</item>
+        <item>Вялікія</item>
+    </string-array>
+
+    <string name="pref_Widgets_title">Віджэты</string>
+    <string name="pref_Widgets_summary">Агульныя налады для віджэтаў</string>
+
+    <string name="pref_Widgets_UpdateInterval_title">Перыяд абнаўлення</string>
+    <string name="pref_Widgets_UpdateInterval_summary">Інтэрвал прымусовага абнаўлення віджэтаў</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_entries">
+        <item>Аўтаматычна (кіруецца Android)</item>
+        <item>Штогадзіны</item>
+        <item>Кожныя 2 гадзіны</item>
+        <item>Кожныя 4 гадзіны</item>
+        <item>Кожныя 6 гадзін</item>
+        <item>Кожныя 12 гадзін</item>
+    </string-array>
+
+    <string name="pref_Widgets_EventInfo_title">Дэталі падзеі</string>
+    <string name="pref_Widgets_EventInfo_summary">Якія дэталі падзеі і элементы віджэта паказваць па змаўчанні</string>
+
+    <string name="pref_Widgets_EventInfo_None">Нічога</string>
+    <string name="pref_Widgets_EventInfo_Border">Бардзюр віджэта</string>
+    <string name="pref_Widgets_EventInfo_Dividers">Падзельнік падзей</string>
+    <string name="pref_Widgets_EventInfo_ButtonConfig">Кнопка канфігурацыі</string>
+    <string name="pref_Widgets_EventInfo_Photo">Фота кантакту</string>
+    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Абразок тыпу падзеі</string>
+    <string name="pref_Widgets_EventInfo_EventCaption">Падрабязнасці падзеі</string>
+    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Абразок абранага кантакту</string>
+    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
+    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Знак задыяка</string>
+    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Жывёла ва ўсходнім календары</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original">Дата выточнай падзеі</string>
+    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Дата выточнай падзеі з годам</string>
+    <string name="pref_Widgets_EventInfo_EventDate">Дата падзеі</string>
+    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата падзеі з годам</string>
+    <string name="pref_Widgets_EventInfo_EventTitle">Загаловак падзеі</string>
+    <string name="pref_Widgets_EventInfo_Age">Узрост (гадавіна)</string>
+    <string name="pref_Widgets_EventInfo_CurrentAge">Бягучы ўзрост</string>
+    <string name="pref_Widgets_EventInfo_WeddingName">Назва гадавіны вяселля</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дзён да падзеі</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Дзён да падзеі (кароткае)</string>
+    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Дзён да падзеі (калі падзея не найблізкая)</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Дзень тыдня падзеі</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Дзень тыдня падзеі (кароткае)</string>
+    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Дзень тыдня падзеі (калі падзея не найблізкая)</string>
+    <string name="pref_Widgets_EventInfo_Organization">Арганізацыя</string>
+    <string name="pref_Widgets_EventInfo_JobTitle">Пасада</string>
+    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼‍📆📁 Абразок крыніцы падзеі</string>
+    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Ёсць web спасылка</string>
+    <string name="pref_Widgets_EventInfo_DatesInBrackets">Акружаць даты дужкамі</string>
+    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Афарбоўваць колерам даты ўсю падзею</string>
+    <string name="pref_Widgets_EventInfo_NewLine1">"- новы радок -"</string>
+    <string name="pref_Widgets_EventInfo_NewLine2">"- новы радок - "</string>
+    <string name="pref_Widgets_EventInfo_NewLine3">"- новы радок -  "</string>
+
+    <string-array name="pref_Widgets_EventInfo_entries">
+        <item>@string/pref_Widgets_EventInfo_Border</item>
+        <item>@string/pref_Widgets_EventInfo_Photo</item>
+        <item>@string/pref_Widgets_EventInfo_Age</item>
+        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
+        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
+        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
+        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+    </string-array>
+
+    <string name="pref_Widgets_BottomInfo_title">Надпіс (ніжні шэраг)</string>
+    <string name="pref_Widgets_BottomInfo_summary">Што паказваць пад фатаграфіяй на фотафіджэтах</string>
+
+    <string name="pref_Widgets_BottomInfo2nd_title">Надпіс (верхні шэраг)</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Што паказваць пад фатаграфіяй на фотафіджэтах</string>
+
+    <string-array name="pref_Widgets_BottomInfo_entries">
+        <item>Прозвішча Імя Імя па бацьку</item>
+        <item>Прозвішча І.І па бацьку. (Імя Імя па бацьку, калі няма прозвішча)</item>
+        <item>Імя Імя па бацьку Прозвішча</item>
+        <item>Імя</item>
+        <item>Псеўданім (Імя, пры адсутнасці)</item>
+        <item>Прозвішча</item>
+        <item>Дата падзеі</item>
+        <item>Тып падзеі</item>
+        <item>Найменне падзеі</item>
+        <item>Арганізацыя (Пасада, пры адсутнасці)</item>
+        <item>Нічога</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Не вылучаць</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">Дзеянне на націск</string>
+    <string name="pref_Widgets_OnClick_summary">Што рабіць пры націску на падзею</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Адкрыць картку кантакту, калі не - падзею календара, калі не - web спасылку</item> <!--Контакт, календарь, ссылка-->
+        <item>Адкрыць падзею календара, калі не - картку кантакту, калі не - web спасылку</item> <!--Календарь, контакт, ссылка-->
+        <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзею календара</item> <!--Ссылка, контакт, календарь-->
+        <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзею календара</item> <!--Контакт, ссылка, календарь-->
+        <item>Адкрыць асноўны спіс падзей</item>
+        <item>Нічога не рабіць</item>
+    </string-array>
+
+    <string name="pref_Widgets_Color_EventCaption_title">Асноўны колер</string>
+    <string name="pref_Widgets_Color_EventCaption_summary">Асноўны колер элементаў віджэта (загалоўкі падзей, ўзрост)</string>
+
+    <string name="pref_Widgets_Color_WidgetCaption_title">Колер загалоўка</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Колер загалоўка спісавага віджэта</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Узрост</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Колер ўзросту для падзей сёння</string>
+
+    <string name="pref_Widgets_Color_EventSoon_title">Дзён да падзеі (блізка)</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Колер лічыльніка дзён для найблізкіх падзей</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Дзён да падзеі (далёка)</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Колер лічыльніка дзён для далёкіх падзей</string>
+
+    <string name="pref_Widgets_Days_EventSoon_summary">За колькі дзён падзеі лічацца найблізкімі</string>
+    <string name="pref_Widgets_Days_EventSoon_title">Найблізкія падзеі</string>
+
+    <string name="widget_config_hint_battery_optimization_title">Уключана аптымізацыя батарэі для гэтай праграмы. Гэта можа паўплываць на абнаўленне віджэтаў і працу паведамленняў. Выключыць аптымізацыю…</string>
+
+    <string name="widget_config_event_types_title">Тыпы падзей</string>
+    <string name="widget_config_event_types_description">Якія падзеі адлюстроўваць на віджэце</string>
+
+    <string name="widget_config_event_types_empty">Як у спісе падзей</string>
+
+    <string name="widget_config_events_sources_label">Крыніцы падзей</string>
+    <string name="widget_config_events_sources_description">Якія крыніцы падзей, абраныя ў наладах праграмы, скарыстаць у гэтым віджэце</string>
+    <string name="widget_config_event_sources_empty">♻️ Усе крыніцы</string>
+
+    <string name="widget_config_index_label">Стартавы нумар падзей</string>
+    <string name="widget_config_index_description">Значэнне 1 азначае, што падзеі будуць адлюстроўвацца з пачатку спіса, 2 - з другога і гэтак далей… Вы можаце дадаць на экран некалькі віджэтаў з рознымі значэннямі ў дадзеным полі, каб атрымаць жаданую канфігурацыю</string>
+
+    <string name="widget_config_scope_label">"Абмежаванне аб'ёму падзей"</string>
+    <string name="widget_config_scope_events_label">Колькасць (макс):</string>
+    <string name="widget_config_scope_days_label">Дні:</string>
+    <string name="widget_config_scope_events_items">Усе,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
+    <string name="widget_config_scope_days_items">Усе,1,2,3,4,5,6,7,14,21,30</string>
+
+    <string name="widget_config_font_label">Каэфіцыент маштабавання памеру шрыфту</string>
+    <string name="widget_config_font_description">Выкарыстоўваецца пры маштабаванні віджэта для павелічэння памеру шрыфту ўзросту, дыстанцыі да падзеі і інфармацыі пад фота</string>
+    <string-array name="widget_config_font">
+        <item>Аўтаматычна (па памеры віджэта)</item>
+        <item>x0.5</item>
+        <item>x0.65</item>
+        <item>x0.75</item>
+        <item>x0.85</item>
+        <item>x1.0</item>
+        <item>x1.2</item>
+        <item>x1.5</item>
+        <item>x1.75</item>
+        <item>x2.0</item>
+    </string-array>
+
+
+    <string name="widget_config_photostyle_label">Стыль фота</string>
+    <string name="widget_config_photostyle_description">Стыль фатаграфій кантактаў</string>
+    <string name="widget_config_photostyle_with_align_description">Стыль фатаграфій кантактаў. Выраўнанне: арыгінал - фота запаўняе ўсю ячэйку, закругленае - па верхнім краі, кола - па цэнтры</string>
+    <string-array name="widget_config_photostyle">
+        <item>Арыгінал</item>
+        <item>Трохі закругленае</item>
+        <item>Сярэдняе закругленае</item>
+        <item>Моцна закругленае</item>
+        <item>Круг</item>
+    </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Загаловак віджэта</string>
+    <string name="widget_config_custom_widget_caption_description">Свой загаловак для гэтага віджэта (падтрымваюцца эмодзі 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Увядзіце паведамленне…</string>
+
+    <string name="widget_config_custom_zero_events_label">Паведамленне пры адсутнасці падзей</string>
+    <string name="widget_config_custom_zero_events_description">Сваё паведамленне замест стандартнага, калі няма падзей для адлюстравання (падтрымваюцца эмодзі 🎂). Увядзіце прабел для нябачнасці віджэта, пакіньце пустым для стандартнага паведамлення</string>
+    <string name="widget_config_custom_zero_events_hint">Увядзіце паведамленне…</string>
+
+    <string name="widget_config_events_count_label">Колькасць падзей у шырыню</string>
+    <string name="widget_config_events_count_description">Калі падзеям занадта \"вузка\" ці \"шырока\" у віджэце, адкарэктуйце колькасць падзей</string>
+    <string-array name="widget_config_events_count">
+        <item>Аўтаматычна</item>
+        <item>-2</item>
+        <item>-1</item>
+        <item>+1</item>
+        <item>+2</item>
+    </string-array>
+
+    <string name="widget_hint">Каб адрэдагаваць налады віджэта, націсніце на подпіс самай правай падзеі:</string>
+
+    <string name="widget_config_event_info_empty">Выкарыстаць агульныя налады</string>
+
+    <string name="widget_config_color_back_label">Колер фону</string>
+    <string name="widget_config_color_back_description">Колер падкладкі віджэта</string>
+
+    <string name="widget_config_layout_title">Колькасць месяцаў</string>
+    <string name="widget_config_layout_description">Колькі месяцаў адлюстроўваць</string>
+    <string name="widget_config_month_events_sources_label">Крыніцы свят і падзей</string>
+    <string name="widget_config_month_events_sources_description">"Крыніцы, па якіх вызначаць працоўныя, выходныя і святочныя дні.
+Доўгі націск на элеменце спісу для выбару колеру.
+Дадатковыя крыніцы (файлы, календары) можна пазначыць у Налады->Налада падзей->Святы"</string>
+    <string name="widget_config_month_shift_title">Стартавы месяц</string>
+    <string name="widget_config_month_shift_label">Зрушэнне:</string>
+    <string name="widget_config_starting_month_position_label">Палажэнне:</string>
+    <string name="widget_config_month_sources_empty">-Не абрана-</string>
+    <string name="widget_config_month_font_magnify_label">Памер шрыфта</string>
+    <string name="widget_config_month_font_magnify_description">Змена памеру шрыфта для ўсіх элементаў</string>
+    <string name="widget_config_month_color_common_label">Звычайныя дні</string>
+    <string name="widget_config_month_color_common_description">Колер звычайных дзён</string>
+    <string name="widget_config_month_color_today_label">Сёння</string>
+    <string name="widget_config_month_color_today_description">Колер даты для сёння (для звычайных дзён)</string>
+    <string name="widget_config_month_color_header_label">Колер загалоўка</string>
+    <string name="widget_config_month_color_header_description">Колер наймення месяца</string>
+    <string name="widget_config_month_color_header_back_label">Фон загалоўка</string>
+    <string name="widget_config_month_color_header_back_description">Колер фону загалоўка календара</string>
+    <string name="widget_config_month_color_arrows_label">Стрэлкі</string>
+    <string name="widget_config_month_color_arrows_description">Колер стрэлак пераключэння месяцаў</string>
+    <string name="widget_config_month_color_weeks_label">Дні тыдня</string>
+    <string name="widget_config_month_color_weeks_description">Колер дзён тыдня</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Аўтаматычна (па памеры віджэта)</item>
+        <item>1 месяц</item>
+        <item>2 месяцы (па гарызанталі)</item>
+        <item>3 месяцы (па гарызанталі)</item>
+        <item>2 месяцы (вертыкальна)</item>
+        <item>3 месяцы (вертыкальна)</item>
+        <item>4 месяцы (2x2)</item>
+        <item>6 месяцаў (3x2)</item>
+        <item>6 месяцаў (2x3)</item>
+        <item>9 месяцаў (3x3)</item>
+        <item>12 месяцаў (3x4)</item>
+        <item>12 месяцаў (4x3)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Бягучы месяц</string>
+    <string name="widget_config_month_shift_january">Пачатак года</string>
+
+    <string-array name="widget_config_month_shift_entries">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_values">
+        <item>Верхні левы кут</item>
+        <item>У цэнтры ўверсе</item>
+        <item>У цэнтры</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Элементы календара</string>
+    <string name="widget_config_elements_description">Які папярэдні элемент календара паказаць</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Назва месяца</item>
+        <item>Год</item>
+        <item>Пазнакі дзён будняў</item>
+        <item>Дні да і пасля месяца</item>
+        <item>Вонкавыя бакавыя палі</item>
+    </string-array>
+
+    <string name="pref_Notifications_title">Паведамленні</string>
+    <string name="pref_Notifications_summary">Калі і як паказваць паведамленні пра падзеі</string>
+
+    <string name="pref_Notifications_Type_title">Стыль паведамленняў</string>
+    <string name="pref_Notifications_Type_summary">Як паведамленні будуць выглядаць</string>
+
+    <string-array name="pref_Notifications_Type_entries">
+        <item>Адно агульнае паведамленне</item>
+        <item>Кожная падзея ў асобным паведамленні</item>
+        <item>Калі падзей менш за 3 -> асобныя, інакш -> агульнае</item>
+        <item>Калі падзей менш за 4 -> асобныя, інакш -> агульнае</item>
+        <item>Падзеі сёння -> асобныя, іншыя -> агульнае</item>
+    </string-array>
+
+    <string name="pref_Notifications_Priority_title">Прыярытэт паведамленняў</string>
+    <string name="pref_Notifications_Priority_summary">Якія не выдаляюцца высокапрыярытэтныя паведамленні заўсёды знаходзяцца ўверсе спіса паведамленняў. Каб схаваць такое паведамленне, націсніце на яго</string>
+
+    <string-array name="pref_Notifications_Priority_entries">
+        <item>Стандартны прыярытэт</item>
+        <item>Толькі агульнае паведамленне будзе якое не выдаляецца</item>
+        <item>Усе паведамленні якія не выдаляюцца і з высокім прыярытэтам</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Тэрміны паведамленняў</string>
+    <string name="pref_Notifications_Days_summary">За колькі дзён паведамляць</string>
+
+    <string-array name="pref_Notifications_Days_entries">
+        <item>У дзень падзеі</item>
+        <item>За 1 дзень</item>
+        <item>За 2 дні</item>
+        <item>За 3 дні</item>
+        <item>За 4 дні</item>
+        <item>За 5 дзён</item>
+        <item>За 6 дзён</item>
+        <item>За 1 тыдзень</item>
+        <item>За 8 дзён</item>
+        <item>За 9 дзён</item>
+        <item>За 10 дзён</item>
+        <item>За 11 дзён</item>
+        <item>За 12 дзён</item>
+        <item>За 13 дзён</item>
+        <item>За 2 тыдні</item>
+    </string-array>
+
+    <string name="pref_Notifications_EventTypes_title">Тыпы падзей</string>
+    <string name="pref_Notifications_EventTypes_summary">Якія падзеі ўлучаць у паведамленні</string>
+
+    <string name="pref_Notifications_AlarmHour_title">Час паведамлення</string>
+    <string name="pref_Notifications_AlarmHour_summary">У які час паведамляць пра падзеі</string>
+
+    <string name="pref_Notifications_Ringtone_title">Гук паведамлення</string>
+    <string name="pref_Notifications_Ringtone_summary">Гук паведамлення пра падзеі, якія маюць быць</string>
+
+    <string name="pref_Notifications_QuickActions_title">Хуткія дзеянні</string>
+    <string name="pref_Notifications_QuickActions_summary">Якія дзеянні паказваць у адзінкавага паведамлення (да 3х штук)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Патэлефанаваць</item>
+        <item>Выключыць з паведамленняў</item>
+        <item>Схаваць падзею</item>
+        <item>Напомніць праз 1 гадзіну</item>
+        <item>Зачыніць (для паведамленняў з высокім прыярытэтам)</item>
+    </string-array>
+
+    <string name="pref_Notifications_OnClick_title">Дзеянне на націск</string>
+    <string name="pref_Notifications_OnClick_summary">Што рабіць пры націску на адзінкавае паведамленне</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Адкрыць картку кантакту, калі не - падзея календара, калі не - web спасылку</item> <!--Кантакт, каляндар, спасылка-->
+        <item>Адкрыць падзею календара, калі не - картку кантакту, калі не - web спасылку</item> <!--Каляндар, кантакт, спасылка-->
+        <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзея календара</item> <!--Спасылка, кантакт, каляндар-->
+        <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзея календара</item> <!--Кантакт, спасылка, каляндар-->
+        <item>Адкрыць асноўны спіс падзей</item>
+        <item>Зачыніць паведамленне</item>
+    </string-array>
+
+    <string name="pref_Notifications_NotifyTest_title">Тэставае паведамленне</string>
+    <string name="pref_Notifications_NotifyTest_summary">Націсніце для паказу тэставага паведамлення за сёння</string>
+
+    <string name="pref_Quiz_title">Віктарына</string>
+    <string name="pref_Quiz_summary">Налады віктарыны</string>
+    <string name="pref_Quiz_Interface_title">Інтэрфейс</string>
+    <string name="pref_Quiz_Interface_summary">Які інтэрфейс скарыстаць для паказу пытанняў віктарыны</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Паведамленні (у кожны момант можна перапыніцца і пайсці пашукаць правільны адказ)</item>
+        <item>Дыялог (можна не спяшацца з адказам, але няможна шукаць падказкі)</item>
+    </string-array>
+
+    <string name="pref_FAQ_title">Пытанні і Адказы</string>
+    <string name="pref_FAQ_summary">Калі нешта працуе не правільна ці Вы не ведаеце, як наладзіць тую ці іншую функцыю праграмы - Вам у гэты раздзел</string>
+    <string name="pref_Help_title">Дапамога</string>
+    <string name="pref_Help_summary">Часам гэта можа дапамагчы…</string>
+    <string name="pref_About_summary">Гісторыя версій, статыстыка падзей, спасылкі на крамы праграмаў</string>
+    <string name="pref_BatteryOptimization_title">Аптымізацыя батарэі ЎКЛЮЧАНА</string>
+    <string name="pref_BatteryOptimization_summary">Адкрыць настройку і выключыць аптымізацыю…</string>
+    <string name="pref_ContactsAccess_title">Няма доступу да кантактаў</string>
+    <string name="pref_ContactsAccess_summary">Запытаць доступ да дадзеных кантактаў…</string>
+    <string name="pref_CalendarAccess_title">Няма доступу да календароў</string>
+    <string name="pref_CalendarAccess_summary">Запытаць доступ да дадзеных календароў…</string>
+    <string name="pref_Debug_On_title">Адладкавыя паведамленні</string>
+    <string name="pref_Debug_On_hint">Націсніце яшчэ %1$d раз%2$s для %3$s адладкавых паведамленняў</string>
+    <string name="pref_InfoMsg_On_title">Інфармацыйныя паведамленні</string>
+    <string name="pref_InfoMsg_On_summary">Паказваць інфармацыйныя паведамленні а выкананых дзеяннях ці запуску фонавых аперацый</string>
+    <string name="pref_Debug_On_summary">Паказваць паведамленні для адладкі памылак (рэкамендуецца ўключыць, калі некарэктна адлюстроўваюцца віджэты ці падзеі, ці не вызначаюцца нейкія даты, і даслаць аўтару праграмы)</string>
+    <string name="pref_ExtraFun_On_title">Дад. функцыі</string>
+    <string name="pref_ExtraFun_On_description">Уключыць дадатковыя функцыі па наладзе розных аспектаў праграмы</string>
+
+    <string name="pref_Tools_title">Прылады</string>
+    <string name="pref_Tools_summary">Розныя прылады для маніпуляцый з дадзенымі</string>
+    <string name="pref_Tools_Preferences_title">Налады</string>
+    <string name="pref_Tools_Preferences_Show_title">Паказаць захаваныя налады</string>
+    <string name="pref_Tools_Preferences_Export_title">Экспартаваць налады</string>
+    <string name="pref_Tools_Preferences_Export_result">Экспартавана налад: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">Імпартаваць налады</string>
+    <string name="pref_Tools_Preferences_Import_result">Імпартавана налад: %1$d, памылак: %2$d</string>
+
+    <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
+    <string name="changelog_installer"><![CDATA[<br>усталявана з %1$s]]></string>
+    <string name="changelog_title"><![CDATA[<h1>Гісторыя версій:</h1>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Версія: %1$s:</h2><ul>]]></string>
+
+    <string name="stats_title"><![CDATA[<h1>Статыстыка:</h1>]]></string>
+
+    <string name="stats_speed_title"><![CDATA[<h2>Хуткасць загрузкі:</h2><ul>]]></string>
+    <string name="stats_speed_contacts"><![CDATA[<li>сканаванне кантактаў: %1$s мс]]></string>
+    <string name="stats_speed_calendar"><![CDATA[<li>сканаванне календароў: %1$s мс]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>сканаванне файлаў: %1$s мс]]></string>
+    <string name="stats_speed_dates"><![CDATA[<li>падлік дат: %1$s мс]]></string>
+
+    <string name="stats_counters_title"><![CDATA[<h2>Лічыльнікі:</h2><ul>]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>усяго падзей: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>падзей кантактаў: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>падзей з календароў: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>падзей з файлаў: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>абраных падзей: %1$d]]></string>
+    <string name="stats_counters_contacts"><![CDATA[<li>кантактаў: %1$d]]></string>
+    <string name="stats_counters_titles"><![CDATA[<li>пасад: %1$d]]></string>
+    <string name="stats_counters_organizations"><![CDATA[<li>арганізацый: %1$d]]></string>
+    <string name="stats_counters_nicknames"><![CDATA[<li>псеўданімаў: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>web спасылак: %1$d]]></string>
+
+    <string name="stats_counters_events_title"><![CDATA[<h2>Падзеі па акаўнтах:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Доступы і сістэмныя опцыі:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>доступ да спіса акаўнтаў: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>доступ да дадзеных кантактаў: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>доступ да дадзеных календароў: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>доступ да файлаў вонкавага сховішча: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>дазвол на адпраўленне паведамленняў: %1$s]]></string>
+    <string name="stats_permissions_notifications_on"><![CDATA[<li>паведамленні: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>дазвол планаваць паведамленні і абнаўленні віджэтаў на дакладны час: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>абнаўленне віджэтаў (wake lock): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>аптымізацыя батарэі: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>аўтазапуск (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>устройства: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>версія Android: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>экран: %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Няма падзей для паказу</h2>Гэта інфармацыя можа дапамагчы:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Тыпы падзей: %1$s</p>
+        <p>Фільтр: %13$s</p>
+        <h4>Падзеі кантактаў:</h4><ul>%2$s
+            <li>паказваць падзеі з акаўнтаў: %3$s</li>
+        </ul>
+        <h4>Падзеі з календароў:</h4><ul>%4$s
+            <li>дні нараджэння: %5$s</li>
+            <li>іншыя падзеі: %6$s</li>
+            <li>свята: %7$s</li>
+            <li>розныя падзеі: %8$s</li>
+        </ul>
+        <h4>Падзеі з файлаў:</h4><ul><li>дні нараджэння: %9$s</li>
+            <li>іншыя падзеі: %10$s</li>
+            <li>свята: %11$s</li>
+            <li>розныя падзеі: %12$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Калі гэта інфармацыя не дапамагла знайсці прычыну адсутнасці падзей, напішыце мне пісьмо (націсніце на назву праграмы і там на кнопку \"Напісаць\")</h4>]]></string>
+
+    <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Гадавіны_вяселля -->
+    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Паркалёвае</string>
+    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Папяровае</string>
+    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Скураное</string>
+    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Ільняное</string>
+    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Драўлянае</string>
+    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Чыгуннае</string>
+    <!-- Цынкавае вяселле — 6,5 лет -->
+    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Мядзянае</string>
+    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Бляшанае</string>
+    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Фаянсавае</string>
+    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Алавянае</string>
+    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Сталёвае</string>
+    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Нікелевае</string>
+    <!-- Нікелевае вяселле — 12,5 лет -->
+    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Ландышавае ці Карункавае</string>
+    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Агатавае</string>
+    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Крыштальнае</string>
+    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">Тапазавае</string>
+    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">Ружовае</string>
+    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">Бірузовае</string>
+    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">Гранатавае</string>
+    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">Парцалянавае</string>
+    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">Апалавае</string>
+    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">Бронзавае</string>
+    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">Берылавае</string>
+    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">Атласнае</string>
+    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Срэбнае</string>
+    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">Нефрытавае</string>
+    <string name="event_type_wedding_27" tools:keep="@string/event_type_wedding_27">Чырвонага дрэва</string>
+    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">Нікелевае</string>
+    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">Аксамітавае</string>
+    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Жамчужнае</string>
+    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">Асмуглае ці Сонечнаяе</string>
+    <string name="event_type_wedding_32" tools:keep="@string/event_type_wedding_32">""</string> <!-- Мядзянае http://www.grc-eka.ru/svadba/32-goda-mednaya.html -->
+    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">Каменная ці Трускаўнае</string>
+    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">Бурштынавае</string>
+    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Палатнянае ці Каралавае</string>
+    <string name="event_type_wedding_36" tools:keep="@string/event_type_wedding_36">""</string> <!-- дзень Касцянога парцаляну https://materinstvo.ru/art/svadebnye-godovshiny-35-100-let -->
+    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">Муслінавае</string>
+    <!-- Алюмініевае вяселле — 37,5 гадоў -->
+    <string name="event_type_wedding_38" tools:keep="@string/event_type_wedding_38">Ртуцевае</string>
+    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">Крэпавае</string>
+    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Рубінавае</string>
+    <string name="event_type_wedding_41" tools:keep="@string/event_type_wedding_41">Земляное</string> <!-- http://www.grc-eka.ru/svadba/41-god-zemlyanaya.html -->
+    <string name="event_type_wedding_42" tools:keep="@string/event_type_wedding_42">Перламутравае</string>
+    <string name="event_type_wedding_43" tools:keep="@string/event_type_wedding_43">Фланэлевае</string>
+    <string name="event_type_wedding_44" tools:keep="@string/event_type_wedding_44">Тапазавае</string>
+    <string name="event_type_wedding_45" tools:keep="@string/event_type_wedding_45">Сапфіравае</string>
+    <string name="event_type_wedding_46" tools:keep="@string/event_type_wedding_46">Лавандавае</string>
+    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">Кашміровае</string>
+    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">Аметыставае</string>
+    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">Кедравае</string>
+    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Залатое</string>
+    <string name="event_type_wedding_51" tools:keep="@string/event_type_wedding_51">""</string>
+    <string name="event_type_wedding_52" tools:keep="@string/event_type_wedding_52">""</string>
+    <string name="event_type_wedding_53" tools:keep="@string/event_type_wedding_53">""</string>
+    <string name="event_type_wedding_54" tools:keep="@string/event_type_wedding_54">""</string>
+    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Ізумруднае</string>
+    <string name="event_type_wedding_56" tools:keep="@string/event_type_wedding_56">""</string>
+    <string name="event_type_wedding_57" tools:keep="@string/event_type_wedding_57">""</string>
+    <string name="event_type_wedding_58" tools:keep="@string/event_type_wedding_58">""</string>
+    <string name="event_type_wedding_59" tools:keep="@string/event_type_wedding_59">""</string>
+    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Дыяментавае</string>
+    <string name="event_type_wedding_61" tools:keep="@string/event_type_wedding_61">""</string>
+    <string name="event_type_wedding_62" tools:keep="@string/event_type_wedding_62">""</string>
+    <string name="event_type_wedding_63" tools:keep="@string/event_type_wedding_63">""</string>
+    <string name="event_type_wedding_64" tools:keep="@string/event_type_wedding_64">""</string>
+    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Жалезнае</string>
+    <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
+    <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
+    <string name="event_type_wedding_68" tools:keep="@string/event_type_wedding_68">""</string>
+    <string name="event_type_wedding_69" tools:keep="@string/event_type_wedding_69">""</string>
+    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Прасвяднае</string>
+    <string name="event_type_wedding_71" tools:keep="@string/event_type_wedding_71">""</string>
+    <string name="event_type_wedding_72" tools:keep="@string/event_type_wedding_72">""</string>
+    <string name="event_type_wedding_73" tools:keep="@string/event_type_wedding_73">""</string>
+    <string name="event_type_wedding_74" tools:keep="@string/event_type_wedding_74">""</string>
+    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Кароннае</string>
+    <string name="event_type_wedding_76" tools:keep="@string/event_type_wedding_76">""</string>
+    <string name="event_type_wedding_77" tools:keep="@string/event_type_wedding_77">""</string>
+    <string name="event_type_wedding_78" tools:keep="@string/event_type_wedding_78">""</string>
+    <string name="event_type_wedding_79" tools:keep="@string/event_type_wedding_79">""</string>
+    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Дубовае</string>
+    <string name="event_type_wedding_81" tools:keep="@string/event_type_wedding_81">""</string>
+    <string name="event_type_wedding_82" tools:keep="@string/event_type_wedding_82">""</string>
+    <string name="event_type_wedding_83" tools:keep="@string/event_type_wedding_83">""</string>
+    <string name="event_type_wedding_84" tools:keep="@string/event_type_wedding_84">""</string>
+    <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
+    <string name="event_type_wedding_86" tools:keep="@string/event_type_wedding_86">""</string>
+    <string name="event_type_wedding_87" tools:keep="@string/event_type_wedding_87">""</string>
+    <string name="event_type_wedding_88" tools:keep="@string/event_type_wedding_88">""</string>
+    <string name="event_type_wedding_89" tools:keep="@string/event_type_wedding_89">""</string>
+    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">Гранітнае</string>
+    <string name="event_type_wedding_91" tools:keep="@string/event_type_wedding_91">""</string>
+    <string name="event_type_wedding_92" tools:keep="@string/event_type_wedding_92">""</string>
+    <string name="event_type_wedding_93" tools:keep="@string/event_type_wedding_93">""</string>
+    <string name="event_type_wedding_94" tools:keep="@string/event_type_wedding_94">""</string>
+    <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
+    <string name="event_type_wedding_96" tools:keep="@string/event_type_wedding_96">""</string>
+    <string name="event_type_wedding_97" tools:keep="@string/event_type_wedding_97">""</string>
+    <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
+    <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
+    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Чырвонае ці плацінавае</string>
+
+    <string name="zodiac_sign_aries">" Авен"</string>
+    <string name="zodiac_sign_taurus">" Цялец"</string>
+    <string name="zodiac_sign_gemini">" Двайняты"</string>
+    <string name="zodiac_sign_cancer">" Рак"</string>
+    <string name="zodiac_sign_leo">" Леў"</string>
+    <string name="zodiac_sign_virgo">" Панна"</string>
+    <string name="zodiac_sign_libra">" Вага"</string>
+    <string name="zodiac_sign_scorpio">" Скарпіён"</string>
+    <string name="zodiac_sign_sagittarius">" Стралец"</string>
+    <string name="zodiac_sign_capricorn">" Казярог"</string>
+    <string name="zodiac_sign_aquarius">" Вадаліў"</string>
+    <string name="zodiac_sign_pisces">" Рыбы"</string>
+
+    <string name="zodiac_year_monkey">" Малпа"</string>
+    <string name="zodiac_year_rooster">" Певень"</string>
+    <string name="zodiac_year_dog">" Сабака"</string>
+    <string name="zodiac_year_pig">" Свіння"</string>
+    <string name="zodiac_year_rat">" Пацук"</string>
+    <string name="zodiac_year_ox">" Бык"</string>
+    <string name="zodiac_year_tiger">" Тыгр"</string>
+    <string name="zodiac_year_rabbit">" Трус"</string>
+    <string name="zodiac_year_dragon">" Цмок"</string>
+    <string name="zodiac_year_snake">" Змяя"</string>
+    <string name="zodiac_year_horse">" Конь"</string>
+    <string name="zodiac_year_sheep">" Авечка"</string>
+
+    <string name="msg_on">УКЛ</string>
+    <string name="msg_off">ВЫКЛ</string>
+    <string name="msg_unknown">НЕВЯДОМА</string>
+
+    <string name="quiz_msg_error_title">"Памылка"</string>
+    <string name="quiz_msg_error_get_question">"Памылка атрымання наступнага пытання!"</string>
+
+    <string name="quiz_answer_true">"Правільна, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Адказ: %1$s\nПравільна: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"Які месяц нараджэння?"</string>
+
+    <string name="quiz_year01_title">"Які год нараджэння?"</string>
+
+    <string name="quiz_age01_title_future">"Колькі гадоў выканаецца?"</string>
+    <string name="quiz_age01_title_past">"Колькі зараз гадоў?"</string>
+    <string name="quiz_age01_title_dead">"Колькі было б зараз гадоў?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Лічыльнік дзён</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Перыяд(ы) паўтарэння:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">дні</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">чысло дзён, праз якое трэба паўтараць падзею. напрыклад: 1000, 5000 (праз коску)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Паўторы:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">колькасць паўтораў для кожнага перыяду</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Найблізкія паўторы:</string>
+
+    <string name="Event_Easter">Вялікдзень</string>
+    <string name="Event_CatholicEaster">К_Вялікдзень</string>
+    <string name="Event_NY">НГ</string>
+
+    <string name="previous_month">Папярэдні месяц</string>
+    <string name="month_title">Назва месяца</string>
+    <string name="next_month">У наступным месяцы</string>
+
+    <string name="month_event_saturdays">Суботы</string>
+    <string name="month_event_sundays">Нядзеля</string>
+
+</resources>

@@ -56,29 +56,47 @@
     <string-array name="holidays2" translatable="false" tools:ignore="UnusedResources">
         <item>🇩🇪 Gesetzliche Feiertage</item>
         <item>"//2023 https://ru-geld.de/de/holidays/
-        01.01.2023,!
-        07.04.2023,!
-        09.04.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        18.05.2023,!
-        28.05.2023,!
-        29.05.2023,!
-        03.10.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
+        01.01.2023,!1 Neujahrstag
+        06.01.2023,!1 Heilige Drei Könige
+        08.03.2024,!1 Internationaler Frauentag
+        07.04.2023,!1 Karfreitag
+        09.04.2023,!1 Ostern
+        10.04.2023,!1 Ostermontag
+        01.05.2023,!1 Tag der Arbeit
+        18.05.2023,!1 Christi Himmelfahrt
+        28.05.2023,!1 Pfingstsonntag
+        29.05.2023,!1 Pfingstmontag
+        08.06.2023,?1 Fronleichnam
+        08.08.2023,?1 Augsburger Friedensfest
+        15.08.2023,?1 Mariä Himmelfahrt
+        20.09.2023,?1 Weltkindertag
+        03.10.2023,!1 Tag der Deutschen Einheit
+        31.10.2023,?1 Reformationstag
+        01.11.2023,?1 Allerheiligen
+        22.11.2023,?1 Buß- und Bettag
+        25.12.2023,!1 Weihnachten
+        26.12.2023,!1 Zweiter Weihnachtsfeiertag"</item>
         <item>"//2024
-        01.01.2024,!
-        29.03.2024,!
-        31.03.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        19.05.2024,!
-        20.05.2024,!
-        03.10.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
+        01.01.2024,!1 Neujahrstag
+        06.01.2024,!1 Heilige Drei Könige
+        08.03.2024,!1 Internationaler Frauentag
+        29.03.2024,!1 Karfreitag
+        31.03.2024,!1 Ostern
+        01.04.2024,!1 Ostermontag
+        01.05.2024,!1 Tag der Arbeit
+        09.05.2024,!1 Christi Himmelfahrt
+        19.05.2024,!1 Pfingstsonntag
+        20.05.2024,!1 Pfingstmontag
+        30.05.2024,?1 Fronleichnam
+        08.08.2024,?1 Augsburger Friedensfest
+        15.08.2024,?1 Mariä Himmelfahrt
+        20.09.2024,?1 Weltkindertag
+        03.10.2024,!1 Tag der Deutschen Einheit
+        31.10.2024,?1 Reformationstag
+        01.11.2024,?1 Allerheiligen
+        20.11.2024,?1 Buß- und Bettag
+        25.12.2024,!1 Weihnachten
+        26.12.2024,!1 Zweiter Weihnachtsfeiertag"</item>
     </string-array>
 
     <string-array name="holidays3" translatable="false" tools:ignore="UnusedResources">
@@ -118,286 +136,300 @@
     <string-array name="holidays4" translatable="false" tools:ignore="UnusedResources">
         <item>🇧🇾 Вытворчы каляндар</item>
         <item>"//2023 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2023-god-31400/
-        02.01.2023,!
-        08.03.2023,!
-        25.04.2023,!
-        08.05.2023,!
-        09.05.2023,!
-        13.05.2023,?
-        03.07.2023,!
-        07.11.2023,!
+        01.01.2023,!1 Новый год
+        02.01.2023,!1 Новый год
+        07.01.2023,!1 Рождество Христово (православное Рождество)
+        08.03.2023,!1 День женщин
+        24.04.2023,!1 Перенос с субботы 29 апреля на понедельник
+        25.04.2023,!1 Радуница (по календарю православной конфессии)
+        29.04.2023,?1
+        01.05.2023,!1 Праздник труда
+        08.05.2023,!1 Перенос с субботы 13 мая на понедельник
+        09.05.2023,!1 День Победы
+        13.05.2023,?1
+        03.07.2023,!1 День Независимости Республики Беларусь (День Республики)
+        06.11.2023,!1 Перенос с субботы 11 ноября на понедельник
+        07.11.2023,!1 День Октябрьской революции
         11.11.2023,?
-        25.12.2023"</item>
-        <item>"//2024 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2024-god-36207/
-        01.01.2024,!
-        02.01.2024,!
-        08.03.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        14.05.2024,!
-        03.07.2024,!
-        07.11.2024,!
-        25.12.2024,!"</item>
+        25.12.2023,!1 Рождество Христово (католическое Рождество)"</item>
+        <item>"//2024 https://www.belta.by/infographica/view/kalendar-prazdnichnyh-i-nerabochih-dnej-v-belarusi-na-2024-god-36207/ https://mintrud.gov.ru/labour/82 https://president.gov.by/ru/gosudarstvo/prazdniki/kalendar-2024
+        01.01.2024,!1 Новый год
+        02.01.2024,!1 Новый год
+        07.01.2023,!1 Рождество Христово (православное Рождество)
+        08.03.2024,!1 День женщин
+        01.05.2024,!1 Праздник труда
+        09.05.2024,!1 День Победы
+        13.05.2024,!1 Перенос с субботы 18 мая на понедельник
+        14.05.2024,!1 Радуница (по календарю православной конфессии)
+        18.05.2024,?1
+        03.07.2024,!1 День Независимости Республики Беларусь (День Республики)
+        07.11.2024,!1 День Октябрьской революции
+        08.11.2024,!1 Перенос с субботы 16 ноября на понедельник
+        16.11.2024,?1
+        25.12.2024,!1 Рождество Христово (католическое Рождество)"</item>
     </string-array>
 
     <string-array name="holidays5" translatable="false" tools:ignore="UnusedResources">
         <item>🇺🇸 Public holidays</item>
         <item>"//2023 https://www.workingdays.us/EN/workingdays_holidays_2023.htm
-        01.01.2023,!
-        02.01.2023,!
-        16.01.2023,!
-        20.02.2023,!
-        29.05.2023,!
-        19.06.2023,!
-        04.07.2023,!
-        04.09.2023,!
-        09.10.2023,!
-        10.11.2023,!
-        11.11.2023,!
-        25.12.2023,!"</item>
+        01.01.2023,!1 New Year's Day
+        02.01.2023,!1 New Year's Day
+        16.01.2023,!1 Martin Luther King Day
+        20.02.2023,!1 President's Day
+        29.05.2023,!1 Memorial Day
+        19.06.2023,!1 Juneteenth
+        04.07.2023,!1 Independence Day
+        04.09.2023,!1 Labor Day
+        09.10.2023,!1 Columbus Day
+        10.11.2023,!1 Veterans Day (obs.)
+        11.11.2023,!1 Veterans Day
+        23.11.2023,!1 Thanksgiving
+        25.12.2023,!1 Christmas"</item>
         <item>"//2024 https://www.workingdays.us/EN/workingdays_holidays_2024.htm
-        01.01.2024,!
-        15.01.2024,!
-        19.02.2024,!
-        27.05.2024,!
-        19.06.2024,!
-        04.07.2024,!
-        02.09.2024,!
-        14.10.2024,!
-        11.11.2024,!
-        28.11.2024,!
-        25.12.2024,!"</item>
+        01.01.2024,!1 New Year's Day
+        15.01.2024,!1 Martin Luther King Day
+        19.02.2024,!1 President's Day
+        27.05.2024,!1 Memorial Day
+        19.06.2024,!1 Juneteenth
+        04.07.2024,!1 Independence Day
+        02.09.2024,!1 Labor Day
+        14.10.2024,!1 Columbus Day
+        11.11.2024,!1 Veterans Day
+        28.11.2024,!1 Thanksgiving
+        25.12.2024,!1 Christmas"</item>
     </string-array>
 
     <string-array name="holidays6" translatable="false" tools:ignore="UnusedResources">
         <item>🇬🇧 Public holidays</item>
         <item>"//2023 https://www.workingdays.us/EN/workingdays_holidays_2023.htm
-        02.01.2023,!
-        07.04.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        29.05.2023,!
-        28.08.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
+        02.01.2023,!1 New Year's Day (subs)
+        07.04.2023,!1 Good Friday
+        10.04.2023,!1 Easter Monday
+        01.05.2023,!1 May Day Bank Holiday
+        08.05.2023,!1 Coronation of King Charles III
+        29.05.2023,!1 Spring Bank Holiday
+        28.08.2023,!1 Late Summer Bank Holiday
+        25.12.2023,!1 Christmas Day
+        26.12.2023,!1 Boxing Day"</item>
         <item>"//2024 https://www.work-day.co.uk/workingdays_holidays_2024.htm
-        01.01.2024,!
-        29.03.2024,!
-        01.01.2024,!
-        06.05.2024,!
-        27.05.2024,!
-        26.08.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
+        01.01.2024,!1 New Year's Day
+        29.03.2024,!1 Good Friday
+        01.04.2024,!1 Easter Monday
+        06.05.2024,!1 May Day Bank Holiday
+        27.05.2024,!1 Spring Bank Holiday
+        26.08.2024,!1 Late Summer Bank Holiday
+        25.12.2024,!1 Christmas Day
+        26.12.2024,!1 Boxing Day"</item>
     </string-array>
 
     <string-array name="holidays7" translatable="false" tools:ignore="UnusedResources">
         <item>🇮🇱 Public holidays</item>
         <item>"//2023 https://israel.workingdays.org/workingdays_holidays_2023.htm
-        06.04.2023,!
-        12.04.2023,!
-        26.04.2023,!
-        26.05.2023,!
-        16.09.2023,!
-        17.09.2023,!
-        25.09.2023,!
-        30.09.2023,!
-        07.10.2023,!"</item>
+        06.04.2023,!1 Pesach
+        12.04.2023,!1 Shvi'i shel Pesach
+        26.04.2023,!1 Yom Ha-Atzmaut
+        26.05.2023,!1 Shavuot
+        16.09.2023,!1 Rosh Hashanah
+        17.09.2023,!1 Rosh Hashanah
+        25.09.2023,!1 Yom Kippur
+        30.09.2023,!1 Sukkot
+        07.10.2023,!1 Shemini Atzeret / Simchat Torah"</item>
         <item>"//2024 https://israel.workingdays.org/workingdays_holidays_2024.htm
-        24.03.2024,!
-        23.04.2024,!
-        29.04.2024,!
-        14.05.2024,!
-        12.06.2024,!
-        03.10.2024,!
-        04.10.2024,!
-        12.10.2024,!
-        17.10.2024,!
-        24.10.2024,!"</item>
+        24.03.2024,!1 Purim
+        23.04.2024,!1 Pesach
+        29.04.2024,!1 Shvi'i shel Pesach
+        14.05.2024,!1 Yom Ha-Atzmaut
+        12.06.2024,!1 Shavuot
+        03.10.2024,!1 Rosh Hashanah
+        04.10.2024,!1 Rosh Hashanah
+        12.10.2024,!1 Yom Kippur
+        17.10.2024,!1 Sukkot
+        24.10.2024,!1 Shemini Atzeret / Simchat Torah"</item>
     </string-array>
 
     <string-array name="holidays8" translatable="false" tools:ignore="UnusedResources">
         <item>🇦🇹 Gesetzliche Feiertage</item>
-        <item>"//2023 https://publicholidays.at/2023-dates/
-        01.01.2023,!
-        06.06.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        18.05.2023,!
-        29.05.2023,!
-        08.06.2023,!
-        15.08.2023,!
-        26.10.2023,!
-        01.11.2023,!
-        08.12.2023,!
-        25.12.2023,!
-        26.12.2023,!"</item>
-        <item>"//2024 https://publicholidays.at/2024-dates/
-        01.01.2024,!
-        06.01.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        09.05.2024,!
-        20.05.2024,!
-        30.05.2024,!
-        15.08.2024,!
-        26.10.2024,!
-        01.11.2024,!
-        08.12.2024,!
-        25.12.2024,!
-        26.12.2024,!"</item>
+        <item>"//2023 https://publicholidays.at/de/2023-dates/
+        01.01.2023,!1 Neujahrstag
+        06.06.2023,!1 Heilige Drei Könige
+        10.04.2023,!1 Ostermontag
+        01.05.2023,!1 Tag der Arbeit
+        18.05.2023,!1 Christi Himmelfahrt
+        29.05.2023,!1 Pfingstmontag
+        08.06.2023,!1 Fronleichnam
+        15.08.2023,!1 Mariä Himmelfahrt
+        26.10.2023,!1 Nationalfeiertag
+        01.11.2023,!1 Allerheiligen
+        08.12.2023,!1 Mariä Empfängnis
+        25.12.2023,!1 Christtag
+        26.12.2023,!1 Stefanitag"</item>
+        <item>"//2024 https://publicholidays.at/de/2024-dates/
+        01.01.2024,!1 Neujahrstag
+        06.01.2024,!1 Heilige Drei Könige
+        01.04.2024,!1 Ostermontag
+        01.05.2024,!1 Tag der Arbeit
+        09.05.2024,!1 Christi Himmelfahrt
+        20.05.2024,!1 Pfingstmontag
+        30.05.2024,!1 Fronleichnam
+        15.08.2024,!1 Mariä Himmelfahrt
+        26.10.2024,!1 Nationalfeiertag
+        01.11.2024,!1 Allerheiligen
+        08.12.2024,!1 Mariä Empfängnis
+        25.12.2024,!1 Christtag
+        26.12.2024,!1 Stefanitag"</item>
     </string-array>
 
     <string-array name="holidays9" translatable="false" tools:ignore="UnusedResources">
         <item>🇧🇷 Feriados públicos</item>
         <item>"//2023 https://www.dias-uteis.com/dias-uteis_feriados_2023.htm
-        01.01.2023,!
-        21.02.2023,!
-        07.03.2023,!
-        21.03.2023,!
-        01.05.2023,!
-        07.09.2023,!
-        12.10.2023,!
-        02.11.2023,!
-        15.11.2023,!
-        25.12.2023,!"</item>
+        01.01.2023,!1 Ano Novo
+        21.02.2023,!1 Terça-feira de Carnaval
+        07.03.2023,!1 Sexta-feira Santa
+        21.03.2023,!1 Tiradentes
+        01.05.2023,!1 Dia do Trabalho
+        07.09.2023,!1 Independência
+        12.10.2023,!1 Nossa Senh. Aparecida
+        02.11.2023,!1 Finados
+        15.11.2023,!1 Proclamação República
+        25.12.2023,!1 Natal"</item>
         <item>"//2024 https://www.dias-uteis.com/dias-uteis_feriados_2024.htm
-        01.01.2024,!
-        13.02.2024,!
-        29.03.2024,!
-        21.04.2024,!
-        01.05.2024,!
-        07.09.2024,!
-        12.10.2024,!
-        02.11.2024,!
-        15.11.2024,!
-        25.12.2024,!"</item>
+        01.01.2024,!1 Ano Novo
+        13.02.2024,!1 Terça-feira de Carnaval
+        29.03.2024,!1 Sexta-feira Santa
+        21.04.2024,!1 Tiradentes
+        01.05.2024,!1 Dia do Trabalho
+        07.09.2024,!1 Independência
+        12.10.2024,!1 Nossa Senh. Aparecida
+        02.11.2024,!1 Finados
+        15.11.2024,!1 Proclamação República
+        25.12.2024,!1 Natal"</item>
     </string-array>
 
     <string-array name="holidays10" translatable="false" tools:ignore="UnusedResources">
         <item>🇪🇸 Feriados publicos</item>
         <item>"//2023 https://www.dias-laborables.es/dias_laborables_feriados_2023.htm
-        01.01.2023,!
-        02.01.2023,!
-        06.01.2023,!
-        28.02.2023,!
-        06.04.2023,!
-        07.04.2023,!
-        01.05.2023,!
-        07.09.2023,!
-        15.08.2023,!
-        12.10.2023,!
-        01.11.2023,!
-        06.12.2023,!
-        08.12.2023,!
-        25.12.2023,!"</item>
+        01.01.2023,!1 Año Nuevo
+        02.01.2023,!1 Año Nuevo
+        06.01.2023,!1 Epifanía del Señor
+        28.02.2023,!1 Día de Andalucía
+        06.04.2023,!1 Jueves santo
+        07.04.2023,!1 Viernes Santo
+        01.05.2023,!1 Fiesta del Trabajo
+        15.08.2023,!1 Asuncíon de la Virgen
+        12.10.2023,!1 Fiesta nacional
+        01.11.2023,!1 Todos los Santos
+        06.12.2023,!1 Constitución
+        08.12.2023,!1 Immacu. Concepcíon
+        25.12.2023,!1 Día de Navidad"</item>
         <item>"//2024 https://www.dias-laborables.es/dias_laborables_feriados_2024.htm
-        01.01.2024,!
-        06.01.2024,!
-        28.02.2024,!
-        28.03.2024,!
-        29.03.2024,!
-        01.05.2024,!
-        15.08.2024,!
-        12.10.2024,!
-        01.11.2024,!
-        06.12.2024,!
-        08.12.2024,!
-        09.12.2024,!
-        25.12.2024,!"</item>
+        01.01.2024,!1 Año Nuevo
+        06.01.2024,!1 Epifanía del Señor
+        28.02.2024,!1 Día de Andalucía
+        28.03.2024,!1 Jueves santo
+        29.03.2024,!1 Viernes Santo
+        01.05.2024,!1 Fiesta del Trabajo
+        15.08.2024,!1 Asuncíon de la Virgen
+        12.10.2024,!1 Fiesta nacional
+        01.11.2024,!1 Todos los Santos
+        06.12.2024,!1 Constitución
+        08.12.2024,!1 Immacu. Concepcíon
+        09.12.2024,!1 Immacu. Concepcíon
+        25.12.2024,!1 Día de Navidad"</item>
     </string-array>
 
     <string-array name="holidays11" translatable="false" tools:ignore="UnusedResources">
         <item>🇫🇷 Vacances publiques</item>
-        <item>"//2023 https://www.joursouvres.fr/joursouvres_joursferies_2023.htm
-        01.01.2023,!
-        10.04.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        18.05.2023,!
-        29.05.2023,!
-        14.07.2023,!
-        15.08.2023,!
-        01.11.2023,!
-        11.11.2023,!
-        25.12.2023,!"</item>
+            <item>"//2023 https://www.joursouvres.fr/joursouvres_joursferies_2023.htm
+        01.01.2023,!1 Jour de l'An
+        10.04.2023,!1 Lundi de Pâques
+        01.05.2023,!1 Fête du Travail
+        08.05.2023,!1 Fête de la Victoire 45
+        18.05.2023,!1 Jeudi de l'Ascension
+        29.05.2023,!1 Lundi de la Pentecôte
+        14.07.2023,!1 Fête Nationale
+        15.08.2023,!1 Assomption
+        01.11.2023,!1 Toussaint
+        11.11.2023,!1 Fête de l'Armistice
+        25.12.2023,!1 Noël"</item>
         <item>"//2024 https://www.joursouvres.fr/joursouvres_joursferies_2024.htm
-        01.01.2024,!
-        01.04.2024,!
-        01.05.2024,!
-        08.05.2024,!
-        09.05.2024,!
-        20.05.2024,!
-        14.07.2024,!
-        15.08.2024,!
-        01.11.2024,!
-        11.11.2024,!
-        25.12.2024,!"</item>
+        01.01.2024,!1 Jour de l'An
+        01.04.2024,!1 Lundi de Pâques
+        01.05.2024,!1 Fête du Travail
+        08.05.2024,!1 Fête de la Victoire 45
+        09.05.2024,!1 Jeudi de l'Ascension
+        20.05.2024,!1 Lundi de la Pentecôte
+        14.07.2024,!1 Fête Nationale
+        15.08.2024,!1 Assomption
+        01.11.2024,!1 Toussaint
+        11.11.2024,!1 Fête de l'Armistice
+        25.12.2024,!1 Noël"</item>
     </string-array>
 
     <string-array name="holidays12" translatable="false" tools:ignore="UnusedResources">
         <item>🇮🇳 Public holidays</item>
         <item>"//2023 https://www.workingdays.in/workingdays_holidays_2023.htm
-        01.01.2023,!
-        14.01.2023,!
-        26.01.2023,!
-        19.02.2023,!
-        07.04.2023,!
-        14.04.2023,!
-        15.08.2023,!
-        02.10.2023,!
-        24.12.2023,!
-        25.12.2023,!"</item>
+        01.01.2023,!1 New Year's Day
+        14.01.2023,!1 Makar Sankranti
+        26.01.2023,!1 Republic Day
+        19.02.2023,!1 Shivaji Jayanti
+        07.04.2023,!1 Good Friday
+        14.04.2023,!1 Mesadi
+        15.08.2023,!1 Independence Day
+        02.10.2023,!1 Gandhi's Birthday
+        24.12.2023,!1 Christmas Eve
+        25.12.2023,!1 Christmas"</item>
         <item>"//2024 https://www.workingdays.in/workingdays_holidays_2024.htm
-        01.01.2024,!
-        14.01.2024,!
-        26.01.2024,!
-        19.02.2024,!
-        29.03.2024,!
-        14.04.2024,!
-        15.08.2024,!
-        02.10.2024,!
-        24.12.2024,!
-        25.12.2024,!"</item>
+        01.01.2024,!1 New Year's Day
+        14.01.2024,!1 Makar Sankranti
+        26.01.2024,!1 Republic Day
+        19.02.2024,!1 Shivaji Jayanti
+        29.03.2024,!1 Good Friday
+        14.04.2024,!1 Mesadi
+        15.08.2024,!1 Independence Day
+        02.10.2024,!1 Gandhi's Birthday
+        24.12.2024,!1 Christmas Eve
+        25.12.2024,!1 Christmas"</item>
     </string-array>
 
     <string-array name="holidays13" translatable="false" tools:ignore="UnusedResources">
         <item>🇰🇿 Мемлекеттік мерекелер</item>
         <item>"//2023 https://egov.kz/cms/ru/articles/calendar_2021
-        01.01.2023,!
-        02.01.2023,!
-        03.01.2023,!
-        08.03.2023,!
-        21.03.2023,!
-        22.03.2023,!
-        23.03.2023,!
-        01.05.2023,!
-        08.05.2023,!
-        09.05.2023,!
-        28.06.2023,!
-        06.07.2023,!
-        07.07.2023,!
-        30.08.2023,!
-        25.10.2023,!
-        16.12.2023,!
-        18.12.2023,!"</item>
+        01.01.2023,!1 Новый год
+        02.01.2023,!1 Новый год
+        03.01.2023,!1 Перенос с воскресенья 1 января на вторник
+        07.01.2023,!1 Православное Рождество
+        08.03.2023,!1 Международный женский день
+        21.03.2023,!1 Наурыз мейрамы
+        22.03.2023,!1 Наурыз мейрамы
+        23.03.2023,!1 Наурыз мейрамы
+        01.05.2023,!1 Праздник единства народа Казахстана
+        07.05.2023,!1 День защитника Отечества
+        08.05.2023,!1 Перенос с воскресенья 7 января на понедельник
+        09.05.2023,!1 День Победы
+        28.06.2023,!1 Первый день Курбан-айта
+        06.07.2023,!1 День Столицы
+        07.07.2023,!1 Перенос с субботы 1 июля на пятницу
+        30.08.2023,!1 День Конституции Республики Казахстан
+        16.12.2023,!1 День Независимости
+        18.12.2023,!1 Перенос с субботы 16 декабря на понедельник"</item>
         <item>"//2024 https://egov.kz/cms/ru/articles/employment_relations/holidays-calend
-        01.01.2024,!
-        02.01.2024,!
-        08.03.2024,!
-        21.03.2024,!
-        22.03.2024,!
-        23.03.2024,!
-        25.03.2024,!
-        01.05.2024,!
-        07.05.2024,!
-        09.05.2024,!
-        17.06.2024,!
-        08.07.2024,!
-        30.08.2024,!
-        25.10.2024,!
-        16.12.2024,!"</item>
+        01.01.2024,!1 Новый год
+        02.01.2024,!1 Новый год
+        07.01.2023,!1 Православное Рождество
+        08.03.2024,!1 Международный женский день
+        21.03.2024,!1 Наурыз мейрамы
+        22.03.2024,!1 Наурыз мейрамы
+        23.03.2024,!1 Наурыз мейрамы
+        25.03.2024,!1 Перенос с субботы 23 марта на понедельник
+        01.05.2024,!1 Праздник единства народа Казахстана
+        07.05.2024,!1 День защитника Отечества
+        09.05.2024,!1 День Победы
+        17.06.2024,!1 Первый день Курбан-айта
+        06.07.2024,!1 День Столицы
+        08.07.2024,!1 Перенос с субботы 6 июля на понедельник
+        30.08.2024,!1 День Конституции РК
+        25.10.2024,!1 День Республики
+        16.12.2024,!1 День Независимости"</item>
     </string-array>
 
 </resources>

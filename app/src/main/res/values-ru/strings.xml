@@ -104,18 +104,18 @@
     <string name="msg_after_year_prefix_1">" год"</string>
     <string name="msg_after_year_prefix_2_3_4">" года"</string>
     <string name="msg_after_year_prefix_1_">" год"</string>
-    <string name="msg_after_year_prefix_4_21">" лет"</string>
+    <string name="msg_after_year_prefix_5_20">" лет"</string>
     <string name="msg_after_year_bc">" до н.э."</string>
 
     <string name="msg_after_month_prefix_1">" месяц"</string>
     <string name="msg_after_month_prefix_2_3_4">" месяца"</string>
     <string name="msg_after_month_prefix_1_">" месяц"</string>
-    <string name="msg_after_month_prefix_4_21">" месяцев"</string>
+    <string name="msg_after_month_prefix_5_20">" месяцев"</string>
 
     <string name="msg_after_day_prefix_1">" день"</string>
     <string name="msg_after_day_prefix_2_3_4">" дня"</string>
     <string name="msg_after_day_prefix_1_">" день"</string>
-    <string name="msg_after_day_prefix_4_21">" дней"</string>
+    <string name="msg_after_day_prefix_5_20">" дней"</string>
 
     <string name="msg_after_day_prefix_short">" дн."</string>
 
@@ -768,7 +768,7 @@
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
     <string name="widget_config_font_description">Используется при масштабировании виджета для увеличения размера шрифта возраста, дистанции до события и информации под фото</string>
     <string-array name="widget_config_font">
-        <item>Авто</item>
+        <item>Автоматически</item>
         <item>x0.5</item>
         <item>x0.65</item>
         <item>x0.75</item>
@@ -802,7 +802,7 @@
     <string name="widget_config_events_count_label">Количество событий в ширину</string>
     <string name="widget_config_events_count_description">Если событиям слишком \"узко\" или \"широко\" в виджете, откорректируйте количество событий</string>
     <string-array name="widget_config_events_count">
-        <item>Авто</item>
+        <item>Автоматически (по размеру виджета)</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>

@@ -104,18 +104,18 @@
     <string name="msg_after_year_prefix_1">" Jahr"</string>
     <string name="msg_after_year_prefix_2_3_4">" Jahre"</string>
     <string name="msg_after_year_prefix_1_">" Jahre"</string> <!--21, 31, 41, ...-->
-    <string name="msg_after_year_prefix_4_21">" Jahre"</string>
+    <string name="msg_after_year_prefix_5_20">" Jahre"</string>
     <string name="msg_after_year_bc">" v"</string>
 
     <string name="msg_after_month_prefix_1">" Monat"</string>
     <string name="msg_after_month_prefix_2_3_4">" Monate"</string>
     <string name="msg_after_month_prefix_1_">" Monate"</string> <!--21, 31, 41, ...-->
-    <string name="msg_after_month_prefix_4_21">" Monate"</string>
+    <string name="msg_after_month_prefix_5_20">" Monate"</string>
 
     <string name="msg_after_day_prefix_1">" Tag"</string>
     <string name="msg_after_day_prefix_2_3_4">" Tage"</string>
     <string name="msg_after_day_prefix_1_">" Tage"</string> <!--21, 31, 41, ...-->
-    <string name="msg_after_day_prefix_4_21">" Tage"</string>
+    <string name="msg_after_day_prefix_5_20">" Tage"</string>
 
     <string name="msg_after_day_prefix_short">" d."</string>
 
@@ -757,7 +757,7 @@
     <string name="widget_config_font_label">Schriftgrößenverhältnis</string>
     <string name="widget_config_font_description">Wird beim Skalieren des Widgets verwendet, um die Schriftgrößen des Alters, des Abstands zum Ereignis und der Informationen unter dem Foto zu erhöhen</string>
     <string-array name="widget_config_font">
-        <item>Auto</item>
+        <item>Automatisch</item>
         <item>x0.5</item>
         <item>x0.65</item>
         <item>x0.75</item>
@@ -791,7 +791,7 @@
     <string name="widget_config_events_count_label">Anzahl der Ereignisse (horizontal)</string>
     <string name="widget_config_events_count_description">Stehen die Ereignisse im Widget \"zu eng\" oder \"zu locker\", passen Sie die Anzahl der Ereignisse an</string>
     <string-array name="widget_config_events_count">
-        <item>Auto</item>
+        <item>Automatisch (nach Widget-Größe)</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>

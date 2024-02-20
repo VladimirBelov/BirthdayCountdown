@@ -793,13 +793,13 @@ class ContactsEvents {
                     Period p = Period.between(dateStart, dateEnd);
 
                     if (p.getYears() > 0) {
-                        eventDistance.append(getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
                     if (p.getMonths() > 0) {
-                        eventDistance.append(getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
                     if (p.getDays() > 0) {
-                        eventDistance.append(getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
                 }
 
@@ -829,7 +829,7 @@ class ContactsEvents {
 
                     long delta = yearTo - yearFrom - (daysFromNYTo < daysFromNYFrom ? 1 : 0);
                     if (delta > 0) {
-                        eventDistance.append(getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
                     final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
                     final int dayOfMonthFrom = calendarDateFrom.get(Calendar.DAY_OF_MONTH);
@@ -839,7 +839,7 @@ class ContactsEvents {
                         delta = calendarDateTo.get(Calendar.MONTH) - calendarDateFrom.get(Calendar.MONTH);
                     }
                     if (delta > 0) {
-                        eventDistance.append(getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
 
                     if (dayOfMonthTo >= dayOfMonthFrom) {
@@ -852,7 +852,7 @@ class ContactsEvents {
                         delta = numDays - dayOfMonthFrom + dayOfMonthTo - 1;
                     }
                     if (delta > 0) {
-                        eventDistance.append(getAgeString(delta, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21)).append(Constants.STRING_SPACE);
+                        eventDistance.append(getAgeString(delta, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20)).append(Constants.STRING_SPACE);
                     }
                 }
             }
@@ -862,7 +862,7 @@ class ContactsEvents {
                 eventDistance.append(Constants.STRING_PARENTHESIS_START);
             }
             if (components == 2 || components == 3) {
-                eventDistance.append(getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21));
+                eventDistance.append(getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20));
             }
             if (components == 3) {
                 eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
@@ -923,7 +923,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_4_21) {
+    String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_5_20) {
 
         try {
 
@@ -936,20 +936,20 @@ class ContactsEvents {
 
             long ageMinus100 = age;
             while (ageMinus100 > 100) {
-                ageMinus100 = ageMinus100 - 100;
+                ageMinus100 -= 100;
             }
 
-            if (!getResources().getString(R.string.pref_Language_fr).equals(preferences_language)) {
+            if (!getResources().getString(R.string.pref_Language_fr).equals(currentLocale)) {
                 if (ageMinus100 == 1) { //Единственное число
                     result.append(getResources().getString(id_prefix_1));
                 } else if (ageMinus100 > 4 && ageMinus100 < 21) { //Больше 4, но меньше 21
-                    result.append(getResources().getString(id_prefix_4_21));
+                    result.append(getResources().getString(id_prefix_5_20));
                 } else if (count_end.equals(Constants.STRING_1)) { //Если заканчивается на 1, но не между 5-20
                     result.append(getResources().getString(id_prefix_1_));
                 } else if (isEnd234) { //Если заканчивается на 2, 3, 4
                     result.append(getResources().getString(id_prefix_2_3_4));
                 } else {
-                    result.append(getResources().getString(id_prefix_4_21));
+                    result.append(getResources().getString(id_prefix_5_20));
                 }
             } else { //Французский
                 if (ageMinus100 == 1) { //Единственное число
@@ -957,7 +957,7 @@ class ContactsEvents {
                 } else if ((ageMinus100 >= 3 && ageMinus100 <= 5) || (ageMinus100 >= 8 && ageMinus100 <= 10)) { //3-5,8-10
                     result.append(getResources().getString(id_prefix_1_));
                 } else {
-                    result.append(getResources().getString(id_prefix_4_21));
+                    result.append(getResources().getString(id_prefix_5_20));
                 }
             }
             return result.toString();
@@ -1522,7 +1522,7 @@ class ContactsEvents {
                 setDisplayMetrics(this.getResources().getDisplayMetrics());
                 displayMetrics_density = displayMetrics.density;
                 resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-                currentLocale = preferences_language;
+                currentLocale = locale.toString();
 
                 weekDaysShort = resources.getStringArray(R.array.weekDaysShort);
                 eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
@@ -4797,7 +4797,7 @@ class ContactsEvents {
 
             if (Age > 0) { //Возраст больше 1 года
                 singleEventArray[Position_age] = Integer.toString(Age);
-                singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21));
+                singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
 
                 if (eventType.equals(getEventType(Constants.Type_Anniversary))) {
                     @Nullable String anCaption;
@@ -4871,7 +4871,7 @@ class ContactsEvents {
                         singleEventArray5K[Position_eventDateThisTime] = sdf_DDMMYYYY.format(cal5K.getTime());
                         singleEventArray5K[Position_eventDateFirstTime] = sdf_DDMMYYYY.format(eventDateFirstTime);
                         singleEventArray5K[Position_age] = Integer.toString(Age);
-                        singleEventArray5K[Position_age_caption] = setAgeFormatting(getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21));
+                        singleEventArray5K[Position_age_caption] = setAgeFormatting(getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20));
                         singleEventArray5K[Position_eventDistance] = Integer.toString(magicDayDistance);
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
                         singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
@@ -5031,7 +5031,7 @@ class ContactsEvents {
                 if (dayDiff > 0) { //Подальше вперёд
                     eventDistance
                             .append(getResources().getString(R.string.msg_before_event_prefix))
-                            .append(getAgeString(dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21))
+                            .append(getAgeString(dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20))
                             .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : Constants.STRING_EMPTY); //для немецкого "in 10 TageN"
                 } else if (dayDiff == -1) { //Вчера
                     eventDistance.append(getResources().getString(R.string.msg_yesterday));
@@ -5040,7 +5040,7 @@ class ContactsEvents {
                 } else { //Подальше назад
                     eventDistance
                             .append(getResources().getString(R.string.msg_after_event_prefix))
-                            .append(getAgeString(-dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_4_21))
+                            .append(getAgeString(-dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20))
                             .append(getResources().getString(R.string.msg_after_event_postfix));
                 }
             }
@@ -5165,7 +5165,7 @@ class ContactsEvents {
                         if (Age > 1) {
                             Age--;
                             singleEventArray[Position_age] = Integer.toString(Age);
-                            singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21));
+                            singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
 
                             if (singleEventArray[Position_eventType].equals(getEventType(Constants.Type_Anniversary))) {
                                 @Nullable String anCaption;
@@ -7705,11 +7705,11 @@ class ContactsEvents {
             }
             Collections.shuffle(rollAges, generator);
 
-            String ageLong = getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21).toUpperCase();
+            String ageLong = getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20).toUpperCase();
 
             for (Integer age : rollAges) {
                 boolean isAge = age.equals(Age);
-                String ageRollLong = getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_4_21).toUpperCase();
+                String ageRollLong = getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20).toUpperCase();
                 StringBuilder sb = new StringBuilder(isAge ? Constants.STRING_1 : Constants.STRING_0).append(Constants.STRING_EOT).append(ageRollLong).append(Constants.STRING_EOT);
                 if (isAge) {
                     sb.append(getResources().getString(R.string.quiz_answer_true, ageLong, eventInfo[Position_eventDateFirstTime]));
@@ -8748,7 +8748,7 @@ class ContactsEvents {
     void clearDaysTypes() {preferences_DaysTypes.clear();}
 
     @SuppressLint("DiscouragedApi")
-    void fillDaysTypesFromFiles() {
+    void fillDaysTypesFromFiles(List<String> fileHashes) {
         try {
 
             //Справочники праздников и выходных
@@ -8760,7 +8760,7 @@ class ContactsEvents {
                     String[] eventsPack = getResources().getStringArray(packId);
                     if (eventsPack.length > 1) {
                         final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        if (!preferences_DaysTypes.containsKey(packHash) && preferences_HolidayEvent_ids.contains(packHash)) {
+                        if (fileHashes == null || fileHashes.contains(packHash)) {
                             Log.i("HOLIDAY", eventsPack[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                             for (int i = 1; i < eventsPack.length; i++) {
                                 String eventsArray = eventsPack[i];

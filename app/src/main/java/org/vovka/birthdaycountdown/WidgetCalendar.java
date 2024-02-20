@@ -480,7 +480,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 //Заполнение типов дней из календарей по периоду
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
                 //Заполнение типов дней из файлов
-                eventsData.fillDaysTypesFromFiles();
+                eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
 
             for (int row = 1; row <= rowsToDraw; row++) {
@@ -628,7 +628,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 if (isToday) {
                                     cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
 
-                                    if (Color.red(color) + Color.green(color) + Color.blue(color) > 128 * 3) {
+                                    if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
                                     } else {
                                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));

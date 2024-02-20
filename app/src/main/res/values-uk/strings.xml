@@ -104,18 +104,18 @@
     <string name="msg_after_year_prefix_1">" рік"</string>
     <string name="msg_after_year_prefix_2_3_4">" роки"</string>
     <string name="msg_after_year_prefix_1_">" рік"</string> <!--21, 31, 41, ...-->
-    <string name="msg_after_year_prefix_4_21">" років"</string>
+    <string name="msg_after_year_prefix_5_20">" років"</string>
     <string name="msg_after_year_bc">" до н.е."</string>
 
     <string name="msg_after_month_prefix_1">" місяць"</string>
     <string name="msg_after_month_prefix_2_3_4">" місяці"</string>
     <string name="msg_after_month_prefix_1_">" місяць"</string>
-    <string name="msg_after_month_prefix_4_21">" місяців"</string>
+    <string name="msg_after_month_prefix_5_20">" місяців"</string>
 
     <string name="msg_after_day_prefix_1">" день"</string>
     <string name="msg_after_day_prefix_2_3_4">" дні"</string>
     <string name="msg_after_day_prefix_1_">" день"</string>
-    <string name="msg_after_day_prefix_4_21">" днів"</string>
+    <string name="msg_after_day_prefix_5_20">" днів"</string>
 
     <string name="msg_after_day_prefix_short">" дн."</string>
 
@@ -791,7 +791,7 @@
     <string name="widget_config_events_count_label">Кількість подій завширшки</string>
     <string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>
     <string-array name="widget_config_events_count">
-        <item>Авто</item>
+        <item>Автоматично (за розміром віджета)</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>
