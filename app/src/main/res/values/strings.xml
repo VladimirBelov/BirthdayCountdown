@@ -1233,6 +1233,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="month_event_saturdays">Saturdays</string>
     <string name="month_event_sundays">Sundays</string>
+    <string name="month_event_popup_prefix">"Date: "</string>
 
     <!-- COMMON STRINGS -->
 
@@ -1257,7 +1258,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento,aniversário,anniversaire"</string>
     <string name="event_type_wedding_labels" translatable="false">"anniversary,wedding,годовщина,свадьба,свадьбы,весілля,hochzeitstag,civil,boda,casamento,mariage"</string>
     <string name="event_type_nameday_labels" translatable="false">"name-day,name day,именины,день ангела,іменини,namenstag,nom"</string>
-    <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento,mort"</string>
+    <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento,mort,мёрт,смерць,смерці,памёр"</string>
     <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa,noce,couronnement"</string>
 
     <string name="event_type_birthday_emoji" translatable="false">🎂</string>

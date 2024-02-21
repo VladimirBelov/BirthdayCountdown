@@ -75,11 +75,12 @@
 					android:id="@+id/textVersionInfo"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:paddingStart="40dp"
 					android:contentDescription="@string/hint_VersionNumberDetails"
-					android:textColor="?android:attr/textColorSecondary"
+					android:importantForAccessibility="no"
 					android:onClick="setDebug"
-					android:importantForAccessibility="no"/>
+					android:paddingStart="40dp"
+					android:textColor="?android:attr/textColorSecondary"
+					tools:ignore="TouchTargetSizeCheck" />
 
 			</LinearLayout>
 

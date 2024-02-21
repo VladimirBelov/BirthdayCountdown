@@ -47,6 +47,7 @@ android {
 
     buildFeatures {
         dataBinding false
+        viewBinding false
         buildConfig true
     }
 

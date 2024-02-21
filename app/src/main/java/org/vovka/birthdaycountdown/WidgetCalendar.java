@@ -135,6 +135,11 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         try {
 
+            AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            if (appWidgetInfo == null) return;
+
+            Resources res = context.getResources();
+
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
@@ -145,10 +150,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             int rowsToDraw = 4;
             int numWeeks = 6;
 
-            AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-
-            Resources res = context.getResources();
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
 
             //Прогресс обновления
@@ -577,15 +578,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
                             }
 
-                            Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                            builder.appendPath("time");
-                            builder.appendPath(Long.toString(cal.getTimeInMillis()));
-                            Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                            cellRv.setOnClickPendingIntent(android.R.id.text1, PendingIntent.getActivity(context, 0, intent,
-                                    PendingIntentImmutable));
-
                             if (enabledFillDays || inMonth) {
                                 cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
                             }
@@ -637,6 +629,39 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 } else {
                                     cellRv.setTextColor(android.R.id.text1, color);
                                 }
+                            }
+
+                            //Реакция на нажатие
+                            boolean hasInfo = false;
+                            if (!dayTypes.isEmpty()) {
+
+                                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+                                if (!dayInfo.isEmpty()) {
+                                    Intent intent = new Intent(context, WidgetCalendarPopup.class);
+                                    String dayInfoString = res.getString(R.string.month_event_popup_prefix)
+                                            .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                                            .concat(Constants.STRING_EOL)
+                                            .concat(String.join(Constants.STRING_EOL, dayInfo));
+                                    intent.putExtra(Constants.ACTION_DAY_INFO, dayInfoString);
+                                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    PendingIntent pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
+                                    cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
+                                    hasInfo = true;
+                                }
+
+                            }
+                            if (!hasInfo) {
+
+                                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                                builder.appendPath("time");
+                                builder.appendPath(Long.toString(cal.getTimeInMillis()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                cellRv.setOnClickPendingIntent(android.R.id.text1, PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
+
                             }
 
                             rowRv.addView(R.id.row_container, cellRv);

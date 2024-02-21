@@ -39,7 +39,7 @@
                 </ul>]]></item>
 
                 <item>Wenn die Akkuoptimierung aktiviert ist, wird in jedem Widget-Einstellungsbildschirm oben auf dem Bildschirm eine Warnmeldung angezeigt. Eine ähnliche Inschrift befindet sich unten in den Anwendungseinstellungen. Um die Optimierung zu deaktivieren, klicken Sie auf die rote Schrift.</item>
-                <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
+                <item><![CDATA[<img src="battery_optimization_on_de.png" width=100%><br>]]></item>
                 <item><![CDATA[Manchmal stoppen auf Android 9-10 Widgets die Aktualisierung nach der Installation einer neuen Version der App. Um dies zu beheben:<ol>
                 <li>entfernen Sie das Widget vom Bildschirm
                 <li>deaktivieren Sie den Launcher-Cache (in den Android-Einstellungen in der Liste der Anwendungen wählen Sie das Programm aus und löschen in den Eigenschaften den Cache)

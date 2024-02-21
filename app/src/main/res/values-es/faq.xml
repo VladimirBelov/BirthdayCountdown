@@ -38,7 +38,7 @@
                 <li>para Android 9-11 puro, esto es \"Deshabilitar la optimización de la batería\" (Aplicaciones y notificaciones-> Avanzado-> Acceso a aplicaciones especiales-> Optimización de la batería)
                 <li>para Huawei EMUI esto es \"Habilitar inicio automático\" (Configuración-> Batería-> Iniciar aplicaciones)</ul>]]></item>
                 <item>Cuando la optimización de la batería está habilitada, habrá un mensaje de advertencia en la parte superior de la pantalla en cada pantalla de preferencias de widgets. Una inscripción similar estará en la parte inferior de la configuración de la aplicación. Para desactivar la optimización, haga clic en la etiqueta roja.</item>
-                <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
+                <item><![CDATA[<img src="battery_optimization_on_es.png" width=100%><br>]]></item>
                 <item><![CDATA[A veces, en Android 9-10, los widgets dejan de actualizarse después de instalar una nueva versión de la aplicación. Para corregir las actualizaciones de widgets, debe:<ol>
                 <li>eliminar el widget de la pantalla
                 <li>borre el caché del iniciador (en la configuración de Android en la lista de aplicaciones, busque el iniciador y seleccione "borrar caché" en propiedades)

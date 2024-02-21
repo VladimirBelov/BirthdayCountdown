@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -66,23 +64,6 @@ public class AboutActivity extends AppCompatActivity {
             eventsData = ContactsEvents.getInstance();
             this.setTheme(eventsData.preferences_theme.themeMain);
             eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
             eventsData.setLocale(true);
 
             setContentView(R.layout.activity_changelog);

@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -122,9 +121,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
 
             //Сообщение при отсутствии событий
-            String prefZeroEventsMessage = Constants.STRING_EMPTY;
+            String prefZeroEventsMessage = context.getString(R.string.msg_no_events);
             if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
-            views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
+            views.setTextViewText(R.id.empty_view, prefZeroEventsMessage);
 
             //Цвет подложки
             int colorWidgetBackground = 0;

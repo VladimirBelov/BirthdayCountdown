@@ -1233,5 +1233,6 @@
 
     <string name="month_event_saturdays">Субботы</string>
     <string name="month_event_sundays">Воскресенья</string>
+    <string name="month_event_popup_prefix">"Дата: "</string>
 
 </resources>

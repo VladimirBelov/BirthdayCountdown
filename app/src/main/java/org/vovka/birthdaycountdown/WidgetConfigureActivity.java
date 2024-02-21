@@ -18,7 +18,6 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -45,7 +44,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,13 +60,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
     private static final String TAG = "WidgetConfigureActivity";
     private int widgetId = 0;
+    private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
     private boolean isListWidget = false;
     private ContactsEvents eventsData;
     private List<String> eventTypesIDs;
     private List<String> eventTypesValues;
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
-    List<String> widgetPref;
     private final List<String> eventSourcesIds = new ArrayList<>();
     private final List<String> eventSourcesTitles = new ArrayList<>();
     private final List<String> eventSourcesPackages = new ArrayList<>();
@@ -88,23 +86,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
@@ -138,14 +119,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Bundle extras = intent.getExtras();
             if (extras != null) widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId);
-            String widgetType;
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
-            } else {
-                widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
             }
 
-            widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
                         .concat(Constants.STRING_PARENTHESIS_OPEN)
@@ -432,7 +410,53 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
-            //Скрываем недоступные параметры
+            //Обновляем видимость элементов
+            updateVisibility();
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            if (ta != null) ta.recycle();
+        }
+    }
+
+    private void updateEventSources() {
+        try {
+
+            TextView listEventSources = findViewById(R.id.listEventSources);
+            StringBuilder sb = new StringBuilder();
+            for (String source: eventSourcesSelected) {
+                int ind = eventSourcesHashes.indexOf(source);
+                if (ind > -1) {
+                    if (sb.length() > 0) sb.append(Constants.STRING_EOL);
+
+                    String sourceId = ContactsEvents.checkForNull(eventSourcesIds.get(ind));
+                    if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
+                        sb.append("📆 ");
+                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
+                        sb.append("📁 ");
+                    } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
+                        sb.append("👨‍💼 ");
+                    }
+                    sb.append(eventSourcesTitles.get(ind));
+                }
+            }
+
+            if (sb.length() == 0) {
+                listEventSources.setText(R.string.widget_config_event_sources_empty);
+            } else {
+                listEventSources.setText(sb.toString());
+            }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void updateVisibility() {
+        try {
 
             if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
 
@@ -505,6 +529,17 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
+            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+
+                //Скрываем заголовок виджета
+                findViewById(R.id.dividerCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.captionCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.editCustomWidgetCaption).setVisibility(View.GONE);
+                findViewById(R.id.hintCustomWidgetCaption).setVisibility(View.GONE);
+
+            }
+
             if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
                     || widgetType.equals(Constants.WIDGET_TYPE_LIST)
                     || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
@@ -515,43 +550,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        } finally {
-            if (ta != null) ta.recycle();
-        }
-    }
-
-    private void updateEventSources() {
-        try {
-
-            TextView listEventSources = findViewById(R.id.listEventSources);
-            StringBuilder sb = new StringBuilder();
-            for (String source: eventSourcesSelected) {
-                int ind = eventSourcesHashes.indexOf(source);
-                if (ind > -1) {
-                    if (sb.length() > 0) sb.append(Constants.STRING_EOL);
-
-                    String sourceId = ContactsEvents.checkForNull(eventSourcesIds.get(ind));
-                    if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
-                        sb.append("📆 ");
-                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
-                        sb.append("📁 ");
-                    } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
-                        sb.append("👨‍💼 ");
-                    }
-                    sb.append(eventSourcesTitles.get(ind));
-                }
-            }
-
-            if (sb.length() == 0) {
-                listEventSources.setText(R.string.widget_config_event_sources_empty);
-            } else {
-                listEventSources.setText(sb.toString());
-            }
-
-        } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }

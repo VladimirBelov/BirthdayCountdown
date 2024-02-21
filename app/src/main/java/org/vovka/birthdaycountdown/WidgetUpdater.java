@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -108,7 +109,10 @@ class WidgetUpdater {
 
             if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
 
-                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
+                String prefZeroEventsMessage = null;
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
+                views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
                 return;
 
@@ -182,8 +186,12 @@ class WidgetUpdater {
 
             if (eventsDisplayed == 0) { //вообще ничего не нашли
 
-                views.setTextViewText(R.id.appwidget_text, context.getString(R.string.msg_no_events));
+                String prefZeroEventsMessage = null;
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
+                views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
+
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
                 intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);

@@ -212,6 +212,7 @@ class ContactsEvents {
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
     private final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
+    private final Map<String, String> preferences_DaysInfo = new HashMap<>();
 
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
@@ -411,7 +412,7 @@ class ContactsEvents {
     float dimen_List_details;
     float dimen_List_name;
     float dimen_list_date;
-    private String currentLocale = Constants.STRING_EMPTY;
+    String currentLocale = Constants.STRING_EMPTY;
 
     //UI объекты
     private Context context;
@@ -426,6 +427,8 @@ class ContactsEvents {
     String eventNameNY;
     String eventNameEaster;
     String eventNameCatholicEaster;
+
+    private Thread widgetsUpdateThread;
 
     private ContactsEvents() {
     }
@@ -1502,21 +1505,26 @@ class ContactsEvents {
 
         try {
 
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
+                locale = new Locale(systemLocale);
+            } else {
+                locale = new Locale(preferences_language);
+            }
+            Resources applicationRes = context.getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+            //
             Configuration configuration = context.getResources().getConfiguration();
             if (force || !preferences_language.equals(currentLocale) || !currentLocale.equals(configuration.locale.toString())) {
 
-                Locale locale;
-                if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
-                    locale = new Locale(systemLocale);
-                } else {
-                    locale = new Locale(preferences_language);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    configuration.setLocales(new android.os.LocaleList(locale));
-                } else {
-                    configuration.setLocale(locale);
-                }
                 Locale.setDefault(locale);
                 resources = context.getResources();
                 setDisplayMetrics(this.getResources().getDisplayMetrics());
@@ -5209,6 +5217,12 @@ class ContactsEvents {
         //Посылаем сообщения на обновление виджетов
         try {
 
+            if (widgetsUpdateThread != null) {
+                if (widgetsUpdateThread.isAlive()) {
+                    widgetsUpdateThread.interrupt();
+                }
+            }
+
             //https://stackoverflow.com/questions/21300924/difference-between-executors-newfixedthreadpool1-and-executors-newsinglethread
             Thread t = new Thread() {
 
@@ -5264,8 +5278,11 @@ class ContactsEvents {
                         countSentRequests.getAndIncrement();
                     }
 
+                    interrupt();
+
                 }
             };
+            widgetsUpdateThread = t;
             t.start();
 
         } catch (Exception e) {
@@ -8745,6 +8762,31 @@ class ContactsEvents {
         return null;
     }
 
+    /**
+     * day - date in yyyy-MM-dd format
+     * */
+    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks) {
+        try {
+
+            List<String> dayInfo = new ArrayList<>();
+            for (String packId: fromPacks) {
+                final String key = packId.concat(Constants.STRING_COLON).concat(day);
+                final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
+                if (preferences_DaysInfo.containsKey(key)){
+                    dayInfo.add(preferences_DaysInfo.get(key));
+                } else if (preferences_DaysInfo.containsKey(key_noYear)) {
+                    dayInfo.add(preferences_DaysInfo.get(key_noYear));
+                }
+            }
+            return dayInfo;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return null;
+    }
+
     void clearDaysTypes() {preferences_DaysTypes.clear();}
 
     @SuppressLint("DiscouragedApi")
@@ -8850,11 +8892,14 @@ class ContactsEvents {
                     }
                 }
                 if (dateEvent != null) {
-                    DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
+                    final String eventTitle = day.substring(indexFirstSpace + 1).trim();
+                    final DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
                     if (flags.contains(Constants.STRING_1)) {
                         preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
+                        preferences_DaysInfo.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), eventTitle);
                     } else {
                         preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
+                        preferences_DaysInfo.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), eventTitle);
                     }
                 } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));
@@ -8895,7 +8940,8 @@ class ContactsEvents {
                     CalendarContract.Instances.BEGIN, //начало именно этого события
                     CalendarContract.Instances.CALENDAR_ID,
                     CalendarContract.Events.DTSTART, //начало первоначального события
-                    CalendarContract.Events.ALL_DAY
+                    CalendarContract.Events.ALL_DAY,
+                    CalendarContract.Instances.TITLE
             };
             ColumnIndexCache cache = new ColumnIndexCache();
             String selection = CalendarContract.Events.CALENDAR_ID + " = " + calIDs;
@@ -8923,7 +8969,6 @@ class ContactsEvents {
                         if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
                             if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
                                 dateCal.add(Calendar.DATE, 1);
-                                //date = dateCal.getTime();
                                 dateFirstCal.add(Calendar.DATE, 1);
                                 dateFirst = dateFirstCal.getTime();
                             }
@@ -8931,7 +8976,9 @@ class ContactsEvents {
 
                         final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
                         final String calHash = getHash(Constants.eventSourceCalendarPrefix + calId);
+                        final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
                         preferences_DaysTypes.put(calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateFirst)), DayType.Type.Holiday);
+                        preferences_DaysInfo.put(calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateFirst)), eventTitle);
 
                     }
                 }
