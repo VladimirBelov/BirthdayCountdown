@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -33,16 +34,21 @@ public class WidgetCalendarPopup extends Activity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            this.setTheme(eventsData.preferences_theme.themeDialog);
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
+
+            this.setTheme(eventsData.preferences_theme.themeDialog);
 
             setContentView(R.layout.activity_popup);
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
+            String dayInfo = null;
             if (extras != null) {
-                String dayInfo = extras.getString(Constants.ACTION_DAY_INFO);
+                dayInfo = extras.getString(Constants.ACTION_DAY_INFO);
+            }
+            if (!TextUtils.isEmpty(dayInfo)) {
                 TextView txtInfo = findViewById(R.id.textInfo);
                 if (txtInfo != null) {
                     txtInfo.setText(dayInfo);
@@ -51,8 +57,6 @@ public class WidgetCalendarPopup extends Activity {
                 ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");
                 finish();
             }
-
-
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

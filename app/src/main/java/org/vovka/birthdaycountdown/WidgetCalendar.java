@@ -15,6 +15,7 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,10 +46,12 @@ import static android.util.TypedValue.COMPLEX_UNIT_SP;
 public class WidgetCalendar extends AppWidgetProvider {
 
     private static final String TAG = "WidgetCalendar";
-    final ContactsEvents eventsData = ContactsEvents.getInstance();
+    private final ContactsEvents eventsData = ContactsEvents.getInstance();
 
-    final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
-    final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
+    private final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
+    private final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
+    private boolean showUpdateProgress = false;
+    private final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -93,18 +97,23 @@ public class WidgetCalendar extends AppWidgetProvider {
             String action = intent.getAction();
             //Log.i("action", "action = " + action);
             if (Constants.ACTION_PREVIOUS_MONTH.equals(action)) {
+
                 customMonthShift--;
                 needSavePref = true;
+                showUpdateProgress = true;
 
             } else if (Constants.ACTION_NEXT_MONTH.equals(action)) {
 
                 customMonthShift++;
                 needSavePref = true;
+                showUpdateProgress = true;
 
             } else if (Constants.ACTION_RESET_MONTH.equals(action)) {
 
                 customMonthShift = 0;
                 needSavePref = true;
+                showUpdateProgress = true;
+
             }
 
             if (needSavePref) {
@@ -130,8 +139,6 @@ public class WidgetCalendar extends AppWidgetProvider {
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         long statCurrentModuleStart = System.currentTimeMillis();
-        final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
-        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
 
@@ -142,6 +149,23 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(context.getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = context.getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
             eventsData.setLocale(true);
 
             int columnsMax = 4;
@@ -153,13 +177,15 @@ public class WidgetCalendar extends AppWidgetProvider {
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
 
             //Прогресс обновления
-            rv.setInt(R.id.calendarAll,"setBackgroundColor", 0);
-            for (int row = 1; row <= rowsMax; row++) {
-                int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
-                rv.setViewVisibility(id, View.GONE);
+            if (showUpdateProgress) {
+                rv.setInt(R.id.calendarAll, "setBackgroundColor", 0);
+                for (int row = 1; row <= rowsMax; row++) {
+                    int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
+                    rv.setViewVisibility(id, View.GONE);
+                }
+                rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
+                appWidgetManager.partiallyUpdateAppWidget(appWidgetId, rv);
             }
-            rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
-            appWidgetManager.partiallyUpdateAppWidget(appWidgetId, rv);
 
             //Настройки
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
@@ -225,8 +251,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
                 }
             }
-            //Log.i("rowsToDraw", "rowsToDraw=" + rowsToDraw);
-            //Log.i("columnsToDraw", "columnsToDraw=" + columnsToDraw);
 
             //Стартовый месяц
             int prefMonthsShift = 0;
@@ -380,7 +404,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         if (prefEvents.contains(eventId)) {
                             try {
 
-                                int colorValue = Integer.parseInt(colors[1]);
+                                @ColorInt int colorValue = Integer.parseInt(colors[1]);
                                 eventsColorsInMonth.put(eventId, colorValue);
                                 eventsColorsOutMonth.put(eventId,
                                         Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue)));
@@ -479,7 +503,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Log.i("PERIOD", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
 
                 //Заполнение типов дней из календарей по периоду
-                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
+                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay, "📆 ");
                 //Заполнение типов дней из файлов
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
@@ -563,18 +587,19 @@ public class WidgetCalendar extends AppWidgetProvider {
                             boolean inMonth = cal.get(Calendar.MONTH) == thisMonth;
                             boolean inYear = cal.get(Calendar.YEAR) == todayYear;
                             boolean isToday = inYear && inMonth && (cal.get(Calendar.DAY_OF_YEAR) == today);
+                            @ColorInt Integer color;
 
                             RemoteViews cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                             if (isToday) {
-                                cellRv.setTextColor(android.R.id.text1, colorToday);
+                                color = colorToday;
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_today);
                                 atLeastOneDayInMonth = true;
                             } else if (inMonth) {
-                                cellRv.setTextColor(android.R.id.text1, colorCommon);
+                                color = colorCommon;
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day_this_month);
                                 atLeastOneDayInMonth = true;
                             } else {
-                                cellRv.setTextColor(android.R.id.text1, colorCommonOutMonth);
+                                color = colorCommonOutMonth;
                                 cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
                             }
 
@@ -585,7 +610,6 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                             //Цвет дня
                             List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
-                            @ColorInt Integer color = null;
 
                             if (!dayTypes.isEmpty()) {
                                 int maxTypeIndex = -1;
@@ -598,9 +622,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 }
 
                                 if (dayType != null && dayType.type == ContactsEvents.DayType.Type.Holiday) {
-                                    color = eventsColorsInMonth.get(dayType.sourceId);
-                                    if (color != null && !inMonth) {
-                                        color = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(color), Color.green(color), Color.blue(color));
+                                    if (inMonth) {
+                                        color = eventsColorsInMonth.get(dayType.sourceId);
+                                    } else {
+                                        color = eventsColorsOutMonth.get(dayType.sourceId);
                                     }
                                 }
                             } else if (colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
@@ -632,36 +657,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                             }
 
                             //Реакция на нажатие
-                            boolean hasInfo = false;
-                            if (!dayTypes.isEmpty()) {
-
-                                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
-                                if (!dayInfo.isEmpty()) {
-                                    Intent intent = new Intent(context, WidgetCalendarPopup.class);
-                                    String dayInfoString = res.getString(R.string.month_event_popup_prefix)
-                                            .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
-                                            .concat(Constants.STRING_EOL)
-                                            .concat(String.join(Constants.STRING_EOL, dayInfo));
-                                    intent.putExtra(Constants.ACTION_DAY_INFO, dayInfoString);
-                                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    PendingIntent pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
-                                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
-                                    cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
-                                    hasInfo = true;
-                                }
-
-                            }
-                            if (!hasInfo) {
-
-                                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                                builder.appendPath("time");
-                                builder.appendPath(Long.toString(cal.getTimeInMillis()));
-                                Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                cellRv.setOnClickPendingIntent(android.R.id.text1, PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
-
+                            PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
+                            if (pendingIntent != null) {
+                                cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
                             }
 
                             rowRv.addView(R.id.row_container, cellRv);
@@ -732,6 +730,40 @@ public class WidgetCalendar extends AppWidgetProvider {
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
         }
+    }
+
+    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, List<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
+        boolean hasInfo = false;
+        PendingIntent pendingIntent = null;
+        if (!dayTypes.isEmpty()) {
+
+            List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+            if (!dayInfo.isEmpty()) {
+                Intent intent = new Intent(context, WidgetCalendarPopup.class);
+                String dayInfoString = res.getString(R.string.month_event_popup_prefix)
+                        .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                        .concat(Constants.STRING_EOL)
+                        .concat(String.join(Constants.STRING_EOL, dayInfo));
+                intent.putExtra(Constants.ACTION_DAY_INFO, dayInfoString);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
+                hasInfo = true;
+            }
+
+        }
+        if (!hasInfo) {
+
+            Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+            builder.appendPath("time");
+            builder.appendPath(Long.toString(cal.getTimeInMillis()));
+            Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+
+        }
+        return pendingIntent;
     }
 
     private static int Dip2Px(Resources res, int sizeDP) {

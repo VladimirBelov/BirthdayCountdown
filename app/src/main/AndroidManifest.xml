@@ -209,7 +209,8 @@
 
         <activity android:name=".WidgetCalendarPopup"
             android:theme="@android:style/Theme.Dialog"
-            android:exported="false"/>
+            android:exported="false"
+            android:excludeFromRecents="true"/>
 
         <!--Receivers-->
         <receiver
