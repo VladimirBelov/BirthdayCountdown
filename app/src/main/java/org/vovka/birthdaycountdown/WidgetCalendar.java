@@ -503,7 +503,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Log.i("PERIOD", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
 
                 //Заполнение типов дней из календарей по периоду
-                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay, "📆 ");
+                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
                 //Заполнение типов дней из файлов
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
@@ -740,11 +740,10 @@ public class WidgetCalendar extends AppWidgetProvider {
             List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
             if (!dayInfo.isEmpty()) {
                 Intent intent = new Intent(context, WidgetCalendarPopup.class);
-                String dayInfoString = res.getString(R.string.month_event_popup_prefix)
-                        .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
-                        .concat(Constants.STRING_EOL)
-                        .concat(String.join(Constants.STRING_EOL, dayInfo));
-                intent.putExtra(Constants.ACTION_DAY_INFO, dayInfoString);
+                intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
+                        .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
+                intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.STRING_EOL, dayInfo));
+                intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,

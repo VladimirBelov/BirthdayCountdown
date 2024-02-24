@@ -68,6 +68,8 @@
     <style name="AlertDialog.Green" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_green_secondary</item>
+        <item name="windowTitleColor">@color/theme_green_primary</item>
+        <item name="windowTitleTextColor">@color/theme_green_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/light_green</item>
@@ -135,6 +137,8 @@
     <style name="AlertDialog.DarkGray" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/theme_grey_primary</item>
+        <item name="background">@color/theme_grey_primary</item>
+        <item name="windowTitleColor">@color/lighter_gray</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
@@ -200,6 +204,7 @@
     <style name="AlertDialog.Black" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/theme_black_primary</item>
+        <item name="background">@color/theme_black_primary</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
         <item name="colorAccent">@color/lighter_gray</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
@@ -265,6 +270,7 @@
     <style name="AlertDialog.Blue" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_blue_secondary</item>
+        <item name="background">@color/theme_blue_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_blue_primary</item>
@@ -329,7 +335,8 @@
 
     <style name="AlertDialog.BlueGrey" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
-        <item name="android:background">@color/theme_blue_gray_secondary</item>
+        <item name="android:background">@color/theme_blue_gray_primary</item>
+        <item name="background">@color/theme_blue_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_blue_gray_primary</item>
         <item name="colorAccent">@color/blue_gray_dark</item>
@@ -408,6 +415,7 @@
     <style name="AlertDialog.Orange" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_orange_secondary</item>
+        <item name="background">@color/theme_orange_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_orange_primary</item>
@@ -476,6 +484,7 @@
     <style name="AlertDialog.Teal" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_teal_secondary</item>
+        <item name="background">@color/theme_teal_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_teal_primary</item>
@@ -544,6 +553,7 @@
     <style name="AlertDialog.Brown" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_brown_secondary</item>
+        <item name="background">@color/theme_brown_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_brown_primary</item>
@@ -612,6 +622,7 @@
     <style name="AlertDialog.Indigo" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_indigo_secondary</item>
+        <item name="background">@color/theme_indigo_primary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_indigo_primary</item>
@@ -634,6 +645,8 @@
 <!--        <item name="android:background">@drawable/row_selector</item>-->
         <item name="android:scaleType">fitCenter</item>
         <item name="android:drawablePadding">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:animateOnClick">true</item>
     </style>
 
     <!-- https://stackoverflow.com/questions/15299508/i-want-to-change-actionbar-icon-size -->

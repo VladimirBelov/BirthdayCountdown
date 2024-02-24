@@ -10,6 +10,7 @@
 <resources>
     <declare-styleable name="Theme">
         <attr name="windowTitleColor" format="color"/>
+        <attr name="windowTitleTextColor" format="color"/>
         <attr name="windowStatusbarColor" format="color"/>
         <attr name="windowNavbarDividerColor" format="color"/>
         <attr name="backgroundColor" format="color"/>

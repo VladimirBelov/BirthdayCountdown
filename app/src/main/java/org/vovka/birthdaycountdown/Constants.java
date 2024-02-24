@@ -188,7 +188,6 @@ final class Constants {
     static final String ACTION_PREVIOUS_MONTH = "action.PREVIOUS_MONTH";
     static final String ACTION_NEXT_MONTH = "action.NEXT_MONTH";
     static final String ACTION_RESET_MONTH = "action.RESET_MONTH";
-    static final String ACTION_DAY_INFO = "action.DAY_INFO";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
@@ -207,6 +206,8 @@ final class Constants {
     static final String EXTRA_COLOR = "color";
     static final String EXTRA_ANCHOR = "anchor";
     static final String EXTRA_CONTACT_ON_SAVE_RESULT = "finishActivityOnSaveCompleted";
+    static final String EXTRA_DAY_CAPTION = "dayCaption";
+    static final String EXTRA_DAY_INFO = "dayInfo";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -265,7 +266,7 @@ final class Constants {
     static final int WIDGET_CALENDAR_OUT_MONTH_TINT = (int) (255 * 0.4);
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
-    static final int TIME_FORCE_UPDATE = 5000;
+    static final int TIME_FORCE_UPDATE = 60000;
     static final String account_google = "com.google";
     static final String account_skype = "com.skype.";
     static final String account_vk = "com.vkontakte.account";

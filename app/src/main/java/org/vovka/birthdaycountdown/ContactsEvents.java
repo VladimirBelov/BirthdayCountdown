@@ -248,7 +248,7 @@ class ContactsEvents {
     private final HashMap<String, String> preferences_xDaysEvents = new HashMap<>();
     List<String> eventListUnsorted = new ArrayList<>(); //Несортированный список
     int currentTheme = 0;
-    boolean needUpdateEventList = false;
+    boolean needUpdateEventList = true;
 
     //Настройки
     boolean preferences_debug_on;
@@ -2590,6 +2590,7 @@ class ContactsEvents {
                     null,
                     "dtstart ASC"
             );
+
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
 
@@ -2599,22 +2600,31 @@ class ContactsEvents {
 
                     while (cursor.moveToNext()) {
                         userData.clear();
-                        Calendar dateStart = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
-                        Calendar dateEnd = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
+
+                        String calendarId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
+                        String calendarTitle = map_calendars.get(calendarId);
+                        final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
+                        if (eventTitle == null || eventTitle.trim().isEmpty()) continue;
+                        final String eventSource = calendarTitle != null
+                                ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
+                                : getResources().getString(R.string.event_type_calendar);
+                        Calendar dateStart = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))))));
+                        Calendar dateEnd = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END))))));
+                        Date dtStart = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
 
                         if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
                             if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
                                 dateStart.add(Calendar.DATE, 1);
                             }
+                            dateEnd.add(Calendar.SECOND, -1); //Событие на весь день заканчивается на следующий день, а не в 23:59:59. Исправляем
+                            dateEnd = removeTime(dateEnd);
                         }
 
-                        // Date dateFirst = dateStart.getTime();
-                        //boolean isInstance = dateCal.get(Calendar.DAY_OF_MONTH) != dateFirstCal.get(Calendar.DAY_OF_MONTH) || dateCal.get(Calendar.MONTH) != dateFirstCal.get(Calendar.MONTH);
-                        String calendarId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
-                        String calendarTitle = map_calendars.get(calendarId);
-
-                        while (dateStart.before(startPeriod)) {
-                            dateStart.add(Calendar.DATE, 1);
+                        if (dateEnd.before(startPeriod)) continue; //Если событие выпало из периода
+                        if (dateStart.before(startPeriod) && dateEnd.compareTo(startPeriod) >= 0) { //Если событие начинается до периода, но заканчивает после старта периода
+                            while (dateStart.before(startPeriod)) {
+                                dateStart.add(Calendar.DATE, 1);
+                            }
                         }
 
                         do {
@@ -2622,13 +2632,8 @@ class ContactsEvents {
                                     + (useEventYear ? sdf_java.format(dateStart.getTime()) : sdf_java_no_year.format(dateStart.getTime())) + Constants.STRING_COLON_SPACE
                                     + getHash(Constants.eventSourceCalendarPrefix + calendarId);
                             int importMethod = importMethod_Standalone;
-                            final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
-                            if (eventTitle == null || eventTitle.trim().isEmpty()) continue;
                             final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
                             idsAllCalendarEvents.add(eventID);
-                            final String eventSource = calendarTitle != null
-                                    ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
-                                    : getResources().getString(R.string.event_type_calendar);
 
                             String contactID = null;
                             statEventsCountByType++;
@@ -2859,7 +2864,6 @@ class ContactsEvents {
 
                             if (importMethod != importMethod_AdditionalDateToContactEvent) {
 
-                                //if (event == null) continue;
                                 if (importMethod != importMethod_NewContactEvent) {
                                     userData.put(Position_eventStorage, Constants.STRING_STORAGE_CALENDAR);
                                 }
@@ -2872,11 +2876,8 @@ class ContactsEvents {
                                 userData.put(Position_dates, eventNewDate);
                                 userData.put(Position_eventIcon, Integer.toString(event.icon));
                                 userData.put(Position_eventEmoji, event.emoji);
-                                // if (isInstance) { //Уже известна дата следующего события
                                 userData.put(Position_eventDateThisTime, sdf_DDMMYYYY.format(dateStart.getTime()));
-                                Date dtStart = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
                                 userData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dtStart));
-                                // }
                                 userData.put(Position_eventSource, eventSource);
                                 userData.put(Position_eventDescription, eventDescription);
 
@@ -8915,7 +8916,7 @@ class ContactsEvents {
         }
     }
 
-    void fillDaysTypesFromCalendars(List<String> calendarHashes, Calendar startPeriod, Calendar endPeriod, @NonNull String titlePrefix) {
+    void fillDaysTypesFromCalendars(List<String> calendarHashes, Calendar startPeriod, Calendar endPeriod) {
         try {
 
             if (checkNoCalendarAccess()) return;
@@ -8975,7 +8976,7 @@ class ContactsEvents {
 
                         final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
                         final String calHash = getHash(Constants.eventSourceCalendarPrefix + calId);
-                        final String eventTitle = titlePrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
+                        final String eventTitle = "📆 " + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
 
                         while (dateStart.before(startPeriod)) {
                             dateStart.add(Calendar.DATE, 1);

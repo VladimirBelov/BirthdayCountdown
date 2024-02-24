@@ -234,9 +234,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
-            //Уведомления
-            //initNotifications();
-
             ListView listView = findViewById(R.id.mainListView);
 
             //Разделитель списка зависит от стиля отображения
@@ -1580,7 +1577,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
-                    swipeRefresh.post(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME));
+                    eventsData.needUpdateEventList = true;
+                    swipeRefresh.setRefreshing(true);
+                    swipeRefresh.postDelayed(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME), 300);
                 }
                 return true;
 
@@ -2287,7 +2286,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 executor.execute(() -> {
 
                     //Background work
-                    if (eventsData.getEvents(this))
+                    if ((eventsData.needUpdateEventList || eventsData.isEmptyEventList()) && eventsData.getEvents(this))
                         eventsData.computeDates();
 
                     handler.post(() -> {
@@ -2310,7 +2309,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else {
 
-                if (eventsData.getEvents(this))
+                if ((eventsData.needUpdateEventList || eventsData.isEmptyEventList()) && eventsData.getEvents(this))
                     eventsData.computeDates();
                 filterEventsList();
                 drawList();
