@@ -49,7 +49,7 @@ public class ColorPreference extends Preference {
     private int[] mColorChoices = {};
     private int mValue = 0;
     private int mItemLayoutId = R.layout.item_color;
-    private int mNumColumns = 4;
+    private int mNumColumns = 5;
     private String mSelectDialogTitle = "";
     private int mSelectDialogIcon;
     private final Context context;
@@ -448,7 +448,7 @@ public class ColorPreference extends Preference {
                         mChoices.add(mPreference.getValue());
                     }
 
-                    int numToFillRecent = Math.min(mChoices.size() % mPreference.mNumColumns == 0 ? mPreference.mNumColumns : mPreference.mNumColumns - (mChoices.size() % mPreference.mNumColumns), eventsData.preferences_RecentColors.size());
+                    /*int numToFillRecent = Math.min(mChoices.size() % mPreference.mNumColumns == 0 ? mPreference.mNumColumns : mPreference.mNumColumns - (mChoices.size() % mPreference.mNumColumns), eventsData.preferences_RecentColors.size());
                     int numFilled = 0;
                     int currentIndex = eventsData.preferences_RecentColors.size() - 1;
                     while(currentIndex >= 0 && numFilled < numToFillRecent) {
@@ -458,6 +458,12 @@ public class ColorPreference extends Preference {
                             numFilled++;
                         }
                         currentIndex--;
+                    }*/
+
+                    for (int valueInt : eventsData.preferences_RecentColors) {
+                        if (!mChoices.contains(valueInt)) {
+                            mChoices.add(valueInt);
+                        }
                     }
 
                 } catch (final Exception e) {

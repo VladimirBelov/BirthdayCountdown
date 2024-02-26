@@ -2253,6 +2253,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Other_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
@@ -2347,6 +2348,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 ToastExpander.showMsg(this, getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
                 if (countSuccess > 0) {
+                    eventsData.needUpdateEventList = true;
                     if (editor.commit()) {
                         eventsData.setAppIcon();
                     }

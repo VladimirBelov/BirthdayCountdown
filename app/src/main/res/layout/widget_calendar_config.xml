@@ -291,7 +291,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_Back_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -315,7 +315,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_Common_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_common_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -339,7 +339,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_Today_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_today_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -363,7 +363,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_MonthTitle_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_header_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -387,7 +387,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_HeaderBack_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_header_back_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -411,7 +411,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_Arrows_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_arrows_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
@@ -435,7 +435,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_Calendar_Weeks_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_weeks_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />

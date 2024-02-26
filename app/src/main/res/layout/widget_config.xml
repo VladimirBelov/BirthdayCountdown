@@ -369,7 +369,7 @@
                     app:defaultValue="@color/pref_Widgets_Color_WidgetBackground_default"
                     app:choices="@array/default_color_background_values"
                     app:icon="@null"
-                    app:numColumns="4"
+                    app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />

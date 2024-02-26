@@ -10,12 +10,17 @@ package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
@@ -36,6 +41,23 @@ public class WidgetCalendarPopup extends Activity {
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
+
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            Locale locale;
+            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
+                locale = new Locale(eventsData.systemLocale);
+            } else {
+                locale = new Locale(eventsData.preferences_language);
+            }
+            Resources applicationRes = getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationConf.setLocales(new android.os.LocaleList(locale));
+            } else {
+                applicationConf.setLocale(locale);
+            }
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
@@ -73,7 +95,7 @@ public class WidgetCalendarPopup extends Activity {
             if (dayMills != null) {
                 TextView buttonCalendar = findViewById(R.id.buttonCalendar);
                 if (buttonCalendar != null) {
-                    buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(getString(R.string.appwidget_label_Calendar)));
+                    buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
                     buttonCalendar.setOnClickListener(view -> {
                         Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                         builder.appendPath("time");

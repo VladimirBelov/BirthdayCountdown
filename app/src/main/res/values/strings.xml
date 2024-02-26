@@ -1995,7 +1995,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="faq_anchor_widgets" translatable="false">widgets</string>
 
     <string name="pref_Colors_Recent_key" translatable="false">ColorsRecent</string>
-    <integer name="pref_Colors_Recent_max" translatable="false">10</integer>
+    <integer name="pref_Colors_Recent_max" translatable="false">20</integer>
 
     <!-- Calendar widget -->
     <string name="widget_config_month_shift_current_month_id" translatable="false">0</string>

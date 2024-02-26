@@ -65,37 +65,38 @@ public class ToastExpander {
             ContactsEvents eventsData = ContactsEvents.getInstance();
             try {
                 if (eventsData.isUIOpen && eventsData.coordinator != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (mFluentSnackbar == null) {
+                            mFluentSnackbar = FluentSnackbar.create(ContactsEvents.getInstance().coordinator);
+                        }
 
-                    if (mFluentSnackbar == null) {
-                        mFluentSnackbar = FluentSnackbar.create(ContactsEvents.getInstance().coordinator);
-                    }
+                        @ColorInt int colorBack = 0;
+                        @ColorInt int colorAction = 0;
+                        try {
+                            TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                            colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
+                            colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
+                        } catch (Resources.NotFoundException e) { /**/ }
 
-                    @ColorInt int colorBack = 0;
-                    @ColorInt int colorAction = 0;
-                    try {
-                        TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                        colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
-                        colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
-                    } catch (Resources.NotFoundException e) { /**/ }
-
-                    mFluentSnackbar
-                            .create(msg)
-                            .maxLines(8)
-                            .backgroundColor(colorBack)
-                            .important()
-                            .actionText(context.getText(R.string.button_off).toString())
-                            .actionTextColor(colorAction)
-                            .action(v -> {
-                                if (type == msgTypeDebug) {
-                                    eventsData.disableDebugMsg();
-                                    mFluentSnackbar.removeAllMessagesByType(type);
-                                } else if (type == msgTypeInfo) {
-                                    eventsData.disableInfoMsg();
-                                    mFluentSnackbar.removeAllMessagesByType(type);
-                                }
-                            })
-                            .type(type)
-                            .show();
+                        mFluentSnackbar
+                                .create(msg)
+                                .maxLines(8)
+                                .backgroundColor(colorBack)
+                                .important()
+                                .actionText(context.getText(R.string.button_off).toString())
+                                .actionTextColor(colorAction)
+                                .action(v -> {
+                                    if (type == msgTypeDebug) {
+                                        eventsData.disableDebugMsg();
+                                        mFluentSnackbar.removeAllMessagesByType(type);
+                                    } else if (type == msgTypeInfo) {
+                                        eventsData.disableInfoMsg();
+                                        mFluentSnackbar.removeAllMessagesByType(type);
+                                    }
+                                })
+                                .type(type)
+                                .show();
+                    });
                 } else {
                     new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
                 }

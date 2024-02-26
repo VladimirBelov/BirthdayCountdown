@@ -740,7 +740,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                                 colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                             }
 
-                            picker.selectRGBColor(eventsData, colorValue, colorDefault, "setCustomColor", colorId);
+                            picker.selectColor(eventsData, colorValue, colorDefault, "setCustomColor", colorId);
 
                         } else {
                             ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");

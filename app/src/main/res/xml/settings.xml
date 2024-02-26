@@ -699,7 +699,7 @@
             android:summary="@string/pref_List_Color_EventToday_summary"
             android:defaultValue="@color/pref_List_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventToday_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -710,7 +710,7 @@
             android:summary="@string/pref_List_Color_EventSoon_summary"
             android:defaultValue="@color/pref_List_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventSoon_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -721,7 +721,7 @@
             android:summary="@string/pref_List_Color_EventJubilee_summary"
             android:defaultValue="@color/pref_List_Color_EventJubilee_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -854,7 +854,7 @@
             android:summary="@string/pref_Widgets_Color_EventCaption_summary"
             android:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventCaption_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -865,7 +865,7 @@
             android:summary="@string/pref_Widgets_Color_WidgetCaption_summary"
             android:defaultValue="@color/pref_Widgets_Color_WidgetCaption_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_WidgetCaption_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -876,7 +876,7 @@
             android:summary="@string/pref_Widgets_Color_EventToday_summary"
             android:defaultValue="@color/pref_Widgets_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventToday_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -887,7 +887,7 @@
             android:summary="@string/pref_Widgets_Color_EventSoon_summary"
             android:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventSoon_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>
@@ -898,7 +898,7 @@
             android:summary="@string/pref_Widgets_Color_EventFar_summary"
             android:defaultValue="@color/pref_Widgets_Color_EventFar_default"
             android:icon="@drawable/ic_menu_paste"
-            app:numColumns="4"
+            app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"
             app:dialogIcon="@drawable/ic_menu_paste"/>

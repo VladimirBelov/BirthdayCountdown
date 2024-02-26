@@ -307,13 +307,13 @@
     </string-array>
 
     <string-array name="weekDays">
-        <item>"ў нядзелю"</item>
-        <item>"ў панядзелак"</item>
+        <item>"у нядзелю"</item>
+        <item>"у панядзелак"</item>
         <item>"ў аўторак"</item>
-        <item>"ў сераду"</item>
-        <item>"ў чацвер"</item>
-        <item>"ў пятніцу"</item>
-        <item>"ў суботу"</item>
+        <item>"у сераду"</item>
+        <item>"у чацвер"</item>
+        <item>"у пятніцу"</item>
+        <item>"у суботу"</item>
     </string-array>
 
     <string-array name="weekDaysShort">
