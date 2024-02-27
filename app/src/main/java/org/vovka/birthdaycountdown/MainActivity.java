@@ -2407,9 +2407,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventsData.setLocale(false);
                 if (convertedView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
-                    convertedView = inflater.inflate(R.layout.entry_main, parent, false);
-                    holder = createViewHolderFrom(convertedView);
-                    convertedView.setTag(holder);
+                    try {
+                        convertedView = inflater.inflate(R.layout.entry_main, parent, false);
+                        holder = createViewHolderFrom(convertedView);
+                        convertedView.setTag(holder);
+                    } catch (InflateException e) {
+                        ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
+                        if (getParent() != null) {
+                            getParent().recreate();
+                        } else {
+                            try {
+                                startActivity(new Intent(eventsData.getContext(), MainActivity.class));
+                            } catch (android.content.ActivityNotFoundException ignored) { /**/ }
+                        }
+                        return parent;
+                    }
                 } else {
                     holder = (ViewHolder) convertedView.getTag();
                 }
@@ -2763,20 +2775,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.EventIconImageView.setImageAlpha((int)(255*alphaPrev));
                     }
                 }
-                return convertedView;
+                //return convertedView;
 
             } catch (Exception e) {
                 e.printStackTrace();
-                ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
-                if (getParent() != null) {
-                    getParent().recreate();
-                } else {
-                    try {
-                        startActivity(new Intent(eventsData.getContext(), MainActivity.class));
-                    } catch (android.content.ActivityNotFoundException ignored) { /**/ }
-                }
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
-            return parent;
+            //return parent;
+            return convertedView;
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {
