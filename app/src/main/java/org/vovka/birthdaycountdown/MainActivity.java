@@ -2764,7 +2764,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
                 return convertedView;
-            } catch (android.view.InflateException e) {
+
+            } catch (Exception e) {
+                e.printStackTrace();
                 ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
                 if (getParent() != null) {
                     getParent().recreate();
@@ -2773,9 +2775,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         startActivity(new Intent(eventsData.getContext(), MainActivity.class));
                     } catch (android.content.ActivityNotFoundException ignored) { /**/ }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
             }
             return parent;
         }
