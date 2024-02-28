@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     //UI объекты
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private Resources resources;
     private SwipeRefreshLayout swipeRefresh;
     private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
@@ -113,9 +112,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private String selectedEvent_str;
     private String[] selectedEvent;
     private int selectedEvent_num;
-    final private List<String> dataList = new ArrayList<>();
+    private final List<String> dataList = new ArrayList<>();
     private final List<String> dataListFull = new ArrayList<>();
-
     private int statsAllEvents = 0;
     private int statsHiddenEvents = 0;
     private int statsSilencedEvents = 0;
@@ -123,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private int statsUnrecognizedEvents = 0;
     private boolean triggeredMsgNoEvents = false;
     private TypedArray ta = null;
-    DisplayMetrics displayMetrics;
+    private DisplayMetrics displayMetrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -2195,7 +2193,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
             }
-            //}
+
             dataListFull.addAll(dataList);
 
         } catch (Exception e) {
@@ -2269,6 +2267,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if ((eventsData.needUpdateEventList || eventsData.isEmptyEventList()) && eventsData.getEvents(this))
                         eventsData.computeDates();
 
+                    final Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> {
 
                         //UI Thread
@@ -2367,8 +2366,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     class EventsAdapter extends ArrayAdapter<String> implements Filterable {
 
-        final ContactsEvents eventsData;
-        final Resources resources;
+        //final ContactsEvents eventsData;
+        //final Resources resources;
         private final List<String> listAll;
         final int dimen_details;
         final int dimen_name;
@@ -2377,11 +2376,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         private EventsAdapter(@NonNull Context context, @NonNull List<String> eventsListFull, @NonNull List<String> eventsList)
         {
-            super(context, R.layout.entry_main, eventsList.toArray(new String[0]));
+            super(context, R.layout.entry_main, eventsList);
 
-                eventsData = ContactsEvents.getInstance();
-                if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-                resources = eventsData.getContext().getResources();
+                //eventsData = ContactsEvents.getInstance();
+                //if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
+                //resources = eventsData.getContext().getResources();
 
                 listAll = new ArrayList<>(eventsListFull);
                 dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
@@ -2428,6 +2427,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 event = getItem(position);
                 if (event == null) return convertedView;
+
                 singleEventArray = event.split(Constants.STRING_EOT, -1);
                 if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
 
@@ -2535,46 +2535,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(currentAge);
                     }
-                    /*@NonNull final String contactID = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_contactID]);
-
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
-                        final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
-                        if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
-                            if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                            if (eventsData.idsWithDeathEvent.contains(contactID)) { //Но есть годовщина смерти
-                                eventDetails.append(getString(R.string.msg_age_could_be_now));
-                            } else {
-                                eventDetails.append(getString(R.string.msg_age_now));
-                            }
-                            eventDetails.append(currentAge);
-                        }
-                    } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
-                        Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
-                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
-                            Locale locale_en = new Locale(Constants.LANG_EN);
-                            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDateFirstTime]);
-                            if (eventDate != null && birthDate != null) {
-                                if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                                eventDetails.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
-                            }
-                        } else { //Другие события
-                            Locale locale_en = new Locale(Constants.LANG_EN);
-                            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
-                            if (eventDate != null && birthDate != null) {
-                                if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                                if (eventsData.idsWithDeathEvent.contains(contactID)) { //Но есть годовщина смерти
-                                    eventDetails.append(getString(R.string.msg_age_could_be));
-                                } else if (eventDate.compareTo(today) == 0) {
-                                    eventDetails.append(getString(R.string.msg_age_now));
-                                } else {
-                                    eventDetails.append(getString(R.string.msg_age_will_be));
-                                }
-                                eventDetails.append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
-                            }
-                        }
-                    }*/
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {
@@ -2717,7 +2677,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                     drawableBack.setColors(new int[] {
                             ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
-                            //ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_transp)),
                             ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
@@ -2727,7 +2686,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     drawableBack.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                     drawableBack.setColors(new int[] {
                             ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
-                            //ta.getColor(R.styleable.Theme_gradientCenterColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_transp)),
                             ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
                     });
 
@@ -2775,14 +2733,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.EventIconImageView.setImageAlpha((int)(255*alphaPrev));
                     }
                 }
-                //return convertedView;
 
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
-            //return parent;
             return convertedView;
         }
 
@@ -2805,7 +2761,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, PhotoImageView, CounterTextView, EventIconImageView);
         }
 
-        //https://www.youtube.com/watch?v=sJ-Z9G0SDhc
+        //How to Filter a RecyclerView with SearchView https://www.youtube.com/watch?v=sJ-Z9G0SDhc
+
         @Override
         @NonNull
         public Filter getFilter() {
