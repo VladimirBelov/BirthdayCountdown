@@ -104,7 +104,7 @@ class WidgetUpdater {
 
             int startingIndex = 1;
             try {
-                if (widgetPref.size() > 0) startingIndex = Integer.parseInt(widgetPref.get(0));
+                if (!widgetPref.isEmpty()) startingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
             if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
@@ -257,7 +257,7 @@ class WidgetUpdater {
             if  (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) ||
                     eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) { //пропускаем события календарей и из файлов
                 useEventListPrefs = false;
-            } else if (eventsPrefList.size() > 0) {
+            } else if (!eventsPrefList.isEmpty()) {
                 useEventListPrefs = false;
                 isVisibleEvent = eventsPrefList.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
                         (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
@@ -265,7 +265,7 @@ class WidgetUpdater {
             if (useEventListPrefs) isVisibleEvent = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]) &&
                     (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId));
 
-            if (isVisibleEvent && sourcesPrefList.size() > 0) {
+            if (isVisibleEvent && !sourcesPrefList.isEmpty()) {
                 final String eventDates = singleEventArray[ContactsEvents.Position_dates];
                 isVisibleEvent = false;
                 for (String source: sourcesPrefList) {
@@ -362,7 +362,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_7: //Псевдоним (Имя, если отсутствует)
-                    if (singleEventArray[ContactsEvents.Position_nickname].trim().length() > 0) {
+                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else {
                         rowValue = singleEventArray[ContactsEvents.Position_personFullName];
@@ -396,7 +396,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_10: //Организация (Должность, если отсутствует)
-                    rowValue = singleEventArray[ContactsEvents.Position_organization].trim().length() > 0 ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption_centered, View.VISIBLE);
@@ -473,7 +473,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_7: //Псевдоним (Имя, если отсутствует)
-                    if (singleEventArray[ContactsEvents.Position_nickname].trim().length() > 0) {
+                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else {
                         rowValue = singleEventArray[ContactsEvents.Position_personFullName];
@@ -507,7 +507,7 @@ class WidgetUpdater {
                     }
                     break;
                 case Constants.STRING_10: //Организация (Должность, если отсутствует)
-                    rowValue = singleEventArray[ContactsEvents.Position_organization].trim().length() > 0 ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                     if (!rowValue.trim().isEmpty()) {
                         views.setTextViewText(id_widget_Caption2nd_centered, rowValue);
                         views.setViewVisibility(id_widget_Caption2nd_centered, View.VISIBLE);

@@ -201,7 +201,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             //Количество месяцев
             String prefLayout = res.getString(R.string.widget_config_layout_default);
             try {
-                if (widgetPref.size() > 0) prefLayout = widgetPref.get(0);
+                if (!widgetPref.isEmpty()) prefLayout = widgetPref.get(0);
             } catch (Exception e) {/**/}
 
             if (prefLayout.equals(res.getString(R.string.widget_config_layout_default))) {

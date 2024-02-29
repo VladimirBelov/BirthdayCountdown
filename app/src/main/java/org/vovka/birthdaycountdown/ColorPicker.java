@@ -57,6 +57,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
     private int mSelectDialogIcon;
     private ColorGridAdapter mAdapter;
     private final Context context;
+    final ContactsEvents eventsData = ContactsEvents.getInstance();
 
     public ColorPicker(@NonNull Context context) {
         super(context);
@@ -155,7 +156,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    public void selectRGBColor(@NonNull ContactsEvents eventsData, int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+    public void selectRGBColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
 
         try {
 
@@ -184,7 +185,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
 
             androidx.appcompat.app.AlertDialog dialog = builder.create();
-            View view = View.inflate(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
+            View view = View.inflate(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
             dialog.setView(view);
 
             if (mSelectDialogTitle == null || mSelectDialogTitle.isEmpty()) {
@@ -371,8 +372,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-            selectColor(eventsData, 0, 0, null, null);
+            selectColor(0, 0, null, null);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -380,7 +380,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    void selectColor(@NonNull ContactsEvents eventsData, int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+    void selectColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
         try {
 
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -395,7 +395,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 mAdapter.setSelectedColor(mValue);
             }
 
-            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), ContactsEvents.getInstance().preferences_theme.themeDialog))
+            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setTitle(mSelectDialogTitle)
                     .setIcon(mSelectDialogIcon)
                     .setView(rootView);
@@ -403,7 +403,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (eventsData.preferences_extrafun) {
                 colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
                     dialog.dismiss();
-                    selectRGBColor(eventsData, initValue, defaultValue, methodToInvoke, idToPass);
+                    selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
                 });
             }
 
@@ -499,9 +499,6 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
         private int mSelectedColor;
 
         private ColorGridAdapter(Context context) {
-
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-
             try {
                 for (int color : mColorChoices) {
                     mChoices.add(color);

@@ -156,7 +156,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Стартовый номер
             int prefStartingIndex = 1;
             try {
-                if (widgetPref.size() > 0) prefStartingIndex = Integer.parseInt(widgetPref.get(0));
+                if (!widgetPref.isEmpty()) prefStartingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
@@ -770,7 +770,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
             if (!eventsData.checkNoContactsAccess()) {
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
-                if (preferences_accounts.size() > 0) { //Только из настроек
+                if (!preferences_accounts.isEmpty()) { //Только из настроек
                     for (String account : preferences_accounts) {
                         String accountType = ContactsEvents.substringBetween(account, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                         if (!accountType.equals(Constants.STRING_NULL)) {
@@ -858,7 +858,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 allCalendars.addAll(eventsData.preferences_BirthDay_calendars);
                 allCalendars.addAll(eventsData.preferences_OtherEvent_calendars);
                 allCalendars.addAll(eventsData.preferences_HolidayEvent_calendars);
-                if (allCalendars.size() > 0) {
+                if (!allCalendars.isEmpty()) {
                     for (String calendar: allCalendars) {
                         if (eventsData.map_calendars.containsKey(calendar)) {
                             eventSourcesTitles.add(ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
@@ -872,7 +872,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             //Файлы
-            if (eventsData.preferences_MultiType_files.size() > 0) {
+            if (!eventsData.preferences_MultiType_files.isEmpty()) {
                 for (String file: eventsData.preferences_MultiType_files) {
                     eventSourcesIds.add(Constants.eventSourceMultiFilePrefix + file);
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
@@ -881,7 +881,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
                 }
             }
-            if (eventsData.preferences_Birthday_files.size() > 0) {
+            if (!eventsData.preferences_Birthday_files.isEmpty()) {
                 for (String file: eventsData.preferences_Birthday_files) {
                     eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
@@ -890,7 +890,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                 }
             }
-            if (eventsData.preferences_OtherEvent_files.size() > 0) {
+            if (!eventsData.preferences_OtherEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_OtherEvent_files) {
                     eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
@@ -899,7 +899,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                 }
             }
-            if (eventsData.preferences_HolidayEvent_files.size() > 0) {
+            if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
                     eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
@@ -918,7 +918,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void selectEventSources() {
         try {
 
-            if (eventSourcesIds.size() > 0) {
+            if (!eventSourcesIds.isEmpty()) {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
                 List<String> sourceChoices = new ArrayList<>();
 

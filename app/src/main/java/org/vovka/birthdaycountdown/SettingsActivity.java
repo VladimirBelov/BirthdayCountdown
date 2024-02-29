@@ -304,7 +304,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             PreferenceCategory prefCat;
             Preference pref;
             eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
-            boolean isNotifyEnabled = eventsData.preferences_notifications_days.size() > 0;
+            boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
@@ -859,7 +859,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Notifications_Days_key).equals(key)) {
 
-                if (eventsData.preferences_notifications_days.size() > 0) {
+                if (!eventsData.preferences_notifications_days.isEmpty()) {
                     //Уведомления выключены
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
 
@@ -1156,7 +1156,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             }
 
-            if (accountNames.size() > 0) {
+            if (!accountNames.isEmpty()) {
                 ListAdapter adapter = new AccountsListAdapter(this, choiceList, accountIcons, accountPackages, ta);
 
                 int contactsEventsCount = eventsData.getContactsEventsCount(null, null);
@@ -1397,7 +1397,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             eventsData.recieveCalendarList();
 
-            if (eventsData.map_calendars.size() == 0) {
+            if (eventsData.map_calendars.isEmpty()) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.pref_CustomEvents_Calendars_title)
@@ -1479,7 +1479,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
             String existingValue = eventsData.preferences_notifications_ringtone;
-            if (existingValue.length() == 0) {
+            if (existingValue.isEmpty()) {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
             } else {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
@@ -2375,7 +2375,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (resultData != null) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        if (eventsData.readFileToString(uri.toString(), null).length() > 0) {
+                        if (!eventsData.readFileToString(uri.toString(), null).isEmpty()) {
                             String filename = eventsData.getPath(this, uri);
                             if (!filename.isEmpty()) {
                                 try {

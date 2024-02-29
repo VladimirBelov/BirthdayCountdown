@@ -29,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            if (eventsData.preferences_notifications_days.size() != 0) {
+            if (!eventsData.preferences_notifications_days.isEmpty()) {
 
                 eventsData.setLocale(true);
                 if (eventsData.getEvents(context)) {

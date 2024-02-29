@@ -145,7 +145,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             //Количество месяцев
             String prefLayout = getString(R.string.widget_config_layout_default);
             try {
-                if (widgetPref.size() > 0) prefLayout = widgetPref.get(0);
+                if (!widgetPref.isEmpty()) prefLayout = widgetPref.get(0);
             } catch (Exception e) {/**/}
 
             final Spinner spinnerLayout = findViewById(R.id.spinnerMonthsLayout);
@@ -583,7 +583,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (!eventsData.checkNoCalendarAccess()){
                 if (eventsData.map_calendars.isEmpty()) eventsData.recieveCalendarList();
                 List<String> allCalendars = new ArrayList<>(eventsData.preferences_HolidayEvent_calendars);
-                if (allCalendars.size() > 0) {
+                if (!allCalendars.isEmpty()) {
                     for (String calendar: allCalendars) {
                         if (eventsData.map_calendars.containsKey(calendar)) {
                             eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar));
@@ -594,7 +594,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
 
             //Файлы
-            if (eventsData.preferences_HolidayEvent_files.size() > 0) {
+            if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
                     eventSourcesTitles.add("📁 " + ContactsEvents.substringBefore(file, Constants.STRING_BAR));
@@ -650,7 +650,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void selectEventSources() {
         try {
 
-            if (eventSourcesIds.size() > 0) {
+            if (!eventSourcesIds.isEmpty()) {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
                 List<String> sourceChoices = new ArrayList<>();
                 List<Integer> colorDots = new ArrayList<>();
@@ -740,7 +740,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                                 colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                             }
 
-                            picker.selectColor(eventsData, colorValue, colorDefault, "setCustomColor", colorId);
+                            picker.selectColor(colorValue, colorDefault, "setCustomColor", colorId);
 
                         } else {
                             ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");

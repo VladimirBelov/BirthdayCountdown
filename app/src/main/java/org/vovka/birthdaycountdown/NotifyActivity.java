@@ -29,7 +29,7 @@ public class NotifyActivity extends Activity {
 
             if (eventsData.getEvents(null)) {
                 eventsData.computeDates();
-                if (eventsData.preferences_notifications_days.size() != 0) {
+                if (!eventsData.preferences_notifications_days.isEmpty()) {
 
                     eventsData.showNotifications(true, Integer.toString(eventsData.preferences_notification_channel_id));
 

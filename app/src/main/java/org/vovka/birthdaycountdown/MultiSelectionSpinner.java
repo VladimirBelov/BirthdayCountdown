@@ -153,7 +153,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
      */
     public void setSelection(List<String> selection) {
         Arrays.fill(mSelection, false);
-        if (selection.size() > 0) {
+        if (!selection.isEmpty()) {
             for (String sel: selection) {
                 for (int j = 0; j < _items.length; ++j) {
                     if (_items[j].equals(sel)) {

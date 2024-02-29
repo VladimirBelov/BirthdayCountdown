@@ -247,27 +247,17 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 Bitmap photo = null;
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
                         : widgetPref_eventInfo.contains(resources.getString(R.string.pref_Widgets_EventInfo_Photo_ID))) {
-                    int roundingFactor = 1;
-                    if (widgetPref != null && widgetPref.size() > 6) {
-                        switch (widgetPref.get(6)) {
-                            case Constants.STRING_1: roundingFactor = 2; break;
-                            case Constants.STRING_2: roundingFactor = 3; break;
-                            case Constants.STRING_3: roundingFactor = 4; break;
-                            case Constants.STRING_4: roundingFactor = 9; break;
-                        }
-                    }
-
+                    int roundingFactor = getRoundingFactor();
                     photo = eventsData.getEventPhoto(eventInfo, true, true, true, roundingFactor);
                 }
                 if (photo != null) {
                     int outWidth;
                     if (widgetWidth > 0) {
-                        outWidth = (int) (widgetWidth * floatDensity / 6);
+                        outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
                     } else {
                         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                        outWidth = displayMetrics.widthPixels / 7;
+                        outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
                     }
-                    outWidth *= 1.2;
 
                     int inWidth = photo.getWidth();
                     int inHeight = photo.getHeight();
@@ -296,6 +286,19 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         return views;
 
+    }
+
+    private int getRoundingFactor() {
+        int roundingFactor = 1;
+        if (widgetPref != null && widgetPref.size() > 6) {
+            switch (widgetPref.get(6)) {
+                case Constants.STRING_1: roundingFactor = 2; break;
+                case Constants.STRING_2: roundingFactor = 3; break;
+                case Constants.STRING_3: roundingFactor = 4; break;
+                case Constants.STRING_4: roundingFactor = 9; break;
+            }
+        }
+        return roundingFactor;
     }
 
     @Override

@@ -498,7 +498,7 @@ class ContactsEvents {
 
     @NonNull
     static String checkForNull(String strIn) {
-        return strIn == null || strIn.length() == 0 ? Constants.STRING_EMPTY : strIn;
+        return strIn == null || strIn.isEmpty() ? Constants.STRING_EMPTY : strIn;
     }
 
     static String normalizeName(String inName) {
@@ -2476,12 +2476,12 @@ class ContactsEvents {
         try (ColumnIndexCache cache = new ColumnIndexCache()) {
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            long statEventsCountByType = 0;
+            int statEventsCountByType = 0;
 
             if (checkNoCalendarAccess()) return false;
 
             Set<String> preferences_calendars = getPreferences_Calendars(eventType);
-            if (preferences_calendars.size() == 0) return false;
+            if (preferences_calendars.isEmpty()) return false;
 
             StringBuilder dataRow;
             Event event = new Event();
@@ -2681,7 +2681,7 @@ class ContactsEvents {
                             String contactTitle = Constants.STRING_EMPTY;
                             boolean namedFromEvent = false;
 
-                            if (contactID == null && event.needScanContacts && matcherNames.size() > 0) {
+                            if (contactID == null && event.needScanContacts && !matcherNames.isEmpty()) {
                                 String foundName;
                                 for (Matcher matcherName : matcherNames) {
                                     if (matcherName.reset(eventTitle).find()) {
@@ -3102,7 +3102,7 @@ class ContactsEvents {
             } else {
                 return false;
             }
-            if (fileList == null || fileList.size() == 0) return false;
+            if (fileList == null || fileList.isEmpty()) return false;
 
             for (String file : fileList) {
 
@@ -4486,7 +4486,7 @@ class ContactsEvents {
             }
 
             //Добавляем 5k+
-            if (magicList.size() > 0) {
+            if (!magicList.isEmpty()) {
                 eventList.addAll(magicList);
                 magicList.clear();
             }
@@ -4911,7 +4911,7 @@ class ContactsEvents {
                             valuePeriods.get(0),
                             toRepeat
                     );
-                    if (events != null && events.size() > 0) {
+                    if (events != null && !events.isEmpty()) {
                         for (Event event : events) {
 
                             String[] singleEventArrayXdays = singleEventArray.clone();
@@ -5299,7 +5299,7 @@ class ContactsEvents {
                 String channel_id = Integer.toString(preferences_notification_channel_id);
                 @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channel_id);
 
-                if (preferences_notifications_days.size() > 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+                if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
                     //https://developer.android.com/training/notify-user/channels.html
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
@@ -5355,7 +5355,7 @@ class ContactsEvents {
             PackageManager pm = context.getPackageManager();
             ComponentName receiver = new ComponentName(context, DeviceBootReceiver.class);
 
-            if (preferences_notifications_days.size() != 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
                 //To enable Boot Receiver class
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
@@ -5429,7 +5429,7 @@ class ContactsEvents {
 
             boolean needToNotify = false;
             boolean canExactAlarm = false;
-            if (preferences_notifications_days.size() > 0 && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
                 canExactAlarm = checkCanExactAlarm();
                 if (!canExactAlarm) {
                     log.append(context.getString(R.string.msg_exact_alarms_disabled));
@@ -5485,7 +5485,7 @@ class ContactsEvents {
 
             if (checkNoNotificationAccess()) return;
             Set<String> notifications_days = new HashSet<>(preferences_notifications_days); //За сколько дней уведомлять
-            if (notifications_days.size() == 0) return;
+            if (notifications_days.isEmpty()) return;
 
             setLocale(true);
 
@@ -5552,7 +5552,7 @@ class ContactsEvents {
                     }
                 }
             }
-            if (listNotify.size() == 0 && !forceNoEventsMessage) return;
+            if (listNotify.isEmpty() && !forceNoEventsMessage) return;
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.cancelAll();
@@ -6540,7 +6540,7 @@ class ContactsEvents {
                     if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
                 }
             }
-            if (toRemoveIds.size() > 0) {
+            if (!toRemoveIds.isEmpty()) {
                 preferences_silentEvents.removeAll(toRemoveIds);
                 countRemoved += toRemoveIds.size();
             }
@@ -6555,7 +6555,7 @@ class ContactsEvents {
                 final String[] keyParts = getKeyParts(event);
                 if (!map_contacts_rawIds.containsKey(keyParts[0])) toRemoveRawIds.add(event);
             }
-            if (toRemoveRawIds.size() > 0) {
+            if (!toRemoveRawIds.isEmpty()) {
                 preferences_silentEventsRawIds.removeAll(toRemoveRawIds);
                 countRemoved += toRemoveRawIds.size();
             }
@@ -6592,7 +6592,7 @@ class ContactsEvents {
                     if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
                 }
             }
-            if (toRemoveIds.size() > 0) {
+            if (!toRemoveIds.isEmpty()) {
                 preferences_hiddenEvents.removeAll(toRemoveIds);
                 countRemoved += toRemoveIds.size();
             }
@@ -6607,7 +6607,7 @@ class ContactsEvents {
                 final String[] keyParts = getKeyParts(event);
                 if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveRawIds.add(event);
             }
-            if (toRemoveRawIds.size() > 0) {
+            if (!toRemoveRawIds.isEmpty()) {
                 preferences_hiddenEventsRawIds.removeAll(toRemoveRawIds);
                 countRemoved += toRemoveRawIds.size();
             }
@@ -7433,7 +7433,7 @@ class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.size() == 0) return null;
+            if (birthdayDatesForIds.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -7468,8 +7468,8 @@ class ContactsEvents {
 
             //Формируем информацию о персоне
             StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
-            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
-            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
+            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -7534,7 +7534,7 @@ class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.size() == 0) return null;
+            if (birthdayDatesForIds.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -7569,8 +7569,8 @@ class ContactsEvents {
 
             //Формируем информацию о персоне
             StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
-            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
-            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
+            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -7631,7 +7631,7 @@ class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.size() == 0) return null;
+            if (birthdayDatesForIds.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -7668,11 +7668,9 @@ class ContactsEvents {
             Date currentDay = removeTime(Calendar.getInstance()).getTime();
             boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
-            //ToastExpander.showFor(Toast.makeText(context, getCalendarFromDate(eventDay).get(YEAR) + "!=" + Calendar.getInstance().get(YEAR) + "=" + isPassedBDay, Toast.LENGTH_LONG), 7000);
-
             StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
-            final boolean isOrg = eventInfo[Position_organization].trim().length() > 0;
-            final boolean isTitle = eventInfo[Position_title].trim().length() > 0;
+            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
+            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -7747,7 +7745,7 @@ class ContactsEvents {
 
         try {
 
-            if (widgetPref == null || eventList.size() == 0) return resultList;
+            if (widgetPref == null || eventList.isEmpty()) return resultList;
 
             //Типы событий
             List<String> eventsPrefList = new ArrayList<>();
@@ -7770,14 +7768,14 @@ class ContactsEvents {
                 String eventKey = getEventKey(singleEventArray);
                 String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
-                if (eventsPrefList.size() > 0) {
+                if (!eventsPrefList.isEmpty()) {
                     useEventListPrefs = false;
                     isVisibleEvent = eventsPrefList.contains(eventType) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId));
                 }
                 if (useEventListPrefs)
                     isVisibleEvent = preferences_list_event_types.contains(eventType) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId));
 
-                if (isVisibleEvent && sourcesPrefList.size() > 0) {
+                if (isVisibleEvent && !sourcesPrefList.isEmpty()) {
                     final String eventDates = singleEventArray[Position_dates];
                     isVisibleEvent = false;
                     for (String source: sourcesPrefList) {
@@ -8819,7 +8817,7 @@ class ContactsEvents {
 
             //Файлы
             Set<String> fileList = preferences_HolidayEvent_files;
-            if (fileList == null || fileList.size() == 0) return;
+            if (fileList == null || fileList.isEmpty()) return;
 
             for (String file : fileList) {
 

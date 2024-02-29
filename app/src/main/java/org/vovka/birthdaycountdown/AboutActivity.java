@@ -175,7 +175,7 @@ public class AboutActivity extends AppCompatActivity {
                         sb.append(getString(R.string.stats_counters_favorite_events, eventsData.statFavoriteEventsCount));
                     sb.append(Constants.HTML_UL_END);
 
-                    if (eventsData.statEventTypes.entrySet().size() > 0) {
+                    if (!eventsData.statEventTypes.entrySet().isEmpty()) {
                         sb.append(getString(R.string.stats_counters_events_title));
                         for (Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
                             sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());
@@ -225,7 +225,6 @@ public class AboutActivity extends AppCompatActivity {
                                 state == State.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
                                         state == State.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
                                                 eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
-
                     }
 
                     final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -369,7 +368,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     @SuppressLint("PrivateApi")
-    public State getMIUIAutoStartState() throws Exception {
+    private State getMIUIAutoStartState() throws Exception {
 
         Class<?> clazz = null;
         try {

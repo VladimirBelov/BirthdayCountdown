@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                     ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 }
             });
@@ -1079,7 +1079,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             }
                         } catch (ParseException e) { /**/ }
 
-                        if (events == null || events.size() == 0) {
+                        if (events == null || events.isEmpty()) {
                             if (captionNearestEvents != null) captionNearestEvents.setVisibility(View.GONE);
                             if (listNearestEvents != null) listNearestEvents.setVisibility(View.GONE);
                         } else {
@@ -1959,8 +1959,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             resources = getResources();
 
             //Устанавливаем тему и переоткрываем окно
+            this.setTheme(eventsData.preferences_theme.themeMain);
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+
             if (eventsData.currentTheme != eventsData.preferences_theme.themeMain) {
-                this.setTheme(eventsData.preferences_theme.themeMain);
+                eventsData.currentTheme = eventsData.preferences_theme.themeMain;
                 this.recreate();
                 return;
             }
@@ -2037,7 +2040,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                     && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-                    && eventsData.preferences_notifications_days.size() > 0) {
+                    && !eventsData.preferences_notifications_days.isEmpty()) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
             }
 
@@ -2074,7 +2077,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-                        && eventsData.preferences_notifications_days.size() > 0) {
+                        && !eventsData.preferences_notifications_days.isEmpty()) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
                 }
 
@@ -2498,7 +2501,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventDetails.insert(0, Constants.HTML_BOLD_START).append(Constants.HTML_BOLD_END);
                 }
 
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && singleEventArray[ContactsEvents.Position_nickname].trim().length() > 0) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && !singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(singleEventArray[ContactsEvents.Position_nickname]);
                 }
@@ -2539,7 +2542,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {
                     final String eventURL = singleEventArray[ContactsEvents.Position_eventURL].trim();
-                    if (eventURL.length() > 0) {
+                    if (!eventURL.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(eventURL.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
                     }
@@ -2547,7 +2550,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventSource))) {
                     final String eventSource = singleEventArray[ContactsEvents.Position_eventSource].trim();
-                    if (eventSource.length() > 0) {
+                    if (!eventSource.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(eventSource.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
                     }
@@ -2555,7 +2558,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Description))) {
                     final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
-                    if (eventDescription.length() > 0) {
+                    if (!eventDescription.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(eventDescription);
                     }
@@ -2735,7 +2738,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
@@ -2832,7 +2834,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         dataList.addAll(res);
                     }
 
-                    if (dataList.size() > 0) {
+                    if (!dataList.isEmpty()) {
                         if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden) {
                             setHint(
                                     (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_hidden_prefix) : resources.getString(R.string.msg_stats_hidden_filtered_prefix))
@@ -2895,7 +2897,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             super.applyOverrideConfiguration(overrideConfiguration);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
         }
     }

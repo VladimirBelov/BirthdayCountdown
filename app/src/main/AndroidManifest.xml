@@ -52,7 +52,6 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.App.Starting"
-            android:screenOrientation="user"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask">
@@ -150,14 +149,12 @@
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="user"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"/>
 
         <activity
             android:name=".WidgetConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
-            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="true"
             android:launchMode="singleInstance">
@@ -169,7 +166,6 @@
         <activity
             android:name=".WidgetCalendarConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
-            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="true"
             android:launchMode="singleInstance">
@@ -181,14 +177,12 @@
         <activity android:name=".AboutActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".SettingsActivity"
-            android:screenOrientation="user"
             tools:ignore="LockedOrientationActivity"
             android:exported="false"/>
 
         <activity android:name=".FAQActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:parentActivityName=".SettingsActivity"
-            android:screenOrientation="user"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"/>
 
