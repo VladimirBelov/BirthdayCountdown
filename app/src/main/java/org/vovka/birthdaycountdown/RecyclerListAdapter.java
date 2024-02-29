@@ -20,10 +20,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import org.vovka.birthdaycountdown.helper.ItemTouchHelperAdapter;
 import org.vovka.birthdaycountdown.helper.ItemTouchHelperViewHolder;
 import org.vovka.birthdaycountdown.helper.OnStartDragListener;
@@ -32,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
  * dismiss events from a {@link ItemTouchHelper}.
@@ -39,7 +39,6 @@ import java.util.List;
  * @author Paul Burke (ipaulpro)
  */
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
-
     private final List<String> mItems = new ArrayList<>();
     private final List<String> mColoredItems = new ArrayList<>();
     private final List<String> mNonSortableItems = new ArrayList<>();

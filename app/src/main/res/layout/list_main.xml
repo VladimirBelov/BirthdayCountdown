@@ -7,7 +7,9 @@
   ~  */
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -57,12 +59,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
-            android:foregroundGravity="top" />
+            android:foregroundGravity="top"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -915,6 +915,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 updateVisibility();
 
+            } else if (getString(R.string.pref_List_Style_key).equals(key) || getString(R.string.pref_List_Filling_key).equals(key)) {
+
+                eventsData.needUpdateLayout = true;
+
             }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
         else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {

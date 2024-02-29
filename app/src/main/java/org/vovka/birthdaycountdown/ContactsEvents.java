@@ -249,6 +249,7 @@ class ContactsEvents {
     List<String> eventListUnsorted = new ArrayList<>(); //Несортированный список
     int currentTheme = 0;
     boolean needUpdateEventList = true;
+    boolean needUpdateLayout = false;
 
     //Настройки
     boolean preferences_debug_on;

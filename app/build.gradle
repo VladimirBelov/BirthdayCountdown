@@ -147,8 +147,7 @@ dependencies {
     //noinspection GradleDependency
     implementation 'com.google.android.material:material:1.1.0-alpha10' //https://github.com/material-components/material-components-android/releases
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
-    //noinspection GradleDependency
-    implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
+    //implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation 'androidx.core:core:1.12.0' //https://developer.android.com/jetpack/androidx/releases/core
     implementation 'androidx.core:core-splashscreen:1.0.1' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.0.1
     //noinspection GradleDependency

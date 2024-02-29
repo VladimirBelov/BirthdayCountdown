@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -53,7 +54,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,6 +93,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.text.HtmlCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -232,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             };
             swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
-            ListView listView = findViewById(R.id.mainListView);
+            /*ListView listView = findViewById(R.id.mainListView);
 
             //Разделитель списка зависит от стиля отображения
             if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
@@ -267,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (intent != null) {
                             try {
                                 MainActivity.this.startActivity(intent);
-                            } catch (ActivityNotFoundException e) { /**/ }
+                            } catch (ActivityNotFoundException e) { *//**//* }
                         } else {
                             ToastExpander.showInfoMsg(this, resources.getString(R.string.msg_no_action));
                         }
@@ -279,9 +282,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             });
 
-            listView.setOnItemLongClickListener((parent, v, position, id) -> onCreatePopupMenu(listView, v, position));
+            listView.setOnItemLongClickListener((parent, v, position, id) -> onCreatePopupMenu(listView, v, position));*/
 
-            //registerForContextMenu(listView);
 
             //Приветственное сообщение или описание новой версии
             showWelcomeScreen();
@@ -1975,7 +1977,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Разделитель списка зависит от стиля отображения
             //Тут повтор из onCreate, потому что иногда при смене настроек изменения не подхватываются
-            ListView listView = findViewById(R.id.mainListView);
+            /*ListView listView = findViewById(R.id.mainListView);
             if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0)));
@@ -1989,9 +1991,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
                 listView.setPadding(0, 0, 0, 0);
 
-            }
+            }*/
 
-            if (eventsData.preference_list_fastscroll) {
+            /*if (eventsData.preference_list_fastscroll) {
 
                 //http://androidopentutorials.com/android-listview-fastscroll/
                 //https://stackoverflow.com/questions/33619453/scrollbar-touch-area-in-android-6
@@ -2024,7 +2026,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 listView.setOnScrollListener(null);
                 listView.setFastScrollEnabled(false);
 
-            }
+            }*/
 
             //Отступы списка событий
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) swipeRefresh.getLayoutParams();
@@ -2209,7 +2211,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     synchronized private void drawList() {
         try {
 
-            //Выводим данные
+            /*//Выводим данные
             ListView listView = findViewById(R.id.mainListView);
 
             //Сохраняем позицию в списке, чтобы вернутся к ней после обновления
@@ -2223,7 +2225,68 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Возвращаемся к ранее сохранённой позиции после обновления
             //Почему-то при index = 0 идёт сдвиг вверх на getPaddingTop
-            listView.setSelectionFromTop(index, index > 0 ? top : top + listView.getPaddingTop());
+            listView.setSelectionFromTop(index, index > 0 ? top : top + listView.getPaddingTop());*/
+
+            RecyclerView recyclerView = findViewById(R.id.mainListView);
+            LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+            int firstVisiblePosition = 0;
+            if (layoutManager != null) {
+                firstVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition();
+            }
+            if (recyclerView.getAdapter() == null || eventsData.needUpdateLayout) {
+                EventsRecyclerAdapter adapter = new EventsRecyclerAdapter(this);
+                recyclerView.setAdapter(adapter);
+
+                //Разделитель списка зависит от стиля отображения
+            /*if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
+
+                listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0)));
+                listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, displayMetrics));
+                int listPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics);
+                listView.setPadding(listPadding, listPadding, listPadding, listPadding);
+
+            } else {
+
+                listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
+                listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
+                listView.setPadding(0, 0, 0, 0);
+
+            }*/
+
+                //InsetDrawable insetDivider;
+                ColorDrawable divider;
+                int dividerHeight;
+                if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
+
+                    divider = new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0));
+                    dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics);
+                    //insetDivider = new InsetDrawable(divider, 0, inset, 0, inset);
+
+                } else {
+
+
+                    divider = new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0));
+                    dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics);
+                    //insetDivider = new InsetDrawable(divider, 0, inset, 0, inset);
+                    divider = new ColorDrawable(getResources().getColor(R.color.dark_red));
+                    //divider.setBounds(0, 0, 200, 100);
+                    DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+                    itemDecoration.setDrawable(divider);
+                    recyclerView.addItemDecoration(itemDecoration);
+
+                }
+                //divider = new ColorDrawable(getResources().getColor(R.color.dark_red));
+
+
+
+
+            } else {
+                recyclerView.invalidate();
+            }
+            if (layoutManager != null) {
+                layoutManager.scrollToPosition(firstVisiblePosition);
+            }
+            eventsData.needUpdateLayout = false;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2277,6 +2340,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         swipeRefresh.setRefreshing(false);
                         if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
 
+                        RecyclerView recyclerView = findViewById(R.id.mainListView);
+                        recyclerView.postInvalidate();
+
                         this.invalidateOptionsMenu();
 
                         if (eventsData.isEmptyEventList()) {
@@ -2297,6 +2363,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 swipeRefresh.setRefreshing(false);
                 if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
+
+                RecyclerView recyclerView = findViewById(R.id.mainListView);
+                recyclerView.invalidate();
 
                 this.invalidateOptionsMenu();
 
@@ -2364,6 +2433,411 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAdapter.ViewHolder> {
+
+        private final LayoutInflater inflater;
+        private final Context context;
+        private ViewGroup parent;
+
+        public EventsRecyclerAdapter(@NonNull Context context) {
+            this.context = context;
+            this.inflater = LayoutInflater.from(context);
+        }
+
+        @NonNull
+        @Override
+        public EventsRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            this.parent = parent;
+            View view = inflater.inflate(R.layout.entry_main, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EventsRecyclerAdapter.ViewHolder holder, int position) {
+            try {
+
+                String event = dataListFull.get(position);
+                if (event == null) return;
+
+                String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return;
+
+                Person person = new Person(eventsData.getContext(), event);
+
+                String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
+                String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                switch (eventDistance) {
+
+                    case Constants.STRING_0: //Сегодня
+
+                        final String caption = eventsData.preferences_list_custom_todayevent_caption;
+                        if (caption.isEmpty()) {
+                            holder.dayDistanceTextView.setText(eventDistanceText[0]);
+                        } else {
+                            holder.dayDistanceTextView.setText(caption);
+                        }
+                        holder.dayDistanceTextView.setTypeface(null, Typeface.BOLD);
+                        holder.dayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventtoday);
+                        break;
+
+                    case Constants.STRING_1: //Завтра и послезавтра
+                    case Constants.STRING_2:
+
+                        final String distance_near = eventDistanceText[0] + (eventDistanceText.length > 1 ? Constants.STRING_SPACE + eventDistanceText[1] : Constants.STRING_EMPTY);
+                        holder.dayDistanceTextView.setText(distance_near);
+                        holder.dayDistanceTextView.setTypeface(null, Typeface.BOLD);
+                        holder.dayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventsoon);
+                        break;
+
+                    default: //Попозже
+
+                        final String distance_far = eventDistanceText[0] + (eventDistanceText.length > 1 ? Constants.STRING_SPACE + eventDistanceText[1] : Constants.STRING_EMPTY);
+                        holder.dayDistanceTextView.setText(distance_far);
+                        holder.dayDistanceTextView.setTypeface(null, Typeface.NORMAL);
+                        holder.dayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_black_primary)));
+
+                }
+
+                //Дата оригинального события
+                holder.dateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear));
+
+                switch (eventsData.preferences_list_nameformat) {
+                    case 2: //Фамилия Имя Отчество
+                        holder.nameTextView.setText(singleEventArray[ContactsEvents.Position_personFullNameAlt]);
+                        break;
+                    case 1: //Имя Отчество Фамилия
+                    default:
+                        holder.nameTextView.setText(singleEventArray[ContactsEvents.Position_personFullName]);
+                        break;
+                }
+
+                //Информация под именем
+                StringBuilder eventDetails = new StringBuilder();
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
+                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
+                    if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
+                }
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
+                    final String positionJobTitle = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_title]).trim();
+                    if (!positionJobTitle.isEmpty()) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_COMMA_SPACE);
+                        eventDetails.append(positionJobTitle);
+                    }
+                }
+                if (eventDetails.length() > 0) {
+                    eventDetails.insert(0, Constants.HTML_BOLD_START).append(Constants.HTML_BOLD_END);
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && singleEventArray[ContactsEvents.Position_nickname].trim().length() > 0) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(singleEventArray[ContactsEvents.Position_nickname]);
+                }
+
+                String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
+                String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel].trim();
+                String eventCaption = singleEventArray[ContactsEvents.Position_eventCaption].trim();
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(eventCaption);
+                    if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel)) {
+                        eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(Constants.STRING_PARENTHESIS_CLOSE);
+                    }
+
+                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                        final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
+                                singleEventArray[ContactsEvents.Position_zodiacSign].trim() : Constants.STRING_EMPTY;
+                        final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
+                                singleEventArray[ContactsEvents.Position_zodiacYear].trim() : Constants.STRING_EMPTY;
+
+                        if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
+                            eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append((strZodiacInfo.concat(Constants.STRING_SPACE).concat(strZodiacYearInfo)).trim()).append(Constants.STRING_PARENTHESIS_CLOSE);
+                        }
+                    }
+
+                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventLabel.isEmpty()) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(eventLabel);
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
+                    final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                    if (!currentAge.isEmpty() && !currentAge.contains(": 0")) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(currentAge);
+                    }
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {
+                    final String eventURL = singleEventArray[ContactsEvents.Position_eventURL].trim();
+                    if (eventURL.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(eventURL.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
+                    }
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventSource))) {
+                    final String eventSource = singleEventArray[ContactsEvents.Position_eventSource].trim();
+                    if (eventSource.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(eventSource.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
+                    }
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Description))) {
+                    final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                    if (eventDescription.length() > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        eventDetails.append(eventDescription);
+                    }
+                }
+
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
+                    String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                    if (dates.length > 0) {
+                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                        for (int i = 0; i < dates.length; i++) {
+                            if (i > 0) eventDetails.append(Constants.HTML_BR);
+                            String date = dates[i];
+                            int ind = date.lastIndexOf(Constants.STRING_COLON_SPACE);
+                            eventDetails.append((ind > -1 ? date.substring(0, ind) : date).trim());
+                        }
+                    }
+                }
+
+                String eventKey = eventsData.getEventKey(singleEventArray);
+                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED));
+                }
+                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_silenced), Constants.HTML_COLOR_BROWN));
+                }
+
+                if (eventDetails.length() == 0) {
+                    holder.detailsTextView.setText(Constants.STRING_EMPTY);
+                } else {
+                    //https://stackoverflow.com/questions/2116162/how-to-display-html-in-textview
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        holder.detailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        holder.detailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), 0));
+                    }
+                }
+
+                //Фото
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
+                    int roundingFactor;
+                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
+                        roundingFactor = 1;
+                    } else {
+                        roundingFactor = eventsData.preferences_list_photostyle;
+                    }
+
+                    holder.photoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, false, roundingFactor));
+                    holder.photoImageView.setVisibility(View.VISIBLE);
+                } else {
+                    holder.photoImageView.setImageBitmap(null);
+                    holder.photoImageView.setVisibility(View.GONE);
+                }
+
+                //Годовщина
+                if (eventsData.isJubilee(person.Age, eventSubType)) {
+                    holder.counterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);
+                } else {
+                    holder.counterTextView.setTextColor(ta.getColor(R.styleable.Theme_eventAgeColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_grey_primary)));
+                }
+                holder.counterTextView.setText(singleEventArray[ContactsEvents.Position_age_caption]);
+
+                //Определяем иконку события
+                int eventIcon;
+                try {
+                    eventIcon = Integer.parseInt(singleEventArray[ContactsEvents.Position_eventIcon]);
+                } catch (NumberFormatException e) {
+                    eventIcon = 0;
+                }
+                if (eventIcon != 0 && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventIcon))) {
+                    holder.eventIconImageView.setImageResource(eventIcon);
+                } else {
+                    holder.eventIconImageView.setImageDrawable(null);
+                }
+
+                //Фон
+                GradientDrawable drawableBack = new GradientDrawable();
+
+                if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
+
+                    drawableBack.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics),
+                            ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)));
+                    drawableBack.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics));
+
+                }
+
+                if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_None))) {
+
+                    drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                    drawableBack.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    drawableBack.setColors(new int[]{
+                            ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_secondary)),
+                            ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_secondary)),
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_LeftToRight))) {
+
+                    drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                    drawableBack.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    drawableBack.setColors(new int[]{
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_RightToLeft))) {
+
+                    drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                    drawableBack.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                    drawableBack.setColors(new int[] {
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_TopToBottom))) {
+
+                    drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                    drawableBack.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                    drawableBack.setColors(new int[] {
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_BottomToTop))) {
+
+                    drawableBack.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                    drawableBack.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                    drawableBack.setColors(new int[] {
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_FromCenter))) {
+
+                    drawableBack.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+                    drawableBack.setGradientRadius((float)parent.getWidth()/2);
+                    drawableBack.setColors(new int[] {
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray)),
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker))
+                    });
+
+                } else if (eventsData.preferences_list_filling == Integer.parseInt(getString(R.string.pref_List_Filling_ToCenter))) {
+
+                    drawableBack.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+                    drawableBack.setGradientRadius((float) parent.getWidth() / 2);
+                    drawableBack.setColors(new int[] {
+                            ta.getColor(R.styleable.Theme_gradientEndColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)),
+                            ta.getColor(R.styleable.Theme_gradientStartColor, ContextCompat.getColor(eventsData.getContext(), R.color.lighter_gray))
+                    });
+
+                }
+
+                holder.entryLayout.setBackground(drawableBack);
+                holder.entryLayout.setAlpha(1);
+
+                //Прозрачность для прошедших событий
+                holder.nameTextView.setAlpha(1);
+                holder.counterTextView.setAlpha(1);
+                holder.dateTextView.setAlpha(1);
+                holder.dayDistanceTextView.setAlpha(1);
+                holder.detailsTextView.setAlpha(1);
+                holder.photoImageView.setImageAlpha(255);
+                holder.eventIconImageView.setImageAlpha(255);
+
+                if (eventsData.statEventsPrevEventsFound > 0 && filterNames.isEmpty()) {
+                    if (position <= eventsData.statEventsPrevEventsFound - 1) {
+                        final float alphaPrev = (float) 0.6;
+                        holder.nameTextView.setAlpha(alphaPrev);
+                        holder.counterTextView.setAlpha(alphaPrev);
+                        holder.dateTextView.setAlpha(alphaPrev);
+                        holder.dayDistanceTextView.setAlpha(alphaPrev);
+                        holder.detailsTextView.setAlpha(alphaPrev);
+                        holder.photoImageView.setImageAlpha((int)(255*alphaPrev));
+                        holder.eventIconImageView.setImageAlpha((int)(255*alphaPrev));
+                    }
+                }
+
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            }
+        }
+
+        @Override
+        public int getItemCount() {return dataListFull.size();}
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            final LinearLayout entryLayout;
+            final TextView nameTextView;
+            final TextView dayDistanceTextView;
+            final TextView dateTextView;
+            final TextView detailsTextView;
+            final ImageView photoImageView;
+            final TextView counterTextView;
+            final ImageView eventIconImageView;
+
+            ViewHolder(View view) {
+                super(view);
+                this.entryLayout = view.findViewById(R.id.entryLayout);
+                this.nameTextView = view.findViewById(R.id.entryNameTextView);
+                this.dayDistanceTextView = view.findViewById(R.id.entryDayDistanceTextView);
+                this.dateTextView = view.findViewById(R.id.entryDateTextView);
+                this.detailsTextView = view.findViewById(R.id.entryEventDetailsTextView);
+                this.counterTextView = view.findViewById(R.id.entryDetailsCounter);
+                this.photoImageView = view.findViewById(R.id.entryPhotoImageView);
+                this.eventIconImageView = view.findViewById(R.id.entryEventIcon);
+            }
+
+        }
+
+    }
+
+    class EventItemDecorator extends RecyclerView.ItemDecoration {
+
+        int space;
+        boolean isHorizontalLayout;
+        public EventItemDecorator(int space) {
+            this.space = space;
+        }
+
+        public EventItemDecorator(int space, boolean isHorizontalLayout) {
+            this.space = space;
+            this.isHorizontalLayout = isHorizontalLayout;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            if(isHorizontalLayout)
+            {
+                outRect.bottom=space;
+                outRect.right=space;
+                outRect.left=space;
+                outRect.top=space;
+
+            } else {
+                outRect.bottom = space;
+                if (parent.getChildAdapterPosition(view) == 0)
+                    outRect.top = space;
+                else
+                    outRect.top = 0;
+
+            }
+
+
+        }
+    }
+
     class EventsAdapter extends ArrayAdapter<String> implements Filterable {
 
         //final ContactsEvents eventsData;
@@ -2394,7 +2868,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @NonNull
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-            View convertedView = convertView;
             ViewHolder holder;
             String[] singleEventArray;
             Person person;
@@ -2404,12 +2877,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
-                if (convertedView == null) {
+                if (convertView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                     try {
-                        convertedView = inflater.inflate(R.layout.entry_main, parent, false);
-                        holder = createViewHolderFrom(convertedView);
-                        convertedView.setTag(holder);
+                        //noinspection AssignmentToMethodParameter
+                        convertView = inflater.inflate(R.layout.entry_main, parent, false);
+                        holder = createViewHolderFrom(convertView);
+                        convertView.setTag(holder);
                     } catch (InflateException e) {
                         ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
                         if (getParent() != null) {
@@ -2422,14 +2896,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         return parent;
                     }
                 } else {
-                    holder = (ViewHolder) convertedView.getTag();
+                    holder = (ViewHolder) convertView.getTag();
                 }
 
                 event = getItem(position);
-                if (event == null) return convertedView;
+                if (event == null) return convertView;
 
                 singleEventArray = event.split(Constants.STRING_EOT, -1);
-                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
+                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertView;
 
                 person = new Person(eventsData.getContext(), event);
 
@@ -2709,8 +3183,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                convertedView.setBackground(drawableBack);
-                convertedView.setAlpha(1);
+                convertView.setBackground(drawableBack);
+                convertView.setAlpha(1);
 
                 //Прозрачность для прошедших событий
                 holder.NameTextView.setAlpha(1);
@@ -2739,7 +3213,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
-            return convertedView;
+            return convertView;
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {
