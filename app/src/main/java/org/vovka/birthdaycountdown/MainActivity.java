@@ -2346,7 +2346,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private static class ViewHolder {
         //https://stackoverflow.com/questions/21501316/what-is-the-benefit-of-viewholder
-        //todo: перейти на RecycleView https://www.spreys.com/listview-to-recyclerview/
+        //https://metanit.com/java/android/5.8.php
+        //todo: перейти на RecycleView https://www.spreys.com/listview-to-recyclerview/ https://metanit.com/java/android/5.12.php
 
         final TextView NameTextView;
         final TextView DayDistanceTextView;
@@ -2397,7 +2398,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @NonNull
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-            View convertedView = convertView;
             ViewHolder holder;
             String[] singleEventArray;
             Person person;
@@ -2407,12 +2407,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
-                if (convertedView == null) {
+                if (convertView == null) {
                     LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
                     try {
-                        convertedView = inflater.inflate(R.layout.entry_main, parent, false);
-                        holder = createViewHolderFrom(convertedView);
-                        convertedView.setTag(holder);
+                        //noinspection ReassignedVariable,AssignmentToMethodParameter
+                        convertView = inflater.inflate(R.layout.entry_main, parent, false);
+                        holder = createViewHolderFrom(convertView);
+                        convertView.setTag(holder);
                     } catch (InflateException e) {
                         ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
                         if (getParent() != null) {
@@ -2425,14 +2426,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         return parent;
                     }
                 } else {
-                    holder = (ViewHolder) convertedView.getTag();
+                    holder = (ViewHolder) convertView.getTag();
                 }
 
                 event = getItem(position);
-                if (event == null) return convertedView;
+                if (event == null) return convertView;
 
                 singleEventArray = event.split(Constants.STRING_EOT, -1);
-                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
+                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertView;
 
                 person = new Person(eventsData.getContext(), event);
 
@@ -2712,8 +2713,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                convertedView.setBackground(drawableBack);
-                convertedView.setAlpha(1);
+                convertView.setBackground(drawableBack);
+                convertView.setAlpha(1);
 
                 //Прозрачность для прошедших событий
                 holder.NameTextView.setAlpha(1);
@@ -2741,7 +2742,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
-            return convertedView;
+            return convertView;
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {
