@@ -281,8 +281,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             listView.setOnItemLongClickListener((parent, v, position, id) -> onCreatePopupMenu(listView, v, position));
 
-            //registerForContextMenu(listView);
-
             //Приветственное сообщение или описание новой версии
             showWelcomeScreen();
 
@@ -1163,11 +1161,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             builder.setIcon(android.R.drawable.ic_menu_info_details);
             builder.setMessage(getString(R.string.msg_no_events_hint));
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
-            /*builder.setNeutralButton(R.string.button_open_addressbook, (dialog, which) -> {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
-                } catch (android.content.ActivityNotFoundException e) { *//**//* }
-            });*/
             builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                 try {
                     startActivity(new Intent(this, SettingsActivity.class));
@@ -2398,6 +2391,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @NonNull
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
+            View convertedView = convertView;
             ViewHolder holder;
             String[] singleEventArray;
             Person person;
@@ -2407,33 +2401,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
-                if (convertView == null) {
-                    LayoutInflater inflater = LayoutInflater.from(eventsData.getContext());
-                    try {
-                        //noinspection ReassignedVariable,AssignmentToMethodParameter
-                        convertView = inflater.inflate(R.layout.entry_main, parent, false);
-                        holder = createViewHolderFrom(convertView);
-                        convertView.setTag(holder);
-                    } catch (InflateException e) {
-                        ToastExpander.showDebugMsg(eventsData.getContext(), getString(R.string.msg_debug_activity_recreate, e.getMessage()));
-                        if (getParent() != null) {
-                            getParent().recreate();
-                        } else {
-                            try {
-                                startActivity(new Intent(eventsData.getContext(), MainActivity.class));
-                            } catch (android.content.ActivityNotFoundException ignored) { /**/ }
-                        }
-                        return parent;
-                    }
+                if (convertedView == null) {
+                    LayoutInflater inflater = LayoutInflater.from(getBaseContext());
+                        convertedView = LayoutInflater.from(getBaseContext()).inflate(R.layout.entry_main, parent, false);
+                        holder = createViewHolderFrom(convertedView);
+                        convertedView.setTag(holder);
                 } else {
-                    holder = (ViewHolder) convertView.getTag();
+                    holder = (ViewHolder) convertedView.getTag();
                 }
 
                 event = getItem(position);
-                if (event == null) return convertView;
+                if (event == null) return convertedView;
 
                 singleEventArray = event.split(Constants.STRING_EOT, -1);
-                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertView;
+                if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
 
                 person = new Person(eventsData.getContext(), event);
 
@@ -2713,8 +2694,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                convertView.setBackground(drawableBack);
-                convertView.setAlpha(1);
+                convertedView.setBackground(drawableBack);
+                convertedView.setAlpha(1);
 
                 //Прозрачность для прошедших событий
                 holder.NameTextView.setAlpha(1);
@@ -2742,7 +2723,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
-            return convertView;
+            return convertedView;
         }
 
         private ViewHolder createViewHolderFrom(@NonNull View view) {
@@ -2903,3 +2884,4 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 }
+
