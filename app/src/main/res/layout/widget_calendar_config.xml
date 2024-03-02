@@ -151,7 +151,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_starting_month_position_label"
-                        android:entries="@array/widget_config_starting_month_position_values"
+                        android:entries="@array/widget_config_starting_month_position_entries"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
@@ -271,6 +271,78 @@
                     android:text="@string/widget_config_month_font_magnify_description"
                     android:textColor="?android:attr/textColorSecondary"
                     tools:ignore="VisualLintLongText" />
+
+                <View
+                    android:id="@+id/dividerOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_onclick_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/blockOnClickCommon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionOnClickCommon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_onclick_common_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOnClickCommon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_onclick_common_label"
+                        android:entries="@array/pref_widget_month_onclick_entries"
+                        android:textAlignment="textEnd"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blockOnClickHolidays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionOnClickHolidays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_onclick_holidays_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOnClickHolidays"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_onclick_common_label"
+                        android:entries="@array/pref_widget_month_onclick_entries"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
 
                 <View
                     android:id="@+id/dividerColorWidgetBackground"

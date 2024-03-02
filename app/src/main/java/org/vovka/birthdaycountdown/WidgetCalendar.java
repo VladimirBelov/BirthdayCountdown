@@ -47,11 +47,23 @@ public class WidgetCalendar extends AppWidgetProvider {
 
     private static final String TAG = "WidgetCalendar";
     private final ContactsEvents eventsData = ContactsEvents.getInstance();
-
+    private Context context;
+    private Resources res;
     private final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
     private final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
     private boolean showUpdateProgress = false;
     private final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
+    @ColorInt private int colorCommon;
+    @ColorInt private int colorCommonOutMonth;
+    @ColorInt private int colorToday;
+    private boolean colorizeSaturdays;
+    private boolean colorizeSundays;
+    private boolean enabledFillDays;
+    private float fontMagnify;
+    private List<String> prefOtherEvents;
+    private int prefOnClickCommon = Constants.onClick_None;
+    private int prefOnClickHolidays = Constants.onClick_None;
+    private boolean atLeastOneDayInMonth;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -139,13 +151,13 @@ public class WidgetCalendar extends AppWidgetProvider {
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         long statCurrentModuleStart = System.currentTimeMillis();
+        this.context = context;
+        this.res = context.getResources();
 
         try {
 
             AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
-
-            Resources res = context.getResources();
 
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
@@ -196,7 +208,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             try {
                 if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
             } catch (Exception e) {/**/}
-            float fontMagnify = (float) (1 + prefFontMagnify * 0.1);
+            fontMagnify = (float) (1 + prefFontMagnify * 0.1);
 
             //Количество месяцев
             String prefLayout = res.getString(R.string.widget_config_layout_default);
@@ -268,13 +280,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (widgetPref.size() > 2) prefStartingMonthPosition = Integer.parseInt(widgetPref.get(2));
             } catch (Exception e) {/**/}
             if (prefStartingMonthPosition == 1) { //Вверху по центру
-
                 prefMonthsShift -= columnsToDraw / 2;
-
             } else if (prefStartingMonthPosition == 2) { //По центру
-
                 prefMonthsShift -= (columnsToDraw / 2) + ((rowsToDraw - 1) / 2) * columnsToDraw;
-
             }
 
             //Ручное смещение месяцев
@@ -292,7 +300,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
-            boolean enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
+            enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
 
             //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();
@@ -327,11 +335,27 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                 }
             } catch (Exception e) {/**/}
-            boolean colorizeSaturdays = prefEvents.contains(res.getString(R.string.widget_config_month_events_saturday_id));
-            boolean colorizeSundays = prefEvents.contains(res.getString(R.string.widget_config_month_events_sunday_id));
-            List<String> prefOtherEvents = new ArrayList<>(prefEvents);
+            colorizeSaturdays = prefEvents.contains(res.getString(R.string.widget_config_month_events_saturday_id));
+            colorizeSundays = prefEvents.contains(res.getString(R.string.widget_config_month_events_sunday_id));
+            prefOtherEvents = new ArrayList<>(prefEvents);
             prefOtherEvents.remove(res.getString(R.string.widget_config_month_events_saturday_id));
             prefOtherEvents.remove(res.getString(R.string.widget_config_month_events_sunday_id));
+
+            //Реакция на нажатие
+            try {
+                List<String> onclickIDs = Arrays.asList(res.getStringArray(R.array.pref_widget_month_onclick_values));
+                String[] prefOnClick = null;
+
+                if (widgetPref.size() > 15) prefOnClick = widgetPref.get(15).split(Constants.REGEX_PLUS, -1);
+                if (prefOnClick != null && prefOnClick.length == 2) {
+                    if (onclickIDs.contains(prefOnClick[0])) {
+                        prefOnClickCommon = onclickIDs.indexOf(prefOnClick[0]);  //Смещение, не значение
+                    }
+                    if (onclickIDs.contains(prefOnClick[1])) {
+                        prefOnClickHolidays = onclickIDs.indexOf(prefOnClick[1]);
+                    }
+                }
+            } catch (Exception e) { /**/ }
 
             //Цвета
 
@@ -344,16 +368,16 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Обычные дни
-            @ColorInt int colorCommon = res.getColor(R.color.pref_Widgets_Color_Calendar_Common_default);
+            colorCommon = res.getColor(R.color.pref_Widgets_Color_Calendar_Common_default);
             if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
                 try {
                     colorCommon = Color.parseColor(widgetPref.get(8));
                 } catch (final Exception e) {/* */}
             }
-            @ColorInt int colorCommonOutMonth = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
+            colorCommonOutMonth = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorCommon), Color.green(colorCommon), Color.blue(colorCommon));
 
             //Сегодня
-            @ColorInt int colorToday = res.getColor(R.color.pref_Widgets_Color_Calendar_Today_default);
+            colorToday = res.getColor(R.color.pref_Widgets_Color_Calendar_Today_default);
             if (widgetPref.size() > 13 && !widgetPref.get(13).isEmpty()) {
                 try {
                     colorToday = Color.parseColor(widgetPref.get(13));
@@ -361,7 +385,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Заголовок
-            @ColorInt int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
+            int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
             if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
                 try {
                     colorMonthTitle = Color.parseColor(widgetPref.get(9));
@@ -582,87 +606,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //Дни
                     for (int week = 0; week < numWeeks; week++) {
                         RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
-                        boolean atLeastOneDayInMonth = false;
+                        atLeastOneDayInMonth = false;
                         for (int day = 0; day < 7; day++) {
-                            boolean inMonth = cal.get(Calendar.MONTH) == thisMonth;
-                            boolean inYear = cal.get(Calendar.YEAR) == todayYear;
-                            boolean isToday = inYear && inMonth && (cal.get(Calendar.DAY_OF_YEAR) == today);
-                            @ColorInt Integer color;
-
-                            RemoteViews cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
-                            if (isToday) {
-                                color = colorToday;
-                                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_today);
-                                atLeastOneDayInMonth = true;
-                            } else if (inMonth) {
-                                color = colorCommon;
-                                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day_this_month);
-                                atLeastOneDayInMonth = true;
-                            } else {
-                                color = colorCommonOutMonth;
-                                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
-                            }
-
-                            if (enabledFillDays || inMonth) {
-                                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
-                            }
-                            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
-
-                            //Цвет дня
-                            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
-
-                            if (!dayTypes.isEmpty()) {
-                                int maxTypeIndex = -1;
-                                ContactsEvents.DayType dayType = null;
-                                for (ContactsEvents.DayType type: dayTypes) {
-                                    if (prefOtherEvents.indexOf(type.sourceId) > maxTypeIndex) {
-                                        maxTypeIndex = prefOtherEvents.indexOf(type.sourceId);
-                                        dayType = type;
-                                    }
-                                }
-
-                                if (dayType != null && dayType.type == ContactsEvents.DayType.Type.Holiday) {
-                                    if (inMonth) {
-                                        color = eventsColorsInMonth.get(dayType.sourceId);
-                                    } else {
-                                        color = eventsColorsOutMonth.get(dayType.sourceId);
-                                    }
-                                }
-                            } else if (colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                                if (inMonth) {
-                                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
-                                } else {
-                                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
-                                }
-                            } else if (colorizeSundays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                                if (inMonth) {
-                                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
-                                } else {
-                                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
-                                }
-                            }
-                            if (color != null) {
-                                if (isToday) {
-                                    cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
-
-                                    if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
-                                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
-                                    } else {
-                                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
-                                    }
-
-                                } else {
-                                    cellRv.setTextColor(android.R.id.text1, color);
-                                }
-                            }
-
-                            //Реакция на нажатие
-                            PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
-                            if (pendingIntent != null) {
-                                cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
-                            }
-
-                            rowRv.addView(R.id.row_container, cellRv);
+                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId);
+                            if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
                             cal.add(Calendar.DAY_OF_MONTH, 1);
                         }
                         if (week < numWeeks - 1 || atLeastOneDayInMonth) { //Если не последняя неделя или есть хоть 1 день в месяце
@@ -732,35 +679,133 @@ public class WidgetCalendar extends AppWidgetProvider {
         }
     }
 
-    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, List<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
-        boolean hasInfo = false;
-        PendingIntent pendingIntent = null;
-        if (!dayTypes.isEmpty()) {
+    private RemoteViews composeDayCell(Calendar cal, int todayYear, int thisMonth, int today, int appWidgetId) {
+        RemoteViews cellRv = null;
 
-            List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
-            if (!dayInfo.isEmpty()) {
-                Intent intent = new Intent(context, WidgetCalendarPopup.class);
-                intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
-                        .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
-                intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.STRING_EOL, dayInfo));
-                intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
-                hasInfo = true;
+        try {
+
+            boolean inMonth = cal.get(Calendar.MONTH) == thisMonth;
+            boolean inYear = cal.get(Calendar.YEAR) == todayYear;
+            boolean isToday = inYear && inMonth && (cal.get(Calendar.DAY_OF_YEAR) == today);
+            @ColorInt Integer color;
+
+            cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
+            if (isToday) {
+                color = colorToday;
+                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_today);
+                atLeastOneDayInMonth = true;
+            } else if (inMonth) {
+                color = colorCommon;
+                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day_this_month);
+                atLeastOneDayInMonth = true;
+            } else {
+                color = colorCommonOutMonth;
+                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
             }
 
+            if (enabledFillDays || inMonth) {
+                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+            }
+            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
+
+            //Цвет дня
+            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+
+            if (!dayTypes.isEmpty()) {
+                int maxTypeIndex = -1;
+                ContactsEvents.DayType dayType = null;
+                for (ContactsEvents.DayType type: dayTypes) {
+                    if (prefOtherEvents.indexOf(type.sourceId) > maxTypeIndex) {
+                        maxTypeIndex = prefOtherEvents.indexOf(type.sourceId);
+                        dayType = type;
+                    }
+                }
+
+                if (dayType != null && dayType.type == ContactsEvents.DayType.Type.Holiday) {
+                    if (inMonth) {
+                        color = eventsColorsInMonth.get(dayType.sourceId);
+                    } else {
+                        color = eventsColorsOutMonth.get(dayType.sourceId);
+                    }
+                }
+            } else if (colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                if (inMonth) {
+                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
+                } else {
+                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
+                }
+            } else if (colorizeSundays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                if (inMonth) {
+                    color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
+                } else {
+                    color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
+                }
+            }
+            if (color != null) {
+                if (isToday) {
+                    cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
+
+                    if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
+                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
+                    } else {
+                        cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
+                    }
+
+                } else {
+                    cellRv.setTextColor(android.R.id.text1, color);
+                }
+            }
+
+            //Реакция на нажатие
+            PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
+            if (pendingIntent != null) {
+                cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        if (!hasInfo) {
+        return cellRv;
+    }
 
-            Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-            builder.appendPath("time");
-            builder.appendPath(Long.toString(cal.getTimeInMillis()));
-            Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, List<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
+        PendingIntent pendingIntent = null;
 
+        try {
+
+            int action;
+            if (!dayTypes.isEmpty()) {
+                action = prefOnClickHolidays;
+            } else {
+                action = prefOnClickCommon;
+            }
+
+            if (action == Constants.onClick_Popup) {
+                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+                if (!dayInfo.isEmpty()) {
+                    Intent intent = new Intent(context, WidgetCalendarPopup.class);
+                    intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
+                            .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
+                    intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.STRING_EOL, dayInfo));
+                    intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
+                }
+            } else if (action == Constants.onClick_Calendar) {
+                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                builder.appendPath("time");
+                builder.appendPath(Long.toString(cal.getTimeInMillis()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return pendingIntent;
     }

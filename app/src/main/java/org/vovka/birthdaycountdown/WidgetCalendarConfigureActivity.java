@@ -143,39 +143,39 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
 
             //Количество месяцев
-            String prefLayout = getString(R.string.widget_config_layout_default);
             try {
+                String prefLayout = getString(R.string.widget_config_layout_default);
                 if (!widgetPref.isEmpty()) prefLayout = widgetPref.get(0);
-            } catch (Exception e) {/**/}
 
-            final Spinner spinnerLayout = findViewById(R.id.spinnerMonthsLayout);
-            List<String> layouts = Arrays.asList(getResources().getStringArray(R.array.widget_config_layout_values));
-            spinnerLayout.setSelection(layouts.lastIndexOf(prefLayout));
+                final Spinner spinnerLayout = findViewById(R.id.spinnerMonthsLayout);
+                List<String> layouts = Arrays.asList(getResources().getStringArray(R.array.widget_config_layout_values));
+                spinnerLayout.setSelection(layouts.lastIndexOf(prefLayout));
+            } catch (Exception e) {/**/}
 
             //Стартовый месяц
-            String prefMonthsShift = getString(R.string.widget_config_month_shift_current_month_id);
             try {
+                String prefMonthsShift = getString(R.string.widget_config_month_shift_current_month_id);
                 if (widgetPref.size() > 1) prefMonthsShift = widgetPref.get(1);
-            } catch (Exception e) {/**/}
 
-            final Spinner spinnerMonthShift = findViewById(R.id.spinnerMonthsShift);
-            List<String> shifts = Arrays.asList(getResources().getStringArray(R.array.widget_config_month_shift_entries));
-            if (shifts.lastIndexOf(prefMonthsShift) > -1) {
-                spinnerMonthShift.setSelection(shifts.lastIndexOf(prefMonthsShift));
-            } else if (prefMonthsShift.equals(getString(R.string.widget_config_month_shift_current_month_id))) { //Текущий месяц
-                spinnerMonthShift.setSelection(shifts.lastIndexOf(getString(R.string.widget_config_month_shift_current_month)));
-            } else if (prefMonthsShift.equals(getString(R.string.widget_config_month_shift_january_id))) { //Начало года
-                spinnerMonthShift.setSelection(shifts.lastIndexOf(getString(R.string.widget_config_month_shift_january)));
-            }
+                final Spinner spinnerMonthShift = findViewById(R.id.spinnerMonthsShift);
+                List<String> shifts = Arrays.asList(getResources().getStringArray(R.array.widget_config_month_shift_entries));
+                if (shifts.lastIndexOf(prefMonthsShift) > -1) {
+                    spinnerMonthShift.setSelection(shifts.lastIndexOf(prefMonthsShift));
+                } else if (prefMonthsShift.equals(getString(R.string.widget_config_month_shift_current_month_id))) { //Текущий месяц
+                    spinnerMonthShift.setSelection(shifts.lastIndexOf(getString(R.string.widget_config_month_shift_current_month)));
+                } else if (prefMonthsShift.equals(getString(R.string.widget_config_month_shift_january_id))) { //Начало года
+                    spinnerMonthShift.setSelection(shifts.lastIndexOf(getString(R.string.widget_config_month_shift_january)));
+                }
+            } catch (Exception e) {/**/}
 
             //Положение
-            int prefStartingMonthPosition = 0;
             try {
+                int prefStartingMonthPosition = 0;
                 if (widgetPref.size() > 2) prefStartingMonthPosition = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e) {/**/}
 
-            final Spinner spinnerStartingMonthPosition = findViewById(R.id.spinnerStartingMonthPosition);
-            spinnerStartingMonthPosition.setSelection(prefStartingMonthPosition);
+                final Spinner spinnerStartingMonthPosition = findViewById(R.id.spinnerStartingMonthPosition);
+                spinnerStartingMonthPosition.setSelection(prefStartingMonthPosition);
+            } catch (Exception e) {/**/}
 
             //Ручное смещение месяцев
             try {
@@ -183,22 +183,23 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             } catch (Exception e) {/**/}
 
             //Элементы календаря
-            List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
-            List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
-            String[] prefElements = null;
-            List<String> selectedElements = new ArrayList<>();
             try {
+                List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
+                List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
+                String[] prefElements = null;
+                List<String> selectedElements = new ArrayList<>();
+
                 if (widgetPref.size() > 4) prefElements = widgetPref.get(4).split(Constants.REGEX_PLUS, -1);
                 if (prefElements != null) {
                     for (String item : prefElements) {
                         if (elementsIDs.contains(item)) selectedElements.add(elementsValues.get(elementsIDs.indexOf(item)));
                     }
                 }
-            } catch (Exception e) {/**/}
 
-            final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
-            spinnerElements.setItems(elementsValues);
-            spinnerElements.setSelection(selectedElements);
+                final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
+                spinnerElements.setItems(elementsValues);
+                spinnerElements.setSelection(selectedElements);
+            } catch (Exception e) {/**/}
 
             //Источники событий
             getEventSources();
@@ -208,141 +209,189 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
 
             //Цвета событий
-            if (widgetPref.size() > 14) {
-                String pref = widgetPref.get(14);
-                if (!pref.isEmpty()) {
-                    List<String> prefEventsColors = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS, -1)));
-                    for (String color: prefEventsColors) {
-                        String[] colors = color.split(Constants.STRING_COLON, -1);
-                        if (colors.length == 2) {
-                            try {
-                                Integer colorValue = Integer.parseInt(colors[1]);
-                                eventSourcesColors.put(colors[0], colorValue);
-                            } catch (NumberFormatException ignored) {/**/}
+            try {
+                if (widgetPref.size() > 14) {
+                    String pref = widgetPref.get(14);
+                    if (!pref.isEmpty()) {
+                        List<String> prefEventsColors = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS, -1)));
+                        for (String color : prefEventsColors) {
+                            String[] colors = color.split(Constants.STRING_COLON, -1);
+                            if (colors.length == 2) {
+                                try {
+                                    Integer colorValue = Integer.parseInt(colors[1]);
+                                    eventSourcesColors.put(colors[0], colorValue);
+                                } catch (NumberFormatException ignored) {/**/}
+                            }
                         }
                     }
                 }
-            }
 
-            updateEventSources();
-            TextView listEventSources = findViewById(R.id.listEventSources);
-            listEventSources.setOnClickListener(v -> selectEventSources());
-
-            //Размер шрифта
-            int prefFontMagnify = 0;
-            try {
-                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
+                updateEventSources();
+                TextView listEventSources = findViewById(R.id.listEventSources);
+                listEventSources.setOnClickListener(v -> selectEventSources());
             } catch (Exception e) {/**/}
 
-            SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
-            seekFontMagnify.setMax(25);
-            seekFontMagnify.setProgress(prefFontMagnify + 5);
+            //Размер шрифта
+            try {
+                int prefFontMagnify = 0;
+                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
 
-            TextView valueFontMagnify = findViewById(R.id.valueFontMagnify);
-            valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+                SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
+                seekFontMagnify.setMax(25);
+                seekFontMagnify.setProgress(prefFontMagnify + 5);
 
-            seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+                TextView valueFontMagnify = findViewById(R.id.valueFontMagnify);
+                valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+
+                seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+            } catch (Exception e) {/**/}
+
+            //Реакция на нажатие
+            try {
+                List<String> onclickIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_values));
+                String[] prefOnClick = null;
+                int prefOnClickCommon = Constants.onClick_None;
+                int prefOnClickHolidays = Constants.onClick_None;
+
+                if (widgetPref.size() > 15) prefOnClick = widgetPref.get(15).split(Constants.REGEX_PLUS, -1);
+                if (prefOnClick != null && prefOnClick.length == 2) {
+                    if (onclickIDs.contains(prefOnClick[0])) {
+                        prefOnClickCommon = onclickIDs.indexOf(prefOnClick[0]); //Смещение, не значение
+                    }
+                    if (onclickIDs.contains(prefOnClick[1])) {
+                        prefOnClickHolidays = onclickIDs.indexOf(prefOnClick[1]);
+                    }
                 }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
+
+                final Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+                spinnerOnClickCommon.setSelection(prefOnClickCommon);
+                final Spinner spinnerOnClickHolidays = findViewById(R.id.spinnerOnClickHolidays);
+                spinnerOnClickHolidays.setSelection(prefOnClickHolidays);
+            } catch (Exception e) { /**/ }
 
             //Цвета
 
             //Фон виджета
-            int colorWidgetBackground = 0;
-            if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
-                try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(7));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
-            }
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
-            colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+            try {
+                int colorWidgetBackground = 0;
+
+                if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
+                    try {
+                        colorWidgetBackground = Color.parseColor(widgetPref.get(7));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorWidgetBackground == 0) {
+                    colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
+                }
+                final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
+                colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+            } catch (final Exception e) { /**/ }
 
             //Обычные дни
-            int colorCommon = 0;
-            if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
-                try {
-                    colorCommon = Color.parseColor(widgetPref.get(8));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorCommon == 0) {
-                colorCommon = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Common_default);
-            }
-            final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
-            colorCommonPicker.setColor(colorCommon);
+            try {
+                int colorCommon = 0;
+                if (widgetPref.size() > 8 && !widgetPref.get(8).isEmpty()) {
+                    try {
+                        colorCommon = Color.parseColor(widgetPref.get(8));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorCommon == 0) {
+                    colorCommon = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Common_default);
+                }
+                final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
+                colorCommonPicker.setColor(colorCommon);
+            } catch (final Exception e) { /**/ }
 
             //Сегодня
-            int colorToday = 0;
-            if (widgetPref.size() > 13 && !widgetPref.get(13).isEmpty()) {
-                try {
-                    colorToday = Color.parseColor(widgetPref.get(13));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorToday == 0) {
-                colorToday = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Today_default);
-            }
-            final ColorPicker colorTodayPicker = findViewById(R.id.colorToday);
-            colorTodayPicker.setColor(colorToday);
+            try {
+                int colorToday = 0;
+                if (widgetPref.size() > 13 && !widgetPref.get(13).isEmpty()) {
+                    try {
+                        colorToday = Color.parseColor(widgetPref.get(13));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorToday == 0) {
+                    colorToday = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Today_default);
+                }
+                final ColorPicker colorTodayPicker = findViewById(R.id.colorToday);
+                colorTodayPicker.setColor(colorToday);
+            } catch (final Exception e) { /**/ }
 
             //Заголовок
-            int colorMonthTitle = 0;
-            if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
-                try {
-                    colorMonthTitle = Color.parseColor(widgetPref.get(9));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorMonthTitle == 0) {
-                colorMonthTitle = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
-            }
-            final ColorPicker colorHeaderPicker = findViewById(R.id.colorMonthTitle);
-            colorHeaderPicker.setColor(colorMonthTitle);
+            try {
+                int colorMonthTitle = 0;
+                if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
+                    try {
+                        colorMonthTitle = Color.parseColor(widgetPref.get(9));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorMonthTitle == 0) {
+                    colorMonthTitle = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
+                }
+                final ColorPicker colorHeaderPicker = findViewById(R.id.colorMonthTitle);
+                colorHeaderPicker.setColor(colorMonthTitle);
+            } catch (final Exception e) { /**/ }
 
             //Фон заголовка
-            int colorHeaderBack = 0;
-            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
-                try {
-                    colorHeaderBack = Color.parseColor(widgetPref.get(10));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorHeaderBack == 0) {
-                colorHeaderBack = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
-            }
-            final ColorPicker colorHeaderBackPicker = findViewById(R.id.colorHeaderBack);
-            colorHeaderBackPicker.setColor(colorHeaderBack);
+            try {
+                int colorHeaderBack = 0;
+                if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                    try {
+                        colorHeaderBack = Color.parseColor(widgetPref.get(10));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorHeaderBack == 0) {
+                    colorHeaderBack = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
+                }
+                final ColorPicker colorHeaderBackPicker = findViewById(R.id.colorHeaderBack);
+                colorHeaderBackPicker.setColor(colorHeaderBack);
+            } catch (final Exception e) { /**/ }
 
             //Стрелки
-            int colorArrows = 0;
-            if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
-                try {
-                    colorArrows = Color.parseColor(widgetPref.get(11));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorArrows == 0) {
-                colorArrows = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Arrows_default);
-            }
-            final ColorPicker colorArrowsPicker = findViewById(R.id.colorArrows);
-            colorArrowsPicker.setColor(colorArrows);
+            try {
+                int colorArrows = 0;
+                if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
+                    try {
+                        colorArrows = Color.parseColor(widgetPref.get(11));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorArrows == 0) {
+                    colorArrows = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Arrows_default);
+                }
+                final ColorPicker colorArrowsPicker = findViewById(R.id.colorArrows);
+                colorArrowsPicker.setColor(colorArrows);
+            } catch (final Exception e) { /**/ }
 
             //Дни недели
-            int colorWeeks = 0;
-            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
-                try {
-                    colorWeeks = Color.parseColor(widgetPref.get(12));
-                } catch (final Exception e) { /* */}
-            }
-            if (colorWeeks == 0) {
-                colorWeeks = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Weeks_default);
-            }
-            final ColorPicker colorWeeksPicker = findViewById(R.id.colorWeeks);
-            colorWeeksPicker.setColor(colorWeeks);
+            try {
+                int colorWeeks = 0;
+                if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
+                    try {
+                        colorWeeks = Color.parseColor(widgetPref.get(12));
+                    } catch (IllegalArgumentException ignored) { /**/ }
+                }
+
+                if (colorWeeks == 0) {
+                    colorWeeks = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Weeks_default);
+                }
+                final ColorPicker colorWeeksPicker = findViewById(R.id.colorWeeks);
+                colorWeeksPicker.setColor(colorWeeks);
+            } catch (final Exception e) { /**/ }
+
 
             //Обновляем видимость элементов
             updateVisibility();
@@ -391,13 +440,20 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
             final StringBuilder selectedElements = new StringBuilder();
             for(final String item: spinnerElements.getSelectedStrings()) {
-                if (selectedElements.length() > 0) selectedElements.append("+");
+                if (selectedElements.length() > 0) selectedElements.append(Constants.STRING_PLUS);
                 selectedElements.append(elementsIDs.get(elementsValues.indexOf(item)));
             }
 
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
+
+            List<String> onclickIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_values));
+            List<String> onclickValues = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_entries));
+            final Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+            final Spinner spinnerOnClickHolidays = findViewById(R.id.spinnerOnClickHolidays);
+            final String selectedOnClick = onclickIDs.get(spinnerOnClickCommon.getSelectedItemPosition())
+                    .concat(Constants.STRING_PLUS).concat(onclickIDs.get(spinnerOnClickHolidays.getSelectedItemPosition()));
 
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
@@ -474,6 +530,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedWeeks); //Дни недели
             prefsToStore.add(selectedToday); //Сегодня
             prefsToStore.add(String.join(Constants.STRING_PLUS, listColors));
+            prefsToStore.add(selectedOnClick);
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 

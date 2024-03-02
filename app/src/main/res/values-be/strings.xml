@@ -863,7 +863,7 @@
         <item>@string/widget_config_month_shift_january</item>
     </string-array>
 
-    <string-array name="widget_config_starting_month_position_values">
+    <string-array name="widget_config_starting_month_position_entries">
         <item>Верхні левы кут</item>
         <item>У цэнтры ўверсе</item>
         <item>У цэнтры</item>

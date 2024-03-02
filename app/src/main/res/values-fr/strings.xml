@@ -857,7 +857,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>@string/widget_config_month_shift_january</item>
     </string-array>
 
-    <string-array name="widget_config_starting_month_position_values">
+    <string-array name="widget_config_starting_month_position_entries">
         <item>Coin supérieur gauche</item>
         <item>En haut au centre</item>
         <item>Centre</item>

@@ -857,7 +857,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>@string/widget_config_month_shift_january</item>
     </string-array>
 
-    <string-array name="widget_config_starting_month_position_values">
+    <string-array name="widget_config_starting_month_position_entries">
         <item>Esquina superior izquierda</item>
         <item>Centro superior</item>
         <item>Centro</item>

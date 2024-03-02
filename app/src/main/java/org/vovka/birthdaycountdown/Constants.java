@@ -332,4 +332,8 @@ final class Constants {
     public static final String SHORTCUT_SETTINGS = "Settings";
     public static final String SHORTCUT_NOTIFY = "Notify";
 
+    static final int onClick_None = 0;
+    static final int onClick_Popup = 1;
+    static final int onClick_Calendar = 2;
+
 }
