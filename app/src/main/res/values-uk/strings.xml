@@ -151,6 +151,7 @@
     <string name="msg_account_info">"Подія з рахунку \"%1$s\""</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
+    <string name="msg_source_info">"Подія з \"%1$s\""</string>
     <string name="msg_title_confirmation">Підтвердження</string>
     <string name="msg_title_success">Дія завершена</string>
     <string name="msg_title_settings">Збережені налаштування</string>
@@ -175,7 +176,6 @@
     <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
     <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
     <string name="msg_eventtype_label_absent">У події відсутня мітка!</string>
-    <string name="msg_debug_activity_recreate">"Відновити основну діяльність через помилку: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -332,6 +332,7 @@
 
     <string name="pref_CustomEvents_Sources_title">Джерела подій</string>
     <string name="pref_CustomEvents_Sources_summary">Використовуйте ці джерела для подій різних типів (тип вказується всередині подій або визначається \"Власнi найменування\" нижче)</string>
+    <string name="pref_CustomEvents_Sources_hint">Щоб включити джерела подій лише для одного типу події (лише дні народження чи свята), скористайтеся налаштуваннями для певного типу події (нижче)</string>
 
     <string name="pref_CustomEvents_Rules_title">Імпорт налаштувань</string>
     <string name="pref_CustomEvents_Rules_summary">Використовуйте ці налаштування під час імпорту подій</string>
@@ -353,6 +354,7 @@
         <item>Пропустити цю подію</item>
     </string-array>
 
+    <string name="pref_CustomEvents_Birthday_title">Дні народження</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Використовувати стандартні найменування для визначення днів народжень</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свої найменування</string>
@@ -362,6 +364,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Використовувати рік з події календаря для розрахунку річниць (не тільки день і місяць)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показувати події народження з вибраних файлів</string>
 
+    <string name="pref_CustomEvents_Anniversary_title">Річниці весілля</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Використовувати стандартні найменування для визначення річниць весіль</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Власнi найменування</string>
@@ -369,16 +372,19 @@
     <string name="pref_CustomEvents_Anniversary_List_title">Список</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Усі відомі назви ювілеїв (по роках)</string>
 
+    <string name="pref_CustomEvents_NameDay_title">Іменини</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Використовувати стандартні найменування для визначення іменин</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Події з такими мітками будуть ідентифіковані як іменини (через кому)</string>
 
+    <string name="pref_CustomEvents_Crowning_title">Вінчання</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Використовувати стандартні найменування для визначення вінчань</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Події з такими мітками будуть ідентифіковані як вінчання (через кому)</string>
 
+    <string name="pref_CustomEvents_Death_title">Річниці смерті</string>
     <string name="pref_CustomEvents_Death_UseInternal_title">Стандартні найменування</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Використовувати стандартні найменування для визначення річниць смерті</string>
     <string name="pref_CustomEvents_Death_Labels_title">Власнi найменування</string>
@@ -389,6 +395,10 @@
     <string name="pref_CustomEvents_Other_Labels_summary">Події з такими мітками будуть ідентифіковані як інші події (через кому)</string>
 
     <string name="pref_CustomEvents_Holiday_title">Свята</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">Власнi найменування</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Події з такими мітками будуть ідентифіковані як свята (через кому)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Державні свята</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Показати ці державні свята</string>
 
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
@@ -817,6 +827,9 @@
     <string name="widget_config_month_sources_empty">-Немає-</string>
     <string name="widget_config_month_font_magnify_label">Розмір шрифту</string>
     <string name="widget_config_month_font_magnify_description">Множник масштабу шрифту для назви місяця, днів тижня та днів</string>
+    <string name="widget_config_onclick_label">При натисканні</string>
+    <string name="widget_config_onclick_common_label">Звичайні дні</string>
+    <string name="widget_config_onclick_holidays_label">Свята</string>
     <string name="widget_config_month_color_common_label">Колір загальних днів</string>
     <string name="widget_config_month_color_common_description">Колір звичайних днів</string>
     <string name="widget_config_month_color_today_label">Колір сьогоднішнього дня</string>
@@ -872,6 +885,12 @@
         <item>Мітки днів тижня</item>
         <item>Дні до і після місяця</item>
         <item>Зовнішні бічні поля</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_entries">
+        <item>Немає</item>
+        <item>Спливне вікно списку подій</item>
+        <item>Відкрити календар</item>
     </string-array>
 
     <string name="pref_Notifications_title">Повідомлення</string>
@@ -1002,6 +1021,7 @@
     <string name="stats_speed_calendar"><![CDATA[<li>сканування календарів: %1$s мс]]></string>
     <string name="stats_speed_files"><![CDATA[<li>сканування файлів: %1$s мс]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>підрахунок дат: %1$s мс]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>оновлення віджетів: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Лічильники:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>всього подій: %1$d]]></string>
@@ -1223,4 +1243,5 @@
 
     <string name="month_event_saturdays">Суботи</string>
     <string name="month_event_sundays">Неділі</string>
+    <string name="month_event_popup_prefix">"Дата: "</string>
 </resources>

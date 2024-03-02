@@ -10,6 +10,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.1</item>
+        <item>Novo tipo de evento – Feriado</item>
+        <item>Feriados de arquivos e calendários estão disponíveis na lista e nos widgets</item>
+        <item>Feriados de 15 países estão disponíveis na lista e nos widgets (livro de referência integrado)</item>
+        <item>Uma configuração foi adicionada ao calendário para mostrar os dias antes e depois do mês. Para widgets já configurados, esta opção deve estar habilitada na lista de elementos</item>
+        <item>Janela pop-up com dados do evento ao clicar em feriados no calendário</item>
+        <item>Tradução para bielorrusso adicionada</item>
+        <item>Suporte para eventos de calendário com duração superior a um dia</item>
+        <item>O número de cores recentes aumentou para 20</item>
+        <item>Adicionada configuração para resposta de clique ao dia (widgets de calendário)</item>
+        <item>Correções de bugs, falha do aplicativo ao reiniciar foi corrigida</item>
+
         <item>#1.8.0</item>
         <item>Adicionada exibição da idade atual no widget da lista de fotos</item>
         <item>O item \"Configurações\" foi adicionado aos atalhos de aplicativos. Os atalhos podem ser fixados no inicializador</item>

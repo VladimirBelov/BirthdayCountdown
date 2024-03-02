@@ -151,6 +151,7 @@
     <string name="msg_account_info">"Ereignis von Konto \"%1$s\""</string>
     <string name="msg_calendar_info">"Kalenderereignis \"%1$s\""</string>
     <string name="msg_file_info">"Ereignis aus Datei \"%1$s\""</string>
+    <string name="msg_source_info">"Ereignis aus \"%1$s\""</string>
     <string name="msg_title_confirmation">Bestätigung</string>
     <string name="msg_title_success">Aktion abgeschlossen</string>
     <string name="msg_title_settings">Gespeicherte Einstellungen</string>
@@ -175,7 +176,6 @@
     <string name="msg_eventtype_label_set">"Labelsatz: %1$s"</string>
     <string name="msg_eventtype_label_added">"Label hinzugefügt: %1$s"</string>
     <string name="msg_eventtype_label_absent">Ereignis fehlt eine Beschriftung!</string>
-    <string name="msg_debug_activity_recreate">"Hauptaktivität aufgrund eines Fehlers neu erstellen: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>
@@ -332,6 +332,7 @@
 
     <string name="pref_CustomEvents_Sources_title">Ereignisquellen</string>
     <string name="pref_CustomEvents_Sources_summary">Verwenden Sie diese Quellen für Ereignisse verschiedener Typen (der Typ wird innerhalb von Ereignissen angegeben oder durch die \"Eigene Bezeichnung(en)\" unten bestimmt)</string>
+    <string name="pref_CustomEvents_Sources_hint">Um Ereignisquellen für nur einen Ereignistyp (nur Geburtstage oder Feiertage) einzubeziehen, verwenden Sie die Einstellungen für einen bestimmten Ereignistyp (unten)</string>
 
     <string name="pref_CustomEvents_Rules_title">Importeinstellungen</string>
     <string name="pref_CustomEvents_Rules_summary">Verwenden Sie diese Einstellung beim Importieren von Ereignissen</string>
@@ -353,6 +354,7 @@
         <item>Dieses Ereignis überspringen</item>
     </string-array>
 
+    <string name="pref_CustomEvents_Birthday_title">Geburtstage</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Geburtstage zu erkennen</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Bezeichnung(en)</string>
@@ -362,6 +364,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen</string>
 
+    <string name="pref_CustomEvents_Anniversary_title">Hochzeitstage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Hochzeitstage zu erkennen</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Eigene Bezeichnung(en)</string>
@@ -369,16 +372,19 @@
     <string name="pref_CustomEvents_Anniversary_List_title">Liste</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Alle Hochzeitstage (nach Jahren)</string>
 
+    <string name="pref_CustomEvents_NameDay_title">Namenstage</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Namenstage zu erkennen</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Namenstag" erkannt (durch Komma getrennt)</string>
 
+    <string name="pref_CustomEvents_Crowning_title">Hochzeiten</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um kirchliche Hochzeiten zu erkennen</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Kirchliche Hochzeit" erkannt (durch Komma getrennt)</string>
 
+    <string name="pref_CustomEvents_Death_title">Todestage</string>
     <string name="pref_CustomEvents_Death_UseInternal_title">Standardbezeichnung</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Verwenden Sie die Standardbezeichnung, um Todestage zu erkennen</string>
     <string name="pref_CustomEvents_Death_Labels_title">Eigene Bezeichnung(en)</string>
@@ -389,6 +395,10 @@
     <string name="pref_CustomEvents_Other_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Anderes Ereignis" erkannt (durch Komma getrennt)</string>
 
     <string name="pref_CustomEvents_Holiday_title">Feiertage</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">Eigene Bezeichnung(en)</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Ereignisse mit solchen Labels werden als Feiertage identifiziert (durch Kommas getrennt)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Feiertage</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Diese Feiertage anzeigen</string>
 
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
@@ -817,6 +827,9 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="widget_config_month_sources_empty">-Keine-</string>
     <string name="widget_config_month_font_magnify_label">Schriftgröße</string>
     <string name="widget_config_month_font_magnify_description">Font-Skalierungsmultiplikator für Monatstitel, Wochentage und Tage</string>
+    <string name="widget_config_onclick_label">Bei-Klick-Verhalten</string>
+    <string name="widget_config_onclick_common_label">Gewöhnliche Tage</string>
+    <string name="widget_config_onclick_holidays_label">Feiertage</string>
     <string name="widget_config_month_color_common_label">Gemeinsame Tagesfarbe</string>
     <string name="widget_config_month_color_common_description">Farbe der allgemeinen Tage</string>
     <string name="widget_config_month_color_today_label">Heute Farbe</string>
@@ -872,6 +885,12 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Wochentagsbeschriftungen</item>
         <item>Tage vor und nach dem Monat</item>
         <item>Außenseitenränder</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_entries">
+        <item>Keine</item>
+        <item>Popup der Ereignisliste</item>
+        <item>Kalender öffnen</item>
     </string-array>
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
@@ -1002,6 +1021,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="stats_speed_calendar"><![CDATA[<li>Kalender scannen: %1$s msec]]></string>
     <string name="stats_speed_files"><![CDATA[<li>Dateien scannen: %1$s msec]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>Datumsanzahl: %1$s msec]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>widgets aktualisiert: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Zähler:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>Ereignisse total: %1$d]]></string>
@@ -1219,4 +1239,5 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
 
     <string name="month_event_saturdays">Samstags</string>
     <string name="month_event_sundays">Sonntage</string>
+    <string name="month_event_popup_prefix">"Datum: "</string>
 </resources>

@@ -11,6 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.1</item>
+        <item>Neuer Veranstaltungstyp – Feiertag</item>
+        <item>Feiertage aus Dateien und Kalendern sind in der Liste und den Widgets verfügbar</item>
+        <item>Gesetzliche Feiertage für 15 Länder sind in der Liste und in den Widgets (integriertes Nachschlagewerk) verfügbar</item>
+        <item>Dem Kalender wurde eine Einstellung hinzugefügt, um Tage vor und nach dem Monat anzuzeigen. Für bereits konfigurierte Widgets muss diese Option in der Elementliste</item> aktiviert werden
+        <item>Popup-Fenster mit Ereignisdaten beim Klicken auf Feiertage im Kalender</item>
+        <item>Belarussische Übersetzung hinzugefügt</item>
+        <item>Unterstützung für Kalenderereignisse, die länger als einen Tag dauern</item>
+        <item>Die Anzahl der aktuellen Farben wurde auf 20 erhöht</item>
+        <item>Einstellung für Klickreaktion auf Tag hinzugefügt (Kalender-Widgets)</item>
+        <item>Fehlerbehebungen, Anwendungsabsturz beim Neustart wurde behoben</item>
+
         <item>#1.8.0</item>
         <item>Anzeige des aktuellen Alters im Fotolisten-Widget hinzugefügt</item>
         <item>Das Element \"Einstellungen\" wurde zu den Anwendungsverknüpfungen hinzugefügt. Die Verknüpfungen können an den Launcher angeheftet werden</item>

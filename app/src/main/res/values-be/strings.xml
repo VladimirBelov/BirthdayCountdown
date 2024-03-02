@@ -176,7 +176,6 @@
     <string name="msg_eventtype_label_set">"Метка ўсталявана: %1$s"</string>
     <string name="msg_eventtype_label_added">"Метка дададзена: %1$s"</string>
     <string name="msg_eventtype_label_absent">У падзеі адсутнічае метка!</string>
-    <string name="msg_debug_activity_recreate">"Перастварэнне асноўнай актыўнасці з-за памылкі: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Маючыя адбыцца падзеі</string>
     <string name="pref_Notifications_Notification_Channel_Description">Паказваць паведамлення аб маючых адбыцца падзеях</string>
@@ -333,6 +332,7 @@
 
     <string name="pref_CustomEvents_Sources_title">Крыніцы падзей</string>
     <string name="pref_CustomEvents_Sources_summary">Скарыстаць гэтыя крыніцы для пошуку падзей розных тыпаў (тып паказаны ў самай падзеі альбо вызначаецца па назвах, уведзенымі ніжэй)</string>
+    <string name="pref_CustomEvents_Sources_hint">Каб уключыць крыніцы падзей толькі для аднаго тыпу падзеі (толькі дні нараджэння ці святы), выкарыстоўвайце налады для пэўнага тыпу падзеі (ніжэй)</string>
 
     <string name="pref_CustomEvents_Rules_title">Налады імпарту</string>
     <string name="pref_CustomEvents_Rules_summary">Скарыстаць гэтыя налады пры імпарце падзей</string>
@@ -354,6 +354,7 @@
         <item>Прапусціць гэту падзею</item>
     </string-array>
 
+    <string name="pref_CustomEvents_Birthday_title">Дні нараджэння</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Стандартныя назвы</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">Скарыстаць стандартныя назвы для вызначэння дзён нараджэнняў</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">Свае назвы</string>
@@ -363,6 +364,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Выкарыстаць год з падзеі календара для разліку гадавін (не толькі дзень і месяц)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">Паказваць дні нараджэння з абраных файлаў</string>
 
+    <string name="pref_CustomEvents_Anniversary_title">Гадовец вяселля</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартныя назвы</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння гадавін вяселляў</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">Свае назвы</string>
@@ -370,16 +372,19 @@
     <string name="pref_CustomEvents_Anniversary_List_title">Спіс</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">Усе іменныя гадавіны вяселляў (па гадах)</string>
 
+    <string name="pref_CustomEvents_NameDay_title">Імяніны</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Стандартныя назвы</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння імянін</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">Свае назвы</string>
     <string name="pref_CustomEvents_NameDay_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як імяніны (праз коску)</string>
 
+    <string name="pref_CustomEvents_Crowning_title">Вянчанні</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Стандартныя назвы</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння вянчанняў</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">Свае назвы</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як вянчанні (праз коску)</string>
 
+    <string name="pref_CustomEvents_Death_title">Гадавіны смерці</string>
     <string name="pref_CustomEvents_Death_UseInternal_title">Стандартныя назвы</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння гадавін смерці</string>
     <string name="pref_CustomEvents_Death_Labels_title">Свае назвы</string>
@@ -774,7 +779,6 @@
         <item>x2.0</item>
     </string-array>
 
-
     <string name="widget_config_photostyle_label">Стыль фота</string>
     <string name="widget_config_photostyle_description">Стыль фатаграфій кантактаў</string>
     <string name="widget_config_photostyle_with_align_description">Стыль фатаграфій кантактаў. Выраўнанне: арыгінал - фота запаўняе ўсю ячэйку, закругленае - па верхнім краі, кола - па цэнтры</string>
@@ -823,6 +827,9 @@
     <string name="widget_config_month_sources_empty">-Не абрана-</string>
     <string name="widget_config_month_font_magnify_label">Памер шрыфта</string>
     <string name="widget_config_month_font_magnify_description">Змена памеру шрыфта для ўсіх элементаў</string>
+    <string name="widget_config_onclick_label">Пры націсканні</string>
+    <string name="widget_config_onclick_common_label">Звычайныя дні</string>
+    <string name="widget_config_onclick_holidays_label">Свята</string>
     <string name="widget_config_month_color_common_label">Звычайныя дні</string>
     <string name="widget_config_month_color_common_description">Колер звычайных дзён</string>
     <string name="widget_config_month_color_today_label">Сёння</string>
@@ -878,6 +885,12 @@
         <item>Пазнакі дзён будняў</item>
         <item>Дні да і пасля месяца</item>
         <item>Вонкавыя бакавыя палі</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_entries">
+        <item>Няма</item>
+        <item>Усплывальнае акно спісу падзей</item>
+        <item>Адкрыць каляндар</item>
     </string-array>
 
     <string name="pref_Notifications_title">Паведамленні</string>
@@ -1008,6 +1021,7 @@
     <string name="stats_speed_calendar"><![CDATA[<li>сканаванне календароў: %1$s мс]]></string>
     <string name="stats_speed_files"><![CDATA[<li>сканаванне файлаў: %1$s мс]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>падлік дат: %1$s мс]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>абнаўленне віджэтаў: %1$s мс]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Лічыльнікі:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>усяго падзей: %1$d]]></string>
@@ -1227,5 +1241,5 @@
 
     <string name="month_event_saturdays">Суботы</string>
     <string name="month_event_sundays">Нядзеля</string>
-
+    <string name="month_event_popup_prefix">"Дата: "</string>
 </resources>

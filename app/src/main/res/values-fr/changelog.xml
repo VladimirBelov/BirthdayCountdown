@@ -11,6 +11,18 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+    <item>#1.8.1</item>
+    <item>"Nouveau type d'événement - Vacances"</item>
+    <item>Les jours fériés des fichiers et des calendriers sont disponibles dans la liste et les widgets</item>
+    <item>Les jours fériés pour 15 pays sont disponibles dans la liste et les widgets (ouvrage de référence intégré)</item>
+    <item>Un paramètre a été ajouté au calendrier pour afficher les jours avant et après le mois. Pour les widgets déjà configurés, cette option doit être activée dans la liste des éléments</item>
+    <item>"Fenêtre pop-up avec les données d'événement lorsque vous cliquez sur les jours fériés dans le calendrier"</item>
+    <item>Traduction biélorusse ajoutée</item>
+    <item>"Prise en charge des événements de calendrier d'une durée de plus d'un jour"</item>
+    <item>Le nombre de couleurs récentes a été augmenté à 20</item>
+    <item>"Ajout d'un paramètre pour la réponse aux clics par jour (widgets de calendrier)"</item>
+    <item>"Correction de bugs, le crash de l'application au redémarrage a été corrigé"</item>
+
     <item>#1.8.0</item>
     <item>"Ajout de l'affichage de l'âge actuel sur le widget de liste de photos"</item>
     <item>"L'élément "Paramètres" a été ajouté aux raccourcis des applications. Les raccourcis peuvent être épinglés sur le lanceur"</item>

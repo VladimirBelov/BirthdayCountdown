@@ -11,6 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.1</item>
+        <item>Nuevo tipo de evento - Vacaciones</item>
+        <item>Los días festivos de archivos y calendarios están disponibles en la lista y los widgets</item>
+        <item>Los días festivos para 15 países están disponibles en la lista y en los widgets (libro de referencia integrado)</item>
+        <item>Se ha agregado una configuración al calendario para mostrar los días anteriores y posteriores al mes. Para widgets ya configurados, esta opción debe estar habilitada en la lista de elementos</item>
+        <item>Ventana emergente con datos de eventos al hacer clic en días festivos en el calendario</item>
+        <item>Se agregó traducción al bielorruso</item>
+        <item>Soporte para eventos del calendario que duran más de un día</item>
+        <item>El número de colores recientes se ha incrementado a 20</item>
+        <item>Configuración agregada para la respuesta de clic al día (widgets de calendario)</item>
+        <item>Corrección de errores, se ha solucionado el bloqueo de la aplicación cuando se reinicia</item>
+
         <item>#1.8.0</item>
         <item>Se agregó la visualización de la edad actual en el widget de lista de fotos</item>
         <item>El elemento \"Configuraciones\" se ha agregado a los accesos directos de las aplicaciones. Los accesos directos se pueden anclar al iniciador</item>

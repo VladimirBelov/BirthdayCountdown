@@ -176,7 +176,6 @@
     <string name="msg_eventtype_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_eventtype_label_added">"Метка добавлена: %1$s"</string>
     <string name="msg_eventtype_label_absent">У события отсутствует метка!</string>
-    <string name="msg_debug_activity_recreate">"Пересоздание основной активности из-за ошибки: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>

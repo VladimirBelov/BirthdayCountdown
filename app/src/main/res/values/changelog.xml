@@ -11,6 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.1</item>
+        <item>New event type - Holiday</item>
+        <item>Holidays from files and calendars are available in the list and widgets</item>
+        <item>Public holidays for 15 countries are available in the list and widgets (built-in reference book)</item>
+        <item>A setting has been added to the calendar to show days before and after the month. For already configured widgets, this option must be enabled in the element list</item>
+        <item>Pop-up window with event data when clicking on holidays in the calendar</item>
+        <item>Belarusian translation added</item>
+        <item>Support for calendar events lasting more than one day</item>
+        <item>The number of recent colors has been increased to 20</item>
+        <item>Added setting for click response to day (calendar widgets)</item>
+        <item>Bug fixes, application crash when restarted has been fixed</item>
+
         <item>#1.8.0</item>
         <item>Added current age display on photo list widget</item>
         <item>The \"Settings\" item has been added to application shortcuts. The shortcuts can be pinned to the launcher</item>

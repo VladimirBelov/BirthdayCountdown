@@ -151,6 +151,7 @@
     <string name="msg_account_info">"Événement du compte \"%1$s\""</string>
     <string name="msg_calendar_info">"Événement du calendrier \"%1$s\""</string>
     <string name="msg_file_info">"Événement du fichier \"%1$s\""</string>
+    <string name="msg_source_info">"Événement du \"%1$s\""</string>
     <string name="msg_title_confirmation">Confirmation</string>
     <string name="msg_title_success">Action exécutée</string>
     <string name="msg_title_settings">Paramètres enregistrés</string>
@@ -175,7 +176,6 @@
     <string name="msg_eventtype_label_set">"Jeu d'étiquettes: %1$s"</string>
     <string name="msg_eventtype_label_added">"Étiquette est ajoutée: %1$s"</string>
     <string name="msg_eventtype_label_absent">"l'événement n'a pas d'étiquette!"</string>
-    <string name="msg_debug_activity_recreate">"Réapprovisionnement de l'activité principale en raison d'une erreur: %1$s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Événements à venir</string>
     <string name="pref_Notifications_Notification_Channel_Description">Afficher les notifications des événements à venir</string>
@@ -332,6 +332,7 @@
 
     <string name="pref_CustomEvents_Sources_title">"Sources des événements"</string>
     <string name="pref_CustomEvents_Sources_summary">"Utilisez ces sources pour rechercher différents types des événements (le type est indiqué dans l'événement lui-même ou est défini par les noms ci-dessous)s)"</string>
+    <string name="pref_CustomEvents_Sources_hint">"Pour inclure des sources d'événements pour un seul type d'événement (uniquement les anniversaires ou les jours fériés), utilisez les paramètres d'un type d'événement spécifique (ci-dessous)"</string>
 
     <string name="pref_CustomEvents_Rules_title">"Paramètres d'importation"</string>
     <string name="pref_CustomEvents_Rules_summary">"Utiliser ces paramètres lors de l'importation des événements"</string>
@@ -353,6 +354,7 @@
         <item>Passer cet événement</item>
     </string-array>
 
+    <string name="pref_CustomEvents_Birthday_title">Anniversaires</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_title">Étiquettes standards</string>
     <string name="pref_CustomEvents_Birthday_UseInternal_summary">"Utiliser des étiquettes standard pour détecter les événements d'anniversaire"</string>
     <string name="pref_CustomEvents_Birthday_Labels_title">"Étiquettes des événements"</string>
@@ -362,6 +364,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_description">"Afficher les événements d'anniversaire à partir des fichiers choisis"</string>
 
+    <string name="pref_CustomEvents_Anniversary_title">Anniversaires de mariage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Utiliser des étiquettes standards</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_summary">"Utiliser des étiquettes standard pour détecter les événements d'anniversaire de mariage"</string>
     <string name="pref_CustomEvents_Anniversary_Labels_title">"Ses étiquettes"</string>
@@ -369,16 +372,19 @@
     <string name="pref_CustomEvents_Anniversary_List_title">Liste</string>
     <string name="pref_CustomEvents_Anniversary_List_summary">"Tous les titres d'anniversaires des mariages (par année)"</string>
 
+    <string name="pref_CustomEvents_NameDay_title">Jours de nom</string>
     <string name="pref_CustomEvents_NameDay_UseInternal_title">Utiliser des étiquettes standards</string>
-    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Utiliser des étiquettes standard pour détecter les fêtes</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Utiliser des étiquettes standard pour détecter les événements de jours de nom</string>
     <string name="pref_CustomEvents_NameDay_Labels_title">"Ses étiquettes"</string>
-    <string name="pref_CustomEvents_NameDay_Labels_summary">Les événements avec ces étiquettes seront identifiés comme les fêtes</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Les événements avec ces étiquettes seront identifiés comme jours de nom</string>
 
+    <string name="pref_CustomEvents_Crowning_title">Mariages religieux</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_title">Utiliser des étiquettes standards</string>
     <string name="pref_CustomEvents_Crowning_UseInternal_summary">Utiliser des étiquettes standard pour détecter les événements des mariages religieux</string>
     <string name="pref_CustomEvents_Crowning_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Crowning_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des mariages religieux (par virgule)</string>
 
+    <string name="pref_CustomEvents_Death_title">Anniversaires de mort</string>
     <string name="pref_CustomEvents_Death_UseInternal_title">Utiliser des étiquettes standards</string>
     <string name="pref_CustomEvents_Death_UseInternal_summary">"Utilisez des étiquettes standards pour détecter les événements des anniversaires de mort"</string>
     <string name="pref_CustomEvents_Death_Labels_title">"Ses étiquettes"</string>
@@ -389,6 +395,10 @@
     <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par virgule)"</string>
 
     <string name="pref_CustomEvents_Holiday_title">Vacances</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">"Noms des événements"</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Les événements portant de telles étiquettes seront identifiés comme des jours vacances (séparés par des virgules)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Jours vacances</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Afficher ces jours vacances</string>
 
     <string name="pref_CustomEvents_Custom_title">"Événement personnalisé"</string>
     <string name="pref_CustomEvents_Custom_Caption_title">"Titre de l'événement"</string>
@@ -817,6 +827,9 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="widget_config_month_sources_empty">-Aucun-</string>
     <string name="widget_config_month_font_magnify_label">Taille de police</string>
     <string name="widget_config_month_font_magnify_description">"Multiplicateur d'échelle de police pour le titre du mois, les jours de la semaine et les jours"</string>
+    <string name="widget_config_onclick_label">Comportement au clic</string>
+    <string name="widget_config_onclick_common_label">Jours ordinaires</string>
+    <string name="widget_config_onclick_holidays_label">Jours fériés</string>
     <string name="widget_config_month_color_common_label">Couleur des jours communs</string>
     <string name="widget_config_month_color_common_description">Couleur des jours communs</string>
     <string name="widget_config_month_color_today_label">Couleur du jour</string>
@@ -872,6 +885,12 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Étiquettes des jours de la semaine</item>
         <item>Jours avant et après le mois</item>
         <item>Marges latérales externes</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_entries">
+        <item>Aucun</item>
+        <item>Popup de la liste des événements</item>
+        <item>Ouvrir le calendrier</item>
     </string-array>
 
     <string name="pref_Notifications_title">Notifications</string>
@@ -1002,6 +1021,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="stats_speed_calendar"><![CDATA[<li>analyse du calendrier: %1$s msec]]></string>
     <string name="stats_speed_files"><![CDATA[<li>analyse des fichiers: %1$s msec]]></string>
     <string name="stats_speed_dates"><![CDATA[<li>calcul des dates: %1$s msec]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>mise à jour des widgets: %1$s msec]]></string>
 
     <string name="stats_counters_title"><![CDATA[<h2>Compteurs:</h2><ul>]]></string>
     <string name="stats_counters_events"><![CDATA[<li>total des événements: %1$d]]></string>
@@ -1220,4 +1240,5 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
 
     <string name="month_event_saturdays">Samedi</string>
     <string name="month_event_sundays">Dimanche</string>
+    <string name="month_event_popup_prefix">"Date: "</string>
 </resources>
