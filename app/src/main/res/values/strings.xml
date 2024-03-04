@@ -1288,20 +1288,25 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Common_key" translatable="false">Common</string>
     <string name="pref_Language_key" translatable="false">Language</string>
     <string name="pref_Language_default" translatable="false">AUTO</string>
+    <string name="pref_Language_en" translatable="false">en</string>
+    <string name="pref_Language_ru" translatable="false">ru</string>
     <string name="pref_Language_de" translatable="false">de</string>
     <string name="pref_Language_uk" translatable="false">uk</string>
     <string name="pref_Language_fr" translatable="false">fr</string>
+    <string name="pref_Language_be" translatable="false">be</string>
+    <string name="pref_Language_es" translatable="false">es</string>
+    <string name="pref_Language_pt" translatable="false">pt</string>
 
     <string-array name="pref_Language_values" translatable="false">
         <item>@string/pref_Language_default</item>
-        <item>en</item>
-        <item>ru</item>
+        <item>@string/pref_Language_en</item>
+        <item>@string/pref_Language_ru</item>
         <item>@string/pref_Language_de</item>
         <item>@string/pref_Language_fr</item>
-        <item>pt</item>
-        <item>es</item>
+        <item>@string/pref_Language_pt</item>
+        <item>@string/pref_Language_es</item>
         <item>@string/pref_Language_uk</item>
-        <item>be</item>
+        <item>@string/pref_Language_be</item>
     </string-array>
 
     <!--https://en.wikipedia.org/wiki/Regional_indicator_symbol-->
@@ -2007,6 +2012,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="faq_anchor_events_calendar" translatable="false">events_calendar</string>
     <string name="faq_anchor_events_files" translatable="false">events_files</string>
     <string name="faq_anchor_widgets" translatable="false">widgets</string>
+    <string name="faq_anchor_widgets_calendar" translatable="false">widgets_calendar</string>
 
     <string name="pref_Colors_Recent_key" translatable="false">ColorsRecent</string>
     <integer name="pref_Colors_Recent_max" translatable="false">20</integer>

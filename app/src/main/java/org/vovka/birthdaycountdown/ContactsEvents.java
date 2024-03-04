@@ -8322,10 +8322,16 @@ class ContactsEvents {
         }
     }
 
-    /** @noinspection SameReturnValue*/
     boolean isContextHelpAvailable() {
 
-        return true; //!Locale.getDefault().getLanguage().equals(resources.getString(R.string.pref_Language_uk));
+        List<String> localesWithFullDocumentation = new ArrayList<>();
+        localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_en));
+        localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_ru));
+        localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_de));
+        localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_be));
+        localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_es));
+
+        return localesWithFullDocumentation.contains(Locale.getDefault().getLanguage());
 
     }
 

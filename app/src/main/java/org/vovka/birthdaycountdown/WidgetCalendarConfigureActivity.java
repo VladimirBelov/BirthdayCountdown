@@ -595,7 +595,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, FAQActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets));
+            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets_calendar));
             try {
                 startActivity(intent);
                 return true;

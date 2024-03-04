@@ -46,6 +46,18 @@
         </ol>]]></item>
         <item>If the standard widget update mechanism does not work, you can turn on the forced update interval: Settings-> Widgets-> Update interval.</item>
 
+        <item>###<![CDATA[<a id="widgets_calendar">Calendar widget]]></item>
+
+        <item>#Navigation</item>
+        <item><![CDATA[The following actions are available when clicking on widget elements:<br><img src="widget_calendar_hint_en.webp" width=100%><br><ol>
+                 <li>Next months (offset by the number of months displayed in the current widget)
+                 <li>Previous months
+                 <li>Return to current month
+                 <li>Upper right month - open widget settings if Android < 9, otherwise - return to the current month
+                 <li>Perform the action specified in the widget settings for a holiday (pop-up window, calendar)
+                 <li>Perform the action specified in the widget settings for a regular day (pop-up window, calendar)
+                 </ol>]]></item>
+
         <item>###Events</item>
 
         <item>#Contact events</item>

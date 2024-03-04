@@ -48,6 +48,18 @@
                 </ol>]]></item>
                 <item>Wenn der Standard-Widget-Aktualisierungsmechanismus nicht funktioniert, können Sie das erzwungene Aktualisierungsintervall aktivieren: Einstellungen-> Widgets-> Aktualisierungsintervall</item>
 
+                <item>###<![CDATA[<a id="widgets_calendar">Kalender-Widget]]></item>
+
+                <item>#Navigation</item>
+                <item><![CDATA[Die folgenden Aktionen sind verfügbar, wenn Sie auf Widget-Elemente klicken:<br><img src="widget_calendar_hint_de.webp" width=100%><br><ol>
+                 <li>Nächste Monate (versetzt um die Anzahl der im aktuellen Widget angezeigten Monate)
+                 <li>Vorherige Monate
+                 <li>Zurück zum aktuellen Monat
+                 <li>Monat oben rechts – Widget-Einstellungen öffnen, wenn Android < 9, andernfalls – zum aktuellen Monat zurückkehren
+                 <li>Führen Sie die in den Widget-Einstellungen angegebene Aktion für einen Feiertag aus (Popup-Fenster, Kalender).
+                 <li>Führen Sie die in den Widget-Einstellungen angegebene Aktion für einen regulären Tag aus (Popup-Fenster, Kalender).
+                 </ol>]]></item>
+
                 <item>###Ereignisse</item>
 
                 <item>#Kontaktereignisse</item>
