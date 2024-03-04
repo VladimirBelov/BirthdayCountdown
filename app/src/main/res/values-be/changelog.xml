@@ -10,7 +10,7 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
-        <item>№1.8.1</item>
+        <item>#1.8.1</item>
         <item>Новы тып падзеі - Свята</item>
         <item>Святы з файлаў і календароў даступныя ў спісе і віджэтах</item>
         <item>Дзяржаўныя святы для 15 краін даступныя ў спісе і віджэтах (убудаваны даведнік)</item>

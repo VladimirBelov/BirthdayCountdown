@@ -934,13 +934,9 @@ class ContactsEvents {
             String count_str = Long.toString(age);
             String count_end = count_str.substring(count_str.length() - 1);
             boolean isEnd234 = count_end.equals(Constants.STRING_2) || count_end.equals(Constants.STRING_3) || count_end.equals(Constants.STRING_4);
+            long ageMinus100 = age % 100;
 
             result.append(age);
-
-            long ageMinus100 = age;
-            while (ageMinus100 > 100) {
-                ageMinus100 -= 100;
-            }
 
             if (!getResources().getString(R.string.pref_Language_fr).equals(currentLocale)) {
                 if (ageMinus100 == 1) { //Единственное число
@@ -5023,6 +5019,7 @@ class ContactsEvents {
             Calendar c1 = Calendar.getInstance();
             c1.setTime(eventDate);
 
+            String currentLanguage = Locale.getDefault().getLanguage();
             if (dayDiff == 0) { //Сегодня
                 eventDistance.append(getResources().getString(R.string.msg_today));
             } else if (dayDiff == 1) { //Завтра
@@ -5034,7 +5031,7 @@ class ContactsEvents {
                     eventDistance
                             .append(getResources().getString(R.string.msg_before_event_prefix))
                             .append(getAgeString(dayDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20))
-                            .append(Locale.getDefault().getLanguage().equals(getResources().getString(R.string.pref_Language_de)) ? "n" : Constants.STRING_EMPTY); //для немецкого "in 10 TageN"
+                            .append(currentLanguage.equals(getResources().getString(R.string.pref_Language_de)) ? "n" : Constants.STRING_EMPTY); //для немецкого "in 10 TageN"
                 } else if (dayDiff == -1) { //Вчера
                     eventDistance.append(getResources().getString(R.string.msg_yesterday));
                 } else if (dayDiff == -2) { //Позавчера
@@ -5047,9 +5044,14 @@ class ContactsEvents {
                 }
             }
             final SimpleDateFormat sdfOut = new SimpleDateFormat(preferences_list_dateformat == 3 || preferences_list_dateformat == 5 ? Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(currentLocale));
+
+            String weekDay = getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1];
+            if (currentLanguage.equals(getResources().getString(R.string.pref_Language_be)) && eventDistance.substring(eventDistance.length() - 1).matches("[аоуіэыяеёю]")) {
+                weekDay = weekDay.replace("у ", "ў ");
+            }
             eventDistance
                     .append(Constants.STRING_BAR)
-                    .append(getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1])
+                    .append(weekDay)
                     .append(Constants.STRING_BAR)
                     .append(sdfOut.format(c1.getTime()))
                     .append(Constants.STRING_BAR)
