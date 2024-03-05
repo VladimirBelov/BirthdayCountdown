@@ -619,10 +619,10 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     if (row > 1 || (column != 1 && columnsToDraw > 1)) {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", 0);
+                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", 1);
                     } else {
                         calendarRv.setInt(R.id.prev_month_button, "setMinWidth", Dip2Px(res, 17));
-                        calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
+                        //calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
                         calendarRv.setInt(R.id.prev_month_button, "setBackgroundResource", R.drawable.cell_day);
@@ -635,10 +635,10 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", 0);
+                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", 1);
                     } else {
                         calendarRv.setInt(R.id.next_month_button, "setMinWidth", Dip2Px(res, 17));
-                        calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
+                        //calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
                         calendarRv.setInt(R.id.next_month_button, "setBackgroundResource", R.drawable.cell_day);
