@@ -23,15 +23,13 @@
             android:id="@+id/prev_month_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_weight="2"
             android:contentDescription="@string/previous_month"
-            android:gravity="center"
-            android:minHeight="10dp"
-            android:minWidth="10dp"
+            android:gravity="center_vertical|end"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
-            android:scaleX="2"
-            android:layout_marginTop="2dp" />
+            android:scaleX="2" />
 
         <TextView
             android:id="@+id/month_label"
@@ -47,15 +45,13 @@
             android:id="@+id/next_month_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="2dp"
+            android:layout_weight="2"
             android:contentDescription="@string/next_month"
-            android:gravity="center"
-            android:minHeight="10dp"
-            android:minWidth="10dp"
+            android:gravity="start|center_vertical"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
-            android:scaleX="2"
-            android:layout_marginTop="2dp" />
+            android:scaleX="2" />
     </LinearLayout>
 
     <LinearLayout
