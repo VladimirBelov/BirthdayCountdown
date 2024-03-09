@@ -216,13 +216,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             swipeRefreshListener = () -> {
                 try {
-                    //https://stackoverflow.com/questions/24587925/swiperefreshlayout-trigger-programmatically/35621309#35621309
-                    //if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME) {
 
                     eventsData.needUpdateEventList = true;
                     updateList(false, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
-                    //}
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     ToastExpander.showDebugMsg(MainActivity.this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -667,7 +664,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://demonuts.com/android-take-screenshot/
                 //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
 
-                //ListView listView = findViewById(R.id.mainListView);
                 View childView = adapter.getView(selectedEvent_num, null, listView);
 
                 childView.measure(
@@ -1008,10 +1004,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             List<String> eventData = eventsData.getXDaysEvent(eventKey);
 
             final TextView captionNearestEvents = view.findViewById(R.id.captionNearestEvents);
-            //if (captionNearestEvents != null) captionNearestEvents.setVisibility(View.GONE);
-
             final TextView listNearestEvents = view.findViewById(R.id.listNearestEvents);
-
             final EditText valuesPeriods = view.findViewById(R.id.repeats_values);
             final EditText valuesTimes = view.findViewById(R.id.times_values);
 
@@ -1408,7 +1401,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             }
 
                             listView.setSelectionFromTop(jumpToEvent, listView.getTop() + listView.getPaddingTop());
-                        }, 200); //https://stackoverflow.com/questions/36426129/recyclerview-scroll-to-position-not-working-every-time
+                        }, 200);
                     }
                 }
                 intent.setAction(Constants.STRING_EMPTY);
@@ -1724,12 +1717,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     ListView listView = alertToShow.getListView();
                     listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
                     listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
-                    /*listView.setPadding(
-                            0, //(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, displayMetrics),
-                            0,
-                            0, //(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics),
-                            0
-                    );*/
                 });
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1858,8 +1845,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == R.id.menu_hints) {
 
                 StringBuilder sb = new StringBuilder();
-                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) sb.append(HTML_BR);
-
                 String[] arrFAQ = resources.getStringArray(R.array.faq);
                 if (!arrFAQ[0].isEmpty()) {
 
@@ -2037,14 +2022,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
             }
 
-            //this.invalidateOptionsMenu();
-
             //Тему не меняли, просто обновляем данные
             if (this.dataList.isEmpty() || eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-
-                //Уведомления
                 eventsData.initNotifications();
 
             }
@@ -2363,28 +2344,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     class EventsAdapter extends ArrayAdapter<String> implements Filterable {
 
-        //final ContactsEvents eventsData;
-        //final Resources resources;
         private final List<String> listAll;
         final int dimen_details;
         final int dimen_name;
         final int dimen_date;
-        //final Date today;
 
         private EventsAdapter(@NonNull Context context, @NonNull List<String> eventsListFull, @NonNull List<String> eventsList)
         {
             super(context, R.layout.entry_main, eventsList);
-
-                //eventsData = ContactsEvents.getInstance();
-                //if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-                //resources = eventsData.getContext().getResources();
 
                 listAll = new ArrayList<>(eventsListFull);
                 dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
                 dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
                 dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
-                //today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
         }
 
         @Override
@@ -2402,6 +2375,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
                 eventsData.setLocale(false);
                 if (convertedView == null) {
+                    //https://stackoverflow.com/questions/10641144/difference-between-getcontext-getapplicationcontext-getbasecontext-and
                     LayoutInflater inflater = LayoutInflater.from(getBaseContext());
                         convertedView = LayoutInflater.from(getBaseContext()).inflate(R.layout.entry_main, parent, false);
                         holder = createViewHolderFrom(convertedView);
@@ -2744,8 +2718,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, PhotoImageView, CounterTextView, EventIconImageView);
         }
-
-        //How to Filter a RecyclerView with SearchView https://www.youtube.com/watch?v=sJ-Z9G0SDhc
 
         @Override
         @NonNull
