@@ -552,6 +552,8 @@ class ContactsEvents {
         try {
 
             if (singleEventArray.length < Position_attrAmount) return null;
+            if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) return null;
+
             Uri uri = null;
             String contactID = singleEventArray[ContactsEvents.Position_contactID];
             boolean isRealContactID = contactID != null && !contactID.isEmpty() && isRealContactEventID(contactID);
@@ -1845,7 +1847,7 @@ class ContactsEvents {
             if (cursor.moveToFirst()) {
                 do {
                     try {
-                        eventKey = addContactEventToEventList(cursor, userData, dataList, cache, eventKey);
+                        eventKey = getContactEventFromCursor(cursor, userData, dataList, cache, eventKey);
                     } catch (RuntimeException e) {
                         countErrors++;
                         if (countErrors < 3) {
@@ -2179,7 +2181,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    private String addContactEventToEventList(
+    private String getContactEventFromCursor(
             @NonNull Cursor cursor,
             @NonNull TreeMap<Integer, String> userData,
             @NonNull List<String> dataList,
@@ -2212,6 +2214,7 @@ class ContactsEvents {
                 int eventIcon = R.drawable.ic_event_unknown;
                 String eventEmoji = getResources().getString(R.string.event_type_unknown_emoji);
                 statContactsEventCount++;
+                boolean isUnrecognized = false;
 
                 if (eventType.equals(getEventType(Constants.Type_BirthDay))
                         || (isEventLabel && preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel.toLowerCase()).find())) {
@@ -2321,6 +2324,7 @@ class ContactsEvents {
 
                     } else {
 
+                        isUnrecognized = true;
                         if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other) {
 
                             eventCaption = getResources().getString(R.string.event_type_other);
@@ -2352,7 +2356,7 @@ class ContactsEvents {
                 String eventKey_next = contactName.concat(Constants.STRING_COMMA).concat(eventType);
 
                 //Наименование события в ключе только для пользовательских событий
-                if (eventType.equals(getEventType(Constants.Type_Custom))) {
+                if (eventType.equals(getEventType(Constants.Type_Custom)) || isUnrecognized) {
                     eventKey_next = eventKey_next.concat(Constants.STRING_COMMA).concat(eventLabel);
                 }
 
@@ -2602,16 +2606,21 @@ class ContactsEvents {
                         final String eventSource = calendarTitle != null
                                 ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
                                 : getResources().getString(R.string.event_type_calendar);
-                        Calendar dateStart = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))))));
-                        Calendar dateEnd = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END))))));
+                        //Calendar dateStart = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))))));
+                        Calendar dateStart = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
+                        dateStart.add(Calendar.MILLISECOND, zoneOffset);
+                        //Calendar dateEnd = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END))))));
+                        Calendar dateEnd = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
+                        dateEnd.add(Calendar.MILLISECOND, zoneOffset);
                         Date dtStart = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
 
                         if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
                             if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
                                 dateStart.add(Calendar.DATE, 1);
+                                dateEnd.add(Calendar.DATE, 1);
                             }
                             dateEnd.add(Calendar.SECOND, -1); //Событие на весь день заканчивается на следующий день, а не в 23:59:59. Исправляем
-                            dateEnd.setTime(removeTime(dateEnd).getTime());
+                            //dateEnd.setTime(removeTime(dateEnd).getTime());
                         }
 
                         if (dateEnd.before(startPeriod)) continue; //Если событие выпало из периода
@@ -2905,7 +2914,7 @@ class ContactsEvents {
                                 }
                             }
                             dateStart.add(Calendar.DATE, 1);
-                        } while (dateStart.before(dateEnd) && dateStart.after(endPeriod));
+                        } while (dateStart.before(dateEnd) && dateStart.compareTo(endPeriod) <= 0);
                     }
                 }
             }
@@ -3012,7 +3021,7 @@ class ContactsEvents {
         String emoji = Constants.STRING_EMPTY;
         Date date;
         String distance;
-        boolean needScanContacts;
+        boolean needScanContacts = false;
 
         public Event() {
         }
@@ -4809,16 +4818,12 @@ class ContactsEvents {
                     }
                 }
             } else if (eventDateFirstTime != null && countDaysDiff(eventDateFirstTime, eventDateThisTime) > 0) { //Возраст до года
+                //todo: если это календарное событие на несколько дней, то 1 день, это, по факту, 2й день события. додумать
                 singleEventArray[Position_age_caption] = setAgeFormatting(countDaysDiffText(eventDateFirstTime, eventDateThisTime, 1));
             } else {
                 singleEventArray[Position_age] = Constants.STRING_MINUS1;
                 singleEventArray[Position_age_caption] = Constants.STRING_EMPTY;
             }
-            /*if (eventDateFirstTime != null && !eventSubType.equals(getEventType(Constants.Type_Death)) && isYear) {
-                singleEventArray[Position_age_current] = countDaysDiffText(eventDateFirstTime, currentDay, 3);
-            } else {
-                singleEventArray[Position_age_current] = Constants.STRING_EMPTY;
-            }*/
             if (eventDateFirstTime != null && isYear) {
                 singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay);
             }
@@ -4874,7 +4879,6 @@ class ContactsEvents {
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
                         singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = resources.getString(R.string.event_type_5k_emoji);
-                        //singleEventArray5K[Position_age_current] = countDaysDiffText(eventDateFirstTime, currentDay, 3); //Возраст текущий
                         singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay); //Возраст текущий
                         //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
 
@@ -4918,6 +4922,9 @@ class ContactsEvents {
                             singleEventArrayXdays[Position_eventStorage] = Constants.STRING_STORAGE_XDAYS;
                             singleEventArrayXdays[Position_eventDistance] = Long.toString(xDaysDistance);
                             singleEventArrayXdays[Position_eventDistanceText] = getEventDistanceText(xDaysDistance, event.date);
+                            singleEventArrayXdays[Position_eventEmoji] = resources.getString(R.string.event_type_xdays_emoji);
+                            singleEventArrayXdays[Position_eventIcon] = Integer.toString(R.drawable.ic_event_xdays);
+                            singleEventArrayXdays[Position_eventDescription] = Constants.STRING_EMPTY;
 
                             singleEventArrayXdays[Position_eventDate_sorted] = (Constants.STRING_00 + xDaysDistance).substring((Constants.STRING_00 + xDaysDistance).length() - 3)
                                     + (checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1") + "1";
@@ -4936,6 +4943,7 @@ class ContactsEvents {
         }
     }
 
+    @NonNull
     private String fillCurrentAge(@NonNull String[] singleEventArray, @NonNull String eventSubType, @NonNull String currentAge, Date today) {
 
         String age = "";
@@ -4943,7 +4951,9 @@ class ContactsEvents {
 
             @NonNull final String contactID = checkForNull(singleEventArray[Position_contactID]);
 
-            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) || eventSubType.equals(getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
+            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) //Если это день рождения или 5K или другое событие контакта
+                    || eventSubType.equals(getEventType(Constants.Type_5K))
+                    || (eventSubType.equals(getEventType(Constants.Type_Other)) && Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage]))) {
                 if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                     if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                         age = resources.getString(R.string.msg_age_could_be_now);
@@ -9089,7 +9099,7 @@ class ContactsEvents {
                                     userData.put(Position_dates, eventNewDate);
                                     userData.put(Position_eventIcon, Integer.toString(R.drawable.ic_event_holiday));
                                     userData.put(Position_eventEmoji, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️");
-                                    userData.put(Position_eventStorage, Constants.STRING_STORAGE_CONTACTS); //Где искать событие по ID
+                                    userData.put(Position_eventStorage, Constants.STRING_STORAGE_HOLIDAYS); //Где искать событие по ID
                                     userData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
                                     userData.put(Position_eventID, Constants.PREFIX_HolidayEventID + getHash(packHash + day));
 

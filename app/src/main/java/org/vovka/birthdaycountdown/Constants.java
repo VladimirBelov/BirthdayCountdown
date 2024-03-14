@@ -107,12 +107,13 @@ final class Constants {
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
     static final String STRING_STORAGE_CONTACTS = "contacts";
-    static final int Storage_Contacts = 1;
     static final String STRING_STORAGE_CALENDAR = "calendar";
-    static final int Storage_Calendar = 0;
     static final String STRING_STORAGE_FILE = "file";
-    static final int Storage_File = 2;
     static final String STRING_STORAGE_XDAYS = "x days";
+    static final String STRING_STORAGE_HOLIDAYS = "holidays";
+    static final int Storage_Calendar = 0;
+    static final int Storage_Contacts = 1;
+    static final int Storage_File = 2;
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
     static final String EVENT_PREFIX_HOLIDAY_EVENT = "holiday";

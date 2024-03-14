@@ -1282,6 +1282,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_type_crowning_emoji" translatable="false">💒</string>
     <string name="event_type_holiday_emoji" translatable="false">🏖️</string>
     <string name="event_type_5k_emoji" translatable="false">🏆</string>
+    <string name="event_type_xdays_emoji" translatable="false">🚩</string>
     <string name="event_type_unknown_emoji" translatable="false">⁉️️</string>
 
     <string name="pref_Root_key" translatable="false">Pref</string>
