@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -257,18 +259,27 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                         String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
                         if (dates.length > 0) {
-                            boolean[] sources = new boolean[]{false, false, false};
-                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
+                            if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length())
+                                sb.append(Constants.STRING_SPACE);
+
+                            Set<Integer> sources = new HashSet<>();
+                            int eventSourceCalendar = R.string.event_source_calendar;
+                            int eventSourceFile = R.string.event_source_file;
+                            int eventSourceInternal = R.string.event_source_internal;
+                            int eventSourceContact = R.string.event_source_contact;
                             for (String date : dates) {
-                                if (date.startsWith(Constants.EVENT_PREFIX_CALENDAR_EVENT) && !sources[1]) {
-                                    sb.append("📆");
-                                    sources[1] = true;
-                                } else if (date.startsWith(Constants.EVENT_PREFIX_FILE_EVENT) && !sources[2]) {
-                                    sb.append("📁");
-                                    sources[2] = true;
-                                } else if (!sources[0]) {
-                                    sb.append("👨‍💼");
-                                    sources[0] = true;
+                                if (date.startsWith(Constants.EVENT_PREFIX_CALENDAR_EVENT) && !sources.contains(eventSourceCalendar)) {
+                                    sb.append(resources.getString(eventSourceCalendar));
+                                    sources.add(eventSourceCalendar);
+                                } else if (date.startsWith(Constants.EVENT_PREFIX_FILE_EVENT) && !sources.contains(eventSourceFile)) {
+                                    sb.append(resources.getString(eventSourceFile));
+                                    sources.add(eventSourceFile);
+                                } else if (date.startsWith(Constants.EVENT_PREFIX_HOLIDAY_EVENT) && !sources.contains(eventSourceInternal)) {
+                                    sb.append(resources.getString(eventSourceInternal));
+                                    sources.add(eventSourceInternal);
+                                } else if (!sources.contains(eventSourceContact)) {
+                                    sb.append(resources.getString(eventSourceContact));
+                                    sources.add(eventSourceContact);
                                 }
                             }
                         }

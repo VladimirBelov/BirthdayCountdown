@@ -1285,6 +1285,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_type_xdays_emoji" translatable="false">🚩</string>
     <string name="event_type_unknown_emoji" translatable="false">⁉️️</string>
 
+    <string name="event_source_contact" translatable="false">👨‍💼</string>
+    <string name="event_source_calendar" translatable="false">📆</string>
+    <string name="event_source_file" translatable="false">📁</string>
+    <string name="event_source_internal" translatable="false">🌐</string>
+
     <string name="pref_Root_key" translatable="false">Pref</string>
     <string name="pref_Common_key" translatable="false">Common</string>
     <string name="pref_Language_key" translatable="false">Language</string>
