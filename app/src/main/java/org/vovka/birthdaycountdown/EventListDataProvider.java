@@ -275,7 +275,22 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                                     sb.append(resources.getString(eventSourceFile));
                                     sources.add(eventSourceFile);
                                 } else if (date.startsWith(Constants.EVENT_PREFIX_HOLIDAY_EVENT) && !sources.contains(eventSourceInternal)) {
-                                    sb.append(resources.getString(eventSourceInternal));
+
+                                    String icon = Constants.STRING_EMPTY;
+                                    try {
+                                        String eventSource = singleEventArray[ContactsEvents.Position_eventSource];
+                                        String prefix = resources.getString(R.string.msg_source_info);
+                                        prefix = prefix.substring(0, prefix.indexOf("%1$s"));
+                                        eventSource = eventSource.substring(prefix.length());
+                                        icon = eventSource.substring(0, eventSource.indexOf(Constants.STRING_SPACE));
+                                    } catch (IndexOutOfBoundsException e) { /**/ }
+
+                                    if (icon.length() == 4) {
+                                        sb.append(icon);
+                                    } else {
+                                        sb.append(resources.getString(eventSourceInternal));
+                                    }
+
                                     sources.add(eventSourceInternal);
                                 } else if (!sources.contains(eventSourceContact)) {
                                     sb.append(resources.getString(eventSourceContact));

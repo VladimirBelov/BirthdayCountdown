@@ -2519,7 +2519,7 @@ class ContactsEvents {
             endPeriod.set(Calendar.SECOND, 0);
             endPeriod.set(Calendar.MILLISECOND, 0);
             endPeriod.add(Calendar.MILLISECOND, zoneOffset);
-            endPeriod.add(Calendar.SECOND, -1);
+            //endPeriod.add(Calendar.SECOND, -1);
 
             String[] arrRules;
             List<Matcher> matcherNames = new ArrayList<>();
@@ -2606,10 +2606,8 @@ class ContactsEvents {
                         final String eventSource = calendarTitle != null
                                 ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
                                 : getResources().getString(R.string.event_type_calendar);
-                        //Calendar dateStart = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN))))));
                         Calendar dateStart = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
                         dateStart.add(Calendar.MILLISECOND, zoneOffset);
-                        //Calendar dateEnd = removeTime(getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END))))));
                         Calendar dateEnd = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
                         dateEnd.add(Calendar.MILLISECOND, zoneOffset);
                         Date dtStart = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
@@ -2619,8 +2617,14 @@ class ContactsEvents {
                                 dateStart.add(Calendar.DATE, 1);
                                 dateEnd.add(Calendar.DATE, 1);
                             }
-                            dateEnd.add(Calendar.SECOND, -1); //Событие на весь день заканчивается на следующий день, а не в 23:59:59. Исправляем
-                            //dateEnd.setTime(removeTime(dateEnd).getTime());
+
+                            //Событие на весь день заканчивается на следующий день, а не в 23:59:59. Исправляем
+                            dateEnd.add(Calendar.DATE, -1);
+                            dateEnd.set(Calendar.HOUR_OF_DAY, 23);
+                            dateEnd.set(Calendar.MINUTE, 59);
+                            dateEnd.set(Calendar.SECOND, 59);
+                            dateEnd.set(Calendar.MILLISECOND, 0);
+                            dateEnd.add(Calendar.MILLISECOND, zoneOffset);
                         }
 
                         if (dateEnd.before(startPeriod)) continue; //Если событие выпало из периода
@@ -4952,8 +4956,7 @@ class ContactsEvents {
             @NonNull final String contactID = checkForNull(singleEventArray[Position_contactID]);
 
             if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) //Если это день рождения или 5K или другое событие контакта
-                    || eventSubType.equals(getEventType(Constants.Type_5K))
-                    || (eventSubType.equals(getEventType(Constants.Type_Other)) && Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage]))) {
+                    || eventSubType.equals(getEventType(Constants.Type_5K))) {
                 if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                     if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                         age = resources.getString(R.string.msg_age_could_be_now);
@@ -5003,6 +5006,8 @@ class ContactsEvents {
                         age = age.concat(countDaysDiffText(birthDate, eventDate, 3));
                     }
                 }
+            } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])) {
+                age = resources.getString(R.string.msg_age_now).concat(currentAge);
             }
 
         } catch (Exception e) {
@@ -8786,10 +8791,10 @@ class ContactsEvents {
             for (String packId: fromPacks) {
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
-                if (preferences_DaysInfo.containsKey(key)){
-                    dayInfo.add(preferences_DaysInfo.get(key));
-                } else if (preferences_DaysInfo.containsKey(key_noYear)) {
-                    dayInfo.add(preferences_DaysInfo.get(key_noYear));
+                if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null){
+                    dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1)));
+                } else if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
+                    dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
                 }
             }
             return dayInfo;
@@ -8908,12 +8913,17 @@ class ContactsEvents {
                 if (dateEvent != null) {
                     final String eventTitle = titlePrefix + day.substring(indexFirstSpace + 1).trim();
                     final DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
+                    String key;
                     if (flags.contains(Constants.STRING_1)) {
-                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), dayType);
-                        preferences_DaysInfo.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent)), eventTitle);
+                        key = packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent));
                     } else {
-                        preferences_DaysTypes.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), dayType);
-                        preferences_DaysInfo.put(packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent)), eventTitle);
+                        key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent));
+                    }
+                    preferences_DaysTypes.put(key, dayType);
+                    if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
+                        preferences_DaysInfo.put(key, checkForNull(preferences_DaysInfo.get(key)).concat(Constants.STRING_EOT).concat(eventTitle));
+                    } else {
+                        preferences_DaysInfo.put(key, eventTitle);
                     }
                 } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));
@@ -8993,8 +9003,13 @@ class ContactsEvents {
                         }
 
                         do {
-                            preferences_DaysTypes.put(calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateStart.getTime())), DayType.Type.Holiday);
-                            preferences_DaysInfo.put(calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateStart.getTime())), eventTitle);
+                            String key = calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateStart.getTime()));
+                            preferences_DaysTypes.put(key, DayType.Type.Holiday);
+                            if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
+                                preferences_DaysInfo.put(key, checkForNull(preferences_DaysInfo.get(key)).concat(Constants.STRING_EOT).concat(eventTitle));
+                            } else {
+                                preferences_DaysInfo.put(key, eventTitle);
+                            }
 
                             dateStart.add(Calendar.DATE, 1);
                             if (dateStart.after(endPeriod)) break;
