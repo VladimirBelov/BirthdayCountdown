@@ -555,49 +555,54 @@ class ContactsEvents {
             if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) return null;
 
             Uri uri = null;
-            String contactID = singleEventArray[ContactsEvents.Position_contactID];
-            boolean isRealContactID = contactID != null && !contactID.isEmpty() && isRealContactEventID(contactID);
+            final String contactID = singleEventArray[ContactsEvents.Position_contactID];
+            final boolean isRealContactID = contactID != null && !contactID.isEmpty() && isRealContactEventID(contactID);
+            final String eventId = singleEventArray[Position_eventID];
+            final boolean notEmptyEventId = !TextUtils.isEmpty(eventId);
+            final String eventUrl = singleEventArray[Position_eventURL].trim();
+            final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
+            final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
 
             if (prefAction == 1) { //Контакт, календарь, ссылка
                 if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
-                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                } else if (notEmptyEventId && !isFileOrHoliday) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
+                } else if (notEmptyEventUrl) {
+                    String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
                 }
 
             } else if (prefAction == 2) { //Календарь, контакт, ссылка
 
-                if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                if (notEmptyEventId && !isFileOrHoliday) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
                 } else if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
-                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                } else if (notEmptyEventUrl) {
+                    String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
                 }
 
             } else if (prefAction == 3) { //Ссылка, контакт, календарь
 
-                if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
-                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                if (notEmptyEventUrl) {
+                    String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
                 } else if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                } else if (notEmptyEventId && !isFileOrHoliday) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
                 }
 
             } else if (prefAction == 4) { //Контакт, ссылка, календарь
                 if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventURL].trim())) {
-                    String[] eventURLs = singleEventArray[Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                } else if (notEmptyEventUrl) {
+                    String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+                } else if (notEmptyEventId && !isFileOrHoliday) {
+                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
                 }
             }
 
@@ -2224,7 +2229,8 @@ class ContactsEvents {
                     eventEmoji = getResources().getString(R.string.event_type_birthday_emoji);
                     eventSubType = getEventType(Constants.Type_BirthDay);
 
-                } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find()) {
+                } else if (eventType.equals(getEventType(Constants.Type_Death))
+                        || (isEventLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     eventCaption = getResources().getString(R.string.event_type_death);
                     eventIcon = R.drawable.ic_event_death;
@@ -5679,7 +5685,7 @@ class ContactsEvents {
                             intent = new Intent(context, MainActivity.class);
                             intent.setAction(Constants.ACTION_LAUNCH);
                         } else if (preferences_notifications_on_click_action >= 1 & preferences_notifications_on_click_action <= 4) {
-                            intent = ContactsEvents.getViewActionIntent(event.singleEventArray, preferences_notifications_on_click_action);
+                            intent = getViewActionIntent(event.singleEventArray, preferences_notifications_on_click_action);
                         } else if (preferences_notifications_on_click_action == 6) { //Закрыть уведомление
                             intent = new Intent();
                         }
