@@ -124,6 +124,7 @@
     <string name="msg_age_could_be_now">"Было бы зараз: "</string>
     <string name="msg_age_will_be">"Будзе: "</string>
     <string name="msg_age_could_be">"Было бы: "</string>
+    <string name="msg_age_passed">"Прайшло: "</string>
     <string name="msg_label_search">Увядзіце частку П.І.Імя па бацьку, тып кантакту, месца працы, пасада, даты (праз коску):</string>
     <string name="msg_hint_search">Пошукавы запыт</string>
     <string name="msg_hint_global_search">Пошук падзей</string>

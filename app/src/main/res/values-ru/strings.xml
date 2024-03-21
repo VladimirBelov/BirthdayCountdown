@@ -124,6 +124,7 @@
     <string name="msg_age_could_be_now">"Было бы сейчас: "</string>
     <string name="msg_age_will_be">"Будет: "</string>
     <string name="msg_age_could_be">"Было бы: "</string>
+    <string name="msg_age_passed">"Прошло: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (через запятую):</string>
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_hint_global_search">Поиск событий</string>

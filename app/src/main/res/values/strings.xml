@@ -124,6 +124,7 @@
     <string name="msg_age_could_be_now">"Could be now: "</string>
     <string name="msg_age_will_be">"Will be: "</string>
     <string name="msg_age_could_be">"Could be: "</string>
+    <string name="msg_age_passed">"Passed: "</string>
     <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (by comma):</string>
     <string name="msg_hint_search">Search value</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>

@@ -197,11 +197,11 @@ class ContactsEvents {
     final HashSet<String> idsAllCalendarEvents = new HashSet<>(); //ID всех найденных событий календаря
     final HashMap<String, String> map_contacts_names = new HashMap<>(); //связка имён контактов с ID
     final HashMap<String, String> map_calendars = new HashMap<>(); //список всех календарей
-    final HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset = new HashMap<>(); //индекс события до сортировки (или для eventListUnsorted)
+    final HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset = new HashMap<>(); //Индекс события до сортировки (или для eventListUnsorted)
     final HashMap<String, String> map_organizations = new HashMap<>();
     final HashMap<String, String> map_contacts_titles = new HashMap<>();
-    final HashMap<String, String> map_contacts_rawIds = new HashMap<>(); // ID всех контактов в адресной книге: rawId -> contactId
-    final HashMap<String, String> map_contacts_ids = new HashMap<>(); // ID всех контактов в адресной книге: contactId -> rawId
+    final HashMap<String, String> map_contacts_rawIds = new HashMap<>(); //ID всех контактов в адресной книге: rawId -> contactId
+    final HashMap<String, String> map_contacts_ids = new HashMap<>(); //ID всех контактов в адресной книге: contactId -> rawId
     final HashMap<String, String> map_contacts_aliases = new HashMap<>();
     final HashMap<String, String> map_events_weblinks = new HashMap<>();
     final HashMap<String, String> map_notes = new HashMap<>();
@@ -211,8 +211,8 @@ class ContactsEvents {
     final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
-    private final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
-    private final Map<String, String> preferences_DaysInfo = new HashMap<>();
+    private final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>(); //Типы дней для календаря
+    private final Map<String, String> preferences_DaysInfo = new HashMap<>(); //Данные о событиях для календаря
 
     //Даты
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
@@ -786,6 +786,7 @@ class ContactsEvents {
 
             StringBuilder eventDistance = new StringBuilder();
             long daysDiff;
+            boolean diffOnlyDays = true;
 
             //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s то размер приложения +200К
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -804,9 +805,11 @@ class ContactsEvents {
 
                     if (p.getYears() > 0) {
                         eventDistance.append(getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
                     }
                     if (p.getMonths() > 0) {
                         eventDistance.append(getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
                     }
                     if (p.getDays() > 0) {
                         eventDistance.append(getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20)).append(Constants.STRING_SPACE);
@@ -840,6 +843,7 @@ class ContactsEvents {
                     long delta = yearTo - yearFrom - (daysFromNYTo < daysFromNYFrom ? 1 : 0);
                     if (delta > 0) {
                         eventDistance.append(getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
                     }
                     final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
                     final int dayOfMonthFrom = calendarDateFrom.get(Calendar.DAY_OF_MONTH);
@@ -850,6 +854,7 @@ class ContactsEvents {
                     }
                     if (delta > 0) {
                         eventDistance.append(getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
                     }
 
                     if (dayOfMonthTo >= dayOfMonthFrom) {
@@ -868,14 +873,16 @@ class ContactsEvents {
             }
 
             //(X days)
-            if (components == 3) {
-                eventDistance.append(Constants.STRING_PARENTHESIS_START);
-            }
-            if (components == 2 || components == 3) {
-                eventDistance.append(getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20));
-            }
-            if (components == 3) {
-                eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
+            if (!diffOnlyDays || components == 2) {
+                if (components == 3) {
+                    eventDistance.append(Constants.STRING_PARENTHESIS_START);
+                }
+                if (components == 2 || components == 3) {
+                    eventDistance.append(getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20));
+                }
+                if (components == 3) {
+                    eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
+                }
             }
 
             return eventDistance.toString();
@@ -2883,6 +2890,7 @@ class ContactsEvents {
                                 userData.put(Position_dates, eventNewDate);
                                 userData.put(Position_eventIcon, Integer.toString(event.icon));
                                 userData.put(Position_eventEmoji, event.emoji);
+                                //todo: получается, что useYear больше не нужен, т.к. дата всегда с годом
                                 userData.put(Position_eventDateThisTime, sdf_DDMMYYYY.format(dateStart.getTime()));
                                 userData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dtStart));
                                 userData.put(Position_eventSource, eventSource);
@@ -4768,6 +4776,7 @@ class ContactsEvents {
             } else {
                 try {
                     eventDateFirstTime = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateFirstTime]);
+                    isYear = true;
                 } catch (ParseException e) { /**/ }
                 try {
                     eventDateThisTime = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
@@ -4961,18 +4970,18 @@ class ContactsEvents {
 
             @NonNull final String contactID = checkForNull(singleEventArray[Position_contactID]);
 
-            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) //Если это день рождения или 5K или другое событие контакта
+            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) //Если это день рождения или 5K
                     || eventSubType.equals(getEventType(Constants.Type_5K))) {
                 if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                     if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                         age = resources.getString(R.string.msg_age_could_be_now);
 
-                        //Если годовщина смерти попалась раньше дня рождения, то у неё currentAge будет пустой - надо заполнить
+                        //Если годовщина смерти попалась раньше дня рождения, то у неё currentAge будет содержать текущий возраст - надо обновить
                         final String key = contactID + Constants.STRING_2HASH + getEventType(Constants.Type_Death);
-                        Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
-                        if (eventIndex != null && eventIndex <= eventList.size()) {
-                            List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
-                            if (TextUtils.isEmpty(singleRowList.get(Position_age_current))) {
+                        if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
+                            if (eventIndex != null && eventIndex <= eventList.size()) {
+                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 Date birthDate = birthdayDatesForIds.get(contactID);
                                 Date deathDate = deathDatesForIds.get(contactID);
                                 if (birthDate != null && deathDate != null) {
@@ -5013,7 +5022,11 @@ class ContactsEvents {
                     }
                 }
             } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])) {
-                age = resources.getString(R.string.msg_age_now).concat(currentAge);
+                if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                    age = resources.getString(R.string.msg_age_passed).concat(currentAge);
+                } else {
+                    age = resources.getString(R.string.msg_age_now).concat(currentAge);
+                }
             }
 
         } catch (Exception e) {
@@ -8812,7 +8825,10 @@ class ContactsEvents {
         return null;
     }
 
-    void clearDaysTypes() {preferences_DaysTypes.clear();}
+    void clearDaysTypesAndInfo() {
+        preferences_DaysTypes.clear();
+        preferences_DaysInfo.clear();
+    }
 
     @SuppressLint("DiscouragedApi")
     void fillDaysTypesFromFiles(List<String> fileHashes) {

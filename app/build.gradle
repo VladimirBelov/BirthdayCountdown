@@ -35,7 +35,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        buildToolsVersion  = "35.0.0 rc1" //https://developer.android.com/tools/releases/build-tools
+        buildToolsVersion  = "35.0.0 rc2" //https://developer.android.com/tools/releases/build-tools
         resConfigs 'en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be'
     }
 
@@ -82,7 +82,7 @@ android {
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 34 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.8.2"
+            versionName "1.8.1"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {

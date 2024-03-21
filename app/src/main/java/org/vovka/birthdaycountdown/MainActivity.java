@@ -1553,6 +1553,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
                     eventsData.needUpdateEventList = true;
+                    eventsData.clearDaysTypesAndInfo();
                     swipeRefresh.postDelayed(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME), 300);
                 }
                 return true;

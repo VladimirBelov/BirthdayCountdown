@@ -124,6 +124,7 @@
     <string name="msg_age_could_be_now">"Peut être maintenant: "</string>
     <string name="msg_age_will_be">"Sera: "</string>
     <string name="msg_age_could_be">"Aurait été: "</string>
+    <string name="msg_age_passed">"Ont passe: "</string>
     <string name="msg_label_search">"Entrez une partie du nom complet, le type de contact, le poste, le titre, une partie de la date de l'événement (séparé par des virgules):"</string>
     <string name="msg_hint_search">Valeur de recherche</string>
     <string name="msg_hint_global_search">Rechercher des anniversaires et des événements</string>
