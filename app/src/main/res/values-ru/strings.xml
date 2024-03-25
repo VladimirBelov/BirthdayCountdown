@@ -438,6 +438,9 @@
         <item>🏆 Круглые даты (5K дней)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Источники событий</string>
+    <string name="pref_List_EventSources_description">Показывать в списке события только из этих источников</string>
+
     <string name="pref_List_SadPhoto_title">Траурная лента</string>
     <string name="pref_List_SadPhoto_summary">Отмечать фотографии умерших контактов траурной лентой</string>
 
@@ -940,6 +943,9 @@
 
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
     <string name="pref_Notifications_EventTypes_summary">Какие события включать в уведомления</string>
+
+    <string name="pref_Notifications_EventSources_title">Источники событий</string>
+    <string name="pref_Notifications_EventSources_description">Показаывать уведомления только для этих источников событий</string>
 
     <string name="pref_Notifications_AlarmHour_title">Время уведомления</string>
     <string name="pref_Notifications_AlarmHour_summary">В какое время уведомлять о событиях</string>

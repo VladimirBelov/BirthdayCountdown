@@ -609,6 +609,13 @@
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
 
+        <Preference
+            android:key="@string/pref_List_EventSources_key"
+            android:title="@string/pref_List_EventSources_title"
+            android:summary="@string/pref_List_EventSources_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
         <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView
             https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/
             https://github.com/JayH5/drag-sort-listview
@@ -953,6 +960,13 @@
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_Notifications_EventSources_key"
+            android:title="@string/pref_Notifications_EventSources_title"
+            android:summary="@string/pref_Notifications_EventSources_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
 
         <Preference
             android:key="@string/pref_Notifications_AlarmHour_key"

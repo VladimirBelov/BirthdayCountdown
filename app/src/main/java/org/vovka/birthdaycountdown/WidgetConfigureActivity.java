@@ -8,36 +8,25 @@
 
 package org.vovka.birthdaycountdown;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorDescription;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,15 +35,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
@@ -64,16 +50,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private int widgetId = 0;
     private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
     private boolean isListWidget = false;
-    private ContactsEvents eventsData;
+    private final ContactsEvents eventsData = ContactsEvents.getInstance();
     private List<String> eventTypesIDs;
     private List<String> eventTypesValues;
     private List<String> eventInfoIDs;
     private List<String> eventInfoValues;
-    private final List<String> eventSourcesIds = new ArrayList<>();
-    private final List<String> eventSourcesTitles = new ArrayList<>();
-    private final List<String> eventSourcesPackages = new ArrayList<>();
-    private final List<String> eventSourcesHashes = new ArrayList<>();
-    private final List<Integer> eventSourcesIcons = new ArrayList<>();
+    private final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
     private List<String> eventSourcesSelected = new ArrayList<>();
 
     @Override
@@ -85,7 +67,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             super.onCreate(savedInstanceState);
 
-            eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
 
@@ -424,7 +405,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 String pref = widgetPref.get(10);
                 if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
             }
-            getEventSources();
+            eventSources.getEventSources();
             updateEventSources();
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
@@ -446,11 +427,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             StringBuilder sb = new StringBuilder();
             for (String source: eventSourcesSelected) {
-                int ind = eventSourcesHashes.indexOf(source);
+                int ind = eventSources.getHashes().indexOf(source);
                 if (ind > -1) {
                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
 
-                    String sourceId = ContactsEvents.checkForNull(eventSourcesIds.get(ind));
+                    String sourceId = ContactsEvents.checkForNull(eventSources.getIds().get(ind));
                     if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
                         sb.append("📆 ");
                     } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
@@ -458,7 +439,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
                         sb.append("👨‍💼 ");
                     }
-                    sb.append(eventSourcesTitles.get(ind));
+                    sb.append(eventSources.getTitles().get(ind));
                 }
             }
 
@@ -740,174 +721,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressLint("DiscouragedApi")
-    private void getEventSources() {
+    private void selectEventSources() {
         try {
 
-            //Справочники праздников и выходных
-            int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
-            while (packId > 0) {
-                try {
-                    String[] eventsPack = getResources().getStringArray(packId);
-                    String packHash = ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-
-                    if (eventsData.preferences_HolidayEvent_ids.contains(packHash)) {
-                        eventSourcesIds.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        eventSourcesTitles.add(eventsPack[0]);
-                        eventSourcesIcons.add(R.drawable.ic_event_holiday);
-                        eventSourcesPackages.add(getPackageName());
-                        eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
-                    }
-
-                } catch (Resources.NotFoundException ignored) { /**/ }
-
-                eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
-            }
-
-            //Online аккаунты
-            final Set<String> preferences_accounts = eventsData.getPreferences_Accounts();
-            if (!eventsData.checkNoContactsAccess()) {
-                AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
-                if (!preferences_accounts.isEmpty()) { //Только из настроек
-                    for (String account : preferences_accounts) {
-                        String accountType = ContactsEvents.substringBetween(account, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                        if (!accountType.equals(Constants.STRING_NULL)) {
-                            for (AuthenticatorDescription desc : descriptions) {
-                                if (accountType.equals(desc.type)) {
-                                    eventSourcesIds.add(Constants.eventSourceContactPrefix + account);
-                                    eventSourcesTitles.add(account);
-                                    eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
-                                    eventSourcesPackages.add(desc.packageName);
-                                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + account));
-                                    break;
-                                }
-                            }
-                        } else {
-
-                            eventSourcesIds.add(Constants.eventSourceLocalPrefix + account);
-                            eventSourcesTitles.add(account);
-                            if (account.toLowerCase().contains(Constants.account_sim)) {
-                                eventSourcesIcons.add(R.drawable.sim_card);
-                            } else {
-                                eventSourcesIcons.add(R.drawable.emo_im_happy);
-                            }
-                            eventSourcesPackages.add(getPackageName());
-                            eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceLocalPrefix + account));
-
-                        }
-                    }
-                } else { //Перебираем все аккаунты
-                    Account[] accounts = AccountManager.get(this).getAccounts();
-                    for (Account account : accounts) {
-                        final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
-                        for (AuthenticatorDescription desc : descriptions) {
-                            if (account.type.equals(desc.type)) {
-                                String eventId = Constants.eventSourceContactPrefix + accountName;
-                                eventSourcesIds.add(eventId);
-                                eventSourcesTitles.add(accountName);
-                                eventSourcesIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
-                                eventSourcesPackages.add(desc.packageName);
-                                eventSourcesHashes.add(ContactsEvents.getHash(eventId));
-                                break;
-                            }
-                        }
-                    }
-
-                    //Raw аккаунты
-                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
-                    Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
-                            new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
-                            "deleted=0",
-                            null,
-                            null);
-                    if (cursor != null && cursor.getCount() > 0) {
-                        if (cursor.moveToFirst()) {
-                            final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
-                            final int indexTypeColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
-                            do {
-                                String sysAccountName = cursor.getString(indexNameColumn);
-                                if (sysAccountName == null) sysAccountName = getString(R.string.account_type_local);
-                                String accountName = sysAccountName + Constants.STRING_PARENTHESIS_OPEN
-                                        + cursor.getString(indexTypeColumn) + Constants.STRING_PARENTHESIS_CLOSE;
-                                if (!eventSourcesTitles.contains(accountName)) {
-                                    String eventId = Constants.eventSourceLocalPrefix + accountName;
-                                    eventSourcesIds.add(eventId);
-                                    eventSourcesTitles.add(accountName);
-                                    if (eventId.toLowerCase().contains(Constants.account_sim)) {
-                                        eventSourcesIcons.add(R.drawable.sim_card);
-                                    } else {
-                                        eventSourcesIcons.add(R.drawable.emo_im_happy);
-                                    }
-                                    eventSourcesPackages.add(getPackageName());
-                                    eventSourcesHashes.add(ContactsEvents.getHash(eventId));
-                                }
-                            } while (cursor.moveToNext());
-                            cursor.close();
-                        }
-                    }
-                }
-            }
-
-            //Календари
-            if (!eventsData.checkNoCalendarAccess()){
-                if (eventsData.map_calendars.isEmpty()) eventsData.recieveCalendarList();
-                List<String> allCalendars = new ArrayList<>();
-                allCalendars.addAll(eventsData.preferences_MultiType_calendars);
-                allCalendars.addAll(eventsData.preferences_BirthDay_calendars);
-                allCalendars.addAll(eventsData.preferences_OtherEvent_calendars);
-                allCalendars.addAll(eventsData.preferences_HolidayEvent_calendars);
-                if (!allCalendars.isEmpty()) {
-                    for (String calendar: allCalendars) {
-                        if (eventsData.map_calendars.containsKey(calendar)) {
-                            eventSourcesTitles.add(ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
-                            eventSourcesIds.add(Constants.eventSourceCalendarPrefix + calendar);
-                            eventSourcesIcons.add(android.R.drawable.ic_menu_month);
-                            eventSourcesPackages.add(getPackageName());
-                            eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar));
-                        }
-                    }
-                }
-            }
-
-            //Файлы
-            if (!eventsData.preferences_MultiType_files.isEmpty()) {
-                for (String file: eventsData.preferences_MultiType_files) {
-                    eventSourcesIds.add(Constants.eventSourceMultiFilePrefix + file);
-                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
-                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
-                    eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceMultiFilePrefix + file));
-                }
-            }
-            if (!eventsData.preferences_Birthday_files.isEmpty()) {
-                for (String file: eventsData.preferences_Birthday_files) {
-                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
-                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
-                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
-                    eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
-                }
-            }
-            if (!eventsData.preferences_OtherEvent_files.isEmpty()) {
-                for (String file: eventsData.preferences_OtherEvent_files) {
-                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
-                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
-                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
-                    eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
-                }
-            }
-            if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
-                for (String file: eventsData.preferences_HolidayEvent_files) {
-                    eventSourcesIds.add(Constants.eventSourceFilePrefix + file);
-                    eventSourcesTitles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
-                    eventSourcesIcons.add(android.R.drawable.ic_menu_save);
-                    eventSourcesPackages.add(getPackageName());
-                    eventSourcesHashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
-                }
-            }
+            eventsData.selectEventSources(eventSources, eventSourcesSelected, this, "getSelectedSources");
 
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
@@ -915,101 +732,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    private void selectEventSources() {
+    public void getSelectedSources(List<String> newSelectedSources) {
         try {
 
-            if (!eventSourcesIds.isEmpty()) {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                List<String> sourceChoices = new ArrayList<>();
-
-                for (int i = 0; i < eventSourcesIds.size(); i++) {
-                    String sourceId = eventSourcesIds.get(i);
-                    String sourceTitle = eventSourcesTitles.get(i);
-
-                    if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
-
-                        final String accountType = ContactsEvents.substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getContactsEventsCount(accountType, ContactsEvents.substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
-                                + Constants.STRING_BRACKETS_CLOSE);
-
-                    } else if (sourceId.startsWith(Constants.eventSourceLocalPrefix)) {
-
-                        final String accountType = ContactsEvents.substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getContactsEventsCount(accountType, null)
-                                + Constants.STRING_BRACKETS_CLOSE);
-
-                    } else if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
-
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getCalendarEventsCount(ContactsEvents.substringAfter(sourceId, Constants.eventSourceCalendarPrefix))
-                                + Constants.STRING_BRACKETS_CLOSE);
-
-                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
-
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getFileEventsCount(sourceId, sourceId.startsWith(Constants.eventSourceMultiFilePrefix))
-                                + Constants.STRING_BRACKETS_CLOSE);
-
-                    } else if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
-
-                        //todo: добавить количество событий
-                        sourceChoices.add(sourceTitle);
-
-                    }
-
-                }
-
-                ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, eventSourcesIcons, eventSourcesPackages, null, ta);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.widget_config_events_sources_label)
-                        .setIcon(R.drawable.btn_zoom_page_press)
-                        .setAdapter(adapter, null)
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-
-                            //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
-                            SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
-                            eventSourcesSelected.clear();
-                            for (int i = 0; i < checked.size(); i++) {
-                                if (checked.get(checked.keyAt(i))) {
-                                    eventSourcesSelected.add(eventSourcesHashes.get(checked.keyAt(i)));
-                                }
-                            }
-                            updateEventSources();
-
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
-
-                AlertDialog alertToShow = builder.create();
-
-                ListView listView = alertToShow.getListView();
-                listView.setItemsCanFocus(false);
-                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-
-                    //Только здесь работает
-                    for (int i = 0; i < sourceChoices.size(); i++) {
-                        String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
-                        if (eventSourcesTitles.contains(title)) {
-                            if (eventSourcesSelected.contains(eventSourcesHashes.get(eventSourcesTitles.indexOf(title)))) {
-                                listView.setItemChecked(i, true);
-                            }
-                        }
-                    }
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
+            if (newSelectedSources != null) {
+                eventSourcesSelected.clear();
+                eventSourcesSelected.addAll(newSelectedSources);
+                updateEventSources();
             }
 
         } catch (final Exception e) {

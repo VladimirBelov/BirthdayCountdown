@@ -438,6 +438,9 @@
         <item>🏆 Round days count (5K, 10K, 15K days)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Event sources</string>
+    <string name="pref_List_EventSources_description">Show events only from these event sources</string>
+
     <string name="pref_List_SadPhoto_title">Mourning tape</string>
     <string name="pref_List_SadPhoto_summary">Mark photos of deceased contacts with mourning tape</string>
 
@@ -940,6 +943,9 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="pref_Notifications_EventTypes_title">Event types</string>
     <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
+
+    <string name="pref_Notifications_EventSources_title">Event sources</string>
+    <string name="pref_Notifications_EventSources_description">Show notifications only from these event sources</string>
 
     <string name="pref_Notifications_AlarmHour_title">Alarm time</string>
     <string name="pref_Notifications_AlarmHour_summary">What time is to notify</string>
@@ -1499,6 +1505,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_CustomEvents_Custom5_UseYear_key" translatable="false">CustomEvents_Custom5_UseYear</string>
     <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
 
+    <string name="pref_List_EventSources_key" translatable="false">List_EventSources</string>
+
     <string name="pref_List_NameFormat_key" translatable="false">List_Caption</string>
     <string name="pref_List_NameFormat_FirstSecondLast" translatable="false">1</string>
     <string name="pref_List_NameFormat_LastFirstSecond" translatable="false">2</string>
@@ -1892,6 +1900,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="pref_Notifications_key" translatable="false">Notifications</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
+    <string name="pref_Notifications_EventSources_key" translatable="false">Notifications_EventSources</string>
 
     <string name="pref_Notifications_Type_key" translatable="false">Notifications_Type</string>
     <string name="pref_Notifications_Type_default" translatable="false">1</string>
