@@ -945,7 +945,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
 
     <string name="pref_Notifications_EventSources_title">Event sources</string>
-    <string name="pref_Notifications_EventSources_description">Show notifications only from these event sources</string>
+    <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources</string>
 
     <string name="pref_Notifications_AlarmHour_title">Alarm time</string>
     <string name="pref_Notifications_AlarmHour_summary">What time is to notify</string>

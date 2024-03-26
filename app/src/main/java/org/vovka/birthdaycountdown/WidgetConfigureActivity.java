@@ -724,7 +724,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void selectEventSources() {
         try {
 
-            eventsData.selectEventSources(eventSources, eventSourcesSelected, this, "getSelectedSources");
+            eventsData.selectEventSources(eventSources, eventSourcesSelected, this, null);
 
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);

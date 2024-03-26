@@ -321,6 +321,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     pref = findPreference(getString(R.string.pref_Notifications_Events_key));
                     if (pref != null) pref.setEnabled(isNotifyEnabled);
 
+                    pref = findPreference(getString(R.string.pref_Notifications_EventSources_key));
+                    if (pref != null) pref.setEnabled(isNotifyEnabled);
+
                     pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
                     if (pref != null) pref.setEnabled(isNotifyEnabled);
 
@@ -347,6 +350,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (pref != null) prefCat.removePreference(pref);
 
                     pref = findPreference(getString(R.string.pref_Notifications_Events_key));
+                    if (pref != null) prefCat.removePreference(pref);
+
+                    pref = findPreference(getString(R.string.pref_Notifications_EventSources_key));
                     if (pref != null) prefCat.removePreference(pref);
 
                     pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
@@ -699,11 +705,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectHolidays();
                 return true;
 
-            } else if (getString(R.string.pref_List_EventSources_key).equals(key)) {
+            } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key)) {
 
-
-
-            } else if (getString(R.string.pref_Notifications_EventSources_key).equals(key)) {
+                selectEventSources(key);
+                return true;
 
             }
 
@@ -2268,12 +2273,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Events_Favorite_key),
                         getString(R.string.pref_Events_Favorite_rawIds_key),
                         getString(R.string.pref_List_EventInfo_key),
+                        getString(R.string.pref_List_EventSources_key),
                         getString(R.string.pref_List_AgeFormat_key),
                         getString(R.string.pref_MergedID_key),
                         getString(R.string.pref_MergedRawID_key),
                         getString(R.string.pref_Notifications_Days_key),
                         getString(R.string.pref_Notifications_Events_key),
                         getString(R.string.pref_Notifications_QuickActions_key),
+                        getString(R.string.pref_Notifications_EventSources_key),
                         getString(R.string.pref_Events_Silent_key),
                         getString(R.string.pref_Events_Silent_rawIds_key),
                         getString(R.string.pref_xDaysEvents_key),
@@ -2371,6 +2378,49 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
+        }
+    }
+
+    private void selectEventSources(String idToPass) {
+        try {
+
+            final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
+            eventSources.getEventSources();
+
+            if (idToPass.equals(getString(R.string.pref_List_EventSources_key))) {
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
+                        this, idToPass);
+            } else if (idToPass.equals(getString(R.string.pref_Notifications_EventSources_key))) {
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications_EventSources),
+                        this, idToPass);
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public void getSelectedSources(String id, List<String> newSelectedSources) {
+        try {
+
+            if (id.equals(getString(R.string.pref_List_EventSources_key))) {
+
+                eventsData.preferences_list_EventSources.clear();
+                eventsData.preferences_list_EventSources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+
+            } else if (id.equals(getString(R.string.pref_Notifications_EventSources_key))) {
+
+                eventsData.preferences_notifications_EventSources.clear();
+                eventsData.preferences_notifications_EventSources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

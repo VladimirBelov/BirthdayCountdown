@@ -23,6 +23,7 @@
 -keep class androidx.core.app.CoreComponentFactory { *; }
 -keep class org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetConfigureActivity { *; }
+-keep class org.vovka.birthdaycountdown.SettingsActivity { *; }
 
 #section for local images
 -keepclassmembers class **.R$* {

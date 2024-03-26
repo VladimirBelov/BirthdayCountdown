@@ -13,6 +13,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -113,7 +114,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
@@ -390,6 +390,8 @@ class ContactsEvents {
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
     final List<Integer> preferences_RecentColors = new ArrayList<>();
+    Set<String> preferences_list_EventSources = new HashSet<>();
+    Set<String> preferences_notifications_EventSources = new HashSet<>();
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -1036,6 +1038,8 @@ class ContactsEvents {
             preferences_list_magnify_date = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Date_key), 0);
             preferences_list_magnify_age = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Age_key), 0);
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), resources.getBoolean(R.bool.pref_List_FastScroll_default));
+            preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
+            preferences_notifications_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());
 
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
@@ -1498,6 +1502,8 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Details_key), preferences_list_magnify_details);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
+            editor.putStringSet(context.getString(R.string.pref_List_EventSources_key), preferences_list_EventSources);
+            editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_EventSources);
 
             editor.commit();
 
@@ -5007,26 +5013,38 @@ class ContactsEvents {
                 }
             } else if (birthdayDatesForIds.containsKey(contactID)) {
                 Date birthDate = birthdayDatesForIds.get(contactID);
-                if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
-                    Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                    Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateFirstTime]);
-                    if (eventDate != null && birthDate != null) {
-                        age = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
-                    }
-                } else { //Другие события
-                    Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                    Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateThisTime]);
-                    if (eventDate != null && birthDate != null) {
-                        if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
-                            age = resources.getString(R.string.msg_age_could_be);
-                        } else if (eventDate.compareTo(today) == 0) {
-                            age = resources.getString(R.string.msg_age_now);
-                        } else {
-                            age = resources.getString(R.string.msg_age_will_be);
+                if (birthDate != null) {
+                    if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                        Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateFirstTime]);
+                        if (eventDate != null) {
+                            age = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
                         }
-                        age = age.concat(countDaysDiffText(birthDate, eventDate, 3));
+                        //Необходимо обновить текущий возраст в дне рождении
+                        final String key = contactID + Constants.STRING_2HASH + getEventType(Constants.Type_BirthDay);
+                        if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
+                            Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
+                            if (eventIndex != null && eventIndex <= eventList.size()) {
+                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                                singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(countDaysDiffText(birthDate, today, 3)));
+                                eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                            }
+                        }
+                    } else { //Другие события
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                        Date eventDate = sdfYear.parse(singleEventArray[Position_eventDateThisTime]);
+                        if (eventDate != null) {
+                            if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
+                                age = resources.getString(R.string.msg_age_could_be);
+                            } else if (eventDate.compareTo(today) == 0) {
+                                age = resources.getString(R.string.msg_age_now);
+                            } else {
+                                age = resources.getString(R.string.msg_age_will_be);
+                            }
+                            age = age.concat(countDaysDiffText(birthDate, eventDate, 3));
+                        }
                     }
                 }
             } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])) {
@@ -9400,7 +9418,7 @@ class ContactsEvents {
 
     }
 
-    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String methodToInvoke) {
+    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String idToPass) {
 
         final List<String> eventSourcesSelected = new ArrayList<>();
         try {
@@ -9467,10 +9485,15 @@ class ContactsEvents {
                                     eventSourcesSelected.add(eventSources.getHashes().get(checked.keyAt(i)));
                                 }
                             }
-                            if (methodToInvoke != null && baseContext instanceof AppCompatActivity) {
+                            if (baseContext instanceof Activity) {
                                 try {
-                                    Method method = baseContext.getClass().getMethod(methodToInvoke, List.class);
-                                    method.invoke(baseContext, eventSourcesSelected);
+                                    if (idToPass == null) {
+                                        Method method = baseContext.getClass().getMethod("getSelectedSources", List.class);
+                                        method.invoke(baseContext, eventSourcesSelected);
+                                    } else {
+                                        Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
+                                        method.invoke(baseContext, idToPass, eventSourcesSelected);
+                                    }
                                 } catch (Exception ignored) {/**/}
                             }
 

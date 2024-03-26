@@ -945,7 +945,7 @@
     <string name="pref_Notifications_EventTypes_summary">Какие события включать в уведомления</string>
 
     <string name="pref_Notifications_EventSources_title">Источники событий</string>
-    <string name="pref_Notifications_EventSources_description">Показаывать уведомления только для этих источников событий</string>
+    <string name="pref_Notifications_EventSources_description">Показывать уведомления только для этих источников событий</string>
 
     <string name="pref_Notifications_AlarmHour_title">Время уведомления</string>
     <string name="pref_Notifications_AlarmHour_summary">В какое время уведомлять о событиях</string>
