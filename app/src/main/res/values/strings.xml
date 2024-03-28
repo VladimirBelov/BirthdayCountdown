@@ -1062,6 +1062,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No events displayed</h2>This information may help:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Event types: %1$s</p>
+        <p>Event sources: %14$s</p>
         <p>Filter: %13$s</p>
         <h4>Events from contacts:</h4><ul>%2$s
             <li>show events from accounts: %3$s</li>

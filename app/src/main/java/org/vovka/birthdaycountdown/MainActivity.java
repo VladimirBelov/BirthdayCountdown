@@ -2077,7 +2077,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsUnrecognizedEvents = 0;
             int statsVisibleEvents = 0;
             eventsData.statEventsPrevEventsFound = 0;
-            final List<String> eventList_toPrepare = new ArrayList<>(eventsData.eventList);
+            //final List<String> eventList_toPrepare = new ArrayList<>(eventsData.eventList);
             dataList.clear();
             dataListFull.clear();
 
@@ -2086,10 +2086,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
-                for (String event : eventList_toPrepare) {
+                for (String event : eventsData.eventList) {
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                     String eventKey = eventsData.getEventKey(singleEventArray);
                     String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+
+                    //Фильтр по источникам
+                    if (!eventsData.preferences_list_EventSources.isEmpty()) {
+                        final String eventDates = singleEventArray[ContactsEvents.Position_dates];
+                        boolean isVisibleEvent = false;
+                        for (String source: eventsData.preferences_list_EventSources) {
+                            if (eventDates.contains(source)) {
+                                isVisibleEvent = true;
+                                break;
+                            }
+                        }
+                        if (!isVisibleEvent) continue;
+                    }
 
                     boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
                     boolean skipAdd = false;
@@ -2101,6 +2114,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             skipAdd = true;
                         }
                     }
+
+                    //Фильтр по типам
                     if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
                         statsAllEvents++;
 
@@ -2113,6 +2128,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (isSilencedEvent) statsSilencedEvents++;
                         if (isXDayEvent) statsXDaysEvents++;
 
+                        //Фильтр по режиму отображения
                         if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений

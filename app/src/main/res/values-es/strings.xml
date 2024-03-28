@@ -1056,6 +1056,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 No se muestran eventos</h2>Esta información puede ayudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Tipos de eventos: %1$s</p>
+        <p>Fuentes de eventos: %14$s</p>
         <p>Filtro: %13$s</p>
          <h4>Eventos de contactos:</h4><ul>%2$s
              <li>mostrar eventos de cuentas: %3$s</li>

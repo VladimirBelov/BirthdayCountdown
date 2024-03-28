@@ -1056,6 +1056,7 @@
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Няма падзей для паказу</h2>Гэта інфармацыя можа дапамагчы:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Тыпы падзей: %1$s</p>
+        <p>Крыніцы падзей: %14$s</p>
         <p>Фільтр: %13$s</p>
         <h4>Падзеі кантактаў:</h4><ul>%2$s
             <li>паказваць падзеі з акаўнтаў: %3$s</li>

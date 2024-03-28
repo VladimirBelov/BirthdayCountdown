@@ -1056,6 +1056,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
         <p>Ereignistypen: %1$s</p>
+        <p>Ereignisquellen: %14$s</p>
         <p>Filter: %13$s</p>
         <h4>Kontaktereignisse:</h4><ul>%2$s
             <li>Ereignisse von Konten anzeigen: %3$s</li>

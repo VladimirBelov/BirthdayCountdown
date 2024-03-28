@@ -367,7 +367,8 @@ class ContactsEvents {
      * */
     private int preferences_notifications_type;
     private int preferences_notifications_priority;
-    private Set<String> preferences_notifications_event_types;
+    private Set<String> preferences_notifications_EventTypes = new HashSet<>();
+    Set<String> preferences_notifications_EventSources = new HashSet<>();
     private Set<String> preferences_notifications_quick_actions;
     private Set<String> preferences_hiddenEvents = new HashSet<>();
     private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
@@ -391,7 +392,6 @@ class ContactsEvents {
     private int preferences_IconPackNumber;
     final List<Integer> preferences_RecentColors = new ArrayList<>();
     Set<String> preferences_list_EventSources = new HashSet<>();
-    Set<String> preferences_notifications_EventSources = new HashSet<>();
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -1259,7 +1259,7 @@ class ContactsEvents {
             if (preferences_notifications_alarm_minute < 0)
                 preferences_notifications_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
             preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-            preferences_notifications_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types //По-умолчанию берём из списка событий
+            preferences_notifications_EventTypes = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types //По-умолчанию берём из списка событий
             );
             preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
             preferences_notifications_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
@@ -5591,7 +5591,21 @@ class ContactsEvents {
                     final String eventKey = getEventKey(singleEventArray);
                     final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
-                    if (preferences_notifications_event_types.contains(singleEventArray[Position_eventType])
+                    //Фильтр по источникам
+                    if (!preferences_notifications_EventSources.isEmpty()) {
+                        final String eventDates = singleEventArray[ContactsEvents.Position_dates];
+                        boolean isVisibleEvent = false;
+                        for (String source: preferences_notifications_EventSources) {
+                            if (eventDates.contains(source)) {
+                                isVisibleEvent = true;
+                                break;
+                            }
+                        }
+                        if (!isVisibleEvent) continue;
+                    }
+
+                    //Фильтр по типам событий
+                    if (preferences_notifications_EventTypes.contains(singleEventArray[Position_eventType])
                             && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))
                             && (getSilencedEventsCount() == 0 || !checkIsSilencedEvent(eventKey, eventKeyWithRawId))) {
 
@@ -8157,17 +8171,32 @@ class ContactsEvents {
 
         try {
 
-            String[] typeIDs = resources.getStringArray(R.array.pref_EventTypes_values);
-            String[] typeNames = resources.getStringArray(R.array.pref_EventTypes_entries);
             StringBuilder listEventsTypes = new StringBuilder();
-            for (int i = 0; i < typeIDs.length; i++) {
-                if (preferences_list_event_types.contains(typeIDs[i])) {
-                    if (listEventsTypes.length() > 0)
-                        listEventsTypes.append(Constants.STRING_COMMA_SPACE);
-                    listEventsTypes.append(typeNames[i]);
+            if (!preferences_list_event_types.isEmpty()) {
+                String[] typeIDs = resources.getStringArray(R.array.pref_EventTypes_values);
+                String[] typeNames = resources.getStringArray(R.array.pref_EventTypes_entries);
+                for (int i = 0; i < typeIDs.length; i++) {
+                    if (preferences_list_event_types.contains(typeIDs[i])) {
+                        if (listEventsTypes.length() > 0) listEventsTypes.append(Constants.STRING_COMMA_SPACE);
+                        listEventsTypes.append(typeNames[i]);
+                    }
+                }
+            }
+            StringBuilder listEventsSources = new StringBuilder();
+            if (!preferences_list_EventSources.isEmpty()) {
+                final EventSources eventSources = new EventSources();
+                eventSources.getEventSources();
+                List<String> EventsSourcesHashes = eventSources.getHashes();
+                for (int i = 0; i < EventsSourcesHashes.size(); i++) {
+                    String hash = EventsSourcesHashes.get(i);
+                    if (preferences_list_EventSources.contains(hash)) {
+                        if (listEventsSources.length() > 0) listEventsSources.append(Constants.STRING_COMMA_SPACE);
+                        listEventsSources.append(eventSources.getTitles().get(i));
+                    }
                 }
             }
             if (map_calendars.isEmpty()) recieveCalendarList();
+
             final String result = resources.getString(R.string.msg_zero_events_body,
                     (preferences_list_event_types.isEmpty() ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none) : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END,
                     resources.getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END) + resources.getString(R.string.stats_permissions_contacts, !checkNoContactsAccess() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END),
@@ -8201,7 +8230,8 @@ class ContactsEvents {
                             resources.getString(R.string.events_scope_silenced),
                             resources.getString(R.string.events_scope_xdays),
                             resources.getString(R.string.events_scope_unrecognized),
-                            resources.getString(R.string.events_scope_favorite)).get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END)
+                            resources.getString(R.string.events_scope_favorite)).get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END),
+                    (listEventsSources.length() == 0 ? resources.getString(R.string.msg_all) : listEventsSources.toString())
             );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 return result;
