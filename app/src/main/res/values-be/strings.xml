@@ -637,50 +637,50 @@
     <string name="pref_Widgets_EventInfo_title">Дэталі падзеі</string>
     <string name="pref_Widgets_EventInfo_summary">Якія дэталі падзеі і элементы віджэта паказваць па змаўчанні</string>
 
-    <string name="pref_Widgets_EventInfo_None">Нічога</string>
-    <string name="pref_Widgets_EventInfo_Border">Бардзюр віджэта</string>
-    <string name="pref_Widgets_EventInfo_Dividers">Падзельнік падзей</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig">Кнопка канфігурацыі</string>
-    <string name="pref_Widgets_EventInfo_Photo">Фота кантакту</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Абразок тыпу падзеі</string>
-    <string name="pref_Widgets_EventInfo_EventCaption">Падрабязнасці падзеі</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Абразок абранага кантакту</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Знак задыяка</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Жывёла ва ўсходнім календары</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Дата выточнай падзеі</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Дата выточнай падзеі з годам</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Дата падзеі</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Дата падзеі з годам</string>
-    <string name="pref_Widgets_EventInfo_EventTitle">Загаловак падзеі</string>
-    <string name="pref_Widgets_EventInfo_Age">Узрост (гадавіна)</string>
-    <string name="pref_Widgets_EventInfo_CurrentAge">Бягучы ўзрост</string>
-    <string name="pref_Widgets_EventInfo_WeddingName">Назва гадавіны вяселля</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Дзён да падзеі</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Дзён да падзеі (кароткае)</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Дзён да падзеі (калі падзея не найблізкая)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Дзень тыдня падзеі</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Дзень тыдня падзеі (кароткае)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Дзень тыдня падзеі (калі падзея не найблізкая)</string>
-    <string name="pref_Widgets_EventInfo_Organization">Арганізацыя</string>
-    <string name="pref_Widgets_EventInfo_JobTitle">Пасада</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼‍📆📁 Абразок крыніцы падзеі</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Ёсць web спасылка</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets">Акружаць даты дужкамі</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Афарбоўваць колерам даты ўсю падзею</string>
-    <string name="pref_Widgets_EventInfo_NewLine1">"- новы радок -"</string>
-    <string name="pref_Widgets_EventInfo_NewLine2">"- новы радок - "</string>
-    <string name="pref_Widgets_EventInfo_NewLine3">"- новы радок -  "</string>
+    <string name="pref_EventInfo_None">Нічога</string>
+    <string name="pref_EventInfo_Border">Бардзюр віджэта</string>
+    <string name="pref_EventInfo_Dividers">Падзельнік падзей</string>
+    <string name="pref_EventInfo_ButtonConfig">Кнопка канфігурацыі</string>
+    <string name="pref_EventInfo_Photo">Фота кантакту</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Абразок тыпу падзеі</string>
+    <string name="pref_EventInfo_EventCaption">Надпіс падзеі</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Абразок абранага кантакту</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Знак задыяка</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Жывёла ва ўсходнім календары</string>
+    <string name="pref_EventInfo_EventDate_Original">Дата выточнай падзеі</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Дата выточнай падзеі з годам</string>
+    <string name="pref_EventInfo_EventDate">Дата падзеі</string>
+    <string name="pref_EventInfo_EventDate_WithYear">Дата падзеі з годам</string>
+    <string name="pref_EventInfo_EventTitle">Загаловак падзеі (ПІБ)</string>
+    <string name="pref_EventInfo_Age">Узрост (гадавіна)</string>
+    <string name="pref_EventInfo_CurrentAge">Бягучы ўзрост</string>
+    <string name="pref_EventInfo_WeddingName">Назва гадавіны вяселля</string>
+    <string name="pref_EventInfo_DaysBeforeEvent">Дзён да падзеі</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort">Дзён да падзеі (кароткае)</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar">Дзён да падзеі (калі падзея не найблізкая)</string>
+    <string name="pref_EventInfo_EventDayOfWeek">Дзень тыдня падзеі</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort">Дзень тыдня падзеі (кароткае)</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar">Дзень тыдня падзеі (калі падзея не найблізкая)</string>
+    <string name="pref_EventInfo_Organization">Арганізацыя</string>
+    <string name="pref_EventInfo_JobTitle">Пасада</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Абразок крыніцы падзеі</string>
+    <string name="pref_EventInfo_LinkIcon">🔗 Ёсць web спасылка</string>
+    <string name="pref_EventInfo_DatesInBrackets">Акружаць даты дужкамі</string>
+    <string name="pref_EventInfo_ColorizeEntireRow">Афарбоўваць колерам даты ўсю падзею</string>
+    <string name="pref_EventInfo_NewLine1">"- новы радок -"</string>
+    <string name="pref_EventInfo_NewLine2">"- новы радок - "</string>
+    <string name="pref_EventInfo_NewLine3">"- новы радок -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>@string/pref_Widgets_EventInfo_Border</item>
-        <item>@string/pref_Widgets_EventInfo_Photo</item>
-        <item>@string/pref_Widgets_EventInfo_Age</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+        <item>@string/pref_EventInfo_Border</item>
+        <item>@string/pref_EventInfo_Photo</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_SilentedIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Надпіс (ніжні шэраг)</string>

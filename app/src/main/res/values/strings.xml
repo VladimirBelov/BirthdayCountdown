@@ -640,50 +640,50 @@
     <string name="pref_Widgets_EventInfo_title">Event details</string>
     <string name="pref_Widgets_EventInfo_summary">What event details and widget elements to show by default</string>
 
-    <string name="pref_Widgets_EventInfo_None">None</string>
-    <string name="pref_Widgets_EventInfo_Border">Widget border</string>
-    <string name="pref_Widgets_EventInfo_Dividers">Events dividers</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig">Config button</string>
-    <string name="pref_Widgets_EventInfo_Photo">Contact photo</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Event type icon</string>
-    <string name="pref_Widgets_EventInfo_EventCaption">Event details</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Favorites icon</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Silenced event icon</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Zodiac sign</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Chinese calendar year</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Original event date</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Original event date with year</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Event date</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Event date with year</string>
-    <string name="pref_Widgets_EventInfo_EventTitle">Event title</string>
-    <string name="pref_Widgets_EventInfo_Age">Age (anniversary)</string>
-    <string name="pref_Widgets_EventInfo_CurrentAge">Current age</string>
-    <string name="pref_Widgets_EventInfo_WeddingName">Wedding anniversary name</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Days before event</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Days before event (short format)</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Days before event (not near event)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Event day of week</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Event day of week (short format)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Event day of week (not near event)</string>
-    <string name="pref_Widgets_EventInfo_Organization">Organization</string>
-    <string name="pref_Widgets_EventInfo_JobTitle">Title</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Web link available</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets">Surround dates by brackets</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
-    <string name="pref_Widgets_EventInfo_NewLine1">"- new line -"</string>
-    <string name="pref_Widgets_EventInfo_NewLine2">"- new line - "</string>
-    <string name="pref_Widgets_EventInfo_NewLine3">"- new line -  "</string>
+    <string name="pref_EventInfo_None">None</string>
+    <string name="pref_EventInfo_Border">Widget border</string>
+    <string name="pref_EventInfo_Dividers">Events dividers</string>
+    <string name="pref_EventInfo_ButtonConfig">Config button</string>
+    <string name="pref_EventInfo_Photo">Contact photo</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Event type icon</string>
+    <string name="pref_EventInfo_EventCaption">Event caption</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Favorites icon</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Silenced event icon</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Zodiac sign</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Chinese calendar year</string>
+    <string name="pref_EventInfo_EventDate_Original">Original event date</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Original event date with year</string>
+    <string name="pref_EventInfo_EventDate">Event date</string>
+    <string name="pref_EventInfo_EventDate_WithYear">Event date with year</string>
+    <string name="pref_EventInfo_EventTitle">Event title (Person name)</string>
+    <string name="pref_EventInfo_Age">Age (anniversary)</string>
+    <string name="pref_EventInfo_CurrentAge">Current age</string>
+    <string name="pref_EventInfo_WeddingName">Wedding anniversary name</string>
+    <string name="pref_EventInfo_DaysBeforeEvent">Days before event</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort">Days before event (short format)</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar">Days before event (not near event)</string>
+    <string name="pref_EventInfo_EventDayOfWeek">Event day of week</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort">Event day of week (short format)</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar">Event day of week (not near event)</string>
+    <string name="pref_EventInfo_Organization">Organization</string>
+    <string name="pref_EventInfo_JobTitle">Title</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
+    <string name="pref_EventInfo_LinkIcon">🔗 Web link available</string>
+    <string name="pref_EventInfo_DatesInBrackets">Surround dates by brackets</string>
+    <string name="pref_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
+    <string name="pref_EventInfo_NewLine1">"- new line -"</string>
+    <string name="pref_EventInfo_NewLine2">"- new line - "</string>
+    <string name="pref_EventInfo_NewLine3">"- new line -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>@string/pref_Widgets_EventInfo_Border</item>
-        <item>@string/pref_Widgets_EventInfo_Photo</item>
-        <item>@string/pref_Widgets_EventInfo_Age</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+        <item>@string/pref_EventInfo_Border</item>
+        <item>@string/pref_EventInfo_Photo</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_SilentedIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Event caption (bottom row)</string>
@@ -946,6 +946,22 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="pref_Notifications_EventSources_title">Event sources</string>
     <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources</string>
+
+    <string name="pref_Notifications_EventInfo_title">Event details</string>
+    <string name="pref_Notifications_EventInfo_summary">What kind of event details to show in notification</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Alarm time</string>
     <string name="pref_Notifications_AlarmHour_summary">What time is to notify</string>
@@ -1731,50 +1747,50 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>16</item>
     </string-array>
 
-    <string name="pref_Widgets_EventInfo_None_ID" translatable="false">0</string>
-    <string name="pref_Widgets_EventInfo_Photo_ID" translatable="false">1</string>
-    <string name="pref_Widgets_EventInfo_EventIcon_ID" translatable="false">2</string>
-    <string name="pref_Widgets_EventInfo_FavIcon_ID" translatable="false">3</string>
-    <string name="pref_Widgets_EventInfo_ZodiacSign_ID" translatable="false">4</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear_ID" translatable="false">5</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon_ID" translatable="false">6</string>
-    <string name="pref_Widgets_EventInfo_EventCaption_ID" translatable="false">7</string>
-    <string name="pref_Widgets_EventInfo_Border_ID" translatable="false">10</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_ID" translatable="false">11</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear_ID" translatable="false">12</string>
-    <string name="pref_Widgets_EventInfo_EventDate_ID" translatable="false">13</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear_ID" translatable="false">14</string>
-    <string name="pref_Widgets_EventInfo_EventTitle_ID" translatable="false">15</string>
-    <string name="pref_Widgets_EventInfo_Age_ID" translatable="false">16</string>
-    <string name="pref_Widgets_EventInfo_WeddingName_ID" translatable="false">17</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar_ID" translatable="false">18</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar_ID" translatable="false">19</string>
-    <string name="pref_Widgets_EventInfo_Organization_ID" translatable="false">20</string>
-    <string name="pref_Widgets_EventInfo_JobTitle_ID" translatable="false">21</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon_ID" translatable="false">22</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon_ID" translatable="false">23</string>
-    <string name="pref_Widgets_EventInfo_NewLine1_ID" translatable="false">24</string>
-    <string name="pref_Widgets_EventInfo_NewLine2_ID" translatable="false">25</string>
-    <string name="pref_Widgets_EventInfo_NewLine3_ID" translatable="false">26</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEvent_ID" translatable="false">27</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeek_ID" translatable="false">28</string>
-    <string name="pref_Widgets_EventInfo_Dividers_ID" translatable="false">29</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig_ID" translatable="false">30</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort_ID" translatable="false">31</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets_ID" translatable="false">32</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
-    <string name="pref_Widgets_EventInfo_CurrentAge_ID" translatable="false">35</string>
+    <string name="pref_EventInfo_None_ID" translatable="false">0</string>
+    <string name="pref_EventInfo_Photo_ID" translatable="false">1</string>
+    <string name="pref_EventInfo_EventIcon_ID" translatable="false">2</string>
+    <string name="pref_EventInfo_FavIcon_ID" translatable="false">3</string>
+    <string name="pref_EventInfo_ZodiacSign_ID" translatable="false">4</string>
+    <string name="pref_EventInfo_ZodiacYear_ID" translatable="false">5</string>
+    <string name="pref_EventInfo_SilentedIcon_ID" translatable="false">6</string>
+    <string name="pref_EventInfo_EventCaption_ID" translatable="false">7</string>
+    <string name="pref_EventInfo_Border_ID" translatable="false">10</string>
+    <string name="pref_EventInfo_EventDate_Original_ID" translatable="false">11</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear_ID" translatable="false">12</string>
+    <string name="pref_EventInfo_EventDate_ID" translatable="false">13</string>
+    <string name="pref_EventInfo_EventDate_WithYear_ID" translatable="false">14</string>
+    <string name="pref_EventInfo_EventTitle_ID" translatable="false">15</string>
+    <string name="pref_EventInfo_Age_ID" translatable="false">16</string>
+    <string name="pref_EventInfo_WeddingName_ID" translatable="false">17</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar_ID" translatable="false">18</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar_ID" translatable="false">19</string>
+    <string name="pref_EventInfo_Organization_ID" translatable="false">20</string>
+    <string name="pref_EventInfo_JobTitle_ID" translatable="false">21</string>
+    <string name="pref_EventInfo_SourceIcon_ID" translatable="false">22</string>
+    <string name="pref_EventInfo_LinkIcon_ID" translatable="false">23</string>
+    <string name="pref_EventInfo_NewLine1_ID" translatable="false">24</string>
+    <string name="pref_EventInfo_NewLine2_ID" translatable="false">25</string>
+    <string name="pref_EventInfo_NewLine3_ID" translatable="false">26</string>
+    <string name="pref_EventInfo_DaysBeforeEvent_ID" translatable="false">27</string>
+    <string name="pref_EventInfo_EventDayOfWeek_ID" translatable="false">28</string>
+    <string name="pref_EventInfo_Dividers_ID" translatable="false">29</string>
+    <string name="pref_EventInfo_ButtonConfig_ID" translatable="false">30</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort_ID" translatable="false">31</string>
+    <string name="pref_EventInfo_DatesInBrackets_ID" translatable="false">32</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
+    <string name="pref_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
+    <string name="pref_EventInfo_CurrentAge_ID" translatable="false">35</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
-        <item>@string/pref_Widgets_EventInfo_Border_ID</item>
-        <item>@string/pref_Widgets_EventInfo_Photo_ID</item>
-        <item>@string/pref_Widgets_EventInfo_Age_ID</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon_ID</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon_ID</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon_ID</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacSign_ID</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear_ID</item>
+        <item>@string/pref_EventInfo_Border_ID</item>
+        <item>@string/pref_EventInfo_Photo_ID</item>
+        <item>@string/pref_EventInfo_Age_ID</item>
+        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_FavIcon_ID</item>
+        <item>@string/pref_EventInfo_SilentedIcon_ID</item>
+        <item>@string/pref_EventInfo_ZodiacSign_ID</item>
+        <item>@string/pref_EventInfo_ZodiacYear_ID</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
@@ -1947,6 +1963,29 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string-array name="pref_Notifications_Days_values_default" translatable="false">
         <item>0</item>
+    </string-array>
+
+    <string name="pref_Notifications_EventInfo_key" translatable="false">Notifications_EventInfo</string>
+    <string-array name="pref_Notifications_EventInfo_values_default" translatable="false">
+        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_EventDate_ID</item>
+        <item>@string/pref_EventInfo_EventTitle_ID</item>
+        <item>@string/pref_EventInfo_Age_ID</item>
+        <item>@string/pref_EventInfo_WeddingName_ID</item>
+    </string-array>
+
+    <string-array name="pref_Notifications_EventInfo_values" translatable="false">
+        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_SourceIcon_ID</item>
+        <item>@string/pref_EventInfo_FavIcon_ID</item>
+        <item>@string/pref_EventInfo_ZodiacSign_ID</item>
+        <item>@string/pref_EventInfo_EventDate_ID</item>
+        <item>@string/pref_EventInfo_EventTitle_ID</item>
+        <item>@string/pref_EventInfo_Age_ID</item>
+        <item>@string/pref_EventInfo_WeddingName_ID</item>
+        <item>@string/pref_EventInfo_Organization_ID</item>
+        <item>@string/pref_EventInfo_JobTitle_ID</item>
+        <item>@string/pref_EventInfo_EventCaption_ID</item>
     </string-array>
 
     <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>

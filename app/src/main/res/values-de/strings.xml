@@ -637,50 +637,50 @@
     <string name="pref_Widgets_EventInfo_title">Ereignisdetails</string>
     <string name="pref_Widgets_EventInfo_summary">Welche Ereignisdetails und Widget-Elemente standardmäßig angezeigt werden sollen</string>
 
-    <string name="pref_Widgets_EventInfo_None">Keine</string>
-    <string name="pref_Widgets_EventInfo_Border">Umrahmung</string>
-    <string name="pref_Widgets_EventInfo_Dividers">Teiler für Ereignisse</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig">Einstellungen-Taste</string>
-    <string name="pref_Widgets_EventInfo_Photo">Kontaktfoto</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
-    <string name="pref_Widgets_EventInfo_EventCaption">Ereignisdetails</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Favoriten-Symbol</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Sternzeichen</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
-    <string name="pref_Widgets_EventInfo_EventDate">Ereignisdatum</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
-    <string name="pref_Widgets_EventInfo_EventTitle">Ereignistitel</string>
-    <string name="pref_Widgets_EventInfo_Age">Alter (Jahrestag)</string>
-    <string name="pref_Widgets_EventInfo_CurrentAge">Aktuelles Alter</string>
-    <string name="pref_Widgets_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">Tage vor dem Ereignis (kurzes Format)</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (ferneres Ereignis)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">Wochentag des Ereignisses (kurzes Format)</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
-    <string name="pref_Widgets_EventInfo_Organization">Unternehmen</string>
-    <string name="pref_Widgets_EventInfo_JobTitle">Position</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets">Schließen Sie Datumsangaben in Klammern ein</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
-    <string name="pref_Widgets_EventInfo_NewLine1">"- neue Zeile -"</string>
-    <string name="pref_Widgets_EventInfo_NewLine2">"- neue Zeile - "</string>
-    <string name="pref_Widgets_EventInfo_NewLine3">"- neue Zeile -  "</string>
+    <string name="pref_EventInfo_None">Keine</string>
+    <string name="pref_EventInfo_Border">Umrahmung</string>
+    <string name="pref_EventInfo_Dividers">Teiler für Ereignisse</string>
+    <string name="pref_EventInfo_ButtonConfig">Einstellungen-Taste</string>
+    <string name="pref_EventInfo_Photo">Kontaktfoto</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
+    <string name="pref_EventInfo_EventCaption">Ereignisbildunterschrift</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Favoriten-Symbol</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Sternzeichen</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
+    <string name="pref_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
+    <string name="pref_EventInfo_EventDate">Ereignisdatum</string>
+    <string name="pref_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
+    <string name="pref_EventInfo_EventTitle">Ereignistitel (Name)</string>
+    <string name="pref_EventInfo_Age">Alter (Jahrestag)</string>
+    <string name="pref_EventInfo_CurrentAge">Aktuelles Alter</string>
+    <string name="pref_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
+    <string name="pref_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort">Tage vor dem Ereignis (kurzes Format)</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar">Tage vor dem Ereignis (ferneres Ereignis)</string>
+    <string name="pref_EventInfo_EventDayOfWeek">Wochentag des Ereignisses</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort">Wochentag des Ereignisses (kurzes Format)</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
+    <string name="pref_EventInfo_Organization">Unternehmen</string>
+    <string name="pref_EventInfo_JobTitle">Position</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
+    <string name="pref_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
+    <string name="pref_EventInfo_DatesInBrackets">Schließen Sie Datumsangaben in Klammern ein</string>
+    <string name="pref_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
+    <string name="pref_EventInfo_NewLine1">"- neue Zeile -"</string>
+    <string name="pref_EventInfo_NewLine2">"- neue Zeile - "</string>
+    <string name="pref_EventInfo_NewLine3">"- neue Zeile -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>@string/pref_Widgets_EventInfo_Border</item>
-        <item>@string/pref_Widgets_EventInfo_Photo</item>
-        <item>@string/pref_Widgets_EventInfo_Age</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+        <item>@string/pref_EventInfo_Border</item>
+        <item>@string/pref_EventInfo_Photo</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_SilentedIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">Bildunterschrift (untere Reihe)</string>

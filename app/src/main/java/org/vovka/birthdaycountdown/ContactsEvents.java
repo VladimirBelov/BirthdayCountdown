@@ -369,6 +369,7 @@ class ContactsEvents {
     private int preferences_notifications_priority;
     private Set<String> preferences_notifications_EventTypes = new HashSet<>();
     Set<String> preferences_notifications_EventSources = new HashSet<>();
+    Set<String> preferences_notifications_EventInfo = new HashSet<>();
     private Set<String> preferences_notifications_quick_actions;
     private Set<String> preferences_hiddenEvents = new HashSet<>();
     private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
@@ -718,10 +719,10 @@ class ContactsEvents {
         displayMetrics_density = displayMetrics.density;
 
         pref_Widgets_EventInfo_Info_Default = new HashSet<>();
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_Widgets_EventInfo_Border_ID));
+        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_Photo_ID));
+        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_EventIcon_ID));
+        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_FavIcon_ID));
+        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_Border_ID));
 
         pref_List_Event_Info_Default = new HashSet<>();
         pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_Photo));
@@ -1005,14 +1006,14 @@ class ContactsEvents {
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
-            preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), resources.getBoolean(R.bool.pref_Help_Debug_On_default));
-            preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), resources.getBoolean(R.bool.pref_Help_InfoMsg_On_default));
-            preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), resources.getBoolean(R.bool.pref_Help_ExtraFun_On_default));
+            preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
+            preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
+            preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
             preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
-            preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), resources.getBoolean(R.bool.pref_MenuStyle_default));
+            preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), getResources().getBoolean(R.bool.pref_MenuStyle_default));
 
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
@@ -1037,9 +1038,10 @@ class ContactsEvents {
             preferences_list_magnify_details = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Details_key), 0);
             preferences_list_magnify_date = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Date_key), 0);
             preferences_list_magnify_age = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Age_key), 0);
-            preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), resources.getBoolean(R.bool.pref_List_FastScroll_default));
+            preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
-            preferences_notifications_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());
+            preferences_notifications_EventSources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());
+            preferences_notifications_EventInfo = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventInfo_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_EventInfo_values_default))));
 
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
@@ -5540,6 +5542,31 @@ class ContactsEvents {
         }
     }
 
+    private class NotifyEvent {
+        final String[] singleEventArray;
+        final Date eventDate;
+
+        public NotifyEvent(@NonNull String[] singleEventArray, @NonNull Date eventDate) {
+            this.singleEventArray = singleEventArray;
+            this.eventDate = eventDate;
+        }
+
+        String eventDay() {
+            //todo: выводить в соответствии с настройками
+            return sdf_DDMM.format(eventDate);
+        }
+
+        @NonNull
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, il = singleEventArray.length; i < il; i++) {
+                if (i > 0) sb.append(Constants.STRING_EOT);
+                sb.append(singleEventArray[i]);
+            }
+            return sb.toString();
+        }
+    }
+
     void showNotifications(boolean forceNoEventsMessage, String channelId) {
         //https://www.journaldev.com/15468/android-notification-styling
 
@@ -5557,31 +5584,6 @@ class ContactsEvents {
             now.set(Calendar.SECOND, 0);
             now.set(Calendar.MILLISECOND, 0);
             Date currentDay = now.getTime();
-
-            class NotifyEvent {
-                final String[] singleEventArray;
-                final Date eventDate;
-
-                public NotifyEvent(@NonNull String[] singleEventArray, @NonNull Date eventDate) {
-                    this.singleEventArray = singleEventArray;
-                    this.eventDate = eventDate;
-                }
-
-                String eventDay() {
-                    //todo: выводить в соответствии с настройками
-                    return sdf_DDMM.format(eventDate);
-                }
-
-                @NonNull
-                public String toString() {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0, il = singleEventArray.length; i < il; i++) {
-                        if (i > 0) sb.append(Constants.STRING_EOT);
-                        sb.append(singleEventArray[i]);
-                    }
-                    return sb.toString();
-                }
-            }
 
             List<NotifyEvent> listNotify = new ArrayList<>();
             for (String event : eventList) {
@@ -5633,7 +5635,6 @@ class ContactsEvents {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.cancelAll();
 
-            StringBuilder textBig;
             if (listNotify.isEmpty() || //Тестовое уведомление
                     preferences_notifications_type == 0 || //Одно общее уведомление
                     listNotify.size() >= 3 && preferences_notifications_type == 2 || //Если событий меньше 3 -> отдельные, иначе - общее
@@ -5641,7 +5642,7 @@ class ContactsEvents {
                     preferences_notifications_type == 4 //За сегодня -> отдельные, остальные -> общее
             ) {
 
-                textBig = new StringBuilder();
+                StringBuilder textBig = new StringBuilder();
                 String textSmall = null;
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
@@ -5649,12 +5650,7 @@ class ContactsEvents {
                         if (preferences_notifications_type != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            textBig.append(event.singleEventArray[Position_eventEmoji]).append(Constants.STRING_SPACE).append(event.eventDay()).append(Constants.STRING_SPACE).append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
-                            if (!TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim()))
-                                textBig.append(Constants.STRING_COLON_SPACE).append(event.singleEventArray[Position_age_caption]);
-                            if (event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
-                                textBig.append(Constants.STRING_SPACE).append(substringBefore(event.singleEventArray[Position_eventCaption], Constants.STRING_PARENTHESIS_OPEN));
-                            }
+                            textBig.append(composeNotifyEventDetails(event));
                         }
                     }
                     if (countEvents > 0) {
@@ -5712,23 +5708,17 @@ class ContactsEvents {
                     NotifyEvent event = listNotify.get(i);
 
                     if (preferences_notifications_type != 4 || event.eventDate.equals(currentDay)) {
-                        textBig = new StringBuilder();
-                        textBig.append(event.singleEventArray[Position_eventEmoji]).append(Constants.STRING_SPACE).append(event.eventDay()).append(Constants.STRING_SPACE).append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
-                        if (!TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim()))
-                            textBig.append(Constants.STRING_COLON_SPACE).append(event.singleEventArray[Position_age_caption]);
-                        if (event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
-                            textBig.append(Constants.STRING_SPACE).append(substringBefore(event.singleEventArray[Position_eventCaption], Constants.STRING_PARENTHESIS_OPEN));
-                        }
 
                         int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                         final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                        final String eventDetails = composeNotifyEventDetails(event);
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
                                 .setSmallIcon(R.drawable.ic_icon_notify)
-                                .setContentText(textBig)
+                                .setContentText(eventDetails)
                                 .setContentTitle(event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
-                                .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
 
@@ -5838,6 +5828,89 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private String composeNotifyEventDetails(NotifyEvent event) {
+
+        StringBuilder eventDetails = new StringBuilder();
+        try {
+
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+                eventDetails.append(event.singleEventArray[Position_eventEmoji]);
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
+                eventDetails.append(getEventSourceIcon(event.singleEventArray));
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
+                if (checkIsFavoriteEvent(getEventKey(event.singleEventArray), getEventKeyWithRawId(event.singleEventArray), event.singleEventArray[ContactsEvents.Position_starred])) {
+                    eventDetails.append(substringBefore(resources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE));
+                }
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
+                eventDetails.append(substringBefore(event.singleEventArray[Position_zodiacSign], Constants.STRING_SPACE));
+            }
+
+            eventDetails
+                    .append(Constants.STRING_SPACE)
+                    .append(event.eventDay())
+                    .append(Constants.STRING_SPACE)
+                    .append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
+            if (!TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim()))
+                eventDetails.append(Constants.STRING_COLON_SPACE).append(event.singleEventArray[Position_age_caption]);
+            if (event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
+                eventDetails.append(Constants.STRING_SPACE).append(substringBefore(event.singleEventArray[Position_eventCaption], Constants.STRING_PARENTHESIS_OPEN));
+            }
+
+
+
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return eventDetails.toString();
+    }
+
+    @NonNull String getEventSourceIcon(String[] singleEventArray) {
+
+        List<String> icons = new ArrayList<>();
+        try {
+
+            if (singleEventArray != null && singleEventArray.length > ContactsEvents.Position_dates) {
+                String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                for (String date : dates) {
+                    if (date.startsWith(Constants.EVENT_PREFIX_CALENDAR_EVENT)) {
+                        icons.add(resources.getString(R.string.event_source_calendar));
+                    } else if (date.startsWith(Constants.EVENT_PREFIX_FILE_EVENT)) {
+                        icons.add(resources.getString(R.string.event_source_file));
+                    } else if (date.startsWith(Constants.EVENT_PREFIX_HOLIDAY_EVENT)) {
+
+                        String icon = Constants.STRING_EMPTY;
+                        try {
+                            String eventSource = singleEventArray[ContactsEvents.Position_eventSource];
+                            String prefix = resources.getString(R.string.msg_source_info);
+                            prefix = prefix.substring(0, prefix.indexOf("%1$s"));
+                            eventSource = eventSource.substring(prefix.length());
+                            icon = eventSource.substring(0, eventSource.indexOf(Constants.STRING_SPACE));
+                        } catch (IndexOutOfBoundsException e) { /**/ }
+
+                        if (icon.length() == 4) {
+                            icons.add(icon);
+                        } else {
+                            icons.add(resources.getString(R.string.event_source_internal));
+                        }
+                    } else {
+                        icons.add(resources.getString(R.string.event_source_contact));
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return String.join(Constants.STRING_EMPTY, new HashSet<>(icons));
     }
 
     String getEventKey(@NonNull String[] singleEventArray) {

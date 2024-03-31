@@ -251,87 +251,87 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 case Constants.WIDGET_TYPE_LIST:
 
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Dividers));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
                     if (ContactsEvents.isWidgetSupportConfig()) {
-                        eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig_ID));
-                        eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
+                        eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID));
+                        eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
                     }
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventTitle));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventCaption));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_WeddingName));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventFar_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventFar));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventShort_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEventShort));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekFar));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekShort_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeekShort));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_SourceIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_SourceIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_LinkIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_LinkIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_NewLine1_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_NewLine1));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_NewLine2_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_NewLine2));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_NewLine3_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_NewLine3));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DatesInBrackets));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_WithYear));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventTitle));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_WeddingName));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEventShort));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeekFar));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeek));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeekShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeekShort));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_SourceIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_SourceIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_LinkIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_LinkIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine1_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine1));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine2));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine3_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine3));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:
 
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_None));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Dividers));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_None));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
                     if (ContactsEvents.isWidgetSupportConfig()) {
-                        eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig_ID));
-                        eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
+                        eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID));
+                        eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
                     }
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Photo));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Organization_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Organization));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_JobTitle_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_JobTitle));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventCaption));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_CurrentAge));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
-                    eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDayOfWeek));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventDate_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventDate));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Organization_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Organization));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_JobTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_JobTitle));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_CurrentAge));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeek_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeek));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
                     break;
 
                 default:
 
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_None_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_None));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Border_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Border));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Age_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Age));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_Photo_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_Photo));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_EventIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_EventIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_FavIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_FavIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_SilentedIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_Widgets_EventInfo_ZodiacYear));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_None_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_None));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_SilentedIcon_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_SilentedIcon));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
+                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID));
+                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
             }
 
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
@@ -339,7 +339,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             String[] infoArray = null;
             try {
                 if (widgetPref.size() > 4) {
-                    if (widgetType.equals(Constants.WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_Widgets_EventInfo_None_ID)))) {
+                    if (widgetType.equals(Constants.WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
                         widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
                     }
 
@@ -360,21 +360,21 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 spinnerEventInfo.setItems(this.eventInfoValues);
                 spinnerEventInfo.moveToBeginning(eventInfoSelections); //Двигаем выбранные вперёд
                 spinnerEventInfo.setColored(new ArrayList<String>(){{
-                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original));
-                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_Original_WithYear));
-                    add(getString(R.string.pref_Widgets_EventInfo_EventDate));
-                    add(getString(R.string.pref_Widgets_EventInfo_EventDate_WithYear));
-                    add(getString(R.string.pref_Widgets_EventInfo_DaysBeforeEvent));
+                    add(getString(R.string.pref_EventInfo_EventDate_Original));
+                    add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
+                    add(getString(R.string.pref_EventInfo_EventDate));
+                    add(getString(R.string.pref_EventInfo_EventDate_WithYear));
+                    add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
                 }}, this.eventsData.preferences_widgets_color_event_today);
 
                 ArrayList<String> listNonSorted = new ArrayList<String>() {{
-                    add(getString(R.string.pref_Widgets_EventInfo_Border));
-                    add(getString(R.string.pref_Widgets_EventInfo_Dividers));
+                    add(getString(R.string.pref_EventInfo_Border));
+                    add(getString(R.string.pref_EventInfo_Dividers));
                     if (ContactsEvents.isWidgetSupportConfig()) {
-                        add(getString(R.string.pref_Widgets_EventInfo_ButtonConfig));
+                        add(getString(R.string.pref_EventInfo_ButtonConfig));
                     }
-                    add(getString(R.string.pref_Widgets_EventInfo_DatesInBrackets));
-                    add(getString(R.string.pref_Widgets_EventInfo_ColorizeEntireRow));
+                    add(getString(R.string.pref_EventInfo_DatesInBrackets));
+                    add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
                 spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
@@ -689,7 +689,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             List<String> allSelectedItems = ((RecyclerListFragment) spinnerEventInfo.fragment).adapter.getAllSelectedItems();
-            allSelectedItems.remove(getString(R.string.pref_Widgets_EventInfo_Border));
+            allSelectedItems.remove(getString(R.string.pref_EventInfo_Border));
             if (allSelectedItems.isEmpty()) {
 
                 ToastExpander.showInfoMsg(getApplicationContext(), getString(R.string.msg_no_selection));

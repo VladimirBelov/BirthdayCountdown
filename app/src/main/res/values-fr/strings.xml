@@ -637,50 +637,50 @@
     <string name="pref_Widgets_EventInfo_title">"Détails de l'événement"</string>
     <string name="pref_Widgets_EventInfo_summary">"Quels détails de l'événement et éléments du widget afficher par défaut"</string>
 
-    <string name="pref_Widgets_EventInfo_None">Aucun</string>
-    <string name="pref_Widgets_EventInfo_Border">Bordure du widget</string>
-    <string name="pref_Widgets_EventInfo_Dividers">"Diviseurs des événements"</string>
-    <string name="pref_Widgets_EventInfo_ButtonConfig">Bouton de configuration</string>
-    <string name="pref_Widgets_EventInfo_Photo">Photo du contact</string>
-    <string name="pref_Widgets_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
-    <string name="pref_Widgets_EventInfo_EventCaption">"Détails de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_FavIcon">🌟 Icône du contact sélectionné</string>
-    <string name="pref_Widgets_EventInfo_SilentedIcon">"🚫 Icône de l'événement sans préavis"</string>
-    <string name="pref_Widgets_EventInfo_ZodiacIcon">♊ Signe du zodiaque</string>
-    <string name="pref_Widgets_EventInfo_ZodiacYear">🐂 Animal dans le calendrier oriental</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original">"Date de l'événement originale"</string>
-    <string name="pref_Widgets_EventInfo_EventDate_Original_WithYear">"Date de l'événement originale avec année"</string>
-    <string name="pref_Widgets_EventInfo_EventDate">"Date de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
-    <string name="pref_Widgets_EventInfo_EventTitle">"Titre de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_Age">Âge (anniversaire)</string>
-    <string name="pref_Widgets_EventInfo_CurrentAge">Âge actuel</string>
-    <string name="pref_Widgets_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventShort">"Jours avant l'événement (brièvement)"</string>
-    <string name="pref_Widgets_EventInfo_DaysBeforeEventFar">"Jours avant l'événement (si l'événement n'est pas le plus proche)"</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeek">"Jour de la semaine de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekShort">"Jour de la semaine de l'événement (brièvement)"</string>
-    <string name="pref_Widgets_EventInfo_EventDayOfWeekFar">"Jour de la semaine de l'événement (si l'événement n'est pas le plus proche)"</string>
-    <string name="pref_Widgets_EventInfo_Organization">Organisation</string>
-    <string name="pref_Widgets_EventInfo_JobTitle">Emploi</string>
-    <string name="pref_Widgets_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
-    <string name="pref_Widgets_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
-    <string name="pref_Widgets_EventInfo_DatesInBrackets">Entourer les dates de parenthèses</string>
-    <string name="pref_Widgets_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
-    <string name="pref_Widgets_EventInfo_NewLine1">"- nouvelle ligne -"</string>
-    <string name="pref_Widgets_EventInfo_NewLine2">"- nouvelle ligne - "</string>
-    <string name="pref_Widgets_EventInfo_NewLine3">"- nouvelle ligne -  "</string>
+    <string name="pref_EventInfo_None">Aucun</string>
+    <string name="pref_EventInfo_Border">Bordure du widget</string>
+    <string name="pref_EventInfo_Dividers">"Diviseurs des événements"</string>
+    <string name="pref_EventInfo_ButtonConfig">Bouton de configuration</string>
+    <string name="pref_EventInfo_Photo">Photo du contact</string>
+    <string name="pref_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
+    <string name="pref_EventInfo_EventCaption">"Légende de l'événement"</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Icône du contact sélectionné</string>
+    <string name="pref_EventInfo_SilentedIcon">"🚫 Icône de l'événement sans préavis"</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Signe du zodiaque</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Animal dans le calendrier oriental</string>
+    <string name="pref_EventInfo_EventDate_Original">"Date de l'événement originale"</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">"Date de l'événement originale avec année"</string>
+    <string name="pref_EventInfo_EventDate">"Date de l'événement"</string>
+    <string name="pref_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
+    <string name="pref_EventInfo_EventTitle">"Titre de l'événement (Nom)"</string>
+    <string name="pref_EventInfo_Age">Âge (anniversaire)</string>
+    <string name="pref_EventInfo_CurrentAge">Âge actuel</string>
+    <string name="pref_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
+    <string name="pref_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort">"Jours avant l'événement (brièvement)"</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar">"Jours avant l'événement (si l'événement n'est pas le plus proche)"</string>
+    <string name="pref_EventInfo_EventDayOfWeek">"Jour de la semaine de l'événement"</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort">"Jour de la semaine de l'événement (brièvement)"</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar">"Jour de la semaine de l'événement (si l'événement n'est pas le plus proche)"</string>
+    <string name="pref_EventInfo_Organization">Organisation</string>
+    <string name="pref_EventInfo_JobTitle">Emploi</string>
+    <string name="pref_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
+    <string name="pref_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
+    <string name="pref_EventInfo_DatesInBrackets">Entourer les dates de parenthèses</string>
+    <string name="pref_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
+    <string name="pref_EventInfo_NewLine1">"- nouvelle ligne -"</string>
+    <string name="pref_EventInfo_NewLine2">"- nouvelle ligne - "</string>
+    <string name="pref_EventInfo_NewLine3">"- nouvelle ligne -  "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
-        <item>@string/pref_Widgets_EventInfo_Border</item>
-        <item>@string/pref_Widgets_EventInfo_Photo</item>
-        <item>@string/pref_Widgets_EventInfo_Age</item>
-        <item>@string/pref_Widgets_EventInfo_EventIcon</item>
-        <item>@string/pref_Widgets_EventInfo_FavIcon</item>
-        <item>@string/pref_Widgets_EventInfo_SilentedIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacIcon</item>
-        <item>@string/pref_Widgets_EventInfo_ZodiacYear</item>
+        <item>@string/pref_EventInfo_Border</item>
+        <item>@string/pref_EventInfo_Photo</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_SilentedIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_ZodiacYear</item>
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_title">"Légende de l'événement (ligne du bas)"</string>

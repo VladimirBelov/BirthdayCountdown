@@ -217,8 +217,8 @@ class WidgetUpdater {
 
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID)))) {
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.appwidget_main,"setBackgroundResource", R.drawable.layout_bg);
             } else {
                 views.setInt(R.id.appwidget_main,"setBackgroundResource", 0);
@@ -528,8 +528,8 @@ class WidgetUpdater {
                 }
             }
 
-            Bitmap photo = eventsData.getEventPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Photo_ID)), true, true, roundingFactor);
+            Bitmap photo = eventsData.getEventPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, true, roundingFactor);
             if (photo != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -573,8 +573,8 @@ class WidgetUpdater {
             //Иконка события
             int id_widget_EventIcon = resources.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_EventIcon_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))) {
 
                 int eventIcon;
                 try {
@@ -601,8 +601,8 @@ class WidgetUpdater {
             String strZodiacInfo = Constants.STRING_EMPTY;
             int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacSign_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
@@ -634,8 +634,8 @@ class WidgetUpdater {
             String strZodiacYearInfo = Constants.STRING_EMPTY;
             int id_widget_ZodiacYearIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.STRING_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ZodiacYear_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
@@ -665,8 +665,8 @@ class WidgetUpdater {
 
             //Иконка фаворита
             int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.STRING_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
 
                 views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
 
@@ -678,8 +678,8 @@ class WidgetUpdater {
 
             //Иконка события без уведомления
             int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.STRING_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_SilentedIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
 
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
@@ -745,8 +745,8 @@ class WidgetUpdater {
             }
 
             //Возраст
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Age_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Age_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Age_ID))) {
 
                 String ageCaption = singleEventArray[ContactsEvents.Position_age_caption];
                 if (ageCaption.contains(Constants.STRING_SPACE)) {

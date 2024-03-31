@@ -83,7 +83,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             RemoteViews views;
-            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Dividers_ID))) {
+            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Dividers_ID))) {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
             } else {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
@@ -99,7 +99,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
-            if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_ButtonConfig_ID))) {
+            if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
                 views.setViewVisibility(R.id.config_button, View.GONE);
             } else {
                 views.setViewVisibility(R.id.config_button, View.VISIBLE);
@@ -160,8 +160,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setInt(R.id.widget_list,"setBackgroundColor", colorWidgetBackground);
 
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_Widgets_EventInfo_Border_ID)))) {
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", R.drawable.layout_bg);
             } else {
                 views.setInt(R.id.widget_layout,"setBackgroundResource", 0);
