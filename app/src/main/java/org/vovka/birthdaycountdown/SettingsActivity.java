@@ -301,80 +301,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
+            PreferenceScreen prefScreen;
             PreferenceCategory prefCat;
             Preference pref;
             eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
             boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
+            boolean isNotify2Enabled = !eventsData.preferences_notifications2_days.isEmpty();
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             final boolean pref_menu_isCompact = eventsData.preferences_menustyle_compact;
+
+            List<Integer> prefsNotify = Arrays.asList(
+                    R.string.pref_Notifications_Type_key,
+                    R.string.pref_Notifications_Priority_key,
+                    R.string.pref_Notifications_Events_key,
+                    R.string.pref_Notifications_EventSources_key,
+                    R.string.pref_Notifications_EventInfo_key,
+                    R.string.pref_Notifications_AlarmHour_key,
+                    R.string.pref_Notifications_QuickActions_key,
+                    R.string.pref_Notifications_Ringtone_key,
+                    R.string.pref_Notifications_OnClick_key,
+                    R.string.pref_Notifications_NotifyTest_key
+            );
+
+            List<Integer> prefsNotify2 = Arrays.asList(
+                    R.string.pref_Notifications2_Type_key,
+                    R.string.pref_Notifications2_Priority_key,
+                    R.string.pref_Notifications2_Events_key,
+                    R.string.pref_Notifications2_EventSources_key,
+                    R.string.pref_Notifications2_EventInfo_key,
+                    R.string.pref_Notifications2_AlarmHour_key,
+                    R.string.pref_Notifications2_QuickActions_key,
+                    R.string.pref_Notifications2_Ringtone_key,
+                    R.string.pref_Notifications2_OnClick_key,
+                    R.string.pref_Notifications2_NotifyTest_key
+            );
+
             if (pref_menu_isCompact) {
-                PreferenceScreen prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
+
+                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
                 if (prefScreen != null) {
-                    pref = findPreference(getString(R.string.pref_Notifications_Type_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
+                    for (Integer prefId: prefsNotify) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) pref.setEnabled(isNotifyEnabled);
+                    }
+                }
 
-                    pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_Events_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_EventSources_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_EventInfo_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
-                    if (pref != null) pref.setEnabled(isNotifyEnabled);
+                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications2_key));
+                if (prefScreen != null) {
+                    for (Integer prefId: prefsNotify2) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) pref.setEnabled(isNotify2Enabled);
+                    }
                 }
 
             } else {
+
                 prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
                 if (prefCat != null && !isNotifyEnabled) {
-                    pref = findPreference(getString(R.string.pref_Notifications_Type_key));
-                    if (pref != null) prefCat.removePreference(pref);
+                    for (Integer prefId: prefsNotify) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) prefCat.removePreference(pref);
+                    }
+                }
 
-                    pref = findPreference(getString(R.string.pref_Notifications_Priority_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_Events_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_EventSources_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_EventInfo_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_AlarmHour_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_QuickActions_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_OnClick_key));
-                    if (pref != null) prefCat.removePreference(pref);
-
-                    pref = findPreference(getString(R.string.pref_Notifications_NotifyTest_key));
-                    if (pref != null) prefCat.removePreference(pref);
+                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications2_key));
+                if (prefCat != null && !isNotify2Enabled) {
+                    for (Integer prefId: prefsNotify2) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) prefCat.removePreference(pref);
+                    }
                 }
 
             }
@@ -411,6 +408,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+
+            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Notifications2_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);

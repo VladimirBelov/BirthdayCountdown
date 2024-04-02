@@ -899,6 +899,8 @@
 
     <string name="pref_Notifications_title">Уведомления</string>
     <string name="pref_Notifications_summary">Когда и как показывать уведомления о событиях</string>
+    <string name="pref_Notifications2_title">Уведомления (+)</string>
+    <string name="pref_Notifications2_summary">Вторая очередь для уведомлений о событиях</string>
 
     <string name="pref_Notifications_Type_title">Стиль уведомлений</string>
     <string name="pref_Notifications_Type_summary">Как уведомления будут выглядеть</string>

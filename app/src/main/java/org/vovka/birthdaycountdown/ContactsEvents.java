@@ -322,7 +322,8 @@ class ContactsEvents {
     String preferences_customevent4_caption;
     String preferences_customevent5_caption;
     int preferences_notification_channel_id;
-    Set<String> preferences_notifications_days;
+    Set<String> preferences_notifications_days = new HashSet<>();
+    Set<String> preferences_notifications2_days = new HashSet<>();
     int preferences_notifications_alarm_hour;
     int preferences_notifications_alarm_minute;
     String preferences_notifications_ringtone;

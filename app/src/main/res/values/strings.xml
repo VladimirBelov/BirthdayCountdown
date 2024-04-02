@@ -899,6 +899,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">When and how to show event notifications</string>
+    <string name="pref_Notifications2_title">Notifications (+)</string>
+    <string name="pref_Notifications2_summary">Second queue for event notifications</string>
 
     <string name="pref_Notifications_Type_title">Style of notifications</string>
     <string name="pref_Notifications_Type_summary">How notifications will be looks like</string>
@@ -1916,10 +1918,13 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_key" translatable="false">Notifications</string>
+    <string name="pref_Notifications2_key" translatable="false">Notifications2</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
     <string name="pref_Notifications_EventSources_key" translatable="false">Notifications_EventSources</string>
+    <string name="pref_Notifications2_EventSources_key" translatable="false">Notifications2_EventSources</string>
 
     <string name="pref_Notifications_Type_key" translatable="false">Notifications_Type</string>
+    <string name="pref_Notifications2_Type_key" translatable="false">Notifications2_Type</string>
     <string name="pref_Notifications_Type_default" translatable="false">1</string>
 
     <string-array name="pref_Notifications_Type_values" translatable="false">
@@ -1931,6 +1936,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_Priority_key" translatable="false">Notifications_Priority</string>
+    <string name="pref_Notifications2_Priority_key" translatable="false">Notifications2_Priority</string>
     <string name="pref_Notifications_Priority_default" translatable="false">1</string>
 
     <string-array name="pref_Notifications_Priority_values" translatable="false">
@@ -1940,8 +1946,10 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_Events_key" translatable="false">Notifications_EventTypes</string>
+    <string name="pref_Notifications2_Events_key" translatable="false">Notifications2_EventTypes</string>
 
     <string name="pref_Notifications_Days_key" translatable="false">Notifications_Days</string>
+    <string name="pref_Notifications2_Days_key" translatable="false">Notifications2_Days</string>
 
     <string-array name="pref_Notifications_Days_values" translatable="false">
         <item>0</item>
@@ -1966,6 +1974,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_EventInfo_key" translatable="false">Notifications_EventInfo</string>
+    <string name="pref_Notifications2_EventInfo_key" translatable="false">Notifications2_EventInfo</string>
     <string-array name="pref_Notifications_EventInfo_values_default" translatable="false">
         <item>@string/pref_EventInfo_EventIcon_ID</item>
         <item>@string/pref_EventInfo_EventDate_ID</item>
@@ -1989,14 +1998,17 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>
+    <string name="pref_Notifications2_AlarmHour_key" translatable="false">Notifications2_AlarmHour</string>
     <string name="pref_Notifications_AlarmHour_default" translatable="false">9</string>
 
     <string name="pref_Notifications_AlarmMinute_key" translatable="false">Notifications_AlarmMinute</string>
     <string name="pref_Notifications_AlarmMinute_default" translatable="false">0</string>
 
     <string name="pref_Notifications_Ringtone_key" translatable="false">Notifications_Ringtone</string>
+    <string name="pref_Notifications2_Ringtone_key" translatable="false">Notifications2_Ringtone</string>
 
     <string name="pref_Notifications_QuickActions_key" translatable="false">Notifications_QuickActions</string>
+    <string name="pref_Notifications2_QuickActions_key" translatable="false">Notifications2_QuickActions</string>
 
     <string name="pref_Notifications_QuickActions_Dial" translatable="false">1</string>
     <string name="pref_Notifications_QuickActions_Silent" translatable="false">2</string>
@@ -2018,6 +2030,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_OnClick_key" translatable="false">Notifications_OnClick</string>
+    <string name="pref_Notifications2_OnClick_key" translatable="false">Notifications2_OnClick</string>
     <string name="pref_Notifications_OnClick_default" translatable="false">1</string>
     <string-array name="pref_Notifications_OnClick_values" translatable="false">
         <item>1</item> <!--Контакт, календарь, ссылка-->
@@ -2029,6 +2042,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>
+    <string name="pref_Notifications2_NotifyTest_key" translatable="false">NotifyTest2</string>
 
     <string name="pref_Quiz_key" translatable="false">Quiz</string>
     <string name="pref_Quiz_Interface_key" translatable="false">QuizInterface</string>

@@ -912,10 +912,10 @@
         android:icon="@drawable/ic_menu_notifications">
 
         <MultiSelectListPreference
+            android:key="@string/pref_Notifications_Days_key"
             android:defaultValue="@array/pref_Notifications_Days_values_default"
             android:entries="@array/pref_Notifications_Days_entries"
             android:entryValues="@array/pref_Notifications_Days_values"
-            android:key="@string/pref_Notifications_Days_key"
             android:summary="@string/pref_Notifications_Days_summary"
             android:title="@string/pref_Notifications_Days_title"
             android:icon="@android:drawable/ic_menu_week"
@@ -923,10 +923,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_Notifications_Type_key"
             android:defaultValue="@string/pref_Notifications_Type_default"
             android:entries="@array/pref_Notifications_Type_entries"
             android:entryValues="@array/pref_Notifications_Type_values"
-            android:key="@string/pref_Notifications_Type_key"
             android:summary="@string/pref_Notifications_Type_summary"
             android:title="@string/pref_Notifications_Type_title"
             android:icon="@android:drawable/ic_menu_view"
@@ -934,10 +934,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_Notifications_Priority_key"
             android:defaultValue="@string/pref_Notifications_Priority_default"
             android:entries="@array/pref_Notifications_Priority_entries"
             android:entryValues="@array/pref_Notifications_Priority_values"
-            android:key="@string/pref_Notifications_Priority_key"
             android:summary="@string/pref_Notifications_Priority_summary"
             android:title="@string/pref_Notifications_Priority_title"
             android:icon="@android:drawable/ic_menu_view"
@@ -945,10 +945,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <MultiSelectListPreference
+            android:key="@string/pref_Notifications_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_EventTypes_entries"
             android:entryValues="@array/pref_EventTypes_values"
-            android:key="@string/pref_Notifications_Events_key"
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
             android:icon="@android:drawable/ic_menu_more"
@@ -990,10 +990,10 @@
             android:dialogIcon="@android:drawable/ic_menu_more"/>
 
         <MultiSelectListPreference
+            android:key="@string/pref_Notifications_QuickActions_key"
             android:defaultValue="@array/pref_Notifications_QuickActions_values_default"
             android:entries="@array/pref_Notifications_QuickActions_entries"
             android:entryValues="@array/pref_Notifications_QuickActions_values"
-            android:key="@string/pref_Notifications_QuickActions_key"
             android:title="@string/pref_Notifications_QuickActions_title"
             android:summary="@string/pref_Notifications_QuickActions_summary"
             android:icon="@android:drawable/ic_menu_compass"
@@ -1001,8 +1001,8 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
-            android:defaultValue="@string/pref_Notifications_OnClick_default"
             android:key="@string/pref_Notifications_OnClick_key"
+            android:defaultValue="@string/pref_Notifications_OnClick_default"
             android:entries="@array/pref_Notifications_OnClick_entries"
             android:entryValues="@array/pref_Notifications_OnClick_values"
             android:title="@string/pref_Notifications_OnClick_title"
@@ -1013,6 +1013,121 @@
 
         <Preference
             android:key="@string/pref_Notifications_NotifyTest_key"
+            android:summary="@string/pref_Notifications_NotifyTest_summary"
+            android:title="@string/pref_Notifications_NotifyTest_title"
+            android:icon="@android:drawable/ic_menu_info_details"/>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="@string/pref_Notifications2_key"
+        android:title="@string/pref_Notifications2_title"
+        android:summary="@string/pref_Notifications2_summary"
+        android:layout="@layout/settings_category_with_icon"
+        android:icon="@drawable/ic_menu_notifications">
+
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_Notifications_Days_values_default"
+            android:entries="@array/pref_Notifications_Days_entries"
+            android:entryValues="@array/pref_Notifications_Days_values"
+            android:key="@string/pref_Notifications2_Days_key"
+            android:summary="@string/pref_Notifications_Days_summary"
+            android:title="@string/pref_Notifications_Days_title"
+            android:icon="@android:drawable/ic_menu_week"
+            android:dialogIcon="@android:drawable/ic_menu_week"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_Type_default"
+            android:entries="@array/pref_Notifications_Type_entries"
+            android:entryValues="@array/pref_Notifications_Type_values"
+            android:key="@string/pref_Notifications2_Type_key"
+            android:summary="@string/pref_Notifications_Type_summary"
+            android:title="@string/pref_Notifications_Type_title"
+            android:icon="@android:drawable/ic_menu_view"
+            android:dialogIcon="@android:drawable/ic_menu_view"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_Notifications_Priority_default"
+            android:entries="@array/pref_Notifications_Priority_entries"
+            android:entryValues="@array/pref_Notifications_Priority_values"
+            android:key="@string/pref_Notifications2_Priority_key"
+            android:summary="@string/pref_Notifications_Priority_summary"
+            android:title="@string/pref_Notifications_Priority_title"
+            android:icon="@android:drawable/ic_menu_view"
+            android:dialogIcon="@android:drawable/ic_menu_view"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_EventTypes_values_default"
+            android:entries="@array/pref_EventTypes_entries"
+            android:entryValues="@array/pref_EventTypes_values"
+            android:key="@string/pref_Notifications2_Events_key"
+            android:title="@string/pref_Notifications_EventTypes_title"
+            android:summary="@string/pref_Notifications_EventTypes_summary"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_Notifications2_EventSources_key"
+            android:title="@string/pref_Notifications_EventSources_title"
+            android:summary="@string/pref_Notifications_EventSources_description"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
+        <MultiSelectListPreference
+            android:key="@string/pref_Notifications2_EventInfo_key"
+            android:defaultValue="@array/pref_Notifications_EventInfo_values_default"
+            android:entries="@array/pref_Notifications_EventInfo_entries"
+            android:entryValues="@array/pref_Notifications_EventInfo_values"
+            android:summary="@string/pref_Notifications_EventInfo_summary"
+            android:title="@string/pref_Notifications_EventInfo_title"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_Notifications2_AlarmHour_key"
+            android:summary="@string/pref_Notifications_AlarmHour_summary"
+            android:title="@string/pref_Notifications_AlarmHour_title"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
+        <!--No support for RingtonePreference in support library: https://issuetracker.google.com/issues/37057453#comment3-->
+        <Preference
+            android:key="@string/pref_Notifications2_Ringtone_key"
+            android:title="@string/pref_Notifications_Ringtone_title"
+            android:summary="@string/pref_Notifications_Ringtone_summary"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
+        <MultiSelectListPreference
+            android:key="@string/pref_Notifications2_QuickActions_key"
+            android:defaultValue="@array/pref_Notifications_QuickActions_values_default"
+            android:entries="@array/pref_Notifications_QuickActions_entries"
+            android:entryValues="@array/pref_Notifications_QuickActions_values"
+            android:title="@string/pref_Notifications_QuickActions_title"
+            android:summary="@string/pref_Notifications_QuickActions_summary"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:key="@string/pref_Notifications2_OnClick_key"
+            android:defaultValue="@string/pref_Notifications_OnClick_default"
+            android:entries="@array/pref_Notifications_OnClick_entries"
+            android:entryValues="@array/pref_Notifications_OnClick_values"
+            android:title="@string/pref_Notifications_OnClick_title"
+            android:summary="@string/pref_Notifications_OnClick_summary"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_Notifications2_NotifyTest_key"
             android:summary="@string/pref_Notifications_NotifyTest_summary"
             android:title="@string/pref_Notifications_NotifyTest_title"
             android:icon="@android:drawable/ic_menu_info_details"/>
