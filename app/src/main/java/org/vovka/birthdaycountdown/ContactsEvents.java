@@ -5849,21 +5849,55 @@ class ContactsEvents {
             if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
                 eventDetails.append(substringBefore(event.singleEventArray[Position_zodiacSign], Constants.STRING_SPACE));
             }
-
-            eventDetails
-                    .append(Constants.STRING_SPACE)
-                    .append(event.eventDay())
-                    .append(Constants.STRING_SPACE)
-                    .append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
-            if (!TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim()))
-                eventDetails.append(Constants.STRING_COLON_SPACE).append(event.singleEventArray[Position_age_caption]);
-            if (event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
-                eventDetails.append(Constants.STRING_SPACE).append(substringBefore(event.singleEventArray[Position_eventCaption], Constants.STRING_PARENTHESIS_OPEN));
+            if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_SPACE);
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
+                eventDetails.append(event.eventDay());
             }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
+                if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
+                eventDetails.append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
+                    && !TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim())) {
+                if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_COLON_SPACE);
+                eventDetails.append(event.singleEventArray[Position_age_caption]);
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_WeddingName_ID))
+                    && event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
 
+                if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
 
+                if (event.singleEventArray[Position_eventCaption].endsWith(Constants.STRING_PARENTHESIS_CLOSE)) {
+                    if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
+                        eventDetails
+                                .append(Constants.STRING_COMMA_SPACE)
+                                .append(event.singleEventArray[Position_eventCaption]);
+                    } else {
+                        eventDetails
+                                .append(Constants.STRING_PARENTHESIS_OPEN)
+                                .append(substringAfter(event.singleEventArray[Position_eventCaption], Constants.STRING_PARENTHESIS_OPEN));
+                    }
+                }
 
-
+            }
+            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))
+                    && !event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
+                eventDetails
+                        .append(Constants.STRING_COMMA_SPACE)
+                        .append(event.singleEventArray[Position_eventCaption]);
+            }
+            final boolean addTitle = preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))
+                    && !TextUtils.isEmpty(event.singleEventArray[Position_title]);
+            final boolean addOrganization = preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_Organization_ID))
+                    && !TextUtils.isEmpty(event.singleEventArray[Position_organization]);
+            if (addOrganization || addTitle) {
+                if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
+                eventDetails.append(Constants.STRING_BRACKETS_START);
+                if (addTitle) eventDetails.append(event.singleEventArray[Position_title]);
+                if (addTitle && addOrganization) eventDetails.append(Constants.STRING_COMMA_SPACE);
+                if (addOrganization) eventDetails.append(event.singleEventArray[Position_organization]);
+                eventDetails.append(Constants.STRING_BRACKETS_CLOSE);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
