@@ -1214,7 +1214,7 @@
             android:title="@string/pref_InfoMsg_On_title"
             android:summary="@string/pref_InfoMsg_On_summary"
             android:defaultValue="@bool/pref_Help_InfoMsg_On_default"
-            android:icon="@drawable/ic_menu_notifications"/>
+            android:icon="@drawable/ic_menu_notifications1"/>
 
         <SwitchPreference
             android:key="@string/pref_Help_Debug_On_key"
