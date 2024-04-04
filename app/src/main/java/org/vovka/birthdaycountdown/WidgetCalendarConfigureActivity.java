@@ -108,12 +108,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
 
             //Отступы всего окна
-            if (eventsData.preferences_list_marging > 0) {
+            if (eventsData.preferences_list_margin > 0) {
                 RelativeLayout main = findViewById(R.id.layout_main);
                 main.setPadding(
-                        main.getPaddingLeft() + (int) (eventsData.preferences_list_marging * eventsData.displayMetrics_density + 0.5f),
+                        main.getPaddingLeft() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                         main.getPaddingTop(),
-                        main.getPaddingRight() + (int) (eventsData.preferences_list_marging * eventsData.displayMetrics_density + 0.5f),
+                        main.getPaddingRight() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                         main.getPaddingBottom()
                 );
             }

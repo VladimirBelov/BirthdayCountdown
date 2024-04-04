@@ -484,9 +484,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 setUpNestedScreen((PreferenceScreen) preference);
 
-            } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Уведомления
+            } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Тест уведомления 1
 
-                testNotify();
+                testNotify(1);
+                return true;
+
+            } else if (getString(R.string.pref_Notifications2_NotifyTest_key).equals(key)) { //Тест уведомления 2
+
+                testNotify(2);
                 return true;
 
             } else if (getString(R.string.pref_FAQActivity_key).equals(key)) { //FAQ
@@ -678,12 +683,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
 
-                selectRingtone();
+                selectRingtone(1, eventsData.preferences_notifications_ringtone);
+                return true;
+
+            } else if (getString(R.string.pref_Notifications2_Ringtone_key).equals(key)) {
+
+                selectRingtone(2, eventsData.preferences_notifications2_ringtone);
                 return true;
 
             } else if (getString(R.string.pref_Notifications_AlarmHour_key).equals(key)) {
 
-                selectAlarmTime();
+                selectAlarmTime(1,
+                        eventsData.preferences_notifications_alarm_hour,
+                        eventsData.preferences_notifications_alarm_minute);
+                return true;
+
+            } else if (getString(R.string.pref_Notifications2_AlarmHour_key).equals(key)) {
+
+                selectAlarmTime(2,
+                        eventsData.preferences_notifications2_alarm_hour,
+                        eventsData.preferences_notifications2_alarm_minute);
                 return true;
 
             } else if (getString(R.string.pref_List_FontMagnify_key).equals(key)) {
@@ -711,7 +730,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectHolidays();
                 return true;
 
-            } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key)) {
+            } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key) || getString(R.string.pref_Notifications2_EventSources_key).equals(key)) {
 
                 selectEventSources(key);
                 return true;
@@ -876,9 +895,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 updateTitles();
                 updateVisibility();
 
-            } else if (getString(R.string.pref_Notifications_Days_key).equals(key)) {
+            } else if (getString(R.string.pref_Notifications_Days_key).equals(key) || getString(R.string.pref_Notifications2_Days_key).equals(key)) {
 
-                if (!eventsData.preferences_notifications_days.isEmpty()) {
+                if (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty()) {
                     //Уведомления выключены
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
 
@@ -1050,7 +1069,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
-    private void testNotify() {
+    private void testNotify(int queueNumber) {
         ContactsEvents eventsData = ContactsEvents.getInstance();
         eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
 
@@ -1078,7 +1097,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 }
             }
-            eventsData.showNotifications(true, testChannelId);
+            eventsData.showNotifications(queueNumber, true, testChannelId);
 
         } else {
             ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
@@ -1487,21 +1506,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private void selectRingtone() {
+    private void selectRingtone(int queueNumber, String prefRingtone) {
 
         try {
 
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .putExtra(Constants.QUEUE, queueNumber);
 
-            String existingValue = eventsData.preferences_notifications_ringtone;
-            if (existingValue.isEmpty()) {
+            if (prefRingtone.isEmpty()) {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
             } else {
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
             }
             try {
                 startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
@@ -1711,21 +1730,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
-    private void selectAlarmTime() {
+    private void selectAlarmTime(int queueNumber, int prefAlarmHour, int prefAlarmMinute) {
 
         try {
 
             final TimePicker timePicker = new TimePicker(this);
             timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
-            timePicker.setCurrentHour(eventsData.preferences_notifications_alarm_hour);
-            timePicker.setCurrentMinute(eventsData.preferences_notifications_alarm_minute);
+            timePicker.setCurrentHour(prefAlarmHour);
+            timePicker.setCurrentMinute(prefAlarmMinute);
 
             new AlertDialog.Builder(this)
                     .setTitle(R.string.pref_Notifications_AlarmHour_title)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
                         int hour = Build.VERSION.SDK_INT >= 23 ? timePicker.getHour() : timePicker.getCurrentHour();
                         int minute = Build.VERSION.SDK_INT >= 23 ? timePicker.getMinute() : timePicker.getCurrentMinute();
-                        eventsData.setPreferences_AlarmTime(hour, minute);
+                        eventsData.setPreferences_AlarmTime(queueNumber, hour, minute);
                         eventsData.savePreferences();
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss())
@@ -2183,7 +2202,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Widgets_Color_EventCaption_key),
                         getString(R.string.pref_Widgets_Color_WidgetCaption_key),
                         getString(R.string.pref_Events_Scope),
-                        getString(R.string.pref_Notifications_ChannelID)
+                        getString(R.string.pref_Notifications_ChannelID),
+                        getString(R.string.pref_Notifications2_ChannelID)
                 ));
 
                 ArrayList<String> listBooleans = new ArrayList<>(Arrays.asList(
@@ -2246,11 +2266,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Custom5_Caption_key),
                         getString(R.string.pref_CustomEvents_Custom5_Labels_key),
                         getString(R.string.pref_Notifications_Type_key),
+                        getString(R.string.pref_Notifications2_Type_key),
                         getString(R.string.pref_Notifications_Priority_key),
+                        getString(R.string.pref_Notifications2_Priority_key),
                         getString(R.string.pref_Notifications_AlarmHour_key),
+                        getString(R.string.pref_Notifications2_AlarmHour_key),
                         getString(R.string.pref_Notifications_AlarmMinute_key),
+                        getString(R.string.pref_Notifications2_AlarmMinute_key),
                         getString(R.string.pref_Notifications_Ringtone_key),
+                        getString(R.string.pref_Notifications2_Ringtone_key),
                         getString(R.string.pref_Notifications_OnClick_key),
+                        getString(R.string.pref_Notifications2_OnClick_key),
                         getString(R.string.pref_Female_Names_key),
                         getString(R.string.pref_Male_Names_key),
                         getString(R.string.pref_Theme_key),
@@ -2284,10 +2310,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_MergedID_key),
                         getString(R.string.pref_MergedRawID_key),
                         getString(R.string.pref_Notifications_Days_key),
+                        getString(R.string.pref_Notifications2_Days_key),
                         getString(R.string.pref_Notifications_Events_key),
+                        getString(R.string.pref_Notifications2_Events_key),
                         getString(R.string.pref_Notifications_EventInfo_key),
+                        getString(R.string.pref_Notifications2_EventInfo_key),
                         getString(R.string.pref_Notifications_QuickActions_key),
+                        getString(R.string.pref_Notifications2_QuickActions_key),
                         getString(R.string.pref_Notifications_EventSources_key),
+                        getString(R.string.pref_Notifications2_EventSources_key),
                         getString(R.string.pref_Events_Silent_key),
                         getString(R.string.pref_Events_Silent_rawIds_key),
                         getString(R.string.pref_xDaysEvents_key),
@@ -2398,7 +2429,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
                         this, idToPass);
             } else if (idToPass.equals(getString(R.string.pref_Notifications_EventSources_key))) {
-                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications_EventSources),
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications_sources),
+                        this, idToPass);
+            } else if (idToPass.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications2_sources),
                         this, idToPass);
             }
 
@@ -2419,8 +2453,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (id.equals(getString(R.string.pref_Notifications_EventSources_key))) {
 
-                eventsData.preferences_notifications_EventSources.clear();
-                eventsData.preferences_notifications_EventSources.addAll(newSelectedSources);
+                eventsData.preferences_notifications_sources.clear();
+                eventsData.preferences_notifications_sources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+
+            } else if (id.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
+
+                eventsData.preferences_notifications2_sources.clear();
+                eventsData.preferences_notifications2_sources.addAll(newSelectedSources);
                 eventsData.savePreferences();
 
             }
@@ -2460,10 +2500,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (requestCode == Constants.RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
                 if (resultData != null) {
                     Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                    int queueNumber = resultData.getIntExtra(Constants.QUEUE, 0);
                     if (ringtone != null) {
-                        eventsData.preferences_notifications_ringtone = ringtone.toString();
+                        if (queueNumber == 1) {
+                            eventsData.preferences_notifications_ringtone = ringtone.toString();
+                        } else if (queueNumber == 2) {
+                            eventsData.preferences_notifications2_ringtone = ringtone.toString();
+                        }
                     } else {
+                        if (queueNumber == 1) {
                         eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                        } else if (queueNumber == 2) {
+                            eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                        }
                     }
                     eventsData.savePreferences();
                 }

@@ -196,6 +196,10 @@ class ContactsEvents {
         add(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_OTHER));
         add(Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM));
     }};
+    static final int Rules_Unrecognized_Type_Other = 1;
+    static final int Rules_Unrecognized_Type_Unrecognized = 2;
+    static final int Rules_Unrecognized_Skip = 3;
+
     final List<String> eventList = new ArrayList<>(); //Список всех событий
     final String systemLocale = Locale.getDefault().getLanguage();
     //final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
@@ -258,47 +262,15 @@ class ContactsEvents {
     int currentTheme = 0;
     boolean needUpdateEventList = true;
 
-    //Настройки
+    //Общие настройки
     boolean preferences_debug_on;
     boolean preferences_info_on;
     boolean preferences_extrafun;
     String preferences_language;
     String preferences_icon;
-    int preferences_list_events_scope;
     boolean preferences_menustyle_compact;
-    Set<String> preferences_list_event_types;
-    Set<String> preferences_list_event_info;
-    String preferences_list_prev_events;
-    String preferences_list_custom_caption;
-    String preferences_list_custom_todayevent_caption;
-    int preferences_list_style;
-    int preferences_list_photostyle;
-    int preferences_list_filling;
-    int preferences_list_marging;
-    int preferences_list_nameformat;
-    int preferences_list_dateformat;
-    Set<String> preferences_list_age_format;
-    @ColorInt int preferences_list_color_eventtoday;
-    @ColorInt int preferences_list_color_eventsoon;
-    int preferences_list_color_eventjubilee;
-    int preferences_list_on_click_action;
-    int preferences_list_magnify_distance;
-    int preferences_list_magnify_name;
-    int preferences_list_magnify_details;
-    int preferences_list_magnify_date;
-    int preferences_list_magnify_age;
-    boolean preference_list_fastscroll;
-    int preferences_widgets_update_period;
-    Set<String> preferences_widgets_event_info;
-    String preferences_widgets_bottom_info;
-    String preferences_widgets_bottom_info_2nd;
-    int preferences_widgets_days_event_soon;
-    @ColorInt int preferences_widgets_color_default;
-    @ColorInt int preferences_widgets_color_widget_caption;
-    @ColorInt int preferences_widgets_color_event_today;
-    @ColorInt int preferences_widgets_color_event_soon;
-    @ColorInt int preferences_widgets_color_event_far;
-    int preferences_widgets_on_click_action;
+    ColorTheme preferences_theme;
+    String preferences_quiz_interface;
     String preferences_first_names_female_custom;
     String preferences_first_names_male_custom;
     Matcher preferences_last_name_completions_male;
@@ -307,31 +279,21 @@ class ContactsEvents {
     Matcher preferences_first_names_female;
     Matcher preferences_second_name_completions_male;
     Matcher preferences_second_name_completions_female;
+    int preferences_jubilee_algorithm;
+    private int preferences_sad_photo;
+    int preferences_name_format;
+    int preferences_date_format;
     @Nullable
     Matcher preferences_death_labels;
     String preferences_birthday_calendars_rules;
-    int preferences_rules_calendars_nameformat;
-    int preferences_rules_files_nameformat;
+    int preferences_rules_calendars_name_format;
+    int preferences_rules_files_name_format;
     int preferences_rules_unrecognized;
-    static final int Rules_Unrecognized_Type_Other = 1;
-    static final int Rules_Unrecognized_Type_Unrecognized = 2;
-    static final int Rules_Unrecognized_Skip = 3;
     String preferences_customevent1_caption;
     String preferences_customevent2_caption;
     String preferences_customevent3_caption;
     String preferences_customevent4_caption;
     String preferences_customevent5_caption;
-    int preferences_notification_channel_id;
-    Set<String> preferences_notifications_days = new HashSet<>();
-    Set<String> preferences_notifications2_days = new HashSet<>();
-    int preferences_notifications_alarm_hour;
-    int preferences_notifications_alarm_minute;
-    String preferences_notifications_ringtone;
-    int preferences_notifications_on_click_action;
-    String preferences_quiz_interface;
-    ColorTheme preferences_theme;
-    int preferences_list_jubilee_algorithm;
-    private int preferences_list_sad_photo;
     @Nullable
     private Matcher preferences_birthday_labels;
     @Nullable
@@ -360,18 +322,6 @@ class ContactsEvents {
     private boolean preferences_customevent5_enabled;
     private Matcher preferences_customevent5_labels;
     private boolean preferences_customevent5_useyear;
-    /* preferences_notifications_type:
-     *   0 - Одно общее уведомление
-     *   1 - Каждое событие в отдельном уведомлении
-     *   2 - Если событий меньше 3 => отдельные, иначе - общее
-     *   3 - Если событий меньше 4 => отдельные, иначе - общее
-     * */
-    private int preferences_notifications_type;
-    private int preferences_notifications_priority;
-    private Set<String> preferences_notifications_EventTypes = new HashSet<>();
-    Set<String> preferences_notifications_EventSources = new HashSet<>();
-    Set<String> preferences_notifications_EventInfo = new HashSet<>();
-    private Set<String> preferences_notifications_quick_actions;
     private Set<String> preferences_hiddenEvents = new HashSet<>();
     private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
     private Set<String> preferences_silentEvents = new HashSet<>();
@@ -388,12 +338,81 @@ class ContactsEvents {
     Set<String> preferences_HolidayEvent_files = new HashSet<>();
     Set<String> preferences_MultiType_files = new HashSet<>();
     Set<String> preferences_HolidayEvent_ids = new HashSet<>();
-    private Set<String> pref_List_Event_Info_Default;
-    private Set<String> pref_List_Age_Format_Default;
-    private Set<String> pref_Widgets_EventInfo_Info_Default;
     private int preferences_IconPackNumber;
     final List<Integer> preferences_RecentColors = new ArrayList<>();
+
+    //Список событий
+    int preferences_list_events_scope;
+    Set<String> preferences_list_event_types;
+    Set<String> preferences_list_event_info;
+    String preferences_list_prev_events;
+    String preferences_list_custom_caption;
+    String preferences_list_custom_todayevent_caption;
+    int preferences_list_style;
+    int preferences_list_photostyle;
+    int preferences_list_filling;
+    int preferences_list_margin;
+    Set<String> preferences_list_age_format;
+    @ColorInt int preferences_list_color_eventtoday;
+    @ColorInt int preferences_list_color_eventsoon;
+    int preferences_list_color_eventjubilee;
+    int preferences_list_on_click_action;
+    int preferences_list_magnify_distance;
+    int preferences_list_magnify_name;
+    int preferences_list_magnify_details;
+    int preferences_list_magnify_date;
+    int preferences_list_magnify_age;
+    boolean preference_list_fastscroll;
+    private Set<String> pref_List_Event_Info_Default;
+    private Set<String> pref_List_Age_Format_Default;
     Set<String> preferences_list_EventSources = new HashSet<>();
+
+    //Уведомления
+    int preferences_notifications_channel_id;
+    int preferences_notifications2_channel_id;
+    Set<String> preferences_notifications_days = new HashSet<>();
+    Set<String> preferences_notifications2_days = new HashSet<>();
+    int preferences_notifications_alarm_hour;
+    int preferences_notifications2_alarm_hour;
+    int preferences_notifications_alarm_minute;
+    int preferences_notifications2_alarm_minute;
+    String preferences_notifications_ringtone;
+    String preferences_notifications2_ringtone;
+    int preferences_notifications_on_click_action;
+    int preferences_notifications2_on_click_action;
+
+    /* preferences_notifications_style:
+     *   0 - Одно общее уведомление
+     *   1 - Каждое событие в отдельном уведомлении
+     *   2 - Если событий меньше 3 => отдельные, иначе - общее
+     *   3 - Если событий меньше 4 => отдельные, иначе - общее
+     * */
+    private int preferences_notifications_style;
+    private int preferences_notifications2_style;
+    private int preferences_notifications_priority;
+    private int preferences_notifications2_priority;
+    private Set<String> preferences_notifications_types = new HashSet<>();
+    private Set<String> preferences_notifications2_types = new HashSet<>();
+    Set<String> preferences_notifications_sources = new HashSet<>();
+    Set<String> preferences_notifications2_sources = new HashSet<>();
+    Set<String> preferences_notifications_details = new HashSet<>();
+    Set<String> preferences_notifications2_details = new HashSet<>();
+    private Set<String> preferences_notifications_quick_actions;
+    private Set<String> preferences_notifications2_quick_actions;
+
+    //Виджеты
+    private Set<String> pref_Widgets_EventInfo_Info_Default;
+    int preferences_widgets_update_period;
+    Set<String> preferences_widgets_event_info;
+    String preferences_widgets_bottom_info;
+    String preferences_widgets_bottom_info_2nd;
+    int preferences_widgets_days_event_soon;
+    @ColorInt int preferences_widgets_color_default;
+    @ColorInt int preferences_widgets_color_widget_caption;
+    @ColorInt int preferences_widgets_color_event_today;
+    @ColorInt int preferences_widgets_color_event_soon;
+    @ColorInt int preferences_widgets_color_event_far;
+    int preferences_widgets_on_click_action;
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -1007,6 +1026,7 @@ class ContactsEvents {
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
+            //Общие нстройки
             preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
             preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
@@ -1016,17 +1036,18 @@ class ContactsEvents {
             initIconPack();
             preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), getResources().getBoolean(R.bool.pref_MenuStyle_default));
 
+            //Список событий
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
             preferences_list_prev_events = getPreferenceString(preferences, context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
             preferences_list_style = getPreferenceInt(preferences, context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default));
             preferences_list_photostyle = getPreferenceInt(preferences, context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default));
             preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
-            preferences_list_jubilee_algorithm = getPreferenceInt(preferences, context.getString(R.string.pref_List_Jubilee_Algorithm_key), context.getString(R.string.pref_List_Jubilee_Algorithm_default));
-            preferences_list_marging = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
-            preferences_list_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
-            preferences_list_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
-            preferences_list_dateformat = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));
+            preferences_jubilee_algorithm = getPreferenceInt(preferences, context.getString(R.string.pref_List_Jubilee_Algorithm_key), context.getString(R.string.pref_List_Jubilee_Algorithm_default));
+            preferences_list_margin = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
+            preferences_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
+            preferences_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+            preferences_date_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));
             preferences_list_age_format = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_AgeFormat_key), pref_List_Age_Format_Default);
             preferences_list_custom_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomCaption_key), Constants.STRING_EMPTY);
             preferences_list_custom_todayevent_caption = getPreferenceString(preferences, context.getString(R.string.pref_List_CustomTodayEventCaption_key), Constants.STRING_EMPTY);
@@ -1041,9 +1062,46 @@ class ContactsEvents {
             preferences_list_magnify_age = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Age_key), 0);
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
-            preferences_notifications_EventSources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());
-            preferences_notifications_EventInfo = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventInfo_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_EventInfo_values_default))));
+            preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
 
+            //Уведомления
+            preferences_notifications_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
+            preferences_notifications2_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_ChannelID), Constants.defaultNotification2ID);
+            preferences_notifications_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Days_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_Days_values_default))));
+            preferences_notifications_days.removeAll(new HashSet<String>() {{ add(Constants.STRING_EMPTY); }});
+            preferences_notifications2_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Days_key), new HashSet<>());
+            preferences_notifications2_days.removeAll(new HashSet<String>() {{ add(Constants.STRING_EMPTY); }});
+
+            preferences_notifications_sources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());
+            preferences_notifications2_sources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications2_EventSources_key), new HashSet<>());
+            preferences_notifications_details = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventInfo_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_EventInfo_values_default))));
+            preferences_notifications2_details = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications2_EventInfo_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_EventInfo_values_default))));
+            preferences_notifications_style = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Type_key), context.getString(R.string.pref_Notifications_Type_default));
+            preferences_notifications2_style = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_Type_key), context.getString(R.string.pref_Notifications_Type_default));
+            preferences_notifications_priority = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Priority_key), context.getString(R.string.pref_Notifications_Priority_default));
+            preferences_notifications2_priority = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_Priority_key), context.getString(R.string.pref_Notifications_Priority_default));
+            preferences_notifications_alarm_hour = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default));
+            if (preferences_notifications_alarm_hour < 0)
+                preferences_notifications_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
+            preferences_notifications2_alarm_hour = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default));
+            if (preferences_notifications2_alarm_hour < 0)
+                preferences_notifications2_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
+            preferences_notifications_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
+            if (preferences_notifications_alarm_minute < 0)
+                preferences_notifications_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
+            preferences_notifications2_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
+            if (preferences_notifications2_alarm_minute < 0)
+                preferences_notifications2_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
+            preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+            preferences_notifications2_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications2_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+            preferences_notifications_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
+            preferences_notifications2_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
+            preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
+            preferences_notifications2_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
+            preferences_notifications_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
+            preferences_notifications2_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
+
+            //Виджеты
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
             preferences_widgets_bottom_info = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo_key), context.getString(R.string.pref_Widgets_BottomInfo_default));
             preferences_widgets_bottom_info_2nd = getPreferenceString(preferences, context.getString(R.string.pref_Widgets_BottomInfo2nd_key), context.getString(R.string.pref_Widgets_BottomInfo2nd_default));
@@ -1055,8 +1113,7 @@ class ContactsEvents {
             preferences_widgets_color_event_far = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventFar_key), getResources().getColor(R.color.pref_Widgets_Color_EventFar_default));
             preferences_widgets_color_default = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
             preferences_widgets_color_widget_caption = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_WidgetCaption_key), getResources().getColor(R.color.pref_Widgets_Color_WidgetCaption_default));
-            preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
-            preferences_notification_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
+
             preferences_quiz_interface = getPreferenceString(preferences, getResources().getString(R.string.pref_Quiz_Interface_key), Constants.STRING_EMPTY);
             if (preferences_quiz_interface.isEmpty()) {
                 preferences_quiz_interface = getResources().getString(Build.VERSION.SDK_INT < Build.VERSION_CODES.O || Build.VERSION.SDK_INT > Build.VERSION_CODES.R ? R.string.pref_Quiz_Interface_Dialog : R.string.pref_Quiz_Interface_Notify);
@@ -1247,26 +1304,6 @@ class ContactsEvents {
             }
             preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
-            //Уведомления
-            preferences_notifications_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Days_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_Days_values_default))));
-            preferences_notifications_days.removeAll(new HashSet<String>() {{
-                add(Constants.STRING_EMPTY);
-            }});
-
-            preferences_notifications_type = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Type_key), context.getString(R.string.pref_Notifications_Type_default));
-            preferences_notifications_priority = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_Priority_key), context.getString(R.string.pref_Notifications_Priority_default));
-            preferences_notifications_alarm_hour = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmHour_key), context.getString(R.string.pref_Notifications_AlarmHour_default));
-            if (preferences_notifications_alarm_hour < 0)
-                preferences_notifications_alarm_hour = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmHour_default));
-            preferences_notifications_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
-            if (preferences_notifications_alarm_minute < 0)
-                preferences_notifications_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
-            preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-            preferences_notifications_EventTypes = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types //По-умолчанию берём из списка событий
-            );
-            preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
-            preferences_notifications_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
-
             //Имена
             preferences_first_names_female_custom = getPreferenceString(preferences, context.getString(R.string.pref_Female_Names_key), Constants.STRING_EMPTY);
             preferences_first_names_male_custom = getPreferenceString(preferences, context.getString(R.string.pref_Male_Names_key), Constants.STRING_EMPTY);
@@ -1394,8 +1431,8 @@ class ContactsEvents {
             if (TextUtils.isEmpty(preferences_birthday_calendars_rules)) {
                 preferences_birthday_calendars_rules = context.getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default);
             }
-            preferences_rules_calendars_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
-            preferences_rules_files_nameformat = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+            preferences_rules_calendars_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
+            preferences_rules_files_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default));
 
             getRecentColors();
 
@@ -1480,10 +1517,14 @@ class ContactsEvents {
             SharedPreferences.Editor editor = preferences.edit();
 
             editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
-            editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notification_channel_id);
+            editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notifications_channel_id);
+            editor.putInt(context.getString(R.string.pref_Notifications2_ChannelID), preferences_notifications2_channel_id);
             editor.putString(context.getString(R.string.pref_Notifications_AlarmHour_key), Integer.toString(preferences_notifications_alarm_hour));
+            editor.putString(context.getString(R.string.pref_Notifications2_AlarmHour_key), Integer.toString(preferences_notifications2_alarm_hour));
             editor.putString(context.getString(R.string.pref_Notifications_AlarmMinute_key), Integer.toString(preferences_notifications_alarm_minute));
+            editor.putString(context.getString(R.string.pref_Notifications2_AlarmMinute_key), Integer.toString(preferences_notifications2_alarm_minute));
             editor.putString(context.getString(R.string.pref_Notifications_Ringtone_key), preferences_notifications_ringtone);
+            editor.putString(context.getString(R.string.pref_Notifications2_Ringtone_key), preferences_notifications2_ringtone);
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
             editor.putInt(context.getString(R.string.pref_IconPack_key), preferences_IconPackNumber);
             editor.putString(context.getString(R.string.pref_Theme_key), Integer.toString(preferences_theme.prefNumber));
@@ -1506,7 +1547,8 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
             editor.putStringSet(context.getString(R.string.pref_List_EventSources_key), preferences_list_EventSources);
-            editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_EventSources);
+            editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
+            editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
 
             editor.commit();
 
@@ -2517,7 +2559,7 @@ class ContactsEvents {
             Event event = new Event();
 
             if (map_calendars.isEmpty()) recieveCalendarList();
-            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_calendars_nameformat).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
+            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_calendars_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
 
             //https://stackoverflow.com/questions/25734285/how-to-get-the-real-time-of-recurring-events
             //https://stackoverflow.com/questions/10133616/reading-all-of-todays-events-using-calendarcontract-android-4-0
@@ -2738,7 +2780,7 @@ class ContactsEvents {
 
                                             String personFullNameNormalized;
                                             String personFullNameAltNormalized;
-                                            final String personFullNameAlt = Person.getAltName(foundName, preferences_rules_calendars_nameformat, context);
+                                            final String personFullNameAlt = Person.getAltName(foundName, preferences_rules_calendars_name_format, context);
                                             if (isFirstSecondLastFormat) {
                                                 personFullNameNormalized = normalizeName(foundName);
                                                 personFullNameAltNormalized = normalizeName(personFullNameAlt);
@@ -3033,9 +3075,26 @@ class ContactsEvents {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 log.append(context.getString(R.string.msg_notifications_disabled));
             } else {
-                initNotificationChannel(log); //для Android 8+
+
+                initNotificationChannel(log, 1, preferences_notifications_days, preferences_notifications_ringtone); //для Android 8+
+                initNotificationChannel(log, 2, preferences_notifications2_days, preferences_notifications2_ringtone); //для Android 8+
+
                 initBootReceiver(log);
-                initNotificationSchedule(log);
+
+                if (!preferences_notifications_days.isEmpty()) {
+                    initNotificationSchedule(log,
+                            1,
+                            preferences_notifications_days,
+                            preferences_notifications_alarm_hour,
+                            preferences_notifications_alarm_minute);
+                }
+                if (!preferences_notifications2_days.isEmpty()) {
+                    initNotificationSchedule(log,
+                            2,
+                            preferences_notifications2_days,
+                            preferences_notifications2_alarm_hour,
+                            preferences_notifications2_alarm_minute);
+                }
             }
             initWidgetUpdate(log);
 
@@ -3096,7 +3155,7 @@ class ContactsEvents {
             now.set(Calendar.MINUTE, 0);
             now.set(Calendar.SECOND, 0);
             now.set(Calendar.MILLISECOND, 0);
-            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_nameformat).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
+            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -3429,7 +3488,7 @@ class ContactsEvents {
 
                         String personFullNameNormalized;
                         String personFullNameAltNormalized;
-                        final String personFullNameAlt = Person.getAltName(eventTitle, preferences_rules_files_nameformat, context);
+                        final String personFullNameAlt = Person.getAltName(eventTitle, preferences_rules_files_name_format, context);
                         if (isFirstSecondLastFormat) {
                             personFullNameNormalized = normalizeName(eventTitle);
                             personFullNameAltNormalized = normalizeName(personFullNameAlt);
@@ -4109,8 +4168,8 @@ class ContactsEvents {
 
                 @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
 
-                addMourningTape = (preferences_list_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
-                        (preferences_list_sad_photo == 2 && deathDatesForIds.containsKey(contactID));
+                addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
+                        (preferences_sad_photo == 2 && deathDatesForIds.containsKey(contactID));
 
                 if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
                     //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
@@ -5106,7 +5165,7 @@ class ContactsEvents {
                             .append(getResources().getString(R.string.msg_after_event_postfix));
                 }
             }
-            final SimpleDateFormat sdfOut = new SimpleDateFormat(preferences_list_dateformat == 3 || preferences_list_dateformat == 5 ? Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(currentLocale));
+            final SimpleDateFormat sdfOut = new SimpleDateFormat(preferences_date_format == 3 || preferences_date_format == 5 ? Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(currentLocale));
 
             String weekDay = getResources().getStringArray(R.array.weekDays)[c1.get(Calendar.DAY_OF_WEEK) - 1];
             if (currentLanguage.equals(getResources().getString(R.string.pref_Language_be)) && eventDistance.substring(eventDistance.length() - 1).matches("[аоуіэыяеёю]")) {
@@ -5353,38 +5412,45 @@ class ContactsEvents {
         }
     }
 
-    void initNotificationChannel(StringBuilder log) {
+    void initNotificationChannel(StringBuilder log, int queueNumber, Set<String> prefDays, String prefRingtone) {
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
 
+                int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
+
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
 
                 //находим канал. если канала нет или рингтон там другой - пересоздаём канал
-                String channel_id = Integer.toString(preferences_notification_channel_id);
+                String channel_id = Integer.toString(prefChannelId);
                 @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channel_id);
 
-                if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+                if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
                     //https://developer.android.com/training/notify-user/channels.html
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null && !channel.getSound().toString().equals(preferences_notifications_ringtone)) {
+                    if (channel != null && !channel.getSound().toString().equals(prefRingtone)) {
                         notificationManager.deleteNotificationChannel(channel_id);
                         channel = null;
                         log.append(resources.getString(R.string.msg_deleted_channel, channel_id));
                     }
 
                     if (channel == null) {
-                        preferences_notification_channel_id = generator.nextInt(1000);
-                        channel_id = Integer.toString(preferences_notification_channel_id);
+                        prefChannelId = generator.nextInt(1000);
+                        if (queueNumber == 1) {
+                            preferences_notifications_channel_id = prefChannelId;
+                        } else if (queueNumber == 2) {
+                            preferences_notifications2_channel_id = prefChannelId;
+                        }
+                        channel_id = Integer.toString(prefChannelId);
 
                         channel = new NotificationChannel(channel_id, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        if (preferences_notifications_ringtone != null)
+                        if (prefRingtone != null)
                             channel.setSound(
-                                    Uri.parse(preferences_notifications_ringtone),
+                                    Uri.parse(prefRingtone),
                                     new AudioAttributes.Builder()
                                             .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                                             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -5393,11 +5459,11 @@ class ContactsEvents {
                         channel.enableVibration(true);
                         notificationManager.createNotificationChannel(channel);
 
-                        log.append(resources.getString(R.string.msg_created_channel, String.valueOf(preferences_notification_channel_id)));
-                        if (preferences_notifications_ringtone != null)
+                        log.append(resources.getString(R.string.msg_created_channel, channel_id));
+                        if (prefRingtone != null)
                             log
                                     .append(resources.getString(R.string.msg_ringtone))
-                                    .append(Uri.parse(preferences_notifications_ringtone))
+                                    .append(Uri.parse(prefRingtone))
                                     .append(Constants.STRING_EOL);
                         savePreferences();
                     }
@@ -5420,7 +5486,7 @@ class ContactsEvents {
             PackageManager pm = context.getPackageManager();
             ComponentName receiver = new ComponentName(context, DeviceBootReceiver.class);
 
-            if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            if ((!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
                 //To enable Boot Receiver class
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
@@ -5484,17 +5550,18 @@ class ContactsEvents {
 
     }
 
-    void initNotificationSchedule(@NonNull StringBuilder log) {
+    void initNotificationSchedule(@NonNull StringBuilder log, int queueNumber, Set<String> prefDays, int prefAlarmHour, int prefAlarmMinute) {
 
         try {
 
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentMutable);
+            alarmIntent.putExtra(Constants.QUEUE, queueNumber);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, queueNumber, alarmIntent, PendingIntentMutable);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             boolean needToNotify = false;
             boolean canExactAlarm = false;
-            if (!preferences_notifications_days.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
                 canExactAlarm = checkCanExactAlarm();
                 if (!canExactAlarm) {
                     log.append(context.getString(R.string.msg_exact_alarms_disabled));
@@ -5506,8 +5573,8 @@ class ContactsEvents {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, preferences_notifications_alarm_hour);
-                calendar.set(Calendar.MINUTE, preferences_notifications_alarm_minute);
+                calendar.set(Calendar.HOUR_OF_DAY, prefAlarmHour);
+                calendar.set(Calendar.MINUTE, prefAlarmMinute);
                 calendar.set(Calendar.SECOND, 0);
 
                 if (calendar.before(Calendar.getInstance())) {
@@ -5532,7 +5599,7 @@ class ContactsEvents {
                 }
 
             } else { //Disable Daily Notifications
-                if (PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
+                if (PendingIntent.getBroadcast(context, queueNumber, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
                     alarmManager.cancel(pendingIntent);
                 }
             }
@@ -5568,13 +5635,50 @@ class ContactsEvents {
         }
     }
 
-    void showNotifications(boolean forceNoEventsMessage, String channelId) {
+    void showNotifications(int queueNumber, boolean forceNoEventsMessage, String channelId) {
+
+        if (queueNumber == 1) {
+            showNotificationsForParams(
+                    forceNoEventsMessage,
+                    channelId, 
+                    preferences_notifications_days,
+                    preferences_notifications_sources,
+                    preferences_notifications_types,
+                    preferences_notifications_style,
+                    preferences_notifications_priority, 
+                    preferences_notifications_ringtone, 
+                    preferences_notifications_on_click_action, 
+                    preferences_notifications_quick_actions,
+                    preferences_notifications_details
+            );
+        } else if (queueNumber == 2) {
+            showNotificationsForParams(
+                    forceNoEventsMessage,
+                    channelId,
+                    preferences_notifications2_days,
+                    preferences_notifications2_sources,
+                    preferences_notifications2_types,
+                    preferences_notifications2_style,
+                    preferences_notifications2_priority,
+                    preferences_notifications2_ringtone,
+                    preferences_notifications2_on_click_action,
+                    preferences_notifications2_quick_actions,
+                    preferences_notifications2_details
+            );
+        }
+
+    }
+
+    void showNotificationsForParams(boolean forceNoEventsMessage, String channelId, Set<String> prefDays, Set<String> prefEventSources,
+                                    Set<String> prefEventTypes, int prefType, int prefPriority,
+                                    String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventInfo) {
         //https://www.journaldev.com/15468/android-notification-styling
+
+        if (checkNoNotificationAccess()) return;
 
         try {
 
-            if (checkNoNotificationAccess()) return;
-            Set<String> notifications_days = new HashSet<>(preferences_notifications_days); //За сколько дней уведомлять
+            Set<String> notifications_days = new HashSet<>(prefDays); //За сколько дней уведомлять
             if (notifications_days.isEmpty()) return;
 
             setLocale(true);
@@ -5595,10 +5699,10 @@ class ContactsEvents {
                     final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
                     //Фильтр по источникам
-                    if (!preferences_notifications_EventSources.isEmpty()) {
+                    if (!prefEventSources.isEmpty()) {
                         final String eventDates = singleEventArray[ContactsEvents.Position_dates];
                         boolean isVisibleEvent = false;
-                        for (String source: preferences_notifications_EventSources) {
+                        for (String source: prefEventSources) {
                             if (eventDates.contains(source)) {
                                 isVisibleEvent = true;
                                 break;
@@ -5608,7 +5712,7 @@ class ContactsEvents {
                     }
 
                     //Фильтр по типам событий
-                    if (preferences_notifications_EventTypes.contains(singleEventArray[Position_eventType])
+                    if (prefEventTypes.contains(singleEventArray[Position_eventType])
                             && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))
                             && (getSilencedEventsCount() == 0 || !checkIsSilencedEvent(eventKey, eventKeyWithRawId))) {
 
@@ -5637,10 +5741,10 @@ class ContactsEvents {
             notificationManager.cancelAll();
 
             if (listNotify.isEmpty() || //Тестовое уведомление
-                    preferences_notifications_type == 0 || //Одно общее уведомление
-                    listNotify.size() >= 3 && preferences_notifications_type == 2 || //Если событий меньше 3 -> отдельные, иначе - общее
-                    listNotify.size() >= 4 && preferences_notifications_type == 3 || //Если событий меньше 4 -> отдельные, иначе - общее
-                    preferences_notifications_type == 4 //За сегодня -> отдельные, остальные -> общее
+                    prefType == 0 || //Одно общее уведомление
+                    listNotify.size() >= 3 && prefType == 2 || //Если событий меньше 3 -> отдельные, иначе - общее
+                    listNotify.size() >= 4 && prefType == 3 || //Если событий меньше 4 -> отдельные, иначе - общее
+                    prefType == 4 //За сегодня -> отдельные, остальные -> общее
             ) {
 
                 StringBuilder textBig = new StringBuilder();
@@ -5648,14 +5752,14 @@ class ContactsEvents {
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
                     for (NotifyEvent event : listNotify) {
-                        if (preferences_notifications_type != 4 || event.eventDate.after(currentDay)) {
+                        if (prefType != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            textBig.append(composeNotifyEventDetails(event));
+                            textBig.append(composeNotifyEventDetails(event, prefEventInfo));
                         }
                     }
                     if (countEvents > 0) {
-                        if (preferences_notifications_type == 4) {
+                        if (prefType == 4) {
                             textSmall = context.getString(R.string.msg_notifications_count) + countEvents;
                         } else {
                             textSmall = context.getString(R.string.msg_notifications_soon) + countEvents;
@@ -5663,7 +5767,7 @@ class ContactsEvents {
                         textBig.insert(0, textSmall + ":\n");
                     }
 
-                } else if (preferences_notifications_type != 4) {
+                } else if (prefType != 4) {
                     textSmall = context.getString(R.string.msg_notifications_soon_no_events);
                 }
 
@@ -5681,14 +5785,14 @@ class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
-                    if (preferences_notifications_priority > 1 && !listNotify.isEmpty()) {
+                    if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
                         builder.setPriority(NotificationCompat.PRIORITY_MAX);
                     }
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                        if (preferences_notifications_ringtone != null)
-                            builder.setSound(Uri.parse(preferences_notifications_ringtone));
+                        if (prefRingtone != null)
+                            builder.setSound(Uri.parse(prefRingtone));
                     }
 
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -5698,21 +5802,21 @@ class ContactsEvents {
                 }
             }
 
-            if (!listNotify.isEmpty() && (preferences_notifications_type == 1 || //Несколько отдельных уведомлений
-                    listNotify.size() < 3 && preferences_notifications_type == 2 || //Если событий меньше 3 -> отдельные
-                    listNotify.size() < 4 && preferences_notifications_type == 3 || //Если событий меньше 4 -> отдельные
-                    preferences_notifications_type == 4 //За сегодня -> отдельные
+            if (!listNotify.isEmpty() && (prefType == 1 || //Несколько отдельных уведомлений
+                    listNotify.size() < 3 && prefType == 2 || //Если событий меньше 3 -> отдельные
+                    listNotify.size() < 4 && prefType == 3 || //Если событий меньше 4 -> отдельные
+                    prefType == 4 //За сегодня -> отдельные
             )) {
 
                 for (int i = listNotify.size() - 1; i >= 0; i--) {
 
                     NotifyEvent event = listNotify.get(i);
 
-                    if (preferences_notifications_type != 4 || event.eventDate.equals(currentDay)) {
+                    if (prefType != 4 || event.eventDate.equals(currentDay)) {
 
                         int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                         final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                        final String eventDetails = composeNotifyEventDetails(event);
+                        final String eventDetails = composeNotifyEventDetails(event, prefEventInfo);
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
@@ -5725,12 +5829,12 @@ class ContactsEvents {
 
                         Intent intent = null;
 
-                        if (preferences_notifications_on_click_action == 7) { //Основной список событий
+                        if (prefOnClickAction == 7) { //Основной список событий
                             intent = new Intent(context, MainActivity.class);
                             intent.setAction(Constants.ACTION_LAUNCH);
-                        } else if (preferences_notifications_on_click_action >= 1 & preferences_notifications_on_click_action <= 4) {
-                            intent = getViewActionIntent(event.singleEventArray, preferences_notifications_on_click_action);
-                        } else if (preferences_notifications_on_click_action == 6) { //Закрыть уведомление
+                        } else if (prefOnClickAction >= 1 & prefOnClickAction <= 4) {
+                            intent = getViewActionIntent(event.singleEventArray, prefOnClickAction);
+                        } else if (prefOnClickAction == 6) { //Закрыть уведомление
                             intent = new Intent();
                         }
 
@@ -5743,7 +5847,7 @@ class ContactsEvents {
                         final String eventAsString = event.toString();
                         //todo: .addPerson для телефона и почты
 
-                        if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Dial))
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Dial))
                                 && !event.singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent))
                                 && !TextUtils.isEmpty(event.singleEventArray[Position_contactID])
                                 && !TextUtils.isEmpty(getContactPhone(parseToLong(event.singleEventArray[Position_contactID])))) {
@@ -5759,7 +5863,7 @@ class ContactsEvents {
                         }
 
                         final String eventKey = getEventKey(event.singleEventArray);
-                        if (!eventKey.isEmpty() && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
+                        if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
                             Intent intentSilent = new Intent(context, ActionReceiver.class);
                             intentSilent.setAction(Constants.ACTION_SILENT);
                             intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -5769,7 +5873,7 @@ class ContactsEvents {
                             builder.addAction(actionSilent);
                         }
 
-                        if (!eventKey.isEmpty() && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
+                        if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
                             Intent intentHide = new Intent(context, ActionReceiver.class);
                             intentHide.setAction(Constants.ACTION_HIDE);
                             intentHide.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -5779,7 +5883,7 @@ class ContactsEvents {
                             builder.addAction(actionHide);
                         }
 
-                        if (preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Remind))) {
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Remind))) {
                             Intent intentSnooze = new Intent(context, ActionReceiver.class);
                             intentSnooze.setAction(Constants.ACTION_SNOOZE);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -5789,7 +5893,7 @@ class ContactsEvents {
                             builder.addAction(actionSnooze);
                         }
 
-                        if (preferences_notifications_priority > 2 && preferences_notifications_quick_actions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
+                        if (prefPriority > 2 && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
                             Intent intentClose = new Intent(context, ActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -5800,8 +5904,8 @@ class ContactsEvents {
                         }
 
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                            if (preferences_notifications_ringtone != null)
-                                builder.setSound(Uri.parse(preferences_notifications_ringtone));
+                            if (prefRingtone != null)
+                                builder.setSound(Uri.parse(prefRingtone));
                         }
 
                         String eventSubType = event.singleEventArray[Position_eventSubType];
@@ -5813,7 +5917,7 @@ class ContactsEvents {
                         }
                         builder.setLargeIcon(getEventPhoto(eventAsString, true, true, false, roundingFactor));
 
-                        if (preferences_notifications_priority > 2) {
+                        if (prefPriority > 2) {
                             builder.setOngoing(true);
                             builder.setPriority(NotificationCompat.PRIORITY_MAX);
                         }
@@ -5831,45 +5935,45 @@ class ContactsEvents {
         }
     }
 
-    private String composeNotifyEventDetails(NotifyEvent event) {
+    private String composeNotifyEventDetails(NotifyEvent event, Set<String> prefEventInfo) {
 
         StringBuilder eventDetails = new StringBuilder();
         try {
 
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
                 eventDetails.append(event.singleEventArray[Position_eventEmoji]);
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
                 eventDetails.append(getEventSourceIcon(event.singleEventArray));
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
                 if (checkIsFavoriteEvent(getEventKey(event.singleEventArray), getEventKeyWithRawId(event.singleEventArray), event.singleEventArray[ContactsEvents.Position_starred])) {
                     eventDetails.append(substringBefore(resources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE));
                 }
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
                 eventDetails.append(substringBefore(event.singleEventArray[Position_zodiacSign], Constants.STRING_SPACE));
             }
             if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_SPACE);
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
                 eventDetails.append(event.eventDay());
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
-                eventDetails.append(preferences_list_nameformat == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
+                eventDetails.append(preferences_name_format == 2 ? event.singleEventArray[Position_personFullNameAlt] : event.singleEventArray[Position_personFullName]);
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
                     && !TextUtils.isEmpty(event.singleEventArray[Position_age_caption].trim())) {
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_COLON_SPACE);
                 eventDetails.append(event.singleEventArray[Position_age_caption]);
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_WeddingName_ID))
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_WeddingName_ID))
                     && event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
 
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
 
                 if (event.singleEventArray[Position_eventCaption].endsWith(Constants.STRING_PARENTHESIS_CLOSE)) {
-                    if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
+                    if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
                         eventDetails
                                 .append(Constants.STRING_COMMA_SPACE)
                                 .append(event.singleEventArray[Position_eventCaption]);
@@ -5881,15 +5985,15 @@ class ContactsEvents {
                 }
 
             }
-            if (preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))
                     && !event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
                 eventDetails
                         .append(Constants.STRING_COMMA_SPACE)
                         .append(event.singleEventArray[Position_eventCaption]);
             }
-            final boolean addTitle = preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))
+            final boolean addTitle = prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))
                     && !TextUtils.isEmpty(event.singleEventArray[Position_title]);
-            final boolean addOrganization = preferences_notifications_EventInfo.contains(resources.getString(R.string.pref_EventInfo_Organization_ID))
+            final boolean addOrganization = prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_Organization_ID))
                     && !TextUtils.isEmpty(event.singleEventArray[Position_organization]);
             if (addOrganization || addTitle) {
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
@@ -6976,9 +7080,14 @@ class ContactsEvents {
 
     }
 
-    void setPreferences_AlarmTime(int alarmHour, int alarmMinute) {
-        this.preferences_notifications_alarm_hour = alarmHour;
-        this.preferences_notifications_alarm_minute = alarmMinute;
+    void setPreferences_AlarmTime(int queueNumber, int alarmHour, int alarmMinute) {
+        if (queueNumber == 1) {
+            this.preferences_notifications_alarm_hour = alarmHour;
+            this.preferences_notifications_alarm_minute = alarmMinute;
+        } else if (queueNumber == 2) {
+            this.preferences_notifications2_alarm_hour = alarmHour;
+            this.preferences_notifications2_alarm_minute = alarmMinute;
+        }
     }
 
     int getPreferences_IconPackNumber() {
@@ -7085,7 +7194,7 @@ class ContactsEvents {
 
         String resultString = Constants.STRING_EMPTY;
         if (TextUtils.isEmpty(dateIn)) return resultString;
-        if (preferences_list_dateformat == 2 && format == FormatDate.WithYear)
+        if (preferences_date_format == 2 && format == FormatDate.WithYear)
             return dateIn; // DD.MM.YYYY
 
         try {
@@ -7097,7 +7206,7 @@ class ContactsEvents {
             Date eventDate = null;
             boolean isYearPresent = false;
 
-            switch (preferences_list_dateformat) {
+            switch (preferences_date_format) {
 
                 case 2: // DD.MM.YYYY
 
@@ -7249,7 +7358,7 @@ class ContactsEvents {
             SimpleDateFormat sdfOut;
             final String timeFormat = " HH:mm";
 
-            switch (preferences_list_dateformat) {
+            switch (preferences_date_format) {
 
                 case 2: // DD.MM.YYYY
 
@@ -7651,7 +7760,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -7752,7 +7861,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -7852,7 +7961,7 @@ class ContactsEvents {
             Date currentDay = removeTime(Calendar.getInstance()).getTime();
             boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
-            StringBuilder personInfo = new StringBuilder(preferences_list_nameformat == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -8762,7 +8871,7 @@ class ContactsEvents {
     boolean isJubilee(int age, @NonNull String eventSubType) {
         try {
             if (age <= 0) return false;
-            final String algorithm = String.valueOf(preferences_list_jubilee_algorithm);
+            final String algorithm = String.valueOf(preferences_jubilee_algorithm);
             if (algorithm.equals(context.getString(R.string.pref_List_Jubilee_Algorithm_Every_10))) {
                 return age % 10 == 0;
             } else if (algorithm.equals(context.getString(R.string.pref_List_Jubilee_Algorithm_Every_5))) {

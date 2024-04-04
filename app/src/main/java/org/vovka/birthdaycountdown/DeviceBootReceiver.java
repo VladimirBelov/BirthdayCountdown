@@ -30,7 +30,22 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                 if (eventsData.getContext() == null) eventsData.setContext(context);
                 eventsData.getPreferences();
                 eventsData.setLocale(true);
-                eventsData.initNotificationSchedule(log);
+
+                if (!eventsData.preferences_notifications_days.isEmpty()) {
+                    eventsData.initNotificationSchedule(log,
+                            1,
+                            eventsData.preferences_notifications_days,
+                            eventsData.preferences_notifications_alarm_hour,
+                            eventsData.preferences_notifications_alarm_minute);
+                }
+                if (!eventsData.preferences_notifications2_days.isEmpty()) {
+                    eventsData.initNotificationSchedule(log,
+                            2,
+                            eventsData.preferences_notifications2_days,
+                            eventsData.preferences_notifications2_alarm_hour,
+                            eventsData.preferences_notifications2_alarm_minute);
+                }
+
                 eventsData.initWidgetUpdate(log);
 
                 if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());

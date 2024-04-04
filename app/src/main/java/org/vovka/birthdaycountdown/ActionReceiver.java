@@ -95,7 +95,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                eventsData.showNotification(notificationData, Integer.toString(eventsData.preferences_notification_channel_id));
+                eventsData.showNotification(notificationData, Integer.toString(eventsData.preferences_notifications_channel_id));
 
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 

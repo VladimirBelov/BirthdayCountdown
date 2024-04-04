@@ -29,18 +29,35 @@ public class AlarmReceiver extends BroadcastReceiver {
             eventsData.getPreferences();
             eventsData.setLocale(true);
 
-            if (!eventsData.preferences_notifications_days.isEmpty()) {
+            boolean isNeedNotify = !eventsData.preferences_notifications_days.isEmpty();
+            boolean isNeedNotify2 = !eventsData.preferences_notifications2_days.isEmpty();
 
-                eventsData.setLocale(true);
+            if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(context)) {
                     eventsData.computeDates();
 
-                    eventsData.showNotifications(false, Integer.toString(eventsData.preferences_notification_channel_id));
+                    if (isNeedNotify && intent.getIntExtra(Constants.QUEUE, 0) == 1) {
+                        eventsData.showNotifications(1, false, Integer.toString(eventsData.preferences_notifications_channel_id));
 
-                    //Переинициализируем уведомления
-                    eventsData.initNotificationSchedule(log);
+                        //Переинициализируем уведомления
+                        eventsData.initNotificationSchedule(log,
+                                1,
+                                eventsData.preferences_notifications_days,
+                                eventsData.preferences_notifications_alarm_hour,
+                                eventsData.preferences_notifications_alarm_minute);
+                    }
+
+                    if (isNeedNotify2 && intent.getIntExtra(Constants.QUEUE, 0) == 2) {
+                        eventsData.showNotifications(2, false, Integer.toString(eventsData.preferences_notifications2_channel_id));
+
+                        //Переинициализируем уведомления
+                        eventsData.initNotificationSchedule(log,
+                                2,
+                                eventsData.preferences_notifications2_days,
+                                eventsData.preferences_notifications2_alarm_hour,
+                                eventsData.preferences_notifications2_alarm_minute);
+                    }
                 }
-
             }
 
             //Переинициализируем обновления виджетов

@@ -120,7 +120,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 final String eventKey = eventsData.getEventKey(singleEventArray);
                 final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 String eventCaption;
-                if (eventsData.preferences_list_nameformat == 2) { //Фамилия Имя Отчество
+                if (eventsData.preferences_name_format == 2) { //Фамилия Имя Отчество
                     eventCaption = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else { //Имя Отчество Фамилия
                     eventCaption = singleEventArray[ContactsEvents.Position_personFullName];

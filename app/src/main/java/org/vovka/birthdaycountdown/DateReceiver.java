@@ -38,7 +38,20 @@ public class DateReceiver extends BroadcastReceiver {
                 eventsData.setLocale(true);
 
                 //Переинициализируем уведомления
-                eventsData.initNotificationSchedule(log);
+                if (!eventsData.preferences_notifications_days.isEmpty()) {
+                    eventsData.initNotificationSchedule(log,
+                            1,
+                            eventsData.preferences_notifications_days,
+                            eventsData.preferences_notifications_alarm_hour,
+                            eventsData.preferences_notifications_alarm_minute);
+                }
+                if (!eventsData.preferences_notifications2_days.isEmpty()) {
+                    eventsData.initNotificationSchedule(log,
+                            2,
+                            eventsData.preferences_notifications2_days,
+                            eventsData.preferences_notifications2_alarm_hour,
+                            eventsData.preferences_notifications2_alarm_minute);
+                }
 
                 //Переинициализируем обновления виджетов
                 eventsData.initWidgetUpdate(log);

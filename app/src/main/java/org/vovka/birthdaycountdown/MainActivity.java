@@ -722,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 StringBuilder textBig = new StringBuilder();
                 textBig
-                        .append(eventsData.preferences_list_nameformat == 2 ? selectedEvent[ContactsEvents.Position_personFullNameAlt] : selectedEvent[ContactsEvents.Position_personFullName])
+                        .append(eventsData.preferences_name_format == 2 ? selectedEvent[ContactsEvents.Position_personFullNameAlt] : selectedEvent[ContactsEvents.Position_personFullName])
                         .append(Constants.STRING_EOL)
                         .append(selectedEvent[ContactsEvents.Position_eventEmoji])
                         .append(Constants.STRING_SPACE)
@@ -2011,9 +2011,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //Отступы списка событий
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) swipeRefresh.getLayoutParams();
             marginParams.setMargins(
-                    (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                    (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.topMargin,
-                    (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                    (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
             swipeRefresh.setLayoutParams(marginParams);
 
@@ -2230,11 +2230,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             TextView stats = findViewById(R.id.mainStatsTextView);
             stats.setText(HtmlCompat.fromHtml(msg, 0), TextView.BufferType.SPANNABLE);
 
-            if (eventsData.preferences_list_marging > 0) {
+            if (eventsData.preferences_list_margin > 0) {
                     stats.setPadding(
                             stats.getPaddingLeft(),
                             stats.getPaddingTop(),
-                            (int) (eventsData.preferences_list_marging * displayMetrics.density + 0.5f),
+                            (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                             stats.getPaddingBottom());
             }
 
@@ -2446,7 +2446,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Дата оригинального события
                 holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear));
 
-                switch (eventsData.preferences_list_nameformat) {
+                switch (eventsData.preferences_name_format) {
                     case 2: //Фамилия Имя Отчество
                         holder.NameTextView.setText(singleEventArray[ContactsEvents.Position_personFullNameAlt]);
                         break;

@@ -1920,6 +1920,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_key" translatable="false">Notifications</string>
     <string name="pref_Notifications2_key" translatable="false">Notifications2</string>
     <string name="pref_Notifications_ChannelID" translatable="false">Notifications_ChannelID</string>
+    <string name="pref_Notifications2_ChannelID" translatable="false">Notifications2_ChannelID</string>
     <string name="pref_Notifications_EventSources_key" translatable="false">Notifications_EventSources</string>
     <string name="pref_Notifications2_EventSources_key" translatable="false">Notifications2_EventSources</string>
 
@@ -2002,6 +2003,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_AlarmHour_default" translatable="false">9</string>
 
     <string name="pref_Notifications_AlarmMinute_key" translatable="false">Notifications_AlarmMinute</string>
+    <string name="pref_Notifications2_AlarmMinute_key" translatable="false">Notifications2_AlarmMinute</string>
     <string name="pref_Notifications_AlarmMinute_default" translatable="false">0</string>
 
     <string name="pref_Notifications_Ringtone_key" translatable="false">Notifications_Ringtone</string>

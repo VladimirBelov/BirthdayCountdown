@@ -27,17 +27,25 @@ public class NotifyActivity extends Activity {
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.setLocale(true);
 
-            if (eventsData.getEvents(null)) {
-                eventsData.computeDates();
-                if (!eventsData.preferences_notifications_days.isEmpty()) {
+            boolean isNeedNotify = !eventsData.preferences_notifications_days.isEmpty();
+            boolean isNeedNotify2 = !eventsData.preferences_notifications2_days.isEmpty();
 
-                    eventsData.showNotifications(true, Integer.toString(eventsData.preferences_notification_channel_id));
+            if (isNeedNotify || isNeedNotify2) {
+                if (eventsData.getEvents(null)) {
+                    eventsData.computeDates();
 
-                } else {
-
-                    ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
-
+                    if (isNeedNotify) {
+                        eventsData.showNotifications(1, true, Integer.toString(eventsData.preferences_notifications_channel_id));
+                    }
+                    if (isNeedNotify2) {
+                        eventsData.showNotifications(2, true, Integer.toString(eventsData.preferences_notifications2_channel_id));
+                    }
                 }
+
+            } else {
+
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
+
             }
 
             finish();

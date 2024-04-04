@@ -177,6 +177,7 @@ final class Constants {
     static final int RESULT_PICK_FILE_FOR_IMPORT = 205;
 
     static final int defaultNotificationID = 1000;
+    static final int defaultNotification2ID = 1100;
     static final int defaultQuizID = 2000;
     static final String ACTION_SNOOZE = "action.SNOOZE";
     static final String ACTION_NOTIFY = "action.NOTIFY";
@@ -337,4 +338,5 @@ final class Constants {
     static final int onClick_Popup = 1;
     static final int onClick_Calendar = 2;
 
+    public static final String QUEUE = "queue";
 }
