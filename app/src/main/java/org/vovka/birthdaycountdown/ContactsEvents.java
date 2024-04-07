@@ -1440,7 +1440,7 @@ class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
-            updateShortCuts(preferences_extrafun);
+            updateShortcuts(preferences_extrafun);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1449,7 +1449,7 @@ class ContactsEvents {
 
     }
 
-    private void updateShortCuts(boolean enableExtraShortcuts) {
+    private void updateShortcuts(boolean enableExtraShortcuts) {
         //https://habr.com/ru/articles/593863/
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
@@ -5417,13 +5417,12 @@ class ContactsEvents {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
 
-                int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
-
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
 
-                //находим канал. если канала нет или рингтон там другой - пересоздаём канал
-                String channel_id = Integer.toString(prefChannelId);
-                @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channel_id);
+                //Находим канал. Если канала нет или рингтон там другой - пересоздаём канал
+                int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
+                String channelId = Integer.toString(prefChannelId);
+                @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
 
                 if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
@@ -5432,9 +5431,9 @@ class ContactsEvents {
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
                     if (channel != null && !channel.getSound().toString().equals(prefRingtone)) {
-                        notificationManager.deleteNotificationChannel(channel_id);
+                        notificationManager.deleteNotificationChannel(channelId);
                         channel = null;
-                        log.append(resources.getString(R.string.msg_deleted_channel, channel_id));
+                        log.append(resources.getString(R.string.msg_deleted_channel, channelId));
                     }
 
                     if (channel == null) {
@@ -5444,9 +5443,9 @@ class ContactsEvents {
                         } else if (queueNumber == 2) {
                             preferences_notifications2_channel_id = prefChannelId;
                         }
-                        channel_id = Integer.toString(prefChannelId);
+                        channelId = Integer.toString(prefChannelId);
 
-                        channel = new NotificationChannel(channel_id, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
                         if (prefRingtone != null)
                             channel.setSound(
@@ -5459,7 +5458,7 @@ class ContactsEvents {
                         channel.enableVibration(true);
                         notificationManager.createNotificationChannel(channel);
 
-                        log.append(resources.getString(R.string.msg_created_channel, channel_id));
+                        log.append(resources.getString(R.string.msg_created_channel, channelId));
                         if (prefRingtone != null)
                             log
                                     .append(resources.getString(R.string.msg_ringtone))
@@ -5469,8 +5468,8 @@ class ContactsEvents {
                     }
 
                 } else if (channel != null) {
-                    notificationManager.deleteNotificationChannel(channel_id);
-                    log.append(resources.getString(R.string.msg_deleted_channel, channel_id));
+                    notificationManager.deleteNotificationChannel(channelId);
+                    log.append(resources.getString(R.string.msg_deleted_channel, channelId));
                 }
             }
         } catch (Exception e) {
@@ -5738,7 +5737,7 @@ class ContactsEvents {
             if (listNotify.isEmpty() && !forceNoEventsMessage) return;
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.cancelAll();
+            //notificationManager.cancelAll();
 
             if (listNotify.isEmpty() || //Тестовое уведомление
                     prefType == 0 || //Одно общее уведомление
@@ -5989,7 +5988,8 @@ class ContactsEvents {
                     && !event.singleEventArray[Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
                 eventDetails
                         .append(Constants.STRING_COMMA_SPACE)
-                        .append(event.singleEventArray[Position_eventCaption]);
+                        .append(event.singleEventArray[Position_eventLabel].trim().isEmpty() ? event.singleEventArray[Position_eventCaption] :
+                                event.singleEventArray[Position_eventLabel]);
             }
             final boolean addTitle = prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))
                     && !TextUtils.isEmpty(event.singleEventArray[Position_title]);

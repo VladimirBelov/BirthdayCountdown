@@ -1032,7 +1032,6 @@
 
         <MultiSelectListPreference
             android:key="@string/pref_Notifications2_Days_key"
-            android:defaultValue="@array/pref_Notifications_Days_values_default"
             android:entries="@array/pref_Notifications_Days_entries"
             android:entryValues="@array/pref_Notifications_Days_values"
             android:summary="@string/pref_Notifications_Days_summary"
