@@ -108,6 +108,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private ContactsEvents eventsData;
     private String eventTypeForSelect;
     private Set<String> filesList;
+    private int runningQueue = 0;
     boolean skipSharedPreferenceChangedEvent = false;
 
     @Override
@@ -1514,8 +1515,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
                     .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
                     .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                    .putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI)
-                    .putExtra(Constants.QUEUE, queueNumber);
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
             if (prefRingtone.isEmpty()) {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
@@ -1523,6 +1523,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
             }
             try {
+                runningQueue = queueNumber;
                 startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
             } catch (android.content.ActivityNotFoundException e) { /**/ }
 
@@ -2500,7 +2501,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (requestCode == Constants.RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
                 if (resultData != null) {
                     Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    int queueNumber = resultData.getIntExtra(Constants.QUEUE, 0);
+                    int queueNumber = runningQueue;
                     if (ringtone != null) {
                         if (queueNumber == 1) {
                             eventsData.preferences_notifications_ringtone = ringtone.toString();
@@ -2514,6 +2515,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
                         }
                     }
+                    runningQueue = 0;
                     eventsData.savePreferences();
                 }
             } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT && resultCode == Activity.RESULT_OK) {
