@@ -84,7 +84,7 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
-                    android:id="@+id/dividerEventInfo"
+                    android:id="@+id/dividerEventSources"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
@@ -92,28 +92,28 @@
                     android:background="?attr/listDividerColor" />
 
                 <TextView
-                    android:id="@+id/captionEventInfo"
+                    android:id="@+id/captionEventSources"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pref_Widgets_EventInfo_title"
+                    android:text="@string/widget_config_events_sources_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textStyle="bold" />
 
-                <org.vovka.birthdaycountdown.MultiSelectionSpinner
-                    android:id="@+id/spinnerEventInfo"
+                <TextView
+                    android:id="@+id/listEventSources"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/hint_EventDetails"
                     android:paddingEnd="8dp"
                     android:paddingStart="8dp"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
-                    android:id="@+id/hintEventInfo"
+                    android:id="@+id/hintEventSources"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pref_Widgets_EventInfo_summary"
+                    android:text="@string/widget_config_events_sources_description"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
@@ -189,7 +189,7 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/dividerEventSources"
+                    android:id="@+id/dividerEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
@@ -197,28 +197,28 @@
                     android:background="?attr/listDividerColor" />
 
                 <TextView
-                    android:id="@+id/captionEventSources"
+                    android:id="@+id/captionEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/widget_config_events_sources_label"
+                    android:text="@string/pref_Widgets_EventInfo_title"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/listEventSources"
+                <org.vovka.birthdaycountdown.MultiSelectionSpinner
+                    android:id="@+id/spinnerEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/hint_EventDetails"
                     android:paddingEnd="8dp"
                     android:paddingStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    tools:ignore="DuplicateSpeakableTextCheck" />
 
                 <TextView
-                    android:id="@+id/hintEventSources"
+                    android:id="@+id/hintEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/widget_config_events_sources_description"
+                    android:text="@string/pref_Widgets_EventInfo_summary"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View

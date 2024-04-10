@@ -29,50 +29,47 @@
 
         <LinearLayout
             android:id="@+id/calendar1x1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical" >
+            android:layout_weight="30"
+            android:orientation="vertical">
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/calendar1x2div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar1x2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar1x3div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar1x3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar1x4div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar1x4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -86,50 +83,47 @@
 
         <LinearLayout
             android:id="@+id/calendar2x1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical" >
+            android:layout_weight="30"
+            android:orientation="vertical">
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/calendar2x2div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar2x2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar2x3div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar2x3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar2x4div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar2x4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -143,50 +137,47 @@
 
         <LinearLayout
             android:id="@+id/calendar3x1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical" >
+            android:layout_weight="30"
+            android:orientation="vertical">
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/calendar3x2div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar3x2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar3x3div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar3x3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar3x4div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar3x4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -200,50 +191,47 @@
 
         <LinearLayout
             android:id="@+id/calendar4x1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical" >
+            android:layout_weight="30"
+            android:orientation="vertical">
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/calendar4x2div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar4x2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar4x3div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar4x3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
         <TextView
             android:id="@+id/calendar4x4div"
             android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/calendar4x4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:orientation="vertical" />
 
     </LinearLayout>

@@ -647,6 +647,7 @@
     <string name="pref_EventInfo_Photo">Contact photo</string>
     <string name="pref_EventInfo_EventIcon">🎂 Event type icon</string>
     <string name="pref_EventInfo_EventCaption">Event caption</string>
+    <string name="pref_EventInfo_EventLabel">Original event label</string>
     <string name="pref_EventInfo_FavIcon">🌟 Favorites icon</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Silenced event icon</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Zodiac sign</string>
@@ -1783,6 +1784,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
     <string name="pref_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
     <string name="pref_EventInfo_CurrentAge_ID" translatable="false">35</string>
+    <string name="pref_EventInfo_EventLabel_ID" translatable="false">36</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

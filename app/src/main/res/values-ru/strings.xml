@@ -647,6 +647,7 @@
     <string name="pref_EventInfo_Photo">Фото контакта</string>
     <string name="pref_EventInfo_EventIcon">🎂 Иконка типа события</string>
     <string name="pref_EventInfo_EventCaption">Наименование события</string>
+    <string name="pref_EventInfo_EventLabel">Исходное наименование события</string>
     <string name="pref_EventInfo_FavIcon">🌟 Иконка избранного контакта</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Иконка события без уведомления</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак зодиака</string>

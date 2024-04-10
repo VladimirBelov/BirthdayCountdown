@@ -162,17 +162,30 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
 
                 //Наименование события и возраст
+                boolean isLabel = false;
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
                     sbDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
+                    if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
+                        if (!singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty()) {
+                            sbDetails
+                                    .append(Constants.STRING_PARENTHESIS_OPEN)
+                                    .append(singleEventArray[ContactsEvents.Position_eventLabel])
+                                    .append(Constants.STRING_PARENTHESIS_CLOSE);
+                            isLabel = true;
+                        }
+                    }
+                } else if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
+                    if (!singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty()) {
+                        sbDetails.append(singleEventArray[ContactsEvents.Position_eventLabel]);
+                        isLabel = true;
+                    }
                 }
                 if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
                         ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
                         : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
-                    if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
-                        if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)))
-                            sbDetails.append(Constants.STRING_COLON_SPACE);
-                        sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
-                    }
+                    if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel)
+                        sbDetails.append(Constants.STRING_COLON_SPACE);
+                    sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                 }
                 //Текущий возраст
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_CurrentAge_ID))) {
