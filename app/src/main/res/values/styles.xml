@@ -716,4 +716,13 @@
         <item name="android:lines">1</item>
     </style>
 
+    <style name="RightAlignedSpinner">
+        <item name="android:spinnerItemStyle">@style/RightAlignedSpinnerItem</item>
+    </style>
+
+    <style name="RightAlignedSpinnerItem">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
 </resources>

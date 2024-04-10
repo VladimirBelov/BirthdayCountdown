@@ -707,6 +707,26 @@
         <item>Ничего</item>
     </string-array>
 
+    <string name="widget_config_captions_use_prefs_caption">Надписи</string>
+    <string name="widget_config_captions_use_prefs_label">Из настроек</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Верхний ряд:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Нижний ряд:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Выравнивание:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Строк:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Размер и цвет:</string>
+
+    <string-array name="pref_Widgets_Aligning">
+        <item>Влево</item>
+        <item>По центру</item>
+        <item>Вправо</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Не выделять</item>
         <item>1</item>
@@ -815,7 +835,7 @@
 
     <string name="widget_hint">Чтобы отредактировать настройки виджета, нажмите на подпись самого правого события:</string>
 
-    <string name="widget_config_event_info_empty">Использовать общие настройки</string>
+    <string name="widget_config_event_info_empty">Использовать установки из настроек приложения</string>
 
     <string name="widget_config_color_back_label">Цвет фона</string>
     <string name="widget_config_color_back_description">Цвет подложки виджета</string>

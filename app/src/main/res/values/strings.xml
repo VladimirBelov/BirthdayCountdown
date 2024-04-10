@@ -707,6 +707,26 @@
         <item>Nothing</item>
     </string-array>
 
+    <string name="widget_config_captions_use_prefs_caption">Event captions</string>
+    <string name="widget_config_captions_use_prefs_label">From prefs</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Upper row:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Bottom row:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Aligning:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Rows:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Size and color:</string>
+
+    <string-array name="pref_Widgets_Aligning">
+        <item>Left</item>
+        <item>Center</item>
+        <item>Right</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Do not highlight</item>
         <item>1</item>
@@ -815,7 +835,7 @@
 
     <string name="widget_hint">To modify widget preferences click on caption of the rightmost event:</string>
 
-    <string name="widget_config_event_info_empty">Use common settings</string>
+    <string name="widget_config_event_info_empty">Use app prefs settings</string>
 
     <string name="widget_config_color_back_label">Widget background color</string>
     <string name="widget_config_color_back_description">Background color for widget</string>
