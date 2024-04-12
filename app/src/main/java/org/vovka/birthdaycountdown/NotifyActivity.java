@@ -12,6 +12,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.core.app.NotificationManagerCompat;
+
 public class NotifyActivity extends Activity {
 
     private static final String TAG = "NotifyActivity";
@@ -33,6 +35,9 @@ public class NotifyActivity extends Activity {
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(null)) {
                     eventsData.computeDates();
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                    notificationManager.cancelAll();
 
                     if (isNeedNotify) {
                         eventsData.showNotifications(1, true, Integer.toString(eventsData.preferences_notifications_channel_id));

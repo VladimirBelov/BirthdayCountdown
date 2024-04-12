@@ -339,7 +339,7 @@
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <Spinner
-                        android:id="@+id/spinnerCaptionsUpperAlign"
+                        android:id="@+id/spinnerCaptionsUpperRows"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -369,7 +369,7 @@
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <EditText
-                        android:id="@+id/captionCaptionsUpperFontSize"
+                        android:id="@+id/editCaptionsUpperFontSize"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
@@ -377,7 +377,6 @@
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
-                        android:text="10"
                         android:textSize="12sp" />
 
                     <TextView
@@ -387,8 +386,6 @@
                         android:layout_marginTop="-6dp"
                         android:layout_weight="10"
                         android:gravity="center"
-                        android:text="●"
-                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -466,7 +463,7 @@
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <Spinner
-                        android:id="@+id/spinnerCaptionsBottomAlign"
+                        android:id="@+id/spinnerCaptionsBottomRows"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -496,7 +493,7 @@
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <EditText
-                        android:id="@+id/captionCaptionsBottomFontSize"
+                        android:id="@+id/editCaptionsBottomFontSize"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
@@ -505,7 +502,6 @@
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
-                        android:text="10"
                         android:textSize="12sp" />
 
                     <TextView
@@ -515,8 +511,6 @@
                         android:layout_marginTop="-6dp"
                         android:layout_weight="10"
                         android:gravity="center"
-                        android:text="●"
-                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                 </LinearLayout>

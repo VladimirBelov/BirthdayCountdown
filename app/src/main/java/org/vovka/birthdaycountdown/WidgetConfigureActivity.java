@@ -20,12 +20,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -38,11 +40,13 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.transition.TransitionManager;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -57,6 +61,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventInfoValues;
     private final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
     private List<String> eventSourcesSelected = new ArrayList<>();
+    @ColorInt private int colorCaptionUpper;
+    @ColorInt private int colorCaptionBottom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -191,10 +197,19 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventTypes.setItems(eventTypesValues);
             spinnerEventTypes.setSelection(listEventTypes);
 
-            //Ограничения объёма
             isListWidget = widgetType.equals(Constants.WIDGET_TYPE_LIST) || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST);
+            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
+            checkCaptionsUsePrefs.setOnClickListener(v -> updateVisibility());
+            checkCaptionsUsePrefs.setChecked(true);
+            TextView labelCaptionsUsePrefs = findViewById(R.id.labelCaptionsUsePrefs);
+            labelCaptionsUsePrefs.setOnClickListener(v -> {
+                checkCaptionsUsePrefs.setChecked(!checkCaptionsUsePrefs.isChecked());
+                updateVisibility();
+            });
+
             if (isListWidget) {
 
+                //Ограничения объёма
                 Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
                 List<String> spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
                 ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
@@ -227,8 +242,92 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             }
                         }
                     }
+                }
+
+            } else {
+
+                //Параметры заголовков
+                List<String> prefCaptions = new ArrayList<>();
+                if (widgetPref.size() > 8) prefCaptions.addAll(Arrays.asList(widgetPref.get(8).split(Constants.REGEX_PLUS)));
+
+                List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
+
+                Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
+                int position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info);
+                if (position != -1) spinnerCaptionsUpper.setSelection(position);
+                Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
+                position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info_2nd);
+                if (position != -1) spinnerCaptionsBottom.setSelection(position);
+
+                Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
+                spinnerCaptionsUpperAligning.setSelection(getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
+                Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
+                spinnerCaptionsBottomAligning.setSelection(getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
+
+                Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
+                Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
+
+                EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
+                editCaptionsUpperFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY));
+                EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
+                editCaptionsBottomFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY));
+
+                updateCaptionsColors(eventsData.preferences_widgets_color_default, eventsData.preferences_widgets_color_default);
+
+                if (prefCaptions.size() == 10) {
+
+                    checkCaptionsUsePrefs.setChecked(false);
+
+                    position = listBottomInfo.indexOf(prefCaptions.get(0));
+                    if (position != -1) spinnerCaptionsUpper.setSelection(position);
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(1));
+                        spinnerCaptionsUpperAligning.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(2));
+                        spinnerCaptionsUpperRows.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        int prefSize = Integer.parseInt(prefCaptions.get(3));
+                        if (prefSize > 0 && prefSize < 100) editCaptionsUpperFontSize.setText(String.valueOf(prefSize));
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(4));
+                        colorCaptionUpper = prefColor;
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    position = listBottomInfo.indexOf(prefCaptions.get(5));
+                    if (position != -1) spinnerCaptionsBottom.setSelection(position);
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(6));
+                        spinnerCaptionsBottomAligning.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(7));
+                        spinnerCaptionsBottomRows.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        int prefSize = Integer.parseInt(prefCaptions.get(8));
+                        if (prefSize > 0 && prefSize < 100) editCaptionsBottomFontSize.setText(String.valueOf(prefSize));
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(9));
+                        colorCaptionBottom = prefColor;
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    updateCaptionsColors(0, 0);
 
                 }
+
             }
 
             //Заголовок виджета
@@ -411,13 +510,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
-            //Обновляем видимость элементов
-            updateVisibility();
-
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
+            //Обновляем видимость элементов
+            updateVisibility();
             if (ta != null) ta.recycle();
         }
     }
@@ -479,6 +577,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
                 findViewById(R.id.hintEventShift).setVisibility(View.GONE);
 
+                findViewById(R.id.dividerCaptions).setVisibility(View.GONE);
+                findViewById(R.id.blockCaptionsUsePrefs).setVisibility(View.GONE);
+
             } else {
 
                 //Скрываем ограничение объёма
@@ -489,6 +590,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 final TextView tv = findViewById(R.id.hintPhotoStyle);
                 if (tv != null) tv.setText(R.string.widget_config_photostyle_with_align_description);
+
+                findViewById(R.id.dividerCaptions).setVisibility(View.VISIBLE);
+                findViewById(R.id.blockCaptionsUsePrefs).setVisibility(View.VISIBLE);
 
             }
 
@@ -550,6 +654,20 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
+            //Параметры заголовков
+            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
+            int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
+            //https://habr.com/ru/articles/243363/
+            TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main));
+            findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperAligning).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperSize).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomAligning).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
+
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -582,13 +700,59 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             final StringBuilder scopeInfo = new StringBuilder();
-            if (this.isListWidget) {
+            if (this.isListWidget) { //Объём событий
                 final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
                 final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
                 if (spinnerScopeEvents.getSelectedItemPosition() != 0 || spinnerScopeDays.getSelectedItemPosition() != 0) { //Есть ограничения
                     scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
                     scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
+                }
+            } else { //Параметры заголовков
+                final CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
+                if (!checkCaptionsUsePrefs.isChecked()) {
+                    List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
+                    List<String> selectedCaptionsDetails = new ArrayList<>();
+
+                    Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
+                    selectedCaptionsDetails.add(listBottomInfo.get(spinnerCaptionsUpper.getSelectedItemPosition()));
+
+                    Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsUpperAligning.getSelectedItemPosition() + 1));
+
+                    Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsUpperRows.getSelectedItemPosition() + 1));
+
+                    EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
+                    String prefSize = String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY);
+                    try {
+                        int selectedSize = Integer.parseInt(editCaptionsUpperFontSize.getText().toString());
+                        if (selectedSize > 0 && selectedSize < 100) prefSize = String.valueOf(selectedSize);
+                    } catch (NumberFormatException ignored) { /**/ }
+                    selectedCaptionsDetails.add(prefSize);
+
+                    selectedCaptionsDetails.add(String.valueOf(colorCaptionUpper));
+
+                    Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
+                    selectedCaptionsDetails.add(listBottomInfo.get(spinnerCaptionsBottom.getSelectedItemPosition()));
+
+                    Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsBottomAligning.getSelectedItemPosition() + 1));
+
+                    Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsBottomRows.getSelectedItemPosition() + 1));
+
+                    EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
+                    prefSize = String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY);
+                    try {
+                        int selectedSize = Integer.parseInt(editCaptionsBottomFontSize.getText().toString());
+                        if (selectedSize > 0 && selectedSize < 100) prefSize = String.valueOf(selectedSize);
+                    } catch (NumberFormatException ignored) { /**/ }
+                    selectedCaptionsDetails.add(prefSize);
+
+                    selectedCaptionsDetails.add(String.valueOf(colorCaptionBottom));
+ToastExpander.showInfoMsg(this, String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
+                    scopeInfo.append(String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
                 }
             }
 
@@ -619,7 +783,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
             prefsToStore.add(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
-            //prefsToStore.add(this.isListWidget ? scopeInfo.toString() : Constants.STRING_EMPTY); //Объём событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий
             prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
@@ -741,6 +904,64 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 eventSourcesSelected.addAll(newSelectedSources);
                 updateEventSources();
             }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private int getDefaultAligningForEventInfo(@NonNull String info) {
+
+        int Left = 1;
+        int Center = 2;
+        try {
+
+            switch (info) {
+                case Constants.STRING_1: //Фамилия Имя Отчество
+                    return Left;
+                case Constants.STRING_2: //Дата события
+                    return Center;
+                case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                    return Center;
+                case Constants.STRING_4: //Имя Отчество Фамилия
+                    return Left;
+                case Constants.STRING_5: //Имя
+                    return Center;
+                case Constants.STRING_6: //Фамилия
+                    return Center;
+                case Constants.STRING_7: //Псевдоним (Имя, если отсутствует)
+                    return Center;
+                case Constants.STRING_8: //Тип события
+                    return Left;
+                case Constants.STRING_9: //Наименование события
+                    return Left;
+                case Constants.STRING_10: //Организация (Должность, если отсутствует)
+                    return Center;
+                default:
+                    return Left;
+            }
+
+        } catch (final Exception e) {
+            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return Left;
+    }
+
+    public void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {
+        try {
+
+            if (colorUpper != 0) colorCaptionUpper = colorUpper;
+            if (colorBottom != 0) colorCaptionBottom = colorBottom;
+
+            TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
+            captionCaptionsUpperColor.setText(Html.fromHtml("<bold><font color=#"
+                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + ">●</font></bold>"));
+
+            TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
+            captionCaptionsBottomColor.setText(Html.fromHtml("<bold><font color=#"
+                    + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + ">●</font></bold>"));
 
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
