@@ -260,9 +260,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 if (position != -1) spinnerCaptionsBottom.setSelection(position);
 
                 Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
-                spinnerCaptionsUpperAligning.setSelection(getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
+                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
                 Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
-                spinnerCaptionsBottomAligning.setSelection(getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
+                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
 
                 Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
                 Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
@@ -274,53 +274,53 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 updateCaptionsColors(eventsData.preferences_widgets_color_default, eventsData.preferences_widgets_color_default);
 
-                if (prefCaptions.size() == 10) {
+                if (prefCaptions.size() == Constants.PhotoWidget_Bottom_Color + 1) {
 
                     checkCaptionsUsePrefs.setChecked(false);
 
-                    position = listBottomInfo.indexOf(prefCaptions.get(0));
+                    position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Upper_Caption));
                     if (position != -1) spinnerCaptionsUpper.setSelection(position);
 
                     try {
-                        position = Integer.parseInt(prefCaptions.get(1));
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Aligning));
                         spinnerCaptionsUpperAligning.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        position = Integer.parseInt(prefCaptions.get(2));
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Rows));
                         spinnerCaptionsUpperRows.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        int prefSize = Integer.parseInt(prefCaptions.get(3));
+                        int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontSize));
                         if (prefSize > 0 && prefSize < 100) editCaptionsUpperFontSize.setText(String.valueOf(prefSize));
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(4));
+                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Color));
                         colorCaptionUpper = prefColor;
                     } catch (NumberFormatException ignored) { /**/ }
 
-                    position = listBottomInfo.indexOf(prefCaptions.get(5));
+                    position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Bottom_Caption));
                     if (position != -1) spinnerCaptionsBottom.setSelection(position);
 
                     try {
-                        position = Integer.parseInt(prefCaptions.get(6));
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Aligning));
                         spinnerCaptionsBottomAligning.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        position = Integer.parseInt(prefCaptions.get(7));
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Rows));
                         spinnerCaptionsBottomRows.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        int prefSize = Integer.parseInt(prefCaptions.get(8));
+                        int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontSize));
                         if (prefSize > 0 && prefSize < 100) editCaptionsBottomFontSize.setText(String.valueOf(prefSize));
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
-                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(9));
+                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Color));
                         colorCaptionBottom = prefColor;
                     } catch (NumberFormatException ignored) { /**/ }
 
@@ -751,7 +751,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     selectedCaptionsDetails.add(prefSize);
 
                     selectedCaptionsDetails.add(String.valueOf(colorCaptionBottom));
-ToastExpander.showInfoMsg(this, String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
                     scopeInfo.append(String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
                 }
             }
@@ -909,44 +908,6 @@ ToastExpander.showInfoMsg(this, String.join(Constants.STRING_PLUS, selectedCapti
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    private int getDefaultAligningForEventInfo(@NonNull String info) {
-
-        int Left = 1;
-        int Center = 2;
-        try {
-
-            switch (info) {
-                case Constants.STRING_1: //Фамилия Имя Отчество
-                    return Left;
-                case Constants.STRING_2: //Дата события
-                    return Center;
-                case Constants.STRING_3: //Фамилия И.О. (Имя Отчество, если нет фамилии)
-                    return Center;
-                case Constants.STRING_4: //Имя Отчество Фамилия
-                    return Left;
-                case Constants.STRING_5: //Имя
-                    return Center;
-                case Constants.STRING_6: //Фамилия
-                    return Center;
-                case Constants.STRING_7: //Псевдоним (Имя, если отсутствует)
-                    return Center;
-                case Constants.STRING_8: //Тип события
-                    return Left;
-                case Constants.STRING_9: //Наименование события
-                    return Left;
-                case Constants.STRING_10: //Организация (Должность, если отсутствует)
-                    return Center;
-                default:
-                    return Left;
-            }
-
-        } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return Left;
     }
 
     public void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {

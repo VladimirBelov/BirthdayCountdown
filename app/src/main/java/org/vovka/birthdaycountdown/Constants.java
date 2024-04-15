@@ -120,9 +120,9 @@ final class Constants {
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
-    static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
+    //static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
-    static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
+    //static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
     static final String WIDGET_EVENT_INFO = "eventInfo";
     static final String WIDGET_IMAGE_VIEW = "imageView";
     static final String WIDGET_IMAGE_VIEW_CENTERED = "imageViewCentered";
@@ -339,4 +339,15 @@ final class Constants {
     static final int onClick_Calendar = 2;
 
     public static final String QUEUE = "queue";
+
+    static final int PhotoWidget_Upper_Caption = 0;
+    static final int PhotoWidget_Upper_Aligning = 1;
+    static final int PhotoWidget_Upper_Rows = 2;
+    static final int PhotoWidget_Upper_FontSize = 3;
+    static final int PhotoWidget_Upper_Color = 4;
+    static final int PhotoWidget_Bottom_Caption = 5;
+    static final int PhotoWidget_Bottom_Aligning = 6;
+    static final int PhotoWidget_Bottom_Rows = 7;
+    static final int PhotoWidget_Bottom_FontSize = 8;
+    static final int PhotoWidget_Bottom_Color = 9;
 }

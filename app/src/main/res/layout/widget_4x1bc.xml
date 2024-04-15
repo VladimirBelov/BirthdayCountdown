@@ -150,28 +150,6 @@
             android:textSize="@dimen/widgetDate_fontSize"/>
 
         <TextView
-            android:id="@+id/textViewCentered0"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dip"
-            android:layout_marginTop="-9.0dip"
-            android:layout_marginBottom="3.0dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingStart="2dip"
-            android:paddingEnd="1dip"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2.0"
-            android:shadowDy="-2.0"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/appwidget_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
             android:id="@+id/textView2nd0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -188,25 +166,6 @@
             android:shadowRadius="2.0"
             android:singleLine="true"
             android:text="@string/widget_FIO"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
-            android:id="@+id/textView2ndCentered0"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textView0"
-            android:layout_marginStart="3dip"
-            android:layout_marginBottom="9dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2"
-            android:shadowDy="-2"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/widget_Date"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize"/>
 
@@ -376,27 +335,6 @@
             android:textSize="@dimen/widgetDate_fontSize"/>
 
         <TextView
-            android:id="@+id/textViewCentered1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
-            android:layout_marginBottom="3.0dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingStart="2dip"
-            android:paddingEnd="1dip"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2.0"
-            android:shadowDy="-2.0"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/appwidget_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
             android:id="@+id/textView2nd1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -412,24 +350,6 @@
             android:shadowRadius="2.0"
             android:singleLine="true"
             android:text="@string/widget_FIO"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
-            android:id="@+id/textView2ndCentered1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textView1"
-            android:layout_marginStart="1dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2"
-            android:shadowDy="-2"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/widget_Date"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize"/>
 
@@ -600,27 +520,6 @@
             android:textSize="@dimen/widgetDate_fontSize"/>
 
         <TextView
-            android:id="@+id/textViewCentered2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
-            android:layout_marginBottom="3.0dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingStart="2dip"
-            android:paddingEnd="1dip"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2.0"
-            android:shadowDy="-2.0"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/appwidget_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
             android:id="@+id/textView2nd2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -636,24 +535,6 @@
             android:shadowRadius="2.0"
             android:singleLine="true"
             android:text="@string/widget_FIO"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
-            android:id="@+id/textView2ndCentered2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textView2"
-            android:layout_marginStart="1dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2"
-            android:shadowDy="-2"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/widget_Date"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize"/>
 
@@ -823,27 +704,6 @@
             android:textSize="@dimen/widgetDate_fontSize"/>
 
         <TextView
-            android:id="@+id/textViewCentered3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
-            android:layout_marginBottom="3.0dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingStart="2dip"
-            android:paddingEnd="1dip"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2.0"
-            android:shadowDy="-2.0"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/appwidget_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
             android:id="@+id/textView2nd3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -859,24 +719,6 @@
             android:shadowRadius="2.0"
             android:singleLine="true"
             android:text="@string/widget_FIO"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
-            android:id="@+id/textView2ndCentered3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textView3"
-            android:layout_marginStart="1dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2"
-            android:shadowDy="-2"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/widget_Date"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize"/>
 
@@ -1051,28 +893,6 @@
             android:textSize="@dimen/widgetDate_fontSize"/>
 
         <TextView
-            android:id="@+id/textViewCentered4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="1dip"
-            android:layout_marginEnd="3dip"
-            android:layout_marginBottom="3.0dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingStart="2dip"
-            android:paddingEnd="1dip"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2.0"
-            android:shadowDy="-2.0"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/appwidget_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
             android:id="@+id/textView2nd4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -1091,26 +911,6 @@
             android:text="@string/widget_FIO"
             android:textColor="#ffffffff"
             android:textSize="@dimen/widgetDate_fontSize"/>
-
-        <TextView
-            android:id="@+id/textView2ndCentered4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textView4"
-            android:layout_marginStart="1dip"
-            android:layout_marginEnd="3dip"
-            android:background="@color/widget_name_shadow"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:shadowColor="@color/theme_black_primary"
-            android:shadowDx="2"
-            android:shadowDy="-2"
-            android:shadowRadius="2.0"
-            android:singleLine="true"
-            android:text="@string/widget_Date"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/widgetDate_fontSize"
-            tools:ignore="TooManyViews" />
 
         <TextView
             android:id="@+id/textViewDistance4"

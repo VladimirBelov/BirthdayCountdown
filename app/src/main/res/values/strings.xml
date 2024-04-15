@@ -1820,18 +1820,29 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Widgets_BottomInfo_key" translatable="false">Widget_BottomInfo</string>
     <string name="pref_Widgets_BottomInfo2nd_key" translatable="false">Widget_BottomInfo2nd</string>
 
+    <string name="pref_Widgets_BottomInfo_LastFirstSecond" translatable="false">1</string>
+    <string name="pref_Widgets_BottomInfo_EventDate" translatable="false">2</string>
+    <string name="pref_Widgets_BottomInfo_LastFS" translatable="false">3</string>
+    <string name="pref_Widgets_BottomInfo_FirstSecondLast" translatable="false">4</string>
+    <string name="pref_Widgets_BottomInfo_First" translatable="false">5</string>
+    <string name="pref_Widgets_BottomInfo_Last" translatable="false">6</string>
+    <string name="pref_Widgets_BottomInfo_Nick" translatable="false">7</string>
+    <string name="pref_Widgets_BottomInfo_EventType" translatable="false">8</string>
+    <string name="pref_Widgets_BottomInfo_EventLabel" translatable="false">9</string>
+    <string name="pref_Widgets_BottomInfo_Organization" translatable="false">10</string>
+    <string name="pref_Widgets_BottomInfo_none" translatable="false">99</string>
     <string-array name="pref_Widgets_BottomInfo_values" translatable="false">
-        <item>1</item> <!--Фамилия Имя Отчество-->
-        <item>3</item> <!--Фамилия И.О.-->
-        <item>4</item> <!--Имя Отчество Фамилия-->
-        <item>5</item> <!--Имя-->
-        <item>7</item> <!--Псевдоним (Имя)-->
-        <item>6</item> <!--Фамилия-->
-        <item>2</item> <!--Дата события-->
-        <item>8</item> <!--Тип события-->
-        <item>9</item> <!--Наименование события-->
-        <item>10</item> <!--Организация (Должность)-->
-        <item>99</item> <!--Ничего-->
+        <item>@string/pref_Widgets_BottomInfo_LastFirstSecond</item> <!--Фамилия Имя Отчество-->
+        <item>@string/pref_Widgets_BottomInfo_LastFS</item> <!--Фамилия И.О.-->
+        <item>@string/pref_Widgets_BottomInfo_FirstSecondLast</item> <!--Имя Отчество Фамилия-->
+        <item>@string/pref_Widgets_BottomInfo_First</item> <!--Имя-->
+        <item>@string/pref_Widgets_BottomInfo_Nick</item> <!--Псевдоним (Имя)-->
+        <item>@string/pref_Widgets_BottomInfo_Last</item> <!--Фамилия-->
+        <item>@string/pref_Widgets_BottomInfo_EventDate</item> <!--Дата события-->
+        <item>@string/pref_Widgets_BottomInfo_EventType</item> <!--Тип события-->
+        <item>@string/pref_Widgets_BottomInfo_EventLabel</item> <!--Наименование события-->
+        <item>@string/pref_Widgets_BottomInfo_Organization</item> <!--Организация (Должность)-->
+        <item>@string/pref_Widgets_BottomInfo_none</item> <!--Ничего-->
     </string-array>
 
     <string name="pref_Widgets_BottomInfo_default" translatable="false">1</string>
