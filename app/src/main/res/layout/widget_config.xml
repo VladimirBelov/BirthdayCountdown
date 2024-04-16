@@ -352,6 +352,34 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/blockCaptionsUpperFontStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionCaptionsUpperFontStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="14dp"
+                        android:text="@string/pref_Widgets_captionCaptionsFontStyle"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCaptionsUpperFontStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/pref_Widgets_captionCaptionsFontStyle"
+                        android:entries="@array/pref_Widgets_FontStyle"
+                        android:theme="@style/RightAlignedSpinner"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/blockCaptionsUpperSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -375,11 +403,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
                         android:layout_weight="10"
+                        android:autofillHints="10"
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
-                        android:textSize="12sp"
-                        android:autofillHints="10" />
+                        android:selectAllOnFocus="true"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/captionCaptionsUpperColor"
@@ -388,7 +417,7 @@
                         android:layout_marginTop="-6dp"
                         android:layout_weight="10"
                         android:gravity="center"
-                        android:paddingEnd="3dp"
+                        android:paddingEnd="4dp"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -479,6 +508,34 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/blockCaptionsBottomFontStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionCaptionsBottomFontStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="14dp"
+                        android:text="@string/pref_Widgets_captionCaptionsFontStyle"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCaptionsBottomFontStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/pref_Widgets_captionCaptionsFontStyle"
+                        android:entries="@array/pref_Widgets_FontStyle"
+                        android:theme="@style/RightAlignedSpinner"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/blockCaptionsBottomSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -502,12 +559,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
                         android:layout_weight="10"
+                        android:autofillHints="10"
                         android:elegantTextHeight="false"
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
-                        android:textSize="12sp"
-                        android:autofillHints="10" />
+                        android:selectAllOnFocus="true"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/captionCaptionsBottomColor"
@@ -516,7 +574,7 @@
                         android:layout_marginTop="-6dp"
                         android:layout_weight="10"
                         android:gravity="center"
-                        android:paddingEnd="3dp"
+                        android:paddingEnd="4dp"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -656,7 +714,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    tools:ignore="TooManyViews" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWidgetBackgroundColor"
@@ -716,8 +775,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor"
-                    tools:ignore="TooManyViews" />
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:id="@+id/captionCustomZeroEventsMessage"

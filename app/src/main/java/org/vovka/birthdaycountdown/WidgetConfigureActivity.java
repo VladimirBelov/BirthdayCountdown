@@ -51,6 +51,8 @@ import androidx.transition.TransitionManager;
 public class WidgetConfigureActivity extends AppCompatActivity {
 
     private static final String TAG = "WidgetConfigureActivity";
+    public static final String UPPER_ROW = "upperRow";
+    public static final String BOTTOM_ROW = "bottomRow";
     private int widgetId = 0;
     private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
     private boolean isListWidget = false;
@@ -267,10 +269,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
                 Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
 
+                Spinner spinnerCaptionsUpperFontStyle = findViewById(R.id.spinnerCaptionsUpperFontStyle);
+                Spinner spinnerCaptionsBottomFontStyle = findViewById(R.id.spinnerCaptionsBottomFontStyle);
+
                 EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
-                editCaptionsUpperFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY));
+                editCaptionsUpperFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_SMALL));
                 EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
-                editCaptionsBottomFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY));
+                editCaptionsBottomFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_SMALL));
 
                 updateCaptionsColors(eventsData.preferences_widgets_color_default, eventsData.preferences_widgets_color_default);
 
@@ -279,16 +284,21 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     checkCaptionsUsePrefs.setChecked(false);
 
                     position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Upper_Caption));
-                    if (position != -1) spinnerCaptionsUpper.setSelection(position);
+                    if (position != -1 && spinnerCaptionsUpper.getAdapter().getCount() > position) spinnerCaptionsUpper.setSelection(position);
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Aligning));
-                        spinnerCaptionsUpperAligning.setSelection(position - 1);
+                        if (spinnerCaptionsUpperAligning.getAdapter().getCount() > position - 1) spinnerCaptionsUpperAligning.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Rows));
-                        spinnerCaptionsUpperRows.setSelection(position - 1);
+                        if (spinnerCaptionsUpperRows.getAdapter().getCount() > position - 1) spinnerCaptionsUpperRows.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontStyle));
+                        if (spinnerCaptionsUpperFontStyle.getAdapter().getCount() > position) spinnerCaptionsUpperFontStyle.setSelection(position);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
@@ -302,16 +312,21 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     } catch (NumberFormatException ignored) { /**/ }
 
                     position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Bottom_Caption));
-                    if (position != -1) spinnerCaptionsBottom.setSelection(position);
+                    if (position != -1 && spinnerCaptionsBottom.getAdapter().getCount() > position) spinnerCaptionsBottom.setSelection(position);
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Aligning));
-                        spinnerCaptionsBottomAligning.setSelection(position - 1);
+                        if (spinnerCaptionsBottomAligning.getAdapter().getCount() > position - 1) spinnerCaptionsBottomAligning.setSelection(position - 1);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Rows));
-                        spinnerCaptionsBottomRows.setSelection(position - 1);
+                        if (spinnerCaptionsBottomRows.getAdapter().getCount() > position - 1) spinnerCaptionsBottomRows.setSelection(position - 1);
+                    } catch (NumberFormatException ignored) { /**/ }
+
+                    try {
+                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontStyle));
+                        if (spinnerCaptionsBottomFontStyle.getAdapter().getCount() > position) spinnerCaptionsBottomFontStyle.setSelection(position);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
@@ -327,6 +342,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     updateCaptionsColors(0, 0);
 
                 }
+
+                //Выбор цвета
+                ColorPicker picker = new ColorPicker(this);
+                TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
+                captionCaptionsUpperColor.setOnClickListener(v -> picker.selectColor(colorCaptionUpper, eventsData.preferences_widgets_color_default, "updateSelectedColor", UPPER_ROW));
+                TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
+                captionCaptionsBottomColor.setOnClickListener(v -> picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, "updateSelectedColor", BOTTOM_ROW));
 
             }
 
@@ -662,10 +684,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperAligning).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperFontStyle).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperSize).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomAligning).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomFontStyle).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
 
         } catch (final Exception e) {
@@ -723,6 +747,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
                     selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsUpperRows.getSelectedItemPosition() + 1));
 
+                    Spinner spinnerCaptionsUpperFontStyle = findViewById(R.id.spinnerCaptionsUpperFontStyle);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsUpperFontStyle.getSelectedItemPosition()));
+
                     EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
                     String prefSize = String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY);
                     try {
@@ -741,6 +768,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                     Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
                     selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsBottomRows.getSelectedItemPosition() + 1));
+
+                    Spinner spinnerCaptionsBottomFontStyle = findViewById(R.id.spinnerCaptionsBottomFontStyle);
+                    selectedCaptionsDetails.add(String.valueOf(spinnerCaptionsBottomFontStyle.getSelectedItemPosition()));
 
                     EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
                     prefSize = String.valueOf(Constants.WIDGET_TEXT_SIZE_TINY);
@@ -890,7 +920,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventsData.selectEventSources(eventSources, eventSourcesSelected, this, null);
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
@@ -905,12 +935,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
-    public void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {
+    void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {
         try {
 
             if (colorUpper != 0) colorCaptionUpper = colorUpper;
@@ -925,7 +955,32 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + ">●</font></bold>"));
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public void updateSelectedColor(@NonNull String colorId, int colorValue) {
+        try {
+
+            if (!colorId.isEmpty()) {
+                ToastExpander.showDebugMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
+
+                if (colorId.equals(UPPER_ROW)) {
+                    colorCaptionUpper = colorValue;
+                    TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
+                    captionCaptionsUpperColor.setText(Html.fromHtml("<bold><font color=#"
+                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + ">●</font></bold>"));
+                } else if (colorId.equals(BOTTOM_ROW)) {
+                    colorCaptionBottom = colorValue;
+                    TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
+                    captionCaptionsBottomColor.setText(Html.fromHtml("<bold><font color=#"
+                            + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + ">●</font></bold>"));
+                }
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }

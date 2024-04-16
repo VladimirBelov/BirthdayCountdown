@@ -343,11 +343,17 @@ final class Constants {
     static final int PhotoWidget_Upper_Caption = 0;
     static final int PhotoWidget_Upper_Aligning = 1;
     static final int PhotoWidget_Upper_Rows = 2;
-    static final int PhotoWidget_Upper_FontSize = 3;
-    static final int PhotoWidget_Upper_Color = 4;
-    static final int PhotoWidget_Bottom_Caption = 5;
-    static final int PhotoWidget_Bottom_Aligning = 6;
-    static final int PhotoWidget_Bottom_Rows = 7;
-    static final int PhotoWidget_Bottom_FontSize = 8;
-    static final int PhotoWidget_Bottom_Color = 9;
+    static final int PhotoWidget_Upper_FontStyle = 3;
+    static final int PhotoWidget_Upper_FontSize = 4;
+    static final int PhotoWidget_Upper_Color = 5;
+    static final int PhotoWidget_Bottom_Caption = 6;
+    static final int PhotoWidget_Bottom_Aligning = 7;
+    static final int PhotoWidget_Bottom_Rows = 8;
+    static final int PhotoWidget_Bottom_FontStyle = 9;
+    static final int PhotoWidget_Bottom_FontSize = 10;
+    static final int PhotoWidget_Bottom_Color = 11;
+
+    static final int Align_Left = 1;
+    static final int Align_Center = 2;
+    static final int Align_Right = 3;
 }

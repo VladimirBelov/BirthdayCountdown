@@ -712,7 +712,8 @@
     <string name="pref_Widgets_captionCaptionsUpper">Верхний ряд:</string>
     <string name="pref_Widgets_captionCaptionsBottom">Нижний ряд:</string>
     <string name="pref_Widgets_captionCaptionsAligning">Выравнивание:</string>
-    <string name="pref_Widgets_captionCaptionsRows">Строк:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Строки:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Стиль:</string>
     <string name="pref_Widgets_captionCaptionsSize">Размер и цвет:</string>
 
     <string-array name="pref_Widgets_Aligning">
@@ -725,6 +726,13 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Обычный</item>
+        <item>Жирный</item>
+        <item>Курсив</item>
+        <item>Жирный курсив</item>
     </string-array>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">

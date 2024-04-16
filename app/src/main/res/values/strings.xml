@@ -713,6 +713,7 @@
     <string name="pref_Widgets_captionCaptionsBottom">Bottom row:</string>
     <string name="pref_Widgets_captionCaptionsAligning">Aligning:</string>
     <string name="pref_Widgets_captionCaptionsRows">Rows:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Style:</string>
     <string name="pref_Widgets_captionCaptionsSize">Size and color:</string>
 
     <string-array name="pref_Widgets_Aligning">
@@ -725,6 +726,13 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Normal</item>
+        <item>Bold</item>
+        <item>Italic</item>
+        <item>Bold italic</item>
     </string-array>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
