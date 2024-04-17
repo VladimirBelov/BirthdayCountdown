@@ -255,16 +255,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
 
                 Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
-                int position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info);
+                int position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info_2nd);
                 if (position != -1) spinnerCaptionsUpper.setSelection(position);
                 Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
-                position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info_2nd);
+                position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info);
                 if (position != -1) spinnerCaptionsBottom.setSelection(position);
 
                 Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
-                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
+                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
                 Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
-                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
+                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
 
                 Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
                 Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);

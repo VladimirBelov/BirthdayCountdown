@@ -177,7 +177,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     eventsData.getPreferences();
                     //todo: проверить для 13+
-                    if (eventsData.preferences_notifications_ringtone.contains("/media/external/") &&
+                    if ((eventsData.preferences_notifications_ringtone.contains("/media/external/") || eventsData.preferences_notifications2_ringtone.contains("/media/external/")) &&
                             eventsData.checkNoStorageAccess()) {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -1091,7 +1091,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                     NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                     channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
-                    channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                    if (queueNumber == 1) {
+                        channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                    } else if (queueNumber == 2) {
+                        channel.setSound(Uri.parse(eventsData.preferences_notifications2_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                    }
+
                     channel.enableVibration(true);
 
                     notificationManager.createNotificationChannel(channel);
