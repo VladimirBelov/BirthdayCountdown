@@ -267,7 +267,6 @@
     <string name="appwidget_desc_Calendar">Widget de calendário por 1 a 12 meses</string>
     <string name="widget_Photo">Foto</string>
     <string name="widget_FIO">Nome completo</string>
-    <string name="widget_Date">Data</string>
     <string name="widget_Age">AA</string>
     <string name="widget_TypeIcon">Ícone</string>
     <string name="widget_Distance">DD</string>
@@ -691,6 +690,7 @@
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Sobrenome Nome Patronímico</item>
+        <item>Sobrenome Nome Patronímico (Apelido)</item>
         <item>Sobrenome N. P. (Nome Patronímico, se não houver Sobrenome)</item>
         <item>Nome Sobrenome Patronímico</item>
         <item>Nome</item>

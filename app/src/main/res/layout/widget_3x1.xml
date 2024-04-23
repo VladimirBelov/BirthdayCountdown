@@ -11,7 +11,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appwidget_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="TooManyViews">
 
     <TextView
         android:id="@+id/appwidget_text"
@@ -134,46 +135,129 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView0"
+            <LinearLayout
+                android:id="@+id/textViewLayout0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="3dip"
-                android:layout_marginTop="-9.0dip"
-                android:layout_marginBottom="3.0dip"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2nd0"
+                <TextView
+                    android:id="@+id/textViewLeft0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="start"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewCenter0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewRight0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="end"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/textView2ndLayout0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/textView0"
-                android:layout_marginStart="3dip"
-                android:layout_marginBottom="9dip"
+                android:layout_above="@id/textViewLayout0"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView2ndLeft0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndCenter0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="center_horizontal"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndRight0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="end"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewDistance0"
@@ -318,44 +402,129 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView1"
+            <LinearLayout
+                android:id="@+id/textViewLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="1dip"
-                android:layout_marginBottom="3.0dip"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2nd1"
+                <TextView
+                    android:id="@+id/textViewLeft1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="start"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewCenter1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewRight1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="end"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/textView2ndLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/textView1"
-                android:layout_marginStart="1dip"
+                android:layout_above="@id/textViewLayout1"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView2ndLeft1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndCenter1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="center_horizontal"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndRight1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="end"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewDistance1"
@@ -499,44 +668,129 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView2"
+            <LinearLayout
+                android:id="@+id/textViewLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="1dip"
-                android:layout_marginBottom="3.0dip"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2nd2"
+                <TextView
+                    android:id="@+id/textViewLeft2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="start"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewCenter2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/textViewRight2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@string/widget_FIO"
+                    android:gravity="end"
+                    android:paddingBottom="1dp"
+                    android:paddingEnd="2dp"
+                    android:paddingStart="2dp"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/widgetDate_fontSize"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/textView2ndLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/textView2"
-                android:layout_marginStart="1dip"
+                android:layout_above="@id/textViewLayout2"
                 android:background="@color/widget_name_shadow"
-                android:contentDescription="@string/widget_FIO"
-                android:ellipsize="marquee"
-                android:gravity="start"
-                android:shadowColor="@color/theme_black_primary"
-                android:shadowDx="2"
-                android:shadowDy="-2"
-                android:shadowRadius="2.0"
-                android:singleLine="true"
-                android:text="@string/widget_FIO"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/widgetDate_fontSize"/>
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView2ndLeft2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndCenter2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="center_horizontal"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+                <TextView
+                    android:id="@+id/textView2ndRight2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dip"
+                    android:contentDescription="@string/widget_FIO"
+                    android:ellipsize="marquee"
+                    android:gravity="end"
+                    android:shadowColor="@color/theme_black_primary"
+                    android:shadowDx="2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="2.0"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/widgetDate_fontSize" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewDistance2"

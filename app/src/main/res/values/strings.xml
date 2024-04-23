@@ -695,6 +695,7 @@
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Surname Name Patronymic</item>
+        <item>Surname Name Patronymic (Nickname)</item>
         <item>Surname N. P. (Name Patronymic, if no Surname)</item>
         <item>Name Patronymic Surname</item>
         <item>Name</item>
@@ -1838,9 +1839,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Widgets_BottomInfo_EventType" translatable="false">8</string>
     <string name="pref_Widgets_BottomInfo_EventLabel" translatable="false">9</string>
     <string name="pref_Widgets_BottomInfo_Organization" translatable="false">10</string>
+    <string name="pref_Widgets_BottomInfo_LastFirstSecondNick" translatable="false">11</string>
     <string name="pref_Widgets_BottomInfo_none" translatable="false">99</string>
     <string-array name="pref_Widgets_BottomInfo_values" translatable="false">
         <item>@string/pref_Widgets_BottomInfo_LastFirstSecond</item> <!--Фамилия Имя Отчество-->
+        <item>@string/pref_Widgets_BottomInfo_LastFirstSecondNick</item> <!--Фамилия Имя Отчество (Псевдоним)-->
         <item>@string/pref_Widgets_BottomInfo_LastFS</item> <!--Фамилия И.О.-->
         <item>@string/pref_Widgets_BottomInfo_FirstSecondLast</item> <!--Имя Отчество Фамилия-->
         <item>@string/pref_Widgets_BottomInfo_First</item> <!--Имя-->

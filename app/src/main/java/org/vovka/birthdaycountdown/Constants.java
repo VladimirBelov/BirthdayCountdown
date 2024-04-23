@@ -120,8 +120,10 @@ final class Constants {
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
+    static final String WIDGET_TEXT_VIEW_LAYOUT = "textViewLayout";
     //static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
+    static final String WIDGET_TEXT_VIEW_2_ND_LAYOUT = "textView2ndLayout";
     //static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
     static final String WIDGET_EVENT_INFO = "eventInfo";
     static final String WIDGET_IMAGE_VIEW = "imageView";

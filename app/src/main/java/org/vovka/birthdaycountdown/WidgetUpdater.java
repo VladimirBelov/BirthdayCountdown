@@ -23,7 +23,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -36,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +45,9 @@ import static android.util.TypedValue.COMPLEX_UNIT_SP;
 class WidgetUpdater {
 
     private static final String TAG = "WidgetUpdater";
+    public static final String ALIGN_LEFT = "Left";
+    public static final String ALIGN_CENTER = "Center";
+    public static final String ALIGN_RIGHT = "Right";
     final private Context context;
     final private ContactsEvents eventsData;
     final private RemoteViews views;
@@ -193,7 +194,7 @@ class WidgetUpdater {
             captionsPrefMap.put(Constants.PhotoWidget_Upper_Caption, Integer.valueOf(eventsData.preferences_widgets_bottom_info_2nd));
             if (!eventsData.preferences_widgets_bottom_info_2nd.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_Aligning, eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd));
-                captionsPrefMap.put(Constants.PhotoWidget_Upper_Rows, 1);
+                captionsPrefMap.put(Constants.PhotoWidget_Upper_Rows, 3);
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_FontStyle, Typeface.NORMAL);
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_FontSize, (int) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_Color, colorDefault);
@@ -202,7 +203,7 @@ class WidgetUpdater {
             captionsPrefMap.put(Constants.PhotoWidget_Bottom_Caption, Integer.valueOf(eventsData.preferences_widgets_bottom_info));
             if (!eventsData.preferences_widgets_bottom_info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_Aligning, eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info));
-                captionsPrefMap.put(Constants.PhotoWidget_Bottom_Rows, 1);
+                captionsPrefMap.put(Constants.PhotoWidget_Bottom_Rows, 3);
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_FontStyle, Typeface.NORMAL);
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_FontSize, (int) (Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify));
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_Color, colorDefault);
@@ -379,190 +380,242 @@ class WidgetUpdater {
             Person person = new Person(context, event);
             @Nullable String rowValue;
             int indSpace;
+            List<String> aligns = new ArrayList<>();
+            aligns.add(ALIGN_LEFT);
+            aligns.add(ALIGN_CENTER);
+            aligns.add(ALIGN_RIGHT);
 
             //Надпись (верхний ряд)
 
-            int id_widget_Caption_Upper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + eventsDisplayed, Constants.STRING_ID, packageName);
-            views.setViewVisibility(id_widget_Caption_Upper, View.INVISIBLE);
+            int layoutCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND_LAYOUT + eventsDisplayed, Constants.STRING_ID, packageName);
+            views.setViewVisibility(layoutCaptionUpper, View.INVISIBLE);
+
+            int textCaptionUpper = 0;
+
+            for (String align: aligns) {
+                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + align + eventsDisplayed, Constants.STRING_ID, packageName);
+                views.setViewVisibility(textCaptionUpper, View.GONE);
+            }
 
             boolean isUpperCaption = false;
             rowValue = null;
-            if (!Objects.equals(captionsPrefMap.get(Constants.PhotoWidget_Upper_Caption), Integer.valueOf((resources.getString(R.string.pref_Widgets_BottomInfo_none))))) {
+            String captionUpper = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Upper_Caption));
+            String captionBottom = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Bottom_Caption));
+            if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
 
-                //Размер
-                Integer fontSize = captionsPrefMap.get(Constants.PhotoWidget_Upper_FontSize);
-                if (fontSize != null) {
-                    views.setTextViewTextSize(id_widget_Caption_Upper, COMPLEX_UNIT_SP, (float) fontSize);
-                }
-                //Выравнивание
-                Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Upper_Aligning);
-                if (aligning != null) {
-                    if (aligning == Constants.Align_Left) {
-                        views.setInt(id_widget_Caption_Upper,"setGravity", Gravity.LEFT);
-                    } else if (aligning == Constants.Align_Center) {
-                        views.setInt(id_widget_Caption_Upper,"setGravity", Gravity.CENTER);
-                    } else if (aligning == Constants.Align_Right) {
-                        views.setInt(id_widget_Caption_Upper,"setGravity", Gravity.RIGHT);
-                    }
-                }
-                //Количество строк
-                Integer rows = captionsPrefMap.get(Constants.PhotoWidget_Upper_Rows);
-                if (rows != null) {
-                    views.setBoolean(id_widget_Caption_Upper,"setSingleLine", rows == 1);
-                    views.setInt(id_widget_Caption_Upper,"setMaxLines", rows);
-                }
-                //Цвет
-                Integer color = captionsPrefMap.get(Constants.PhotoWidget_Upper_Color);
-                if (color != null) {
-                    views.setTextColor(id_widget_Caption_Upper, color);
-                }
                 //Надпись
-                String info = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Upper_Caption));
-                if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
+                if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
+                    rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
+                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                        rowValue = rowValue
+                                .concat(Constants.STRING_PARENTHESIS_OPEN)
+                                .concat(singleEventArray[ContactsEvents.Position_nickname])
+                                .concat(Constants.STRING_PARENTHESIS_CLOSE);
+                    }
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
                     if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
-                    } else {
+                    } else if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
+                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
+                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
+                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
+                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = singleEventArray[ContactsEvents.Position_personFullName];
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
                             singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
+                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
                     rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
+
             }
             if (!TextUtils.isEmpty(rowValue)) {
+
+                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_CENTER + eventsDisplayed, Constants.STRING_ID, packageName);
+
+                //Выравнивание
+                //TextView до Android 12 не понимает setGravity через setInt, по-этому, для каждого выравнивания - свой TextView
+                //https://stackoverflow.com/questions/7825508/remoteviews-textview-setgravity
+
+                Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Upper_Aligning);
+                if (aligning != null) {
+                    if (aligning == Constants.Align_Left) {
+                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_LEFT + eventsDisplayed, Constants.STRING_ID, packageName);
+                    } else if (aligning == Constants.Align_Right) {
+                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_RIGHT + eventsDisplayed, Constants.STRING_ID, packageName);
+                    }
+                }
+                //Размер
+                Integer fontSize = captionsPrefMap.get(Constants.PhotoWidget_Upper_FontSize);
+                if (fontSize != null) {
+                    views.setTextViewTextSize(textCaptionUpper, COMPLEX_UNIT_SP, (float) fontSize);
+                }
+                //Количество строк
+                Integer rows = captionsPrefMap.get(Constants.PhotoWidget_Upper_Rows);
+                if (rows != null) {
+                    views.setBoolean(textCaptionUpper,"setSingleLine", rows == 1);
+                    views.setInt(textCaptionUpper,"setMaxLines", rows);
+                }
+                //Цвет
+                Integer color = captionsPrefMap.get(Constants.PhotoWidget_Upper_Color);
+                if (color != null) {
+                    views.setTextColor(textCaptionUpper, color);
+                }
+
                 //Стиль текста
                 Integer style = captionsPrefMap.get(Constants.PhotoWidget_Upper_FontStyle);
                 if (style != null && style != Typeface.NORMAL) {
                     SpannableString spanValue = new SpannableString(rowValue);
                     spanValue.setSpan(new StyleSpan(style), 0, rowValue.length() - 1, 0);
-                    views.setTextViewText(id_widget_Caption_Upper, spanValue);
+                    views.setTextViewText(textCaptionUpper, spanValue);
                 } else {
-                    views.setTextViewText(id_widget_Caption_Upper, rowValue);
+                    views.setTextViewText(textCaptionUpper, rowValue);
                 }
 
-                views.setViewVisibility(id_widget_Caption_Upper, View.VISIBLE);
+                views.setViewVisibility(layoutCaptionUpper, View.VISIBLE);
+                views.setViewVisibility(textCaptionUpper, View.VISIBLE);
                 isUpperCaption = true;
             }
 
             //Надпись (нижний ряд)
 
-            int id_widget_Caption_Bottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + eventsDisplayed, Constants.STRING_ID, packageName);
-            views.setViewVisibility(id_widget_Caption_Bottom, View.INVISIBLE);
+            int layoutCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_LAYOUT + eventsDisplayed, Constants.STRING_ID, packageName);
+            views.setViewVisibility(layoutCaptionBottom, View.INVISIBLE);
+
+            int textCaptionBottom = 0;
+            for (String align: aligns) {
+                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + align + eventsDisplayed, Constants.STRING_ID, packageName);
+                views.setViewVisibility(textCaptionBottom, View.GONE);
+            }
 
             boolean isBottomCaption = false;
             rowValue = null;
-            if (!Objects.equals(captionsPrefMap.get(Constants.PhotoWidget_Bottom_Caption), Integer.valueOf((resources.getString(R.string.pref_Widgets_BottomInfo_none))))) {
+            if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
 
-                //Размер
-                Integer fontSize = captionsPrefMap.get(Constants.PhotoWidget_Bottom_FontSize);
-                if (fontSize != null) {
-                    views.setTextViewTextSize(id_widget_Caption_Bottom, COMPLEX_UNIT_SP, (float) fontSize);
-                }
-                //Выравнивание
-                Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Aligning);
-                if (aligning != null) {
-                    if (aligning == Constants.Align_Left) {
-                        views.setInt(id_widget_Caption_Bottom,"setGravity", Gravity.LEFT);
-                    } else if (aligning == Constants.Align_Center) {
-                        views.setInt(id_widget_Caption_Bottom,"setGravity", Gravity.CENTER);
-                    } else if (aligning == Constants.Align_Right) {
-                        views.setInt(id_widget_Caption_Bottom,"setGravity", Gravity.RIGHT);
-                    }
-                }
-                //Количество строк
-                Integer rows = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Rows);
-                if (rows != null) {
-                    views.setBoolean(id_widget_Caption_Bottom,"setSingleLine", rows == 1);
-                    views.setInt(id_widget_Caption_Bottom,"setMaxLines", rows);
-                }
-                //Цвет
-                Integer color = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Color);
-                if (color != null) {
-                    views.setTextColor(id_widget_Caption_Bottom, color);
-                }
                 //Надпись
-                String info = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Bottom_Caption));
-                if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
+                if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
+                    rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
+                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                        rowValue = rowValue
+                                .concat(Constants.STRING_PARENTHESIS_OPEN)
+                                .concat(singleEventArray[ContactsEvents.Position_nickname])
+                                .concat(Constants.STRING_PARENTHESIS_CLOSE);
+                    }
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = singleEventArray[ContactsEvents.Position_personFullName];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
                     if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
-                    } else {
+                    } else if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
+                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
+                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
+                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
+                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = singleEventArray[ContactsEvents.Position_personFullName];
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
                     }
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
                             singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
-                } else if (info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
+                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
                     rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
+
             }
             if (!TextUtils.isEmpty(rowValue)) {
+
+                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_CENTER + eventsDisplayed, Constants.STRING_ID, packageName);
+
+                //Выравнивание
+                Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Aligning);
+                if (aligning != null) {
+                    if (aligning == Constants.Align_Left) {
+                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_LEFT + eventsDisplayed, Constants.STRING_ID, packageName);
+                    } else if (aligning == Constants.Align_Right) {
+                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_RIGHT + eventsDisplayed, Constants.STRING_ID, packageName);
+                    }
+                }
+                //Размер
+                Integer fontSize = captionsPrefMap.get(Constants.PhotoWidget_Bottom_FontSize);
+                if (fontSize != null) {
+                    views.setTextViewTextSize(textCaptionBottom, COMPLEX_UNIT_SP, (float) fontSize);
+                }
+                //Количество строк
+                Integer rows = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Rows);
+                if (rows != null) {
+                    views.setBoolean(textCaptionBottom,"setSingleLine", rows == 1);
+                    views.setInt(textCaptionBottom,"setMaxLines", rows);
+                }
+                //Цвет
+                Integer color = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Color);
+                if (color != null) {
+                    views.setTextColor(textCaptionBottom, color);
+                }
+
                 //Стиль текста
                 Integer style = captionsPrefMap.get(Constants.PhotoWidget_Bottom_FontStyle);
                 if (style != null && style != Typeface.NORMAL) {
                     SpannableString spanValue = new SpannableString(rowValue);
                     spanValue.setSpan(new StyleSpan(style), 0, rowValue.length() - 1, 0);
-                    views.setTextViewText(id_widget_Caption_Bottom, spanValue);
+                    views.setTextViewText(textCaptionBottom, spanValue);
                 } else {
-                    views.setTextViewText(id_widget_Caption_Bottom, rowValue);
+                    views.setTextViewText(textCaptionBottom, rowValue);
                 }
 
-                views.setViewVisibility(id_widget_Caption_Bottom, View.VISIBLE);
+                views.setViewVisibility(layoutCaptionBottom, View.VISIBLE);
+                views.setViewVisibility(textCaptionBottom, View.VISIBLE);
                 isBottomCaption = true;
             }
 
@@ -747,9 +800,9 @@ class WidgetUpdater {
                         views.setTextColor(id_widget_Age, colorEventToday);
                     } else {
                         //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
-                        views.setTextColor(id_widget_Caption_Bottom, colorEventToday);
+                        views.setTextColor(textCaptionUpper, colorEventToday);
                         //views.setTextColor(id_widget_Caption_centered, colorEventToday);
-                        views.setTextColor(id_widget_Caption_Upper, colorEventToday);
+                        views.setTextColor(textCaptionBottom, colorEventToday);
                         //views.setTextColor(id_widget_Caption2nd_centered, colorEventToday);
                     }
                 }
@@ -814,10 +867,10 @@ class WidgetUpdater {
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
                 intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
                 if (isUpperCaption) {
-                    views.setOnClickPendingIntent(id_widget_Caption_Upper, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+                    views.setOnClickPendingIntent(textCaptionUpper, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
                 }
                 if (isBottomCaption) {
-                    views.setOnClickPendingIntent(id_widget_Caption_Bottom, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
+                    views.setOnClickPendingIntent(textCaptionBottom, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
                 }
 
             }

@@ -267,7 +267,6 @@
     <string name="appwidget_desc_Calendar">Віджет календаря на 1..12 місяців</string>
     <string name="widget_Photo">Фото</string>
     <string name="widget_FIO">ПІБ</string>
-    <string name="widget_Date">Дата</string>
     <string name="widget_Age">РР</string>
     <string name="widget_TypeIcon">Тип</string>
     <string name="widget_Distance">До</string>
@@ -691,6 +690,7 @@
 
     <string-array name="pref_Widgets_BottomInfo_entries">
         <item>Прізвище Ім’я По-батькові</item>
+        <item>Прізвище Ім’я По-батькові (Псевдонім)</item>
         <item>Прізвище І.П. (Ім’я, якщо немає прізвища)</item>
         <item>Ім’я По-батькові Прізвище</item>
         <item>Ім’я</item>
