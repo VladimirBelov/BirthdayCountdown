@@ -311,7 +311,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_onclick_common_label"
-                        android:entries="@array/pref_widget_month_onclick_entries"
+                        android:entries="@array/pref_widget_month_onclick_common_entries"
                         android:textAlignment="textEnd"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -339,7 +339,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_onclick_common_label"
-                        android:entries="@array/pref_widget_month_onclick_entries"
+                        android:entries="@array/pref_widget_month_onclick_holidays_entries"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>

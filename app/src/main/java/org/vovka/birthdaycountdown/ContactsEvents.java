@@ -9010,14 +9010,20 @@ class ContactsEvents {
 
                 CheckedTextView textView = view.findViewById(android.R.id.text1);
 
-                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                if (ta != null) {
+                    textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                }
                 textView.setTextSize(16);
                 textView.setMaxLines(5);
 
-                if (this.colorDots != null && this.colorDots.size() >= position - 1 && this.colorDots.get(position) != null) {
-                    textView.setText(Html.fromHtml("<bold><font color=#"
-                            + Integer.toHexString(this.colorDots.get(position) & 0x00ffffff)
-                            + ">●</font></bold> " + textView.getText()));
+                if (this.colorDots != null && this.colorDots.size() >= position - 1) {
+                    @ColorInt Integer dotColor = this.colorDots.get(position);
+                    if (dotColor != null) {
+                        if (Color.alpha(dotColor) == 0 && ta != null) dotColor = ta.getColor(R.styleable.Theme_dialogBackgroundColor, dotColor);
+                        textView.setText(Html.fromHtml("<bold><font color=#"
+                                + Integer.toHexString(dotColor & 0x00ffffff)
+                                + ">●</font></bold> " + textView.getText()));
+                    }
                 }
 
                 if (this.images != null && this.packages != null && this.images.size() >= position - 1 && this.packages.size() >= position - 1) {
@@ -9076,15 +9082,31 @@ class ContactsEvents {
     /**
      * day - date in yyyy-MM-dd format
      * */
-    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks) {
+    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
         try {
 
             List<String> dayInfo = new ArrayList<>();
             for (String packId: fromPacks) {
+
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
+
+                //@ColorInt int colorValue = resources.getColor(R.color.transparent);
+                @ColorInt Integer colorValue = null;
+                if (colors != null && colors.containsKey(packId) && colors.get(packId) != null) {
+                    Integer colorFromPack = colors.get(packId);
+                    if (colorFromPack != null && Color.alpha(colorFromPack) != 0) {
+                        colorValue = colorFromPack;
+                    }
+                }
+
                 if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null){
-                    dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1)));
+                    String[] eventsList = checkForNull(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1);
+                    for (String eventInfo: eventsList) {
+                        dayInfo.add("<bold><font color=#" +
+                                (colorValue != null ? Integer.toHexString(colorValue & 0x00ffffff) : Constants.TRANSPARENT) +
+                                ">●</font></bold> " + eventInfo);
+                    }
                 } else if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
                     dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
                 }

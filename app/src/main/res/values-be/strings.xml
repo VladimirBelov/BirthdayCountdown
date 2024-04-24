@@ -829,8 +829,8 @@
     <string name="widget_config_month_font_magnify_label">Памер шрыфта</string>
     <string name="widget_config_month_font_magnify_description">Змена памеру шрыфта для ўсіх элементаў</string>
     <string name="widget_config_onclick_label">Пры націсканні</string>
-    <string name="widget_config_onclick_common_label">Звычайныя дні</string>
-    <string name="widget_config_onclick_holidays_label">Свята</string>
+    <string name="widget_config_onclick_common_label">Дні без падзей:</string>
+    <string name="widget_config_onclick_holidays_label">Дні з падзеямі:</string>
     <string name="widget_config_month_color_common_label">Звычайныя дні</string>
     <string name="widget_config_month_color_common_description">Колер звычайных дзён</string>
     <string name="widget_config_month_color_today_label">Сёння</string>
@@ -888,9 +888,14 @@
         <item>Вонкавыя бакавыя палі</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Няма</item>
         <item>Усплывальнае акно спісу падзей</item>
+        <item>Адкрыць каляндар</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Няма</item>
         <item>Адкрыць каляндар</item>
     </string-array>
 

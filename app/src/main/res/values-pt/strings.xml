@@ -829,8 +829,8 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="widget_config_month_font_magnify_label">Tamanho da fonte</string>
     <string name="widget_config_month_font_magnify_description">Multiplicador de escala de fonte para título do mês, dias da semana e dias</string>
     <string name="widget_config_onclick_label">Comportamento ao clicar</string>
-    <string name="widget_config_onclick_common_label">Dias normais</string>
-    <string name="widget_config_onclick_holidays_label">Feriados</string>
+    <string name="widget_config_onclick_common_label">Dias sem eventos:</string>
+    <string name="widget_config_onclick_holidays_label">Dias com eventos:</string>
     <string name="widget_config_month_color_common_label">Cor dos dias comuns</string>
     <string name="widget_config_month_color_common_description">Cor dos dias comuns</string>
     <string name="widget_config_month_color_today_label">Cor de hoje</string>
@@ -888,9 +888,14 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
         <item>Margens laterais externas</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Nenhum</item>
         <item>Pop-up da lista de eventos</item>
+        <item>Abrir calendário</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Nenhum</item>
         <item>Abrir calendário</item>
     </string-array>
 

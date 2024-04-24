@@ -829,8 +829,8 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="widget_config_month_font_magnify_label">Schriftgröße</string>
     <string name="widget_config_month_font_magnify_description">Font-Skalierungsmultiplikator für Monatstitel, Wochentage und Tage</string>
     <string name="widget_config_onclick_label">Bei-Klick-Verhalten</string>
-    <string name="widget_config_onclick_common_label">Gewöhnliche Tage</string>
-    <string name="widget_config_onclick_holidays_label">Feiertage</string>
+    <string name="widget_config_onclick_common_label">Tage ohne Ereignisse:</string>
+    <string name="widget_config_onclick_holidays_label">Tage mit Ereignisse:</string>
     <string name="widget_config_month_color_common_label">Gemeinsame Tagesfarbe</string>
     <string name="widget_config_month_color_common_description">Farbe der allgemeinen Tage</string>
     <string name="widget_config_month_color_today_label">Heute Farbe</string>
@@ -888,9 +888,14 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Außenseitenränder</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Keine</item>
         <item>Popup der Ereignisliste</item>
+        <item>Kalender öffnen</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Keine</item>
         <item>Kalender öffnen</item>
     </string-array>
 

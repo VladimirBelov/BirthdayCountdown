@@ -829,8 +829,8 @@
     <string name="widget_config_month_font_magnify_label">Розмір шрифту</string>
     <string name="widget_config_month_font_magnify_description">Множник масштабу шрифту для назви місяця, днів тижня та днів</string>
     <string name="widget_config_onclick_label">При натисканні</string>
-    <string name="widget_config_onclick_common_label">Звичайні дні</string>
-    <string name="widget_config_onclick_holidays_label">Свята</string>
+    <string name="widget_config_onclick_common_label">Дні без подій:</string>
+    <string name="widget_config_onclick_holidays_label">Дні з подіями:</string>
     <string name="widget_config_month_color_common_label">Колір загальних днів</string>
     <string name="widget_config_month_color_common_description">Колір звичайних днів</string>
     <string name="widget_config_month_color_today_label">Колір сьогоднішнього дня</string>
@@ -888,9 +888,14 @@
         <item>Зовнішні бічні поля</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Немає</item>
         <item>Спливне вікно списку подій</item>
+        <item>Відкрити календар</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Немає</item>
         <item>Відкрити календар</item>
     </string-array>
 

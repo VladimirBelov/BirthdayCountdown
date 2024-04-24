@@ -51,8 +51,8 @@ import androidx.transition.TransitionManager;
 public class WidgetConfigureActivity extends AppCompatActivity {
 
     private static final String TAG = "WidgetConfigureActivity";
-    public static final String UPPER_ROW = "upperRow";
-    public static final String BOTTOM_ROW = "bottomRow";
+    private static final String UPPER_ROW = "upperRow";
+    private static final String BOTTOM_ROW = "bottomRow";
     private int widgetId = 0;
     private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
     private boolean isListWidget = false;
@@ -838,7 +838,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
+    private void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
         final Intent intent = new Intent();
         intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
         try {
@@ -925,7 +925,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void getSelectedSources(List<String> newSelectedSources) {
+    private void getSelectedSources(List<String> newSelectedSources) {
         try {
 
             if (newSelectedSources != null) {

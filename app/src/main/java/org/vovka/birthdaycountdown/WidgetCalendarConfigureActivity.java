@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -256,18 +257,19 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Реакция на нажатие
             try {
-                List<String> onclickIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_values));
+                List<String> onclickHolidaysIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_values));
+                List<String> onclickCommonIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_common_values));
                 String[] prefOnClick = null;
                 int prefOnClickCommon = Constants.onClick_None;
                 int prefOnClickHolidays = Constants.onClick_None;
 
                 if (widgetPref.size() > 15) prefOnClick = widgetPref.get(15).split(Constants.REGEX_PLUS, -1);
                 if (prefOnClick != null && prefOnClick.length == 2) {
-                    if (onclickIDs.contains(prefOnClick[0])) {
-                        prefOnClickCommon = onclickIDs.indexOf(prefOnClick[0]); //Смещение, не значение
+                    if (onclickCommonIDs.contains(prefOnClick[0])) {
+                        prefOnClickCommon = onclickCommonIDs.indexOf(prefOnClick[0]); //Смещение, не значение
                     }
-                    if (onclickIDs.contains(prefOnClick[1])) {
-                        prefOnClickHolidays = onclickIDs.indexOf(prefOnClick[1]);
+                    if (onclickHolidaysIDs.contains(prefOnClick[1])) {
+                        prefOnClickHolidays = onclickHolidaysIDs.indexOf(prefOnClick[1]);
                     }
                 }
 
@@ -448,12 +450,13 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
 
-            List<String> onclickIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_values));
-            List<String> onclickValues = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_entries));
+            List<String> onclickHolidaysIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_values));
+            List<String> onclickCommonIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_common_values));
+            List<String> onclickValues = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_entries));
             final Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
             final Spinner spinnerOnClickHolidays = findViewById(R.id.spinnerOnClickHolidays);
-            final String selectedOnClick = onclickIDs.get(spinnerOnClickCommon.getSelectedItemPosition())
-                    .concat(Constants.STRING_PLUS).concat(onclickIDs.get(spinnerOnClickHolidays.getSelectedItemPosition()));
+            final String selectedOnClick = onclickCommonIDs.get(spinnerOnClickCommon.getSelectedItemPosition())
+                    .concat(Constants.STRING_PLUS).concat(onclickHolidaysIDs.get(spinnerOnClickHolidays.getSelectedItemPosition()));
 
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
@@ -668,6 +671,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void updateEventSources() {
         try {
 
+            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             TextView listEventSources = findViewById(R.id.listEventSources);
             StringBuilder sb = new StringBuilder();
             for (String sourceId: eventSourcesSelected) {
@@ -675,7 +679,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 if (ind > -1) {
                     if (sb.length() > 0) sb.append(Constants.HTML_BR);
 
-                    Integer colorValue;
+                    @ColorInt Integer colorValue;
                     if (eventSourcesColors.containsKey(sourceId) && eventSourcesColors.get(sourceId) != null) {
                         colorValue = eventSourcesColors.get(sourceId);
                     } else {
@@ -683,6 +687,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     }
 
                     if (colorValue != null) {
+                        if (Color.alpha(colorValue) == 0) {
+                            colorValue = ta.getColor(R.styleable.Theme_backgroundColor, colorValue);
+                        }
+
                         sb.append("<bold><font color=#")
                                 .append(Integer.toHexString(colorValue & 0x00ffffff))
                                 .append(">●</font></bold> ");
@@ -691,6 +699,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                 }
             }
+            ta.recycle();
 
             if (sb.length() == 0) {
                 listEventSources.setText(R.string.widget_config_month_sources_empty);

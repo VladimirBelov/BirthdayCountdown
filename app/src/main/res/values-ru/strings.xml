@@ -861,8 +861,8 @@
     <string name="widget_config_month_font_magnify_label">Размер шрифта</string>
     <string name="widget_config_month_font_magnify_description">Изменение размера шрифта для всех элементов</string>
     <string name="widget_config_onclick_label">Реакция на нажатие</string>
-    <string name="widget_config_onclick_common_label">Обычные дни</string>
-    <string name="widget_config_onclick_holidays_label">Праздники</string>
+    <string name="widget_config_onclick_common_label">Дни без событий:</string>
+    <string name="widget_config_onclick_holidays_label">Дни с событиями:</string>
     <string name="widget_config_month_color_common_label">Обычные дни</string>
     <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
     <string name="widget_config_month_color_today_label">Сегодня</string>
@@ -920,9 +920,14 @@
         <item>Внешние боковые отступы</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Ничего</item>
         <item>Всплывающее окно с событиями</item>
+        <item>Открыть календарь</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Ничего</item>
         <item>Открыть календарь</item>
     </string-array>
 

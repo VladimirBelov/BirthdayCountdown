@@ -33,6 +33,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_green_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -68,6 +69,7 @@
     <style name="AlertDialog.Green" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_green_secondary</item>
+        <item name="backgroundColor">@color/theme_green_secondary</item>
         <item name="windowTitleColor">@color/theme_green_primary</item>
         <item name="windowTitleTextColor">@color/theme_green_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
@@ -102,6 +104,7 @@
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogBackgroundColor">@color/theme_grey_primary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -137,6 +140,7 @@
     <style name="AlertDialog.DarkGray" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/theme_grey_primary</item>
+        <item name="backgroundColor">@color/theme_grey_primary</item>
         <item name="windowTitleColor">@color/theme_grey_primary</item>
         <item name="windowTitleTextColor">@color/lighter_gray</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
@@ -171,6 +175,7 @@
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogBackgroundColor">@color/theme_black_primary</item>
         <item name="eventAgeColor">@color/lighter_gray</item>
         <item name="eventDateColor">@color/light_gray</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -204,6 +209,7 @@
     <style name="AlertDialog.Black" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/lighter_gray</item>
         <item name="android:background">@color/theme_black_primary</item>
+        <item name="backgroundColor">@color/theme_black_primary</item>
         <item name="windowTitleColor">@color/theme_black_primary</item>
         <item name="windowTitleTextColor">@color/lighter_gray</item>
         <item name="android:textColorPrimary">@color/lighter_gray</item>
@@ -237,6 +243,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_blue_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -271,6 +278,7 @@
     <style name="AlertDialog.Blue" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_blue_secondary</item>
+        <item name="backgroundColor">@color/theme_blue_secondary</item>
         <item name="windowTitleColor">@color/theme_blue_primary</item>
         <item name="windowTitleTextColor">@color/theme_blue_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
@@ -306,6 +314,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -338,6 +347,7 @@
     <style name="AlertDialog.BlueGrey" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_blue_gray_secondary</item>
+        <item name="backgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="windowTitleColor">@color/theme_blue_gray_primary</item>
         <item name="windowTitleTextColor">@color/theme_blue_gray_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
@@ -382,6 +392,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_orange_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -418,6 +429,7 @@
     <style name="AlertDialog.Orange" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_orange_secondary</item>
+        <item name="backgroundColor">@color/theme_orange_secondary</item>
         <item name="windowTitleColor">@color/theme_orange_primary</item>
         <item name="windowTitleTextColor">@color/theme_blue_secondary</item>
         <item name="android:textColorPrimary">@color/theme_orange_secondary</item>
@@ -452,6 +464,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_teal_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -488,6 +501,7 @@
     <style name="AlertDialog.Teal" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_teal_secondary</item>
+        <item name="backgroundColor">@color/theme_teal_secondary</item>
         <item name="windowTitleColor">@color/theme_teal_primary</item>
         <item name="windowTitleTextColor">@color/theme_teal_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
@@ -522,6 +536,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_brown_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -558,6 +573,7 @@
     <style name="AlertDialog.Brown" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_brown_secondary</item>
+        <item name="backgroundColor">@color/theme_brown_secondary</item>
         <item name="windowTitleColor">@color/theme_brown_primary</item>
         <item name="windowTitleTextColor">@color/theme_brown_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
@@ -592,6 +608,7 @@
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="dialogBackgroundColor">@color/theme_indigo_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -628,6 +645,7 @@
     <style name="AlertDialog.Indigo" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/theme_black_primary</item>
         <item name="android:background">@color/theme_indigo_secondary</item>
+        <item name="backgroundColor">@color/theme_indigo_secondary</item>
         <item name="windowTitleColor">@color/theme_indigo_primary</item>
         <item name="windowTitleTextColor">@color/theme_indigo_secondary</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>

@@ -829,8 +829,8 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="widget_config_month_font_magnify_label">Taille de police</string>
     <string name="widget_config_month_font_magnify_description">"Multiplicateur d'échelle de police pour le titre du mois, les jours de la semaine et les jours"</string>
     <string name="widget_config_onclick_label">Comportement au clic</string>
-    <string name="widget_config_onclick_common_label">Jours ordinaires</string>
-    <string name="widget_config_onclick_holidays_label">Jours fériés</string>
+    <string name="widget_config_onclick_common_label">Jours sans événements:</string>
+    <string name="widget_config_onclick_holidays_label">Journées avec événements:</string>
     <string name="widget_config_month_color_common_label">Couleur des jours communs</string>
     <string name="widget_config_month_color_common_description">Couleur des jours communs</string>
     <string name="widget_config_month_color_today_label">Couleur du jour</string>
@@ -888,9 +888,14 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Marges latérales externes</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>Aucun</item>
         <item>Popup de la liste des événements</item>
+        <item>Ouvrir le calendrier</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Aucun</item>
         <item>Ouvrir le calendrier</item>
     </string-array>
 

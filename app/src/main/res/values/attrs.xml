@@ -23,6 +23,7 @@
         <attr name="eventDetailsColor" format="color"/>
         <attr name="dialogTextColor" format="color"/>
         <attr name="dialogHintColor" format="color"/>
+        <attr name="dialogBackgroundColor" format="color"/>
         <attr name="dialogButtonColor" format="color"/>
         <attr name="gradientStartColor" format="color"/>
         <attr name="gradientEndColor" format="color"/>

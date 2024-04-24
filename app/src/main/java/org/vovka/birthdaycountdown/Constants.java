@@ -358,4 +358,5 @@ final class Constants {
     static final int Align_Left = 1;
     static final int Align_Center = 2;
     static final int Align_Right = 3;
+    static final String TRANSPARENT = "transparent";
 }

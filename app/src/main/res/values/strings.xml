@@ -862,8 +862,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="widget_config_month_font_magnify_label">Font size</string>
     <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
     <string name="widget_config_onclick_label">On click behavior</string>
-    <string name="widget_config_onclick_common_label">Ordinary days</string>
-    <string name="widget_config_onclick_holidays_label">Holidays</string>
+    <string name="widget_config_onclick_common_label">Ordinary days:</string>
+    <string name="widget_config_onclick_holidays_label">Days with events:</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
     <string name="widget_config_month_color_today_label">Today color</string>
@@ -921,9 +921,14 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>External side margins</item>
     </string-array>
 
-    <string-array name="pref_widget_month_onclick_entries">
+    <string-array name="pref_widget_month_onclick_holidays_entries">
         <item>None</item>
         <item>Events list popup</item>
+        <item>Open calendar</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>None</item>
         <item>Open calendar</item>
     </string-array>
 
@@ -1955,9 +1960,14 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="second_name_completions_man" translatable="false">ев,ов,ович,евич,ич,james,john,william,thomas,alexander,robert,michael,david,andrew,peter,joseph,jack,edward,anthony,christopher,daniel,henry,matthew,oliver,jay</string>
     <string name="second_name_completions_female" translatable="false">ева,ова,овна,евна,ична,rose,grace,jane,louise,jade,may,elizabeth,marie,kate,anne,lily,jean,ruby,paige,lee,belle,claire,mary,charlotte,hope</string>
 
-    <string-array name="pref_widget_month_onclick_values" translatable="false">
+    <string-array name="pref_widget_month_onclick_holidays_values" translatable="false">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_values" translatable="false">
+        <item>0</item>
         <item>2</item>
     </string-array>
 
