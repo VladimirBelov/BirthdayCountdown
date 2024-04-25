@@ -838,7 +838,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
+    public void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
         final Intent intent = new Intent();
         intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
         try {

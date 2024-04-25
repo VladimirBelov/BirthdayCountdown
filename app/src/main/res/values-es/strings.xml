@@ -437,6 +437,9 @@
         <item>🏆 Fechas redondas (5K días)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Fuentes de eventos</string>
+    <string name="pref_List_EventSources_description">Mostrar eventos solo de estas fuentes de eventos</string>
+
     <string name="pref_List_SadPhoto_title">Cinta de funeral</string>
     <string name="pref_List_SadPhoto_summary">Marque las fotos de los contactos fallecidos con una cinta de luto</string>
 
@@ -642,6 +645,7 @@
     <string name="pref_EventInfo_ButtonConfig">Botón de configuración</string>
     <string name="pref_EventInfo_Photo">Foto de contacto</string>
     <string name="pref_EventInfo_EventIcon">Icono de tipo de evento</string>
+    <string name="pref_EventInfo_EventLabel">Etiqueta de evento original</string>
     <string name="pref_EventInfo_EventCaption">Título del evento</string>
     <string name="pref_EventInfo_FavIcon">Icono favorito</string>
     <string name="pref_EventInfo_SilentedIcon">Icono de evento silenciado</string>
@@ -702,6 +706,15 @@
         <item>Organización (Posición, si está ausente)</item>
         <item>Nada</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Subtítulos</string>
+    <string name="widget_config_captions_use_prefs_label">Desde la configuración general</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Fila superior:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Fila inferior:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Alineación:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Filas:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Estilo:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Tamaño y color:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>No resaltar</item>
@@ -901,6 +914,8 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
 
     <string name="pref_Notifications_title">Notificaciones</string>
     <string name="pref_Notifications_summary">Cuándo y cómo mostrar notificaciones de eventos</string>
+    <string name="pref_Notifications2_title">Notificaciones (+)</string>
+    <string name="pref_Notifications2_summary">Segunda cola para notificaciones de eventos</string>
 
     <string name="pref_Notifications_Type_title">Estilo de notificación</string>
     <string name="pref_Notifications_Type_summary">Cómo se verán las notificaciones</string>
@@ -945,6 +960,25 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
 
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_summary">Qué eventos incluir en las notificaciones</string>
+
+    <string name="pref_Notifications_EventSources_title">Fuentes de eventos</string>
+    <string name="pref_Notifications_EventSources_description">Mostrar notificaciones solo para estas fuentes de eventos</string>
+
+    <string name="pref_Notifications_EventInfo_title">Detalles del evento</string>
+    <string name="pref_Notifications_EventInfo_summary">Qué tipo de detalles del evento mostrar en la notificación</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Tiempo de notificación</string>
     <string name="pref_Notifications_AlarmHour_summary">Cuándo notificar sobre eventos</string>

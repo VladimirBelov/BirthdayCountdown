@@ -437,6 +437,9 @@
         <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Fontes de eventos</string>
+    <string name="pref_List_EventSources_description">Mostrar eventos apenas destas fontes de eventos</string>
+
     <string name="pref_List_SadPhoto_title">Fita de luto</string>
     <string name="pref_List_SadPhoto_summary">Marcar fotos de contatos falecidos com fita de luto</string>
 
@@ -642,6 +645,7 @@
     <string name="pref_EventInfo_ButtonConfig">Botão Configurar</string>
     <string name="pref_EventInfo_Photo">Foto do contato</string>
     <string name="pref_EventInfo_EventIcon">🎂 Ícone do tipo de evento</string>
+    <string name="pref_EventInfo_EventLabel">Rótulo original do evento</string>
     <string name="pref_EventInfo_EventCaption">Legenda do evento</string>
     <string name="pref_EventInfo_FavIcon">🌟 Ícone de favoritos</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Ícone de evento silenciado</string>
@@ -702,6 +706,15 @@
         <item>Organização (Título, se ausente)</item>
         <item>Nada</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Legendas</string>
+    <string name="widget_config_captions_use_prefs_label">Das configurações gerais</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Linha superior:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Linha inferior:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Alinhamento:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Linhas:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Estilo:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Tamanho e cor:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Não destacar</item>
@@ -901,6 +914,8 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
 
     <string name="pref_Notifications_title">Notificações</string>
     <string name="pref_Notifications_summary">Quando e como mostrar notificações de eventos</string>
+    <string name="pref_Notifications2_title">Notificações (+)</string>
+    <string name="pref_Notifications2_summary">Segunda fila para notificações de eventos</string>
 
     <string name="pref_Notifications_Type_title">Estilo das notificações</string>
     <string name="pref_Notifications_Type_summary">Como serão as notificações</string>
@@ -945,6 +960,25 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
 
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_summary">Que tipo de eventos incluir nas notificações</string>
+
+    <string name="pref_Notifications_EventSources_title">Fontes de eventos</string>
+    <string name="pref_Notifications_EventSources_description">Mostrar notificações apenas para essas fontes de eventos</string>
+
+    <string name="pref_Notifications_EventInfo_title">Detalhes do evento</string>
+    <string name="pref_Notifications_EventInfo_summary">Que tipo de detalhes do evento mostrar na notificação</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Hora do alarme</string>
     <string name="pref_Notifications_AlarmHour_summary">Qual é o horário para notificar</string>

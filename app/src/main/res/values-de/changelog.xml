@@ -11,6 +11,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.2</item>
+        <item>Möglichkeit zur Auswahl von Ereignisquellen für die Hauptliste und Benachrichtigungen (Extrafunktionen)</item>
+        <item>Möglichkeit zur Auswahl von Ereignisdetails für Benachrichtigungen (Extrafunktionen)</item>
+        <item>Zweite unabhängige Benachrichtigungswarteschlange (Extrafunktionen)</item>
+        <item>Möglichkeit, den ursprünglichen Ereignisnamen im Fotolisten-Widget anzuzeigen</item>
+        <item>Feinabstimmung der oberen und unteren Zeilen im Foto-Widget</item>
+        <item>Legen Sie die transparente Farbe von Ereignissen im Kalender-Widget fest (Ereignisse färben den Tag nicht ein, sind aber im Popup-Fenster sichtbar)</item>
+        <item>Fehlerbehebungen</item>
+
         <item>#1.8.1</item>
         <item>Neuer Veranstaltungstyp – Feiertag</item>
         <item>Feiertage aus Dateien und Kalendern sind in der Liste und den Widgets verfügbar</item>

@@ -11,6 +11,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.2</item>
+        <item>Ability to select event sources for the main list and notifications (extra features)</item>
+        <item>Ability to select event details for notifications (extra features)</item>
+        <item>Second independent notification queue (extra features)</item>
+        <item>Ability to display the original event label on the photo list widget</item>
+        <item>Fine-tuning the top and bottom lines in the photo widget</item>
+        <item>Set the transparent color of events on the calendar widget (events do not tint the day, but are visible in the pop-up window)</item>
+        <item>Bug fixes</item>
+
         <item>#1.8.1</item>
         <item>New event type - Holiday</item>
         <item>Holidays from files and calendars are available in the list and widgets</item>

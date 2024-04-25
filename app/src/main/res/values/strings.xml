@@ -267,7 +267,6 @@
     <string name="appwidget_desc_Calendar">Calendar widget for 1..12 months</string>
     <string name="widget_Photo">Photo</string>
     <string name="widget_FIO">Full name</string>
-    <string name="widget_Date">Date</string>
     <string name="widget_Age">YY</string>
     <string name="widget_TypeIcon">Icon</string>
     <string name="widget_Distance">DD</string>

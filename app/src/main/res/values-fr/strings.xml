@@ -437,6 +437,9 @@
         <item>🏆 Les jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">"Sources d'événements"</string>
+    <string name="pref_List_EventSources_description">"Afficher uniquement les événements de ces sources d'événements"</string>
+
     <string name="pref_List_SadPhoto_title">Bande de deuil</string>
     <string name="pref_List_SadPhoto_summary">Marquer les photos des contacts décédés avec du ruban de deuil</string>
 
@@ -642,6 +645,7 @@
     <string name="pref_EventInfo_ButtonConfig">Bouton de configuration</string>
     <string name="pref_EventInfo_Photo">Photo du contact</string>
     <string name="pref_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
+    <string name="pref_EventInfo_EventLabel">"Étiquette d'événement d'origine"</string>
     <string name="pref_EventInfo_EventCaption">"Légende de l'événement"</string>
     <string name="pref_EventInfo_FavIcon">🌟 Icône du contact sélectionné</string>
     <string name="pref_EventInfo_SilentedIcon">"🚫 Icône de l'événement sans préavis"</string>
@@ -702,6 +706,15 @@
         <item>Organisation (Titre, si absent)</item>
         <item>Rien</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Légendes</string>
+    <string name="widget_config_captions_use_prefs_label">Depuis les paramètres généraux</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Ligne du haut:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Ligne du bas:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Alignement:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Lignes:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Style:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Taille et couleur:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Ne pas mettre en surbrillance</item>
@@ -901,6 +914,8 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">Quand et comment afficher les notifications des événements</string>
+    <string name="pref_Notifications2_title">Notifications (+)</string>
+    <string name="pref_Notifications2_summary">"Deuxième file d'attente pour les notifications d'événements"</string>
 
     <string name="pref_Notifications_Type_title">Style des notifications</string>
     <string name="pref_Notifications_Type_summary">À quoi ressembleront les notifications</string>
@@ -945,6 +960,25 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
 
     <string name="pref_Notifications_EventTypes_title">"Types des événements"</string>
     <string name="pref_Notifications_EventTypes_summary">"Quels événements inclure dans les notifications"</string>
+
+    <string name="pref_Notifications_EventSources_title">"Sources d'événements"</string>
+    <string name="pref_Notifications_EventSources_description">"Afficher les notifications uniquement pour ces sources d'événements"</string>
+
+    <string name="pref_Notifications_EventInfo_title">"Détails de l'événement"</string>
+    <string name="pref_Notifications_EventInfo_summary">"Quels types de détails d'événement afficher dans la notification"</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">"Heure de la notification"</string>
     <string name="pref_Notifications_AlarmHour_summary">À quelle heure signaler les événements</string>

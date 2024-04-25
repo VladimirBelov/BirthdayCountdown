@@ -11,6 +11,15 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+    <item>#1.8.2</item>
+    <item>"Sélection des sources d'événements pour la liste principale et les notifications (fonctions supplémentaires)"</item>
+    <item>"Sélection les détails de l'événement pour les notifications (fonctions supplémentaires)"</item>
+    <item>"Deuxième file d'attente de notifications indépendante (fonctions supplémentaires)"</item>
+    <item>"Possibilité d'afficher le nom d'origine de l'événement sur le widget de liste de photos"</item>
+    <item>Affiner les lignes du haut et du bas dans le widget photo</item>
+    <item>Définissez la couleur transparente des événements sur le widget du calendrier (les événements ne teintent pas le jour, mais sont visibles dans la fenêtre pop-up)</item>
+    <item>"Correction d'erreur"</item>
+
     <item>#1.8.1</item>
     <item>"Nouveau type d'événement - Vacances"</item>
     <item>Les jours fériés des fichiers et des calendriers sont disponibles dans la liste et les widgets</item>

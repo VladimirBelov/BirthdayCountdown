@@ -10,6 +10,15 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.2</item>
+        <item>Selecionar fontes de eventos para a lista principal e notificações (funções adicionais)</item>
+        <item>Selecionar detalhes do evento para notificações (funções adicionais)</item>
+        <item>Segunda fila de notificação independente (funções adicionais)</item>
+        <item>Capacidade de exibir o nome original do evento no widget da lista de fotos</item>
+        <item>Ajustando as linhas superiores e inferiores no widget de fotos</item>
+        <item>Defina a cor transparente dos eventos no widget de calendário (os eventos não colorem o dia, mas ficam visíveis na janela pop-up)</item>
+        <item>Correção de erros</item>
+
         <item>#1.8.1</item>
         <item>Novo tipo de evento – Feriado</item>
         <item>Feriados de arquivos e calendários estão disponíveis na lista e nos widgets</item>

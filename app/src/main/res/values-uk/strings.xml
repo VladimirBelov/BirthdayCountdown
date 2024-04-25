@@ -437,6 +437,9 @@
         <item>🏆 Круглі дати (5K днів)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Джерела подій</string>
+    <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій</string>
+
     <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
     <string name="pref_List_SadPhoto_summary">Відзначати фотографії померлих контактів траурною стрічкою</string>
 
@@ -642,6 +645,7 @@
     <string name="pref_EventInfo_ButtonConfig">Кнопка конфігурації</string>
     <string name="pref_EventInfo_Photo">Фото контакту</string>
     <string name="pref_EventInfo_EventIcon">Іконка типу події</string>
+    <string name="pref_EventInfo_EventLabel">Оригінальна мітка події</string>
     <string name="pref_EventInfo_EventCaption">Підпис до події</string>
     <string name="pref_EventInfo_FavIcon">Іконка обраного контакту</string>
     <string name="pref_EventInfo_SilentedIcon">Значок події без повiдомлення</string>
@@ -702,6 +706,15 @@
         <item>Організація (Посада, якщо відсутня)</item>
         <item>Нічого</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Написи</string>
+    <string name="widget_config_captions_use_prefs_label">Із загальних налаштувань</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Верхній ряд:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Нижній ряд:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Вирівнювання:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Рядки:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Стиль:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Розмір та колір:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Чи не виділяти</item>
@@ -901,6 +914,8 @@
 
     <string name="pref_Notifications_title">Повідомлення</string>
     <string name="pref_Notifications_summary">Коли та як показувати сповіщення про події</string>
+    <string name="pref_Notifications2_title">Повідомлення (+)</string>
+    <string name="pref_Notifications2_summary">Друга черга для повідомлень про події</string>
 
     <string name="pref_Notifications_Type_title">Стиль повідомлень</string>
     <string name="pref_Notifications_Type_summary">Вигляд вiдображення повідомлень</string>
@@ -945,6 +960,25 @@
 
     <string name="pref_Notifications_EventTypes_title">Типи подій</string>
     <string name="pref_Notifications_EventTypes_summary">Які події включати в повідомлення</string>
+
+    <string name="pref_Notifications_EventSources_title">Джерела подій</string>
+    <string name="pref_Notifications_EventSources_description">Показувати сповіщення лише для цих джерел подій</string>
+
+    <string name="pref_Notifications_EventInfo_title">Деталі події</string>
+    <string name="pref_Notifications_EventInfo_summary">Які подробиці показувати в сповіщенні</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Час повідомлення</string>
     <string name="pref_Notifications_AlarmHour_summary">В який час повідомляти</string>

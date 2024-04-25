@@ -9237,8 +9237,11 @@ class ContactsEvents {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent));
                     }
                     preferences_DaysTypes.put(key, dayType);
-                    if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
-                        preferences_DaysInfo.put(key, checkForNull(preferences_DaysInfo.get(key)).concat(Constants.STRING_EOT).concat(eventTitle));
+                    String dayInfo = preferences_DaysInfo.get(key);
+                    if (dayInfo != null) {
+                        if (!dayInfo.contains(eventTitle)) {
+                            preferences_DaysInfo.put(key, dayInfo.concat(Constants.STRING_EOT).concat(eventTitle));
+                        }
                     } else {
                         preferences_DaysInfo.put(key, eventTitle);
                     }
@@ -9322,8 +9325,11 @@ class ContactsEvents {
                         do {
                             String key = calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateStart.getTime()));
                             preferences_DaysTypes.put(key, DayType.Type.Holiday);
-                            if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
-                                preferences_DaysInfo.put(key, checkForNull(preferences_DaysInfo.get(key)).concat(Constants.STRING_EOT).concat(eventTitle));
+                            String eventInfo = preferences_DaysInfo.get(key);
+                            if (eventInfo != null) {
+                                if (!eventInfo.contains(eventTitle)) {
+                                    preferences_DaysInfo.put(key, eventInfo.concat(Constants.STRING_EOT).concat(eventTitle));
+                                }
                             } else {
                                 preferences_DaysInfo.put(key, eventTitle);
                             }

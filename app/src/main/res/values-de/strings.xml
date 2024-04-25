@@ -437,6 +437,9 @@
         <item>🏆 Besondere Geburtstage (Alle 5000 Tage)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Ereignisquellen</string>
+    <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen</string>
+
     <string name="pref_List_SadPhoto_title">Trauerband</string>
     <string name="pref_List_SadPhoto_summary">Markieren Sie Fotos von verstorbenen Kontakten mit Trauerband</string>
 
@@ -642,6 +645,7 @@
     <string name="pref_EventInfo_ButtonConfig">Einstellungen-Taste</string>
     <string name="pref_EventInfo_Photo">Kontaktfoto</string>
     <string name="pref_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
+    <string name="pref_EventInfo_EventLabel">Original-Ereignisbezeichnung</string>
     <string name="pref_EventInfo_EventCaption">Ereignisbildunterschrift</string>
     <string name="pref_EventInfo_FavIcon">🌟 Favoriten-Symbol</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
@@ -702,6 +706,15 @@
         <item>Unternehmen (Position, wenn Eintrag fehlt)</item>
         <item>Nichts</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Untertitel</string>
+    <string name="widget_config_captions_use_prefs_label">Aus allgemeinen Einstellungen</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Oberste Zeile:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Unterste Zeile:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Ausrichtung:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Zeilen:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Stil:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Größe und Farbe:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Nicht markieren</item>
@@ -901,6 +914,8 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
 
     <string name="pref_Notifications_title">Benachrichtigungen</string>
     <string name="pref_Notifications_summary">Wann und wie Benachrichtigungen zu Ereignissen angezeigt werden</string>
+    <string name="pref_Notifications2_title">Benachrichtigungen (+)</string>
+    <string name="pref_Notifications2_summary">Zweite Warteschlange für Ereignisbenachrichtigungen</string>
 
     <string name="pref_Notifications_Type_title">Benachrichtigungsstil</string>
     <string name="pref_Notifications_Type_summary">Wie werden Benachrichtigungen aussehen</string>
@@ -945,6 +960,25 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
 
     <string name="pref_Notifications_EventTypes_title">Ereignistypen</string>
     <string name="pref_Notifications_EventTypes_summary">Welche Ereignisse in den Benachrichtigungen enthalten sein sollen</string>
+
+    <string name="pref_Notifications_EventSources_title">Ereignisquellen</string>
+    <string name="pref_Notifications_EventSources_description">Benachrichtigungen nur für diese Ereignisquellen anzeigen</string>
+
+    <string name="pref_Notifications_EventInfo_title">Ereignisdetails</string>
+    <string name="pref_Notifications_EventInfo_summary">Welche Art von Ereignisdetails in der Benachrichtigung angezeigt werden sollen</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Benachrichtigungszeit</string>
     <string name="pref_Notifications_AlarmHour_summary">Uhrzeit der Benachrichtigung</string>

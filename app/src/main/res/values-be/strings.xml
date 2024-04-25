@@ -437,6 +437,9 @@
         <item>🏆 Круглыя даты (5K дзён)</item>
     </string-array>
 
+    <string name="pref_List_EventSources_title">Крыніцы падзей</string>
+    <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей</string>
+
     <string name="pref_List_SadPhoto_title">Жалобная стужка</string>
     <string name="pref_List_SadPhoto_summary">Адзначаць фатаграфіі памерлых кантактаў жалобнай стужкай</string>
 
@@ -643,6 +646,7 @@
     <string name="pref_EventInfo_Photo">Фота кантакту</string>
     <string name="pref_EventInfo_EventIcon">🎂 Абразок тыпу падзеі</string>
     <string name="pref_EventInfo_EventCaption">Надпіс падзеі</string>
+    <string name="pref_EventInfo_EventLabel">Арыгінальная пазнака падзеі</string>
     <string name="pref_EventInfo_FavIcon">🌟 Абразок абранага кантакту</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак задыяка</string>
@@ -702,6 +706,15 @@
         <item>Арганізацыя (Пасада, пры адсутнасці)</item>
         <item>Нічога</item>
     </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Надпісы</string>
+    <string name="widget_config_captions_use_prefs_label">З агульных налад</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Верхні рад:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Ніжні шэраг:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Выраўноўванне:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Радкі:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Стыль:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Памер і колер:</string>
 
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Не вылучаць</item>
@@ -901,6 +914,8 @@
 
     <string name="pref_Notifications_title">Паведамленні</string>
     <string name="pref_Notifications_summary">Калі і як паказваць паведамленні пра падзеі</string>
+    <string name="pref_Notifications2_title">Паведамленні (+)</string>
+    <string name="pref_Notifications2_summary">Другая чарга апавяшчэнняў аб падзеях</string>
 
     <string name="pref_Notifications_Type_title">Стыль паведамленняў</string>
     <string name="pref_Notifications_Type_summary">Як паведамленні будуць выглядаць</string>
@@ -945,6 +960,25 @@
 
     <string name="pref_Notifications_EventTypes_title">Тыпы падзей</string>
     <string name="pref_Notifications_EventTypes_summary">Якія падзеі ўлучаць у паведамленні</string>
+
+    <string name="pref_Notifications_EventSources_title">Крыніцы падзей</string>
+    <string name="pref_Notifications_EventSources_description">Паказваць апавяшчэнні толькі для гэтых крыніц падзей</string>
+
+    <string name="pref_Notifications_EventInfo_title">Падрабязнасці падзеі</string>
+    <string name="pref_Notifications_EventInfo_summary">Якія дэталі падзеі паказваць у апавяшчэнні</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
 
     <string name="pref_Notifications_AlarmHour_title">Час паведамлення</string>
     <string name="pref_Notifications_AlarmHour_summary">У які час паведамляць пра падзеі</string>
