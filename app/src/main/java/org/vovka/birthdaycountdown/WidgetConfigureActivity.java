@@ -925,7 +925,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    private void getSelectedSources(List<String> newSelectedSources) {
+    public void getSelectedSources(List<String> newSelectedSources) {
         try {
 
             if (newSelectedSources != null) {

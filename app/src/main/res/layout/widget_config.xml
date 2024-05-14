@@ -262,7 +262,8 @@
                         android:layout_marginLeft="-4dp"
                         android:gravity="center_vertical"
                         android:scaleX="0.80"
-                        android:scaleY="0.80" />
+                        android:scaleY="0.80"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
 
@@ -303,9 +304,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsUpperAligning"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsAligning"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -331,9 +333,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsUpperRows"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsRows"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -359,9 +362,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsUpperFontStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsFontStyle"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -390,11 +394,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="70"
+                        android:layout_weight="8"
                         android:gravity="center_vertical"
+                        android:labelFor="@id/editCaptionsUpperFontSize"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsSize"
-                        android:labelFor="@id/editCaptionsUpperFontSize"
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <EditText
@@ -402,22 +406,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
-                        android:layout_weight="10"
+                        android:layout_weight="1"
                         android:autofillHints="10"
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
                         android:selectAllOnFocus="true"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                     <TextView
                         android:id="@+id/captionCaptionsUpperColor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-6dp"
-                        android:layout_weight="10"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingEnd="4dp"
+                        android:paddingEnd="10dp"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -459,9 +464,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsBottomAligning"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsAligning"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -487,9 +493,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsBottomRows"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsRows"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -515,9 +522,10 @@
 
                     <TextView
                         android:id="@+id/captionCaptionsBottomFontStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsFontStyle"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -546,11 +554,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="70"
+                        android:layout_weight="8"
                         android:gravity="center_vertical"
+                        android:labelFor="@id/editCaptionsBottomFontSize"
                         android:paddingStart="14dp"
                         android:text="@string/pref_Widgets_captionCaptionsSize"
-                        android:labelFor="@id/editCaptionsBottomFontSize"
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <EditText
@@ -558,23 +566,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
-                        android:layout_weight="10"
+                        android:layout_weight="1"
                         android:autofillHints="10"
-                        android:elegantTextHeight="false"
                         android:gravity="center_vertical|end"
                         android:inputType="number"
                         android:maxLength="2"
                         android:selectAllOnFocus="true"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <TextView
                         android:id="@+id/captionCaptionsBottomColor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-6dp"
-                        android:layout_weight="10"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingEnd="4dp"
+                        android:paddingEnd="10dp"
                         android:textSize="20sp" />
 
                 </LinearLayout>

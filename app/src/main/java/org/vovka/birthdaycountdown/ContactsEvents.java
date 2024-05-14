@@ -566,7 +566,7 @@ class ContactsEvents {
         try {
             return Long.parseLong(strIn);
         } catch (NumberFormatException e) {
-            return Long.parseLong(Constants.STRING_0);
+            return 0L;
         }
 
     }
@@ -2061,7 +2061,7 @@ class ContactsEvents {
         return count;
     }
 
-    int getFileEventsCount(String file, boolean needEventLabel) {
+    int getFileEventsCount(String file, @NonNull String eventType, boolean needEventLabel) {
 
         int count = 0;
         try {
@@ -2074,6 +2074,27 @@ class ContactsEvents {
             now.set(Calendar.MINUTE, 0);
             now.set(Calendar.SECOND, 0);
             now.set(Calendar.MILLISECOND, 0);
+
+            boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+
+                event = new Event();
+                event.caption = getResources().getString(R.string.event_type_birthday);
+                event.type = eventType;
+                event.subType = getEventType(Constants.Type_BirthDay);
+                event.icon = R.drawable.ic_event_birthday;
+                event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
+
+            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+
+                event = new Event();
+                event.caption = getResources().getString(R.string.event_type_other);
+                event.type = eventType;
+                event.subType = getEventType(Constants.Type_FileEvent);
+                event.icon = R.drawable.ic_event_other;
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+
+            }
 
             for (String eventRow : eventsArray) {
 
@@ -2118,7 +2139,7 @@ class ContactsEvents {
                                     isAD = false;
                                     flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
                                 }
-                                if (needEventLabel) {
+                                if (isMultiTypeSource || needEventLabel) {
                                     eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
                                 }
                             }
@@ -2150,7 +2171,7 @@ class ContactsEvents {
 
                 if (eventDateString.isEmpty()) continue;
 
-                if (needEventLabel) {
+                if (isMultiTypeSource || needEventLabel) {
                     event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle);
                 }
 
@@ -9729,18 +9750,27 @@ class ContactsEvents {
                                 + getCalendarEventsCount(substringAfter(sourceId, Constants.eventSourceCalendarPrefix))
                                 + Constants.STRING_BRACKETS_CLOSE);
 
-                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
+                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix)) {
 
                         sourceChoices.add(sourceTitle
                                 + Constants.STRING_BRACKETS_OPEN
-                                + getFileEventsCount(sourceId, sourceId.startsWith(Constants.eventSourceMultiFilePrefix))
+                                + getFileEventsCount(sourceId, getEventType(Constants.Type_BirthDay), false)
                                 + Constants.STRING_BRACKETS_CLOSE);
 
-                    } else if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
+                    } else if (sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
 
-                        //todo: добавить количество событий
-                        sourceChoices.add(sourceTitle);
+                        sourceChoices.add(sourceTitle
+                                + Constants.STRING_BRACKETS_OPEN
+                                + getFileEventsCount(sourceId, Constants.Type_MultiEvent, true)
+                                + Constants.STRING_BRACKETS_CLOSE);
 
+                    } else {
+                        if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
+
+                            //todo: добавить количество событий
+                            sourceChoices.add(sourceTitle);
+
+                        }
                     }
 
                 }
@@ -9769,7 +9799,9 @@ class ContactsEvents {
                                         Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
                                         method.invoke(baseContext, idToPass, eventSourcesSelected);
                                     }
-                                } catch (Exception ignored) {/**/}
+                                } catch (Exception ignored) {
+                                    ToastExpander.showDebugMsg(baseContext, "No method getSelectedSources found for " + baseContext.getClass().getSimpleName());
+                                }
                             }
 
                         })

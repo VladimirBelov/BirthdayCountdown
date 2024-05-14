@@ -1639,7 +1639,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     filesPaths.add(
                             file.split(Constants.STRING_PIPE)[0]
                                 + Constants.STRING_BRACKETS_OPEN
-                                + eventsData.getFileEventsCount(file, eventType.equals(Constants.Type_MultiEvent))
+                                + eventsData.getFileEventsCount(file, eventType, eventType.equals(Constants.Type_MultiEvent))
                                 + Constants.STRING_BRACKETS_CLOSE
                     );
                     filesFullData.add(file);

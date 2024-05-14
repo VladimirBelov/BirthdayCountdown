@@ -715,7 +715,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             //Цвет дня
             List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
 
-            boolean isCustomColor = false;
+            boolean isColoredByEvent = false;
             if (!dayTypes.isEmpty()) {
                 int maxTypeIndex = -1;
                 for (ContactsEvents.DayType dayType : dayTypes) {
@@ -726,22 +726,22 @@ public class WidgetCalendar extends AppWidgetProvider {
                         } else {
                             colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                         }
-                        if (colorOfDay != null && dayType.type == ContactsEvents.DayType.Type.Holiday
-                                && Color.alpha(colorOfDay) > (inMonth ? 0 : Constants.WIDGET_CALENDAR_OUT_MONTH_TINT)) {
+                        if (colorOfDay != null && Color.alpha(colorOfDay) > (inMonth ? 0 : Constants.WIDGET_CALENDAR_OUT_MONTH_TINT)) {
+                            isColoredByEvent = true;
+                            if (dayType.type == ContactsEvents.DayType.Type.Workday) break;
                             maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                             color = colorOfDay;
-                            isCustomColor = true;
                         }
                     }
                 }
             }
-            if (!isCustomColor && colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            if (!isColoredByEvent && colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 if (inMonth) {
                     color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
                 } else {
                     color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
                 }
-            } else if (!isCustomColor && colorizeSundays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            } else if (!isColoredByEvent && colorizeSundays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                 if (inMonth) {
                     color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
                 } else {
