@@ -2552,7 +2552,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 String eventKey = eventsData.getEventKey(singleEventArray);
                 String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-                if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
+                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED));
                 }
@@ -2757,9 +2757,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         //для поиска AND используем <строка1>+<строка2>
                         //для поиска OR используем <строка1>,<строка2>
                         filterNames = ContactsEvents.normalizeName(constraint.toString());
+                        final List<String> searchSource =
+                                eventsData.preferences_list_search_death == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all)) ? eventsData.eventList : listAll;
                         if (filterNames.contains("+")) {
                             String[] params = filterNames.split(Constants.REGEX_PLUS);
-                            for (String listItem : listAll) {
+                            for (String listItem : searchSource) {
                                 final String item = listItem.toLowerCase();
                                 int matches = 0;
                                 for (String param: params) {
@@ -2775,7 +2777,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         } else {
                             Matcher filter = Pattern.compile(filterNames.replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA).replace(Constants.STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
-                            for (String listItem : listAll) {
+                            for (String listItem : searchSource) {
                                 if (filter.reset(listItem).find()) {
                                     if (!dataList_filtered.contains(listItem)) {
                                         dataList_filtered.add(listItem);

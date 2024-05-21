@@ -604,6 +604,13 @@
         <item>Ничего не делать</item>
     </string-array>
 
+    <string name="pref_List_SearchDeath_title">Глубина поиска</string>
+    <string name="pref_List_SearchDeath_summary">В каких источниках искать события</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Выбранные источники</item>
+        <item>Все источники</item>
+    </string-array>
+
     <string name="pref_List_Color_EventToday_title">События сегодня</string>
     <string name="pref_List_Color_EventToday_summary">Цвет заголовка дня для событий сегодня</string>
 

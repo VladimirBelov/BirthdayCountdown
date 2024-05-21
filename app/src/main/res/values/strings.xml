@@ -604,6 +604,13 @@
         <item>Nothing</item>
     </string-array>
 
+    <string name="pref_List_SearchDeath_title">Search death</string>
+    <string name="pref_List_SearchDeath_summary">What sources to look for events in</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Selected sources</item>
+        <item>All sources</item>
+    </string-array>
+
     <string name="pref_List_Color_EventToday_title">Today events</string>
     <string name="pref_List_Color_EventToday_summary">Color of day caption for today events</string>
 
@@ -1596,6 +1603,15 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>4</item> <!--Контакт, ссылка, календарь-->
         <item>8</item> <!--Контекстное меню-->
         <item>9</item> <!--Ничего-->
+    </string-array>
+
+    <string name="pref_List_SearchDeath_key" translatable="false">List_SearchDeath</string>
+    <string name="pref_List_SearchDeath_default" translatable="false">1</string>
+    <string name="pref_List_SearchDeath_selected" translatable="false">1</string>
+    <string name="pref_List_SearchDeath_all" translatable="false">2</string>
+    <string-array name="pref_List_SearchDeath_values" translatable="false">
+        <item>@string/pref_List_SearchDeath_selected</item> <!--Источники для списка событий-->
+        <item>@string/pref_List_SearchDeath_all</item> <!--Все указанные источники-->
     </string-array>
 
     <string name="pref_List_Color_EventToday_key" translatable="false">List_Color_EventToday</string>

@@ -10,7 +10,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
-
+<!--Глубина поиска событий-->
         <item>#1.8.2</item>
         <item>Выбор источников событий для основного списка и уведомлений (доп. функции)</item>
         <item>Выбор деталей события для уведомлений (доп. функции)</item>

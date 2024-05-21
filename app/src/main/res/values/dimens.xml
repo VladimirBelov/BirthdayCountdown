@@ -25,5 +25,4 @@
     <dimen name="event_name">18sp</dimen>
     <dimen name="event_date">14sp</dimen>
 
-    <integer name="design_snackbar_text_max_lines" tools:override="true">5</integer> <!-- https://stackoverflow.com/questions/30705607/android-multiline-snackbar -->
 </resources>

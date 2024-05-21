@@ -596,10 +596,10 @@
         android:icon="@android:drawable/ic_menu_agenda">
 
         <MultiSelectListPreference
+            android:key="@string/pref_List_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_EventTypes_entries"
             android:entryValues="@array/pref_EventTypes_values"
-            android:key="@string/pref_List_Events_key"
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_summary"
             android:icon="@android:drawable/ic_menu_more"
@@ -614,10 +614,10 @@
             android:dialogIcon="@android:drawable/ic_menu_more"/>
 
         <MultiSelectListPreference
+            android:key="@string/pref_List_EventInfo_key"
             android:defaultValue="@array/pref_List_EventInfo_values_default"
             android:entries="@array/pref_List_EventInfo_entries"
             android:entryValues="@array/pref_List_EventInfo_values"
-            android:key="@string/pref_List_EventInfo_key"
             android:summary="@string/pref_List_EventInfo_summary"
             android:title="@string/pref_List_EventInfo_title"
             android:icon="@android:drawable/ic_menu_agenda"
@@ -625,10 +625,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_List_PrevEvents_key"
             android:defaultValue="@string/pref_List_PrevEvents_default"
             android:entries="@array/pref_List_PrevEvents_entries"
             android:entryValues="@array/pref_List_PrevEvents_values"
-            android:key="@string/pref_List_PrevEvents_key"
             android:summary="@string/pref_List_PrevEvents_summary"
             android:title="@string/pref_List_PrevEvents_title"
             android:icon="@android:drawable/ic_menu_revert"
@@ -642,10 +642,10 @@
             android:icon="@drawable/ic_menu_find"/>
 
         <ListPreference
+            android:key="@string/pref_List_Style_key"
             android:defaultValue="@string/pref_List_Style_default"
             android:entries="@array/pref_List_Style_entries"
             android:entryValues="@array/pref_List_Style_values"
-            android:key="@string/pref_List_Style_key"
             android:summary="@string/pref_List_Style_summary"
             android:title="@string/pref_List_Style_title"
             android:icon="@android:drawable/ic_menu_agenda"
@@ -653,10 +653,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_List_PhotoStyle_key"
             android:defaultValue="@string/pref_List_PhotoStyle_default"
             android:entries="@array/pref_List_PhotoStyle_entries"
             android:entryValues="@array/pref_List_PhotoStyle_values"
-            android:key="@string/pref_List_PhotoStyle_key"
             android:summary="@string/pref_List_PhotoStyle_summary"
             android:title="@string/pref_List_PhotoStyle_title"
             android:icon="@android:drawable/ic_menu_crop"
@@ -664,10 +664,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_List_Filling_key"
             android:defaultValue="@string/pref_List_Filling_default"
             android:entries="@array/pref_List_Filling_entries"
             android:entryValues="@array/pref_List_Filling_values"
-            android:key="@string/pref_List_Filling_key"
             android:summary="@string/pref_List_Filling_summary"
             android:title="@string/pref_List_Filling_title"
             android:icon="@drawable/ic_menu_paste"
@@ -682,14 +682,25 @@
             android:icon="@android:drawable/ic_menu_preferences" />
 
         <ListPreference
-            android:defaultValue="@string/pref_List_OnClick_default"
             android:key="@string/pref_List_OnClick_key"
+            android:defaultValue="@string/pref_List_OnClick_default"
             android:entries="@array/pref_List_OnClick_entries"
             android:entryValues="@array/pref_List_OnClick_values"
             android:title="@string/pref_List_OnClick_title"
             android:summary="@string/pref_List_OnClick_summary"
             android:icon="@android:drawable/ic_menu_compass"
             android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:key="@string/pref_List_SearchDeath_key"
+            android:defaultValue="@string/pref_List_SearchDeath_default"
+            android:entries="@array/pref_List_SearchDeath_entries"
+            android:entryValues="@array/pref_List_SearchDeath_values"
+            android:title="@string/pref_List_SearchDeath_title"
+            android:summary="@string/pref_List_SearchDeath_summary"
+            android:icon="@android:drawable/ic_menu_search"
+            android:dialogIcon="@android:drawable/ic_menu_search"
             android:negativeButtonText="@string/button_cancel"/>
 
         <org.vovka.birthdaycountdown.ColorPreference
@@ -726,10 +737,10 @@
             app:dialogIcon="@drawable/ic_menu_paste"/>
 
         <ListPreference
+            android:key="@string/pref_List_Jubilee_Algorithm_key"
             android:defaultValue="@string/pref_List_Jubilee_Algorithm_default"
             android:entries="@array/pref_List_Jubilee_Algorithm_entries"
             android:entryValues="@array/pref_List_Jubilee_Algorithm_values"
-            android:key="@string/pref_List_Jubilee_Algorithm_key"
             android:summary="@string/pref_List_Jubilee_Algorithm_summary"
             android:title="@string/pref_List_Jubilee_Algorithm_title"
             android:icon="@android:drawable/ic_menu_week"

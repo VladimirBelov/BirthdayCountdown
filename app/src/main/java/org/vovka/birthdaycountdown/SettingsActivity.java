@@ -399,6 +399,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDeath_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
@@ -920,25 +921,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         } catch (ActivityNotFoundException e) { /**/ }
                     }
                     //Нет доступа на отправку уведомлений
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && eventsData.checkNoNotificationAccess()) {
-                        String[] permissions;
-                        if (!eventsData.checkCanExactAlarm()) {
-                            permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
-                        } else {
-                            permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
-                        }
-                        ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !eventsData.checkCanExactAlarm()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                        if (eventsData.checkNoNotificationAccess()) {
+                            String[] permissions;
+                            if (!eventsData.checkCanExactAlarm()) {
+                                permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
+                            } else {
+                                permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
+                            }
+                            ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !eventsData.checkCanExactAlarm()) {
 
                             //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
                             //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                            try {
-                                startActivity(intent);
-                            } catch (ActivityNotFoundException e) { /**/ }
+                            //https://stackoverflow.com/questions/70304940/android-12-redirect-to-alarms-reminders-settings-not-working
+
+                            startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
+
+//                            Intent intent = new Intent();
+//                            intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+//
+//                            try {
+//                                startActivity(intent);
+//                            } catch (ActivityNotFoundException e) { /**/ }
+
                         }
-                    }
                 }
 
                 if (eventsData.preferences_menustyle_compact) {

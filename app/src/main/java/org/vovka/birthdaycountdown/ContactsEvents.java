@@ -366,6 +366,7 @@ class ContactsEvents {
     private Set<String> pref_List_Event_Info_Default;
     private Set<String> pref_List_Age_Format_Default;
     Set<String> preferences_list_EventSources = new HashSet<>();
+    int preferences_list_search_death;
 
     //Уведомления
     int preferences_notifications_channel_id;
@@ -1063,6 +1064,7 @@ class ContactsEvents {
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
+            preferences_list_search_death = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
 
             //Уведомления
             preferences_notifications_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
@@ -8171,9 +8173,10 @@ class ContactsEvents {
     boolean checkCanExactAlarm() {
         boolean canExact = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager.canScheduleExactAlarms()) {
-            //if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
+            //AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            //if (alarmManager.canScheduleExactAlarms()) {
+            //BUG: https://issuetracker.google.com/issues/292556798
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
                 canExact = true;
             }
         } else {

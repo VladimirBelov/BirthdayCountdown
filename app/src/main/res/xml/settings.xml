@@ -700,6 +700,17 @@
             android:dialogIcon="@android:drawable/ic_menu_compass"
             android:negativeButtonText="@string/button_cancel"/>
 
+        <ListPreference
+            android:key="@string/pref_List_SearchDeath_key"
+            android:defaultValue="@string/pref_List_SearchDeath_default"
+            android:entries="@array/pref_List_SearchDeath_entries"
+            android:entryValues="@array/pref_List_SearchDeath_values"
+            android:title="@string/pref_List_SearchDeath_title"
+            android:summary="@string/pref_List_SearchDeath_summary"
+            android:icon="@android:drawable/ic_menu_search"
+            android:dialogIcon="@android:drawable/ic_menu_search"
+            android:negativeButtonText="@string/button_cancel"/>
+
         <org.vovka.birthdaycountdown.ColorPreference
             android:key="@string/pref_List_Color_EventToday_key"
             android:title="@string/pref_List_Color_EventToday_title"

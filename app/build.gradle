@@ -82,7 +82,7 @@ android {
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 34 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.8.2"
+            versionName "1.8.3"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
@@ -149,7 +149,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
-    implementation 'androidx.core:core:1.12.0' //https://developer.android.com/jetpack/androidx/releases/core
+    implementation 'androidx.core:core:1.13.1' //https://developer.android.com/jetpack/androidx/releases/core
     implementation 'androidx.core:core-splashscreen:1.0.1' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.0.1
     //noinspection GradleDependency
     implementation 'androidx.fragment:fragment:1.1.0' //https://developer.android.com/jetpack/androidx/releases/fragment
