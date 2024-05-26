@@ -1355,6 +1355,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             List<String> packNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
             List<Integer> packIcons = new ArrayList<>();
+            packIcons.add(R.drawable.ic_pack00_m1);
             packIcons.add(R.drawable.ic_pack00_f1);
             packIcons.add(R.drawable.ic_pack01_f2);
             packIcons.add(R.drawable.ic_pack02_f2);
@@ -1373,9 +1374,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ListView listView = alertToShow.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            List<String> packIds = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_values)));
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
-                eventsData.setPreferences_IconPackNumber(position);
+                eventsData.setPreferences_IconPackNumber(Integer.parseInt(packIds.get(position)));
                 eventsData.savePreferences();
                 eventsData.initIconPack();
                 alertToShow.dismiss();
@@ -1383,7 +1385,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                listView.setItemChecked(eventsData.getPreferences_IconPackNumber(), true);
+                listView.setItemChecked(packIds.indexOf(String.valueOf(eventsData.getPreferences_IconPackNumber())), true);
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

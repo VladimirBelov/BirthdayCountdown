@@ -290,6 +290,7 @@
     <string name="pref_MenuStyle_description">Utilisez un menu compacté à plusieurs niveaux ou un menu étendu avec des catégories</string>
 
     <string-array name="pref_IconPack_entries">
+        <item>"Standard (pas d'âge)"</item>
         <item>Standard</item>
         <item>Colorés</item>
         <item>Blanc-et-noirs</item>

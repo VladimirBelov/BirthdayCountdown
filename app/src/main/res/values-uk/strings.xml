@@ -290,6 +290,7 @@
     <string name="pref_MenuStyle_description">Використовуйте ущільнене меню з кількома рівнями або розширене меню з категоріями</string>
 
     <string-array name="pref_IconPack_entries">
+        <item>Стандартні (без віку)</item>
         <item>Стандартні</item>
         <item>Кольорові</item>
         <item>Чорно-білі</item>

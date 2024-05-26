@@ -8386,6 +8386,15 @@ class ContactsEvents {
                     preferences_IconPackImages_M.put(150, R.drawable.ic_pack03_m6);
 
                     break;
+
+                case 4:
+
+                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack00_f1);
+
+                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack00_m1);
+
+                    break;
+
             }
 
             if (preferences_IconPackImages_F.isEmpty()) {

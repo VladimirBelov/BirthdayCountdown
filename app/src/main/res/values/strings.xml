@@ -290,6 +290,7 @@
     <string name="pref_MenuStyle_description">Use a compacted menu with several levels or an expanded menu with categories</string>
 
     <string-array name="pref_IconPack_entries">
+        <item>Standard (w/o age)</item>
         <item>Standard</item>
         <item>Color</item>
         <item>Black/white</item>
@@ -1430,6 +1431,13 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Accounts_key" translatable="false">Accounts</string>
 
     <string name="pref_IconPack_key" translatable="false">IconPack</string>
+    <string-array name="pref_IconPack_values" translatable="false">
+        <item>4</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 
     <string name="pref_MenuStyle_key" translatable="false">MenuStyle</string>
     <bool name="pref_MenuStyle_default" translatable="false">true</bool>

@@ -290,6 +290,7 @@
     <string name="pref_MenuStyle_description">Использовать компактное меню с несколькими уровнями вложенности или развёрнутое меню с категориями</string>
 
     <string-array name="pref_IconPack_entries">
+        <item>Стандартные (без возраста)</item>
         <item>Стандартные</item>
         <item>Цветные</item>
         <item>Чёрно-белые</item>
