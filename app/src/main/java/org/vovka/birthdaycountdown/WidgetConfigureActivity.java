@@ -55,6 +55,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private static final String BOTTOM_ROW = "bottomRow";
     private int widgetId = 0;
     private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
+    List<String> widgetPref;
     private boolean isListWidget = false;
     private final ContactsEvents eventsData = ContactsEvents.getInstance();
     private List<String> eventTypesIDs;
@@ -131,7 +132,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
 
-            List<String> widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+            widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
                         .concat(Constants.STRING_PARENTHESIS_OPEN)
@@ -170,13 +171,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerPhotoStyle.setSelection(prefPhotoStyle, true);
 
             //Количество событий в ширину (фото виджет)
-            int prefEventsCountIndex = 0;
-            try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e) {/**/}
+//            int prefEventsCountIndex = 0;
+//            try {
+//                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+//            } catch (Exception e) {/**/}
 
-            Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
-            spinnerEventsCount.setSelection(prefEventsCountIndex, true);
+            //todo: удалить
+            //Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
+            //spinnerEventsCount.setSelection(prefEventsCountIndex, true);
 
             //Типы событий
             eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
@@ -209,48 +211,80 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 updateVisibility();
             });
 
+            //Ограничения объёма
+
+            List<String> spinnerScopeEventsItems;
             if (isListWidget) {
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+            } else {
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(Constants.STRING_COMMA, -1)));
+            }
 
-                //Ограничения объёма
-                Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
-                List<String> spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
-                ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
-                spinnerScopeEvents.setAdapter(spinnerScopeEventsAdapter);
+            Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
+            ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
+            spinnerScopeEvents.setAdapter(spinnerScopeEventsAdapter);
 
-                Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
-                List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
-                ArrayAdapter<String> spinnerScopeDaysAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeDaysItems);
-                spinnerScopeDays.setAdapter(spinnerScopeDaysAdapter);
+            Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
+            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+            ArrayAdapter<String> spinnerScopeDaysAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeDaysItems);
+            spinnerScopeDays.setAdapter(spinnerScopeDaysAdapter);
 
-                String prefScope = Constants.STRING_EMPTY;
-                if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
-                if (!TextUtils.isEmpty(prefScope)) {
-                    Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
-                    if (matchScopes.find()) {
-                        final String scopeEvents = matchScopes.group(1);
-                        if(scopeEvents != null) {
-                            if (scopeEvents.equals(Constants.STRING_0)){ //Без ограничений
-                                spinnerScopeEvents.setSelection(0);
-                            } else if (spinnerScopeEventsItems.contains(scopeEvents)){
-                                spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
-                            }
+            Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
+            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+
+                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
+                ArrayAdapter<String> spinnerLayoutAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerLayoutItems);
+                spinnerLayout.setAdapter(spinnerLayoutAdapter);
+                spinnerLayout.setSelection(1); //Оставить пустоту по-умолчанию
+
+            }
+
+            String prefScope = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
+            if (!TextUtils.isEmpty(prefScope)) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(prefScope);
+                boolean found = matchScopes.find();
+                if (!found) {
+                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
+                    found = matchScopes.find();
+                }
+                if (found) {
+                    final String scopeEvents = matchScopes.group(1);
+                    if (scopeEvents != null) {
+                        if (scopeEvents.equals(Constants.STRING_0)) { //Без ограничений
+                            spinnerScopeEvents.setSelection(0);
+                        } else if (spinnerScopeEventsItems.contains(scopeEvents)) {
+                            spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
                         }
-                        final String scopeDays = matchScopes.group(2);
-                        if(scopeDays != null) {
-                            if (scopeDays.equals(Constants.STRING_0)){ //Без ограничений
-                                spinnerScopeDays.setSelection(0);
-                            } else if (spinnerScopeDaysItems.contains(scopeDays)){
-                                spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
+                    }
+                    final String scopeDays = matchScopes.group(2);
+                    if (scopeDays != null) {
+                        if (scopeDays.equals(Constants.STRING_0)) { //Без ограничений
+                            spinnerScopeDays.setSelection(0);
+                        } else if (spinnerScopeDaysItems.contains(scopeDays)) {
+                            spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
+                        }
+                    }
+                    if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                            || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+                        final String scopeLayout = matchScopes.group(3);
+                        if (scopeLayout != null) {
+                            if (scopeLayout.equals(Constants.STRING_PLUS)) { //Расширить
+                                spinnerLayout.setSelection(0);
+                            } else if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
+                                spinnerLayout.setSelection(1);
                             }
                         }
                     }
                 }
+            }
 
-            } else {
+            if (!isListWidget) {
 
                 //Параметры заголовков
                 List<String> prefCaptions = new ArrayList<>();
-                if (widgetPref.size() > 8) prefCaptions.addAll(Arrays.asList(widgetPref.get(8).split(Constants.REGEX_PLUS)));
+                if (widgetPref.size() > 11) prefCaptions.addAll(Arrays.asList(widgetPref.get(11).split(Constants.REGEX_PLUS)));
 
                 List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
 
@@ -581,15 +615,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
 
-            if (!widgetType.equals(Constants.WIDGET_TYPE_5X1)) {
+            //if (!widgetType.equals(Constants.WIDGET_TYPE_5X1)) {
 
                 //Скрываем количество событий
-                findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
-                findViewById(R.id.captionEventsCount).setVisibility(View.GONE);
-                findViewById(R.id.spinnerEventsCount).setVisibility(View.GONE);
-                findViewById(R.id.hintEventsCount).setVisibility(View.GONE);
+                //todo: удалить
+                //findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
+               //findViewById(R.id.captionEventsCount).setVisibility(View.GONE);
+               // findViewById(R.id.spinnerEventsCount).setVisibility(View.GONE);
+              //  findViewById(R.id.hintEventsCount).setVisibility(View.GONE);
 
-            }
+            //}
 
             if (this.isListWidget) {
 
@@ -605,10 +640,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } else {
 
                 //Скрываем ограничение объёма
-                findViewById(R.id.dividerScope).setVisibility(View.GONE);
+                /*findViewById(R.id.dividerScope).setVisibility(View.GONE);
                 findViewById(R.id.captionScope).setVisibility(View.GONE);
                 findViewById(R.id.blockScopeEvents).setVisibility(View.GONE);
-                findViewById(R.id.blockScopeDays).setVisibility(View.GONE);
+                findViewById(R.id.blockScopeDays).setVisibility(View.GONE);*/
 
                 final TextView tv = findViewById(R.id.hintPhotoStyle);
                 if (tv != null) tv.setText(R.string.widget_config_photostyle_with_align_description);
@@ -704,7 +739,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             final Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             final Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-            final Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
+            //final Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
             final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
@@ -724,19 +759,34 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             final StringBuilder scopeInfo = new StringBuilder();
-            if (this.isListWidget) { //Объём событий
-                final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
-                final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
+            //Объём событий
+            final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
+            final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
-                if (spinnerScopeEvents.getSelectedItemPosition() != 0 || spinnerScopeDays.getSelectedItemPosition() != 0) { //Есть ограничения
-                    scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
-                    scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
+            if (spinnerScopeEvents.getSelectedItemPosition() != 0 || spinnerScopeDays.getSelectedItemPosition() != 0) { //Есть ограничения
+                scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
+                scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
+
+                Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
+                if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                        || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+
+                    List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
+                    if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
+                        scopeInfo.append(Constants.STRING_PLUS);
+                    } else if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(1))) {
+                        scopeInfo.append(Constants.STRING_MINUS);
+                    }
+
                 }
-            } else { //Параметры заголовков
+            }
+
+            //Параметры заголовков
+            List<String> selectedCaptionsDetails = new ArrayList<>();
+            if (!this.isListWidget) {
                 final CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
                 if (!checkCaptionsUsePrefs.isChecked()) {
                     List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
-                    List<String> selectedCaptionsDetails = new ArrayList<>();
 
                     Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
                     selectedCaptionsDetails.add(listBottomInfo.get(spinnerCaptionsUpper.getSelectedItemPosition()));
@@ -781,7 +831,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     selectedCaptionsDetails.add(prefSize);
 
                     selectedCaptionsDetails.add(String.valueOf(colorCaptionBottom));
-                    scopeInfo.append(String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
+                    //scopeInfo.append(String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
                 }
             }
 
@@ -801,12 +851,18 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
 
+            //Совместимость с предыдущими версиями
+            int prefEventsCountIndex = 0;
+            try {
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+            } catch (Exception e) {/**/}
+
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
 
             prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
             prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
-            prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
+            prefsToStore.add(String.valueOf(prefEventsCountIndex)); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
             prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
@@ -815,6 +871,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(scopeInfo.toString()); //Объём событий
             prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
+            prefsToStore.add(String.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 

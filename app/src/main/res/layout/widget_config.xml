@@ -141,9 +141,10 @@
 
                     <TextView
                         android:id="@+id/captionScopeEvents"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="8dp"
                         android:text="@string/widget_config_scope_events_label"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -155,8 +156,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_scope_events_label"
-                        android:entries="@array/pref_EventTypes_values"
-                        android:textAlignment="textEnd"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
@@ -169,9 +168,10 @@
 
                     <TextView
                         android:id="@+id/captionScopeDays"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:paddingStart="8dp"
                         android:text="@string/widget_config_scope_days_label"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -183,7 +183,33 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:contentDescription="@string/widget_config_scope_days_label"
-                        android:entries="@array/pref_EventTypes_values"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blockLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_layout_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_layout_label"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
@@ -587,7 +613,7 @@
 
                 </LinearLayout>
 
-                <View
+                <!--<View
                     android:id="@+id/dividerEventsCount"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -616,7 +642,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_events_count_description"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary" />-->
 
                 <View
                     android:id="@+id/dividerEventShift"

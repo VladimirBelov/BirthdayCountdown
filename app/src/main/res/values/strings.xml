@@ -803,7 +803,10 @@
     <string name="widget_config_scope_events_label">Max events:</string>
     <string name="widget_config_scope_days_label">Max days:</string>
     <string name="widget_config_scope_events_items">All,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
+    <string name="widget_config_photo_scope_events_items">Automatically,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">All,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Too few events:</string>
+    <string name="widget_config_layout_items">Expand,Keep width</string>
 
     <string name="widget_config_font_label">Font magnify factor</string>
     <string name="widget_config_font_description">Font scale multiplier for age, event distance and under photo info text</string>
@@ -1955,9 +1958,9 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,</string>
-    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,</string>
-    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,</string>
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,,</string>
     <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,2+1</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>

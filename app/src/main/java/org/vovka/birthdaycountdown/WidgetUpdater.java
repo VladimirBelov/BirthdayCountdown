@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +53,8 @@ class WidgetUpdater {
     final private Context context;
     final private ContactsEvents eventsData;
     final private RemoteViews views;
-    final private int eventsCount;
+    private final int eventsCount;
+    private int daysCount = 0;
     final private int width;
     final private int height;
     private final int widgetId;
@@ -102,8 +105,8 @@ class WidgetUpdater {
             //Скрываем все события
             resources = context.getResources();
             packageName = context.getPackageName();
-            for (int e = 0; e < this.eventsCount; e++) {
-                views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.INVISIBLE);
+            for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
+                views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.GONE);
             }
 
             //Получаем настройки отображения виджета
@@ -138,6 +141,39 @@ class WidgetUpdater {
 
             if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
                 sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
+            }
+
+            //Объём событий
+            String prefScope = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
+            if (!TextUtils.isEmpty(prefScope)) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(prefScope);
+                boolean found = matchScopes.find();
+                if (!found) {
+                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
+                    found = matchScopes.find();
+                }
+                if (found) {
+                    final String scopeDays = matchScopes.group(2);
+                    if (scopeDays != null) {
+                        if (!scopeDays.equals(Constants.STRING_0)){ //Дни
+                            try {
+                                this.daysCount = Integer.parseInt(scopeDays);
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                    }
+                    if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                            || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+                        final String scopeLayout = matchScopes.group(3);
+                        if (scopeLayout != null) {
+                            if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
+                                for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
+                                    views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.INVISIBLE);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
@@ -186,7 +222,7 @@ class WidgetUpdater {
 
             //Параметры заголовков
             List<String> prefCaptions = new ArrayList<>();
-            if (widgetPref.size() > 8) prefCaptions.addAll(Arrays.asList(widgetPref.get(8).split(Constants.REGEX_PLUS)));
+            if (widgetPref.size() > 11) prefCaptions.addAll(Arrays.asList(widgetPref.get(11).split(Constants.REGEX_PLUS)));
 
             List<String> listBottomInfo = Arrays.asList(resources.getStringArray(R.array.pref_Widgets_BottomInfo_values));
 
@@ -367,6 +403,20 @@ class WidgetUpdater {
                         isVisibleEvent = true;
                         break;
                     }
+                }
+            }
+
+            if (isVisibleEvent && daysCount > 0) {
+                Date eventDate = null;
+                try {
+                    eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
+                } catch (Exception e) { /**/ }
+
+                if (eventDate != null) {
+                    Calendar now = Calendar.getInstance();
+                    Date currentDay = new Date(now.getTimeInMillis());
+                    long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                    if (countDays + 1 > daysCount) isVisibleEvent = false;
                 }
             }
 

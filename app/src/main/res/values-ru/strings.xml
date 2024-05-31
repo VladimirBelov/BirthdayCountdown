@@ -803,7 +803,10 @@
     <string name="widget_config_scope_events_label">Количество (макс):</string>
     <string name="widget_config_scope_days_label">Дни:</string>
     <string name="widget_config_scope_events_items">Все,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
+    <string name="widget_config_photo_scope_events_items">Автоматически,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Все,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Мало событий:</string>
+    <string name="widget_config_layout_items">Расширить,Оставить пустоту</string>
 
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
     <string name="widget_config_font_description">Используется при масштабировании виджета для увеличения размера шрифта возраста, дистанции до события и информации под фото</string>

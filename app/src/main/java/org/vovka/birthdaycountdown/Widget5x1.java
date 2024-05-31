@@ -14,10 +14,13 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 
@@ -48,10 +51,29 @@ public class Widget5x1 extends AppWidgetProvider {
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
-            int prefEventsCountIndex = 0;
+
+            //Объём событий
+
+            String prefScope = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
+            if (!TextUtils.isEmpty(prefScope)) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
+                if (matchScopes.find()) {
+                    final String scopeEvents = matchScopes.group(1);
+                    if(scopeEvents != null) {
+                        if (!scopeEvents.equals(Constants.STRING_0)){
+                            try {
+                                eventsCount = Integer.parseInt(scopeEvents);
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                    }
+                }
+            }
+
+            /*int prefEventsCountIndex = 0;
             try {
                 if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e2) {/**/}
+            } catch (Exception e2) {*//**//*}
 
             int prefEventsCountDiff = 0;
             switch (prefEventsCountIndex) {
@@ -67,9 +89,9 @@ public class Widget5x1 extends AppWidgetProvider {
                 case 4:
                     prefEventsCountDiff = 2;
                     break;
-            }
+            }*/
 
-            RemoteViews views = getRemoteViews(context, eventsCount + prefEventsCountDiff);
+            RemoteViews views = getRemoteViews(context, eventsCount);
 
             ToastExpander.showDebugMsg(context.getApplicationContext(), Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
@@ -79,7 +101,7 @@ public class Widget5x1 extends AppWidgetProvider {
                     : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
             );
 
-            new WidgetUpdater(context, eventsData, views, eventsCount + prefEventsCountDiff, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
+            new WidgetUpdater(context, eventsData, views, eventsCount, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
