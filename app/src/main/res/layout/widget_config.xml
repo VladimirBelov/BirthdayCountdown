@@ -144,7 +144,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:paddingStart="8dp"
                         android:text="@string/widget_config_scope_events_label"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -154,7 +154,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:contentDescription="@string/widget_config_scope_events_label"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -171,7 +171,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:paddingStart="8dp"
                         android:text="@string/widget_config_scope_days_label"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -181,7 +181,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:contentDescription="@string/widget_config_scope_days_label"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -198,7 +198,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:paddingStart="8dp"
                         android:text="@string/widget_config_layout_label"
                         android:textColor="?android:attr/textColorSecondary" />
@@ -208,7 +208,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:contentDescription="@string/widget_config_layout_label"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -765,7 +765,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    tools:ignore="TooManyViews" />
 
                 <View
                     android:id="@+id/dividerCustomWidgetCaption"
