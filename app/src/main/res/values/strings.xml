@@ -842,10 +842,10 @@
     <string name="widget_config_custom_zero_events_description">Custom message when no events is found (Emojis are supported 🎂). Enter space to make widget transparent, clear text for show standard message</string>
     <string name="widget_config_custom_zero_events_hint">Enter message…</string>
 
-    <string name="widget_config_events_count_label">Number of events horizontal</string>
-    <string name="widget_config_events_count_description">If there is too \'narrow\' or \'loose\' for events on the widget, adjust the number of events</string>
+    <string name="widget_config_events_count_label">Correction</string>
+    <!--<string name="widget_config_events_count_description">If there is too \'narrow\' or \'loose\' for events on the widget, adjust the number of events</string>-->
     <string-array name="widget_config_events_count">
-        <item>Automatically (by widget size)</item>
+        <item>-</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>

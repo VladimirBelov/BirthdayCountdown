@@ -815,9 +815,9 @@
     <string name="widget_config_custom_zero_events_hint">Введіть повідомлення…</string>
 
     <string name="widget_config_events_count_label">Кількість подій завширшки</string>
-    <string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>
+    <!--<string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>-->
     <string-array name="widget_config_events_count">
-        <item>Автоматично (за розміром віджета)</item>
+        <item>-</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>

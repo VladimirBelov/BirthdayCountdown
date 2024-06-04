@@ -171,14 +171,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerPhotoStyle.setSelection(prefPhotoStyle, true);
 
             //Количество событий в ширину (фото виджет)
-//            int prefEventsCountIndex = 0;
-//            try {
-//                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-//            } catch (Exception e) {/**/}
+            int prefEventsCountIndex = 0;
+            try {
+                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+            } catch (Exception e) {/**/}
 
-            //todo: удалить
-            //Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
-            //spinnerEventsCount.setSelection(prefEventsCountIndex, true);
+            Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
+            spinnerEventsCount.setSelection(prefEventsCountIndex, true);
 
             //Типы событий
             eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
@@ -739,7 +738,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             final Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             final Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-            //final Spinner spinnerEventsCount = findViewById(R.id.spinnerEventsCount);
+            final Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
             final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
@@ -851,18 +850,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
 
-            //Совместимость с предыдущими версиями
-            int prefEventsCountIndex = 0;
-            try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e) {/**/}
-
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
 
             prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
             prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
-            prefsToStore.add(String.valueOf(prefEventsCountIndex)); //Количество событий (позиция в списке выбора)
+            prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
             prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки

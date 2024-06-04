@@ -55,6 +55,7 @@ public class Widget5x1 extends AppWidgetProvider {
             //Объём событий
 
             String prefScope = Constants.STRING_EMPTY;
+            boolean fixedEventsCount = false;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
             if (!TextUtils.isEmpty(prefScope)) {
                 Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
@@ -64,32 +65,34 @@ public class Widget5x1 extends AppWidgetProvider {
                         if (!scopeEvents.equals(Constants.STRING_0)){
                             try {
                                 eventsCount = Integer.parseInt(scopeEvents);
+                                fixedEventsCount = true;
                             } catch (NumberFormatException ignored) { /**/ }
                         }
                     }
                 }
             }
 
-            /*int prefEventsCountIndex = 0;
-            try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e2) {*//**//*}
+            if (!fixedEventsCount) {
+                int prefEventsCountIndex = 0;
+                try {
+                    if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
+                } catch (Exception e2) { /**/ }
 
-            int prefEventsCountDiff = 0;
-            switch (prefEventsCountIndex) {
-                case 1:
-                    prefEventsCountDiff = -2;
-                    break;
-                case 2:
-                    prefEventsCountDiff = -1;
-                    break;
-                case 3:
-                    prefEventsCountDiff = 1;
-                    break;
-                case 4:
-                    prefEventsCountDiff = 2;
-                    break;
-            }*/
+                switch (prefEventsCountIndex) {
+                    case 1:
+                        eventsCount += -2;
+                        break;
+                    case 2:
+                        eventsCount += -1;
+                        break;
+                    case 3:
+                        eventsCount += 1;
+                        break;
+                    case 4:
+                        eventsCount += 2;
+                        break;
+                }
+            }
 
             RemoteViews views = getRemoteViews(context, eventsCount);
 

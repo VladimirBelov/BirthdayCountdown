@@ -815,9 +815,9 @@
     <string name="widget_config_custom_zero_events_hint">Insira a mensagem…</string>
 
     <string name="widget_config_events_count_label">Número de eventos horizontais</string>
-    <string name="widget_config_events_count_description">Se houver muito \"estreito\" ou \"solto\" para eventos no widget, ajuste o número de eventos</string>
+    <!--<string name="widget_config_events_count_description">Se houver muito \"estreito\" ou \"solto\" para eventos no widget, ajuste o número de eventos</string>-->
     <string-array name="widget_config_events_count">
-        <item>Automático (por tamanho do widget)</item>
+        <item>-</item>
         <item>-2</item>
         <item>-1</item>
         <item>+1</item>

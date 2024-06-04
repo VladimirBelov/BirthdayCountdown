@@ -161,6 +161,34 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/blockScopeEventsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionScopeEventsCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_events_count_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerScopeEventsCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:entries="@array/widget_config_events_count"
+                        android:contentDescription="@string/widget_config_events_count_label"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/blockScopeDays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
