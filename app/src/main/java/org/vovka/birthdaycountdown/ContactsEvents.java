@@ -7023,6 +7023,14 @@ class ContactsEvents {
                 prefWidget.add(defaultPref.get(prefWidget.size()));
             }
 
+            //Совместимость с версиями до 1.83
+            if (widgetType != null && prefWidget.get(8).length() > 6 && prefWidget.get(11).isEmpty()
+                    && (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1) || widgetType.equals(Constants.WIDGET_TYPE_2X2))) {
+                ToastExpander.showDebugMsg(context, "set compatibility for pre 1.8.3 version");
+                prefWidget.set(11, prefWidget.get(8));
+                prefWidget.set(8, defaultPref.get(8));
+            }
+
             return prefWidget;
 
         } catch (Exception e) {
