@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -211,7 +212,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             });
 
             //Ограничения объёма
-
             List<String> spinnerScopeEventsItems;
             if (isListWidget) {
                 spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
@@ -222,6 +222,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
             spinnerScopeEvents.setAdapter(spinnerScopeEventsAdapter);
+            spinnerScopeEvents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    updateVisibility();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
 
             Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
             List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
@@ -614,6 +623,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
 
+            boolean isNotPhotoWidget = !widgetType.equals(Constants.WIDGET_TYPE_5X1) && !widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                    && !widgetType.equals(Constants.WIDGET_TYPE_2X2);
+
+            if (isNotPhotoWidget) {
+                findViewById(R.id.blockLayout).setVisibility(View.GONE);
+            }
+
             //if (!widgetType.equals(Constants.WIDGET_TYPE_5X1)) {
 
                 //Скрываем количество событий
@@ -725,6 +741,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomFontStyle).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
+
+            //Ограничение объёма
+            final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
+            findViewById(R.id.blockScopeEventsCount).setVisibility(
+                    isNotPhotoWidget || spinnerScopeEvents.getSelectedItemPosition() != 0 ? View.GONE : View.VISIBLE
+            );
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
