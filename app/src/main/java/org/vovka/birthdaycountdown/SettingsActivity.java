@@ -45,6 +45,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.InputType;
@@ -735,6 +736,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key) || getString(R.string.pref_Notifications2_EventSources_key).equals(key)) {
 
                 selectEventSources(key);
+                return true;
+
+            } else if (getString(R.string.pref_Help_CalendarSync_key).equals(key)) {
+
+                syncCalendars();
                 return true;
 
             }
@@ -2482,6 +2488,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
         } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public void syncCalendars() {
+        try {
+
+            //https://stackoverflow.com/questions/7094637/trigger-android-calendar-to-sync-after-adding-events-programmatically
+            Account[] accounts = AccountManager.get(this).getAccounts();
+            Log.d(TAG, "Refreshing " + accounts.length + " accounts");
+            String authority = CalendarContract.Calendars.CONTENT_URI.getAuthority();
+            for (Account account : accounts) {
+                Log.d(TAG, "Refreshing calendars for: " + account);
+                Bundle extras = new Bundle();
+                extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                ContentResolver.requestSync(account, authority, extras);
+            }
+            ToastExpander.showInfoMsg(this, getString(R.string.pref_Help_CalendarSync_result));
+
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }

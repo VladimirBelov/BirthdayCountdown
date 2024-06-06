@@ -1194,30 +1194,9 @@
 
         <Preference
             android:key="@string/pref_FAQActivity_key"
-            android:summary="@string/pref_FAQ_summary"
             android:title="@string/pref_FAQ_title"
+            android:summary="@string/pref_FAQ_summary"
             android:icon="@android:drawable/ic_menu_info_details"/>
-
-        <Preference
-            android:key="@string/pref_Help_BatteryOptimization_key"
-            android:summary="@string/pref_BatteryOptimization_summary"
-            android:title="@string/pref_BatteryOptimization_title"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:layout="@layout/settings_item_red"/>
-
-        <Preference
-            android:key="@string/pref_Help_ContactsAccess_key"
-            android:summary="@string/pref_ContactsAccess_summary"
-            android:title="@string/pref_ContactsAccess_title"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:layout="@layout/settings_item_red"/>
-
-        <Preference
-            android:key="@string/pref_Help_CalendarAccess_key"
-            android:summary="@string/pref_CalendarAccess_summary"
-            android:title="@string/pref_CalendarAccess_title"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:layout="@layout/settings_item_red"/>
 
         <SwitchPreference
             android:key="@string/pref_Help_InfoMsg_On_key"
@@ -1234,8 +1213,36 @@
             android:icon="@android:drawable/ic_menu_manage"/>
 
         <Preference
+            android:key="@string/pref_Help_CalendarSync_key"
+            android:title="@string/pref_Help_CalendarSync_title"
+            android:summary="@string/pref_Help_CalendarSync_summary"
+            android:icon="@android:drawable/ic_menu_set_as"/>
+
+        <Preference
+            android:key="@string/pref_Help_BatteryOptimization_key"
+            android:title="@string/pref_BatteryOptimization_title"
+            android:summary="@string/pref_BatteryOptimization_summary"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
+            android:key="@string/pref_Help_ContactsAccess_key"
+            android:title="@string/pref_ContactsAccess_title"
+            android:summary="@string/pref_ContactsAccess_summary"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
+            android:key="@string/pref_Help_CalendarAccess_key"
+            android:title="@string/pref_CalendarAccess_title"
+            android:summary="@string/pref_CalendarAccess_summary"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
             android:key="@string/pref_AboutActivity_key"
             android:title="@string/window_about"
+            android:summary="@string/pref_About_summary"
             android:icon="@android:drawable/ic_menu_info_details"/>
 
     </PreferenceCategory>

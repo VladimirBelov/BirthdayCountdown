@@ -1069,6 +1069,9 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Debug_On_summary">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
     <string name="pref_ExtraFun_On_title">Extra features</string>а
     <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
+    <string name="pref_Help_CalendarSync_title">Calendar sync</string>
+    <string name="pref_Help_CalendarSync_summary">Force sync of all calendars</string>
+    <string name="pref_Help_CalendarSync_result">Forced sync for calendars…</string>
 
     <string name="pref_Tools_title">Tools</string>
     <string name="pref_Tools_summary">Different tools for data manipulation</string>
@@ -2151,6 +2154,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Help_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
     <string name="pref_Help_ContactsAccess_key" translatable="false">ContactsAccess</string>
     <string name="pref_Help_CalendarAccess_key" translatable="false">CalendarAccess</string>
+    <string name="pref_Help_CalendarSync_key" translatable="false">CalendarSync</string>
 
     <string name="pref_Tools_key" translatable="false">Tools</string>
     <string name="pref_Tools_Preferences_key" translatable="false">ToolsPreferences</string>

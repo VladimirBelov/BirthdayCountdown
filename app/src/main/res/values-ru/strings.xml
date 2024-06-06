@@ -1069,6 +1069,9 @@
     <string name="pref_Debug_On_summary">Показывать сообщения для отладки ошибок (рекомендуется включить, если некорректно отображаются виджеты или события, или не определяются какие-то даты, и прислать автору программы)</string>
     <string name="pref_ExtraFun_On_title">Доп. функции</string>
     <string name="pref_ExtraFun_On_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
+    <string name="pref_Help_CalendarSync_title">Синхронизация календарей</string>
+    <string name="pref_Help_CalendarSync_summary">Принудительно запустить синхронизацию всех календарей</string>
+    <string name="pref_Help_CalendarSync_result">Запущена синхронизация календарей…</string>
 
     <string name="pref_Tools_title">Инструменты</string>
     <string name="pref_Tools_summary">Различные инструменты для манипуляций с данными</string>
