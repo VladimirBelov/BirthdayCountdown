@@ -205,8 +205,10 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_calendar, !eventsData.checkNoCalendarAccess()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    sb.append(getString(R.string.stats_permissions_files, !eventsData.checkNoStorageAccess()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        sb.append(getString(R.string.stats_permissions_files, !eventsData.checkNoStorageAccess()
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    }
 
                     sb.append(getString(R.string.stats_permissions_notifications_on, NotificationManagerCompat.from(this).areNotificationsEnabled()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
