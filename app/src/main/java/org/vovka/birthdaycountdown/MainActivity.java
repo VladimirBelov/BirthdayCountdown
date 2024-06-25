@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.LocaleManager;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
@@ -32,6 +33,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
@@ -153,6 +155,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Resources applicationRes = getBaseContext().getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
+                    if (!list.isEmpty()) {
+                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                    }
+                }
                 applicationConf.setLocales(new android.os.LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);

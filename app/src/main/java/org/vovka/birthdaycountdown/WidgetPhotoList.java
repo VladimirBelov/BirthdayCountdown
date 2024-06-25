@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+import android.app.LocaleManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -20,6 +21,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -64,6 +66,12 @@ public class WidgetPhotoList extends AppWidgetProvider {
             Resources applicationRes = context.getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    LocaleList list = context.getSystemService(LocaleManager.class).getApplicationLocales();
+                    if (!list.isEmpty()) {
+                        locale = context.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                    }
+                }
                 applicationConf.setLocales(new android.os.LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);

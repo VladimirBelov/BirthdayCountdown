@@ -24,8 +24,11 @@
 
     <string name="menu_add_event">Добавить событие</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
+    <string name="menu_add_event_to_contact_short">Добавить в контакт…</string>
     <string name="menu_add_event_to_calendar">Добавить событие в календарь…</string>
+    <string name="menu_add_event_to_calendar_short">Добавить в календарь…</string>
     <string name="menu_open_file_with_events">Открыть файл с событиями…</string>
+    <string name="menu_open_file_with_events_short">Открыть файл…</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_search">Поиск</string>

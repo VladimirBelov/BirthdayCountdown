@@ -18,10 +18,10 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/> <!-- для проигрывания уведомлений из внешнего хранилища (Android 13+) -->
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/> <!-- для установки высокого приоритета уведомлениям викторины на младших Android https://stackoverflow.com/questions/42597698/android-how-to-allow-enable-floating-notifications-setting-as-default-for-ap -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- без этого на Android 12+ будет появляться SecurityException https://developer.android.com/about/versions/12/behavior-changes-12#exact-alarm-permission -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32"/> <!-- без этого на Android 12+ будет появляться SecurityException https://developer.android.com/about/versions/12/behavior-changes-12#exact-alarm-permission -->
     <!-- <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> позволяет запрашивать игнорирование оптимизации батареи для этого приложения (для обновления виджетов) https://developer.android.com/reference/android/provider/Settings#ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- для Android 13+ нужно для отправки уведомлений -->
-    <!--<uses-permission android:name="android.permission.USE_EXACT_ALARM"/> https://support.google.com/googleplay/android-developer/answer/12253906#exact_alarm_preview -->
+    <!-- <uses-permission android:name="android.permission.USE_EXACT_ALARM"/> https://stackoverflow.com/questions/71031091/android-12-using-schedule-exact-alarm-permission-to-get-show-data-at-specific-t-->
 
     <queries> <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
         <intent>

@@ -8181,10 +8181,10 @@ class ContactsEvents {
     boolean checkCanExactAlarm() {
         boolean canExact = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            //AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            //if (alarmManager.canScheduleExactAlarms()) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager.canScheduleExactAlarms()) {
             //BUG: https://issuetracker.google.com/issues/292556798
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
+            //if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
                 canExact = true;
             }
         } else {

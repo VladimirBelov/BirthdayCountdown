@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.LocaleManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -77,6 +79,12 @@ public class AboutActivity extends AppCompatActivity {
             Resources applicationRes = getBaseContext().getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
+                    if (!list.isEmpty()) {
+                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                    }
+                }
                 applicationConf.setLocales(new android.os.LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
@@ -204,7 +212,7 @@ public class AboutActivity extends AppCompatActivity {
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED
+                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, eventsData.checkCanExactAlarm()
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 

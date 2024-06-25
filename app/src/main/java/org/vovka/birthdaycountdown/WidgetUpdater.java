@@ -345,7 +345,7 @@ class WidgetUpdater {
 
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
+            if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.appwidget_main,"setBackgroundResource", R.drawable.layout_bg);
             } else {

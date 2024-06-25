@@ -9,6 +9,7 @@
 package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
+import android.app.LocaleManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -16,6 +17,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.text.Html;
 import android.text.TextUtils;
@@ -54,6 +56,12 @@ public class WidgetCalendarPopup extends Activity {
             Resources applicationRes = getBaseContext().getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
+                    if (!list.isEmpty()) {
+                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                    }
+                }
                 applicationConf.setLocales(new android.os.LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);

@@ -31,16 +31,19 @@
             <item
                 android:id="@+id/menu_add_event_to_contact"
                 android:title="@string/menu_add_event_to_contact"
+                android:titleCondensed="@string/menu_add_event_to_contact_short"
                 android:icon="@android:drawable/ic_menu_my_calendar" />
 
             <item
                 android:id="@+id/menu_add_event_to_calendar"
                 android:title="@string/menu_add_event_to_calendar"
+                android:titleCondensed="@string/menu_add_event_to_calendar_short"
                 android:icon="@android:drawable/ic_menu_month" />
 
             <item
                 android:id="@+id/menu_open_file_with_events"
                 android:title="@string/menu_open_file_with_events"
+                android:titleCondensed="@string/menu_open_file_with_events_short"
                 android:icon="@android:drawable/ic_menu_save" />
 
         </menu>

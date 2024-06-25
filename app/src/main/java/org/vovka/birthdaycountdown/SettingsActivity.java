@@ -15,6 +15,7 @@ import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.LocaleManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
@@ -40,6 +41,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
@@ -133,6 +135,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Resources applicationRes = getBaseContext().getResources();
             Configuration applicationConf = applicationRes.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
+                    if (!list.isEmpty()) {
+                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                    }
+                }
                 applicationConf.setLocales(new android.os.LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
@@ -937,13 +945,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             }
                             ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
 
-                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !eventsData.checkCanExactAlarm()) {
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                                && !eventsData.checkCanExactAlarm() && !eventsData.checkNoBatteryOptimization()) {
 
                             //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
                             //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
                             //https://stackoverflow.com/questions/70304940/android-12-redirect-to-alarms-reminders-settings-not-working
 
-                            startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
+                            try {
+                                startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
+                            } catch (ActivityNotFoundException e) { /**/ }
+
+                            //       String[] permissions;
+                    //        permissions = new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM};
+                    //        ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
 
 //                            Intent intent = new Intent();
 //                            intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
@@ -1599,7 +1614,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             input.requestFocus();
             if (alertToShow.getWindow() != null) alertToShow.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             alertToShow.show();
-            alertToShow.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
+            if (alertToShow.getWindow() != null) {
+                alertToShow.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
+            }
 
             //https://stackoverflow.com/questions/15362122/change-font-size-for-an-alertdialog-message
             TextView textView = alertToShow.findViewById(android.R.id.message);
