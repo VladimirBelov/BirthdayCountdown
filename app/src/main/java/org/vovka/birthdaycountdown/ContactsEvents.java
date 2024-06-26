@@ -2885,7 +2885,7 @@ class ContactsEvents {
                                         map_events_weblinks.put(contactID, sb.toString());
                                     }
 
-                                    if (!eventDescription.isEmpty()) {
+                                    if (!TextUtils.isEmpty(eventDescription)) {
                                         String eventDescription_stored = checkForNull(singleRowList.get(ContactsEvents.Position_eventDescription)).trim();
                                         if (eventDescription_stored.isEmpty()) {
                                             singleRowList.set(ContactsEvents.Position_eventDescription, eventDescription);
@@ -3152,7 +3152,7 @@ class ContactsEvents {
 
     static class DayType {
         enum Type {
-            Holiday, Workday
+            Holiday, Workday, Common
         }
         final String sourceId;
         final Type type;
@@ -6185,13 +6185,25 @@ class ContactsEvents {
 
             if (eventDate != null) {
                 StringBuilder textBig = new StringBuilder();
-                textBig.append(singleEventArray[Position_eventEmoji]).append(Constants.STRING_SPACE).append(eventDay).append(Constants.STRING_SPACE).append(singleEventArray[Position_personFullName]);
+                textBig
+                        .append(singleEventArray[Position_eventEmoji])
+                        .append(Constants.STRING_SPACE)
+                        .append(eventDay)
+                        .append(Constants.STRING_SPACE)
+                        .append(singleEventArray[Position_personFullName]);
                 if (!TextUtils.isEmpty(singleEventArray[Position_age_caption].trim()))
                     textBig.append(": ").append(singleEventArray[Position_age_caption]);
 
                 int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                 final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId).setColor(this.getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.ic_icon_notify).setContentText(textBig).setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1]).setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)).setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                        .setColor(this.getResources().getColor(R.color.dark_green))
+                        .setSmallIcon(R.drawable.ic_icon_notify)
+                        .setContentText(textBig)
+                        .setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = null;
@@ -9107,7 +9119,8 @@ class ContactsEvents {
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
                 if (preferences_DaysTypes.containsKey(key)){
                     types.add(new DayType(packId, preferences_DaysTypes.get(key)));
-                } else if (preferences_DaysTypes.containsKey(key_noYear)) {
+                }
+                if (preferences_DaysTypes.containsKey(key_noYear)) {
                     types.add(new DayType(packId, preferences_DaysTypes.get(key_noYear)));
                 }
             }
@@ -9141,15 +9154,19 @@ class ContactsEvents {
                     }
                 }
 
+                String colorRGB = colorValue != null ? Integer.toHexString(colorValue & 0x00ffffff) : Constants.TRANSPARENT;
                 if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null){
                     String[] eventsList = checkForNull(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1);
                     for (String eventInfo: eventsList) {
-                        dayInfo.add("<bold><font color=#" +
-                                (colorValue != null ? Integer.toHexString(colorValue & 0x00ffffff) : Constants.TRANSPARENT) +
-                                ">●</font></bold> " + eventInfo);
+                        dayInfo.add("<bold><font color=#" + colorRGB + ">●</font></bold> " + eventInfo);
                     }
-                } else if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
-                    dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
+                }
+                if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
+                    //dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
+                    String[] eventsList = checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
+                    for (String eventInfo: eventsList) {
+                        dayInfo.add("<bold><font color=#" + colorRGB + ">●</font></bold> " + eventInfo);
+                    }
                 }
             }
             return dayInfo;
@@ -9228,6 +9245,7 @@ class ContactsEvents {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
+            GregorianCalendar now = new GregorianCalendar();
             for (String eventLine: days) {
                 String day = eventLine.trim();
 
@@ -9235,24 +9253,37 @@ class ContactsEvents {
                     continue;
 
                 final int indexComma = day.indexOf(Constants.STRING_COMMA);
-                if (indexComma == -1) {
-                    ToastExpander.showInfoMsg(getContext().getApplicationContext(), resources.getString(R.string.msg_event_parse_error, day));
-                    continue;
-                }
-
                 final int indexFirstSpace = day.indexOf(Constants.STRING_SPACE);
-                String flags;
-                if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
+                String flags = Constants.STRING_EMPTY;
+                if (indexComma > -1 && indexComma < indexFirstSpace) {
                     flags = day.substring(indexComma + 1, indexFirstSpace);
-                } else {
+                } else if (indexComma > -1){
                     flags = day.substring(indexComma + 1);
                 }
 
                 Date dateEvent = null;
-                String eventDateString = day.substring(0, indexComma);
+                String eventDateString;
+                if (indexComma > -1) {
+                    eventDateString = day.substring(0, indexComma);
+                } else if (indexFirstSpace > -1) {
+                    eventDateString = day.substring(0, indexFirstSpace);
+                } else {
+                    ToastExpander.showInfoMsg(getContext().getApplicationContext(), resources.getString(R.string.msg_event_parse_error, day));
+                    continue;
+                }
 
+                boolean isFloating = false;
                 try {
+                    String dateNextFloatingEvent = computeFloatingDate(eventDateString);
+                    if (!eventDateString.equals(dateNextFloatingEvent)) {
+                        eventDateString = dateNextFloatingEvent;
+                        isFloating = true;
+                    } else if (eventDateString.endsWith(Constants.STRING_0000)) {
+                        eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + now.get(Calendar.YEAR);
+                    }
                     dateEvent = sdf_DDMMYYYY.parse(eventDateString);
+                    //if (dateEvent != null && now.after(getCalendarFromDate(dateEvent)))
+                    //    dateEvent = addYear(dateEvent, 1);
                 } catch (Exception e1) {
                     try {
                         dateEvent = sdf_india.parse(eventDateString);
@@ -9270,14 +9301,22 @@ class ContactsEvents {
                 }
                 if (dateEvent != null) {
                     final String eventTitle = titlePrefix + day.substring(indexFirstSpace + 1).trim();
-                    final DayType.Type dayType = flags.contains("?") ? DayType.Type.Workday : DayType.Type.Holiday;
+                    final DayType.Type dayType = flags.contains("!") ? DayType.Type.Holiday :
+                            flags.contains("?") ? DayType.Type.Workday : DayType.Type.Common;
                     String key;
-                    if (flags.contains(Constants.STRING_1)) {
+                    if (flags.contains(Constants.STRING_1) || isFloating) {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent));
                     } else {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent));
                     }
-                    preferences_DaysTypes.put(key, dayType);
+                    DayType.Type dayTypeStored = preferences_DaysTypes.get(key);
+                    if (dayTypeStored != null) {
+                        if (dayTypeStored == DayType.Type.Common) {
+                            preferences_DaysTypes.put(key, dayType);
+                        }
+                    } else {
+                        preferences_DaysTypes.put(key, dayType);
+                    }
                     String dayInfo = preferences_DaysInfo.get(key);
                     if (dayInfo != null) {
                         if (!dayInfo.contains(eventTitle)) {
@@ -9440,6 +9479,13 @@ class ContactsEvents {
                                     String eventDateString = day.substring(0, indexComma);
 
                                     try {
+                                        String dateNextFloatingEvent = computeFloatingDate(eventDateString);
+                                        if (!eventDateString.equals(dateNextFloatingEvent)) {
+                                            eventDateString = dateNextFloatingEvent;
+                                            isEndless = false;
+                                        } else if (eventDateString.endsWith(Constants.STRING_0000)) {
+                                            eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + now.get(Calendar.YEAR);
+                                        }
                                         dateEvent = sdf_DDMMYYYY.parse(eventDateString);
                                     } catch (ParseException e1) {
                                         try {
@@ -9459,8 +9505,14 @@ class ContactsEvents {
 
                                     if (dateEvent == null) continue;
 
-                                    if (!isEndless && now.after(getCalendarFromDate(dateEvent)))
-                                        continue; //Одиночное событие и оно прошло
+                                    if (now.after(getCalendarFromDate(dateEvent))) {
+                                        if (!isEndless) { //Одиночное событие и оно прошло
+                                            continue;
+                                        } else {
+                                            dateEvent = addYear(dateEvent, 1);
+                                            eventDateString = sdf_DDMMYYYY.format(dateEvent);
+                                        }
+                                    }
 
                                     if (TextUtils.isEmpty(eventTitle)) continue;
 

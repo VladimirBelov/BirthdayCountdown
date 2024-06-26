@@ -603,14 +603,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_Remind_Morning) {
 
-                Calendar now = Calendar.getInstance();
-                now.add(Calendar.DAY_OF_MONTH, 1);
-                now.set(Calendar.HOUR_OF_DAY, 9);
-                now.set(Calendar.MINUTE, 0);
-                now.set(Calendar.SECOND, 0);
-                now.set(Calendar.MILLISECOND, 0);
+                Calendar wakeTime = Calendar.getInstance();
+                wakeTime.add(Calendar.DAY_OF_MONTH, 1);
+                wakeTime.set(Calendar.HOUR_OF_DAY, 9);
+                wakeTime.set(Calendar.MINUTE, 0);
+                wakeTime.set(Calendar.SECOND, 0);
+                wakeTime.set(Calendar.MILLISECOND, 0);
 
-                eventsData.snoozeNotification(selectedEvent_str, 0, now.getTime());
+                eventsData.snoozeNotification(selectedEvent_str, 0, wakeTime.getTime());
                 return true;
 
             } else if (itemId == Constants.ContextMenu_AnniversaryList) {
@@ -1528,7 +1528,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             menu.findItem(R.id.menu_open_file_with_events).setVisible(
                     !eventsData.preferences_Birthday_files.isEmpty()
                             || !eventsData.preferences_OtherEvent_files.isEmpty()
-                            || !eventsData.preferences_MultiType_files.isEmpty());
+                            || !eventsData.preferences_MultiType_files.isEmpty()
+                            || !eventsData.preferences_HolidayEvent_files.isEmpty());
 
             // https://stackoverflow.com/questions/3721963/how-to-add-calendar-events-in-android
             // https://developer.android.com/training/contacts-provider/modify-data

@@ -955,18 +955,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             try {
                                 startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
                             } catch (ActivityNotFoundException e) { /**/ }
-
-                            //       String[] permissions;
-                    //        permissions = new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM};
-                    //        ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-
-//                            Intent intent = new Intent();
-//                            intent.setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-//
-//                            try {
-//                                startActivity(intent);
-//                            } catch (ActivityNotFoundException e) { /**/ }
-
                         }
                 }
 

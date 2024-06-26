@@ -532,7 +532,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
                     }
                 }
-                Log.i("PERIOD", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
+                Log.i(TAG + ".Period", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
 
                 //Заполнение типов дней из календарей по периоду
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
@@ -727,18 +727,20 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (!dayTypes.isEmpty()) {
                 int maxTypeIndex = -1;
                 for (ContactsEvents.DayType dayType : dayTypes) {
-                    if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
-                        Integer colorOfDay;
-                        if (inMonth) {
-                            colorOfDay = eventsColorsInMonth.get(dayType.sourceId);
-                        } else {
-                            colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
-                        }
-                        if (colorOfDay != null && Color.alpha(colorOfDay) > (inMonth ? 0 : Constants.WIDGET_CALENDAR_OUT_MONTH_TINT)) {
-                            isColoredByEvent = true;
-                            if (dayType.type == ContactsEvents.DayType.Type.Workday) break;
-                            maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
-                            color = colorOfDay;
+                    if (dayType.type != ContactsEvents.DayType.Type.Common) {
+                        if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
+                            Integer colorOfDay;
+                            if (inMonth) {
+                                colorOfDay = eventsColorsInMonth.get(dayType.sourceId);
+                            } else {
+                                colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
+                            }
+                            if (colorOfDay != null && Color.alpha(colorOfDay) > (inMonth ? 0 : Constants.WIDGET_CALENDAR_OUT_MONTH_TINT)) {
+                                isColoredByEvent = true;
+                                if (dayType.type == ContactsEvents.DayType.Type.Workday) break;
+                                maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
+                                color = colorOfDay;
+                            }
                         }
                     }
                 }
