@@ -218,6 +218,7 @@
     <string name="button_open_version_history">История версий</string>
     <string name="button_all">Все</string>
     <string name="button_snooze">Напомнить</string>
+    <string name="button_attach">Закрепить</string>
     <string name="button_hide">Скрыть</string>
     <string name="button_silent">Не уведомлять</string>
     <string name="button_dial">Позвонить</string>
@@ -1027,6 +1028,7 @@
         <item>Исключить из уведомлений</item>
         <item>Скрыть событие</item>
         <item>Напомнить через 1 час</item>
+        <item>Закрепить</item>
         <item>Закрыть (для уведомлений с высоким приоритетом)</item>
     </string-array>
 

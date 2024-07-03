@@ -5910,9 +5910,23 @@ class ContactsEvents {
                             intentSnooze.setAction(Constants.ACTION_SNOOZE);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
+                            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventInfo.toArray(new String[0]));
+                            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
                             PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
                             NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
                             builder.addAction(actionSnooze);
+                        }
+
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {
+                            Intent intentAttach = new Intent(context, ActionReceiver.class);
+                            intentAttach.setAction(Constants.ACTION_ATTACH);
+                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
+                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventInfo.toArray(new String[0]));
+                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
+                            PendingIntent pendingAttach = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentAttach, PendingIntentImmutable);
+                            NotificationCompat.Action actionAttach = new NotificationCompat.Action(0, context.getString(R.string.button_attach), pendingAttach);
+                            builder.addAction(actionAttach);
                         }
 
                         if (prefPriority > 2 && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
@@ -5921,8 +5935,10 @@ class ContactsEvents {
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
-                            NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
-                            builder.addAction(actionSnooze);
+                            NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                            builder.addAction(actionClose);
+                            builder.setOngoing(true);
+                            builder.setPriority(NotificationCompat.PRIORITY_MAX);
                         }
 
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -5938,11 +5954,6 @@ class ContactsEvents {
                             roundingFactor = preferences_list_photostyle;
                         }
                         builder.setLargeIcon(getEventPhoto(eventAsString, true, true, false, roundingFactor));
-
-                        if (prefPriority > 2) {
-                            builder.setOngoing(true);
-                            builder.setPriority(NotificationCompat.PRIORITY_MAX);
-                        }
 
                         notificationManager.notify(notificationID, builder.build());
                     }
@@ -6165,7 +6176,7 @@ class ContactsEvents {
     }
 
     @SuppressLint("MissingPermission")
-    void showNotification(String dataNotify, String channelId) {
+    void showNotification(String dataNotify, String[] actions, String[] details, String channelId, boolean setOnGoing) {
 
         try {
 
@@ -6175,78 +6186,96 @@ class ContactsEvents {
 
             String[] singleEventArray = dataNotify.split(Constants.STRING_EOT, -1);
             Date eventDate = null;
-            String eventDay = null;
+            //String eventDay = null;
             try {
                 eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
-                if (eventDate != null) {
+                /*if (eventDate != null) {
                     eventDay = sdf_DDMM.format(eventDate);
-                }
+                }*/
             } catch (Exception e) { /**/ }
+            if (eventDate == null) return;
 
-            if (eventDate != null) {
-                StringBuilder textBig = new StringBuilder();
-                textBig
-                        .append(singleEventArray[Position_eventEmoji])
-                        .append(Constants.STRING_SPACE)
-                        .append(eventDay)
-                        .append(Constants.STRING_SPACE)
-                        .append(singleEventArray[Position_personFullName]);
-                if (!TextUtils.isEmpty(singleEventArray[Position_age_caption].trim()))
-                    textBig.append(": ").append(singleEventArray[Position_age_caption]);
+            final String eventDetails = composeNotifyEventDetails(new NotifyEvent(singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
+            /*StringBuilder textBig = new StringBuilder();
+            textBig
+                    .append(singleEventArray[Position_eventEmoji])
+                    .append(Constants.STRING_SPACE)
+                    .append(eventDay)
+                    .append(Constants.STRING_SPACE)
+                    .append(singleEventArray[Position_personFullName]);
+            if (!TextUtils.isEmpty(singleEventArray[Position_age_caption].trim()))
+                textBig.append(": ").append(singleEventArray[Position_age_caption]);*/
 
-                int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                        .setColor(this.getResources().getColor(R.color.dark_green))
-                        .setSmallIcon(R.drawable.ic_icon_notify)
-                        .setContentText(textBig)
-                        .setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig))
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setAutoCancel(true);
+            int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+            final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                    .setColor(this.getResources().getColor(R.color.dark_green))
+                    .setSmallIcon(R.drawable.ic_icon_notify)
+                    .setContentText(eventDetails)
+                    .setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setAutoCancel(true);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = null;
-                if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CONTACTS) && !TextUtils.isEmpty(singleEventArray[Position_contactID])) {
-                    uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-                } else if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR) && !TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                    uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
-                }
-                if (uri != null) {
-                    intent.setData(uri);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
-                    builder.setContentIntent(pendingIntent);
-                }
-
-                Intent intentSnooze = new Intent(context, ActionReceiver.class);
-                intentSnooze.setAction(Constants.ACTION_SNOOZE); //todo: добавить все кнопки
-                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
-                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
-                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, notificationID, intentSnooze, PendingIntentImmutable);
-                NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
-                builder.addAction(actionSnooze);
-
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    if (preferences_notifications_ringtone != null)
-                        builder.setSound(Uri.parse(preferences_notifications_ringtone));
-                }
-
-                String eventSubType = singleEventArray[Position_eventSubType];
-                int roundingFactor;
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
-                    roundingFactor = 1;
-                } else {
-                    roundingFactor = preferences_list_photostyle;
-                }
-                builder.setLargeIcon(getEventPhoto(dataNotify, true, true, false, roundingFactor));
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                if (!checkNoNotificationAccess()) {
-                    notificationManager.notify(notificationID, builder.build());
-                }
-
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = null;
+            if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CONTACTS) && !TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+                uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
+            } else if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR) && !TextUtils.isEmpty(singleEventArray[Position_eventID])) {
+                uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+            }
+            if (uri != null) {
+                intent.setData(uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+                builder.setContentIntent(pendingIntent);
             }
 
+            //todo: добавить кнопки из actions
+            /*
+            Intent intentSnooze = new Intent(context, ActionReceiver.class);
+            intentSnooze.setAction(Constants.ACTION_SNOOZE); //todo: добавить все кнопки
+            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+            PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, notificationID, intentSnooze, PendingIntentImmutable);
+            NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
+            builder.addAction(actionSnooze);*/
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                if (preferences_notifications_ringtone != null)
+                    builder.setSound(Uri.parse(preferences_notifications_ringtone));
+            }
+
+            String eventSubType = singleEventArray[Position_eventSubType];
+            int roundingFactor;
+            if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
+                roundingFactor = 1;
+            } else {
+                roundingFactor = preferences_list_photostyle;
+            }
+            builder.setLargeIcon(getEventPhoto(dataNotify, true, true, false, roundingFactor));
+
+            if (setOnGoing) {
+                if (actions != null && Arrays.asList(actions).contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
+                    Intent intentClose = new Intent(context, ActionReceiver.class);
+                    intentClose.setAction(Constants.ACTION_CLOSE);
+                    intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                    intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                    PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
+                    NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                    builder.addAction(actionClose);
+                }
+                builder.setSilent(true);
+                builder.setAutoCancel(false);
+                builder.setOngoing(true);
+                builder.setPriority(NotificationCompat.PRIORITY_MAX);
+            }
+
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            if (!checkNoNotificationAccess()) {
+                notificationManager.notify(notificationID, builder.build());
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

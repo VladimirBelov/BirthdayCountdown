@@ -999,6 +999,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Von Benachrichtigungen ausschließen</item>
         <item>Ereignis ausblenden</item>
         <item>Erinnere mich in 1 Stunde</item>
+        <item>Anheften</item>
         <item>Schließen (für Benachrichtigungen mit hoher Priorität)</item>
     </string-array>
 

@@ -95,7 +95,35 @@ public class ActionReceiver extends BroadcastReceiver {
                     return;
                 }
 
-                eventsData.showNotification(notificationData, Integer.toString(eventsData.preferences_notifications_channel_id));
+                String[] notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
+                String[] notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
+                eventsData.showNotification(
+                        notificationData,
+                        notificationActions,
+                        notificationDetails,
+                        Integer.toString(eventsData.preferences_notifications_channel_id),
+                        false
+                );
+
+            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
+
+                if (notificationData.equals(Constants.STRING_EMPTY)) {
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
+                    return;
+                }
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.cancel(notificationID);
+
+                String[] notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
+                String[] notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
+                eventsData.showNotification(
+                        notificationData,
+                        notificationActions,
+                        notificationDetails,
+                        Integer.toString(eventsData.preferences_notifications_channel_id),
+                        true
+                );
 
             } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 

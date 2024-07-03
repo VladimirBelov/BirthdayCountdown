@@ -218,6 +218,7 @@
     <string name="button_open_version_history">Version history</string>
     <string name="button_all">All</string>
     <string name="button_snooze">Remind</string>
+    <string name="button_attach">Attach</string>
     <string name="button_hide">Hide</string>
     <string name="button_silent">Don\'t notify</string>
     <string name="button_dial">Dial</string>
@@ -1027,6 +1028,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>Exclude from notifications</item>
         <item>Hide event</item>
         <item>Remind in 1 hour</item>
+        <item>Attach</item>
         <item>Close (for high priority notifications)</item>
     </string-array>
 
@@ -2103,12 +2105,14 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_QuickActions_Hide" translatable="false">3</string>
     <string name="pref_Notifications_QuickActions_Remind" translatable="false">4</string>
     <string name="pref_Notifications_QuickActions_Close" translatable="false">5</string>
+    <string name="pref_Notifications_QuickActions_Attach" translatable="false">6</string>
 
     <string-array name="pref_Notifications_QuickActions_values" translatable="false">
         <item>@string/pref_Notifications_QuickActions_Dial</item> <!--Позвонить-->
         <item>@string/pref_Notifications_QuickActions_Silent</item> <!--Не уведомлять-->
         <item>@string/pref_Notifications_QuickActions_Hide</item> <!--Скрыть событие-->
         <item>@string/pref_Notifications_QuickActions_Remind</item> <!--Напомнить-->
+        <item>@string/pref_Notifications_QuickActions_Attach</item> <!--Закрепить-->
         <item>@string/pref_Notifications_QuickActions_Close</item> <!--Закрыть-->
     </string-array>
 

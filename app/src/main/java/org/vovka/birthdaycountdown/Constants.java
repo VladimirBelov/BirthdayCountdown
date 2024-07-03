@@ -183,6 +183,7 @@ final class Constants {
     static final int defaultNotification2ID = 1100;
     static final int defaultQuizID = 2000;
     static final String ACTION_SNOOZE = "action.SNOOZE";
+    static final String ACTION_ATTACH = "action.ATTACH";
     static final String ACTION_NOTIFY = "action.NOTIFY";
     static final String ACTION_LAUNCH = "action.LAUNCH_ACTIVITY";
     static final String ACTION_HIDE = "action.HIDE";
@@ -196,6 +197,8 @@ final class Constants {
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
+    static final String EXTRA_NOTIFICATION_DETAILS = "notificationDetails";
+    static final String EXTRA_NOTIFICATION_ACTIONS = "notificationActions";
     static final String EXTRA_FILTER = "filterText";
     static final String EXTRA_QUIZ_QUESTION = "quizQuestion";
     static final String EXTRA_QUIZ_RESULT = "quizResult";

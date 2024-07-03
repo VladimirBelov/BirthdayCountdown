@@ -35,6 +35,6 @@
 
 	</com.google.android.material.appbar.AppBarLayout>
 
-	<include layout="@layout/list_main" />
+	<include layout="@layout/list_main"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
