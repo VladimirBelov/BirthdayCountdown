@@ -72,10 +72,13 @@ import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
                     }
                 }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
+                applicationConf.setLocales(new LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
             }
@@ -1165,7 +1168,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                 try {
                     startActivity(new Intent(this, SettingsActivity.class));
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
             });
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
@@ -1190,7 +1193,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                 try {
                     startActivity(new Intent(this, SettingsActivity.class));
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
             });
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
@@ -1256,7 +1259,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             builder.setNeutralButton(R.string.button_open_version_history, (dialog, which) -> {
                                 try {
                                     startActivity(new Intent(this, AboutActivity.class));
-                                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                                } catch (ActivityNotFoundException e) { /**/ }
                             });
                             alertToShow = builder.create();
                             alertToShow.setOnShowListener(arg0 -> {
@@ -1290,7 +1293,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                         try {
                             startActivity(new Intent(this, SettingsActivity.class));
-                        } catch (android.content.ActivityNotFoundException e) { /**/ }
+                        } catch (ActivityNotFoundException e) { /**/ }
                     });
 
                     alertToShow = builder.create();
@@ -1485,6 +1488,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     || statsUnrecognizedEvents > 0
                                     || eventsData.statFavoriteEventsCount > 0
                     );
+            final boolean isItemSourcesVisible = eventsData != null && eventsData.preferences_extrafun;
+            final boolean isItemTypesVisible = eventsData != null && eventsData.preferences_extrafun;
 
             searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
             {
@@ -1496,6 +1501,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(false);
                     menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(false);
                     menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(false);
+                    menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(false);
+                    menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(false);
                     menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(true);
                     return true;
                 }
@@ -1509,6 +1516,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
                     //показывать, если есть скрытые или без уведомлений
                     menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
+                    menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(isItemSourcesVisible);
+                    menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(isItemTypesVisible);
                     menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
                     filterEventsList();
                     return true;
@@ -1537,9 +1546,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
 
             menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
-
             menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
-
+            menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(isItemSourcesVisible);
+            menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(isItemTypesVisible);
             menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
 
         } catch (Exception e) {
@@ -1738,6 +1747,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
                 alertToShow.getWindow().setLayout((int) (displayRectangle.width() * 0.9f), alertToShow.getWindow().getAttributes().height);*/
 
+                return true;
+
+            } else if (itemId == R.id.menu_events_sources) {
+
+                final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
+                eventSources.getEventSources();
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
+                        this, getString(R.string.pref_List_EventSources_key));
+                return true;
+
+            } else if (itemId == R.id.menu_events_types) {
+
+                selectEventsTypes();
                 return true;
 
             } else if (itemId == R.id.menu_add_event_to_contact) {
@@ -2342,6 +2364,78 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    public void getSelectedSources(String id, List<String> newSelectedSources) {
+        try {
+
+            if (id.equals(getString(R.string.pref_List_EventSources_key))) {
+
+                eventsData.preferences_list_EventSources.clear();
+                eventsData.preferences_list_EventSources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+                eventsData.needUpdateEventList = true;
+                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void selectEventsTypes() {
+        try {
+
+            final List<String> eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
+            final List<String> eventTypesTitles = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_entries));
+            ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
+
+            Set<String> preferences_list_types = eventsData.preferences_list_event_types;
+            boolean[] sel = new boolean[eventTypesIDs.size()];
+            int ind = 0;
+            for (String eventType: eventTypesIDs) {
+                sel[ind] = preferences_list_types.contains(eventType);
+                eventTypesSelected.add(sel[ind]);
+                ind++;
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_List_EventTypes_title)
+                    .setIcon(R.drawable.ic_menu_types)
+                    .setMultiChoiceItems(eventTypesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventTypesSelected.set(which, isChecked))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> toStore = new HashSet<>();
+                        for (int i = 0; i < eventTypesSelected.size(); i++) {
+                            if (eventTypesSelected.get(i)) toStore.add(eventTypesIDs.get(i));
+                        }
+
+                        eventsData.preferences_list_event_types = toStore;
+                        eventsData.savePreferences();
+                        eventsData.needUpdateEventList = true;
+                        updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+
+                        dialog.cancel();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private static class ViewHolder {

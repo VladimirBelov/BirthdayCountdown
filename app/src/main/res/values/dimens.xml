@@ -10,7 +10,7 @@
 <!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
 <!-- https://stackoverflow.com/questions/32860815/how-to-define-dimens-xml-for-every-different-screen-size-in-android -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <dimen name="widgetDate_fontSize">10.0sp</dimen>
     <dimen name="widgetMarks_fontSize">12.0sp</dimen>
     <dimen name="widgetDaysX_fontSize">24.0sp</dimen>

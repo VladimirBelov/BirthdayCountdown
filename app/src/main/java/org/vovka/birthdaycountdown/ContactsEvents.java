@@ -1549,6 +1549,7 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
             editor.putStringSet(context.getString(R.string.pref_List_EventSources_key), preferences_list_EventSources);
+            editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
 
@@ -5810,6 +5811,16 @@ class ContactsEvents {
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
                         builder.setPriority(NotificationCompat.PRIORITY_MAX);
+
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
+                            int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+                            Intent intentClose = new Intent(context, ActionReceiver.class);
+                            intentClose.setAction(Constants.ACTION_CLOSE);
+                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                            PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
+                            NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                            builder.addAction(actionClose);
+                        }
                     }
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -5933,7 +5944,6 @@ class ContactsEvents {
                             Intent intentClose = new Intent(context, ActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
-                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
                             NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
@@ -6135,6 +6145,8 @@ class ContactsEvents {
             Intent alarmIntent = new Intent(context, ActionReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
             alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, preferences_notifications_details.toArray(new String[0])); //Берём из основных
+            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0]));
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), alarmIntent, PendingIntentMutable); //PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -6145,7 +6157,7 @@ class ContactsEvents {
             if (snoozeHours > 0) {
                 nextUpdateTimeMillis = currentTimeMillis + snoozeHours * 60 * DateUtils.MINUTE_IN_MILLIS; //* DateUtils.HOUR_IN_MILLIS;
                 isSnoozed = true;
-            } else { //if (wakeDateTime != null)
+            } else {
                 nextUpdateTimeMillis = wakeDateTime.getTime();
             }
             Time nextUpdateTime = new Time();
@@ -6186,26 +6198,12 @@ class ContactsEvents {
 
             String[] singleEventArray = dataNotify.split(Constants.STRING_EOT, -1);
             Date eventDate = null;
-            //String eventDay = null;
             try {
                 eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
-                /*if (eventDate != null) {
-                    eventDay = sdf_DDMM.format(eventDate);
-                }*/
             } catch (Exception e) { /**/ }
             if (eventDate == null) return;
 
             final String eventDetails = composeNotifyEventDetails(new NotifyEvent(singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
-            /*StringBuilder textBig = new StringBuilder();
-            textBig
-                    .append(singleEventArray[Position_eventEmoji])
-                    .append(Constants.STRING_SPACE)
-                    .append(eventDay)
-                    .append(Constants.STRING_SPACE)
-                    .append(singleEventArray[Position_personFullName]);
-            if (!TextUtils.isEmpty(singleEventArray[Position_age_caption].trim()))
-                textBig.append(": ").append(singleEventArray[Position_age_caption]);*/
-
             int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
             final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)

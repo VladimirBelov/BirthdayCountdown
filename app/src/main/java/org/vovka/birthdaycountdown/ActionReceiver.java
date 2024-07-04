@@ -27,6 +27,8 @@ public class ActionReceiver extends BroadcastReceiver {
         try {
 
             final String action = intent.getAction();
+            if (action == null) return;
+
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.setLocale(true);
@@ -50,7 +52,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 }
             }
 
-            if (action != null && action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
+            if (action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request");
@@ -64,7 +66,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-            } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
+            } else if  (action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_SILENT + Constants.STRING_COLON_SPACE + "Empty request");
@@ -76,7 +78,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-            } else if  (action != null && action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
+            } else if  (action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
@@ -88,7 +90,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
+            } else if (action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 
                 if (notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
@@ -105,7 +107,7 @@ public class ActionReceiver extends BroadcastReceiver {
                         false
                 );
 
-            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
+            } else if (action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
 
                 if (notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
@@ -125,7 +127,7 @@ public class ActionReceiver extends BroadcastReceiver {
                         true
                 );
 
-            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
+            } else if (action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
                     ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
@@ -149,7 +151,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     }
                 }
 
-            } else if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLOSE)) {
+            } else if (action.equalsIgnoreCase(Constants.ACTION_CLOSE)) {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);

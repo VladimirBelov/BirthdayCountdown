@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class androidx.core.app.CoreComponentFactory { *; }
+-keep class org.vovka.birthdaycountdown.MainActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.SettingsActivity { *; }

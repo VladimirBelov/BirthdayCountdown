@@ -34,6 +34,8 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_quiz">Викторина</string>
     <string name="menu_filter_events">Фильтр…</string>
+    <string name="menu_events_sources">Источники…</string>
+    <string name="menu_events_types">Типы событий…</string>
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_create_contact">Создать контакт…</string>

@@ -761,7 +761,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/widget_config_photostyle_label"
                     android:entries="@array/widget_config_photostyle"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    tools:ignore="DuplicateSpeakableTextCheck,TooManyViews" />
 
                 <TextView
                     android:id="@+id/hintPhotoStyle"

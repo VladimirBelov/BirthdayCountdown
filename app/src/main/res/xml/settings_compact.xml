@@ -602,16 +602,15 @@
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_EventTypes_entries"
             android:entryValues="@array/pref_EventTypes_values"
-            android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"
+            android:icon="@drawable/ic_menu_types"
+            android:dialogIcon="@drawable/ic_menu_types"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_List_EventSources_key"
             android:title="@string/pref_List_EventSources_title"
             android:summary="@string/pref_List_EventSources_description"
-            android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:icon="@drawable/ic_menu_sources"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_List_EventInfo_key"

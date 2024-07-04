@@ -34,6 +34,8 @@
     <string name="menu_search">Search</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filter…</string>
+    <string name="menu_events_sources">Sources…</string>
+    <string name="menu_events_types">Events types…</string>
     <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_create_contact">Create contact…</string>

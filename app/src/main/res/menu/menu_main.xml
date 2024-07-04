@@ -75,7 +75,21 @@
         android:icon="@android:drawable/ic_menu_view"
         android:visible="false" />
 
-    <!-- 6 MENU_MAIN_HINTS -->
+    <!-- 6 MENU_MAIN_SOURCES -->
+    <item
+        android:id="@+id/menu_events_sources"
+        android:title="@string/menu_events_sources"
+        android:icon="@drawable/ic_menu_sources"
+        android:visible="false" />
+
+    <!-- 7 MENU_MAIN_TYPES -->
+    <item
+        android:id="@+id/menu_events_types"
+        android:title="@string/menu_events_types"
+        android:icon="@drawable/ic_menu_types"
+        android:visible="false" />
+
+    <!-- 8 MENU_MAIN_HINTS -->
     <item
         android:id="@+id/menu_hints"
         android:title="@string/menu_hints"

@@ -108,10 +108,10 @@ public class Widget5x1 extends AppWidgetProvider {
 
                 switch (prefEventsCountIndex) {
                     case 1:
-                        eventsCount += -2;
+                        eventsCount -= 2;
                         break;
                     case 2:
-                        eventsCount += -1;
+                        eventsCount -= 1;
                         break;
                     case 3:
                         eventsCount += 1;

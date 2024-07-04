@@ -265,7 +265,9 @@ final class Constants {
     static final int MENU_MAIN_QUIZ = 3;
     static final int MENU_MAIN_SETTINGS = 4;
     static final int MENU_MAIN_FILTER = 5;
-    static final int MENU_MAIN_HINTS = 6;
+    static final int MENU_MAIN_SOURCES = 6;
+    static final int MENU_MAIN_TYPES = 7;
+    static final int MENU_MAIN_HINTS = 8;
 
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
