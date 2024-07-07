@@ -209,6 +209,7 @@ class ContactsEvents {
     final HashSet<String> idsAllCalendarEvents = new HashSet<>(); //ID всех найденных событий календаря
     final HashMap<String, String> map_contacts_names = new HashMap<>(); //связка имён контактов с ID
     final HashMap<String, String> map_calendars = new HashMap<>(); //список всех календарей
+    final HashMap<String, Integer> map_calendars_colors = new HashMap<>(); //цвета календарей
     final HashMap<String, Integer> map_eventsBySubtypeAndPersonID_offset = new HashMap<>(); //Индекс события до сортировки (или для eventListUnsorted)
     final HashMap<String, String> map_organizations = new HashMap<>();
     final HashMap<String, String> map_contacts_titles = new HashMap<>();
@@ -3065,7 +3066,8 @@ class ContactsEvents {
                             android.provider.BaseColumns._ID,
                             CalendarContract.Calendars.VISIBLE,
                             CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                            CalendarContract.Calendars.ACCOUNT_NAME
+                            CalendarContract.Calendars.ACCOUNT_NAME,
+                            CalendarContract.Calendars.CALENDAR_COLOR
                     },
                     null,
                     null,
@@ -3077,6 +3079,8 @@ class ContactsEvents {
                     for (int i = 0; i < cursor.getCount(); i++) {
                         if (cursor.getInt(1) == 1) {
                             map_calendars.put(cursor.getInt(0) + Constants.STRING_EMPTY, cursor.getString(2).concat(Constants.STRING_EOT).concat(cursor.getString(3)));
+                            String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + cursor.getInt(0));
+                            map_calendars_colors.put(calendarId, cursor.getInt(4));
                         }
                         cursor.moveToNext();
                     }

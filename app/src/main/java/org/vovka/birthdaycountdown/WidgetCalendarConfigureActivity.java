@@ -502,22 +502,24 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     ? ContactsEvents.toARGBString(colorToday) : Constants.STRING_EMPTY;
 
             List<String> listColors = new ArrayList<>();
-            for (String colorId : eventSourcesColors.keySet()) {
-                @Nullable Integer colorValue = eventSourcesColors.get(colorId);
+            for (String sourceId : eventSourcesColors.keySet()) {
+                @Nullable Integer colorValue = eventSourcesColors.get(sourceId);
 
                 if (colorValue != null) {
 
-                    if (colorId.equals(getString(R.string.widget_config_month_events_saturday_id)) && colorValue ==
+                    if (sourceId.equals(getString(R.string.widget_config_month_events_saturday_id)) && colorValue ==
                             ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Saturday_default)) {
                         colorValue = null;
-                    } else if (colorId.equals(getString(R.string.widget_config_month_events_sunday_id)) && colorValue ==
+                    } else if (sourceId.equals(getString(R.string.widget_config_month_events_sunday_id)) && colorValue ==
                             ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Sunday_default)) {
                         colorValue = null;
                     } else if (colorValue == ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default)) {
                         colorValue = null;
+                    } else if (!eventSourcesSelected.contains(sourceId)) {
+                        colorValue = null;
                     }
 
-                    if (colorValue != null) listColors.add(colorId.concat(Constants.STRING_COLON).concat(String.valueOf(colorValue)));
+                    if (colorValue != null) listColors.add(sourceId.concat(Constants.STRING_COLON).concat(String.valueOf(colorValue)));
                 }
             }
 
@@ -654,8 +656,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 if (!allCalendars.isEmpty()) {
                     for (String calendar: allCalendars) {
                         if (eventsData.map_calendars.containsKey(calendar)) {
-                            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar));
+                            String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar);
+                            eventSourcesIds.add(calendarId);
                             eventSourcesTitles.add("📆 " + ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
+                            if (eventsData.map_calendars_colors.containsKey(calendarId)) {
+                                eventSourcesColors.put(calendarId, eventsData.map_calendars_colors.get(calendarId));
+                            }
                         }
                     }
                 }
@@ -787,10 +793,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     listView.setOnItemLongClickListener((parent, view, position, id) -> {
 
                         ColorPicker picker = new ColorPicker(thisActivity);
-                        String colorId = eventSourcesIds.get(position);
+                        String sourceId = eventSourcesIds.get(position);
                         Integer colorValue;
-                        if (eventSourcesColors.containsKey(colorId) && eventSourcesColors.get(colorId) != null) {
-                            colorValue = eventSourcesColors.get(colorId);
+                        if (eventSourcesColors.containsKey(sourceId) && eventSourcesColors.get(sourceId) != null) {
+                            colorValue = eventSourcesColors.get(sourceId);
                         } else {
                             colorValue = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                         }
@@ -806,15 +812,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                             alertToShow.dismiss();
 
                             int colorDefault;
-                            if (colorId.equals(getString(R.string.widget_config_month_events_saturday_id))) {
+                            Integer colorCalendar = eventsData.map_calendars_colors.get(sourceId);
+                            if (sourceId.equals(getString(R.string.widget_config_month_events_saturday_id))) {
                                 colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Saturday_default);
-                            } else if (colorId.equals(getString(R.string.widget_config_month_events_sunday_id))) {
+                            } else if (sourceId.equals(getString(R.string.widget_config_month_events_sunday_id))) {
                                 colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Sunday_default);
+                            } else if (colorCalendar != null) {
+                                colorDefault = colorCalendar;
                             } else {
                                 colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                             }
 
-                            picker.selectColor(colorValue, colorDefault, "setCustomColor", colorId);
+                            picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
 
                         } else {
                             ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");

@@ -556,7 +556,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_BirthDay);
                 if (eventsData.checkNoCalendarAccess()) {
 
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
+                    requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
                 } else {
 
@@ -571,8 +571,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (eventsData.checkNoCalendarAccess()) {
 
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
-                    return true;
+                    requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
                 } else {
 
@@ -585,8 +584,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (eventsData.checkNoCalendarAccess()) {
 
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
-                    return true;
+                    requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
                 } else {
 
@@ -599,8 +597,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (eventsData.checkNoCalendarAccess()) {
 
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
-                    return true;
+                    requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
                 } else {
 
@@ -638,17 +635,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Help_CalendarAccess_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
-                    ActivityCompat.requestPermissions(
-                            this,
-                            new String[]{Manifest.permission.READ_CALENDAR},
-                            Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
-                    );
-                } else {
-                    try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                }
+                requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2);
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key).equals(key)) {
 
@@ -2592,6 +2579,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             ToastExpander.showInfoMsg(this, getString(R.string.pref_Help_CalendarSync_result));
 
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void requestCalendarPermission(int resultCode) {
+        try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.READ_CALENDAR},
+                    resultCode
+            );
+        } else {
+            try {
+                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+            } catch (android.content.ActivityNotFoundException e) { /**/ }
+        }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
