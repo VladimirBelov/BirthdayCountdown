@@ -198,7 +198,6 @@
     <string name="hint_Rate_PlayMarket">Ацаніць праграму ў Google Play</string>
     <string name="hint_Rate_AppGallery">Ацаніць праграму ў HUAWEI AppGallery</string>
     <string name="hint_Color">Значэнне ў ARGB</string>
-    <string name="hint_widget_config_events_count_label">Усталяванне колькасці падзей у шырыню</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>

@@ -246,7 +246,7 @@ public class ColorPreference extends Preference {
 
                 TypedArray ta = getActivity().getTheme().obtainStyledAttributes(R.styleable.Theme);
 
-                final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getActivity(), eventsData.preferences_theme.themeDialog))
+                final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), eventsData.preferences_theme.themeDialog))
                         .setPositiveButton(R.string.button_ok, null)
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
 
@@ -256,7 +256,7 @@ public class ColorPreference extends Preference {
                     builder.getContext().setTheme(ContactsEvents.themeEditText_default);
                 }
 
-                androidx.appcompat.app.AlertDialog dialog = builder.create();
+                AlertDialog dialog = builder.create();
                 View view = View.inflate(new ContextThemeWrapper(getActivity(), ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
                 dialog.setView(view);
 
@@ -388,7 +388,7 @@ public class ColorPreference extends Preference {
                 });
 
                 dialog.setOnShowListener(arg0 -> {
-                    final Button buttonPositive = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+                    final Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     buttonPositive.setOnClickListener(v -> {
                         try {
                             String colorString = color_edit.getText().toString();

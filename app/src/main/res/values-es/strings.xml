@@ -198,7 +198,6 @@
     <string name="hint_Rate_PlayMarket">Califica esta aplicación en Google Play</string>
     <string name="hint_Rate_AppGallery">Califique esta aplicación en la HUAWEI AppGallery</string>
     <string name="hint_Color">valor ARGB</string>
-    <string name="hint_widget_config_events_count_label">Establecer el número de eventos horizontal</string>
 
     <string name="button_ok">Okay</string>
     <string name="button_yes">Sí</string>

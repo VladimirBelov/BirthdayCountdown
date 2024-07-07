@@ -198,7 +198,6 @@
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
     <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
     <string name="hint_Color">Значення ARGB</string>
-    <string name="hint_widget_config_events_count_label">Установити кількість подій по горизонталі</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>

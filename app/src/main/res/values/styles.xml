@@ -63,6 +63,10 @@
     <!-- Меню главной активности и контекстное меню-->
     <style name="AppTheme.Green.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/theme_green_secondary</item>
+        <item name="android:textColorHint">@color/theme_green_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_green_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_green_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <!-- Темы диалогов -->
@@ -135,6 +139,7 @@
     <style name="AppTheme.DarkGray.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/theme_grey_primary</item>
         <item name="android:textColor">@color/lighter_gray</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <style name="AlertDialog.DarkGray" parent="Theme.AppCompat.Dialog.Alert">
@@ -204,6 +209,7 @@
     <style name="AppTheme.Black.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/theme_black_primary</item>
         <item name="android:textColor">@color/light_gray</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <style name="AlertDialog.Black" parent="Theme.AppCompat.Dialog.Alert">
@@ -273,6 +279,10 @@
         <item name="android:colorBackground">@color/theme_blue_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/medium_dark_gray_trans_25</item>
+        <item name="android:textColorHint">@color/theme_blue_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_blue_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_blue_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <style name="AlertDialog.Blue" parent="Theme.AppCompat.Dialog.Alert">
@@ -342,6 +352,10 @@
     <style name="AppTheme.BlueGrey.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/theme_blue_gray_secondary</item>
         <item name="android:textColor">@color/theme_blue_gray_primary</item>
+        <item name="android:textColorHint">@color/theme_blue_gray_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_blue_gray_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_blue_gray_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <style name="AlertDialog.BlueGrey" parent="Theme.AppCompat.Dialog.Alert">
@@ -423,6 +437,10 @@
         <item name="android:colorBackground">@color/theme_orange_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_orange_status_transp</item>
+        <item name="android:textColorHint">@color/theme_orange_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_orange_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_orange_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <!-- Темы диалогов -->
@@ -495,6 +513,10 @@
         <item name="android:colorBackground">@color/theme_teal_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_teal_status_transp</item>
+        <item name="android:textColorHint">@color/theme_teal_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_teal_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_teal_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <!-- Темы диалогов -->
@@ -567,6 +589,10 @@
         <item name="android:colorBackground">@color/theme_brown_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_brown_status_transp</item>
+        <item name="android:textColorHint">@color/theme_teal_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_teal_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_teal_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <!-- Темы диалогов -->
@@ -639,6 +665,10 @@
         <item name="android:colorBackground">@color/theme_indigo_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_indigo_status_transp</item>
+        <item name="android:textColorHint">@color/theme_indigo_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_indigo_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_indigo_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <!-- Темы диалогов -->
@@ -688,6 +718,10 @@
         <item name="overlapAnchor">false</item>
         <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
         <item name="android:dropDownVerticalOffset">5dp</item>
+    </style>
+
+    <style name="PopupWindowStyle" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
     </style>
 
     <!-- Меню действий -->

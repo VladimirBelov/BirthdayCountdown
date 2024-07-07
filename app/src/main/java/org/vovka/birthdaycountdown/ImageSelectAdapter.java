@@ -19,9 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 class ImageSelectAdapter extends ArrayAdapter<String> {
 
@@ -54,7 +54,13 @@ class ImageSelectAdapter extends ArrayAdapter<String> {
             //Resources resources = packageContext.getResources();
             //Drawable icon = null; //androidx.core.content.res.ResourcesCompat.getDrawable(resources, images.get(position), null);
             //Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
-            Bitmap bmp = ContactsEvents.getBitmap(getContext(), images.size() <= position ? 0 : images.get(position));
+            Bitmap bmp;
+            if (position < images.size() && images.get(position) != null) {
+                bmp = ContactsEvents.getBitmap(getContext(), images.get(position));
+            } else {
+                Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+                bmp = Bitmap.createBitmap(130, 130, conf);
+            }
             if (bmp != null) {
                 //Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 /*Canvas canvas = new Canvas(bmp);
@@ -86,6 +92,8 @@ class ImageSelectAdapter extends ArrayAdapter<String> {
                 //bitmapScaled.recycle();
                 bmp.recycle();
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+          //  } else {
+          //      textView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
             }
             textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, ta.getResources().getDisplayMetrics()));
 

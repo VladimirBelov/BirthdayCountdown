@@ -367,6 +367,7 @@ class ContactsEvents {
     private Set<String> pref_List_Age_Format_Default;
     Set<String> preferences_list_EventSources = new HashSet<>();
     int preferences_list_search_death;
+    int preferences_list_quick_action;
 
     //Уведомления
     int preferences_notifications_channel_id;
@@ -1065,6 +1066,7 @@ class ContactsEvents {
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
             preferences_list_search_death = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
+            preferences_list_quick_action = getPreferenceInt(preferences, context.getString(R.string.pref_List_QuickAction_key), R.id.menu_add);
 
             //Уведомления
             preferences_notifications_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
@@ -1548,6 +1550,7 @@ class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Details_key), preferences_list_magnify_details);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
+            editor.putInt(context.getString(R.string.pref_List_QuickAction_key), preferences_list_quick_action);
             editor.putStringSet(context.getString(R.string.pref_List_EventSources_key), preferences_list_EventSources);
             editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);

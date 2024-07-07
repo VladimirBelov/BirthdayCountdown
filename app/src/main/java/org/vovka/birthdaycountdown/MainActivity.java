@@ -46,7 +46,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -301,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean onCreatePopupMenu(ListView listView, View v, int position) {
+    private boolean onCreatePopupMenu(ListView listView, View view, int position) {
         try {
 
             //https://developer.alexanderklimov.ru/android/popupmenu.php
@@ -314,8 +313,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //todo: ссылки с имени и фамилии на web справочник
 
             //eventsData.setLocale(true); //без установки слетает язык на поворотах экрана
-            Context wrapper = new ContextThemeWrapper(MainActivity.this, eventsData.preferences_theme.themePopup);
-            PopupMenu popupMenu = new PopupMenu(wrapper, v, Gravity.RIGHT | Gravity.FILL_VERTICAL);
+            PopupMenu popupMenu = new PopupMenu(
+                    new ContextThemeWrapper(MainActivity.this, eventsData.preferences_theme.themePopup),
+                    view,
+                    Gravity.RIGHT | Gravity.FILL_VERTICAL
+            );
             final Menu menu = popupMenu.getMenu();
             setMenuIconsVisible(menu);
 
@@ -1448,7 +1450,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onDestroy();
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "AlwaysShowAction"})
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
@@ -1457,26 +1459,42 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (menu instanceof MenuBuilder) {
                 ((MenuBuilder) menu).setOptionalIconsVisible(true);
             }
-            try {
-                getMenuInflater().inflate(R.menu.menu_main, menu);
-            } catch (InflateException e) { /**/ }
 
-            MenuItem searchItem = menu.getItem(Constants.MENU_MAIN_SEARCH);
-            SearchView searchView = (SearchView) searchItem.getActionView();
-            searchItem.setVisible(!eventsData.isEmptyEventList());
-            if (searchView != null) {
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
+            //try {
+            //    getMenuInflater().inflate(R.menu.menu_main, menu);
+            //} catch (InflateException e) { /**/ }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        adapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
+            MenuItem menuItem;
+            menuItem = menu.add(Menu.NONE, R.id.menu_search, Menu.NONE, R.string.menu_search).setIcon(android.R.drawable.ic_menu_search)
+                    .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+                    .setActionView(new SearchView(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themePopup)));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                menuItem.setContentDescription(getString(R.string.hint_SearchPanel));
+            }
+            SubMenu subMenuFile = menu.addSubMenu(Menu.NONE, R.id.menu_add, Menu.NONE, R.string.menu_add_event).setIcon(android.R.drawable.ic_menu_add);
+            subMenuFile.add(Menu.NONE, R.id.menu_add_event_to_contact, Menu.NONE, R.string.menu_add_event_to_contact)
+                    .setIcon(android.R.drawable.ic_menu_my_calendar)
+                    .setTitleCondensed(getString(R.string.menu_add_event_to_contact_short));
+            subMenuFile.add(Menu.NONE, R.id.menu_add_event_to_calendar, Menu.NONE, R.string.menu_add_event_to_calendar)
+                    .setIcon(android.R.drawable.ic_menu_month)
+                    .setTitleCondensed(getString(R.string.menu_add_event_to_calendar_short));
+            subMenuFile.add(Menu.NONE, R.id.menu_open_file_with_events, Menu.NONE, R.string.menu_open_file_with_events)
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .setTitleCondensed(getString(R.string.menu_open_file_with_events_short));
+            menu.add(Menu.NONE, R.id.menu_refresh, Menu.NONE, R.string.menu_refresh).setIcon(android.R.drawable.ic_menu_rotate);
+            menu.add(Menu.NONE, R.id.menu_quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_help);
+            menu.add(Menu.NONE, R.id.menu_settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
+            menu.add(Menu.NONE, R.id.menu_filter_events, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
+            menu.add(Menu.NONE, R.id.menu_events_sources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
+            menu.add(Menu.NONE, R.id.menu_events_types, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
+            menu.add(Menu.NONE, R.id.menu_hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);
+
+            //Быстрое действие
+            if (eventsData.preferences_list_quick_action > 0) {
+                menuItem = menu.findItem(eventsData.preferences_list_quick_action);
+                if (menuItem != null) {
+                    menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                }
             }
 
             final boolean isItemQuizVisible = !this.dataList.isEmpty() && eventsData.preferences_extrafun;
@@ -1491,47 +1509,75 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final boolean isItemSourcesVisible = eventsData != null && eventsData.preferences_extrafun;
             final boolean isItemTypesVisible = eventsData != null && eventsData.preferences_extrafun;
 
-            searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
-            {
+            MenuItem searchItem = menu.findItem(R.id.menu_search);
+            if (searchItem != null) {
+                SearchView searchView = (SearchView) searchItem.getActionView();
+                searchItem.setVisible(!eventsData.isEmptyEventList());
+                if (searchView != null) {
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return false;
+                        }
 
-                @Override
-                public boolean onMenuItemActionExpand(@NonNull MenuItem item){
-                    menu.getItem(Constants.MENU_MAIN_ADD_EVENT).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_REFRESH).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(false);
-                    menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(true);
-                    return true;
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            adapter.getFilter().filter(newText);
+                            return false;
+                        }
+                    });
                 }
 
-                //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
-                @Override
-                public boolean onMenuItemActionCollapse(@NonNull MenuItem item){
-                    menu.getItem(Constants.MENU_MAIN_ADD_EVENT).setVisible(true);
-                    menu.getItem(Constants.MENU_MAIN_REFRESH).setVisible(true);
-                    menu.getItem(Constants.MENU_MAIN_SETTINGS).setVisible(true);
-                    menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
-                    //показывать, если есть скрытые или без уведомлений
-                    menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
-                    menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(isItemSourcesVisible);
-                    menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(isItemTypesVisible);
-                    menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
-                    filterEventsList();
-                    return true;
+                searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+
+                    @Override
+                    public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+                        try {
+                            menu.findItem(R.id.menu_add).setVisible(false);
+                            menu.findItem(R.id.menu_refresh).setVisible(false);
+                            menu.findItem(R.id.menu_settings).setVisible(false);
+                            menu.findItem(R.id.menu_quiz).setVisible(false);
+                            menu.findItem(R.id.menu_filter_events).setVisible(false);
+                            menu.findItem(R.id.menu_events_sources).setVisible(false);
+                            menu.findItem(R.id.menu_events_types).setVisible(false);
+                            menu.findItem(R.id.menu_hints).setVisible(true);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
+                            ToastExpander.showDebugMsg(getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                        }
+                        return true;
+                    }
+
+                    //работает, только если showAsAction="always" https://stackoverflow.com/questions/9327826/searchviews-oncloselistener-doesnt-work/18186164
+                    @Override
+                    public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+                        try {
+                            menu.findItem(R.id.menu_add).setVisible(true);
+                            menu.findItem(R.id.menu_refresh).setVisible(true);
+                            menu.findItem(R.id.menu_settings).setVisible(true);
+                            menu.findItem(R.id.menu_quiz).setVisible(isItemQuizVisible);
+                            menu.findItem(R.id.menu_filter_events).setVisible(isItemFilterVisible);
+                            menu.findItem(R.id.menu_events_sources).setVisible(isItemSourcesVisible);
+                            menu.findItem(R.id.menu_events_types).setVisible(isItemTypesVisible);
+                            menu.findItem(R.id.menu_hints).setVisible(false);
+                            filterEventsList();
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
+                            ToastExpander.showDebugMsg(getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                        }
+                        return true;
+                    }
+
+                });
+
+                if (searchView != null) {
+                    searchView.setQueryHint(getString(R.string.msg_hint_search));
+                    searchView.setMaxWidth(Integer.MAX_VALUE);
+
+                    //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
+                    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
                 }
-
-            });
-
-            if (searchView != null) {
-                searchView.setQueryHint(getString (R.string.msg_hint_search));
-                searchView.setMaxWidth(Integer.MAX_VALUE);
-
-                //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             }
 
             menu.findItem(R.id.menu_open_file_with_events).setVisible(
@@ -1545,11 +1591,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
             // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
 
-            menu.getItem(Constants.MENU_MAIN_QUIZ).setVisible(isItemQuizVisible);
-            menu.getItem(Constants.MENU_MAIN_FILTER).setVisible(isItemFilterVisible);
-            menu.getItem(Constants.MENU_MAIN_SOURCES).setVisible(isItemSourcesVisible);
-            menu.getItem(Constants.MENU_MAIN_TYPES).setVisible(isItemTypesVisible);
-            menu.getItem(Constants.MENU_MAIN_HINTS).setVisible(false);
+            menu.findItem(R.id.menu_quiz).setVisible(isItemQuizVisible);
+            menu.findItem(R.id.menu_filter_events).setVisible(isItemFilterVisible);
+            menu.findItem(R.id.menu_events_sources).setVisible(isItemSourcesVisible);
+            menu.findItem(R.id.menu_events_types).setVisible(isItemTypesVisible);
+            menu.findItem(R.id.menu_hints).setVisible(false);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2403,7 +2449,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_List_EventTypes_title)
-                    .setIcon(R.drawable.ic_menu_types)
+                    .setIcon(R.drawable.ic_menu_copy)
                     .setMultiChoiceItems(eventTypesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventTypesSelected.set(which, isChecked))
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 

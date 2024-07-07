@@ -406,9 +406,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDeath_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
@@ -749,6 +751,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Help_CalendarSync_key).equals(key)) {
 
                 syncCalendars();
+                return true;
+
+            } else if (getString(R.string.pref_List_QuickAction_key).equals(key)) {
+
+                selectQuickAction();
                 return true;
 
             }
@@ -1971,6 +1978,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void selectQuickAction() {
+
+       try {
+
+           List<String> menuTitles = new ArrayList<>();
+           List<Integer> menuIds = new ArrayList<>();
+           List<Integer> menuImages = new ArrayList<>();
+
+           menuTitles.add(getString(R.string.pref_List_QuickAction_none));
+           menuIds.add(0);
+           menuImages.add(null);
+
+           menuTitles.add(getString(R.string.menu_add_event));
+           menuIds.add(R.id.menu_add);
+           menuImages.add(android.R.drawable.ic_menu_add);
+
+           menuTitles.add(getString(R.string.menu_refresh));
+           menuIds.add(R.id.menu_refresh);
+           menuImages.add(android.R.drawable.ic_menu_rotate);
+
+           menuTitles.add(getString(R.string.menu_settings));
+           menuIds.add(R.id.menu_settings);
+           menuImages.add(R.drawable.ic_sysbar_quicksettings);
+
+           menuTitles.add(getString(R.string.menu_filter_events));
+           menuIds.add(R.id.menu_filter_events);
+           menuImages.add(android.R.drawable.ic_menu_view);
+
+           menuTitles.add(getString(R.string.menu_events_sources));
+           menuIds.add(R.id.menu_events_sources);
+           menuImages.add(android.R.drawable.ic_menu_agenda);
+
+           menuTitles.add(getString(R.string.menu_events_types));
+           menuIds.add(R.id.menu_events_types);
+           menuImages.add(R.drawable.ic_menu_copy);
+
+           ListAdapter adapter = new ImageSelectAdapter(this, menuTitles, menuImages, true, ta);
+
+           AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                   .setTitle(R.string.pref_List_QuickAction_title)
+                   .setIcon(android.R.drawable.ic_menu_compass)
+                   .setAdapter(adapter, null)
+                   .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                   .setCancelable(true);
+
+           AlertDialog alertToShow = builder.create();
+
+           ListView listView = alertToShow.getListView();
+           listView.setItemsCanFocus(false);
+           listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+           listView.setOnItemClickListener((parent, view, position, id) -> {
+               eventsData.preferences_list_quick_action = menuIds.get(position);
+               eventsData.savePreferences();
+               alertToShow.dismiss();
+           });
+
+           alertToShow.setOnShowListener(arg0 -> {
+               alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+               listView.setItemChecked(menuIds.indexOf(eventsData.preferences_list_quick_action), true);
+           });
+
+           alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+           alertToShow.show();
+
+       } catch (Exception e) {
+           Log.e(TAG, e.getMessage(), e);
+           ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+       }
+    }
+
     private void showPreferences() {
 
         try {
@@ -2223,6 +2301,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_FontMagnify_Details_key),
                         getString(R.string.pref_List_FontMagnify_Date_key),
                         getString(R.string.pref_List_FontMagnify_Age_key),
+                        getString(R.string.pref_List_QuickAction_key),
                         getString(R.string.pref_Widgets_Color_EventToday_key),
                         getString(R.string.pref_Widgets_Color_EventSoon_key),
                         getString(R.string.pref_Widgets_Color_EventFar_key),

@@ -605,15 +605,15 @@
             android:entryValues="@array/pref_EventTypes_values"
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_summary"
-            android:icon="@drawable/ic_menu_types"
-            android:dialogIcon="@drawable/ic_menu_types"
+            android:icon="@drawable/ic_menu_copy"
+            android:dialogIcon="@drawable/ic_menu_copy"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_List_EventSources_key"
             android:title="@string/pref_List_EventSources_title"
             android:summary="@string/pref_List_EventSources_description"
-            android:icon="@drawable/ic_menu_sources"/>
+            android:icon="@android:drawable/ic_menu_agenda"/>
 
         <!-- todo: сделать сортировку для деталей под ФИО через DragSortListView
             https://stackoverflow.com/questions/2909311/android-list-view-drag-and-drop-sort/
@@ -627,8 +627,8 @@
             android:entryValues="@array/pref_List_EventInfo_values"
             android:summary="@string/pref_List_EventInfo_summary"
             android:title="@string/pref_List_EventInfo_title"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:icon="@drawable/ic_menu_friendslist"
+            android:dialogIcon="@drawable/ic_menu_friendslist"
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
@@ -672,21 +672,27 @@
 
         <ListPreference
             android:key="@string/pref_List_Filling_key"
+            android:title="@string/pref_List_Filling_title"
+            android:summary="@string/pref_List_Filling_summary"
             android:defaultValue="@string/pref_List_Filling_default"
             android:entries="@array/pref_List_Filling_entries"
             android:entryValues="@array/pref_List_Filling_values"
-            android:summary="@string/pref_List_Filling_summary"
-            android:title="@string/pref_List_Filling_title"
             android:icon="@drawable/ic_menu_paste"
             android:dialogIcon="@drawable/ic_menu_paste"
             android:negativeButtonText="@string/button_cancel"/>
 
         <SwitchPreference
             android:key="@string/pref_List_FastScroll_key"
-            android:summary="@string/pref_List_FastScroll_summary"
             android:title="@string/pref_List_FastScroll_title"
+            android:summary="@string/pref_List_FastScroll_summary"
             android:defaultValue="@bool/pref_List_FastScroll_default"
             android:icon="@android:drawable/ic_menu_preferences" />
+
+        <Preference
+            android:key="@string/pref_List_QuickAction_key"
+            android:title="@string/pref_List_QuickAction_title"
+            android:summary="@string/pref_List_QuickAction_summary"
+            android:icon="@android:drawable/ic_menu_compass"/>
 
         <ListPreference
             android:key="@string/pref_List_OnClick_key"
@@ -783,8 +789,8 @@
             android:entryValues="@array/pref_List_Margin_values"
             android:summary="@string/pref_List_Margin_summary"
             android:title="@string/pref_List_Margin_title"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_chat_dashboard"
+            android:dialogIcon="@drawable/ic_menu_chat_dashboard"
             android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceCategory>

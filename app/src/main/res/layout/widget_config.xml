@@ -641,37 +641,6 @@
 
                 </LinearLayout>
 
-                <!--<View
-                    android:id="@+id/dividerEventsCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
-
-                <TextView
-                    android:id="@+id/captionEventsCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_config_events_count_label"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spinnerEventsCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/hint_widget_config_events_count_label"
-                    android:entries="@array/widget_config_events_count" />
-
-                <TextView
-                    android:id="@+id/hintEventsCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_config_events_count_description"
-                    android:textColor="?android:attr/textColorSecondary" />-->
-
                 <View
                     android:id="@+id/dividerEventShift"
                     android:layout_width="match_parent"

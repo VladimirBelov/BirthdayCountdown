@@ -203,7 +203,6 @@
     <string name="hint_Rate_PlayMarket">Оценить приложение в Google Play</string>
     <string name="hint_Rate_AppGallery">Оценить приложение в HUAWEI AppGallery</string>
     <string name="hint_Color">Значение в ARGB</string>
-    <string name="hint_widget_config_events_count_label">Установка количества событий в ширину</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Да</string>
@@ -570,6 +569,10 @@
 
     <string name="pref_List_FastScroll_title">Быстрая прокрутка</string>
     <string name="pref_List_FastScroll_summary">Включить быструю прокрутку списка событий, касаясь правой части экрана</string>
+
+    <string name="pref_List_QuickAction_title">Быстрое действие</string>
+    <string name="pref_List_QuickAction_summary">Всегда показывать это действие на панели действий</string>
+    <string name="pref_List_QuickAction_none">Никакое</string>
 
     <string name="pref_Female_Names_title">Женские имена</string>
     <string name="pref_Female_Names_description">Дополнительные женские имена для корректного отображения пиктограмм контактов без фото и определения полных имён</string>

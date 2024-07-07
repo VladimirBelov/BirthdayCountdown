@@ -259,7 +259,7 @@ final class Constants {
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 
-    static final int MENU_MAIN_SEARCH = 0;
+    /*static final int MENU_MAIN_SEARCH = 0;
     static final int MENU_MAIN_ADD_EVENT = 1;
     static final int MENU_MAIN_REFRESH = 2;
     static final int MENU_MAIN_QUIZ = 3;
@@ -267,7 +267,7 @@ final class Constants {
     static final int MENU_MAIN_FILTER = 5;
     static final int MENU_MAIN_SOURCES = 6;
     static final int MENU_MAIN_TYPES = 7;
-    static final int MENU_MAIN_HINTS = 8;
+    static final int MENU_MAIN_HINTS = 8;*/
 
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;

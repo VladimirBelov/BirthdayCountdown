@@ -162,7 +162,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
 
-            final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
+            final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
                         if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
@@ -184,7 +184,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 builder.getContext().setTheme(ContactsEvents.themeEditText_default);
             }
 
-            androidx.appcompat.app.AlertDialog dialog = builder.create();
+            AlertDialog dialog = builder.create();
             View view = View.inflate(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
             dialog.setView(view);
 
@@ -320,7 +320,7 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
             });
 
             dialog.setOnShowListener(arg0 -> {
-                final Button buttonPositive = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+                final Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 buttonPositive.setOnClickListener(v -> {
                     try {
                         String colorString = color_edit.getText().toString();

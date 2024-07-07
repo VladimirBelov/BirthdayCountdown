@@ -602,15 +602,15 @@
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_EventTypes_entries"
             android:entryValues="@array/pref_EventTypes_values"
-            android:icon="@drawable/ic_menu_types"
-            android:dialogIcon="@drawable/ic_menu_types"
+            android:icon="@drawable/ic_menu_copy"
+            android:dialogIcon="@drawable/ic_menu_copy"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_List_EventSources_key"
             android:title="@string/pref_List_EventSources_title"
             android:summary="@string/pref_List_EventSources_description"
-            android:icon="@drawable/ic_menu_sources"/>
+            android:icon="@android:drawable/ic_menu_agenda"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_List_EventInfo_key"
@@ -619,8 +619,8 @@
             android:defaultValue="@array/pref_List_EventInfo_values_default"
             android:entries="@array/pref_List_EventInfo_entries"
             android:entryValues="@array/pref_List_EventInfo_values"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:dialogIcon="@android:drawable/ic_menu_agenda"
+            android:icon="@drawable/ic_menu_friendslist"
+            android:dialogIcon="@drawable/ic_menu_friendslist"
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
@@ -675,10 +675,16 @@
 
         <SwitchPreference
             android:key="@string/pref_List_FastScroll_key"
-            android:summary="@string/pref_List_FastScroll_summary"
             android:title="@string/pref_List_FastScroll_title"
+            android:summary="@string/pref_List_FastScroll_summary"
             android:defaultValue="@bool/pref_List_FastScroll_default"
-            android:icon="@android:drawable/ic_menu_preferences" />
+            android:icon="@android:drawable/ic_menu_preferences"/>
+
+        <Preference
+            android:key="@string/pref_List_QuickAction_key"
+            android:title="@string/pref_List_QuickAction_title"
+            android:summary="@string/pref_List_QuickAction_summary"
+            android:icon="@android:drawable/ic_menu_compass"/>
 
         <ListPreference
             android:key="@string/pref_List_OnClick_key"
@@ -775,8 +781,8 @@
             android:defaultValue="@string/pref_List_Margin_default"
             android:entries="@array/pref_List_Margin_entries"
             android:entryValues="@array/pref_List_Margin_values"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_chat_dashboard"
+            android:dialogIcon="@drawable/ic_menu_chat_dashboard"
             android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceScreen>

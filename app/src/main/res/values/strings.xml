@@ -203,7 +203,6 @@
     <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
     <string name="hint_Rate_AppGallery">Rate this app on HUAWEI AppGallery</string>
     <string name="hint_Color">ARGB value</string>
-    <string name="hint_widget_config_events_count_label">Set number of events horizontal</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Yes</string>
@@ -570,6 +569,10 @@
 
     <string name="pref_List_FastScroll_title">Fast scroll</string>
     <string name="pref_List_FastScroll_summary">Enable fast scroll for event list while touching right side of screen</string>
+
+    <string name="pref_List_QuickAction_title">Quick action</string>
+    <string name="pref_List_QuickAction_summary">Always show this action at action bar</string>
+    <string name="pref_List_QuickAction_none">None</string>
 
     <string name="pref_Female_Names_title">Female names</string>
     <string name="pref_Female_Names_description">Additional female names for the correct display of contact icons without a photo and parse full names</string>
@@ -1457,6 +1460,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="pref_List_FastScroll_key" translatable="false">FastScroll</string>
     <bool name="pref_List_FastScroll_default" translatable="false">false</bool>
+
+    <string name="pref_List_QuickAction_key" translatable="false">List_QuickAction</string>
 
     <string name="pref_EventList_key" translatable="false">EventList</string>
     <string name="pref_List_Events_key" translatable="false">EventTypes</string>
