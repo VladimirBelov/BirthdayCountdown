@@ -6,6 +6,7 @@ Android application: Events list and widgets for all your contacts dates: birthd
 <img src="https://github.com/VladimirBelov/BirthdayCountdown/assets/11346454/129274cf-dfad-47f6-b0e4-bcb998222250" height=300> 
 <img src="https://github.com/VladimirBelov/BirthdayCountdown/assets/11346454/9e331194-af4e-4109-b3c3-a22a831b916c" height=300>
 <img src="https://github.com/VladimirBelov/BirthdayCountdown/assets/11346454/f56401b8-571e-4ef8-b7d3-7b01752352f0" height=300>
+<img src="https://github.com/VladimirBelov/BirthdayCountdown/assets/11346454/6d1c1b88-d3aa-407a-a945-ffd7f1cec182" height=300>
 
 ## Introduction
 
