@@ -11,6 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.3</item>
+        <item>Profundidad de búsqueda de eventos (Configuración->Lista de eventos->Profundidad de búsqueda) (funciones extra)</item>
+        <item>Conjunto de siluetas eternas</item>
+        <item>Configurar el número de días y eventos en el widget de fotografía</item>
+        <item>Sincronización forzada de calendarios (Configuración->Ayuda)</item>
+        <item>Optimización para Android 14</item>
+        <item>Soporte para días no festivos desde archivos en el widget de calendario</item>
+        <item>Nueva acción para notificaciones: \"Adjuntar\"</item>
+        <item>Selección rápida de fuentes y tipos de eventos para la lista principal (funciones extra)</item>
+        <item>Configurar una acción rápida para el menú de la lista principal (Configuración->Lista de eventos->Acción rápida) (funciones extra)</item>
+        <item>El widget de calendario utiliza los colores de los calendarios de origen de forma predeterminada</item>
+
         <item>#1.8.2</item>
         <item>Selección fuentes de eventos para la lista principal y notificaciones (funciones extra)</item>
         <item>Selección detalles del evento para notificaciones (funciones extra)</item>

@@ -427,7 +427,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
 
-            hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+                hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_ExactAlarms_key);
+            } else {
+                hidePreference(eventsData.checkCanExactAlarm(), R.string.pref_Help_key, R.string.pref_Help_ExactAlarms_key);
+                hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+            }
             hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
 
@@ -616,6 +622,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                     try {
                         startActivity(intent);
+                    } catch (ActivityNotFoundException e) { /**/ }
+                }
+
+            } else if (getString(R.string.pref_Help_ExactAlarms_key).equals(key)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
                     } catch (ActivityNotFoundException e) { /**/ }
                 }
 

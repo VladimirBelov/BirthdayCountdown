@@ -24,13 +24,18 @@
 
     <string name="menu_add_event">Ajouter un événement</string>
     <string name="menu_add_event_to_contact">Ajouter un événement au contact…</string>
+    <string name="menu_add_event_to_contact_short">Ajouter au contact…</string>
     <string name="menu_add_event_to_calendar">Ajouter un événement au calendrier…</string>
+    <string name="menu_add_event_to_calendar_short">Ajouter au calendrier…</string>
     <string name="menu_open_file_with_events">Ouvrir le fichier avec les événements…</string>
+    <string name="menu_open_file_with_events_short">Fichier ouvert…</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
     <string name="menu_search">Rechercher</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filtre…</string>
+    <string name="menu_events_sources">Sources…</string>
+    <string name="menu_events_types">"Types d'événements…"</string>
     <string name="menu_hints">Astuces de recherche…</string>
     <string name="menu_context_edit_contact">Modifier le contact</string>
     <string name="menu_context_create_contact">Créer un contact…</string>
@@ -214,6 +219,7 @@
     <string name="button_open_version_history">Historique des versions</string>
     <string name="button_all">Tous</string>
     <string name="button_snooze">Rappeler</string>
+    <string name="button_attach">Joindre</string>
     <string name="button_hide">Cacher</string>
     <string name="button_silent">Ne pas notifier</string>
     <string name="button_dial">Téléphoner</string>
@@ -564,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Défilement rapide</string>
     <string name="pref_List_FastScroll_summary">"Activer le défilement rapide de la liste des événements en touchant le côté droit de l'écran"</string>
 
+    <string name="pref_List_QuickAction_title">Action rapide</string>
+    <string name="pref_List_QuickAction_summary">"Toujours afficher cette action dans la barre d'action"</string>
+    <string name="pref_List_QuickAction_none">Aucun</string>
+
     <string name="pref_Female_Names_title">Noms féminins</string>
     <string name="pref_Female_Names_description">"Noms féminins supplémentaires pour afficher correctement les icônes des contacts sans photo et définir les noms complets"</string>
     <string name="pref_Female_Names_hint">Entrez les prénoms féminins (par virgule)</string>
@@ -602,6 +612,13 @@
         <item>"Ouvrir la fiche de contact, en cas d'absence - lien web, en cas d'absence - événement du calendrier"</item>
         <item>Ouvrir le menu contextuel</item>
         <item>Ne rien faire</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Profondeur de recherche</string>
+    <string name="pref_List_SearchDeath_summary">Quelles sources rechercher les événements</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Sources sélectionnées</item>
+        <item>Toutes les sources</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">"Événements d'aujourd'hui"</string>
@@ -758,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">Pendant combien de jours les événements sont considérés comme les plus proches</string>
     <string name="pref_Widgets_Days_EventSoon_title">"Événements proches"</string>
 
-    <string name="widget_config_hint_battery_optimization_title">"L'optimisation de la batterie pour cette application est activée. Cela peut affecter la mise à jour des widgets et le fonctionnement des notifications. Désactiver l'optimisation…"</string>
-
     <string name="widget_config_event_types_title">"Types des événements"</string>
     <string name="widget_config_event_types_description">"Quels événements afficher sur le widget"</string>
 
@@ -778,6 +793,8 @@
     <string name="widget_config_scope_events_items">Tous,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Automatiquement,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Tous,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">"Trop peu d'événements:"</string>
+    <string name="widget_config_layout_items">Développer, Conserver la largeur</string>
 
     <string name="widget_config_font_label">"Facteur de mise à l'échelle de la taille de police"</string>
     <string name="widget_config_font_description">"Utilisé lors de la mise à l'échelle du widget pour augmenter la taille de la police d'âge, la distance à l'événement et les informations sous la photo"</string>
@@ -1030,6 +1047,8 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_About_summary">"Historique des versions, statistiques des événements liens vers les magasins d'applications"</string>
     <string name="pref_BatteryOptimization_title">"L'optimisation de la batterie est activée"</string>
     <string name="pref_BatteryOptimization_summary">"Ouvrez le paramètre et désactivez L'optimisation…"</string>
+    <string name="pref_ExactAlarms_title">Les alarmes et rappels sont désactivés</string>
+    <string name="pref_ExactAlarms_summary">Ouvrez le paramètre et activez-le pour planifier les notifications et les mises à jour des widgets à une heure spécifique…</string>
     <string name="pref_ContactsAccess_title">Aucun accès aux contacts</string>
     <string name="pref_ContactsAccess_summary">"Demander l'accès aux données de contacts…"</string>
     <string name="pref_CalendarAccess_title">Aucun accès au calendrier</string>
@@ -1041,6 +1060,9 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_Debug_On_summary">"Afficher les messages de débogage (il est recommandé de l'activer si les widgets ou les événements ne s'affichent pas correctement et de l'envoyer à l'auteur de l'application)"</string>
     <string name="pref_ExtraFun_On_title">Fonctionnalités supplémentaires</string>
     <string name="pref_ExtraFun_On_description">"Activer des fonctionnalités supplémentaires pour personnaliser divers aspects de l'application"</string>
+    <string name="pref_Help_CalendarSync_title">Synchronisation des calendriers</string>
+    <string name="pref_Help_CalendarSync_summary">Forcer la synchronisation de tous les calendriers</string>
+    <string name="pref_Help_CalendarSync_result">Synchronisation forcée pour les calendriers…</string>
 
     <string name="pref_Tools_title">Outils</string>
     <string name="pref_Tools_summary">Différents outils de manipulation des données</string>

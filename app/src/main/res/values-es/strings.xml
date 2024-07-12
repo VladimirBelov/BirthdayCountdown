@@ -24,13 +24,18 @@
 
     <string name="menu_add_event">Añadir evento</string>
     <string name="menu_add_event_to_contact">Agregar evento al contacto…</string>
+    <string name="menu_add_event_to_contact_short">Agregar al contacto…</string>
     <string name="menu_add_event_to_calendar">Agregar evento al calendario…</string>
+    <string name="menu_add_event_to_calendar_short">Agregar al calendario…</string>
     <string name="menu_open_file_with_events">Abrir archivo con eventos…</string>
+    <string name="menu_open_file_with_events_short">Abrir archivo…</string>
     <string name="menu_settings">Configuraciones</string>
     <string name="menu_refresh">Actualizar</string>
     <string name="menu_search">Buscar</string>
     <string name="menu_quiz">Encuesta</string>
     <string name="menu_filter_events">Filtrar…</string>
+    <string name="menu_events_sources">Fuentes…</string>
+    <string name="menu_events_types">Tipos de eventos…</string>
     <string name="menu_hints">Sugerencias de búsqueda…</string>
     <string name="menu_context_edit_contact">Editar contacto</string>
     <string name="menu_context_create_contact">Create contact…</string>
@@ -214,6 +219,7 @@
     <string name="button_open_version_history">Historial de versiones</string>
     <string name="button_all">Todas</string>
     <string name="button_snooze">Recordar</string>
+    <string name="button_attach">Adjuntar</string>
     <string name="button_hide">Esconder</string>
     <string name="button_silent">No notificar</string>
     <string name="button_dial">Llamada</string>
@@ -564,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Desplazamiento rápido</string>
     <string name="pref_List_FastScroll_summary">Habilite el desplazamiento rápido para la lista de eventos mientras toca el lado derecho de la pantalla</string>
 
+    <string name="pref_List_QuickAction_title">Acción rápida</string>
+    <string name="pref_List_QuickAction_summary">Mostrar siempre esta acción en la barra de acciones</string>
+    <string name="pref_List_QuickAction_none">Ninguno</string>
+
     <string name="pref_Female_Names_title">Nombres femeninos</string>
     <string name="pref_Female_Names_description">Nombres femeninos adicionales para la visualización correcta de los iconos de contacto sin una foto.</string>
     <string name="pref_Female_Names_hint">Ingrese nombres femeninos (separados por comas)</string>
@@ -602,6 +612,13 @@
         <item>Abra la tarjeta de contacto, si está ausente - enlace web, si está ausente - evento del calendario</item>
         <item>Abrir menú contextual</item>
         <item>Nada</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Profundidad de búsqueda</string>
+    <string name="pref_List_SearchDeath_summary">Qué fuentes buscar eventos</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Fuentes seleccionadas</item>
+        <item>Todas las fuentes</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Eventos de hoy</string>
@@ -758,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">Por cuántos días se consideran los eventos los más cercanos</string>
     <string name="pref_Widgets_Days_EventSoon_title">Próximos eventos</string>
 
-    <string name="widget_config_hint_battery_optimization_title">La optimización de la batería para esta aplicación está ACTIVADA. Esto puede evitar que los widgets se actualicen o que aparezcan notificaciones. Apagar…</string>
-
     <string name="widget_config_event_types_title">Tipos de eventos</string>
     <string name="widget_config_event_types_description">Qué eventos mostrar en el widget</string>
 
@@ -778,6 +793,8 @@
     <string name="widget_config_scope_events_items">Todos,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Automáticamente,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Todos,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Muy pocos eventos:</string>
+    <string name="widget_config_layout_items">Expandir, Mantener ancho</string>
 
     <string name="widget_config_font_label">Factor de escala del tamaño de fuente</string>
     <string name="widget_config_font_description">Se usa al escalar el widget para aumentar el tamaño de fuente de la edad, la distancia al evento y la información debajo de la foto</string>
@@ -1030,6 +1047,8 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="pref_About_summary">Historial de versiones, estadísticas de eventos, enlaces de tiendas de aplicaciones</string>
     <string name="pref_BatteryOptimization_title">Optimización de batería activada</string>
     <string name="pref_BatteryOptimization_summary">Abra la configuración y desactive la optimización…</string>
+    <string name="pref_ExactAlarms_title">Las alarmas y recordatorios están desactivados</string>
+    <string name="pref_ExactAlarms_summary">Abra la configuración y actívela para programar notificaciones y actualizaciones de widgets para una hora específica…</string>
     <string name="pref_ContactsAccess_title">Sin acceso a eventos de contactos</string>
     <string name="pref_ContactsAccess_summary">Solicitar permiso para eventos de contactos…</string>
     <string name="pref_CalendarAccess_title">Sin acceso al calendario</string>
@@ -1041,6 +1060,9 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="pref_Debug_On_summary">Mostrar mensajes para depurar (se recomienda habilitarlo si los widgets o eventos se muestran incorrectamente y enviarlo al autor del programa)</string>
     <string name="pref_ExtraFun_On_title">Funciones extra</string>
     <string name="pref_ExtraFun_On_description">Habilite funciones adicionales para personalizar varios aspectos de la aplicación</string>
+    <string name="pref_Help_CalendarSync_title">Sincronización de calendarios</string>
+    <string name="pref_Help_CalendarSync_summary">Forzar sincronización de todos los calendarios</string>
+    <string name="pref_Help_CalendarSync_result">Sincronización forzada para calendarios…</string>
 
     <string name="pref_Tools_title">Herramientas</string>
     <string name="pref_Tools_summary">Diferentes herramientas para la manipulación de datos</string>

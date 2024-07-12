@@ -11,6 +11,18 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.3</item>
+        <item>Suchtiefe für Ereignisse (Einstellungen->Liste der Ereignisse->Suchtiefe) (Extrafunktionen)</item>
+        <item>Satz zeitloser Silhouetten</item>
+        <item>Festlegen der Anzahl von Tagen und Ereignissen im Foto-Widget</item>
+        <item>Erzwungene Synchronisierung von Kalendern (Einstellungen->Hilfe)</item>
+        <item>Optimierung für Android 14</item>
+        <item>Unterstützung für Nicht-Feiertage aus Dateien im Kalender-Widget</item>
+        <item>Neue Aktion für Benachrichtigungen: \"Anhängen\"</item>
+        <item>Schnelle Auswahl von Quellen und Ereignistypen für die Hauptliste (Extrafunktionen)</item>
+        <item>Festlegen einer Schnellaktion für das Hauptlistenmenü (Einstellungen->Liste der Ereignisse->Schnelle Aktion) (Extrafunktionen)</item>
+        <item>Das Kalender-Widget verwendet die Farben der Quellkalender durch Standard</item>
+
         <item>#1.8.2</item>
         <item>Möglichkeit zur Auswahl von Ereignisquellen für die Hauptliste und Benachrichtigungen (Extrafunktionen)</item>
         <item>Möglichkeit zur Auswahl von Ereignisdetails für Benachrichtigungen (Extrafunktionen)</item>

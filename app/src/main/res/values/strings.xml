@@ -614,7 +614,7 @@
         <item>Nothing</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Search death</string>
+    <string name="pref_List_SearchDeath_title">Search depth</string>
     <string name="pref_List_SearchDeath_summary">What sources to look for events in</string>
     <string-array name="pref_List_SearchDeath_entries">
         <item>Selected sources</item>
@@ -793,8 +793,6 @@
 
     <string name="pref_Widgets_Days_EventSoon_summary">For how many days events are considered to be nearest</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nearest events days amount</string>
-
-    <string name="widget_config_hint_battery_optimization_title">Battery optimization for this application is ON. This may prevents widgets update or notifications appear. Turn it OFF…</string>
 
     <string name="widget_config_event_types_title">Event types</string>
     <string name="widget_config_event_types_description">What kind of events to display on this widget</string>
@@ -1068,6 +1066,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_About_summary">Version history, events statistics, appstores links</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
     <string name="pref_BatteryOptimization_summary">Open the setting and turn off the optimization…</string>
+    <string name="pref_ExactAlarms_title">Alarms &amp; reminders are OFF</string>
+    <string name="pref_ExactAlarms_summary">Open the setting and turn this on to schedule notifications and widgets updates for a specific time…</string>
     <string name="pref_ContactsAccess_title">No access to contacts events</string>
     <string name="pref_ContactsAccess_summary">Request permission to contacts events…</string>
     <string name="pref_CalendarAccess_title">No access to calendar</string>
@@ -1079,7 +1079,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Debug_On_summary">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
     <string name="pref_ExtraFun_On_title">Extra features</string>а
     <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
-    <string name="pref_Help_CalendarSync_title">Calendar sync</string>
+    <string name="pref_Help_CalendarSync_title">Calendars sync</string>
     <string name="pref_Help_CalendarSync_summary">Force sync of all calendars</string>
     <string name="pref_Help_CalendarSync_result">Forced sync for calendars…</string>
 
@@ -1127,7 +1127,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="stats_permissions_files"><![CDATA[<li>external storage access: %1$s]]></string>
     <string name="stats_permissions_post_notifications"><![CDATA[<li>permission to send notifications: %1$s]]></string>
     <string name="stats_permissions_notifications_on"><![CDATA[<li>notifications: %1$s]]></string>
-    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>permission to schedule notifications for a specific time: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>permission to schedule notifications and widgets updates for a specific time: %1$s]]></string>
     <string name="stats_permissions_wakelock"><![CDATA[<li>widgets update access (wake lock): %1$s]]></string>
     <string name="stats_permissions_battery"><![CDATA[<li>battery optimization: %1$s]]></string>
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>autostart (Xiaomi): %1$s]]></string>
@@ -2166,6 +2166,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <bool name="pref_Help_ExtraFun_On_default" translatable="false">false</bool>
 
     <string name="pref_Help_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
+    <string name="pref_Help_ExactAlarms_key" translatable="false">ExactAlarms</string>
     <string name="pref_Help_ContactsAccess_key" translatable="false">ContactsAccess</string>
     <string name="pref_Help_CalendarAccess_key" translatable="false">CalendarAccess</string>
     <string name="pref_Help_CalendarSync_key" translatable="false">CalendarSync</string>

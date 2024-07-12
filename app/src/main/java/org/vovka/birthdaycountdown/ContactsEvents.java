@@ -2847,7 +2847,7 @@ class ContactsEvents {
                                 }
                             }
 
-                            if (contactID != null) {
+                            if (contactID != null && event.needScanContacts) {
                                 importMethod = importMethod_NewContactEvent;
                                 userData.put(Position_contactID, contactID);
                                 userData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
@@ -3985,7 +3985,7 @@ class ContactsEvents {
                 event.type = getEventType(Constants.Type_Other);
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
-                event.needScanContacts = false;
+                event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel_forSearch).find()) {
 
@@ -8225,12 +8225,11 @@ class ContactsEvents {
     }
 
     boolean checkCanExactAlarm() {
+        //Если стоит isIgnoringBatteryOptimizations, то canScheduleExactAlarms возвращает true
         boolean canExact = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager.canScheduleExactAlarms()) {
-            //BUG: https://issuetracker.google.com/issues/292556798
-            //if (ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) == PackageManager.PERMISSION_GRANTED) {
                 canExact = true;
             }
         } else {

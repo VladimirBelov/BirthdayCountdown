@@ -34,6 +34,8 @@
     <string name="menu_search">Suche</string>
     <string name="menu_quiz">Quiz</string>
     <string name="menu_filter_events">Filtern…</string>
+    <string name="menu_events_sources">Quellen…</string>
+    <string name="menu_events_types">Ereignistypen…</string>
     <string name="menu_hints">Suchhinweise…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_create_contact">Kontakt erstellen…</string>
@@ -217,6 +219,7 @@
     <string name="button_open_version_history">Versionsverlauf</string>
     <string name="button_all">Alle</string>
     <string name="button_snooze">Erinnerung</string>
+    <string name="button_attach">Anhängen</string>
     <string name="button_hide">Ausblenden</string>
     <string name="button_silent">Nicht benachrichtigen</string>
     <string name="button_dial">Telefonieren</string>
@@ -567,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Schnelles Scrollen</string>
     <string name="pref_List_FastScroll_summary">Aktivieren Sie den schnellen Bildlauf für die Ereignisliste, während Sie die rechte Seite des Bildschirms berühren</string>
 
+    <string name="pref_List_QuickAction_title">Schnelle Aktion</string>
+    <string name="pref_List_QuickAction_summary">Diese Aktion immer in der Aktionsleiste anzeigen</string>
+    <string name="pref_List_QuickAction_none">Keine</string>
+
     <string name="pref_Female_Names_title">Weibliche Namen</string>
     <string name="pref_Female_Names_description">Zusätzliche weibliche Namen für die korrekte Anzeige von Kontaktsymbolen ohne Foto und vollständige Namensanalyse</string>
     <string name="pref_Female_Names_hint">Geben Sie weibliche Namen ein (durch Komma getrennt)</string>
@@ -605,6 +612,13 @@
         <item>Kontakt öffnen, falls nicht vorhanden - Weblink, falls nicht vorhanden - Kalendertermin</item>
         <item>Kontextmenü öffnen</item>
         <item>Keine Aktion</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Suchtiefe</string>
+    <string name="pref_List_SearchDeath_summary">Welche Quellen sollen nach Ereignissen durchsucht werden</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Ausgewählte Quellen</item>
+        <item>Alle Quellen</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Heutige Ereignisse</string>
@@ -761,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Bevorstehende Ereignisse</string>
 
-    <string name="widget_config_hint_battery_optimization_title">Die Batterieoptimierung für diese Anwendung ist aktiviert. Dies kann verhindern, dass Widgets aktualisiert werden oder Benachrichtigungen angezeigt werden. Schalte es AUS…</string>
-
     <string name="widget_config_event_types_title">Ereignistypen</string>
     <string name="widget_config_event_types_description">Welche Ereignisse im Widget angezeigt werden sollen </string>
 
@@ -781,6 +793,8 @@
     <string name="widget_config_scope_events_items">Alle,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Automatisch,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Alle,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Zu wenige Ereignisse:</string>
+    <string name="widget_config_layout_items">Erweitern, Breite beibehalten</string>
 
     <string name="widget_config_font_label">Schriftgrößenverhältnis</string>
     <string name="widget_config_font_description">Wird beim Skalieren des Widgets verwendet, um die Schriftgrößen des Alters, des Abstands zum Ereignis und der Informationen unter dem Foto zu erhöhen</string>
@@ -1033,6 +1047,8 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_summary">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
+    <string name="pref_ExactAlarms_title">Alarme und Erinnerungen sind AUS</string>
+    <string name="pref_ExactAlarms_summary">Öffnen Sie die Einstellung und aktivieren Sie diese, um Benachrichtigungen und Widget-Updates für eine bestimmte Zeit zu planen…</string>
     <string name="pref_ContactsAccess_title">Kein Zugriff auf Kontaktereignisse</string>
     <string name="pref_ContactsAccess_summary">Berechtigung für Zugriff auf Kontaktereignisse anfordern…</string>
     <string name="pref_CalendarAccess_title">Kein Zugriff auf den Kalender</string>
@@ -1044,6 +1060,9 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_Debug_On_summary">Debug-Meldungen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
     <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
+    <string name="pref_Help_CalendarSync_title">Kalender synchronisieren</string>
+    <string name="pref_Help_CalendarSync_summary">Synchronisierung aller Kalender erzwingen</string>
+    <string name="pref_Help_CalendarSync_result">Erzwungene Synchronisierung für Kalender…</string>
 
     <string name="pref_Tools_title">Werkzeuge</string>
     <string name="pref_Tools_summary">Verschiedene Werkzeuge zur Datenbearbeitung</string>

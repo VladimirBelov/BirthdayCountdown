@@ -22,7 +22,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -46,7 +45,6 @@ import java.util.Locale;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -402,26 +400,11 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 colorWeeksPicker.setColor(colorWeeks);
             } catch (final Exception e) { /**/ }
 
-
-            //Обновляем видимость элементов
-            updateVisibility();
-
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
-        }
-    }
-
-    private void updateVisibility() {
-        try {
-
-            if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -564,15 +547,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     public void buttonCancelOnClick(@SuppressWarnings("unused") final View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
-        final Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-        try {
-            startActivity(intent);
-        } catch (final android.content.ActivityNotFoundException e) { /**/ }
     }
 
     @Override

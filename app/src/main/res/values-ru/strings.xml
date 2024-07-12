@@ -794,8 +794,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">За сколько дней события считаются ближайшими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Ближайшие события</string>
 
-    <string name="widget_config_hint_battery_optimization_title">Включена оптимизация батареи для этого приложения. Это может повлиять на обновление виджетов и работу уведомлений. Выключить оптимизацию…</string>
-
     <string name="widget_config_event_types_title">Типы событий</string>
     <string name="widget_config_event_types_description">Какие события отображать на виджете</string>
 
@@ -1068,6 +1066,8 @@
     <string name="pref_About_summary">История версий, статистика событий, ссылки на магазины приложений</string>
     <string name="pref_BatteryOptimization_title">Оптимизация батареи ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_summary">Открыть настройку и выключить оптимизацию…</string>
+    <string name="pref_ExactAlarms_title">Будильники и напоминания ВЫКЛЮЧЕНЫ</string>
+    <string name="pref_ExactAlarms_summary">Открыть настройку и включить планирование уведомлений и обновлений виджетов на точное время…</string>
     <string name="pref_ContactsAccess_title">Нет доступа к контактам</string>
     <string name="pref_ContactsAccess_summary">Запросить доступ к данным контактов…</string>
     <string name="pref_CalendarAccess_title">Нет доступа к календарям</string>

@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,7 +44,6 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -629,25 +627,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void updateVisibility() {
         try {
 
-            if (this.eventsData.checkNoBatteryOptimization()) findViewById(R.id.hintBatteryOptimization).setVisibility(View.GONE);
-
             boolean isNotPhotoWidget = !widgetType.equals(Constants.WIDGET_TYPE_5X1) && !widgetType.equals(Constants.WIDGET_TYPE_4X1)
                     && !widgetType.equals(Constants.WIDGET_TYPE_2X2);
 
             if (isNotPhotoWidget) {
                 findViewById(R.id.blockLayout).setVisibility(View.GONE);
             }
-
-            //if (!widgetType.equals(Constants.WIDGET_TYPE_5X1)) {
-
-                //Скрываем количество событий
-                //todo: удалить
-                //findViewById(R.id.dividerEventsCount).setVisibility(View.GONE);
-               //findViewById(R.id.captionEventsCount).setVisibility(View.GONE);
-               // findViewById(R.id.spinnerEventsCount).setVisibility(View.GONE);
-              //  findViewById(R.id.hintEventsCount).setVisibility(View.GONE);
-
-            //}
 
             if (this.isListWidget) {
 
@@ -915,15 +900,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public void buttonCancelOnClick(@SuppressWarnings("unused") final View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void openBatteryOptimisationsSettings(@SuppressWarnings("unused") final View view) {
-        final Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-        try {
-            startActivity(intent);
-        } catch (final android.content.ActivityNotFoundException e) { /**/ }
     }
 
     @Override

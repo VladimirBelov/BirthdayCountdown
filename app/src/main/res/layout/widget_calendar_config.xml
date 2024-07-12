@@ -47,18 +47,6 @@
                 android:isScrollContainer="true">
 
                 <TextView
-                    android:id="@+id/hintBatteryOptimization"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:onClick="openBatteryOptimisationsSettings"
-                    android:paddingBottom="20dp"
-                    android:text="@string/widget_config_hint_battery_optimization_title"
-                    android:textColor="@color/dark_red"
-                    android:textStyle="bold"
-                    tools:ignore="VisualLintLongText" />
-
-                <TextView
                     android:id="@+id/captionMonthsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

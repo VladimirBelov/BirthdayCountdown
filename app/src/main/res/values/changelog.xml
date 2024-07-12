@@ -10,6 +10,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+        
+        <item>#1.8.3</item>
+        <item>Events search depth (Settings->Event list->Search depth) (extra features)</item>
+        <item>Set of ageless silhouettes</item>
+        <item>Setting the number of days and events in the photo widget</item>
+        <item>Forced synchronization of calendars (Settings->Help)</item>
+        <item>Optimization for Android 14</item>
+        <item>Support for non-holiday days from files in the calendar widget</item>
+        <item>New action for notifications: \"Attach\"</item>
+        <item>Quick selection of sources and types of events for the main list (extra features)</item>
+        <item>Setting a quick action for main list menu (Settings->Events list->Quick action) (extra features)</item>
+        <item>The calendar widget uses the colors of the source calendars by default</item>
 
         <item>#1.8.2</item>
         <item>Ability to select event sources for the main list and notifications (extra features)</item>

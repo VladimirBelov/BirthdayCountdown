@@ -24,13 +24,18 @@
 
     <string name="menu_add_event">Дадаць падзею</string>
     <string name="menu_add_event_to_contact">Дадаць падзею ў кантакт…</string>
+    <string name="menu_add_event_to_contact_short">Дадаць ў кантакт…</string>
     <string name="menu_add_event_to_calendar">Дадаць падзею ў каляндар…</string>
+    <string name="menu_add_event_to_calendar_short">Дадаць ў каляндар…</string>
     <string name="menu_open_file_with_events">Адчыніць файл з падзеямі…</string>
+    <string name="menu_open_file_with_events_short">Адчыніць файл…</string>
     <string name="menu_settings">Наладкі</string>
     <string name="menu_refresh">Абнавіць</string>
     <string name="menu_search">Пошук</string>
     <string name="menu_quiz">Віктарына</string>
     <string name="menu_filter_events">Фільтр…</string>
+    <string name="menu_events_sources">Крыніцы…</string>
+    <string name="menu_events_types">Тыпы падзей…</string>
     <string name="menu_hints">Падказкі для пошука…</string>
     <string name="menu_context_edit_contact">Рэдагаваць кантакт</string>
     <string name="menu_context_create_contact">Стварыць кантакт…</string>
@@ -214,6 +219,7 @@
     <string name="button_open_version_history">Гісторыя версій</string>
     <string name="button_all">Усе</string>
     <string name="button_snooze">Напомніць</string>
+    <string name="button_attach">Далучыць</string>
     <string name="button_hide">Схаваць</string>
     <string name="button_silent">Не паведамляць</string>
     <string name="button_dial">Патэлефанаваць</string>
@@ -564,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Хуткая пракрутка</string>
     <string name="pref_List_FastScroll_summary">Уключыць хуткую пракрутку спіса падзей, дакранаючыся правай часткі экрана</string>
 
+    <string name="pref_List_QuickAction_title">Хуткае дзеянне</string>
+    <string name="pref_List_QuickAction_summary">Заўсёды паказваць гэта дзеянне на панэлі дзеянняў</string>
+    <string name="pref_List_QuickAction_none">Няма</string>
+
     <string name="pref_Female_Names_title">Жаночыя імёны</string>
     <string name="pref_Female_Names_description">Дадатковыя жаночыя імёны для карэктнага адлюстравання піктаграм кантактаў без фота і вызначэння поўных імёнаў</string>
     <string name="pref_Female_Names_hint">Увядзіце жаночыя імёны (праз коску)</string>
@@ -602,6 +612,13 @@
         <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзея календара</item> <!--Кантакт, спасылка, каляндар-->
         <item>Адкрыць кантэкставае меню</item>
         <item>Нічога не рабіць</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Глыбіня пошуку</string>
+    <string name="pref_List_SearchDeath_summary">У якіх крыніцах шукаць падзеі</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Выбраныя крыніцы</item>
+        <item>Усе крыніцы</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Падзеі сёння</string>
@@ -758,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">За колькі дзён падзеі лічацца найблізкімі</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найблізкія падзеі</string>
 
-    <string name="widget_config_hint_battery_optimization_title">Уключана аптымізацыя батарэі для гэтай праграмы. Гэта можа паўплываць на абнаўленне віджэтаў і працу паведамленняў. Выключыць аптымізацыю…</string>
-
     <string name="widget_config_event_types_title">Тыпы падзей</string>
     <string name="widget_config_event_types_description">Якія падзеі адлюстроўваць на віджэце</string>
 
@@ -778,6 +793,8 @@
     <string name="widget_config_scope_events_items">Усе,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Аўтаматычна,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Усе,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Занадта мала падзей:</string>
+    <string name="widget_config_layout_items">Разгарнуць, захаваць шырыню</string>
 
     <string name="widget_config_font_label">Каэфіцыент маштабавання памеру шрыфту</string>
     <string name="widget_config_font_description">Выкарыстоўваецца пры маштабаванні віджэта для павелічэння памеру шрыфту ўзросту, дыстанцыі да падзеі і інфармацыі пад фота</string>
@@ -1030,6 +1047,8 @@
     <string name="pref_About_summary">Гісторыя версій, статыстыка падзей, спасылкі на крамы праграмаў</string>
     <string name="pref_BatteryOptimization_title">Аптымізацыя батарэі ЎКЛЮЧАНА</string>
     <string name="pref_BatteryOptimization_summary">Адкрыць настройку і выключыць аптымізацыю…</string>
+    <string name="pref_ExactAlarms_title">Будзільнікі і напаміны ВЫКЛЮЧАНЫ</string>
+    <string name="pref_ExactAlarms_summary">Адкрыйце наладу і ўключыце гэта, каб запланаваць абнаўленні апавяшчэнняў і віджэтаў на пэўны час…</string>
     <string name="pref_ContactsAccess_title">Няма доступу да кантактаў</string>
     <string name="pref_ContactsAccess_summary">Запытаць доступ да дадзеных кантактаў…</string>
     <string name="pref_CalendarAccess_title">Няма доступу да календароў</string>
@@ -1041,6 +1060,9 @@
     <string name="pref_Debug_On_summary">Паказваць паведамленні для адладкі памылак (рэкамендуецца ўключыць, калі некарэктна адлюстроўваюцца віджэты ці падзеі, ці не вызначаюцца нейкія даты, і даслаць аўтару праграмы)</string>
     <string name="pref_ExtraFun_On_title">Дад. функцыі</string>
     <string name="pref_ExtraFun_On_description">Уключыць дадатковыя функцыі па наладзе розных аспектаў праграмы</string>
+    <string name="pref_Help_CalendarSync_title">Сінхранізацыя календароў</string>
+    <string name="pref_Help_CalendarSync_summary">Прымусова сінхранізаваць усе календары</string>
+    <string name="pref_Help_CalendarSync_result">Прымусовая сінхранізацыя для календароў…</string>
 
     <string name="pref_Tools_title">Прылады</string>
     <string name="pref_Tools_summary">Розныя прылады для маніпуляцый з дадзенымі</string>

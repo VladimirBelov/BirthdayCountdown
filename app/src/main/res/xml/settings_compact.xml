@@ -1238,6 +1238,13 @@
             android:layout="@layout/settings_item_red"/>
 
         <Preference
+            android:key="@string/pref_Help_ExactAlarms_key"
+            android:title="@string/pref_ExactAlarms_title"
+            android:summary="@string/pref_ExactAlarms_summary"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
             android:key="@string/pref_Help_ContactsAccess_key"
             android:title="@string/pref_ContactsAccess_title"
             android:summary="@string/pref_ContactsAccess_summary"

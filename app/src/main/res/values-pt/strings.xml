@@ -24,13 +24,18 @@
 
     <string name="menu_add_event">Adicionar evento</string>
     <string name="menu_add_event_to_contact">Adicionar evento ao contato…</string>
+    <string name="menu_add_event_to_contact_short">Adicionar ao contato…</string>
     <string name="menu_add_event_to_calendar">Adicionar evento ao calendário…</string>
+    <string name="menu_add_event_to_calendar_short">Adicionar ao calendário…</string>
     <string name="menu_open_file_with_events">Abrir arquivo com eventos…</string>
+    <string name="menu_open_file_with_events_short">Abrir arquivo…</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_refresh">Atualizar</string>
     <string name="menu_search">Procurar</string>
     <string name="menu_quiz">Teste</string>
     <string name="menu_filter_events">Filtrar…</string>
+    <string name="menu_events_sources">Fontes…</string>
+    <string name="menu_events_types">Tipos de eventos…</string>
     <string name="menu_hints">Dicas de pesquisa…</string>
     <string name="menu_context_edit_contact">Editar contato</string>
     <string name="menu_context_create_contact">Criar contato…</string>
@@ -214,6 +219,7 @@
     <string name="button_open_version_history">Histórico de versões</string>
     <string name="button_all">Todos</string>
     <string name="button_snooze">Lembrar</string>
+    <string name="button_attach">Anexar</string>
     <string name="button_hide">Ocultar</string>
     <string name="button_silent">Não notificar</string>
     <string name="button_dial">Discar</string>
@@ -564,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Rolagem rápida</string>
     <string name="pref_List_FastScroll_summary">Ativar rolagem rápida para lista de eventos ao tocar no lado direito da tela</string>
 
+    <string name="pref_List_QuickAction_title">Ação rápida</string>
+    <string name="pref_List_QuickAction_summary">Sempre mostrar esta ação na barra de ações</string>
+    <string name="pref_List_QuickAction_none">Nenhum</string>
+
     <string name="pref_Female_Names_title">Nomes femininos</string>
     <string name="pref_Female_Names_description">Nomes femininos adicionais para a exibição correta de ícones de contato sem foto e análise de nomes completos</string>
     <string name="pref_Female_Names_hint">Insira nomes femininos (por vírgula)</string>
@@ -602,6 +612,13 @@
         <item>Abra o cartão de contato, se estiver ausente - link da web, se estiver ausente - evento do calendário</item>
         <item>Abrir menu de contexto</item>
         <item>Nada</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Profundidade de pesquisa</string>
+    <string name="pref_List_SearchDeath_summary">Quais fontes procurar eventos</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Fontes selecionadas</item>
+        <item>Todas as fontes</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Eventos de hoje</string>
@@ -758,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">Por quantos dias os eventos são considerados mais próximos</string>
     <string name="pref_Widgets_Days_EventSoon_title">Quantidade de dias de eventos mais próximos</string>
 
-    <string name="widget_config_hint_battery_optimization_title">A otimização da bateria para este aplicativo está ATIVADA. Isso pode impedir a atualização de widgets ou o aparecimento de notificações. Desligue…</string>
-
     <string name="widget_config_event_types_title">Tipos de eventos</string>
     <string name="widget_config_event_types_description">Que tipo de eventos exibir neste widget</string>
 
@@ -778,6 +793,8 @@
     <string name="widget_config_scope_events_items">Todos,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Automático,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Todos,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Poucos eventos:</string>
+    <string name="widget_config_layout_items">Expandir,Manter largura</string>
 
     <string name="widget_config_font_label">Fator de ampliação da fonte</string>
     <string name="widget_config_font_description">Multiplicador de escala de fonte para idade, distância do evento e texto de informações abaixo da foto</string>
@@ -1030,6 +1047,8 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_About_summary">Histórico de versões, estatísticas de eventos, links de lojas de aplicativos</string>
     <string name="pref_BatteryOptimization_title">A otimização da bateria está ATIVADA</string>
     <string name="pref_BatteryOptimization_summary">Abra a configuração e desative a otimização…</string>
+    <string name="pref_ExactAlarms_title">Alarmes e lembretes estão DESATIVADOS</string>
+    <string name="pref_ExactAlarms_summary">Abra a configuração e ative-a para agendar notificações e atualizações de widgets para um horário específico…</string>
     <string name="pref_ContactsAccess_title">Sem acesso a eventos de contatos</string>
     <string name="pref_ContactsAccess_summary">Solicitar permissão para eventos de contatos…</string>
     <string name="pref_CalendarAccess_title">Sem acesso ao calendário</string>
@@ -1041,6 +1060,9 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_Debug_On_summary">Mostrar mensagens de depuração (recomenda-se habilitá-lo se widgets ou eventos forem exibidos incorretamente e enviá-los ao autor do aplicativo)</string>
     <string name="pref_ExtraFun_On_title">Recursos extras</string>а
     <string name="pref_ExtraFun_On_description">Ative recursos adicionais para personalizar vários aspectos do aplicativo</string>
+    <string name="pref_Help_CalendarSync_title">Sincronização de calendários</string>
+    <string name="pref_Help_CalendarSync_summary">Forçar sincronização de todos os calendários</string>
+    <string name="pref_Help_CalendarSync_result">Sincronização forçada para calendários…</string>
 
     <string name="pref_Tools_title">Ferramentas</string>
     <string name="pref_Tools_summary">Diferentes ferramentas para manipulação de dados</string>

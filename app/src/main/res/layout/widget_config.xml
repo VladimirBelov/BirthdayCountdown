@@ -47,18 +47,6 @@
                 android:isScrollContainer="true">
 
                 <TextView
-                    android:id="@+id/hintBatteryOptimization"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:onClick="openBatteryOptimisationsSettings"
-                    android:paddingBottom="20dp"
-                    android:text="@string/widget_config_hint_battery_optimization_title"
-                    android:textColor="@color/dark_red"
-                    android:textStyle="bold"
-                    tools:ignore="VisualLintLongText" />
-
-                <TextView
                     android:id="@+id/captionEventTypes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -730,14 +718,15 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/widget_config_photostyle_label"
                     android:entries="@array/widget_config_photostyle"
-                    tools:ignore="DuplicateSpeakableTextCheck,TooManyViews" />
+                    tools:ignore="DuplicateSpeakableTextCheck" />
 
                 <TextView
                     android:id="@+id/hintPhotoStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_photostyle_description"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:ignore="TooManyViews" />
 
                 <View
                     android:id="@+id/dividerWidgetBackgroundColor"

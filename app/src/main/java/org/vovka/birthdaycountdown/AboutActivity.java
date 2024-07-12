@@ -131,12 +131,6 @@ public class AboutActivity extends AppCompatActivity {
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 
-            //https://stackoverflow.com/questions/58340558/how-to-detect-android-go
-            //https://stackoverflow.com/questions/39036411/activitymanagercompat-islowramdevice-is-useless-is-always-returns-false
-            //ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            //if (am.isLowRamDevice()) {
-            //   webView.setVisibility(View.GONE);
-
             StringBuilder sb = new StringBuilder();
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
@@ -213,20 +207,23 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_notifications_on, NotificationManagerCompat.from(this).areNotificationsEnabled()
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, eventsData.checkCanExactAlarm()
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
-                    }
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         sb.append(getString(R.string.stats_permissions_post_notifications, ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
-                    sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    sb.append(getString(R.string.stats_permissions_battery, !eventsData.checkNoBatteryOptimization()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, eventsData.checkCanExactAlarm()
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    } else {
+                        sb.append(getString(R.string.stats_permissions_battery, !eventsData.checkNoBatteryOptimization()
+                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                    }
 
                     //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
                     if (ContactsEvents.isXiaomi()) {

@@ -24,13 +24,18 @@
 
     <string name="menu_add_event">Додати подію</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
+    <string name="menu_add_event_to_contact_short">Додати до контакту…</string>
     <string name="menu_add_event_to_calendar">Додати подію до календаря…</string>
+    <string name="menu_add_event_to_calendar_short">Додати до календаря…</string>
     <string name="menu_open_file_with_events">Відкрийте файл із подіями…</string>
+    <string name="menu_open_file_with_events_short">Відкрийте файл…</string>
     <string name="menu_settings">Налаштування</string>
     <string name="menu_refresh">Оновити</string>
     <string name="menu_search">Пошук</string>
     <string name="menu_quiz">Вікторина</string>
     <string name="menu_filter_events">Фільтр…</string>
+    <string name="menu_events_sources">Джерела…</string>
+    <string name="menu_events_types">Типи подій…</string>
     <string name="menu_hints">Пошукові підказки…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_create_contact">Crear contacto…</string>
@@ -213,7 +218,8 @@
     <string name="button_open_app_settings">Відкрити налаштування…</string>
     <string name="button_open_version_history">Історія версій</string>
     <string name="button_all">Всі</string>
-    <string name="button_snooze">Нагадати через годину</string>
+    <string name="button_snooze">Нагадати</string>
+    <string name="button_attach">Прикріпити</string>
     <string name="button_hide">Приховати</string>
     <string name="button_silent">Не повідомляти</string>
     <string name="button_dial">Дзвонити</string>
@@ -564,6 +570,10 @@
     <string name="pref_List_FastScroll_title">Швидке прокручування</string>
     <string name="pref_List_FastScroll_summary">Увімкніть швидке прокручування списку подій, торкаючись правого краю екрана</string>
 
+    <string name="pref_List_QuickAction_title">Швидка дія</string>
+    <string name="pref_List_QuickAction_summary">Завжди показувати цю дію на панелі дій</string>
+    <string name="pref_List_QuickAction_none">Немає</string>
+
     <string name="pref_Female_Names_title">Жіночі імена</string>
     <string name="pref_Female_Names_description">Додаткові жіночі імена для коректного відображення піктограм контактів без фото</string>
     <string name="pref_Female_Names_hint">Введіть жіночі імена (через кому)</string>
@@ -602,6 +612,13 @@
         <item>Відкрийте картку контакту, якщо немає - посилання на веб-сайт, якщо немає - календарну подію</item>
         <item>Відкрити контекстне меню</item>
         <item>Нічого</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Глибина пошуку</string>
+    <string name="pref_List_SearchDeath_summary">У яких джерелах шукати події</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Вибрані джерела</item>
+        <item>Усі джерела</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Подiя сьогодні</string>
@@ -758,8 +775,6 @@
     <string name="pref_Widgets_Days_EventSoon_summary">Кiлькiсть днів до подій, що вважаються найближчими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>
 
-    <string name="widget_config_hint_battery_optimization_title">Оптимізація батареї для роботи цієї програми ввiмкнена, зважайте, що це може перешкодити оновленню віджетів або появи повідомлень. Вимкнути…</string>
-
     <string name="widget_config_event_types_title">Типи подій</string>
     <string name="widget_config_event_types_description">Які події будуть відображенi на віджеті</string>
 
@@ -778,6 +793,8 @@
     <string name="widget_config_scope_events_items">Всi,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
     <string name="widget_config_photo_scope_events_items">Автоматично,1,2,3,4,5,6,7</string>
     <string name="widget_config_scope_days_items">Всi,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Замало подій:</string>
+    <string name="widget_config_layout_items">Розгорнути, зберегти ширину</string>
 
     <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
     <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, часу до події та інформації під фото</string>
@@ -1030,6 +1047,8 @@
     <string name="pref_About_summary">Історія версій, статистика подій, посилання на магазини програм</string>
     <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_summary">Відкрити налаштування і вимкнути оптимізацію…</string>
+    <string name="pref_ExactAlarms_title">Будильники та нагадування ВИМКНЕНО</string>
+    <string name="pref_ExactAlarms_summary">Відкрийте налаштування та ввімкніть це, щоб запланувати оновлення сповіщень і віджетів на певний час…</string>
     <string name="pref_ContactsAccess_title">Немає доступу до подій контактів</string>
     <string name="pref_ContactsAccess_summary">Запитати дозвіл на події контактів…</string>
     <string name="pref_CalendarAccess_title">Немає доступу до календаря</string>
@@ -1041,6 +1060,9 @@
     <string name="pref_Debug_On_summary">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
     <string name="pref_ExtraFun_On_title">Додаткові функції</string>
     <string name="pref_ExtraFun_On_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
+    <string name="pref_Help_CalendarSync_title">Синхронізація календарів</string>
+    <string name="pref_Help_CalendarSync_summary">Примусова синхронізація всіх календарів</string>
+    <string name="pref_Help_CalendarSync_result">Примусова синхронізація для календарів…</string>
 
     <string name="pref_Tools_title">Інструменти</string>
     <string name="pref_Tools_summary">Різні інструменти для обробки даних</string>
