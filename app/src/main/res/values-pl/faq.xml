@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.07.2024, 01:48
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 16.07.2024, 01:48
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="faq" tools:ignore="InconsistentArrays">
+
+        <item>###Ogólne</item>
+        <item>Ta sekcja nie jest dostępna w języku wybranym w ustawieniach. Przejdź na język angielski w interfejsie programu i użyj Tłumacza Google.</item>
+
+        <item>#Szukaj</item>
+        <item><![CDATA[Aby wyszukać wiele parametrów, oddziel je przecinkami (dowolna wartość) lub \"+\" (wszystkie wartości), na przykład:<ul>
+ <li>\"Antoni, Zofia\" – wyświetli zdarzenia kontaktów o imionach Antoni lub Zofia
+ <li>\"Antoni+Bliźnięta\" - wyświetli zdarzenia z kontaktów o imieniu Antoni i znaku zodiaku Bliźnięta
+ </ul>]]></item>
+        <item>Wyszukiwanie wykorzystuje wszystkie dane zdarzeń (aby sprawdzić: włącz „Debugowanie wiadomości” w ustawieniach aplikacji, przytrzymaj wydarzenie, wskaż \"Dane wydarzenia\")</item>
+        <item> </item>
+
+        <item>#Języki aplikacji</item>
+        <item>Jeśli chcesz pomóc w przetłumaczeniu tego programu na bliski Tobie język lub jeśli znajdziesz jakieś nieścisłości w tłumaczeniu - napisz na e-mail (przycisk poniżej).</item>
+    </string-array>
+
+</resources>

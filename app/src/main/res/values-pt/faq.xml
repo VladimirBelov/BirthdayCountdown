@@ -11,7 +11,7 @@
     <string-array name="faq" tools:ignore="InconsistentArrays">
 
         <item>###Geral</item>
-        <item>Esta seção não está disponível no idioma selecionado nas configurações. Mude para o idioma inglês da interface do programa e use o Google Tradutor.</item>
+        <item>Esta seção não está disponível no idioma selecionado nas configurações. Mude para inglês ou espanhol na interface do programa e use o Google Translate.</item>
 
         <item>#Procurar</item>
         <item><![CDATA[Para pesquisar vários parâmetros, separe-os com vírgulas (qualquer valor) ou \"+\" (todos os valores), por exemplo:<ul>

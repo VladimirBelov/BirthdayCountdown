@@ -63,6 +63,7 @@
     <!-- Меню главной активности и контекстное меню-->
     <style name="AppTheme.Green.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/theme_green_secondary</item>
+        <item name="android:textColor">@color/theme_green_primary</item>
         <item name="android:textColorHint">@color/theme_green_secondary</item>
         <item name="android:textColorPrimary">@color/theme_green_secondary</item>
         <item name="android:textColorSecondary">@color/theme_green_secondary</item>

@@ -22,6 +22,7 @@
         <item>Quick selection of sources and types of events for the main list (extra features)</item>
         <item>Setting a quick action for main list menu (Settings->Events list->Quick action) (extra features)</item>
         <item>The calendar widget uses the colors of the source calendars by default</item>
+        <item>Added Polish translation</item>
 
         <item>#1.8.2</item>
         <item>Ability to select event sources for the main list and notifications (extra features)</item>

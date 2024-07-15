@@ -214,7 +214,6 @@
     <string name="button_rate">Estimar</string>
     <string name="button_mail">Escribe</string>
     <string name="button_discuss">Discutir</string>
-    <!--<string name="button_open_addressbook">Abrir libreta de direcciones…</string>-->
     <string name="button_open_app_settings">Abrir configuración…</string>
     <string name="button_open_version_history">Historial de versiones</string>
     <string name="button_all">Todas</string>
@@ -733,6 +732,25 @@
     <string name="pref_Widgets_captionCaptionsFontStyle">Estilo:</string>
     <string name="pref_Widgets_captionCaptionsSize">Tamaño y color:</string>
 
+    <string-array name="pref_Widgets_Aligning">
+        <item>Izquierda</item>
+        <item>Centro</item>
+        <item>Derecha</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Normal</item>
+        <item>Negrita</item>
+        <item>Cursiva</item>
+        <item>Negrita cursiva</item>
+    </string-array>
+
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>No resaltar</item>
         <item>1</item>
@@ -831,7 +849,6 @@
     <string name="widget_config_custom_zero_events_hint">Introducir mensaje…</string>
 
     <string name="widget_config_events_count_label">Numero de eventos</string>
-    <!--<string name="widget_config_events_count_description">Si los eventos son demasiado \"estrechos\" o \"anchos\" en el widget, ajuste el número de eventos</string>-->
     <string-array name="widget_config_events_count">
         <item>-</item>
         <item>-2</item>
@@ -1137,6 +1154,72 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Si esta información no ayudó a encontrar el motivo de la ausencia de eventos, escríbame un correo electrónico (haga clic en el nombre de la aplicación y allí en el botón \"Escribe\")</h4>]]></string>
 
+    <string name="zodiac_sign_aries">" Aries"</string>
+    <string name="zodiac_sign_taurus">" Tauro"</string>
+    <string name="zodiac_sign_gemini">" Géminis"</string>
+    <string name="zodiac_sign_cancer">" Cáncer"</string>
+    <string name="zodiac_sign_leo">" Leo"</string>
+    <string name="zodiac_sign_virgo">" Virgo"</string>
+    <string name="zodiac_sign_libra">" Libra"</string>
+    <string name="zodiac_sign_scorpio">" Escorpio"</string>
+    <string name="zodiac_sign_sagittarius">" Sagitario"</string>
+    <string name="zodiac_sign_capricorn">" Capricornio"</string>
+    <string name="zodiac_sign_aquarius">" Acuario"</string>
+    <string name="zodiac_sign_pisces">" Piscis"</string>
+
+    <string name="zodiac_year_monkey">" Mono"</string>
+    <string name="zodiac_year_rooster">" Gallo"</string>
+    <string name="zodiac_year_dog">" Perro"</string>
+    <string name="zodiac_year_pig">" Cerdo"</string>
+    <string name="zodiac_year_rat">" Rata"</string>
+    <string name="zodiac_year_ox">" Buey"</string>
+    <string name="zodiac_year_tiger">" Tigre"</string>
+    <string name="zodiac_year_rabbit">" Conejo"</string>
+    <string name="zodiac_year_dragon">" Dragón"</string>
+    <string name="zodiac_year_snake">" Serpiente"</string>
+    <string name="zodiac_year_horse">" Caballo"</string>
+    <string name="zodiac_year_sheep">" Oveja"</string>
+
+    <string name="msg_on">EN</string>
+    <string name="msg_off">APAGADO</string>
+    <string name="msg_unknown">DESCONOCIDO</string>
+
+    <string name="quiz_msg_error_title">"Error"</string>
+    <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>
+
+    <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Respuesta: %1$s\nCorrecto: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"¿Qué mes de nacimiento?"</string>
+
+    <string name="quiz_year01_title">"¿Qué año de nacimiento?"</string>
+
+    <string name="quiz_age01_title_future">"¿Qué edad tendrá?"</string>
+    <string name="quiz_age01_title_past">"¿Qué edad tiene ahora?"</string>
+    <string name="quiz_age01_title_dead">"¿Qué edad tendría ahora?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Contador de días</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">ingrese la cantidad de días</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">cantidad de días después de los cuales se debe repetir el evento. ej: 1000, 5000 (por coma)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Horas:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">tiempo máximo de repetición de cada período</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Repeticiones más cercanas:</string>
+
+    <string name="Event_Easter">Pascua</string>
+    <string name="Event_CatholicEaster">Pascua_Católica</string>
+    <string name="Event_NY">AN</string>
+
+    <string name="previous_month">Mes anterior</string>
+    <string name="month_title">Título del mes</string>
+    <string name="next_month">El próximo mes</string>
+
+    <string name="month_event_saturdays">Sábados</string>
+    <string name="month_event_sundays">Domingos</string>
+    <string name="month_event_popup_prefix">"Fecha: "</string>
+
     <!-- https://es.wikipedia.org/wiki/Aniversario_de_bodas -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>
     <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Algodón</string>
@@ -1239,69 +1322,4 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Hueso</string>
 
-    <string name="zodiac_sign_aries">" Aries"</string>
-    <string name="zodiac_sign_taurus">" Tauro"</string>
-    <string name="zodiac_sign_gemini">" Géminis"</string>
-    <string name="zodiac_sign_cancer">" Cáncer"</string>
-    <string name="zodiac_sign_leo">" Leo"</string>
-    <string name="zodiac_sign_virgo">" Virgo"</string>
-    <string name="zodiac_sign_libra">" Libra"</string>
-    <string name="zodiac_sign_scorpio">" Escorpio"</string>
-    <string name="zodiac_sign_sagittarius">" Sagitario"</string>
-    <string name="zodiac_sign_capricorn">" Capricornio"</string>
-    <string name="zodiac_sign_aquarius">" Acuario"</string>
-    <string name="zodiac_sign_pisces">" Piscis"</string>
-
-    <string name="zodiac_year_monkey">" Mono"</string>
-    <string name="zodiac_year_rooster">" Gallo"</string>
-    <string name="zodiac_year_dog">" Perro"</string>
-    <string name="zodiac_year_pig">" Cerdo"</string>
-    <string name="zodiac_year_rat">" Rata"</string>
-    <string name="zodiac_year_ox">" Buey"</string>
-    <string name="zodiac_year_tiger">" Tigre"</string>
-    <string name="zodiac_year_rabbit">" Conejo"</string>
-    <string name="zodiac_year_dragon">" Dragón"</string>
-    <string name="zodiac_year_snake">" Serpiente"</string>
-    <string name="zodiac_year_horse">" Caballo"</string>
-    <string name="zodiac_year_sheep">" Oveja"</string>
-
-    <string name="msg_on">EN</string>
-    <string name="msg_off">APAGADO</string>
-    <string name="msg_unknown">DESCONOCIDO</string>
-
-    <string name="quiz_msg_error_title">"Error"</string>
-    <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>
-
-    <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Respuesta: %1$s\nCorrecto: %2$s (%3$s)"</string>
-
-    <string name="quiz_month01_title">"¿Qué mes de nacimiento?"</string>
-
-    <string name="quiz_year01_title">"¿Qué año de nacimiento?"</string>
-
-    <string name="quiz_age01_title_future">"¿Qué edad tendrá?"</string>
-    <string name="quiz_age01_title_past">"¿Qué edad tiene ahora?"</string>
-    <string name="quiz_age01_title_dead">"¿Qué edad tendría ahora?"</string>
-
-    <string name="xDaysCounter_Dialog_Title">Contador de días</string>
-    <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>
-    <string name="xDaysCounter_Dialog_Repeats_Hint">ingrese la cantidad de días</string>
-    <string name="xDaysCounter_Dialog_Repeats_EditHint">cantidad de días después de los cuales se debe repetir el evento. ej: 1000, 5000 (por coma)</string>
-    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
-    <string name="xDaysCounter_Dialog_Times_Caption">Horas:</string>
-    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
-    <string name="xDaysCounter_Dialog_Times_EditHint">tiempo máximo de repetición de cada período</string>
-    <string name="xDaysCounter_Dialog_NearestEvents">Repeticiones más cercanas:</string>
-
-    <string name="Event_Easter">Pascua</string>
-    <string name="Event_CatholicEaster">Pascua_Católica</string>
-    <string name="Event_NY">AN</string>
-
-    <string name="previous_month">Mes anterior</string>
-    <string name="month_title">Título del mes</string>
-    <string name="next_month">El próximo mes</string>
-
-    <string name="month_event_saturdays">Sábados</string>
-    <string name="month_event_sundays">Domingos</string>
-    <string name="month_event_popup_prefix">"Fecha: "</string>
 </resources>

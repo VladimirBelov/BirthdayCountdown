@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.07.2024, 02:06
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 16.07.2024, 02:06
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.3</item>
+        <item>Głębokość wyszukiwania wydarzeń (Ustawienia->Lista wydarzeń->Głębokość wyszukiwania) (dodatkowe funkcje)</item>
+        <item>Zestaw ponadczasowych sylwetek</item>
+        <item>Ustawianie liczby dni i wydarzeń w widżecie zdjęć</item>
+        <item>Wymuszona synchronizacja kalendarzy (Ustawienia->Pomoc)</item>
+        <item>Optymalizacja dla Androida 14</item>
+        <item>Obsługa dni nieświątecznych z plików w widżecie kalendarza</item>
+        <item>Nowa akcja dla powiadomień: „Załącz”</item>
+        <item>Szybki wybór źródeł i typów wydarzeń dla listy głównej (dodatkowe funkcje)</item>
+        <item>Ustawienie szybkiej akcji dla głównego menu listy (Ustawienia->Lista wydarzeń->Szybka akcja) (dodatkowe funkcje)</item>
+        <item>Widżet kalendarza domyślnie używa kolorów kalendarzy źródłowych</item>
+        <item>Dodano tłumaczenie na język polski</item>
+
+    </string-array>
+</resources>

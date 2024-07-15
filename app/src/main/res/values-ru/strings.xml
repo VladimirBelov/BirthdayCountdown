@@ -214,7 +214,6 @@
     <string name="button_rate">Оценить</string>
     <string name="button_mail">Написать</string>
     <string name="button_discuss">Обсудить</string>
-    <!--<string name="button_open_addressbook">Открыть адресную книгу…</string>-->
     <string name="button_open_app_settings">Открыть настройки…</string>
     <string name="button_open_version_history">История версий</string>
     <string name="button_all">Все</string>
@@ -606,10 +605,10 @@
     <string name="pref_List_OnClick_title">Действие на нажатие</string>
     <string name="pref_List_OnClick_summary">Что делать при нажатии на событие</string>
     <string-array name="pref_List_OnClick_entries">
-        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item> <!--Контакт, календарь, ссылка-->
-        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item> <!--Календарь, контакт, ссылка-->
-        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item> <!--Ссылка, контакт, календарь-->
-        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item> <!--Контакт, ссылка, календарь-->
+        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item>
+        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item>
+        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item>
+        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item>
         <item>Открыть контекстное меню</item>
         <item>Ничего не делать</item>
     </string-array>
@@ -768,10 +767,10 @@
     <string name="pref_Widgets_OnClick_title">Действие на нажатие</string>
     <string name="pref_Widgets_OnClick_summary">Что делать при нажатии на событие</string>
     <string-array name="pref_Widgets_OnClick_entries">
-        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item> <!--Контакт, календарь, ссылка-->
-        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item> <!--Календарь, контакт, ссылка-->
-        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item> <!--Ссылка, контакт, календарь-->
-        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item> <!--Контакт, ссылка, календарь-->
+        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item>
+        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item>
+        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item>
+        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item>
         <item>Открыть основной список событий</item>
         <item>Ничего не делать</item>
     </string-array>
@@ -850,7 +849,6 @@
     <string name="widget_config_custom_zero_events_hint">Введите сообщение…</string>
 
     <string name="widget_config_events_count_label">Корректировка</string>
-    <!--<string name="widget_config_events_count_description">Если событиям слишком \"узко\" или \"широко\" в виджете, откорректируйте количество событий</string>-->
     <string-array name="widget_config_events_count">
         <item>-</item>
         <item>-2</item>
@@ -1038,10 +1036,10 @@
     <string name="pref_Notifications_OnClick_title">Действие на нажатие</string>
     <string name="pref_Notifications_OnClick_summary">Что делать при нажатии на одиночное уведомление</string>
     <string-array name="pref_Notifications_OnClick_entries">
-        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item> <!--Контакт, календарь, ссылка-->
-        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item> <!--Календарь, контакт, ссылка-->
-        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item> <!--Ссылка, контакт, календарь-->
-        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item> <!--Контакт, ссылка, календарь-->
+        <item>Открыть карточку контакта, если нет - событие календаря, если нет - web ссылку</item>
+        <item>Открыть событие календаря, если нет - карточку контакта, если нет - web ссылку</item>
+        <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item>
+        <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item>
         <item>Открыть основной список событий</item>
         <item>Закрыть уведомление</item>
     </string-array>
@@ -1156,6 +1154,72 @@
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Если эта информация не помогла найти причину отсутствия событий, напишите мне письмо (нажмите на название приложения и там на кнопку \"Написать\")</h4>]]></string>
 
+    <string name="zodiac_sign_aries">" Овен"</string>
+    <string name="zodiac_sign_taurus">" Телец"</string>
+    <string name="zodiac_sign_gemini">" Близнецы"</string>
+    <string name="zodiac_sign_cancer">" Рак"</string>
+    <string name="zodiac_sign_leo">" Лев"</string>
+    <string name="zodiac_sign_virgo">" Дева"</string>
+    <string name="zodiac_sign_libra">" Весы"</string>
+    <string name="zodiac_sign_scorpio">" Скорпион"</string>
+    <string name="zodiac_sign_sagittarius">" Стрелец"</string>
+    <string name="zodiac_sign_capricorn">" Козерог"</string>
+    <string name="zodiac_sign_aquarius">" Водолей"</string>
+    <string name="zodiac_sign_pisces">" Рыбы"</string>
+
+    <string name="zodiac_year_monkey">" Обезьяна"</string>
+    <string name="zodiac_year_rooster">" Петух"</string>
+    <string name="zodiac_year_dog">" Собака"</string>
+    <string name="zodiac_year_pig">" Свинья"</string>
+    <string name="zodiac_year_rat">" Крыса"</string>
+    <string name="zodiac_year_ox">" Бык"</string>
+    <string name="zodiac_year_tiger">" Тигр"</string>
+    <string name="zodiac_year_rabbit">" Кролик"</string>
+    <string name="zodiac_year_dragon">" Дракон"</string>
+    <string name="zodiac_year_snake">" Змея"</string>
+    <string name="zodiac_year_horse">" Лошадь"</string>
+    <string name="zodiac_year_sheep">" Овца"</string>
+
+    <string name="msg_on">ВКЛ</string>
+    <string name="msg_off">ВЫКЛ</string>
+    <string name="msg_unknown">НЕИЗВЕСТНО</string>
+
+    <string name="quiz_msg_error_title">"Ошибка"</string>
+    <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>
+
+    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Ответ: %1$s\nПравильно: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"Какой месяц рождения?"</string>
+
+    <string name="quiz_year01_title">"Какой год рождения?"</string>
+
+    <string name="quiz_age01_title_future">"Сколько лет исполнится?"</string>
+    <string name="quiz_age01_title_past">"Сколько сейчас лет?"</string>
+    <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Период(ы) повторения:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">дни</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">число дней, через которое нужно повторять событие. например: 1000, 5000 (через запятую)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Повторы:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">число повторов для каждого периода</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
+
+    <string name="Event_Easter">Пасха</string>
+    <string name="Event_CatholicEaster">К_Пасха</string>
+    <string name="Event_NY">НГ</string>
+
+    <string name="previous_month">Предыдущий месяц</string>
+    <string name="month_title">Наименование месяца</string>
+    <string name="next_month">Следующий месяц</string>
+
+    <string name="month_event_saturdays">Субботы</string>
+    <string name="month_event_sundays">Воскресенья</string>
+    <string name="month_event_popup_prefix">"Дата: "</string>
+
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>
     <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Бумажная</string>
@@ -1260,71 +1324,5 @@
     <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
     <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Красная или платиновая</string>
-
-    <string name="zodiac_sign_aries">" Овен"</string>
-    <string name="zodiac_sign_taurus">" Телец"</string>
-    <string name="zodiac_sign_gemini">" Близнецы"</string>
-    <string name="zodiac_sign_cancer">" Рак"</string>
-    <string name="zodiac_sign_leo">" Лев"</string>
-    <string name="zodiac_sign_virgo">" Дева"</string>
-    <string name="zodiac_sign_libra">" Весы"</string>
-    <string name="zodiac_sign_scorpio">" Скорпион"</string>
-    <string name="zodiac_sign_sagittarius">" Стрелец"</string>
-    <string name="zodiac_sign_capricorn">" Козерог"</string>
-    <string name="zodiac_sign_aquarius">" Водолей"</string>
-    <string name="zodiac_sign_pisces">" Рыбы"</string>
-
-    <string name="zodiac_year_monkey">" Обезьяна"</string>
-    <string name="zodiac_year_rooster">" Петух"</string>
-    <string name="zodiac_year_dog">" Собака"</string>
-    <string name="zodiac_year_pig">" Свинья"</string>
-    <string name="zodiac_year_rat">" Крыса"</string>
-    <string name="zodiac_year_ox">" Бык"</string>
-    <string name="zodiac_year_tiger">" Тигр"</string>
-    <string name="zodiac_year_rabbit">" Кролик"</string>
-    <string name="zodiac_year_dragon">" Дракон"</string>
-    <string name="zodiac_year_snake">" Змея"</string>
-    <string name="zodiac_year_horse">" Лошадь"</string>
-    <string name="zodiac_year_sheep">" Овца"</string>
-
-    <string name="msg_on">ВКЛ</string>
-    <string name="msg_off">ВЫКЛ</string>
-    <string name="msg_unknown">НЕИЗВЕСТНО</string>
-
-    <string name="quiz_msg_error_title">"Ошибка"</string>
-    <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>
-
-    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Ответ: %1$s\nПравильно: %2$s (%3$s)"</string>
-
-	<string name="quiz_month01_title">"Какой месяц рождения?"</string>
-
-	<string name="quiz_year01_title">"Какой год рождения?"</string>
-
-    <string name="quiz_age01_title_future">"Сколько лет исполнится?"</string>
-    <string name="quiz_age01_title_past">"Сколько сейчас лет?"</string>
-    <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
-
-    <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
-    <string name="xDaysCounter_Dialog_Repeats_Caption">Период(ы) повторения:</string>
-    <string name="xDaysCounter_Dialog_Repeats_Hint">дни</string>
-    <string name="xDaysCounter_Dialog_Repeats_EditHint">число дней, через которое нужно повторять событие. например: 1000, 5000 (через запятую)</string>
-    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
-    <string name="xDaysCounter_Dialog_Times_Caption">Повторы:</string>
-    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
-    <string name="xDaysCounter_Dialog_Times_EditHint">число повторов для каждого периода</string>
-    <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
-
-    <string name="Event_Easter">Пасха</string>
-    <string name="Event_CatholicEaster">К_Пасха</string>
-    <string name="Event_NY">НГ</string>
-
-    <string name="previous_month">Предыдущий месяц</string>
-    <string name="month_title">Наименование месяца</string>
-    <string name="next_month">Следующий месяц</string>
-
-    <string name="month_event_saturdays">Субботы</string>
-    <string name="month_event_sundays">Воскресенья</string>
-    <string name="month_event_popup_prefix">"Дата: "</string>
 
 </resources>

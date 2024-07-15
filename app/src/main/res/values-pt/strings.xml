@@ -214,7 +214,6 @@
     <string name="button_rate">Avaliar aplicativo</string>
     <string name="button_mail">Correio</string>
     <string name="button_discuss">Discutir</string>
-    <!--<string name="button_open_addressbook">Abrir catálogo de endereços…</string>-->
     <string name="button_open_app_settings">Abrir configurações…</string>
     <string name="button_open_version_history">Histórico de versões</string>
     <string name="button_all">Todos</string>
@@ -733,6 +732,25 @@
     <string name="pref_Widgets_captionCaptionsFontStyle">Estilo:</string>
     <string name="pref_Widgets_captionCaptionsSize">Tamanho e cor:</string>
 
+    <string-array name="pref_Widgets_Aligning">
+        <item>Esquerda</item>
+        <item>Centro</item>
+        <item>Certo</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Normal</item>
+        <item>Negrito</item>
+        <item>Itálico</item>
+        <item>Negrito itálico</item>
+    </string-array>
+
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Não destacar</item>
         <item>1</item>
@@ -831,7 +849,6 @@
     <string name="widget_config_custom_zero_events_hint">Insira a mensagem…</string>
 
     <string name="widget_config_events_count_label">Número de eventos horizontais</string>
-    <!--<string name="widget_config_events_count_description">Se houver muito \"estreito\" ou \"solto\" para eventos no widget, ajuste o número de eventos</string>-->
     <string-array name="widget_config_events_count">
         <item>-</item>
         <item>-2</item>
@@ -1137,6 +1154,73 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
          </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Se esta informação for inútil para você, envie-me um e-mail (clique no título do aplicativo e encontre o botão \"mail\" lá)</h4>]]></string>
 
+    <string name="zodiac_sign_aries">" Áries"</string>
+    <string name="zodiac_sign_taurus">" Touro"</string>
+    <string name="zodiac_sign_gemini">" Gêmeos"</string>
+    <string name="zodiac_sign_cancer">" Câncer"</string>
+    <string name="zodiac_sign_leo">" Leão"</string>
+    <string name="zodiac_sign_virgo">" Virgem"</string>
+    <string name="zodiac_sign_libra">" Libra"</string>
+    <string name="zodiac_sign_scorpio">" Escorpião"</string>
+    <string name="zodiac_sign_sagittarius">" Sagitário"</string>
+    <string name="zodiac_sign_capricorn">" Capricórnio"</string>
+    <string name="zodiac_sign_aquarius">" Aquário"</string>
+    <string name="zodiac_sign_pisces">" Peixes"</string>
+
+    <!--https://pt.wikipedia.org/wiki/Hor%C3%B3scopo_chin%C3%AAs-->
+    <string name="zodiac_year_monkey">" Macaco"</string>
+    <string name="zodiac_year_rooster">" Galo"</string>
+    <string name="zodiac_year_dog">" Cão"</string>
+    <string name="zodiac_year_pig">" Porco"</string>
+    <string name="zodiac_year_rat">" Rato"</string>
+    <string name="zodiac_year_ox">" Boi"</string>
+    <string name="zodiac_year_tiger">" Tigre"</string>
+    <string name="zodiac_year_rabbit">" Coelho"</string>
+    <string name="zodiac_year_dragon">" Dragão"</string>
+    <string name="zodiac_year_snake">" Serpente	"</string>
+    <string name="zodiac_year_horse">"Cavalo"</string>
+    <string name="zodiac_year_sheep">"Cabra"</string>
+
+    <string name="msg_on">ATIVADO</string>
+    <string name="msg_off">DESATIVADO</string>
+    <string name="msg_unknown">DESCONHECIDO</string>
+
+    <string name="quiz_msg_error_title">"Erro"</string>
+    <string name="quiz_msg_error_get_question">"Erro ao receber a próxima pergunta!"</string>
+
+    <string name="quiz_answer_true">"Certo, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Resposta: %1$s\nResposta correta: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"Qual é o mês de nascimento?"</string>
+
+    <string name="quiz_year01_title">"Qual é o ano de nascimento?"</string>
+
+    <string name="quiz_age01_title_future">"Quantos anos ele/ela terá?"</string>
+    <string name="quiz_age01_title_past">"Quantos anos ele(a) tem?"</string>
+    <string name="quiz_age01_title_dead">"Quantos anos ele/ela teria agora?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Contador de dias</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">insira a quantidade de dias</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">quantidade de dias após os quais o evento deve ser repetido. ex: 1000, 5000 (por vírgula)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Horários:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">tempos máximos de repetição de cada período</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Repetições mais próximas:</string>
+
+    <string name="Event_Easter">Páscoa</string>
+    <string name="Event_CatholicEaster">Páscoa_católica</string>
+    <string name="Event_NY">AN</string>
+
+    <string name="previous_month">Mês anterior</string>
+    <string name="month_title">Título do mês</string>
+    <string name="next_month">No próximo mês</string>
+
+    <string name="month_event_saturdays">Sábados</string>
+    <string name="month_event_sundays">Domingos</string>
+    <string name="month_event_popup_prefix">"Data: "</string>
+
     <!-- https://pt.wikipedia.org/wiki/Anivers%C3%A1rio_de_casamento -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>
     <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Algodão</string>
@@ -1239,70 +1323,4 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">""</string>
 
-    <string name="zodiac_sign_aries">" Áries"</string>
-    <string name="zodiac_sign_taurus">" Touro"</string>
-    <string name="zodiac_sign_gemini">" Gêmeos"</string>
-    <string name="zodiac_sign_cancer">" Câncer"</string>
-    <string name="zodiac_sign_leo">" Leão"</string>
-    <string name="zodiac_sign_virgo">" Virgem"</string>
-    <string name="zodiac_sign_libra">" Libra"</string>
-    <string name="zodiac_sign_scorpio">" Escorpião"</string>
-    <string name="zodiac_sign_sagittarius">" Sagitário"</string>
-    <string name="zodiac_sign_capricorn">" Capricórnio"</string>
-    <string name="zodiac_sign_aquarius">" Aquário"</string>
-    <string name="zodiac_sign_pisces">" Peixes"</string>
-
-    <!--https://pt.wikipedia.org/wiki/Hor%C3%B3scopo_chin%C3%AAs-->
-    <string name="zodiac_year_monkey">" Macaco"</string>
-    <string name="zodiac_year_rooster">" Galo"</string>
-    <string name="zodiac_year_dog">" Cão"</string>
-    <string name="zodiac_year_pig">" Porco"</string>
-    <string name="zodiac_year_rat">" Rato"</string>
-    <string name="zodiac_year_ox">" Boi"</string>
-    <string name="zodiac_year_tiger">" Tigre"</string>
-    <string name="zodiac_year_rabbit">" Coelho"</string>
-    <string name="zodiac_year_dragon">" Dragão"</string>
-    <string name="zodiac_year_snake">" Serpente	"</string>
-    <string name="zodiac_year_horse">"Cavalo"</string>
-    <string name="zodiac_year_sheep">"Cabra"</string>
-
-    <string name="msg_on">ATIVADO</string>
-    <string name="msg_off">DESATIVADO</string>
-    <string name="msg_unknown">DESCONHECIDO</string>
-
-    <string name="quiz_msg_error_title">"Erro"</string>
-    <string name="quiz_msg_error_get_question">"Erro ao receber a próxima pergunta!"</string>
-
-    <string name="quiz_answer_true">"Certo, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Resposta: %1$s\nResposta correta: %2$s (%3$s)"</string>
-
-    <string name="quiz_month01_title">"Qual é o mês de nascimento?"</string>
-
-    <string name="quiz_year01_title">"Qual é o ano de nascimento?"</string>
-
-    <string name="quiz_age01_title_future">"Quantos anos ele/ela terá?"</string>
-    <string name="quiz_age01_title_past">"Quantos anos ele(a) tem?"</string>
-    <string name="quiz_age01_title_dead">"Quantos anos ele/ela teria agora?"</string>
-
-    <string name="xDaysCounter_Dialog_Title">Contador de dias</string>
-    <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>
-    <string name="xDaysCounter_Dialog_Repeats_Hint">insira a quantidade de dias</string>
-    <string name="xDaysCounter_Dialog_Repeats_EditHint">quantidade de dias após os quais o evento deve ser repetido. ex: 1000, 5000 (por vírgula)</string>
-    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
-    <string name="xDaysCounter_Dialog_Times_Caption">Horários:</string>
-    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
-    <string name="xDaysCounter_Dialog_Times_EditHint">tempos máximos de repetição de cada período</string>
-    <string name="xDaysCounter_Dialog_NearestEvents">Repetições mais próximas:</string>
-
-    <string name="Event_Easter">Páscoa</string>
-    <string name="Event_CatholicEaster">Páscoa_católica</string>
-    <string name="Event_NY">AN</string>
-
-    <string name="previous_month">Mês anterior</string>
-    <string name="month_title">Título do mês</string>
-    <string name="next_month">No próximo mês</string>
-
-    <string name="month_event_saturdays">Sábados</string>
-    <string name="month_event_sundays">Domingos</string>
-    <string name="month_event_popup_prefix">"Data: "</string>
 </resources>

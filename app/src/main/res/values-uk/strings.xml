@@ -214,7 +214,6 @@
     <string name="button_rate">Оцінити</string>
     <string name="button_mail">Написати</string>
     <string name="button_discuss">Обговоріть</string>
-    <!--<string name="button_open_addressbook">Відкрити адресну книгу…</string>-->
     <string name="button_open_app_settings">Відкрити налаштування…</string>
     <string name="button_open_version_history">Історія версій</string>
     <string name="button_all">Всі</string>
@@ -733,6 +732,25 @@
     <string name="pref_Widgets_captionCaptionsFontStyle">Стиль:</string>
     <string name="pref_Widgets_captionCaptionsSize">Розмір та колір:</string>
 
+    <string-array name="pref_Widgets_Aligning">
+        <item>Ліворуч</item>
+        <item>По центру</item>
+        <item>Правильно</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Звичайний</item>
+        <item>Жирний</item>
+        <item>Курсив</item>
+        <item>Жирний курсив</item>
+    </string-array>
+
     <string-array name="pref_Widgets_Days_EventSoon_entries">
         <item>Чи не виділяти</item>
         <item>1</item>
@@ -831,7 +849,6 @@
     <string name="widget_config_custom_zero_events_hint">Введіть повідомлення…</string>
 
     <string name="widget_config_events_count_label">Кількість подій завширшки</string>
-    <!--<string name="widget_config_events_count_description">Якщо подій занадто \"багато\" або \"мало\" у віджеті, відкоригуйте їх кількість</string>-->
     <string-array name="widget_config_events_count">
         <item>-</item>
         <item>-2</item>
@@ -1137,6 +1154,72 @@
         </ul>]]></string>
     <string name="msg_zero_events_footer"><![CDATA[<h4>Якщо ця інформація не допомогла знайти причину відсутності подій, напишіть мені лист (натисніть назву програми і там на кнопку \"Написати\")</h4>]]></string>
 
+    <string name="zodiac_sign_aries">" Овен"</string> <!-- Баран -->
+    <string name="zodiac_sign_taurus">" Телець"</string> <!-- Тур -->
+    <string name="zodiac_sign_gemini">" Близнюки"</string> <!-- Ворота -->
+    <string name="zodiac_sign_cancer">" Рак"</string> <!-- Дiд -->
+    <string name="zodiac_sign_leo">" Лев"</string> <!-- Ворон -->
+    <string name="zodiac_sign_virgo">" Діва"</string> <!-- Лада -->
+    <string name="zodiac_sign_libra">" Терези"</string> <!-- Доля -->
+    <string name="zodiac_sign_scorpio">" Скорпіон"</string> <!-- Громовик -->
+    <string name="zodiac_sign_sagittarius">" Стрілець"</string> <!-- Господар -->
+    <string name="zodiac_sign_capricorn">" Козеріг"</string> <!-- Коза -->
+    <string name="zodiac_sign_aquarius">" Водолій"</string> <!-- Водяник -->
+    <string name="zodiac_sign_pisces">" Риби"</string> <!-- Русалка -->
+
+    <string name="zodiac_year_monkey">" Мавпа"</string>
+    <string name="zodiac_year_rooster">" Півень"</string>
+    <string name="zodiac_year_dog">" Собака"</string>
+    <string name="zodiac_year_pig">" Свиня"</string>
+    <string name="zodiac_year_rat">" Щур"</string>
+    <string name="zodiac_year_ox">" Бик"</string>
+    <string name="zodiac_year_tiger">" Тигр"</string>
+    <string name="zodiac_year_rabbit">" Кролик"</string>
+    <string name="zodiac_year_dragon">" Дракон"</string>
+    <string name="zodiac_year_snake">" Змія"</string>
+    <string name="zodiac_year_horse">" Кінь"</string>
+    <string name="zodiac_year_sheep">" Коза"</string>
+
+    <string name="msg_on">ВКЛ</string>
+    <string name="msg_off">ВИКЛ</string>
+    <string name="msg_unknown">НЕВІДОМО</string>
+
+    <string name="quiz_msg_error_title">"Помилка"</string>
+    <string name="quiz_msg_error_get_question">"Помилка отримання наступного запитання!"</string>
+
+    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Відповідь: %1$s\nПравильно: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"Який місяць народження?"</string>
+
+    <string name="quiz_year01_title">"Який рік народження?"</string>
+
+    <string name="quiz_age01_title_future">"Скільки років виповниться?"</string>
+    <string name="quiz_age01_title_past">"Скільки зараз років?"</string>
+    <string name="quiz_age01_title_dead">"Скільки було б зараз років?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Лічильник днів</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Періоди:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">введіть кількість днів</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">кількість днів, після якої подія має повторюватися. наприклад: 1000, 5000 (через кому)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Час:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">максимальний час повторення кожного періоду</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Найближчі повтори:</string>
+
+    <string name="Event_Easter">Великдень</string>
+    <string name="Event_CatholicEaster">Католицький_Великдень</string>
+    <string name="Event_NY">НР</string>
+
+    <string name="previous_month">Попередній місяць</string>
+    <string name="month_title">Назва місяця</string>
+    <string name="next_month">Наступного місяця</string>
+
+    <string name="month_event_saturdays">Суботи</string>
+    <string name="month_event_sundays">Неділі</string>
+    <string name="month_event_popup_prefix">"Дата: "</string>
+
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/
  https://osoblyva.com/vesilni-richnytsi-ta-yih-nazvy-vid-0-do-100-rokiv/  -->
@@ -1244,69 +1327,4 @@
     <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
     <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">Червоне</string>
 
-    <string name="zodiac_sign_aries">" Овен"</string> <!-- Баран -->
-    <string name="zodiac_sign_taurus">" Телець"</string> <!-- Тур -->
-    <string name="zodiac_sign_gemini">" Близнюки"</string> <!-- Ворота -->
-    <string name="zodiac_sign_cancer">" Рак"</string> <!-- Дiд -->
-    <string name="zodiac_sign_leo">" Лев"</string> <!-- Ворон -->
-    <string name="zodiac_sign_virgo">" Діва"</string> <!-- Лада -->
-    <string name="zodiac_sign_libra">" Терези"</string> <!-- Доля -->
-    <string name="zodiac_sign_scorpio">" Скорпіон"</string> <!-- Громовик -->
-    <string name="zodiac_sign_sagittarius">" Стрілець"</string> <!-- Господар -->
-    <string name="zodiac_sign_capricorn">" Козеріг"</string> <!-- Коза -->
-    <string name="zodiac_sign_aquarius">" Водолій"</string> <!-- Водяник -->
-    <string name="zodiac_sign_pisces">" Риби"</string> <!-- Русалка -->
-
-    <string name="zodiac_year_monkey">" Мавпа"</string>
-    <string name="zodiac_year_rooster">" Півень"</string>
-    <string name="zodiac_year_dog">" Собака"</string>
-    <string name="zodiac_year_pig">" Свиня"</string>
-    <string name="zodiac_year_rat">" Щур"</string>
-    <string name="zodiac_year_ox">" Бик"</string>
-    <string name="zodiac_year_tiger">" Тигр"</string>
-    <string name="zodiac_year_rabbit">" Кролик"</string>
-    <string name="zodiac_year_dragon">" Дракон"</string>
-    <string name="zodiac_year_snake">" Змія"</string>
-    <string name="zodiac_year_horse">" Кінь"</string>
-    <string name="zodiac_year_sheep">" Коза"</string>
-
-    <string name="msg_on">ВКЛ</string>
-    <string name="msg_off">ВИКЛ</string>
-    <string name="msg_unknown">НЕВІДОМО</string>
-
-    <string name="quiz_msg_error_title">"Помилка"</string>
-    <string name="quiz_msg_error_get_question">"Помилка отримання наступного запитання!"</string>
-
-    <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Відповідь: %1$s\nПравильно: %2$s (%3$s)"</string>
-
-    <string name="quiz_month01_title">"Який місяць народження?"</string>
-
-    <string name="quiz_year01_title">"Який рік народження?"</string>
-
-    <string name="quiz_age01_title_future">"Скільки років виповниться?"</string>
-    <string name="quiz_age01_title_past">"Скільки зараз років?"</string>
-    <string name="quiz_age01_title_dead">"Скільки було б зараз років?"</string>
-
-    <string name="xDaysCounter_Dialog_Title">Лічильник днів</string>
-    <string name="xDaysCounter_Dialog_Repeats_Caption">Періоди:</string>
-    <string name="xDaysCounter_Dialog_Repeats_Hint">введіть кількість днів</string>
-    <string name="xDaysCounter_Dialog_Repeats_EditHint">кількість днів, після якої подія має повторюватися. наприклад: 1000, 5000 (через кому)</string>
-    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
-    <string name="xDaysCounter_Dialog_Times_Caption">Час:</string>
-    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
-    <string name="xDaysCounter_Dialog_Times_EditHint">максимальний час повторення кожного періоду</string>
-    <string name="xDaysCounter_Dialog_NearestEvents">Найближчі повтори:</string>
-
-    <string name="Event_Easter">Великдень</string>
-    <string name="Event_CatholicEaster">Католицький_Великдень</string>
-    <string name="Event_NY">НР</string>
-
-    <string name="previous_month">Попередній місяць</string>
-    <string name="month_title">Назва місяця</string>
-    <string name="next_month">Наступного місяця</string>
-
-    <string name="month_event_saturdays">Суботи</string>
-    <string name="month_event_sundays">Неділі</string>
-    <string name="month_event_popup_prefix">"Дата: "</string>
 </resources>
