@@ -7852,7 +7852,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -7954,7 +7954,7 @@ class ContactsEvents {
             if (!isBirthday) return null;
 
             //Формируем информацию о персоне
-            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -8055,7 +8055,7 @@ class ContactsEvents {
             Date currentDay = removeTime(Calendar.getInstance()).getTime();
             boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
-            StringBuilder personInfo = new StringBuilder(preferences_name_format == 2 ? eventInfo[Position_personFullNameAlt] : eventInfo[Position_personFullName]);
+            StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
             final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
             final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
             if (isOrg || isTitle) {
@@ -9999,6 +9999,25 @@ class ContactsEvents {
             ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return Constants.Align_Left;
+    }
+
+    @NonNull
+    String getFullName(@NonNull String[] singleEventArray) {
+        try {
+        if (preferences_name_format == 2) {
+           if (singleEventArray.length >= ContactsEvents.Position_personFullNameAlt) {
+               return singleEventArray[ContactsEvents.Position_personFullNameAlt];
+           }
+        } else {
+            if (singleEventArray.length >= ContactsEvents.Position_personFullName) {
+                return singleEventArray[ContactsEvents.Position_personFullName];
+            }
+        }
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return Constants.STRING_EMPTY;
     }
 
 }

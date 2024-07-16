@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(selectedEvent[ContactsEvents.Position_personFullName])
+                        .setTitle(eventsData.getFullName(selectedEvent))
                         .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, true, roundingFactor)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
@@ -735,7 +735,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 StringBuilder textBig = new StringBuilder();
                 textBig
-                        .append(eventsData.preferences_name_format == 2 ? selectedEvent[ContactsEvents.Position_personFullNameAlt] : selectedEvent[ContactsEvents.Position_personFullName])
+                        .append(eventsData.getFullName(selectedEvent))
                         .append(Constants.STRING_EOL)
                         .append(selectedEvent[ContactsEvents.Position_eventEmoji])
                         .append(Constants.STRING_SPACE)
@@ -2591,15 +2591,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Дата оригинального события
                 holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear));
 
-                switch (eventsData.preferences_name_format) {
-                    case 2: //Фамилия Имя Отчество
-                        holder.NameTextView.setText(singleEventArray[ContactsEvents.Position_personFullNameAlt]);
-                        break;
-                    case 1: //Имя Отчество Фамилия
-                    default:
-                        holder.NameTextView.setText(singleEventArray[ContactsEvents.Position_personFullName]);
-                        break;
-                }
+                //Фамилия Имя Отчество
+                holder.NameTextView.setText(eventsData.getFullName(singleEventArray));
 
                 //Информация под именем
                 StringBuilder eventDetails = new StringBuilder();

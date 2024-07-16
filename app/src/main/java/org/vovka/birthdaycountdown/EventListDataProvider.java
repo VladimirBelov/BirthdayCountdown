@@ -209,7 +209,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        sb.append(eventsData.preferences_name_format == 2 ? singleEventArray[ContactsEvents.Position_personFullNameAlt] : singleEventArray[ContactsEvents.Position_personFullName]);
+                        sb.append(eventsData.getFullName(singleEventArray));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Age_ID))) {
 

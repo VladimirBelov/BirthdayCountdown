@@ -84,9 +84,10 @@ public class SuggestionProvider extends ContentProvider{
                                 eventNum--;
                             } else {
                                 final String[] eventDistance = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                                String fullName = eventsData.getFullName(singleEventArray);
                                 matrixCursor.addRow(new Object[]{
                                         (long) eventNum,
-                                        singleEventArray[ContactsEvents.Position_personFullName],
+                                        fullName,
                                         singleEventArray[ContactsEvents.Position_eventEmoji]
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(singleEventArray[ContactsEvents.Position_eventCaption])
@@ -101,7 +102,7 @@ public class SuggestionProvider extends ContentProvider{
                                                 || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
                                                     singleEventArray[ContactsEvents.Position_photo_uri] :
                                                     Constants.STRING_EMPTY,
-                                        Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(singleEventArray[ContactsEvents.Position_personFullName]).concat(Constants.STRING_EOT)
+                                        Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(fullName).concat(Constants.STRING_EOT)
                                 });
                             }
                         }

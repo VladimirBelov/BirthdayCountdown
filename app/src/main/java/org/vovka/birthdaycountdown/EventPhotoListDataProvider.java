@@ -120,12 +120,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Заголовок
                 final String eventKey = eventsData.getEventKey(singleEventArray);
                 final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-                String eventCaption;
-                if (eventsData.preferences_name_format == 2) { //Фамилия Имя Отчество
-                    eventCaption = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                } else { //Имя Отчество Фамилия
-                    eventCaption = singleEventArray[ContactsEvents.Position_personFullName];
-                }
+                String eventCaption = eventsData.getFullName(singleEventArray);
                 //Иконка избранного
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
