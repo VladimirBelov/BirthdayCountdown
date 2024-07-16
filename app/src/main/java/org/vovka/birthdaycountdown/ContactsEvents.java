@@ -535,6 +535,7 @@ class ContactsEvents {
         return strIn == null || strIn.isEmpty() ? Constants.STRING_EMPTY : strIn;
     }
 
+    @Nullable
     static String normalizeName(String inName) {
 
         if (inName == null) {
@@ -581,6 +582,7 @@ class ContactsEvents {
         return false;
     }
 
+    @Nullable
     static Intent getViewActionIntent(@NonNull String[] singleEventArray, int prefAction) {
 
         try {
@@ -670,6 +672,7 @@ class ContactsEvents {
         return bitmap;
     }
 
+    @Nullable
     static Bitmap getBitmap(Context context, int drawableId) {
         try {
             Drawable drawable = ContextCompat.getDrawable(context, drawableId);
@@ -1712,7 +1715,7 @@ class ContactsEvents {
             ColumnIndexCache cache = new ColumnIndexCache();
 
             //Организации и должности
-            final String[] projectionOrgTitle = new String[]{
+            final String[] projectionOrgTitle = {
                     Constants.ColumnNames_CONTACT_ID,
                     ContactsContract.CommonDataKinds.Organization.COMPANY,
                     ContactsContract.CommonDataKinds.Organization.TITLE
@@ -1747,7 +1750,7 @@ class ContactsEvents {
             cache.clear();
 
             //Псевдонимы
-            final String[] projectionNick = new String[]{Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Nickname.NAME};
+            final String[] projectionNick = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Nickname.NAME};
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionNick,
@@ -1775,7 +1778,7 @@ class ContactsEvents {
             cache.clear();
 
             //Web ссылки
-            final String[] projectionURL = new String[]{ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Website.URL};
+            final String[] projectionURL = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Website.URL};
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionURL,
@@ -1808,7 +1811,7 @@ class ContactsEvents {
 
             //Заметки
             //https://stackoverflow.com/a/6301244/4928833
-            final String[] projectionNotes = new String[]{Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Note.NOTE};
+            final String[] projectionNotes = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Note.NOTE};
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionNotes,
@@ -1831,7 +1834,7 @@ class ContactsEvents {
             cache.clear();
 
             //Контакты
-            final String[] projectionAllContacts = new String[]{
+            final String[] projectionAllContacts = {
                     ContactsContract.RawContacts.CONTACT_ID,
                     ContactsContract.RawContacts._ID,
                     ContactsContract.Data.DISPLAY_NAME,
@@ -1858,17 +1861,19 @@ class ContactsEvents {
 
                         //ИОФ
                         final String personName = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME));
-                        if (personName != null) {
+                        if (personName != null && personID != null) {
                             final String personNameNormalized = normalizeName(personName);
-                            if (!checkForNull(personNameNormalized).isEmpty() && !map_contacts_names.containsKey(personNameNormalized)) {
+                            if (!TextUtils.isEmpty(personNameNormalized) && !map_contacts_names.containsKey(personNameNormalized)) {
                                 map_contacts_names.put(personNameNormalized, personID);
                             }
-                            map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME, checkForNull(personName));
+                            map_contacts_data.put(personID.concat(ContactsContract.Data.DISPLAY_NAME), checkForNull(personName));
 
                             //ИФ
-                            final String personNameShortNormalized = Person.getShortName(personNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context);
-                            if (!map_contacts_names.containsKey(personNameShortNormalized)) {
-                                map_contacts_names.put(personNameShortNormalized, personID);
+                            if (!TextUtils.isEmpty(personNameNormalized)) {
+                                final String personNameShortNormalized = Person.getShortName(personNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context);
+                                if (!map_contacts_names.containsKey(personNameShortNormalized)) {
+                                    map_contacts_names.put(personNameShortNormalized, personID);
+                                }
                             }
                         }
 
@@ -1876,15 +1881,17 @@ class ContactsEvents {
                         final String personNameAlt = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE));
                         if (personNameAlt != null) {
                             final String personNameAltNormalized = normalizeName(personNameAlt);
-                            if (!checkForNull(personNameAltNormalized).isEmpty() && !map_contacts_names.containsKey(personNameAltNormalized)) {
+                            if (!TextUtils.isEmpty(personNameAltNormalized) && !map_contacts_names.containsKey(personNameAltNormalized)) {
                                 map_contacts_names.put(personNameAltNormalized, personID);
                             }
                             map_contacts_data.put(personID + ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE, checkForNull(personNameAlt));
 
                             //ФИ
-                            final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context);
-                            if (!map_contacts_names.containsKey(personNameAltShortNormalized)) {
-                                map_contacts_names.put(personNameAltShortNormalized, personID);
+                            if (!TextUtils.isEmpty(personNameAltNormalized)) {
+                                final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context);
+                                if (!map_contacts_names.containsKey(personNameAltShortNormalized)) {
+                                    map_contacts_names.put(personNameAltShortNormalized, personID);
+                                }
                             }
                         }
 
@@ -1898,7 +1905,7 @@ class ContactsEvents {
             cache.clear();
 
             //События
-            final String[] projectionContactsEvents = new String[]{
+            final String[] projectionContactsEvents = {
                     ContactsContract.CommonDataKinds.Event.DATA,
                     ContactsContract.CommonDataKinds.Event.TYPE,
                     Constants.ColumnNames_ACCOUNT_TYPE,
@@ -2049,7 +2056,7 @@ class ContactsEvents {
             endTime.add(Calendar.MILLISECOND, zoneOffset);
             endTime.add(Calendar.SECOND, -1);
 
-            String[] projection = new String[]{CalendarContract.Instances.EVENT_ID};
+            String[] projection = {CalendarContract.Instances.EVENT_ID};
             String selection = CalendarContract.Events.CALENDAR_ID + " = " + calID;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startTime.getTimeInMillis());
@@ -2593,7 +2600,7 @@ class ContactsEvents {
             //https://stackoverflow.com/questions/10133616/reading-all-of-todays-events-using-calendarcontract-android-4-0
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
-            String[] projection = new String[]{
+            String[] projection = {
                     CalendarContract.Instances.EVENT_ID,
                     CalendarContract.Instances.TITLE,
                     CalendarContract.Instances.DESCRIPTION, //todo: доделать правила и под это поле
@@ -2823,15 +2830,17 @@ class ContactsEvents {
                                             namedFromEvent = true;
 
                                             //Ищем контакт
-                                            contactID = map_contacts_names.get(personFullNameNormalized);
-                                            if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                                                contactID = map_contacts_names.get(personFullNameAltNormalized);
-                                            }
-                                            if (contactID == null) {
-                                                contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
-                                            }
-                                            if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                                                contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                                            if (!TextUtils.isEmpty(personFullNameNormalized) && !TextUtils.isEmpty(personFullNameAltNormalized)) {
+                                                contactID = map_contacts_names.get(personFullNameNormalized);
+                                                if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                                    contactID = map_contacts_names.get(personFullNameAltNormalized);
+                                                }
+                                                if (contactID == null) {
+                                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
+                                                }
+                                                if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                                                }
                                             }
 
                                             if (contactID != null) {
@@ -3533,15 +3542,17 @@ class ContactsEvents {
                         }
 
                         //Ищем контакт
-                        contactID = map_contacts_names.get(personFullNameNormalized);
-                        if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                            contactID = map_contacts_names.get(personFullNameAltNormalized);
-                        }
-                        if (TextUtils.isEmpty(contactID)) {
-                            contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
-                        }
-                        if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                            contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                        if (personFullNameNormalized != null) {
+                            contactID = map_contacts_names.get(personFullNameNormalized);
+                            if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                contactID = map_contacts_names.get(personFullNameAltNormalized);
+                            }
+                            if (TextUtils.isEmpty(contactID)) {
+                                contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
+                            }
+                            if (TextUtils.isEmpty(contactID) && personFullNameAltNormalized != null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                            }
                         }
 
                         //hashCode -> ID
@@ -3814,7 +3825,8 @@ class ContactsEvents {
             //Определяем день недели
             int weekDayToGet = 0;
             int indexWeekDay = -1;
-            for (int i = 1; i <= weekDaysShort.length; i++) {
+            int countWeekdays = weekDaysShort.length;
+            for (int i = 1; i <= countWeekdays; i++) {
                 String weekDayName = weekDaysShort[i - 1].toLowerCase();
                 if (eventDayString.contains(weekDayName)) {
                     weekDayToGet = i - 1;
@@ -3909,6 +3921,7 @@ class ContactsEvents {
         }
     }
 
+    @Nullable
     private Calendar getEasterDateFor(float Y, boolean getOrthodox) {
         //https://www.geeksforgeeks.org/how-to-calculate-the-easter-date-for-a-given-year-using-gauss-algorithm/
         //https://ru.wikipedia.org/wiki/Алгоритм_Гаусса_вычисления_даты_Пасхи
@@ -4166,6 +4179,7 @@ class ContactsEvents {
         return sb.toString();
     }
 
+    @Nullable
     Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean forWidget, int roundingFactor) {
 
         boolean makeSquared = suggestSquared;
@@ -5037,7 +5051,7 @@ class ContactsEvents {
                             valuePeriods.get(0),
                             toRepeat
                     );
-                    if (events != null && !events.isEmpty()) {
+                    if (!events.isEmpty()) {
                         for (Event event : events) {
 
                             String[] singleEventArrayXdays = singleEventArray.clone();
@@ -6808,10 +6822,11 @@ class ContactsEvents {
      * @param toRepeat Positive: how many events to return (total), Negative: how many events of every period to return (from startDate)
      * @return ArrayList of events inside [startDate] ... [endDate] period
      */
+    @NonNull
     ArrayList<Event> getNextRepeatsForEvent(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull Calendar eventDate, @NonNull String periods, int toRepeat) {
+        ArrayList<Event> result = new ArrayList<>();
         try {
 
-            ArrayList<Event> result = new ArrayList<>();
             Set<Long> selectedDates = new HashSet<>();
 
             if (toRepeat == 0) return result;
@@ -6868,13 +6883,12 @@ class ContactsEvents {
                     result.remove(result.size() - 1);
                 }
             }
-            return result;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return null;
         }
+        return result;
     }
 
     void clearDeadLinksSilencedEvents() {
@@ -7797,6 +7811,7 @@ class ContactsEvents {
     /**
      * Вопрос "В каком месяце родился?"
      */
+    @Nullable
     QuizQuestion quizGetQuestionBirthdayMonth() {
 
         QuizQuestion result;
@@ -7898,6 +7913,7 @@ class ContactsEvents {
     /**
      * Вопрос "В каком году родился?"
      */
+    @Nullable
     QuizQuestion quizGetQuestionBirthdayYear() {
 
         QuizQuestion result;
@@ -7995,6 +8011,7 @@ class ContactsEvents {
     /**
      * Вопрос "Сколько лет исполнится?"
      */
+    @Nullable
     QuizQuestion quizGetQuestionContactAge() {
 
         QuizQuestion result;
@@ -8277,10 +8294,12 @@ class ContactsEvents {
                     }
                     if (contentUri != null) {
                         final String selection = "_id=?";
-                        final String[] selectionArgs = new String[]{split[1]};
-                        return getDataColumn(context, contentUri, selection, selectionArgs);
+                        final String[] selectionArgs = {split[1]};
+                        String dataColumn = getDataColumn(context, contentUri, selection, selectionArgs);
+                        if (dataColumn != null) return dataColumn;
                     } else {
-                        return getDataColumn(context, uri, null, null);
+                        String dataColumn = getDataColumn(context, uri, null, null);
+                        if (dataColumn != null) return dataColumn;
                     }
                 }
             }
@@ -8322,6 +8341,7 @@ class ContactsEvents {
         return Constants.FilePrefix_GooglePhotos.equals(uri.getAuthority());
     }
 
+    @Nullable
     String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
 
         try {
@@ -8478,7 +8498,8 @@ class ContactsEvents {
             if (!preferences_list_event_types.isEmpty()) {
                 String[] typeIDs = resources.getStringArray(R.array.pref_EventTypes_values);
                 String[] typeNames = resources.getStringArray(R.array.pref_EventTypes_entries);
-                for (int i = 0; i < typeIDs.length; i++) {
+                int countTypes = typeIDs.length;
+                for (int i = 0; i < countTypes; i++) {
                     if (preferences_list_event_types.contains(typeIDs[i])) {
                         if (listEventsTypes.length() > 0) listEventsTypes.append(Constants.STRING_COMMA_SPACE);
                         listEventsTypes.append(typeNames[i]);
@@ -9143,10 +9164,11 @@ class ContactsEvents {
     /**
      * day - date in yyyy-MM-dd format
      * */
+    @NonNull
     List<DayType> getDayTypes(@NonNull String day, @NonNull List<String> fromPacks) {
+        List<DayType> types = new ArrayList<>();
         try {
 
-            List<DayType> types = new ArrayList<>();
             for (String packId: fromPacks) {
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
@@ -9157,22 +9179,22 @@ class ContactsEvents {
                     types.add(new DayType(packId, preferences_DaysTypes.get(key_noYear)));
                 }
             }
-            return types;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return null;
+        return types;
     }
 
     /**
      * day - date in yyyy-MM-dd format
      * */
+    @NonNull
     List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+        List<String> dayInfo = new ArrayList<>();
         try {
 
-            List<String> dayInfo = new ArrayList<>();
             for (String packId: fromPacks) {
 
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
@@ -9202,13 +9224,12 @@ class ContactsEvents {
                     }
                 }
             }
-            return dayInfo;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return null;
+        return dayInfo;
     }
 
     void clearDaysTypesAndInfo() {
@@ -9227,11 +9248,12 @@ class ContactsEvents {
                 try {
 
                     String[] eventsPack = getResources().getStringArray(packId);
-                    if (eventsPack.length > 1) {
+                    int countEvents = eventsPack.length;
+                    if (countEvents > 1) {
                         final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (fileHashes == null || fileHashes.contains(packHash)) {
                             Log.i("HOLIDAY", eventsPack[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
-                            for (int i = 1; i < eventsPack.length; i++) {
+                            for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
                                 fillDaysTypesFromFile(packHash, days, "🏖️ ");
@@ -9393,7 +9415,7 @@ class ContactsEvents {
             if (calIDs.length() == 0) return;
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
-            String[] projection = new String[]{
+            String[] projection = {
                     CalendarContract.Instances.BEGIN,
                     CalendarContract.Instances.END,
                     CalendarContract.Instances.CALENDAR_ID,
@@ -9478,11 +9500,12 @@ class ContactsEvents {
                 try {
 
                     String[] eventsPack = getResources().getStringArray(packId);
-                    if (eventsPack.length > 1) {
+                    int countEvents = eventsPack.length;
+                    if (countEvents > 1) {
                         final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (preferences_HolidayEvent_ids.contains(packHash)) {
 
-                            for (int i = 1; i < eventsPack.length; i++) {
+                            for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
                                 for (String eventLine: days) {

@@ -200,7 +200,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (showUpdateProgress) {
                 rv.setInt(R.id.calendarAll, "setBackgroundColor", 0);
                 for (int row = 1; row <= rowsMax; row++) {
-                    int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
+                    int id = res.getIdentifier("calendar".concat(String.valueOf(row)), "id", context.getPackageName());
                     rv.setViewVisibility(id, View.GONE);
                 }
                 rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
@@ -475,12 +475,13 @@ public class WidgetCalendar extends AppWidgetProvider {
             rv.setInt(R.id.calendarAll,"setBackgroundColor", colorWidgetBackground);
 
             for (int row = 1; row <= rowsMax; row++) {
-                int id = res.getIdentifier("calendar" + row, "id", context.getPackageName());
+                int id = res.getIdentifier("calendar".concat(String.valueOf(row)), "id", context.getPackageName());
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
                     for (int column = 1; column <= columnsMax; column++) {
-                        id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
-                        int idDiv = res.getIdentifier("calendar" + row + "x" + column + "div", "id", context.getPackageName());
+                        String idRow = "calendar".concat(String.valueOf(row)).concat("x");
+                        id = res.getIdentifier(idRow.concat(String.valueOf(column)), "id", context.getPackageName());
+                        int idDiv = res.getIdentifier(idRow.concat(String.valueOf(column)).concat("div"), "id", context.getPackageName());
                         if (id != 0) {
                             rv.removeAllViews(id);
                             if (column > columnsToDraw) {
