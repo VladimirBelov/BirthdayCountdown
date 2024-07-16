@@ -4357,8 +4357,8 @@ class ContactsEvents {
                 paintStroke.setStyle(Paint.Style.STROKE);
                 paintStroke.setColor(Color.WHITE);
                 paintStroke.setStrokeWidth(3);
-                canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) (bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
-                canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) (bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
+                canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
+                canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
 
                 bm.recycle();
                 bm = bmOverlay;
@@ -8957,10 +8957,10 @@ class ContactsEvents {
             String customLabels = getPreferenceString(preferences, keyForLabels, Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (customLabels.isEmpty()) {
                 setPreferenceString(keyForLabels, eventLabel);
-                resultInfo = resources.getString(R.string.msg_eventtype_label_set, eventLabel);
+                resultInfo = resources.getString(R.string.msg_event_type_label_set, eventLabel);
             } else {
                 setPreferenceString(keyForLabels, customLabels.concat(Constants.STRING_COMMA).concat(eventLabel));
-                resultInfo = resources.getString(R.string.msg_eventtype_label_added, eventLabel);
+                resultInfo = resources.getString(R.string.msg_event_type_label_added, eventLabel);
             }
 
             if (eventTypeId > 6 && eventTitle != null) {

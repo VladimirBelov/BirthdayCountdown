@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
 //https://developer.android.com/guide/topics/appwidgets
@@ -312,6 +313,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
     }
 
+    @Nullable
     @Override
     public RemoteViews getLoadingView() {
         return null;

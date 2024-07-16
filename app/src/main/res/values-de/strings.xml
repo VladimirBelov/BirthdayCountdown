@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">als Text</string>
     <string name="menu_context_xDaysEvent_add">Tageszähler hinzufügen…</string>
     <string name="menu_context_xDaysEvent_edit">Tageszähler…</string>
-    <string name="menu_context_set_eventype">Ereignistyp auswählen…</string>
+    <string name="menu_context_set_event_type">Ereignistyp auswählen…</string>
     <string name="menu_context_favorites_add">Zu Favoriten hinzufügen</string>
     <string name="menu_context_favorites_remove">Aus Favoriten entfernen</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Alle gespeicherten Einstellungen löschen, bevor neue importiert werden?</string>
     <string name="msg_prefs_import_unknown">"Unbekannte Präferenz: %1$s"</string>
     <string name="msg_prefs_import_error">"Importfehler: %1$s"</string>
-    <string name="msg_eventtype_select_title">Ereignistyp auswählen</string>
-    <string name="msg_eventtype_label_set">"Labelsatz: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Label hinzugefügt: %1$s"</string>
-    <string name="msg_eventtype_label_absent">Ereignis fehlt eine Beschriftung!</string>
+    <string name="msg_event_type_select_title">Ereignistyp auswählen</string>
+    <string name="msg_event_type_label_set">"Labelsatz: %1$s"</string>
+    <string name="msg_event_type_label_added">"Label hinzugefügt: %1$s"</string>
+    <string name="msg_event_type_label_absent">Ereignis fehlt eine Beschriftung!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Kommende Ereignisse</string>
     <string name="pref_Notifications_Notification_Channel_Description">Benachrichtigungen für bevorstehende Ereignisse anzeigen</string>

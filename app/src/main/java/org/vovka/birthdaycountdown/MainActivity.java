@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             if (isUnrecognizedEvent(selectedEvent) && !Constants.STRING_EMPTY.equals(selectedEvent[ContactsEvents.Position_eventLabel])) {
-                menu.add(Menu.NONE, Constants.ContextMenu_SetEvenType, Menu.NONE, getString(R.string.menu_context_set_eventype))
+                menu.add(Menu.NONE, Constants.ContextMenu_SetEvenType, Menu.NONE, getString(R.string.menu_context_set_event_type))
                         .setIcon(android.R.drawable.ic_menu_mylocation);
             }
 
@@ -805,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.ContextMenu_SetEvenType) {
 
                 if (Constants.STRING_EMPTY.equals(selectedEvent[ContactsEvents.Position_eventLabel])) {
-                    ToastExpander.showInfoMsg(this, getString(R.string.msg_eventtype_label_absent));
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_event_type_label_absent));
                     return true;
                 }
 
@@ -840,7 +840,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, true, ta);
 
                 AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.msg_eventtype_select_title)
+                        .setTitle(R.string.msg_event_type_select_title)
                         .setAdapter(adapter, null)
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                         .setCancelable(true);

@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">как тэкст</string>
     <string name="menu_context_xDaysEvent_add">Дадаць лічыльнік дзён…</string>
     <string name="menu_context_xDaysEvent_edit">Лічыльнік дзён…</string>
-    <string name="menu_context_set_eventype">Вызначыць тып падзеі…</string>
+    <string name="menu_context_set_event_type">Вызначыць тып падзеі…</string>
     <string name="menu_context_favorites_add">Дадаць у абранае</string>
     <string name="menu_context_favorites_remove">Выдаліць з абраных</string>
     <string name="menu_ok">Добра</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Выдаліць усе захаваныя налады перад імпартаваннем новых?</string>
     <string name="msg_prefs_import_unknown">"Невядомая налада: %1$s"</string>
     <string name="msg_prefs_import_error">"Памылка імпарту: %1$s"</string>
-    <string name="msg_eventtype_select_title">Абярыце тып падзеі</string>
-    <string name="msg_eventtype_label_set">"Метка ўсталявана: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Метка дададзена: %1$s"</string>
-    <string name="msg_eventtype_label_absent">У падзеі адсутнічае метка!</string>
+    <string name="msg_event_type_select_title">Абярыце тып падзеі</string>
+    <string name="msg_event_type_label_set">"Метка ўсталявана: %1$s"</string>
+    <string name="msg_event_type_label_added">"Метка дададзена: %1$s"</string>
+    <string name="msg_event_type_label_absent">У падзеі адсутнічае метка!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Маючыя адбыцца падзеі</string>
     <string name="pref_Notifications_Notification_Channel_Description">Паказваць паведамлення аб маючых адбыцца падзеях</string>

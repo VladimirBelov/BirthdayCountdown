@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
@@ -314,6 +315,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         return roundingFactor;
     }
 
+    @Nullable
     @Override
     public RemoteViews getLoadingView() {
         return null;

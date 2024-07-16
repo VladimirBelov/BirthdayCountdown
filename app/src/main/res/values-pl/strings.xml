@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">jako tekst</string>
     <string name="menu_context_xDaysEvent_add">Dodaj licznik dni…</string>
     <string name="menu_context_xDaysEvent_edit">Licznik dni…</string>
-    <string name="menu_context_set_eventype">Ustaw typ wydarzenia…</string>
+    <string name="menu_context_set_event_type">Ustaw typ wydarzenia…</string>
     <string name="menu_context_favorites_add">Dodaj do ulubionych</string>
     <string name="menu_context_favorites_remove">Usuń z ulubionych</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Czy chcesz wyczyścić wszystkie zapisane ustawienia przed zaimportowaniem nowych?</string>
     <string name="msg_prefs_import_unknown">"Nieznane ustawienie: %1$s"</string>
     <string name="msg_prefs_import_error">"Błąd importu: %1$s"</string>
-    <string name="msg_eventtype_select_title">Wybierz typ wydarzenia</string>
-    <string name="msg_eventtype_label_set">"Zestaw etykiet: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Dodano etykietę: %1$s"</string>
-    <string name="msg_eventtype_label_absent">Wydarzenie nie ma etykiety!</string>
+    <string name="msg_event_type_select_title">Wybierz typ wydarzenia</string>
+    <string name="msg_event_type_label_set">"Zestaw etykiet: %1$s"</string>
+    <string name="msg_event_type_label_added">"Dodano etykietę: %1$s"</string>
+    <string name="msg_event_type_label_absent">Wydarzenie nie ma etykiety!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Nadchodzące wydarzenia</string>
     <string name="pref_Notifications_Notification_Channel_Description">Pokazuj powiadomienia o nadchodzących wydarzeniach</string>

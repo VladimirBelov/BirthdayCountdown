@@ -155,7 +155,8 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         Arrays.fill(mSelection, false);
         if (!selection.isEmpty()) {
             for (String sel: selection) {
-                for (int j = 0; j < _items.length; ++j) {
+                int countSelected = _items.length;
+                for (int j = 0; j < countSelected; ++j) {
                     if (_items[j].equals(sel)) {
                         mSelection[j] = true;
                     }
@@ -206,7 +207,8 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
 
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<>();
-        for (int i = 0; i < _items.length; i++) {
+        int countSelected = _items.length;
+        for (int i = 0; i < countSelected; i++) {
             if (mSelection[i]) {
                 selection.add(_items[i]);
             }
@@ -218,7 +220,8 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
-        for (int i = 0; i < _items.length; i++) {
+        int countSelected = _items.length;
+        for (int i = 0; i < countSelected; i++) {
             if (mSelection[i]) {
                 if (foundOne) {
                     sb.append("\n");

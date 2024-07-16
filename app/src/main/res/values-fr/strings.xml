@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">en tant que texte</string>
     <string name="menu_context_xDaysEvent_add">Ajouter un compteur de jours…</string>
     <string name="menu_context_xDaysEvent_edit">Compteur de jours…</string>
-    <string name="menu_context_set_eventype">"Spécifier le type d'événement…"</string>
+    <string name="menu_context_set_event_type">"Spécifier le type d'événement…"</string>
     <string name="menu_context_favorites_add">Ajouter aux favoris</string>
     <string name="menu_context_favorites_remove">Supprimer des favoris</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">"Voulez-vous supprimer tous les paramètres enregistrés avant d'en importer de nouveaux?"</string>
     <string name="msg_prefs_import_unknown">"Configuration inconnue: %1$s"</string>
     <string name="msg_prefs_import_error">"Erreur d'importation: %1$s"</string>
-    <string name="msg_eventtype_select_title">"Sélectionner le type d'événement"</string>
-    <string name="msg_eventtype_label_set">"Jeu d'étiquettes: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Étiquette est ajoutée: %1$s"</string>
-    <string name="msg_eventtype_label_absent">"l'événement n'a pas d'étiquette!"</string>
+    <string name="msg_event_type_select_title">"Sélectionner le type d'événement"</string>
+    <string name="msg_event_type_label_set">"Jeu d'étiquettes: %1$s"</string>
+    <string name="msg_event_type_label_added">"Étiquette est ajoutée: %1$s"</string>
+    <string name="msg_event_type_label_absent">"l'événement n'a pas d'étiquette!"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Événements à venir</string>
     <string name="pref_Notifications_Notification_Channel_Description">Afficher les notifications des événements à venir</string>

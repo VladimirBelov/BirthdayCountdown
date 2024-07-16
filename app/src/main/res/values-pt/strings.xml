@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">como texto</string>
     <string name="menu_context_xDaysEvent_add">Adicionar contador de dias…</string>
     <string name="menu_context_xDaysEvent_edit">Contador de dias…</string>
-    <string name="menu_context_set_eventype">Escolha o tipo de evento…</string>
+    <string name="menu_context_set_event_type">Escolha o tipo de evento…</string>
     <string name="menu_context_favorites_add">Adicionar aos favoritos</string>
     <string name="menu_context_favorites_remove">Remover dos favoritos</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Limpar todas as preferências salvas antes de importar uma nova?</string>
     <string name="msg_prefs_import_unknown">"Preferência desconhecida: %1$s"</string>
     <string name="msg_prefs_import_error">"Erro de importação: %1$s"</string>
-    <string name="msg_eventtype_select_title">Selecione o tipo de evento</string>
-    <string name="msg_eventtype_label_set">"Conjunto de rótulos: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Rótulo adicionado: %1$s"</string>
-    <string name="msg_eventtype_label_absent">O evento não tem rótulo!</string>
+    <string name="msg_event_type_select_title">Selecione o tipo de evento</string>
+    <string name="msg_event_type_label_set">"Conjunto de rótulos: %1$s"</string>
+    <string name="msg_event_type_label_added">"Rótulo adicionado: %1$s"</string>
+    <string name="msg_event_type_label_absent">O evento não tem rótulo!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificações para eventos futuros</string>

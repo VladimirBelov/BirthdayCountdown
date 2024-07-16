@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">como texto</string>
     <string name="menu_context_xDaysEvent_add">Añadir contador de días…</string>
     <string name="menu_context_xDaysEvent_edit">Contador de días…</string>
-    <string name="menu_context_set_eventype">Elegir tipo de evento…</string>
+    <string name="menu_context_set_event_type">Elegir tipo de evento…</string>
     <string name="menu_context_favorites_add">Agregar a favoritos</string>
     <string name="menu_context_favorites_remove">Eliminar de favoritos</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">¿Borrar todas las preferencias guardadas antes de importar una nueva?</string>
     <string name="msg_prefs_import_unknown">"Preferencia desconocida: %1$s"</string>
     <string name="msg_prefs_import_error">"Error de importación: %1$s"</string>
-    <string name="msg_eventtype_select_title">Seleccionar tipo de evento</string>
-    <string name="msg_eventtype_label_set">"Conjunto de etiquetas: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Etiqueta agregada: %1$s"</string>
-    <string name="msg_eventtype_label_absent">¡Al evento le falta una etiqueta!</string>
+    <string name="msg_event_type_select_title">Seleccionar tipo de evento</string>
+    <string name="msg_event_type_label_set">"Conjunto de etiquetas: %1$s"</string>
+    <string name="msg_event_type_label_added">"Etiqueta agregada: %1$s"</string>
+    <string name="msg_event_type_label_absent">¡Al evento le falta una etiqueta!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos Eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificaciones sobre próximos eventos</string>

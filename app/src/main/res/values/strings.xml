@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">as text</string>
     <string name="menu_context_xDaysEvent_add">Add days counter…</string>
     <string name="menu_context_xDaysEvent_edit">Days counter…</string>
-    <string name="menu_context_set_eventype">Choose event type…</string>
+    <string name="menu_context_set_event_type">Choose event type…</string>
     <string name="menu_context_favorites_add">Add to favorites</string>
     <string name="menu_context_favorites_remove">Remove from favorites</string>
     <string name="menu_ok">OK</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Clear all saved preferences before import new one?</string>
     <string name="msg_prefs_import_unknown">"Unknown pref: %1$s"</string>
     <string name="msg_prefs_import_error">"Import error: %1$s"</string>
-    <string name="msg_eventtype_select_title">Select event type</string>
-    <string name="msg_eventtype_label_set">"Label set: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Label added: %1$s"</string>
-    <string name="msg_eventtype_label_absent">The event has no label!</string>
+    <string name="msg_event_type_select_title">Select event type</string>
+    <string name="msg_event_type_label_set">"Label set: %1$s"</string>
+    <string name="msg_event_type_label_added">"Label added: %1$s"</string>
+    <string name="msg_event_type_label_absent">The event has no label!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>

@@ -58,7 +58,7 @@
     <string name="menu_context_share_as_text">як текст</string>
     <string name="menu_context_xDaysEvent_add">Додати лічильник днів…</string>
     <string name="menu_context_xDaysEvent_edit">Лічильник днів…</string>
-    <string name="menu_context_set_eventype">Виберіть тип події…</string>
+    <string name="menu_context_set_event_type">Виберіть тип події…</string>
     <string name="menu_context_favorites_add">Додати до вибраного</string>
     <string name="menu_context_favorites_remove">Видалити з вибраного</string>
     <string name="menu_ok">Добре</string>
@@ -178,10 +178,10 @@
     <string name="msg_prefs_import_clear_confirmation">Очистити всі збережені налаштування перед імпортом нових?</string>
     <string name="msg_prefs_import_unknown">"Невідомий параметр: %1$s"</string>
     <string name="msg_prefs_import_error">"Помилка імпорту: %1$s"</string>
-    <string name="msg_eventtype_select_title">Виберіть тип події</string>
-    <string name="msg_eventtype_label_set">"Набір міток: %1$s"</string>
-    <string name="msg_eventtype_label_added">"Додано мітку: %1$s"</string>
-    <string name="msg_eventtype_label_absent">У події відсутня мітка!</string>
+    <string name="msg_event_type_select_title">Виберіть тип події</string>
+    <string name="msg_event_type_label_set">"Набір міток: %1$s"</string>
+    <string name="msg_event_type_label_added">"Додано мітку: %1$s"</string>
+    <string name="msg_event_type_label_absent">У події відсутня мітка!</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
