@@ -245,6 +245,7 @@
         <receiver android:name=".AlarmReceiver" />
         <receiver android:name=".ActionReceiver" />
         <receiver android:name=".WidgetUpdateReceiver" />
+        <receiver android:name=".WidgetUpdateDailyReceiver" />
         <receiver android:name=".QuizReceiver" />
 
         <!--Widgets-->

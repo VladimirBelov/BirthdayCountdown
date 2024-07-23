@@ -140,6 +140,7 @@ public class Widget5x1 extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context.getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
+            eventsData.statActiveWidgets++;
         }
 
     }

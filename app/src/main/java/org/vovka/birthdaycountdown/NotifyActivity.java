@@ -34,7 +34,6 @@ public class NotifyActivity extends Activity {
 
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(null)) {
-                    eventsData.computeDates();
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
                     notificationManager.cancelAll();

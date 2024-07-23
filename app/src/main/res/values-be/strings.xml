@@ -645,11 +645,11 @@
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Аўтаматычна (кіруецца Android)</item>
-        <item>Штогадзіны</item>
-        <item>Кожныя 2 гадзіны</item>
-        <item>Кожныя 4 гадзіны</item>
-        <item>Кожныя 6 гадзін</item>
-        <item>Кожныя 12 гадзін</item>
+        <item>Штогадзіны і апоўначы</item>
+        <item>Кожныя 2 гадзіны і апоўначы</item>
+        <item>Кожныя 4 гадзіны і апоўначы</item>
+        <item>Кожныя 6 гадзін і апоўначы</item>
+        <item>Кожныя 12 гадзін і апоўначы</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Дэталі падзеі</string>
@@ -1115,6 +1115,7 @@
     <string name="stats_counters_organizations"><![CDATA[<li>арганізацый: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>псеўданімаў: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web спасылак: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>віджэты: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Падзеі па акаўнтах:</h2><ul>]]></string>
 

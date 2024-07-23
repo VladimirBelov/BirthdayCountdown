@@ -104,7 +104,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -201,6 +200,7 @@ class ContactsEvents {
     static final int Rules_Unrecognized_Skip = 3;
 
     final List<String> eventList = new ArrayList<>(); //Список всех событий
+    final List<String> eventListUpdated = new ArrayList<>(); //Список всех событий (обновлённый)
     final String systemLocale = Locale.getDefault().getLanguage();
     //final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
     final HashMap<String, Date> deathDatesForIds = new HashMap<>(); //Даты годовщин смерти по ID
@@ -259,7 +259,6 @@ class ContactsEvents {
     private final HashMap<String, String> preferences_mergedIDs = new HashMap<>(); //жёсткая привязка события к определённому контакту по ContactID
     private final HashMap<String, String> preferences_mergedRawIDs = new HashMap<>(); //жёсткая привязка события к определённому контакту RawContactID
     private final HashMap<String, String> preferences_xDaysEvents = new HashMap<>();
-    List<String> eventListUnsorted = new ArrayList<>(); //Несортированный список
     int currentTheme = 0;
     boolean needUpdateEventList = true;
 
@@ -438,6 +437,7 @@ class ContactsEvents {
     long statLastPausedForOtherActivity = 0;
     int statEventsPrevEventsFound = 0;
     int statFavoriteEventsCount = 0;
+    int statActiveWidgets = 0;
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     private static DisplayMetrics displayMetrics;
@@ -1628,8 +1628,7 @@ class ContactsEvents {
 
         try {
 
-            eventList.clear();
-            eventListUnsorted.clear();
+            eventListUpdated.clear();
             map_organizations.clear();
             map_contacts_titles.clear();
             map_contacts_aliases.clear();
@@ -1683,6 +1682,13 @@ class ContactsEvents {
                     | getHolidayEvents();
 
             statFavoriteEventsCount += preferences_favoriteEvents.size();
+
+            if (result) {
+                eventList.clear();
+                eventList.addAll(eventListUpdated);
+                eventListUpdated.clear();
+                computeDates();
+            }
 
             return result;
 
@@ -1973,7 +1979,7 @@ class ContactsEvents {
             cache.clear();
             cursor.close();
 
-            eventList.addAll(dataList);
+            eventListUpdated.addAll(dataList);
             statEventsCount += statContactsEventCount;
             dataList.clear();
             statTimeGetContactEvents = System.currentTimeMillis() - statCurrentModuleStart;
@@ -2863,8 +2869,8 @@ class ContactsEvents {
 
                                 //Ищем событие контакта в списке событий и добавляем в него
                                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                                if (eventIndex != null && eventIndex <= eventList.size()) {
-                                    List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
+                                    List<String> singleRowList = Arrays.asList(eventListUpdated.get(eventIndex).split(Constants.STRING_EOT, -1));
                                     final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
 
                                     if (!eventDates.contains(eventNewDate)) { //Нет такой даты из такого источника
@@ -2925,7 +2931,7 @@ class ContactsEvents {
                                         if (rNum != 1) dataRow.append(Constants.STRING_EOT);
                                         dataRow.append(entry);
                                     }
-                                    eventList.set(eventIndex, dataRow.toString());
+                                    eventListUpdated.set(eventIndex, dataRow.toString());
                                     importMethod = importMethod_AdditionalDateToContactEvent;
 
                                 } else { //Такого события ещё не было
@@ -3015,15 +3021,15 @@ class ContactsEvents {
                                     dataRow.append(entry.getValue());
                                 }
                                 final String eventData = dataRow.toString();
-                                if (!eventList.contains(eventData)) {
-                                    eventList.add(eventData);
+                                if (!eventListUpdated.contains(eventData)) {
+                                    eventListUpdated.add(eventData);
 
                                     if (importMethod == importMethod_NewContactEvent) {  //Добавляем событие
                                         if (!contactID.isEmpty()) {
-                                            map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
+                                            map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                                         }
                                     } else {
-                                        map_eventsBySubtypeAndPersonID_offset.put(eventID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
+                                        map_eventsBySubtypeAndPersonID_offset.put(eventID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                                     }
                                 }
                             }
@@ -3589,9 +3595,9 @@ class ContactsEvents {
 
                         //Ищем событие контакта в списке событий и добавляем в него
                         Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                        if (eventIndex != null && eventIndex <= eventList.size()) {
+                        if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
 
-                            List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            List<String> singleRowList = Arrays.asList(eventListUpdated.get(eventIndex).split(Constants.STRING_EOT, -1));
                             final String eventDates = singleRowList.get(ContactsEvents.Position_dates);
                             boolean needUpdate = false;
 
@@ -3640,7 +3646,7 @@ class ContactsEvents {
                                 if (rNum != 1) dataRow.append(Constants.STRING_EOT);
                                 dataRow.append(entry);
                             }
-                            eventList.set(eventIndex, dataRow.toString());
+                            eventListUpdated.set(eventIndex, dataRow.toString());
                             userData.clear();
 
                         } else { //Такого события ещё не было
@@ -3689,10 +3695,10 @@ class ContactsEvents {
                             dataRow.append(entry.getValue());
                         }
                         final String eventData = dataRow.toString();
-                        if (!eventList.contains(eventData)) {
-                            eventList.add(eventData);
+                        if (!eventListUpdated.contains(eventData)) {
+                            eventListUpdated.add(eventData);
                             if (contactID != null && !contactID.isEmpty()) {
-                                map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventList.size() - 1);
+                                map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                             }
                         }
                         userData.clear();
@@ -4635,8 +4641,6 @@ class ContactsEvents {
                 magicList.clear();
             }
 
-            eventListUnsorted = new ArrayList<>(eventList);
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -5241,7 +5245,7 @@ class ContactsEvents {
 
             //Собираем события
             int params_days = 365;
-            int params_events = 1000;
+            int params_events = 10000;
             switch (params) {
                 case "1d":
                     params_days = 1;
@@ -5374,8 +5378,8 @@ class ContactsEvents {
     void updateWidgets(int widgetID, StringBuilder log) {
 
         if (context == null) return;
-        AtomicInteger countSentRequests = new AtomicInteger();
         statTimeUpdateWidgets = 0;
+        statActiveWidgets = 0;
 
         //Посылаем сообщения на обновление виджетов
         try {
@@ -5393,12 +5397,19 @@ class ContactsEvents {
 
                     int[] ids;
 
+                    if (widgetID == 0) {
+                        try {
+                            sleep(2000);
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+                    }
+
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
                     if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
                         //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         Widget2x2 myWidget = new Widget2x2();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
@@ -5406,7 +5417,6 @@ class ContactsEvents {
                         //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         Widget5x1 myWidget = new Widget5x1();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
@@ -5414,7 +5424,6 @@ class ContactsEvents {
                         //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         Widget4x1 myWidget = new Widget4x1();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
@@ -5422,7 +5431,6 @@ class ContactsEvents {
                         //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         WidgetList myWidget = new WidgetList();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
@@ -5430,7 +5438,6 @@ class ContactsEvents {
                         //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         WidgetPhotoList myWidget = new WidgetPhotoList();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
@@ -5438,7 +5445,6 @@ class ContactsEvents {
                         //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
                         WidgetCalendar myWidget = new WidgetCalendar();
                         myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                        countSentRequests.getAndIncrement();
                     }
 
                     interrupt();
@@ -5452,7 +5458,7 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            if (log != null && countSentRequests.get() > 0)
+            if (log != null)
                 log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
         }
     }
@@ -5555,9 +5561,14 @@ class ContactsEvents {
 
         try {
 
-            Intent alarmIntent = new Intent(context, WidgetUpdateReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentMutable);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager == null) return;
+
+            Intent updateIntent = new Intent(context, WidgetUpdateReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntentMutable);
+
+            Intent updateIntentDaily = new Intent(context, WidgetUpdateDailyReceiver.class);
+            PendingIntent pendingIntentDaily = PendingIntent.getBroadcast(context, 0, updateIntentDaily, PendingIntentMutable);
 
             if (preferences_widgets_update_period > 0) {
 
@@ -5565,25 +5576,39 @@ class ContactsEvents {
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.add(Calendar.HOUR_OF_DAY, preferences_widgets_update_period);
 
-                if (alarmManager != null) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * preferences_widgets_update_period, pendingIntent);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (checkCanExactAlarm()) {
-                            try {
-                                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            } catch (SecurityException se) {
-                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            }
-                        } else {
+                Calendar calendarStartDay = Calendar.getInstance();
+                calendarStartDay.setTimeInMillis(System.currentTimeMillis());
+                calendarStartDay.add(Calendar.DAY_OF_YEAR, 1);
+                calendarStartDay.set(Calendar.HOUR_OF_DAY, 0);
+                calendarStartDay.set(Calendar.MINUTE, 0);
+                calendarStartDay.set(Calendar.SECOND, 1);
+                calendarStartDay.set(Calendar.MILLISECOND, 0);
+
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * preferences_widgets_update_period, pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentDaily);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkCanExactAlarm()) {
+                        try {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
+                        } catch (SecurityException se) {
                             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
                         }
+                    } else {
+                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
                     }
-                    log.append(resources.getString(R.string.msg_next_widgetupdate, sdf_DDMMYYYYHHMM.format(calendar.getTime())));
                 }
+                log.append(resources.getString(R.string.msg_next_widgetupdate,
+                        sdf_DDMMYYYYHHMM.format(calendar.before(calendarStartDay) ? calendar.getTime() : calendarStartDay.getTime())));
 
             } else { //Disable
-                if (PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
+                if (PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntentMutable) != null) {
                     alarmManager.cancel(pendingIntent);
+                }
+                if (PendingIntent.getBroadcast(context, 0, updateIntentDaily, PendingIntentMutable) != null) {
+                    alarmManager.cancel(pendingIntentDaily);
                 }
             }
 
@@ -7830,10 +7855,10 @@ class ContactsEvents {
             SimpleDateFormat sdfMonthLong = new SimpleDateFormat("LLLL", Locale.forLanguageTag(currentLocale));
             Date BDay;
 
-            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+            while (!isBirthday && tryEvent <= eventList.size()) {
                 tryEvent++;
-                int randomInt = generator.nextInt(eventListUnsorted.size());
-                event = eventListUnsorted.get(randomInt);
+                int randomInt = generator.nextInt(eventList.size());
+                event = eventList.get(randomInt);
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
@@ -7931,10 +7956,10 @@ class ContactsEvents {
             String BYearLong = Constants.STRING_EMPTY;
             Date BDay;
 
-            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+            while (!isBirthday && tryEvent <= eventList.size()) {
                 tryEvent++;
-                int randomInt = generator.nextInt(eventListUnsorted.size());
-                event = eventListUnsorted.get(randomInt);
+                int randomInt = generator.nextInt(eventList.size());
+                event = eventList.get(randomInt);
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
@@ -8029,10 +8054,10 @@ class ContactsEvents {
             Date BDay = null;
             Date eventDay = null;
 
-            while (!isBirthday && tryEvent <= eventListUnsorted.size()) {
+            while (!isBirthday && tryEvent <= eventList.size()) {
                 tryEvent++;
-                int randomInt = generator.nextInt(eventListUnsorted.size());
-                event = eventListUnsorted.get(randomInt);
+                int randomInt = generator.nextInt(eventList.size());
+                event = eventList.get(randomInt);
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
@@ -9600,8 +9625,8 @@ class ContactsEvents {
                                         dataRow.append(entry.getValue());
                                     }
                                     final String eventData = dataRow.toString();
-                                    if (!eventList.contains(eventData)) {
-                                        eventList.add(eventData);
+                                    if (!eventListUpdated.contains(eventData)) {
+                                        eventListUpdated.add(eventData);
                                     }
                                     userData.clear();
 

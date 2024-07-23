@@ -51,7 +51,6 @@ public class QuizActivity extends Activity {
             eventsData.setLocale(true);
 
             if (eventsData.getEvents(null)) {
-                eventsData.computeDates();
                 eventsData.quizCheckAndGo(null, null);
             }
 

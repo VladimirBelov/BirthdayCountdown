@@ -1615,6 +1615,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventsData.needUpdateEventList = true;
                     eventsData.clearDaysTypesAndInfo();
                     swipeRefresh.postDelayed(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME), 300);
+                    eventsData.updateWidgets(0, null);
                 }
                 return true;
 
@@ -2101,6 +2102,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
+                eventsData.updateWidgets(0, null);
 
             }
 
@@ -2331,8 +2333,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 executor.execute(() -> {
 
                     //Background work
-                    if ((eventsData.needUpdateEventList || eventsData.isEmptyEventList()) && eventsData.getEvents(this))
-                        eventsData.computeDates();
+                    if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
+                        eventsData.getEvents(this);
+                    }
 
                     final Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> {
@@ -2348,8 +2351,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         if (eventsData.isEmptyEventList()) {
                             showZeroEventsHints();
-                        } else {
-                            eventsData.updateWidgets(0, null);
+                        //} else {
+                        //    eventsData.updateWidgets(0, null);
                         }
 
                     });
@@ -2357,8 +2360,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else {
 
-                if ((eventsData.needUpdateEventList || eventsData.isEmptyEventList()) && eventsData.getEvents(this))
-                    eventsData.computeDates();
+                if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
+                    eventsData.getEvents(this);
+                }
                 filterEventsList();
                 drawList();
 
@@ -2369,8 +2373,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.isEmptyEventList()) {
                     showZeroEventsHints();
-                } else {
-                    eventsData.updateWidgets(0, null);
+                //} else {
+                //    eventsData.updateWidgets(0, null);
                 }
             }
 

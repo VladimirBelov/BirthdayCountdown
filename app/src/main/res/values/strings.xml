@@ -645,11 +645,11 @@
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Automatically (controlled by Android)</item>
-        <item>Every 1 hour</item>
-        <item>Every 2 hours</item>
-        <item>Every 4 hours</item>
-        <item>Every 6 hours</item>
-        <item>Every 12 hours</item>
+        <item>Every 1 hour + midnight</item>
+        <item>Every 2 hours + midnight</item>
+        <item>Every 4 hours + midnight</item>
+        <item>Every 6 hours + midnight</item>
+        <item>Every 12 hours + midnight</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Event details</string>
@@ -1115,6 +1115,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="stats_counters_organizations"><![CDATA[<li>contacts organizations: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>contacts nicknames: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web links: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Events by accounts:</h2><ul>]]></string>
 

@@ -645,11 +645,11 @@
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Автоматически (управляется Android)</item>
-        <item>Каждый час</item>
-        <item>Каждые 2 часа</item>
-        <item>Каждые 4 часа</item>
-        <item>Каждые 6 часов</item>
-        <item>Каждые 12 часов</item>
+        <item>Каждый час и в полночь</item>
+        <item>Каждые 2 часа и в полночь</item>
+        <item>Каждые 4 часа и в полночь</item>
+        <item>Каждые 6 часов и в полночь</item>
+        <item>Каждые 12 часов и в полночь</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Детали события</string>
@@ -1115,6 +1115,7 @@
     <string name="stats_counters_organizations"><![CDATA[<li>организаций: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>псевдонимов: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web ссылок: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>виджетов: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>События по аккаунтам:</h2><ul>]]></string>
 

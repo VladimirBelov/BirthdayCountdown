@@ -645,11 +645,11 @@
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Автоматично (керується Android)</item>
-        <item>Кожну 1 годину</item>
-        <item>Кожні 2 години</item>
-        <item>Кожні 4 години</item>
-        <item>Кожні 6 годин</item>
-        <item>Кожні 12 годин</item>
+        <item>Кожну 1 годину і опівночі</item>
+        <item>Кожні 2 години і опівночі</item>
+        <item>Кожні 4 години і опівночі</item>
+        <item>Кожні 6 годин і опівночі</item>
+        <item>Кожні 12 годин і опівночі</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Деталі події</string>
@@ -1115,6 +1115,7 @@
     <string name="stats_counters_organizations"><![CDATA[<li>організацій: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>псевдонімів: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>веб-посилання: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>віджети: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Події за акаунтів:</h2><ul>]]></string>
 

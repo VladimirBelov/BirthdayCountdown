@@ -429,4 +429,36 @@
         16.12.2024,!1 День Независимости"</item>
     </string-array>
 
+    <string-array name="holidays14" translatable="false" tools:ignore="UnusedResources">
+    <item>🇵🇱 Święta</item>
+        <item>"//2023 https://poland.workingdays.org/workingdays_holidays_2023.htm https://www.kalendarz-365.pl/swieta/2023.html
+        01.01.2023,!1 Nowy Rok
+        06.01.2023,!1 Trzech Króli
+        09.04.2023,!1 Wielkanoc
+        10.04.2023,!1 Poniedziałek Wielkanocny
+        01.05.2023,!1 Święto Pracy
+        03.05.2023,!1 Święto Konstytucji 3 Maja
+        28.05.2023,!1 Zielone Świątki
+        08.06.2023,!1 Boże Ciało
+        15.08.2023,!1 Wniebowzięcie Najświętszej Maryi Panny
+        01.11.2023,!1 Wszystkich Świętych
+        11.11.2023,!1 Narodowe Święto Niepodległości
+        25.12.2023,!1 Boże Narodzenie (Pierwszy Dzień)
+        26.12.2023,!1 Boże Narodzenie (Drugi Dzień)"</item>
+        <item>"//2024 https://poland.workingdays.org/workingdays_holidays_2024.htm https://www.kalendarz-365.pl/swieta/2024.html
+        01.01.2024,!1 Nowy Rok
+        06.01.2024,!1 Trzech Króli
+        31.03.2024,!1 Wielkanoc
+        01.04.2024,!1 Poniedziałek Wielkanocny
+        01.05.2024,!1 Święto Pracy
+        03.05.2024,!1 Święto Konstytucji 3 Maja
+        19.05.2024,!1 Zielone Świątki
+        30.05.2024,!1 Boże Ciało
+        15.08.2024,!1 Wniebowzięcie Najświętszej Maryi Panny
+        01.11.2024,!1 Wszystkich Świętych
+        11.11.2024,!1 Narodowe Święto Niepodległości
+        25.12.2024,!1 Boże Narodzenie (Pierwszy Dzień)
+        26.12.2024,!1 Boże Narodzenie (Drugi Dzień)"</item>
+    </string-array>
+
 </resources>

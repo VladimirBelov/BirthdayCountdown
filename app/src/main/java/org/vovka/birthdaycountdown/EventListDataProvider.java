@@ -351,7 +351,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                if (eventsData.getEvents(context)) eventsData.computeDates();
+                eventsData.getEvents(context);
             }
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
                 if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(resources.getString(R.string.pref_EventInfo_None_ID))) {

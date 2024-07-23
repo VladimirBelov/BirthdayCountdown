@@ -34,7 +34,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(context)) {
-                    eventsData.computeDates();
 
                     if (isNeedNotify && intent.getIntExtra(Constants.QUEUE, 0) == 1) {
                         eventsData.showNotifications(1, false, Integer.toString(eventsData.preferences_notifications_channel_id));

@@ -98,7 +98,7 @@ class WidgetUpdater {
             if (eventsData.getContext() == null) eventsData.setContext(context);
             eventsData.getPreferences();
             eventsData.setLocale(true);
-            if (eventsData.getEvents(context)) eventsData.computeDates();
+            eventsData.getEvents(context);
         }
 
         try {

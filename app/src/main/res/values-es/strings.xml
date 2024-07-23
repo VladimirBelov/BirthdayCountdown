@@ -645,11 +645,11 @@
 
     <string-array name="pref_Widgets_UpdateInterval_entries">
         <item>Automáticamente (controlado por Android)</item>
-        <item>Cada 1 hora</item>
-        <item>Cada 2 horas</item>
-        <item>Cada 4 horas</item>
-        <item>Cada 6 horas</item>
-        <item>Cada 12 horas</item>
+        <item>Cada 1 hora y a medianoche</item>
+        <item>Cada 2 horas y a medianoche</item>
+        <item>Cada 4 horas y a medianoche</item>
+        <item>Cada 6 horas y a medianoche</item>
+        <item>Cada 12 horas y a medianoche</item>
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
@@ -1115,6 +1115,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="stats_counters_organizations"><![CDATA[<li>organizaciones: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>alias: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>enlaces web: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por cuenta:</h2><ul>]]></string>
 

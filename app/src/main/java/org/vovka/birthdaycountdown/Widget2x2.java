@@ -91,6 +91,7 @@ public class Widget2x2 extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
+            eventsData.statActiveWidgets++;
         }
 
     }
