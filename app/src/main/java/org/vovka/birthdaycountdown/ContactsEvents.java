@@ -5463,7 +5463,7 @@ class ContactsEvents {
         }
     }
 
-    void initNotificationChannel(StringBuilder log, int queueNumber, Set<String> prefDays, String prefRingtone) {
+    void initNotificationChannel(StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, String prefRingtone) {
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
@@ -5547,8 +5547,17 @@ class ContactsEvents {
             } else { //Disable Daily Notifications
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    log.append(resources.getString(R.string.msg_notifications_were_disabled)).append(Constants.STRING_EOL);
                 }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
+                    NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                    List<NotificationChannel> listChannels = notificationManager.getNotificationChannels();
+                    for (NotificationChannel channel: listChannels) {
+                        String id = channel.getId();
+                        notificationManager.deleteNotificationChannel(id);
+                        log.append(resources.getString(R.string.msg_deleted_channel, id));
+                    }
+                }
+                log.append(resources.getString(R.string.msg_notifications_were_disabled)).append(Constants.STRING_EOL);
             }
 
         } catch (Exception e) {
@@ -5619,7 +5628,7 @@ class ContactsEvents {
 
     }
 
-    void initNotificationSchedule(@NonNull StringBuilder log, int queueNumber, Set<String> prefDays, int prefAlarmHour, int prefAlarmMinute) {
+    void initNotificationSchedule(@NonNull StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, int prefAlarmHour, int prefAlarmMinute) {
 
         try {
 
@@ -7628,14 +7637,15 @@ class ContactsEvents {
 
             final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIOpen;
 
+            final String quizChannelId = Integer.toString(Constants.defaultQuizID);
             if (isNotifyInterface && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
 
                 NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                NotificationChannel channel = notificationManager.getNotificationChannel(Integer.toString(Constants.defaultQuizID));
+                NotificationChannel channel = notificationManager.getNotificationChannel(quizChannelId);
 
                 if (channel == null) {
-                    notificationManager.deleteNotificationChannel(Integer.toString(Constants.defaultQuizID));
-                    channel = new NotificationChannel(Integer.toString(Constants.defaultQuizID), context.getString(R.string.pref_Notifications_Quiz_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                    notificationManager.deleteNotificationChannel(quizChannelId);
+                    channel = new NotificationChannel(quizChannelId, context.getString(R.string.pref_Notifications_Quiz_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                     channel.setSound(null, null);
                     channel.setShowBadge(false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -7700,7 +7710,7 @@ class ContactsEvents {
             if (isNotifyInterface) {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Integer.toString(Constants.defaultQuizID)).setColor(getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.quiz_icon).setContentTitle(quest.type).setContentText(quest.question).setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question)).setPriority(NotificationCompat.PRIORITY_MAX).setWhen(0).setAutoCancel(true);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, quizChannelId).setColor(getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.quiz_icon).setContentTitle(quest.type).setContentText(quest.question).setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question)).setPriority(NotificationCompat.PRIORITY_MAX).setWhen(0).setAutoCancel(true);
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { //
                     builder.setSound(Uri.parse("content://media/internal/audio/media/29"));
