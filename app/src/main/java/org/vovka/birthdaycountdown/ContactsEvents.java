@@ -2636,7 +2636,7 @@ class ContactsEvents {
 
             String[] arrRules;
             List<Matcher> matcherNames = new ArrayList<>();
-            boolean useEventYear = false;
+            boolean useEventYear;
             final List<String> eventURLs = new ArrayList<>();
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
@@ -2657,6 +2657,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_CalendarEvent);
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                useEventYear = true;
 
             } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
 
@@ -2665,6 +2666,7 @@ class ContactsEvents {
                 event.subType = eventType; //getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                useEventYear = true;
 
             } else if (isMultiTypeSource) {
 
@@ -3863,14 +3865,14 @@ class ContactsEvents {
                 cal.set(eventYear, eventMonth, 1);
                 int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
                 if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                int daysToSub = weekDayStartOfNextMonth >= weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
+                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
                 cal.add(Calendar.DAY_OF_MONTH, - daysToSub + daysShift);
 
                 if (cal.before(now)) { //В этом году уже прошло, берём следующий год
                     cal.set(eventYear + 1, eventMonth, 1);
                     weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
                     if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                    daysToSub = weekDayStartOfNextMonth >= weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
+                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
                     cal.add(Calendar.DAY_OF_MONTH, - daysToSub + daysShift);
                 }
 
@@ -3879,14 +3881,14 @@ class ContactsEvents {
                 cal.set(eventYear, eventMonth, 1);
                 int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
                 if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                int daysToSub = weekDayStartOfNextMonth >= weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
+                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
                 cal.add(Calendar.DAY_OF_MONTH, - daysToSub + daysShift);
 
                 if (cal.before(now)) { //В этом году уже прошло, берём следующий год
                     cal.set(eventYear + 1, eventMonth, 1);
                     weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
                     if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                    daysToSub = weekDayStartOfNextMonth >= weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
+                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
                     cal.add(Calendar.DAY_OF_MONTH, - daysToSub + daysShift);
                 }
 
@@ -5291,25 +5293,23 @@ class ContactsEvents {
                 if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K)) //пропускаем 5K+
                         && !singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent)) //пропускаем события календаря
                 ) {
-                    if (params_days == 365) { //нет ограничения по дням
-                        newList.add(li);
-                        statEventsPrevEventsFound++;
-                    } else {
-                        Date eventDate = null;
-                        try {
-                            eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
-                            if (eventDate != null) {
-                                eventDate = addYear(eventDate, -1);
-                            }
-                        } catch (Exception e) { /**/ }
-
+                    Date eventDate = null;
+                    try {
+                        eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateThisTime]);
                         if (eventDate != null) {
-                            if (-countDaysDiff(currentDay, eventDate) <= params_days) {
-                                newList.add(li);
-                                statEventsPrevEventsFound++;
-                            } else {
-                                break;
-                            }
+                            eventDate = addYear(eventDate, -1);
+                        }
+                    } catch (Exception e) { /**/ }
+
+                    if (eventDate != null && !eventDate.equals(currentDay)) {
+                        if (params_days == 365) { //нет ограничения по дням
+                            newList.add(li);
+                            statEventsPrevEventsFound++;
+                        } else if (-countDaysDiff(currentDay, eventDate) <= params_days) {
+                            newList.add(li);
+                            statEventsPrevEventsFound++;
+                        } else {
+                            break;
                         }
                     }
                 }
