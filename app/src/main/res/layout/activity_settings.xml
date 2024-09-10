@@ -26,7 +26,6 @@
         android:theme="@style/AppTheme.ActionBar"
         app:titleTextAppearance="@style/ActivityTitleStyle"/>
 
-    <!--suppress AndroidDomInspection -->
     <ListView
         android:id="@id/android:list"
         android:background="?attr/backgroundColor"
