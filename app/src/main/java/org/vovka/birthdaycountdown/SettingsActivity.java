@@ -1466,7 +1466,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            eventsData.recieveCalendarList();
+            eventsData.fillCalendarList();
 
             if (eventsData.map_calendars.isEmpty()) {
 
@@ -1485,34 +1485,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             ArrayList<String> calIDs = new ArrayList<>();
             ArrayList<String> calTitles = new ArrayList<>();
+            List<Integer> calColors = new ArrayList<>();
             ArrayList<Boolean> calSelected = new ArrayList<>();
 
             Set<String> preferences_calendars = eventsData.getPreferences_Calendars(eventType);
-            boolean[] sel = new boolean[eventsData.map_calendars.size()];
-            int ind = 0;
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
+                String[] calInfo = ContactsEvents.getKeyParts(entry.getValue());
+                String calTitle = calInfo[0];
+                if (calInfo.length > 2 && calInfo[2].equals(Constants.STRING_0)) calTitle = calTitle + " 🚫";
                 calTitles.add(
-                        entry.getValue().replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN)
-                                + Constants.STRING_PARENTHESIS_CLOSE
+                        calTitle
                                 + Constants.STRING_BRACKETS_OPEN
                                 + eventsData.getCalendarEventsCount(entry.getKey())
                                 + Constants.STRING_BRACKETS_CLOSE
                 );
+                String calId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + entry.getKey());
+                if (eventsData.map_calendars_colors.containsKey(calId)) {
+                    calColors.add(eventsData.map_calendars_colors.get(calId));
+                } else calColors.add(null);
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
-                sel[ind] = calSelected.get(ind);
-                ind++;
             }
+
+            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, calTitles, null, null, calColors, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_CustomEvents_Calendars_title)
                     .setIcon(android.R.drawable.ic_menu_month)
-                    .setMultiChoiceItems(calTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> calSelected.set(which, isChecked))
+                    .setAdapter(adapter, null)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
                         Set<String> toStore = new HashSet<>();
-                        for (int i = 0; i < calSelected.size(); i++) {
-                            if (calSelected.get(i)) toStore.add(calIDs.get(i));
+                        SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                toStore.add(calIDs.get(checked.keyAt(i)));
+                            }
                         }
                         eventsData.setPreferences_Calendars(eventType, toStore);
                         eventsData.savePreferences();
@@ -1525,9 +1533,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             AlertDialog alertToShow = builder.create();
 
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                //Только здесь работает
+                for (int i = 0; i < calTitles.size(); i++) {
+                    if (calSelected.get(i)) {
+                        listView.setItemChecked(i, true);
+                    }
+                }
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -625,7 +625,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Календари
             if (!eventsData.checkNoCalendarAccess()){
-                if (eventsData.map_calendars.isEmpty()) eventsData.recieveCalendarList();
+                if (eventsData.map_calendars.isEmpty()) eventsData.fillCalendarList();
                 List<String> allCalendars = new ArrayList<>(eventsData.preferences_HolidayEvent_calendars);
                 if (!allCalendars.isEmpty()) {
                     for (String calendar: allCalendars) {
@@ -799,8 +799,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                             picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
 
-                        } else {
-                            ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");
+                        //} else {
+                        //    ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");
                         }
 
                         return true;
@@ -819,7 +819,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
     public void setCustomColor(@NonNull String colorId, int colorValue) {
         if (!colorId.isEmpty()) {
-            ToastExpander.showDebugMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
+            //ToastExpander.showDebugMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
             eventSourcesColors.put(colorId, colorValue);
         }
         selectEventSources();

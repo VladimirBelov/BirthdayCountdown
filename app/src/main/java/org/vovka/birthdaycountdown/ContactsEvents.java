@@ -2599,7 +2599,7 @@ class ContactsEvents {
             StringBuilder dataRow;
             Event event = new Event();
 
-            if (map_calendars.isEmpty()) recieveCalendarList();
+            if (map_calendars.isEmpty()) fillCalendarList();
             final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_calendars_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
 
             //https://stackoverflow.com/questions/25734285/how-to-get-the-real-time-of-recurring-events
@@ -3067,7 +3067,7 @@ class ContactsEvents {
         }
     }
 
-    void recieveCalendarList() {
+    void fillCalendarList() {
 
         Cursor cursor = null;
 
@@ -3081,10 +3081,10 @@ class ContactsEvents {
                     uri,
                     new String[]{
                             android.provider.BaseColumns._ID,
-                            CalendarContract.Calendars.VISIBLE,
                             CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
                             CalendarContract.Calendars.ACCOUNT_NAME,
-                            CalendarContract.Calendars.CALENDAR_COLOR
+                            CalendarContract.Calendars.CALENDAR_COLOR,
+                            CalendarContract.Calendars.VISIBLE
                     },
                     null,
                     null,
@@ -3094,11 +3094,17 @@ class ContactsEvents {
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     for (int i = 0; i < cursor.getCount(); i++) {
-                        if (cursor.getInt(1) == 1) {
-                            map_calendars.put(cursor.getInt(0) + Constants.STRING_EMPTY, cursor.getString(2).concat(Constants.STRING_EOT).concat(cursor.getString(3)));
-                            String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + cursor.getInt(0));
-                            map_calendars_colors.put(calendarId, cursor.getInt(4));
-                        }
+                        String calId = cursor.getString(0);
+                        //if (cursor.getInt(1) == 1) {
+                            map_calendars.put(calId, cursor.getString(1)
+                                    .concat(Constants.STRING_EOT)
+                                    .concat(cursor.getString(2))
+                                    .concat(Constants.STRING_EOT)
+                                    .concat(cursor.getString(4))
+                            );
+                            String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix.concat(calId));
+                            map_calendars_colors.put(calendarId, cursor.getInt(3));
+                        //}
                         cursor.moveToNext();
                     }
                 }
@@ -6187,7 +6193,7 @@ class ContactsEvents {
         return Constants.STRING_EMPTY;
     }
 
-    private String[] getKeyParts(@NonNull String eventKey) {
+    static String[] getKeyParts(@NonNull String eventKey) {
         return eventKey.replace(Constants.STRING_2HASH, Constants.STRING_EOT).split(Constants.STRING_EOT, -1);
     }
 
@@ -8554,7 +8560,7 @@ class ContactsEvents {
                     }
                 }
             }
-            if (map_calendars.isEmpty()) recieveCalendarList();
+            if (map_calendars.isEmpty()) fillCalendarList();
 
             final String result = resources.getString(R.string.msg_zero_events_body,
                     (preferences_list_event_types.isEmpty() ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none) : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END,
@@ -8618,9 +8624,12 @@ class ContactsEvents {
 
             for(String id: setIDs){
                 if (sb.length() > 0) sb.append(Constants.STRING_COMMA_SPACE);
-                sb.append(mapTitles.containsKey(id)
-                        ? checkForNull(mapTitles.get(id)).replace(Constants.STRING_EOT, Constants.STRING_PARENTHESIS_OPEN) + Constants.STRING_PARENTHESIS_CLOSE
-                        : id);
+                String calData = mapTitles.get(id);
+                if (calData != null) {
+                    String[] calInfo = getKeyParts(calData);
+                    sb.append(calInfo[0]);
+                    if (calInfo.length > 1) sb.append(Constants.STRING_PARENTHESIS_OPEN).append(calInfo[1]).append(Constants.STRING_PARENTHESIS_CLOSE);
+                } else sb.append(id);
             }
 
         } catch (Exception e) {
@@ -9812,7 +9821,7 @@ class ContactsEvents {
 
                 //Календари
                 if (!checkNoCalendarAccess()){
-                    if (map_calendars.isEmpty()) recieveCalendarList();
+                    if (map_calendars.isEmpty()) fillCalendarList();
                     List<String> allCalendars = new ArrayList<>();
                     allCalendars.addAll(preferences_MultiType_calendars);
                     allCalendars.addAll(preferences_BirthDay_calendars);
