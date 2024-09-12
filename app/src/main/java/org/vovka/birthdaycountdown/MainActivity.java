@@ -2442,6 +2442,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             boolean[] sel = new boolean[eventTypesIDs.size()];
             int ind = 0;
             for (String eventType: eventTypesIDs) {
+                eventTypesTitles.set(ind,
+                        eventTypesTitles.get(ind)
+                                + Constants.STRING_BRACKETS_OPEN
+                                + (eventsData.statEventTypes.containsKey(eventType) ? eventsData.statEventTypes.get(eventType) : Constants.STRING_0)
+                                + Constants.STRING_BRACKETS_CLOSE
+                );
                 sel[ind] = preferences_list_types.contains(eventType);
                 eventTypesSelected.add(sel[ind]);
                 ind++;

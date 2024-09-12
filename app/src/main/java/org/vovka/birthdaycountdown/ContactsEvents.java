@@ -438,6 +438,7 @@ class ContactsEvents {
     int statEventsPrevEventsFound = 0;
     int statFavoriteEventsCount = 0;
     int statActiveWidgets = 0;
+    final HashMap<String, Integer> statEventSources = new HashMap<>();
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     private static DisplayMetrics displayMetrics;
@@ -1643,6 +1644,7 @@ class ContactsEvents {
             map_contacts_names.clear();
             map_eventsBySubtypeAndPersonID_offset.clear();
 
+            statEventSources.clear();
             statEventTypes.clear();
             statEventsCount = 0;
             statContactsEventCount = 0;
@@ -4689,6 +4691,7 @@ class ContactsEvents {
             final String eventType = singleEventArray[Position_eventType];
             final String eventSubType = singleEventArray[Position_eventSubType];
             @NonNull final String contactID = checkForNull(singleEventArray[ContactsEvents.Position_contactID]);
+            increaseStatForEventTypes(eventType);
 
             if (TextUtils.isEmpty(singleEventArray[Position_eventDateThisTime])) {
                 //перебираем все даты и находим максимальную
@@ -4699,7 +4702,7 @@ class ContactsEvents {
                     Date storedDate_Date = null;
                     boolean storedDate_isYear = false;
 
-                    increaseStatForAccountType(accountType);
+                    increaseStatForEventSources(accountType);
 
                     if (accountType.contains(Constants.account_skype)) {
 
@@ -4917,7 +4920,7 @@ class ContactsEvents {
 
                 String dayValue = dayArray[0];
                 if (!dayValue.isEmpty()) {
-                    increaseStatForAccountType(substringBefore(dayValue, Constants.STRING_COLON_SPACE));
+                    increaseStatForEventSources(substringBefore(dayValue, Constants.STRING_COLON_SPACE));
                 }
 
             }
@@ -5041,6 +5044,7 @@ class ContactsEvents {
                                 + (checkIsHiddenEvent(event5kKey, event5kKeyWithRawId) ? "3" : checkIsSilencedEvent(event5kKey, event5kKeyWithRawId) ? "2" : "1") + "5";
 
                         magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
+                        increaseStatForEventTypes(getEventType(Constants.Type_5K));
                     }
                 }
 
@@ -5181,12 +5185,21 @@ class ContactsEvents {
         return age;
     }
 
-    private void increaseStatForAccountType(@NonNull String accountType) {
-        if (!statEventTypes.containsKey(accountType)) {
-            statEventTypes.put(accountType, 1);
+    private void increaseStatForEventSources(@NonNull String sourceType) {
+        if (!statEventSources.containsKey(sourceType)) {
+            statEventSources.put(sourceType, 1);
         } else {
-            Integer oldCount = statEventTypes.get(accountType);
-            statEventTypes.put(accountType, (oldCount == null ? 0 : oldCount) + 1);
+            Integer oldCount = statEventSources.get(sourceType);
+            statEventSources.put(sourceType, (oldCount == null ? 0 : oldCount) + 1);
+        }
+    }
+
+    private void increaseStatForEventTypes(@NonNull String eventType) {
+        if (!statEventTypes.containsKey(eventType)) {
+            statEventTypes.put(eventType, 1);
+        } else {
+            Integer oldCount = statEventTypes.get(eventType);
+            statEventTypes.put(eventType, (oldCount == null ? 0 : oldCount) + 1);
         }
     }
 
@@ -5756,7 +5769,7 @@ class ContactsEvents {
     void showNotificationsForParams(boolean forceNoEventsMessage, String channelId, Set<String> prefDays, Set<String> prefEventSources,
                                     Set<String> prefEventTypes, int prefType, int prefPriority,
                                     String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventInfo) {
-        //https://www.journaldev.com/15468/android-notification-styling
+        //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/511-urok-186-notifications-rasshirennye-uvedomlenija.html
 
         if (checkNoNotificationAccess()) return;
 
@@ -5862,7 +5875,8 @@ class ContactsEvents {
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                             .setColor(this.getResources().getColor(R.color.dark_green))
-                            .setSmallIcon(R.drawable.ic_icon_notify).setContentText(textSmall)
+                            .setSmallIcon(R.drawable.ic_icon_notify)
+                            .setContentText(textSmall)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)) //Ограничение 5120 символов https://stackoverflow.com/questions/27124887/whats-the-max-size-of-a-bigtextstyle-notification
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setContentIntent(pendingIntent)
@@ -7233,6 +7247,32 @@ class ContactsEvents {
         preferences_icon = iconName;
     }
 
+    Bitmap getPreferences_Icon() {
+        Bitmap defaultIcon = getBitmap(context, R.mipmap.ic_launcher_spring_round);
+        try {
+
+            List<String> iconIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
+            List<Integer> iconImages = new ArrayList<>();
+            iconImages.add(R.mipmap.ic_launcher_spring_round);
+            iconImages.add(R.mipmap.ic_launcher_summer_round);
+            iconImages.add(R.mipmap.ic_launcher_autumn_round);
+            iconImages.add(R.mipmap.ic_launcher_winter_round);
+            iconImages.add(R.mipmap.ic_launcher_grey_round);
+            iconImages.add(R.mipmap.ic_launcher_black_round);
+
+            if (iconIDs.contains(preferences_icon)) {
+                Bitmap icon = getBitmap(context, iconImages.get(iconIDs.indexOf(preferences_icon)));
+                if (icon != null) return icon;
+            }
+            return defaultIcon;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return defaultIcon;
+        }
+    }
+
     void setPreferences_ThemeNumber(int themeNumber) {
         preferences_theme.prefNumber = themeNumber;
     }
@@ -7716,7 +7756,15 @@ class ContactsEvents {
             if (isNotifyInterface) {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, quizChannelId).setColor(getResources().getColor(R.color.dark_green)).setSmallIcon(R.drawable.quiz_icon).setContentTitle(quest.type).setContentText(quest.question).setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question)).setPriority(NotificationCompat.PRIORITY_MAX).setWhen(0).setAutoCancel(true);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, quizChannelId)
+                        .setColor(getResources().getColor(R.color.dark_green))
+                        .setSmallIcon(R.drawable.quiz_icon)
+                        .setContentTitle(quest.type)
+                        .setContentText(quest.question)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question))
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setWhen(0)
+                        .setAutoCancel(true);
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { //
                     builder.setSound(Uri.parse("content://media/internal/audio/media/29"));

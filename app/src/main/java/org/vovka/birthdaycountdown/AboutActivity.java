@@ -29,6 +29,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,6 +116,9 @@ public class AboutActivity extends AppCompatActivity {
             SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
+            ImageView imageIcon = findViewById(R.id.imageIcon);
+            imageIcon.setImageBitmap(eventsData.getPreferences_Icon());
+
             //https://stackoverflow.com/questions/14652894/using-html-in-android-alert-dialog
             //https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
             //https://stackoverflow.com/a/21119027/4928833
@@ -179,9 +183,9 @@ public class AboutActivity extends AppCompatActivity {
                         sb.append(getString(R.string.stats_counters_widgets, eventsData.statActiveWidgets));
                     sb.append(Constants.HTML_UL_END);
 
-                    if (!eventsData.statEventTypes.entrySet().isEmpty()) {
+                    if (!eventsData.statEventSources.entrySet().isEmpty()) {
                         sb.append(getString(R.string.stats_counters_events_title));
-                        for (Map.Entry<String, Integer> entry : eventsData.statEventTypes.entrySet()) {
+                        for (Map.Entry<String, Integer> entry : eventsData.statEventSources.entrySet()) {
                             sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());
                         }
                         sb.append(Constants.HTML_UL_END);

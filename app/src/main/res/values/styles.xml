@@ -451,7 +451,7 @@
         <item name="backgroundColor">@color/theme_orange_secondary</item>
         <item name="windowTitleColor">@color/theme_orange_primary</item>
         <item name="windowTitleTextColor">@color/theme_blue_secondary</item>
-        <item name="android:textColorPrimary">@color/theme_orange_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColorSecondary">@color/theme_black_primary</item>
         <item name="colorAccent">@color/theme_orange_primary</item>
         <item name="textColorAlertDialogListItem">@color/theme_black_primary</item>
