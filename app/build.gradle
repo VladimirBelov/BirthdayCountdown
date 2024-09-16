@@ -32,7 +32,7 @@ android {
             }
         }
     }
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         buildToolsVersion  = "35.0.0" //https://developer.android.com/tools/releases/build-tools

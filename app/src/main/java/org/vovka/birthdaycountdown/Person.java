@@ -26,8 +26,8 @@ class Person {
         return SecondName;
     }
 
-    private String FirstName;
-    private String SecondName;
+    private String FirstName = Constants.STRING_EMPTY;
+    private String SecondName = Constants.STRING_EMPTY;
     int Age = -1;
     String FIO_str;
     private Context context;
@@ -43,7 +43,9 @@ class Person {
             if (spaceFirst == -1) { //Имя из одного слова
                 final ContactsEvents contactsEvents = ContactsEvents.getInstance();
                 final String normalizedName = ContactsEvents.normalizeName(FIO_str);
-                if (contactsEvents.preferences_first_names_male.reset(normalizedName).find()
+                if (normalizedName == null) {
+                    FirstName = FIO_str;
+                } else if (contactsEvents.preferences_first_names_male.reset(normalizedName).find()
                         ||contactsEvents.preferences_first_names_female.reset(normalizedName).find()) { //Это имя
                     FirstName = FIO_str;
                     LastName = Constants.STRING_EMPTY;
@@ -179,20 +181,35 @@ class Person {
             int ind = 0;
             if (!this.LastName.isEmpty()) {
                 final String normalizedLastName = ContactsEvents.normalizeName(this.LastName);
-                if (contactsEvents.preferences_last_name_completions_male.reset(normalizedLastName).find()) {ind++;}
-                else if (contactsEvents.preferences_last_name_completions_female.reset(normalizedLastName).find()) {ind--;}
+                if (normalizedLastName != null) {
+                    if (contactsEvents.preferences_last_name_completions_male.reset(normalizedLastName).find()) {
+                        ind++;
+                    } else if (contactsEvents.preferences_last_name_completions_female.reset(normalizedLastName).find()) {
+                        ind--;
+                    }
+                }
             }
 
             if (!this.SecondName.isEmpty()) {
                 final String normalizedSecondName = ContactsEvents.normalizeName(this.SecondName);
-                if (contactsEvents.preferences_second_name_completions_male.reset(normalizedSecondName).find()) {ind++;}
-                else if (contactsEvents.preferences_second_name_completions_female.reset(normalizedSecondName).find()) {ind--;}
+                if (normalizedSecondName != null) {
+                    if (contactsEvents.preferences_second_name_completions_male.reset(normalizedSecondName).find()) {
+                        ind++;
+                    } else if (contactsEvents.preferences_second_name_completions_female.reset(normalizedSecondName).find()) {
+                        ind--;
+                    }
+                }
             }
 
             if (!this.FirstName.isEmpty()) {
                 final String normalizedFirstName = ContactsEvents.normalizeName(this.FirstName);
-                if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()) {ind++;}
-                else if (contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {ind--;}
+                if (normalizedFirstName != null) {
+                    if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()) {
+                        ind++;
+                    } else if (contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {
+                        ind--;
+                    }
+                }
             }
 
             return ind > 0 ? 1 : ind < 0 ? 2 : -1;
