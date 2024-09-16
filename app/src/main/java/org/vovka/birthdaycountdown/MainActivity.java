@@ -181,18 +181,33 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.currentTheme = eventsData.preferences_theme.themeMain;
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
-            //https://developer.android.com/topic/performance/vitals/launch-time#java
-            //A common way to implement a themed launch screen is to use the windowDisablePreview theme attribute to turn off the initial blank screen that the system process draws when launching the app.
-            // However, this approach can result in a longer startup time than apps that don’t suppress the preview window
             super.onCreate(savedInstanceState);
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
-            //eventsData.setAppIcon();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                //https://medium.com/androiddevelopers/insets-handling-tips-for-android-15s-edge-to-edge-enforcement-872774e8839b
+                this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
+            }
 
             setContentView(R.layout.activity_main);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
+
+            /*ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                // Apply the insets as a margin to the view. Here the system is setting
+                // only the bottom, left, and right dimensions, but apply whichever insets are
+                // appropriate to your layout. You can also update the view padding
+                // if that's more appropriate.
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                mlp.leftMargin = insets.left;
+                mlp.topMargin = insets.top;
+                mlp.rightMargin = insets.right;
+                v.setLayoutParams(mlp);
+
+                return WindowInsetsCompat.CONSUMED;
+            });*/
 
             //Цвет заголовка окна https://github.com/neokree/MaterialNavigationDrawer/issues/5
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));

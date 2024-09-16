@@ -34,7 +34,7 @@
             android:textAlignment="center"
             android:textColor="?attr/windowTitleColor"
             android:textSize="10sp"
-            tools:ignore="RtlSymmetry,SmallSp" />
+            tools:ignore="RtlSymmetry,SmallSp"/>
 
     </LinearLayout>
 
@@ -50,7 +50,7 @@
         android:paddingEnd="20dp"
         android:paddingBottom="4dp"
         android:scrollbars="vertical"
-        android:textColor="?attr/eventFullNameColor" />
+        android:textColor="?attr/eventFullNameColor"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
@@ -62,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/backgroundColor"
-            android:foregroundGravity="top" />
+            android:foregroundGravity="top"
+            android:clipToPadding="false"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

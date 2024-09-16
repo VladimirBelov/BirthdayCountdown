@@ -19,7 +19,8 @@
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="?attr/backgroundColor">
+		android:background="?attr/backgroundColor"
+		><!--android:fitsSystemWindows="true"-->
 
 		<!--https://stackoverflow.com/questions/26455027/android-api-21-toolbar-padding-->
 		<androidx.appcompat.widget.Toolbar
