@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
                 //https://medium.com/androiddevelopers/insets-handling-tips-for-android-15s-edge-to-edge-enforcement-872774e8839b
+                //https://habr.com/ru/companies/oleg-bunin/articles/488196/
                 this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
             }
 
