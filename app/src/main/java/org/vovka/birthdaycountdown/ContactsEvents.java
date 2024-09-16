@@ -539,30 +539,28 @@ class ContactsEvents {
     @Nullable
     static String normalizeName(String inName) {
 
-        if (inName == null) {
-            return null;
-        } else {
-            String normalName = inName.toLowerCase(Locale.ROOT);
-            if (normalName.contains(Constants.STRING_COMMA)) {
-                normalName = normalName.replace(Constants.STRING_COMMA, Constants.STRING_EMPTY);
-            }
-            if (normalName.contains("ё")) {
-                normalName = normalName.replace("ё", "е");
-            }
-            if (normalName.contains("é")) {
-                normalName = normalName.replace("é", "e");
-            }
-            if (normalName.contains(Constants.STRING_EOL)) {
-                normalName = normalName.replace(Constants.STRING_EOL, Constants.STRING_EMPTY);
-            }
-            if (normalName.contains("\r")) {
-                normalName = normalName.replace("\r", Constants.STRING_EMPTY);
-            }
-            if (normalName.contains("\t")) {
-                normalName = normalName.replace("\t", Constants.STRING_SPACE);
-            }
-            return normalName;
+        if (inName == null) return null;
+
+        String normalName = inName.toLowerCase(Locale.ROOT);
+        if (normalName.contains(Constants.STRING_COMMA)) {
+            normalName = normalName.replace(Constants.STRING_COMMA, Constants.STRING_EMPTY);
         }
+        if (normalName.contains("ё")) {
+            normalName = normalName.replace("ё", "е");
+        }
+        if (normalName.contains("é")) {
+            normalName = normalName.replace("é", "e");
+        }
+        if (normalName.contains(Constants.STRING_EOL)) {
+            normalName = normalName.replace(Constants.STRING_EOL, Constants.STRING_EMPTY);
+        }
+        if (normalName.contains("\r")) {
+            normalName = normalName.replace("\r", Constants.STRING_EMPTY);
+        }
+        if (normalName.contains("\t")) {
+            normalName = normalName.replace("\t", Constants.STRING_SPACE);
+        }
+        return normalName;
     }
 
     @NonNull
@@ -4355,7 +4353,7 @@ class ContactsEvents {
                 bmHeight = bm.getHeight();
             }
 
-            if (addMourningTape) {
+            if (addMourningTape && bm.getConfig() != null) {
                 //Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
@@ -4383,7 +4381,9 @@ class ContactsEvents {
             //Добавление иконки избранного
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
-            if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon)) && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
+            if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
+                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])
+                    && bm.getConfig() != null) {
 
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
