@@ -154,3 +154,9 @@ dependencies {
     //noinspection GradleDependency
     implementation 'androidx.fragment:fragment:1.1.0' //https://developer.android.com/jetpack/androidx/releases/fragment
 }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}

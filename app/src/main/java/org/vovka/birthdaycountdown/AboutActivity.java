@@ -141,58 +141,58 @@ public class AboutActivity extends AppCompatActivity {
 
             if (eventsData.preferences_extrafun || eventsData.preferences_debug_on) {
 
-                //Statistics information
-                sb.append(getString(R.string.stats_title));
+                if (eventsData.statTimeComputeDates > 0) {
+                    sb.append(getString(R.string.stats_title));
 
-                sb.append(getString(R.string.stats_speed_title));
-                try {
-                    if (eventsData.statTimeGetContactEvents > 0)
-                        sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                    if (eventsData.statTimeGetCalendarEvents > 0)
-                        sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                    if (eventsData.statTimeGetFileEvents > 0)
-                        sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                    if (eventsData.statTimeUpdateWidgets > 0)
-                        sb.append(getString(R.string.stats_speed_widgets, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeUpdateWidgets)), eventsData.statTimeUpdateWidgets > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                    sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                } catch (Exception e) { /**/ }
-                sb.append(Constants.HTML_UL_END);
-
-                sb.append(getString(R.string.stats_counters_title));
-                try {
-                    if (eventsData.statContactsCount > 0)
-                        sb.append(getString(R.string.stats_counters_contacts, eventsData.statContactsCount));
-                    if (eventsData.statContactsTitleCount > 0)
-                        sb.append(getString(R.string.stats_counters_titles, eventsData.statContactsTitleCount));
-                    if (eventsData.statContactsOrganizationCount > 0)
-                        sb.append(getString(R.string.stats_counters_organizations, eventsData.statContactsOrganizationCount));
-                    if (eventsData.statContactsNicknameCount > 0)
-                        sb.append(getString(R.string.stats_counters_nicknames, eventsData.statContactsNicknameCount));
-                    if (eventsData.statContactsURLCount > 0)
-                        sb.append(getString(R.string.stats_counters_URLs, eventsData.statContactsURLCount));
-                    sb.append(getString(R.string.stats_counters_events, eventsData.statEventsCount));
-                    if (eventsData.statContactsEventCount > 0)
-                        sb.append(getString(R.string.stats_counters_contacts_events, eventsData.statContactsEventCount));
-                    if (eventsData.statCalendarsEventCount > 0)
-                        sb.append(getString(R.string.stats_counters_calendars_events, eventsData.statCalendarsEventCount));
-                    if (eventsData.statFilesEventCount > 0)
-                        sb.append(getString(R.string.stats_counters_files_events, eventsData.statFilesEventCount));
-                    if (eventsData.statFavoriteEventsCount > 0)
-                        sb.append(getString(R.string.stats_counters_favorite_events, eventsData.statFavoriteEventsCount));
-                    if (eventsData.statActiveWidgets > 0)
-                        sb.append(getString(R.string.stats_counters_widgets, eventsData.statActiveWidgets));
+                    sb.append(getString(R.string.stats_speed_title));
+                    try {
+                        if (eventsData.statTimeGetContactEvents > 0)
+                            sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                        if (eventsData.statTimeGetCalendarEvents > 0)
+                            sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                        if (eventsData.statTimeGetFileEvents > 0)
+                            sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                        if (eventsData.statTimeUpdateWidgets > 0)
+                            sb.append(getString(R.string.stats_speed_widgets, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeUpdateWidgets)), eventsData.statTimeUpdateWidgets > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                        sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                    } catch (Exception e) { /**/ }
                     sb.append(Constants.HTML_UL_END);
 
-                    if (!eventsData.statEventSources.entrySet().isEmpty()) {
-                        sb.append(getString(R.string.stats_counters_events_title));
-                        for (Map.Entry<String, Integer> entry : eventsData.statEventSources.entrySet()) {
-                            sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());
-                        }
+                    sb.append(getString(R.string.stats_counters_title));
+                    try {
+                        if (eventsData.statContactsCount > 0)
+                            sb.append(getString(R.string.stats_counters_contacts, eventsData.statContactsCount));
+                        if (eventsData.statContactsTitleCount > 0)
+                            sb.append(getString(R.string.stats_counters_titles, eventsData.statContactsTitleCount));
+                        if (eventsData.statContactsOrganizationCount > 0)
+                            sb.append(getString(R.string.stats_counters_organizations, eventsData.statContactsOrganizationCount));
+                        if (eventsData.statContactsNicknameCount > 0)
+                            sb.append(getString(R.string.stats_counters_nicknames, eventsData.statContactsNicknameCount));
+                        if (eventsData.statContactsURLCount > 0)
+                            sb.append(getString(R.string.stats_counters_URLs, eventsData.statContactsURLCount));
+                        sb.append(getString(R.string.stats_counters_events, eventsData.statEventsCount));
+                        if (eventsData.statContactsEventCount > 0)
+                            sb.append(getString(R.string.stats_counters_contacts_events, eventsData.statContactsEventCount));
+                        if (eventsData.statCalendarsEventCount > 0)
+                            sb.append(getString(R.string.stats_counters_calendars_events, eventsData.statCalendarsEventCount));
+                        if (eventsData.statFilesEventCount > 0)
+                            sb.append(getString(R.string.stats_counters_files_events, eventsData.statFilesEventCount));
+                        if (eventsData.statFavoriteEventsCount > 0)
+                            sb.append(getString(R.string.stats_counters_favorite_events, eventsData.statFavoriteEventsCount));
+                        if (eventsData.statActiveWidgets > 0)
+                            sb.append(getString(R.string.stats_counters_widgets, eventsData.statActiveWidgets));
                         sb.append(Constants.HTML_UL_END);
-                    }
-                } catch (Exception e) { /**/ }
 
-                //Permissions and system options
+                        if (!eventsData.statEventSources.entrySet().isEmpty()) {
+                            sb.append(getString(R.string.stats_counters_events_title));
+                            for (Map.Entry<String, Integer> entry : eventsData.statEventSources.entrySet()) {
+                                sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());
+                            }
+                            sb.append(Constants.HTML_UL_END);
+                        }
+                    } catch (Exception e) { /**/ }
+                }
+
                 sb.append(getString(R.string.stats_permissions_title));
                 try {
 

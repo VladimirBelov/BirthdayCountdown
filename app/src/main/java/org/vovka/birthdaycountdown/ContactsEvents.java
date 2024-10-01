@@ -4353,8 +4353,8 @@ class ContactsEvents {
                 bmHeight = bm.getHeight();
             }
 
-            if (addMourningTape && bm.getConfig() != null) {
-                //Если контакт умер, добавлять чёрную ленточку
+            if (addMourningTape) {
+                bm.getConfig();//Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
@@ -4382,9 +4382,8 @@ class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
             if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
-                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])
-                    && bm.getConfig() != null) {
-
+                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
+                bm.getConfig();
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawBitmap(bm, new Matrix(), null);
@@ -4394,11 +4393,11 @@ class ContactsEvents {
 
                 if (roundingFactor < 3) { //Не круг - рисуем в левом нижнем углу
 
-                    canvas.drawBitmap(bmStarScaled, 2 + (float)((bmOverlay.getWidth() - bmOverlay.getHeight()) / 4), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+                    canvas.drawBitmap(bmStarScaled, 2 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 4), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
 
                 } else if (roundingFactor < 9) { //Закругление - рисуем в левом нижнем углу правее
 
-                    canvas.drawBitmap(bmStarScaled, 10 + (float)((bmOverlay.getWidth() - bmOverlay.getHeight())/8), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+                    canvas.drawBitmap(bmStarScaled, 10 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 8), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
 
                 } else { //Круг - рисуем внизу по центру
 
@@ -6053,6 +6052,7 @@ class ContactsEvents {
         }
     }
 
+    @NonNull
     private String composeNotifyEventDetails(NotifyEvent event, Set<String> prefEventInfo) {
 
         StringBuilder eventDetails = new StringBuilder();
@@ -6116,11 +6116,11 @@ class ContactsEvents {
                     && !TextUtils.isEmpty(event.singleEventArray[Position_organization]);
             if (addOrganization || addTitle) {
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
-                eventDetails.append(Constants.STRING_BRACKETS_START);
+                eventDetails.append(Constants.STRING_PARENTHESIS_START);
                 if (addTitle) eventDetails.append(event.singleEventArray[Position_title]);
                 if (addTitle && addOrganization) eventDetails.append(Constants.STRING_COMMA_SPACE);
                 if (addOrganization) eventDetails.append(event.singleEventArray[Position_organization]);
-                eventDetails.append(Constants.STRING_BRACKETS_CLOSE);
+                eventDetails.append(Constants.STRING_PARENTHESIS_CLOSE);
             }
 
         } catch (Exception e) {

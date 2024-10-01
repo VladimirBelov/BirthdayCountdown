@@ -181,9 +181,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.currentTheme = eventsData.preferences_theme.themeMain;
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
-            //https://developer.android.com/topic/performance/vitals/launch-time#java
-            //A common way to implement a themed launch screen is to use the windowDisablePreview theme attribute to turn off the initial blank screen that the system process draws when launching the app.
-            // However, this approach can result in a longer startup time than apps that don’t suppress the preview window
             super.onCreate(savedInstanceState);
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
