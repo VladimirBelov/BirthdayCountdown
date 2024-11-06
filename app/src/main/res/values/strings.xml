@@ -52,6 +52,7 @@
     <string name="menu_context_merge_event">Link to contact…</string>
     <string name="menu_context_unmerge_event">Unlink from contact</string>
     <string name="menu_context_remerge_event">Link to other contact…</string>
+    <string name="menu_context_remerge_event_short">Link to other…</string>
     <string name="menu_context_open_url">Open web link</string>
     <string name="menu_context_share">Share event…</string>
     <string name="menu_context_share_as_image">as image</string>
@@ -405,6 +406,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Public holidays</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Show these public holidays</string>
 
+    <string name="pref_CustomEvents_Fact_title">Facts</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Budnled facts</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Show these facts from bundled database</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Show facts from chosen files</string>
+
     <string name="pref_CustomEvents_Custom_title">User-defined events</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Event caption</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Enter caption for this event to start using it</string>
@@ -433,7 +439,7 @@
     <string name="pref_List_EventTypes_title">Event types</string>
     <string name="pref_List_EventTypes_summary">What kind of events to include in list</string>
 
-    <string-array name="pref_EventTypes_entries">
+    <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Birthdays</item>
         <item>💑 Anniversaries</item>
         <item>🗓️ Other events</item>
@@ -996,6 +1002,16 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_EventTypes_title">Event types</string>
     <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
 
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Birthdays</item>
+        <item>💑 Anniversaries</item>
+        <item>🗓️ Other events</item>
+        <item>🏖️ Holidays</item>
+        <item>⏰ Custom events</item>
+        <item>🏆 Round days count (5K, 10K, 15K days)</item>
+        <item>📝 Facts</item>
+    </string-array>
+
     <string name="pref_Notifications_EventSources_title">Event sources</string>
     <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources</string>
 
@@ -1014,6 +1030,9 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Facts count</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">How many random facts to show</string>
 
     <string name="pref_Notifications_AlarmHour_title">Alarm time</string>
     <string name="pref_Notifications_AlarmHour_summary">What time is to notify</string>
@@ -1117,7 +1136,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="stats_counters_URLs"><![CDATA[<li>web links: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
 
-    <string name="stats_counters_events_title"><![CDATA[<h2>Events by accounts:</h2><ul>]]></string>
+    <string name="stats_counters_events_title"><![CDATA[<h2>Events by sources:</h2><ul>]]></string>
 
     <string name="stats_permissions_title"><![CDATA[<h1>Permissions and options:</h1><ul>]]></string>
     <string name="stats_permissions_accounts"><![CDATA[<li>accounts access: %1$s]]></string>
@@ -1483,6 +1502,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_EventTypes_Holiday" translatable="false">4</string>
     <string name="pref_EventTypes_Custom" translatable="false">0</string>
     <string name="pref_EventTypes_RoundDays" translatable="false">11</string>
+    <string name="pref_EventTypes_Facts" translatable="false">5</string>
 
     <string-array name="pref_EventTypes_values_default" translatable="false">
         <item>@string/pref_EventTypes_Birthday</item>
@@ -1492,13 +1512,23 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventTypes_Custom</item>
     </string-array>
 
-    <string-array name="pref_EventTypes_values" translatable="false">
+    <string-array name="pref_List_EventTypes_values" translatable="false">
         <item>@string/pref_EventTypes_Birthday</item>
         <item>@string/pref_EventTypes_Anniversary</item>
         <item>@string/pref_EventTypes_Other</item>
         <item>@string/pref_EventTypes_Holiday</item>
         <item>@string/pref_EventTypes_Custom</item>
         <item>@string/pref_EventTypes_RoundDays</item>
+    </string-array>
+
+    <string-array name="pref_Notifications_EventTypes_values" translatable="false">
+        <item>@string/pref_EventTypes_Birthday</item>
+        <item>@string/pref_EventTypes_Anniversary</item>
+        <item>@string/pref_EventTypes_Other</item>
+        <item>@string/pref_EventTypes_Holiday</item>
+        <item>@string/pref_EventTypes_Custom</item>
+        <item>@string/pref_EventTypes_RoundDays</item>
+        <item>@string/pref_EventTypes_Facts</item>
     </string-array>
 
     <string-array name="pref_List_SadPhoto_values" translatable="false">
@@ -1560,11 +1590,15 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_CustomEvents_Other_Calendars_key" translatable="false">CustomEvents_Other_Calendars</string>
     <string name="pref_CustomEvents_Other_LocalFiles_key" translatable="false">CustomEvents_Other_LocalFiles</string>
 
+    <string name="pref_Holidays_key" translatable="false">Holidays</string>
     <string name="pref_CustomEvents_Holiday_Labels_key" translatable="false">CustomEvents_Holiday_Labels</string>
     <string name="pref_CustomEvents_Holiday_Calendars_key" translatable="false">CustomEvents_Holiday_Calendars</string>
     <string name="pref_CustomEvents_Holiday_LocalFiles_key" translatable="false">CustomEvents_Holiday_LocalFiles</string>
     <string name="pref_CustomEvents_Holiday_Public_Ids_key" translatable="false">CustomEvents_Holiday_Public</string>
-    <string name="pref_Holidays_key" translatable="false">Holidays</string>
+
+    <string name="pref_Facts_key" translatable="false">Facts</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Ids_key" translatable="false">CustomEvents_Fact_Bundled</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_key" translatable="false">CustomEvents_Fact_LocalFiles</string>
 
     <string name="pref_CustomEvents_Custom1_key" translatable="false" tools:ignore="Typos">CustomEvents_Custom1</string>
     <string name="pref_CustomEvents_Custom2_key" translatable="false">CustomEvents_Custom2</string>
@@ -2094,6 +2128,16 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventInfo_Organization_ID</item>
         <item>@string/pref_EventInfo_JobTitle_ID</item>
         <item>@string/pref_EventInfo_EventCaption_ID</item>
+    </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_key" translatable="false">Notifications_FactEvents_Count</string>
+    <string name="pref_Notifications2_FactEvents_Count_key" translatable="false">Notifications2_FactEvents_Count</string>
+    <string name="pref_Notifications_FactEvents_Count_default" translatable="false">1</string>
+
+    <string-array name="pref_Notifications_FactEvents_Count_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string name="pref_Notifications_AlarmHour_key" translatable="false">Notifications_AlarmHour</string>

@@ -409,7 +409,7 @@ class WidgetUpdater {
             if (isVisibleEvent && daysCount > 0) {
                 Date eventDate = null;
                 try {
-                    eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
+                    eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                 } catch (Exception e) { /**/ }
 
                 if (eventDate != null) {

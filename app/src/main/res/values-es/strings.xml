@@ -433,7 +433,7 @@
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
     <string name="pref_List_EventTypes_summary">Qué eventos mostrar en la lista</string>
 
-    <string-array name="pref_EventTypes_entries">
+    <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Cumpleaños</item>
         <item>💑 Aniversario de bodas</item>
         <item>🗓️ Otros eventos</item>
@@ -1047,6 +1047,16 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="pref_Notifications_NotifyTest_title">Notificación de prueba</string>
     <string name="pref_Notifications_NotifyTest_summary">Haga clic para mostrar la notificación de prueba de hoy</string>
 
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Cumpleaños</item>
+        <item>💑 Aniversario de bodas</item>
+        <item>🗓️ Otros eventos</item>
+        <item>🏖️ Vacaciones</item>
+        <item>⏰ Eventos personalizados</item>
+        <item>🏆 Fechas redondas (5K días)</item>
+        <item>📝 Hechos</item>
+    </string-array>
+
     <string name="pref_Quiz_title">Encuesta</string>
     <string name="pref_Quiz_summary">Preferencias de cuestionarios</string>
     <string name="pref_Quiz_Interface_title">Interfaz</string>
@@ -1117,7 +1127,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="stats_counters_URLs"><![CDATA[<li>enlaces web: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
 
-    <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por cuenta:</h2><ul>]]></string>
+    <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por fuentes:</h2><ul>]]></string>
 
     <string name="stats_permissions_title"><![CDATA[<h1>Permisos y opciones:</h1><ul>]]></string>
     <string name="stats_permissions_accounts"><![CDATA[<li>acceso a la lista de cuentas: %1$s]]></string>

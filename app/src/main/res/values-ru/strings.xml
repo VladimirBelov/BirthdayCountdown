@@ -52,6 +52,7 @@
     <string name="menu_context_merge_event">Присоединить к контакту…</string>
     <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
     <string name="menu_context_remerge_event">Присоединить к другому контакту…</string>
+    <string name="menu_context_remerge_event_short">Присоединить к другому…</string>
     <string name="menu_context_open_url">Открыть web ссылку</string>
     <string name="menu_context_share">Поделиться событием…</string>
     <string name="menu_context_share_as_image">как изображение</string>
@@ -405,6 +406,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Государственные праздники</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Показывать эти государственные праздники</string>
 
+    <string name="pref_CustomEvents_Fact_title">Факты</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Предустановленные факты</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Показывать эти факты из внутренней базы данных</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Показывать факты из выбранных файлов</string>
+
     <string name="pref_CustomEvents_Custom_title">Пользовательские события</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Заголовок события</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Заполните заголовок события, чтобы включить его использование</string>
@@ -433,7 +439,7 @@
     <string name="pref_List_EventTypes_title">Типы событий</string>
     <string name="pref_List_EventTypes_summary">Какие события отображать в списке</string>
 
-    <string-array name="pref_EventTypes_entries">
+    <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Дни рождения</item>
         <item>💑 Годовщины свадеб</item>
         <item>🗓️ Другие события</item>
@@ -996,6 +1002,16 @@
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
     <string name="pref_Notifications_EventTypes_summary">Какие события включать в уведомления</string>
 
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Дни рождения</item>
+        <item>💑 Годовщины свадеб</item>
+        <item>🗓️ Другие события</item>
+        <item>🏖️ Праздники</item>
+        <item>⏰ Пользовательские события</item>
+        <item>🏆 Круглые даты (5K дней)</item>
+        <item>📝 Факты</item>
+    </string-array>
+
     <string name="pref_Notifications_EventSources_title">Источники событий</string>
     <string name="pref_Notifications_EventSources_description">Показывать уведомления только для этих источников событий</string>
 
@@ -1014,6 +1030,9 @@
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Количество фактов</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Какое количество случайных фактов показывать</string>
 
     <string name="pref_Notifications_AlarmHour_title">Время уведомления</string>
     <string name="pref_Notifications_AlarmHour_summary">В какое время уведомлять о событиях</string>
@@ -1117,7 +1136,7 @@
     <string name="stats_counters_URLs"><![CDATA[<li>web ссылок: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>виджетов: %1$d]]></string>
 
-    <string name="stats_counters_events_title"><![CDATA[<h2>События по аккаунтам:</h2><ul>]]></string>
+    <string name="stats_counters_events_title"><![CDATA[<h2>События по источникам:</h2><ul>]]></string>
 
     <string name="stats_permissions_title"><![CDATA[<h1>Доступы и системные опции:</h1><ul>]]></string>
     <string name="stats_permissions_accounts"><![CDATA[<li>доступ к списку аккаунтов: %1$s]]></string>

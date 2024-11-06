@@ -107,6 +107,7 @@ final class Constants {
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
+    static final String STRING_TYPE_FACT = "facts";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";
     static final String STRING_STORAGE_FILE = "file";
@@ -155,6 +156,7 @@ final class Constants {
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
     static final int Type_Xdays = 22;
+    static final int Type_Fact = 24;
     static final int Type_Unrecognized = 99;
     static final String Type_MultiEvent = "30";
     static final int pref_List_NameFormat_FirstSecondLast = 1;
@@ -319,7 +321,7 @@ final class Constants {
     static final int ContextMenu_AnniversaryList = 9;
     static final int ContextMenu_SilentEvent = 10;
     static final int ContextMenu_UnsilentEvent = 11;
-    static final int ContextMenu_EditEvent = 12;
+    static final int ContextMenu_OpenCalendar = 12;
     static final int ContextMenu_MergeEvent = 13;
     static final int ContextMenu_UnmergeEvent = 14;
     static final int ContextMenu_RemergeEvent = 15;
@@ -337,6 +339,7 @@ final class Constants {
     static final String eventSourceFilePrefix = "file:";
     static final String eventSourceMultiFilePrefix = "multifile:";
     static final String eventSourceHolidayPrefix = "holiday:";
+    static final String eventSourceFactPrefix = "fact:";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";

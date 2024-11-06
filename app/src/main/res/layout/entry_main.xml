@@ -37,11 +37,11 @@
 
             <TextView
                 android:id="@+id/entryDayDistanceTextView"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:minEms="12"
+                android:maxLines="2"
                 android:gravity="top|start"
+                android:layout_weight="1"
                 android:text="@string/hint_EventDistance"
                 android:textAlignment="textStart"
                 android:textColor="?attr/eventDistanceColor"
@@ -49,12 +49,11 @@
 
             <TextView
                 android:id="@+id/entryDateTextView"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:maxLines="1"
-                android:minEms="12"
+                android:gravity="top|end"
+                android:layout_weight="2"
+                android:maxLines="2"
                 android:text="@string/hint_Date"
                 android:textAlignment="textEnd"
                 android:textColor="?attr/eventDateColor"

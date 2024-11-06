@@ -188,13 +188,13 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateThisTime], ContactsEvents.FormatDate.WithoutYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
                         sb.append(surround(String.format(Constants.HTML_COLOR, colorDate, eventDay), widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
 
                         if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateThisTime], ContactsEvents.FormatDate.WithYear);
+                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
                         sb.append(surround(String.format(Constants.HTML_COLOR, colorDate, eventDay), widgetPref_DatesInBrackets));
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
@@ -407,7 +407,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateThisTime]);
+                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

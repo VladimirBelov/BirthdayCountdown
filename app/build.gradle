@@ -36,7 +36,10 @@ android {
 
     defaultConfig {
         buildToolsVersion  = "35.0.0" //https://developer.android.com/tools/releases/build-tools
-        resConfigs 'en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl'
+
+        def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl']
+        buildConfigField "String[]", "TRANSLATIONS", "new String[]{\""+locales.join("\",\"")+"\"}"
+        resConfigs locales
     }
 
     bundle {
@@ -149,7 +152,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
-    implementation 'androidx.core:core:1.13.1' //https://developer.android.com/jetpack/androidx/releases/core
+    //noinspection GradleDependency
+    implementation 'androidx.core:core:1.14.0-alpha01' //https://developer.android.com/jetpack/androidx/releases/core
     implementation 'androidx.core:core-splashscreen:1.0.1' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.0.1
     //noinspection GradleDependency
     implementation 'androidx.fragment:fragment:1.1.0' //https://developer.android.com/jetpack/androidx/releases/fragment

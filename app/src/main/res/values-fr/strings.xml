@@ -433,7 +433,7 @@
     <string name="pref_List_EventTypes_title">"Types des événements"</string>
     <string name="pref_List_EventTypes_summary">"Quels types des événements inclure dans la liste"</string>
 
-    <string-array name="pref_EventTypes_entries">
+    <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Anniversaires</item>
         <item>💑 Anniversaires de mariage</item>
         <item>🗓️ Autres événements</item>
@@ -1047,6 +1047,16 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_Notifications_NotifyTest_title">Notification de test</string>
     <string name="pref_Notifications_NotifyTest_summary">"Cliquez pour afficher la notification d'aujourd'hui"</string>
 
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Anniversaires</item>
+        <item>💑 Anniversaires de mariage</item>
+        <item>🗓️ Autres événements</item>
+        <item>🏖️ Vacances</item>
+        <item>⏰ Événements personnalisés</item>
+        <item>🏆 Jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
+        <item>📝 Faits</item>
+    </string-array>
+
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Paramètres du quiz</string>
     <string name="pref_Quiz_Interface_title">Interface</string>
@@ -1117,7 +1127,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="stats_counters_URLs"><![CDATA[<li>liens web: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
 
-    <string name="stats_counters_events_title"><![CDATA[<h2>Événements par comptes:</h2><ul>]]></string>
+    <string name="stats_counters_events_title"><![CDATA[<h2>Événements par sources:</h2><ul>]]></string>
 
     <string name="stats_permissions_title"><![CDATA[<h1>Autorisations et options:</h1><ul>]]></string>
     <string name="stats_permissions_accounts"><![CDATA[<li>accès aux comptes: %1$s]]></string>

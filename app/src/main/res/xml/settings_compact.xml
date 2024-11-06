@@ -407,6 +407,23 @@
         </PreferenceCategory>
 
         <PreferenceCategory
+            android:title="@string/pref_CustomEvents_Fact_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_fact">
+
+            <Preference
+                android:key="@string/pref_Facts_key"
+                android:title="@string/pref_CustomEvents_Fact_Bundled_Labels_title"
+                android:summary="@string/pref_CustomEvents_Fact_Bundled_Labels_summary"/>
+
+            <Preference
+                android:key="@string/pref_CustomEvents_Fact_LocalFiles_key"
+                android:title="@string/pref_CustomEvents_LocalFiles_title"
+                android:summary="@string/pref_CustomEvents_Fact_LocalFiles_summary"/>
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
             android:key="@string/pref_CustomEvents_Custom1_key"
             android:title="@string/pref_CustomEvents_Custom_title"
             android:layout="@layout/settings_category_with_icon"
@@ -600,8 +617,8 @@
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_summary"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_EventTypes_entries"
-            android:entryValues="@array/pref_EventTypes_values"
+            android:entries="@array/pref_List_EventTypes_entries"
+            android:entryValues="@array/pref_List_EventTypes_values"
             android:icon="@drawable/ic_menu_copy"
             android:dialogIcon="@drawable/ic_menu_copy"
             android:negativeButtonText="@string/button_cancel"/>
@@ -965,8 +982,8 @@
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_EventTypes_entries"
-            android:entryValues="@array/pref_EventTypes_values"
+            android:entries="@array/pref_Notifications_EventTypes_entries"
+            android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
@@ -988,6 +1005,17 @@
             android:icon="@android:drawable/ic_menu_agenda"
             android:dialogIcon="@android:drawable/ic_menu_agenda"
             android:negativeButtonText="@string/button_cancel"/>
+
+<!--        <ListPreference
+            android:key="@string/pref_Notifications_FactEvents_Count_key"
+            android:title="@string/pref_Notifications_FactEvents_Count_title"
+            android:summary="@string/pref_Notifications_FactEvents_Count_summary"
+            android:defaultValue="@string/pref_Notifications_FactEvents_Count_default"
+            android:entries="@array/pref_Notifications_FactEvents_Count_entries"
+            android:entryValues="@array/pref_Notifications_FactEvents_Count_values"
+            android:icon="@android:drawable/ic_menu_day"
+            android:dialogIcon="@android:drawable/ic_menu_day"
+            android:negativeButtonText="@string/button_cancel"/>-->
 
         <Preference
             android:key="@string/pref_Notifications_AlarmHour_key"
@@ -1053,34 +1081,34 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_Notifications2_Type_key"
             android:defaultValue="@string/pref_Notifications_Type_default"
             android:title="@string/pref_Notifications_Type_title"
             android:summary="@string/pref_Notifications_Type_summary"
             android:entries="@array/pref_Notifications_Type_entries"
             android:entryValues="@array/pref_Notifications_Type_values"
-            android:key="@string/pref_Notifications2_Type_key"
             android:icon="@android:drawable/ic_menu_view"
             android:dialogIcon="@android:drawable/ic_menu_view"
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
+            android:key="@string/pref_Notifications2_Priority_key"
             android:defaultValue="@string/pref_Notifications_Priority_default"
             android:title="@string/pref_Notifications_Priority_title"
             android:summary="@string/pref_Notifications_Priority_summary"
             android:entries="@array/pref_Notifications_Priority_entries"
             android:entryValues="@array/pref_Notifications_Priority_values"
-            android:key="@string/pref_Notifications2_Priority_key"
             android:icon="@android:drawable/ic_menu_view"
             android:dialogIcon="@android:drawable/ic_menu_view"
             android:negativeButtonText="@string/button_cancel"/>
 
         <MultiSelectListPreference
+            android:key="@string/pref_Notifications2_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
-            android:entries="@array/pref_EventTypes_entries"
-            android:entryValues="@array/pref_EventTypes_values"
-            android:key="@string/pref_Notifications2_Events_key"
+            android:entries="@array/pref_Notifications_EventTypes_entries"
+            android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"
             android:negativeButtonText="@string/button_cancel"/>
@@ -1102,6 +1130,17 @@
             android:icon="@android:drawable/ic_menu_agenda"
             android:dialogIcon="@android:drawable/ic_menu_agenda"
             android:negativeButtonText="@string/button_cancel"/>
+
+<!--        <ListPreference
+            android:key="@string/pref_Notifications2_FactEvents_Count_key"
+            android:title="@string/pref_Notifications_FactEvents_Count_title"
+            android:summary="@string/pref_Notifications_FactEvents_Count_summary"
+            android:defaultValue="@string/pref_Notifications_FactEvents_Count_default"
+            android:entries="@array/pref_Notifications_FactEvents_Count_entries"
+            android:entryValues="@array/pref_Notifications_FactEvents_Count_values"
+            android:icon="@android:drawable/ic_menu_day"
+            android:dialogIcon="@android:drawable/ic_menu_day"
+            android:negativeButtonText="@string/button_cancel"/>-->
 
         <Preference
             android:key="@string/pref_Notifications2_AlarmHour_key"

@@ -433,7 +433,7 @@
     <string name="pref_List_EventTypes_title">Типи подій</string>
     <string name="pref_List_EventTypes_summary">Які події відображати в списку подій</string>
 
-    <string-array name="pref_EventTypes_entries">
+    <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Дні народження</item>
         <item>💑 Річниці весілля</item>
         <item>🗓️ Інші події</item>
@@ -1047,6 +1047,16 @@
     <string name="pref_Notifications_NotifyTest_title">Тестове повідомлення</string>
     <string name="pref_Notifications_NotifyTest_summary">Натисніть для показу тестового повідомлення за сьогодні</string>
 
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Дні народження</item>
+        <item>💑 Річниці весілля</item>
+        <item>🗓️ Інші події</item>
+        <item>🏖️ Свята</item>
+        <item>⏰ Події користувача</item>
+        <item>🏆 Круглі дати (5K днів)</item>
+        <item>📝 Факти</item>
+    </string-array>
+
     <string name="pref_Quiz_title">Вікторина</string>
     <string name="pref_Quiz_summary">Вподобання вікторини</string>
     <string name="pref_Quiz_Interface_title">Інтерфейс</string>
@@ -1117,7 +1127,7 @@
     <string name="stats_counters_URLs"><![CDATA[<li>веб-посилання: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>віджети: %1$d]]></string>
 
-    <string name="stats_counters_events_title"><![CDATA[<h2>Події за акаунтів:</h2><ul>]]></string>
+    <string name="stats_counters_events_title"><![CDATA[<h2>Події за джерелами:</h2><ul>]]></string>
 
     <string name="stats_permissions_title"><![CDATA[<h1>Дозволи та параметри:</h1><ul>]]></string>
     <string name="stats_permissions_accounts"><![CDATA[<li>доступ до списку облікових записів: %1$s]]></string>

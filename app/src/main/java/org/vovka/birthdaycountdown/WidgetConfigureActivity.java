@@ -187,8 +187,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventsCount.setSelection(prefEventsCountIndex, true);
 
             //Типы событий
-            eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
-            eventTypesValues = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_entries));
+            eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values));
+            eventTypesValues = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries));
 
             MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             List<String> listEventTypes = new ArrayList<>();

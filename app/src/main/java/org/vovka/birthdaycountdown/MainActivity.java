@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
 
                 if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)) {
-                    menu.add(Menu.NONE, Constants.ContextMenu_EditEvent, Menu.NONE, getString(R.string.menu_context_edit_event))
+                    menu.add(Menu.NONE, Constants.ContextMenu_OpenCalendar, Menu.NONE, getString(R.string.menu_context_edit_event))
                             .setIcon(android.R.drawable.ic_menu_month);
                 }
 
@@ -350,7 +350,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
-                                .setIcon(R.drawable.ic_menu_copy);
+                                .setIcon(R.drawable.ic_menu_copy)
+                                .setTitleCondensed(getString(R.string.menu_context_remerge_event_short));
                     } else if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)
                             && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
@@ -504,7 +505,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == Constants.ContextMenu_EditEvent) {
+            } else if (itemId == Constants.ContextMenu_OpenCalendar) {
 
                 Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
                 Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
@@ -736,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .append(Constants.STRING_EOL)
                         .append(selectedEvent[ContactsEvents.Position_eventEmoji])
                         .append(Constants.STRING_SPACE)
-                        .append(selectedEvent[ContactsEvents.Position_eventDateThisTime])
+                        .append(selectedEvent[ContactsEvents.Position_eventDateNextTime])
                         .append(Constants.STRING_SPACE)
                         .append(selectedEvent[ContactsEvents.Position_eventCaption]);
                 if (!TextUtils.isEmpty(selectedEvent[ContactsEvents.Position_age_caption].trim()))
@@ -771,7 +772,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else { //Другие события
                             Locale locale_en = new Locale(Constants.LANG_EN);
                             SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateThisTime]);
+                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
                             Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
                             if (eventDate != null && birthDate != null) {
                                 if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
@@ -2431,8 +2432,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     void selectEventsTypes() {
         try {
 
-            final List<String> eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_values));
-            final List<String> eventTypesTitles = Arrays.asList(getResources().getStringArray(R.array.pref_EventTypes_entries));
+            final List<String> eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values));
+            final List<String> eventTypesTitles = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries));
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
 
             Set<String> preferences_list_types = eventsData.preferences_list_event_types;

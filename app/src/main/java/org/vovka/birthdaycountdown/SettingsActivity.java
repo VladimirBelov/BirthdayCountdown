@@ -328,6 +328,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Notifications_Events_key,
                     R.string.pref_Notifications_EventSources_key,
                     R.string.pref_Notifications_EventInfo_key,
+                    R.string.pref_Notifications_FactEvents_Count_key,
                     R.string.pref_Notifications_AlarmHour_key,
                     R.string.pref_Notifications_QuickActions_key,
                     R.string.pref_Notifications_Ringtone_key,
@@ -341,6 +342,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Notifications2_Events_key,
                     R.string.pref_Notifications2_EventSources_key,
                     R.string.pref_Notifications2_EventInfo_key,
+                    R.string.pref_Notifications2_FactEvents_Count_key,
                     R.string.pref_Notifications2_AlarmHour_key,
                     R.string.pref_Notifications2_QuickActions_key,
                     R.string.pref_Notifications2_Ringtone_key,
@@ -422,7 +424,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
 
+            Preference prefNotifyFactsCount = new Preference(eventsData.getContext());
+            prefNotifyFactsCount.setKey(getString(R.string.pref_Notifications_FactEvents_Count_key));
+            prefNotifyFactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
+            prefNotifyFactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
+            prefNotifyFactsCount.setIcon(android.R.drawable.ic_menu_day);
+            prefNotifyFactsCount.setOnPreferenceClickListener(preference -> {
+                selectFactsCount(1);
+                return true;
+            });
+            hideOrAddPreference(!eventsData.preferences_notifications_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications_key,
+                    R.string.pref_Notifications_FactEvents_Count_key, prefNotifyFactsCount, R.string.pref_Notifications_EventInfo_key);
+
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Notifications2_key);
+
+            Preference prefNotify2FactsCount = new Preference(eventsData.getContext());
+            prefNotify2FactsCount.setKey(getString(R.string.pref_Notifications2_FactEvents_Count_key));
+            prefNotify2FactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
+            prefNotify2FactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
+            prefNotify2FactsCount.setIcon(android.R.drawable.ic_menu_day);
+            prefNotify2FactsCount.setOnPreferenceClickListener(preference -> {
+                selectFactsCount(2);
+                return true;
+            });
+            hideOrAddPreference(!eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications2_key,
+                    R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount, R.string.pref_Notifications2_EventInfo_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
@@ -471,6 +497,51 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    void hideOrAddPreference(boolean condition, @StringRes int parentId, @StringRes int resId, @NonNull Preference prefToAdd, @StringRes int resIdAddAfter) {
+
+        try {
+
+            if (condition) {
+                hidePreference(true, parentId, resId);
+                return;
+            }
+
+            Preference prefParent = null;
+            if (parentId != 0) prefParent = findPreference(getString(parentId));
+            Preference prefPrev = findPreference(getString(resIdAddAfter));
+
+            if (prefPrev != null && prefParent != null) {
+                int order = prefPrev.getOrder() + 1;
+                prefToAdd.setOrder(order);
+
+                //Отодвигаем вниз остальные
+                if (prefParent instanceof PreferenceScreen) {
+                    int countPrefs = ((PreferenceScreen) prefParent).getPreferenceCount();
+                    if (countPrefs > order) {
+                        for (int i = order; i < countPrefs; i++) {
+                            Preference prefToMove = ((PreferenceScreen) prefParent).getPreference(i);
+                            if (prefToMove != null) prefToMove.setOrder(i + 1);
+                        }
+                    }
+                    ((PreferenceScreen) prefParent).addPreference(prefToAdd);
+                } else if (prefParent instanceof PreferenceCategory) {
+                    int countPrefs = ((PreferenceCategory) prefParent).getPreferenceCount();
+                    if (countPrefs > order) {
+                        for (int i = order; i < countPrefs; i++) {
+                            Preference prefToMove = ((PreferenceCategory) prefParent).getPreference(i);
+                            if (prefToMove != null) prefToMove.setOrder(i + 1);
+                        }
+                    }
+                    ((PreferenceCategory) prefParent).addPreference(prefToAdd);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @Override
@@ -684,6 +755,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
+            } else if (getString(R.string.pref_CustomEvents_Fact_LocalFiles_key).equals(key)) {
+
+                if (eventsData.preferences_FactEvent_files != null) {
+                    filesList = new HashSet<>(eventsData.preferences_FactEvent_files);
+                } else {
+                    filesList = new HashSet<>();
+                }
+                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Fact);
+                selectFiles(this.eventTypeForSelect);
+                return true;
+
             } else if (getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key).equals(key)) {
 
                 if (eventsData.preferences_MultiType_files != null) {
@@ -694,6 +776,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 this.eventTypeForSelect = Constants.Type_MultiEvent;
                 selectFiles(this.eventTypeForSelect);
                 return true;
+
+            /*} else if (getString(R.string.pref_Notifications_FactEvents_Count_key).equals(key)) {
+
+                selectFactsCount(1);
+                return true;*/
+
+            /*} else if (getString(R.string.pref_Notifications2_FactEvents_Count_key).equals(key)) {
+
+                selectFactsCount(2);
+                return true;*/
 
             } else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
 
@@ -744,6 +836,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectHolidays();
                 return true;
 
+            } else if (getString(R.string.pref_Facts_key).equals(key)) {
+
+                selectFacts();
+                return true;
+
             } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key) || getString(R.string.pref_Notifications2_EventSources_key).equals(key)) {
 
                 selectEventSources(key);
@@ -767,6 +864,75 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
 
         return false;
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private void selectFacts() {
+        try {
+
+            //Предустановленные факты
+            final List<String> eventSourcesIds = new ArrayList<>();
+            final List<String> eventSourcesTitles = new ArrayList<>();
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packId);
+
+                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
+                    eventSourcesTitles.add(eventsPack[0]);
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
+
+            ArrayList<Boolean> eventSelected = new ArrayList<>();
+
+            Set<String> preferences_facts = eventsData.preferences_FactEvent_ids;
+            boolean[] sel = new boolean[eventSourcesIds.size()];
+            int ind = 0;
+            for (String eventId: eventSourcesIds) {
+                sel[ind] = preferences_facts.contains(eventId);
+                eventSelected.add(sel[ind]);
+                ind++;
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_Fact_Bundled_Labels_title)
+                    .setIcon(R.drawable.ic_event_fact)
+                    .setMultiChoiceItems(eventSourcesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventSelected.set(which, isChecked))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> toStore = new HashSet<>();
+                        for (int i = 0; i < eventSelected.size(); i++) {
+                            if (eventSelected.get(i)) toStore.add(eventSourcesIds.get(i));
+                        }
+
+                        eventsData.preferences_FactEvent_ids = toStore;
+                        eventsData.savePreferences();
+                        eventsData.clearDaysTypesAndInfo();
+
+                        dialog.cancel();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @SuppressLint("DiscouragedApi")
@@ -978,6 +1144,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)) {
 
                 updateVisibility();
+
+            } else if (getString(R.string.pref_Notifications_Events_key).equals(key)) {
+                /*if (eventsData.preferences_notifications_types.contains(getString(R.string.pref_EventTypes_Facts))) {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                } else {*/
+                    updateVisibility();
+                //}
+            } else if (getString(R.string.pref_Notifications2_Events_key).equals(key)) {
+                /*if (eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts))) {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                } else {*/
+                    updateVisibility();
+                //}
 
             }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
@@ -1346,7 +1529,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
            listView.setOnItemClickListener((parent, view, position, id) -> {
-               String s1 = themeNumbers.get(position);
                eventsData.setPreferences_ThemeNumber(Integer.parseInt(themeNumbers.get(position)));
                eventsData.savePreferences();
                alertToShow.dismiss();
@@ -2395,6 +2577,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications2_Type_key),
                         getString(R.string.pref_Notifications_Priority_key),
                         getString(R.string.pref_Notifications2_Priority_key),
+                        getString(R.string.pref_Notifications_FactEvents_Count_key),
+                        getString(R.string.pref_Notifications2_FactEvents_Count_key),
                         getString(R.string.pref_Notifications_AlarmHour_key),
                         getString(R.string.pref_Notifications2_AlarmHour_key),
                         getString(R.string.pref_Notifications_AlarmMinute_key),
@@ -2419,12 +2603,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Other_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Fact_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Birthday_Calendars_key),
                         getString(R.string.pref_CustomEvents_Other_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
+                        getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
@@ -2590,6 +2776,61 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.savePreferences();
 
             }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public void selectFactsCount(int queueNumber) {
+        try {
+
+        List<String> list = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_FactEvents_Count_values)));
+        ArrayAdapter<String> adapter = new SingleChoiceListAdapter(this, list, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_Notifications_FactEvents_Count_title)
+                    .setIcon(android.R.drawable.ic_menu_day)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            listView.setPadding(
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, ta.getResources().getDisplayMetrics()),
+                    0,
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, ta.getResources().getDisplayMetrics()),
+                    0
+            );
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (queueNumber == 2) {
+                    eventsData.preferences_notifications2_fact_event_count = Integer.parseInt(list.get(position));
+                } else {
+                    eventsData.preferences_notifications_fact_event_count = Integer.parseInt(list.get(position));
+                }
+                eventsData.savePreferences();
+                alertToShow.dismiss();
+            });
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                int fact_event_count;
+                if (queueNumber == 2) {
+                    fact_event_count = eventsData.preferences_notifications2_fact_event_count;
+                } else {
+                    fact_event_count = eventsData.preferences_notifications_fact_event_count;
+                }
+                listView.setItemChecked(list.indexOf(Integer.toString(fact_event_count)), true);
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2803,6 +3044,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(oval, null, null, null);
 
                 textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            }
+
+            return view;
+        }
+
+    }
+
+    private static class SingleChoiceListAdapter extends ArrayAdapter<String> {
+
+        private static final String TAG = "SingleChoiceListAdapter";
+        private final TypedArray ta;
+
+        SingleChoiceListAdapter(Context context, List<String> items, TypedArray theme) {
+            super(context, R.layout.settings_list_item_single_choice, items);
+            this.ta = theme;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            try {
+
+                CheckedTextView textView = view.findViewById(android.R.id.text1);
+
+                if (ta != null) textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                textView.setTextSize(16);
+                textView.setMaxLines(5);
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
