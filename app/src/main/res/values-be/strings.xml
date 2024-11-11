@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Пошукавы запыт</string>
     <string name="msg_hint_global_search">Пошук падзей</string>
     <string name="msg_notifications_soon_no_events">Няма падзей у абраныя дні</string>
-    <string name="msg_notifications_count">"Падзей хутка - "</string>
-    <string name="msg_notifications_soon">"Падзей - "</string>
+    <string name="msg_notifications_soon">"Падзей хутка - "</string>
+    <string name="msg_notifications_all">"Падзей - "</string>
     <string name="msg_notifications_disabled">Паведамленні выключаны\n</string>
     <string name="msg_exact_alarms_disabled">Паведамленні ў дакладны час забаронены\n</string>
     <string name="msg_no_events_hint">Не знойдзена ніводнай падзеі. Для адлюстравання падзей яны павінны быць запоўнены ў картках Вашых кантактаў ці ў абраных календарах ці ў абраных файлах</string>

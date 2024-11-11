@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Wyszukiwane hasło</string>
     <string name="msg_hint_global_search">Wyszukiwanie wydarzeń</string>
     <string name="msg_notifications_soon_no_events">W wybrane dni nie ma żadnych wydarzeń</string>
-    <string name="msg_notifications_count">"Wydarzenia już wkrótce - "</string>
-    <string name="msg_notifications_soon">"Wydarzenia - "</string>
+    <string name="msg_notifications_soon">"Wydarzenia już wkrótce - "</string>
+    <string name="msg_notifications_all">"Wydarzenia - "</string>
     <string name="msg_notifications_disabled">Powiadomienia wyłączone\n</string>
     <string name="msg_exact_alarms_disabled">Powiadomienia czasowe są wyłączone\n</string>
     <string name="msg_no_events_hint">Nie znaleziono żadnych wydarzeń. Aby wyświetlić wydarzenia, należy je wypełnić w swoich kartach kontaktów lub w wybranych kalendarzach lub w wybranych plikach</string>

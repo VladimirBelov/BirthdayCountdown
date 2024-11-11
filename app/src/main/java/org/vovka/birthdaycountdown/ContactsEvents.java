@@ -5794,7 +5794,7 @@ class ContactsEvents {
     void showNotificationsForParams(boolean forceNoEventsMessage, String channelId, Set<String> prefDays, Set<String> prefEventSources,
                                     Set<String> prefEventTypes, int prefType, int prefPriority,
                                     String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventDetails,
-                                    int countRandomFacts) {
+                                    int randomFactsCount) {
         //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/511-urok-186-notifications-rasshirennye-uvedomlenija.html
 
         if (checkNoNotificationAccess()) return;
@@ -5858,20 +5858,27 @@ class ContactsEvents {
                     }
                 }
             }
-            if (listNotify.isEmpty() && !forceNoEventsMessage) return;
+            List<String> listFacts = new ArrayList<>();
+            if (randomFactsCount != 0) {
+                listFacts = getNextRandomFacts(randomFactsCount, prefEventSources);
+            }
+            if (listNotify.isEmpty() && !forceNoEventsMessage && listFacts.isEmpty()) return;
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             //notificationManager.cancelAll();
 
             if (listNotify.isEmpty() || //Тестовое уведомление
                     prefType == 0 || //Одно общее уведомление
-                    listNotify.size() >= 3 && prefType == 2 || //Если событий меньше 3 -> отдельные, иначе - общее
-                    listNotify.size() >= 4 && prefType == 3 || //Если событий меньше 4 -> отдельные, иначе - общее
+                    prefType == 2 && listNotify.size() >= 3 || //Одно общее уведомление (событий >= 3)
+                    prefType == 3 && listNotify.size() >= 4 || //Одно общее уведомление (событий >= 4)
                     prefType == 4 //За сегодня -> отдельные, остальные -> общее
             ) {
 
                 StringBuilder textBig = new StringBuilder();
                 String textSmall = null;
+                if (!listFacts.isEmpty()) {
+                    textBig.append(composeNotifyFacts(listFacts));
+                }
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
                     for (NotifyEvent event : listNotify) {
@@ -5881,17 +5888,21 @@ class ContactsEvents {
                             textBig.append(composeNotifyEventDetails(event, prefEventDetails));
                         }
                     }
+
                     if (countEvents > 0) {
                         if (prefType == 4) {
-                            textSmall = context.getString(R.string.msg_notifications_count) + countEvents;
-                        } else {
                             textSmall = context.getString(R.string.msg_notifications_soon) + countEvents;
+                        } else {
+                            textSmall = context.getString(R.string.msg_notifications_all) + countEvents;
                         }
                         textBig.insert(0, textSmall + ":\n");
                     }
-
                 } else if (prefType != 4) {
-                    textSmall = context.getString(R.string.msg_notifications_soon_no_events);
+                    if (listFacts.isEmpty()) {
+                        textSmall = context.getString(R.string.msg_notifications_soon_no_events);
+                    } else {
+                        textSmall = "Facts";
+                    }
                 }
 
                 if (textSmall != null) {
@@ -6070,6 +6081,27 @@ class ContactsEvents {
                     }
                 }
 
+                if (prefType != 4 && !listFacts.isEmpty()) {
+                    int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+                    final String eventDetails = composeNotifyFacts(listFacts);
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                            .setColor(this.getResources().getColor(R.color.dark_green))
+                            .setSmallIcon(R.drawable.ic_icon_notify)
+                            .setContentText(eventDetails)
+                            .setContentTitle("Facts")
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true);
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        if (prefRingtone != null)
+                            builder.setSound(Uri.parse(prefRingtone));
+                    }
+
+                    notificationManager.notify(notificationID, builder.build());
+                }
+
             }
             listNotify.clear();
 
@@ -6077,6 +6109,41 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    @NonNull
+    private List<String> getNextRandomFacts(int randomFactsCount, @NonNull Set<String> eventSources) {
+        List<String> listSelectedFacts = new ArrayList<>();
+        try {
+
+            List<String> listAllFacts = new ArrayList<>(eventListFacts);
+            if (!eventSources.isEmpty()) { //Фильтрация по источникам
+                List<String> listFactsToRemove = new ArrayList<>();
+                for (String factToFilter: listAllFacts) {
+                    String[] fact = factToFilter.split(Constants.STRING_EOT, -1);
+                    if (fact.length < 2 || !eventSources.contains(fact[1])) {
+                        listFactsToRemove.add(factToFilter);
+                    }
+                }
+                if (!listFactsToRemove.isEmpty()) {
+                    listAllFacts.removeAll(listFactsToRemove);
+                }
+            }
+
+            int tryFact = 0;
+            while (tryFact < Math.min(randomFactsCount, listAllFacts.size())) {
+                String[] fact = listAllFacts.get(generator.nextInt(listAllFacts.size())).split(Constants.STRING_EOT, -1);
+                if (!listSelectedFacts.contains(fact[0])) {
+                    tryFact++;
+                    listSelectedFacts.add(fact[0]);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return listSelectedFacts;
     }
 
     @NonNull
@@ -6148,6 +6215,27 @@ class ContactsEvents {
                 if (addTitle && addOrganization) eventDetails.append(Constants.STRING_COMMA_SPACE);
                 if (addOrganization) eventDetails.append(event.singleEventArray[Position_organization]);
                 eventDetails.append(Constants.STRING_PARENTHESIS_CLOSE);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return eventDetails.toString();
+    }
+
+    @NonNull
+    private String composeNotifyFacts(@NonNull List<String> listFacts) {
+        StringBuilder eventDetails = new StringBuilder();
+        try {
+
+            for (String fact: listFacts) {
+                if (eventDetails.length() > 0) {
+                    eventDetails.append(Constants.STRING_EOL);
+                }
+                eventDetails.append(resources.getString(R.string.event_type_fact_emoji));
+                eventDetails.append(Constants.STRING_SPACE);
+                eventDetails.append(fact);
             }
 
         } catch (Exception e) {
@@ -9664,7 +9752,7 @@ class ContactsEvents {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                         continue;
                     }
-                    final String packHash = getHash(Constants.eventSourceFactPrefix + file);
+                    final String packHash = getHash(Constants.eventSourceFilePrefix + file);
 
                     for (String eventRow: eventsArray) {
                         String fact = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);

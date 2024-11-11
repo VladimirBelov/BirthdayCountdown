@@ -135,8 +135,8 @@
     <string name="msg_hint_search">Поисковый запрос</string>
     <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
-    <string name="msg_notifications_count">"Событий скоро - "</string>
-    <string name="msg_notifications_soon">"Событий - "</string>
+    <string name="msg_notifications_soon">"Событий скоро - "</string>
+    <string name="msg_notifications_all">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены\n</string>
     <string name="msg_exact_alarms_disabled">Уведомления в точное время запрещены\n</string>
     <string name="msg_no_events_hint">Не найдено ни одного события. Для отображения событий они должны быть заполнены в карточках Ваших контактов или в выбранных календарях или в выбранных файлах</string>

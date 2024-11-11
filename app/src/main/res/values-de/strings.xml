@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Suchanfrage</string>
     <string name="msg_hint_global_search">Suche nach Ereignissen</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die ausgewählte Tage</string>
-    <string name="msg_notifications_count">"Ereignisse in Kürze - "</string>
-    <string name="msg_notifications_soon">"Ereignisse - "</string>
+    <string name="msg_notifications_soon">"Ereignisse in Kürze - "</string>
+    <string name="msg_notifications_all">"Ereignisse - "</string>
     <string name="msg_notifications_disabled">Benachrichtigungen aus\n</string>
     <string name="msg_exact_alarms_disabled">Exakte Alarme deaktiviert\n</string>
     <string name="msg_no_events_hint">Keine Ereignisse gefunden. Um Ereignisse anzuzeigen, müssen sie in den Karten Ihrer Kontakte oder in ausgewählten Kalendern oder in ausgewählten Dateien ausgefüllt werden</string>

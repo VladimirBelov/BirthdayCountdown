@@ -135,8 +135,8 @@
     <string name="msg_hint_search">Search value</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>
     <string name="msg_notifications_soon_no_events">No events for chosen days</string>
-    <string name="msg_notifications_count">"Events - "</string>
     <string name="msg_notifications_soon">"Events soon - "</string>
+    <string name="msg_notifications_all">"Events - "</string>
     <string name="msg_notifications_disabled">Notifications disabled\n</string>
     <string name="msg_exact_alarms_disabled">Exact alarms disabled\n</string>
     <string name="msg_no_events_hint">No events found. To display events, they must be filled in your contacts cards or in selected calendars or in selected files</string>
@@ -1383,6 +1383,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_type_death_emoji" translatable="false">⚰️</string>
     <string name="event_type_crowning_emoji" translatable="false">💒</string>
     <string name="event_type_holiday_emoji" translatable="false">🏖️</string>
+    <string name="event_type_fact_emoji" translatable="false">📑</string>
     <string name="event_type_5k_emoji" translatable="false">🏆</string>
     <string name="event_type_xdays_emoji" translatable="false">🚩</string>
     <string name="event_type_unknown_emoji" translatable="false">⁉️️</string>

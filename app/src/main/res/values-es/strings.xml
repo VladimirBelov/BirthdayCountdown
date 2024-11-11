@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Consulta de busqueda</string>
     <string name="msg_hint_global_search">Buscar eventos</string>
     <string name="msg_notifications_soon_no_events">No hay eventos para los días elegidos</string>
-    <string name="msg_notifications_count">"Eventos pronto - "</string>
-    <string name="msg_notifications_soon">"Eventos - "</string>
+    <string name="msg_notifications_soon">"Eventos pronto - "</string>
+    <string name="msg_notifications_all">"Eventos - "</string>
     <string name="msg_notifications_disabled">Notificaciones desactivadas\n</string>
     <string name="msg_exact_alarms_disabled">Alarmas exactas deshabilitadas\n</string>
     <string name="msg_no_events_hint">No se encontraron eventos. Para mostrar eventos, deben ser llenados en las tarjetas de sus contactos o en calendarios seleccionados o en archivos seleccionados</string>

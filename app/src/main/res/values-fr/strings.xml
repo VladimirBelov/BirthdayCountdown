@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Valeur de recherche</string>
     <string name="msg_hint_global_search">Rechercher des anniversaires et des événements</string>
     <string name="msg_notifications_soon_no_events">Aucun événement pour les jours sélectionnés</string>
-    <string name="msg_notifications_count">"Événements - "</string>
     <string name="msg_notifications_soon">"Événements bientôt - "</string>
+    <string name="msg_notifications_all">"Événements - "</string>
     <string name="msg_notifications_disabled">Notifications sont désactivées\n</string>
     <string name="msg_exact_alarms_disabled">"Notifications à l'heure exacte sont interdites\n"</string>
     <string name="msg_no_events_hint">"Aucun événement n'a été trouvé. Pour afficher les événements, ils doivent être remplis dans vos cartes de contact ou dans les calendriers sélectionnés ou dans les fichiers sélectionnés"</string>

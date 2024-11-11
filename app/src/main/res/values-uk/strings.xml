@@ -134,8 +134,8 @@
     <string name="msg_hint_search">Пошуковий запит</string>
     <string name="msg_hint_global_search">Пошук подій</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
-    <string name="msg_notifications_count">"Незабаром подій - "</string>
-    <string name="msg_notifications_soon">"Подій - "</string>
+    <string name="msg_notifications_soon">"Незабаром подій - "</string>
+    <string name="msg_notifications_all">"Подій - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені\n</string>
     <string name="msg_exact_alarms_disabled">Точні будильники вимкнено\n</string>
     <string name="msg_no_events_hint">Не знайдено жодної події. Для відображення подій вони мають бути заповнені у картках Ваших контактів або у вибраних календарях або у вибраних файлах</string>
