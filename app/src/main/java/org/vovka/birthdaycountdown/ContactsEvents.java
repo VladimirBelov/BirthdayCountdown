@@ -5769,7 +5769,8 @@ class ContactsEvents {
                     preferences_notifications_ringtone, 
                     preferences_notifications_on_click_action, 
                     preferences_notifications_quick_actions,
-                    preferences_notifications_details
+                    preferences_notifications_details,
+                    preferences_notifications_types.contains(resources.getString(R.string.pref_EventTypes_Facts)) ? preferences_notifications_fact_event_count : 0
             );
         } else if (queueNumber == 2) {
             showNotificationsForParams(
@@ -5783,7 +5784,8 @@ class ContactsEvents {
                     preferences_notifications2_ringtone,
                     preferences_notifications2_on_click_action,
                     preferences_notifications2_quick_actions,
-                    preferences_notifications2_details
+                    preferences_notifications2_details,
+                    preferences_notifications2_types.contains(resources.getString(R.string.pref_EventTypes_Facts)) ? preferences_notifications2_fact_event_count : 0
             );
         }
 
@@ -5791,7 +5793,8 @@ class ContactsEvents {
 
     void showNotificationsForParams(boolean forceNoEventsMessage, String channelId, Set<String> prefDays, Set<String> prefEventSources,
                                     Set<String> prefEventTypes, int prefType, int prefPriority,
-                                    String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventInfo) {
+                                    String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventDetails,
+                                    int countRandomFacts) {
         //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/511-urok-186-notifications-rasshirennye-uvedomlenija.html
 
         if (checkNoNotificationAccess()) return;
@@ -5875,7 +5878,7 @@ class ContactsEvents {
                         if (prefType != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            textBig.append(composeNotifyEventDetails(event, prefEventInfo));
+                            textBig.append(composeNotifyEventDetails(event, prefEventDetails));
                         }
                     }
                     if (countEvents > 0) {
@@ -5947,7 +5950,7 @@ class ContactsEvents {
 
                         int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                         final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                        final String eventDetails = composeNotifyEventDetails(event, prefEventInfo);
+                        final String eventDetails = composeNotifyEventDetails(event, prefEventDetails);
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
@@ -6019,7 +6022,7 @@ class ContactsEvents {
                             intentSnooze.setAction(Constants.ACTION_SNOOZE);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
-                            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventInfo.toArray(new String[0]));
+                            intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
                             PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
                             NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
@@ -6031,7 +6034,7 @@ class ContactsEvents {
                             intentAttach.setAction(Constants.ACTION_ATTACH);
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
-                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventInfo.toArray(new String[0]));
+                            intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
                             PendingIntent pendingAttach = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentAttach, PendingIntentImmutable);
                             NotificationCompat.Action actionAttach = new NotificationCompat.Action(0, context.getString(R.string.button_attach), pendingAttach);
@@ -8624,7 +8627,7 @@ class ContactsEvents {
             StringBuilder listEventsSources = new StringBuilder();
             if (!preferences_list_EventSources.isEmpty()) {
                 final EventSources eventSources = new EventSources();
-                eventSources.getEventSources();
+                eventSources.getEventSources(resources.getString(R.string.pref_List_EventSources_key));
                 List<String> EventsSourcesHashes = eventSources.getHashes();
                 for (int i = 0; i < EventsSourcesHashes.size(); i++) {
                     String hash = EventsSourcesHashes.get(i);
@@ -9609,7 +9612,7 @@ class ContactsEvents {
             if (preferences_FactEvent_ids.isEmpty() && preferences_FactEvent_files.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            List<String> facts = new ArrayList<>();
+            List<String> factsBundled = new ArrayList<>();
 
             if (!preferences_FactEvent_ids.isEmpty()) {
                 int eventsPackCount = 1;
@@ -9631,9 +9634,12 @@ class ContactsEvents {
                                         if (fact.isEmpty() || fact.startsWith(Constants.STRING_HASH) || fact.startsWith(Constants.STRING_DSLASH))
                                             continue;
 
-                                        if (!facts.contains(fact)) {
-                                            facts.add(fact);
+                                        fact = fact.concat(Constants.STRING_EOT).concat(packHash);
+
+                                        if (!factsBundled.contains(fact)) {
+                                            factsBundled.add(fact);
                                             increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
+                                            statEventsCount++;
                                         }
                                     }
                                 }
@@ -9647,8 +9653,41 @@ class ContactsEvents {
                 }
             }
 
+            List<String> factsFiles = new ArrayList<>();
+
+            if (!preferences_FactEvent_files.isEmpty()) {
+                for (String file : preferences_FactEvent_files) {
+
+                    String[] fileDetails = file.split(Constants.STRING_PIPE);
+                    String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                    if (eventsArray[0].isEmpty()) {
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                        continue;
+                    }
+                    final String packHash = getHash(Constants.eventSourceFactPrefix + file);
+
+                    for (String eventRow: eventsArray) {
+                        String fact = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
+
+                        if (fact.isEmpty() || fact.startsWith(Constants.STRING_HASH) || fact.startsWith(Constants.STRING_DSLASH))
+                            continue;
+
+                        fact = fact.concat(Constants.STRING_EOT).concat(packHash);
+
+                        if (!factsFiles.contains(fact)) {
+                            factsFiles.add(fact);
+                            increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
+                            statEventsCount++;
+                            statFilesEventCount++;
+                        }
+                    }
+
+                }
+            }
+
             eventListFacts.clear();
-            eventListFacts.addAll(facts);
+            eventListFacts.addAll(factsBundled);
+            eventListFacts.addAll(factsFiles);
 
             statTimeGetFactEvents += System.currentTimeMillis() - statCurrentModuleStart;
             statEventsCount += eventListFacts.size();
@@ -9836,7 +9875,7 @@ class ContactsEvents {
         private final List<Integer> icons = new ArrayList<>();
 
         @SuppressLint("DiscouragedApi")
-        void getEventSources() {
+        void getEventSources(String eventConsumer) {
             try {
 
                 ids.clear();
@@ -9846,8 +9885,8 @@ class ContactsEvents {
                 icons.clear();
 
                 //Справочники праздников и выходных
-                int eventsPackCount = 1;
                 String packageName = context.getPackageName();
+                int eventsPackCount = 1;
                 int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
                 while (packId > 0) {
                     try {
@@ -9866,6 +9905,32 @@ class ContactsEvents {
 
                     eventsPackCount++;
                     packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                }
+
+                if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
+                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))) {
+
+                    //Факты
+                    eventsPackCount = 1;
+                    packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                    while (packId > 0) {
+                        try {
+                            String[] eventsPack = getResources().getStringArray(packId);
+                            String packHash = ContactsEvents.getHash(Constants.eventSourceFactPrefix + eventsPack[0]);
+
+                            if (preferences_FactEvent_ids.contains(packHash)) {
+                                ids.add(Constants.eventSourceFactPrefix + eventsPack[0]);
+                                titles.add(eventsPack[0]);
+                                icons.add(R.drawable.ic_event_fact);
+                                packages.add(packageName);
+                                hashes.add(ContactsEvents.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
+                            }
+
+                        } catch (Resources.NotFoundException ignored) { /**/ }
+
+                        eventsPackCount++;
+                        packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                    }
                 }
 
                 //Online аккаунты
@@ -10002,12 +10067,26 @@ class ContactsEvents {
                     }
                 }
                 if (!preferences_HolidayEvent_files.isEmpty()) {
+                    //Праздники
                     for (String file: preferences_HolidayEvent_files) {
                         ids.add(Constants.eventSourceFilePrefix + file);
                         titles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
                         icons.add(android.R.drawable.ic_menu_save);
                         packages.add(packageName);
                         hashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                    }
+                }
+                if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
+                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))) {
+                    //Факты
+                    if (!preferences_FactEvent_files.isEmpty()) {
+                        for (String file: preferences_FactEvent_files) {
+                            ids.add(Constants.eventSourceFilePrefix + file);
+                            titles.add(ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                            icons.add(android.R.drawable.ic_menu_save);
+                            packages.add(packageName);
+                            hashes.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                        }
                     }
                 }
 
@@ -10019,7 +10098,7 @@ class ContactsEvents {
 
     }
 
-    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String idToPass) {
+    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String eventConsumer) {
 
         final List<String> eventSourcesSelected = new ArrayList<>();
         try {
@@ -10059,7 +10138,8 @@ class ContactsEvents {
 
                         sourceChoices.add(sourceTitle
                                 + Constants.STRING_BRACKETS_OPEN
-                                + getFileEventsCount(sourceId, getEventType(Constants.Type_BirthDay), false)
+                                //todo: тут жертвуем типом события в пользу "фактов" и скорости
+                                + getFileEventsCount(sourceId, getEventType(Constants.Type_Fact), false)
                                 + Constants.STRING_BRACKETS_CLOSE);
 
                     } else if (sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
@@ -10069,13 +10149,16 @@ class ContactsEvents {
                                 + getFileEventsCount(sourceId, Constants.Type_MultiEvent, true)
                                 + Constants.STRING_BRACKETS_CLOSE);
 
-                    } else {
-                        if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
+                    } else if (sourceId.startsWith(Constants.eventSourceHolidayPrefix)) {
 
-                            //todo: добавить количество событий
-                            sourceChoices.add(sourceTitle);
+                        //todo: добавить количество событий
+                        sourceChoices.add(sourceTitle);
 
-                        }
+                    } else if (sourceId.startsWith(Constants.eventSourceFactPrefix)) {
+
+                        //todo: добавить количество событий
+                        sourceChoices.add(sourceTitle);
+
                     }
 
                 }
@@ -10097,12 +10180,12 @@ class ContactsEvents {
                             }
                             if (baseContext instanceof Activity) {
                                 try {
-                                    if (idToPass == null) {
+                                    if (eventConsumer == null) {
                                         Method method = baseContext.getClass().getMethod("getSelectedSources", List.class);
                                         method.invoke(baseContext, eventSourcesSelected);
                                     } else {
                                         Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
-                                        method.invoke(baseContext, idToPass, eventSourcesSelected);
+                                        method.invoke(baseContext, eventConsumer, eventSourcesSelected);
                                     }
                                 } catch (Exception ignored) {
                                     ToastExpander.showDebugMsg(baseContext, "No method getSelectedSources found for " + baseContext.getClass().getSimpleName());

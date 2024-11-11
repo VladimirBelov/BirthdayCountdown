@@ -449,7 +449,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Event sources</string>
-    <string name="pref_List_EventSources_description">Show events only from these event sources</string>
+    <string name="pref_List_EventSources_description">Show events only from these event sources. If no source is selected, events from all sources are shown</string>
 
     <string name="pref_List_SadPhoto_title">Mourning tape</string>
     <string name="pref_List_SadPhoto_summary">Mark photos of deceased contacts with mourning tape</string>
@@ -1013,7 +1013,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Notifications_EventSources_title">Event sources</string>
-    <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources</string>
+    <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources. If no source is selected, events from all sources are shown</string>
 
     <string name="pref_Notifications_EventInfo_title">Event details</string>
     <string name="pref_Notifications_EventInfo_summary">What kind of event details to show in notification</string>

@@ -449,7 +449,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Источники событий</string>
-    <string name="pref_List_EventSources_description">Показывать в списке события только из этих источников</string>
+    <string name="pref_List_EventSources_description">Показывать в списке события только из этих источников. Если ни один источник не выбран - показываются события из всех источников</string>
 
     <string name="pref_List_SadPhoto_title">Траурная лента</string>
     <string name="pref_List_SadPhoto_summary">Отмечать фотографии умерших контактов траурной лентой</string>
@@ -1013,7 +1013,7 @@
     </string-array>
 
     <string name="pref_Notifications_EventSources_title">Источники событий</string>
-    <string name="pref_Notifications_EventSources_description">Показывать уведомления только для этих источников событий</string>
+    <string name="pref_Notifications_EventSources_description">Показывать уведомления только для этих источников событий. Если ни один источник не выбран - показываются события из всех источников</string>
 
     <string name="pref_Notifications_EventInfo_title">Детали события</string>
     <string name="pref_Notifications_EventInfo_summary">Какие сведения о событии показывать в уведомлении</string>

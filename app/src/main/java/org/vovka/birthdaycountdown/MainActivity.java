@@ -1793,7 +1793,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == R.id.menu_events_sources) {
 
                 final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
-                eventSources.getEventSources();
+                eventSources.getEventSources(getString(R.string.pref_List_EventSources_key));
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
                         this, getString(R.string.pref_List_EventSources_key));
                 return true;
@@ -1857,6 +1857,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
                 for (String file: eventsData.preferences_HolidayEvent_files) {
+                    String[] fileDetails = file.split(Constants.STRING_PIPE);
+                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                        fileNames.add(fileDetails[0]);
+                        fileURIs.add(fileDetails[1]);
+                    }
+                }
+                for (String file: eventsData.preferences_FactEvent_files) {
                     String[] fileDetails = file.split(Constants.STRING_PIPE);
                     if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                         fileNames.add(fileDetails[0]);

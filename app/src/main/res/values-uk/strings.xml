@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Джерела подій</string>
-    <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій</string>
+    <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>
 
     <string name="pref_List_SadPhoto_title">Траурна стрічка</string>
     <string name="pref_List_SadPhoto_summary">Відзначати фотографії померлих контактів траурною стрічкою</string>
@@ -997,7 +997,7 @@
     <string name="pref_Notifications_EventTypes_summary">Які події включати в повідомлення</string>
 
     <string name="pref_Notifications_EventSources_title">Джерела подій</string>
-    <string name="pref_Notifications_EventSources_description">Показувати сповіщення лише для цих джерел подій</string>
+    <string name="pref_Notifications_EventSources_description">Показувати сповіщення лише для цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>
 
     <string name="pref_Notifications_EventInfo_title">Деталі події</string>
     <string name="pref_Notifications_EventInfo_summary">Які подробиці показувати в сповіщенні</string>

@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Fontes de eventos</string>
-    <string name="pref_List_EventSources_description">Mostrar eventos apenas destas fontes de eventos</string>
+    <string name="pref_List_EventSources_description">Mostrar eventos apenas destas fontes de eventos. Se nenhuma fonte for selecionada, os eventos de todas as fontes serão mostrados</string>
 
     <string name="pref_List_SadPhoto_title">Fita de luto</string>
     <string name="pref_List_SadPhoto_summary">Marcar fotos de contatos falecidos com fita de luto</string>
@@ -997,7 +997,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_Notifications_EventTypes_summary">Que tipo de eventos incluir nas notificações</string>
 
     <string name="pref_Notifications_EventSources_title">Fontes de eventos</string>
-    <string name="pref_Notifications_EventSources_description">Mostrar notificações apenas para essas fontes de eventos</string>
+    <string name="pref_Notifications_EventSources_description">Mostrar notificações apenas para essas fontes de eventos. Se nenhuma fonte for selecionada, os eventos de todas as fontes serão mostrados</string>
 
     <string name="pref_Notifications_EventInfo_title">Detalhes do evento</string>
     <string name="pref_Notifications_EventInfo_summary">Que tipo de detalhes do evento mostrar na notificação</string>

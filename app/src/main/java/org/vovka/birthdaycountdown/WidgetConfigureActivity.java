@@ -575,7 +575,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 String pref = widgetPref.get(10);
                 if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
             }
-            eventSources.getEventSources();
+            eventSources.getEventSources(widgetType);
             updateEventSources();
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());

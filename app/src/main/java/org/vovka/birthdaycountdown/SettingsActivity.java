@@ -2731,21 +2731,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private void selectEventSources(String idToPass) {
+    private void selectEventSources(String eventConsumer) {
         try {
 
             final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
-            eventSources.getEventSources();
+            eventSources.getEventSources(eventConsumer);
 
-            if (idToPass.equals(getString(R.string.pref_List_EventSources_key))) {
+            if (eventConsumer.equals(getString(R.string.pref_List_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
-                        this, idToPass);
-            } else if (idToPass.equals(getString(R.string.pref_Notifications_EventSources_key))) {
+                        this, eventConsumer);
+            } else if (eventConsumer.equals(getString(R.string.pref_Notifications_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications_sources),
-                        this, idToPass);
-            } else if (idToPass.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
+                        this, eventConsumer);
+            } else if (eventConsumer.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications2_sources),
-                        this, idToPass);
+                        this, eventConsumer);
             }
 
         } catch (final Exception e) {

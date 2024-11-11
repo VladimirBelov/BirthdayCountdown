@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Крыніцы падзей</string>
-    <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей</string>
+    <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
 
     <string name="pref_List_SadPhoto_title">Жалобная стужка</string>
     <string name="pref_List_SadPhoto_summary">Адзначаць фатаграфіі памерлых кантактаў жалобнай стужкай</string>
@@ -997,7 +997,7 @@
     <string name="pref_Notifications_EventTypes_summary">Якія падзеі ўлучаць у паведамленні</string>
 
     <string name="pref_Notifications_EventSources_title">Крыніцы падзей</string>
-    <string name="pref_Notifications_EventSources_description">Паказваць апавяшчэнні толькі для гэтых крыніц падзей</string>
+    <string name="pref_Notifications_EventSources_description">Паказваць апавяшчэнні толькі для гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
 
     <string name="pref_Notifications_EventInfo_title">Падрабязнасці падзеі</string>
     <string name="pref_Notifications_EventInfo_summary">Якія дэталі падзеі паказваць у апавяшчэнні</string>

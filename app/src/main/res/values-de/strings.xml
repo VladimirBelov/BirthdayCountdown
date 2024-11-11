@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Ereignisquellen</string>
-    <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen</string>
+    <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>
 
     <string name="pref_List_SadPhoto_title">Trauerband</string>
     <string name="pref_List_SadPhoto_summary">Markieren Sie Fotos von verstorbenen Kontakten mit Trauerband</string>
@@ -997,7 +997,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_Notifications_EventTypes_summary">Welche Ereignisse in den Benachrichtigungen enthalten sein sollen</string>
 
     <string name="pref_Notifications_EventSources_title">Ereignisquellen</string>
-    <string name="pref_Notifications_EventSources_description">Benachrichtigungen nur für diese Ereignisquellen anzeigen</string>
+    <string name="pref_Notifications_EventSources_description">Benachrichtigungen nur für diese Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>
 
     <string name="pref_Notifications_EventInfo_title">Ereignisdetails</string>
     <string name="pref_Notifications_EventInfo_summary">Welche Art von Ereignisdetails in der Benachrichtigung angezeigt werden sollen</string>

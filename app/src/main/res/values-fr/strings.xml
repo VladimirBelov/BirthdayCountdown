@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">"Sources d'événements"</string>
-    <string name="pref_List_EventSources_description">"Afficher uniquement les événements de ces sources d'événements"</string>
+    <string name="pref_List_EventSources_description">"Afficher uniquement les événements de ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>
 
     <string name="pref_List_SadPhoto_title">Bande de deuil</string>
     <string name="pref_List_SadPhoto_summary">Marquer les photos des contacts décédés avec du ruban de deuil</string>
@@ -997,7 +997,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_Notifications_EventTypes_summary">"Quels événements inclure dans les notifications"</string>
 
     <string name="pref_Notifications_EventSources_title">"Sources d'événements"</string>
-    <string name="pref_Notifications_EventSources_description">"Afficher les notifications uniquement pour ces sources d'événements"</string>
+    <string name="pref_Notifications_EventSources_description">"Afficher les notifications uniquement pour ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>
 
     <string name="pref_Notifications_EventInfo_title">"Détails de l'événement"</string>
     <string name="pref_Notifications_EventInfo_summary">"Quels types de détails d'événement afficher dans la notification"</string>

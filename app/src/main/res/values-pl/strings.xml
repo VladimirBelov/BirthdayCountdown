@@ -443,7 +443,7 @@
     </string-array>
 
     <string name="pref_List_EventSources_title">Źródła wydarzeń</string>
-    <string name="pref_List_EventSources_description">Pokaż na liście tylko wydarzenia z tych źródeł</string>
+    <string name="pref_List_EventSources_description">Pokaż na liście tylko wydarzenia z tych źródeł. Jeśli nie zostanie wybrane żadne źródło, pokazane zostaną zdarzenia ze wszystkich źródeł</string>
 
     <string name="pref_List_SadPhoto_title">Wstążka żałobna</string>
     <string name="pref_List_SadPhoto_summary">Oznacz zdjęcia zmarłych kontaktów wstążką żałobną</string>
@@ -997,7 +997,7 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
     <string name="pref_Notifications_EventTypes_summary">Które wydarzenia uwzględnić w powiadomieniach</string>
 
     <string name="pref_Notifications_EventSources_title">Źródła wydarzeń</string>
-    <string name="pref_Notifications_EventSources_description">Pokazuj powiadomienia tylko dla tych źródeł wydarzeń</string>
+    <string name="pref_Notifications_EventSources_description">Pokazuj powiadomienia tylko dla tych źródeł wydarzeń. Jeśli nie zostanie wybrane żadne źródło, pokazane zostaną zdarzenia ze wszystkich źródeł</string>
 
     <string name="pref_Notifications_EventInfo_title">Szczegóły wydarzenia</string>
     <string name="pref_Notifications_EventInfo_summary">Które informacje o wydarzeniu mają być wyświetlane w powiadomieniu</string>
