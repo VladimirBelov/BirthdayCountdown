@@ -17,6 +17,7 @@ final class Constants {
     static final String REGEX_LAST = "\\Z";
     static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
     static final String REGEX_EVENTS_SCOPE_PLUS = "(\\d+?)[e](\\d+?)[d]([\\+\\-])";
+    static final String REGEX_EVENTS_SCOPE_RAND = "(\\d+?)[e](\\d+?)[d](\\d+?)[r]";
     static final String REGEX_CALENDAR_LAYOUT = "(\\d+?)[r](\\d+?)[c]";
     static final String REGEX_PERIOD = "\\.";
     static final String STRING_0 = "0";

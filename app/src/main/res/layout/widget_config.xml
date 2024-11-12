@@ -230,6 +230,32 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/blockFacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionFacts"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_scope_facts_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerFacts"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_scope_facts_label" />
+
+                </LinearLayout>
+
                 <View
                     android:id="@+id/dividerEventInfo"
                     android:layout_width="match_parent"
@@ -701,7 +727,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    tools:ignore="TooManyViews" />
 
                 <TextView
                     android:id="@+id/captionPhotoStyle"
@@ -725,8 +752,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_photostyle_description"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:ignore="TooManyViews" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <View
                     android:id="@+id/dividerWidgetBackgroundColor"
@@ -734,8 +760,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor"
-                    tools:ignore="TooManyViews" />
+                    android:background="?attr/listDividerColor" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWidgetBackgroundColor"
@@ -751,8 +776,7 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
-                    app:dialogIcon="@drawable/ic_menu_paste"
-                    tools:ignore="TooManyViews" />
+                    app:dialogIcon="@drawable/ic_menu_paste" />
 
                 <View
                     android:id="@+id/dividerCustomWidgetCaption"

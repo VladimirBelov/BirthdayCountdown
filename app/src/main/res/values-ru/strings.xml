@@ -819,6 +819,8 @@
     <string name="widget_config_scope_days_items">Все,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Мало событий:</string>
     <string name="widget_config_layout_items">Расширить,Сохранять размер</string>
+    <string name="widget_config_scope_facts_label">Количество фактов:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Коэффициент масштабирования размера шрифта</string>
     <string name="widget_config_font_description">Используется при масштабировании виджета для увеличения размера шрифта возраста, дистанции до события и информации под фото</string>
@@ -1002,6 +1004,7 @@
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
     <string name="pref_Notifications_EventTypes_summary">Какие события включать в уведомления</string>
 
+    <string name="pref_Notifications_EventTypes_Facts">📝 Факты</string>
     <string-array name="pref_Notifications_EventTypes_entries">
         <item>🎂 Дни рождения</item>
         <item>💑 Годовщины свадеб</item>
@@ -1009,7 +1012,7 @@
         <item>🏖️ Праздники</item>
         <item>⏰ Пользовательские события</item>
         <item>🏆 Круглые даты (5K дней)</item>
-        <item>📝 Факты</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
     </string-array>
 
     <string name="pref_Notifications_EventSources_title">Источники событий</string>

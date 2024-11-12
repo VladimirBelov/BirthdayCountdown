@@ -187,8 +187,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventsCount.setSelection(prefEventsCountIndex, true);
 
             //Типы событий
-            eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values));
-            eventTypesValues = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries));
+            eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
+            eventTypesValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
+
+            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
+                eventTypesValues.add(getString(R.string.pref_Notifications_EventTypes_Facts));
+            }
 
             MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             List<String> listEventTypes = new ArrayList<>();
@@ -206,6 +211,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventTypes.setZeroSelectedTitle(getString(R.string.widget_config_event_types_empty));
             spinnerEventTypes.setItems(eventTypesValues);
             spinnerEventTypes.setSelection(listEventTypes);
+            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                spinnerEventTypes.onDismissListener = dialog -> updateVisibility();
+            }
 
             isListWidget = widgetType.equals(Constants.WIDGET_TYPE_LIST) || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST);
             CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
@@ -254,11 +262,20 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
+            Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
+            List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(Constants.STRING_COMMA, -1)));
+            ArrayAdapter<String> spinnerFactsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerFactsItems);
+            spinnerFacts.setAdapter(spinnerFactsAdapter);
+
             String prefScope = Constants.STRING_EMPTY;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
             if (!TextUtils.isEmpty(prefScope)) {
                 Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(prefScope);
                 boolean found = matchScopes.find();
+                if (!found) {
+                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope).reset();
+                    found = matchScopes.find();
+                }
                 if (!found) {
                     matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
                     found = matchScopes.find();
@@ -290,6 +307,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                                 spinnerLayout.setSelection(1);
                             }
                         }
+                    } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                        try {
+                            final String scopeFacts = matchScopes.group(3);
+                            if (scopeFacts != null) {
+                                if (spinnerFactsItems.contains(scopeFacts)) {
+                                    spinnerFacts.setSelection(spinnerFactsItems.indexOf(scopeFacts), true);
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException ignored) { /**/ }
                     }
                 }
             }
@@ -741,6 +767,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     isNotPhotoWidget || spinnerScopeEvents.getSelectedItemPosition() != 0 ? View.GONE : View.VISIBLE
             );
 
+            //Факты
+            final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
+            findViewById(R.id.blockFacts).setVisibility(
+                    widgetType.equals(Constants.WIDGET_TYPE_LIST)
+                            && spinnerEventTypes.getSelectedStrings().contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
+            );
+
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -792,6 +825,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         scopeInfo.append(Constants.STRING_MINUS);
                     }
 
+                } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                    final Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
+                    scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
                 }
             }
 

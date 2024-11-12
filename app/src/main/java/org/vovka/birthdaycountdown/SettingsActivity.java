@@ -777,16 +777,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
-            /*} else if (getString(R.string.pref_Notifications_FactEvents_Count_key).equals(key)) {
-
-                selectFactsCount(1);
-                return true;*/
-
-            /*} else if (getString(R.string.pref_Notifications2_FactEvents_Count_key).equals(key)) {
-
-                selectFactsCount(2);
-                return true;*/
-
             } else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
 
                 selectRingtone(1, eventsData.preferences_notifications_ringtone);

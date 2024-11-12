@@ -42,6 +42,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     FragmentManager fm;
     Fragment fragment;
     Menu menu;
+    DialogInterface.OnDismissListener onDismissListener = null;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
@@ -91,7 +92,13 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
             //super.performClick(); если это включить, то фокус уходит за 2 клика
             dialogBuilder = new AlertDialog.Builder(getContext());
             dialogBuilder.setMultiChoiceItems(_items, mSelection, this);
-            dialogBuilder.show();
+            AlertDialog dialog = dialogBuilder.create();
+            if (onDismissListener != null) {
+                dialog.setOnDismissListener(dialog1 -> onDismissListener.onDismiss(dialog1));
+            }
+
+            dialog.show();
+            //dialogBuilder.show();
             //todo: добавить onDismiss обработчик для пост обработки выбранного (когда будет дерево вариантов)
 
         } else {

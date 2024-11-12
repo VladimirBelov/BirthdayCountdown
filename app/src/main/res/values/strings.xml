@@ -819,6 +819,8 @@
     <string name="widget_config_scope_days_items">All,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Too few events:</string>
     <string name="widget_config_layout_items">Expand,Keep width</string>
+    <string name="widget_config_scope_facts_label">Facts count:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Font magnify factor</string>
     <string name="widget_config_font_description">Font scale multiplier for age, event distance and under photo info text</string>
@@ -1002,6 +1004,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_EventTypes_title">Event types</string>
     <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
 
+    <string name="pref_Notifications_EventTypes_Facts">📝 Facts</string>
     <string-array name="pref_Notifications_EventTypes_entries">
         <item>🎂 Birthdays</item>
         <item>💑 Anniversaries</item>
@@ -1009,7 +1012,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>🏖️ Holidays</item>
         <item>⏰ Custom events</item>
         <item>🏆 Round days count (5K, 10K, 15K days)</item>
-        <item>📝 Facts</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
     </string-array>
 
     <string name="pref_Notifications_EventSources_title">Event sources</string>
