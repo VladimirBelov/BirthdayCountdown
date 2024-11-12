@@ -5877,7 +5877,7 @@ class ContactsEvents {
                 StringBuilder textBig = new StringBuilder();
                 String textSmall = null;
                 if (!listFacts.isEmpty()) {
-                    textBig.append(composeNotifyFacts(listFacts));
+                    textBig.append(composeFactsAsString(listFacts));
                 }
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
@@ -6083,7 +6083,7 @@ class ContactsEvents {
 
                 if (prefType != 4 && !listFacts.isEmpty()) {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                    final String eventDetails = composeNotifyFacts(listFacts);
+                    final String eventDetails = composeFactsAsString(listFacts);
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                             .setColor(this.getResources().getColor(R.color.dark_green))
@@ -6112,7 +6112,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    private List<String> getNextRandomFacts(int randomFactsCount, @NonNull Set<String> eventSources) {
+    List<String> getNextRandomFacts(int randomFactsCount, @NonNull Set<String> eventSources) {
         List<String> listSelectedFacts = new ArrayList<>();
         try {
 
@@ -6225,7 +6225,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    private String composeNotifyFacts(@NonNull List<String> listFacts) {
+    private String composeFactsAsString(@NonNull List<String> listFacts) {
         StringBuilder eventDetails = new StringBuilder();
         try {
 

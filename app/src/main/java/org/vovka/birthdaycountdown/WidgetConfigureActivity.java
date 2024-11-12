@@ -810,25 +810,23 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
-            if (spinnerScopeEvents.getSelectedItemPosition() != 0 || spinnerScopeDays.getSelectedItemPosition() != 0) { //Есть ограничения
-                scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
-                scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
+            scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
+            scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
 
-                Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
-                if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                        || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+            Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
+            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
+                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
 
-                    List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
-                    if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
-                        scopeInfo.append(Constants.STRING_PLUS);
-                    } else if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(1))) {
-                        scopeInfo.append(Constants.STRING_MINUS);
-                    }
-
-                } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
-                    final Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
-                    scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
+                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
+                if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
+                    scopeInfo.append(Constants.STRING_PLUS);
+                } else if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(1))) {
+                    scopeInfo.append(Constants.STRING_MINUS);
                 }
+
+            } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                final Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
+                scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
             }
 
             //Параметры заголовков

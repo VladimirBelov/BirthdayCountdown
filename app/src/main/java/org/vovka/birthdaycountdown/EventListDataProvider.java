@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -368,12 +369,18 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             //Ограничения объёма
             int maxEvents = 0;
             int maxDays = 0;
+            int maxFacts = 0;
             String prefScope = Constants.STRING_EMPTY;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
 
             if (!TextUtils.isEmpty(prefScope)) {
-                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
-                if (matchScopes.find()) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope);
+                boolean found = matchScopes.find();
+                if (!found) {
+                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
+                    found = matchScopes.find();
+                }
+                if (found) {
                     final String scopeEvents = matchScopes.group(1);
                     if (scopeEvents != null) {
                         List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
@@ -392,9 +399,21 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                             } catch (NumberFormatException e) { /**/ }
                         }
                     }
+                    try {
+                        final String scopeFacts = matchScopes.group(3);
+                        if (scopeFacts != null) {
+                            maxFacts = Integer.parseInt(scopeFacts);
+                        }
+                    } catch (IndexOutOfBoundsException ignored) { /**/ }
                 }
             }
 
+            if (maxFacts > 0) {
+                List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<String>() {});
+                for (String fact: listFacts) {
+                    eventListView.add(resources.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fact);
+                }
+            }
             if (maxEvents == 0 && maxDays == 0) {
                 eventListView.addAll(filteredEventList);
             } else {
