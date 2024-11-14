@@ -408,8 +408,16 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 }
             }
 
-            if (maxFacts > 0) {
-                List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<String>() {});
+            List<String> eventsPrefList = new ArrayList<>();
+            if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
+                eventsPrefList = Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
+            }
+            if (maxFacts > 0 && eventsPrefList.contains(resources.getString(R.string.pref_EventTypes_Facts))) {
+                List<String> sourcesPrefList = new ArrayList<>();
+                if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                    sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
+                }
+                List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<>(sourcesPrefList));
                 for (String fact: listFacts) {
                     eventListView.add(resources.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fact);
                 }

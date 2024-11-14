@@ -9737,7 +9737,7 @@ class ContactsEvents {
                     } catch (Resources.NotFoundException ignored) { /**/ }
 
                     eventsPackCount++;
-                    packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+                    packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
                 }
             }
 
@@ -9996,7 +9996,8 @@ class ContactsEvents {
                 }
 
                 if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
-                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))) {
+                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))
+                        || eventConsumer.equals(Constants.WIDGET_TYPE_LIST)) {
 
                     //Факты
                     eventsPackCount = 1;
@@ -10165,7 +10166,8 @@ class ContactsEvents {
                     }
                 }
                 if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
-                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))) {
+                        || eventConsumer.equals(resources.getString(R.string.pref_Notifications2_EventSources_key))
+                        || eventConsumer.equals(Constants.WIDGET_TYPE_LIST)) {
                     //Факты
                     if (!preferences_FactEvent_files.isEmpty()) {
                         for (String file: preferences_FactEvent_files) {
