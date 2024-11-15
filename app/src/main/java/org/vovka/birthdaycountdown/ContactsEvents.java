@@ -446,6 +446,7 @@ class ContactsEvents {
     int statFavoriteEventsCount = 0;
     int statActiveWidgets = 0;
     final HashMap<String, Integer> statEventSources = new HashMap<>();
+    final HashMap<String, Integer> statEventSourcesIds = new HashMap<>();
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
 
     private static DisplayMetrics displayMetrics;
@@ -1659,6 +1660,7 @@ class ContactsEvents {
             map_eventsBySubtypeAndPersonID_offset.clear();
 
             statEventSources.clear();
+            statEventSourcesIds.clear();
             statEventTypes.clear();
             statEventsCount = 0;
             statContactsEventCount = 0;
@@ -5213,6 +5215,15 @@ class ContactsEvents {
         } else {
             Integer oldCount = statEventSources.get(sourceType);
             statEventSources.put(sourceType, (oldCount == null ? 0 : oldCount) + 1);
+        }
+    }
+
+    private void increaseStatForEventSourcesIds(@NonNull String sourceId) {
+        if (!statEventSourcesIds.containsKey(sourceId)) {
+            statEventSourcesIds.put(sourceId, 1);
+        } else {
+            Integer oldCount = statEventSourcesIds.get(sourceId);
+            statEventSourcesIds.put(sourceId, (oldCount == null ? 0 : oldCount) + 1);
         }
     }
 
@@ -9727,6 +9738,8 @@ class ContactsEvents {
                                         if (!factsBundled.contains(fact)) {
                                             factsBundled.add(fact);
                                             increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
+                                            increaseStatForEventSourcesIds(packHash);
+                                            increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
                                             statEventsCount++;
                                         }
                                     }
@@ -9765,6 +9778,8 @@ class ContactsEvents {
                         if (!factsFiles.contains(fact)) {
                             factsFiles.add(fact);
                             increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
+                            increaseStatForEventSourcesIds(packHash);
+                            increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
                             statEventsCount++;
                             statFilesEventCount++;
                         }
@@ -9906,6 +9921,7 @@ class ContactsEvents {
                                     final String eventData = dataRow.toString();
                                     if (!eventListUpdated.contains(eventData)) {
                                         eventListUpdated.add(eventData);
+                                        increaseStatForEventSourcesIds(packHash);
                                     }
                                     userData.clear();
 
@@ -9983,7 +9999,14 @@ class ContactsEvents {
 
                         if (preferences_HolidayEvent_ids.contains(packHash)) {
                             ids.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                            titles.add(eventsPack[0]);
+                            String sourceTitle = eventsPack[0];
+                            if (statEventSourcesIds.containsKey(packHash)) {
+                                sourceTitle = sourceTitle
+                                        + Constants.STRING_BRACKETS_OPEN
+                                        + statEventSourcesIds.get(packHash)
+                                        + Constants.STRING_BRACKETS_CLOSE;
+                            }
+                            titles.add(sourceTitle);
                             icons.add(R.drawable.ic_event_holiday);
                             packages.add(packageName);
                             hashes.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
@@ -10009,7 +10032,14 @@ class ContactsEvents {
 
                             if (preferences_FactEvent_ids.contains(packHash)) {
                                 ids.add(Constants.eventSourceFactPrefix + eventsPack[0]);
-                                titles.add(eventsPack[0]);
+                                String sourceTitle = eventsPack[0];
+                                if (statEventSourcesIds.containsKey(packHash)) {
+                                    sourceTitle = sourceTitle
+                                            + Constants.STRING_BRACKETS_OPEN
+                                            + statEventSourcesIds.get(packHash)
+                                            + Constants.STRING_BRACKETS_CLOSE;
+                                }
+                                titles.add(sourceTitle);
                                 icons.add(R.drawable.ic_event_fact);
                                 packages.add(packageName);
                                 hashes.add(ContactsEvents.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
