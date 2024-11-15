@@ -2021,7 +2021,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Common_default" translatable="false">@color/white</color>
-    <color name="pref_Widgets_Color_Calendar_Today_default" translatable="false">@color/black</color>
+    <color name="pref_Widgets_Color_Calendar_Today_default" translatable="false">@color/back03</color>
     <color name="pref_Widgets_Color_Calendar_MonthTitle_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Arrows_default" translatable="false">@color/white</color>
     <color name="pref_Widgets_Color_Calendar_Weeks_default" translatable="false">@color/white_semi</color>
