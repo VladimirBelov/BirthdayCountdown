@@ -196,12 +196,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             //Добавление количества событий
-            for (int i=0; i < eventTypesValues.size(); i++) {
-                if (eventsData.statEventTypes.containsKey(eventTypesIDs.get(i))) {
-                    eventTypesValues.set(i, eventTypesValues.get(i)
-                            + Constants.STRING_BRACKETS_OPEN
-                            + eventsData.statEventTypes.get(eventTypesIDs.get(i))
-                            + Constants.STRING_BRACKETS_CLOSE);
+            if (eventsData.preferences_extrafun) {
+                for (int i = 0; i < eventTypesValues.size(); i++) {
+                    if (eventsData.statEventTypes.containsKey(eventTypesIDs.get(i))) {
+                        eventTypesValues.set(i, eventTypesValues.get(i)
+                                + Constants.STRING_BRACKETS_OPEN
+                                + eventsData.statEventTypes.get(eventTypesIDs.get(i))
+                                + Constants.STRING_BRACKETS_CLOSE);
+                    }
                 }
             }
 
