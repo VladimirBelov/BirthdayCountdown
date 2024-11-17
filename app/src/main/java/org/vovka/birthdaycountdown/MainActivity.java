@@ -2157,13 +2157,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsUnrecognizedEvents = 0;
             int statsVisibleEvents = 0;
             eventsData.statEventsPrevEventsFound = 0;
-            //final List<String> eventList_toPrepare = new ArrayList<>(eventsData.eventList);
             dataList.clear();
-            dataListFull.clear();
 
-            final int hiddenEventsCount = eventsData.getHiddenEventsCount();
-            final int silencedEventsCount = eventsData.getSilencedEventsCount();
-            final int xDaysEventsCount = eventsData.getXDaysEventsCount();
+            //final int hiddenEventsCount = eventsData.getHiddenEventsCount();
+            //final int silencedEventsCount = eventsData.getSilencedEventsCount();
+            //final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
                 for (String event : eventsData.eventList) {
@@ -2201,7 +2199,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
                         boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
-                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey) && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
+                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
+                                && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                         boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
 
                         if (isHiddenEvent) statsHiddenEvents++;
@@ -2268,6 +2267,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
 
+            dataListFull.clear();
             dataListFull.addAll(dataList);
 
         } catch (Exception e) {
