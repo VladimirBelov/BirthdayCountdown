@@ -311,82 +311,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            PreferenceScreen prefScreen;
-            PreferenceCategory prefCat;
-            Preference pref;
-            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
-            boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
-            boolean isNotify2Enabled = !eventsData.preferences_notifications2_days.isEmpty();
-
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             final boolean pref_menu_isCompact = eventsData.preferences_menustyle_compact;
-
-            List<Integer> prefsNotify = Arrays.asList(
-                    R.string.pref_Notifications_Type_key,
-                    R.string.pref_Notifications_Priority_key,
-                    R.string.pref_Notifications_Events_key,
-                    R.string.pref_Notifications_EventSources_key,
-                    R.string.pref_Notifications_EventInfo_key,
-                    R.string.pref_Notifications_FactEvents_Count_key,
-                    R.string.pref_Notifications_AlarmHour_key,
-                    R.string.pref_Notifications_QuickActions_key,
-                    R.string.pref_Notifications_Ringtone_key,
-                    R.string.pref_Notifications_OnClick_key,
-                    R.string.pref_Notifications_NotifyTest_key
-            );
-
-            List<Integer> prefsNotify2 = Arrays.asList(
-                    R.string.pref_Notifications2_Type_key,
-                    R.string.pref_Notifications2_Priority_key,
-                    R.string.pref_Notifications2_Events_key,
-                    R.string.pref_Notifications2_EventSources_key,
-                    R.string.pref_Notifications2_EventInfo_key,
-                    R.string.pref_Notifications2_FactEvents_Count_key,
-                    R.string.pref_Notifications2_AlarmHour_key,
-                    R.string.pref_Notifications2_QuickActions_key,
-                    R.string.pref_Notifications2_Ringtone_key,
-                    R.string.pref_Notifications2_OnClick_key,
-                    R.string.pref_Notifications2_NotifyTest_key
-            );
-
-            if (pref_menu_isCompact) {
-
-                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
-                if (prefScreen != null) {
-                    for (Integer prefId: prefsNotify) {
-                        pref = findPreference(getString(prefId));
-                        if (pref != null) pref.setEnabled(isNotifyEnabled);
-                    }
-                }
-
-                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications2_key));
-                if (prefScreen != null) {
-                    for (Integer prefId: prefsNotify2) {
-                        pref = findPreference(getString(prefId));
-                        if (pref != null) pref.setEnabled(isNotify2Enabled);
-                    }
-                }
-
-            } else {
-
-                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
-                if (prefCat != null && !isNotifyEnabled) {
-                    for (Integer prefId: prefsNotify) {
-                        pref = findPreference(getString(prefId));
-                        if (pref != null) prefCat.removePreference(pref);
-                    }
-                }
-
-                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications2_key));
-                if (prefCat != null && !isNotify2Enabled) {
-                    for (Integer prefId: prefsNotify2) {
-                        pref = findPreference(getString(prefId));
-                        if (pref != null) prefCat.removePreference(pref);
-                    }
-                }
-
-            }
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
@@ -463,6 +390,80 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
 
+            //Уведомления
+            PreferenceScreen prefScreen;
+            PreferenceCategory prefCat;
+            Preference pref;
+            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
+            boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
+            boolean isNotify2Enabled = !eventsData.preferences_notifications2_days.isEmpty();
+
+            List<Integer> prefsNotify = Arrays.asList(
+                    R.string.pref_Notifications_Type_key,
+                    R.string.pref_Notifications_Priority_key,
+                    R.string.pref_Notifications_Events_key,
+                    R.string.pref_Notifications_EventSources_key,
+                    R.string.pref_Notifications_EventInfo_key,
+                    R.string.pref_Notifications_FactEvents_Count_key,
+                    R.string.pref_Notifications_AlarmHour_key,
+                    R.string.pref_Notifications_QuickActions_key,
+                    R.string.pref_Notifications_Ringtone_key,
+                    R.string.pref_Notifications_OnClick_key,
+                    R.string.pref_Notifications_NotifyTest_key
+            );
+
+            List<Integer> prefsNotify2 = Arrays.asList(
+                    R.string.pref_Notifications2_Type_key,
+                    R.string.pref_Notifications2_Priority_key,
+                    R.string.pref_Notifications2_Events_key,
+                    R.string.pref_Notifications2_EventSources_key,
+                    R.string.pref_Notifications2_EventInfo_key,
+                    R.string.pref_Notifications2_FactEvents_Count_key,
+                    R.string.pref_Notifications2_AlarmHour_key,
+                    R.string.pref_Notifications2_QuickActions_key,
+                    R.string.pref_Notifications2_Ringtone_key,
+                    R.string.pref_Notifications2_OnClick_key,
+                    R.string.pref_Notifications2_NotifyTest_key
+            );
+
+            if (pref_menu_isCompact) {
+
+                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications_key));
+                if (prefScreen != null) {
+                    for (Integer prefId : prefsNotify) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) pref.setEnabled(isNotifyEnabled);
+                    }
+                }
+
+                prefScreen = (PreferenceScreen) findPreference(getString(R.string.pref_Notifications2_key));
+                if (prefScreen != null) {
+                    for (Integer prefId : prefsNotify2) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) pref.setEnabled(isNotify2Enabled);
+                    }
+                }
+
+            } else {
+
+                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
+                if (prefCat != null && !isNotifyEnabled) {
+                    for (Integer prefId : prefsNotify) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) prefCat.removePreference(pref);
+                    }
+                }
+
+                prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications2_key));
+                if (prefCat != null && !isNotify2Enabled) {
+                    for (Integer prefId : prefsNotify2) {
+                        pref = findPreference(getString(prefId));
+                        if (pref != null) prefCat.removePreference(pref);
+                    }
+                }
+
+            }
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -488,7 +489,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 } else {
                     prefParent = findPreference(getString(R.string.pref_Root_key));
-                    if (prefParent != null) ((PreferenceGroup) prefParent).removePreference(pref);
+                    if (prefParent != null) {
+                        ((PreferenceGroup) prefParent).removePreference(pref);
+                    }
                 }
             }
 
@@ -496,7 +499,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
 
+    boolean findPreference(@StringRes int parentId, @StringRes int resId) {
+
+        try {
+
+            Preference pref = findPreference(getString(resId));
+            if (pref != null) {
+                Preference prefParent = null;
+                if (parentId != 0) prefParent = findPreference(getString(parentId));
+                if (prefParent != null) {
+                    if (prefParent instanceof PreferenceScreen) {
+                        return ((PreferenceScreen) prefParent).findPreference(getString(resId)) != null;
+                    } else if (prefParent instanceof PreferenceCategory) {
+                        return ((PreferenceCategory) prefParent).findPreference(getString(resId)) != null;
+                    }
+
+                } else {
+                    prefParent = findPreference(getString(R.string.pref_Root_key));
+                    if (prefParent != null) return ((PreferenceGroup) prefParent).findPreference(getString(resId)) != null;
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return false;
     }
 
     void hideOrAddPreference(boolean condition, @StringRes int parentId, @StringRes int resId, @NonNull Preference prefToAdd, @StringRes int resIdAddAfter) {
@@ -508,11 +538,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 return;
             }
 
-            Preference prefParent = null;
-            if (parentId != 0) prefParent = findPreference(getString(parentId));
+            if (parentId == 0) return;
+            Preference prefParent = findPreference(getString(parentId));
+            if (prefParent == null) return;
             Preference prefPrev = findPreference(getString(resIdAddAfter));
+            if (prefPrev == null) return;
 
-            if (prefPrev != null && prefParent != null) {
+            if (!findPreference(parentId, resId)) {
                 int order = prefPrev.getOrder() + 1;
                 prefToAdd.setOrder(order);
 
