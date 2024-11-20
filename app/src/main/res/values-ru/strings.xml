@@ -51,8 +51,7 @@
     <string name="menu_context_unsilent_event">Вернуть уведомление</string>
     <string name="menu_context_merge_event">Присоединить к контакту…</string>
     <string name="menu_context_unmerge_event">Отсоединить от контакта</string>
-    <string name="menu_context_remerge_event">Присоединить к другому контакту…</string>
-    <string name="menu_context_remerge_event_short">Присоединить к другому…</string>
+    <string name="menu_context_remerge_event">Присоединить к др. контакту…</string>
     <string name="menu_context_open_url">Открыть web ссылку</string>
     <string name="menu_context_share">Поделиться событием…</string>
     <string name="menu_context_share_as_image">как изображение</string>
@@ -66,6 +65,7 @@
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
     <string name="menu_help_events_files">События из локальных файлов</string>
+    <string name="menu_help_events_facts">Факты</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
     <string name="msg_no_events">События не найдены</string>

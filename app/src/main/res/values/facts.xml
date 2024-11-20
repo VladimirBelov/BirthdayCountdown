@@ -10,8 +10,7 @@
 
     <string-array name="facts1" translatable="false" tools:ignore="UnusedResources">
 <item>🇷🇺 Мысль дня</item>
-<item>"Алкоголизм - болезнь безответственности
-Делать деньги — самая большая ошибка в жизни. Делать нужно то, к чему чувствуешь склонность и талант и, если преуспеешь в этом — деньги будут (Грир Гарсон)
+<item>"Делать деньги — самая большая ошибка в жизни. Делать нужно то, к чему чувствуешь склонность и талант и, если преуспеешь в этом — деньги будут (Грир Гарсон)
 Чтобы пожинать добро — нужно его сеять
 Кто сеет добро - пожинает добро, кто сеет зло - пожинает зло
 Вы никогда не выиграете по-крупному, если будете только минимизировать потери (Харви Спектор из сериала «Форс-мажоры»)
@@ -23,7 +22,6 @@
 Деньги все могут сделать: они срывают скалы, высушивают реки; нет такой вершины, на которую не мог бы взобраться нагруженный золотом осел (Фернандо де Рохас)
 Если мы честны перед кем-то, то мы честны перед Богом и собой.  Поэтому так важна регулярная практика откровенных бесед
 Многие могли бы быть хорошими людьми, если бы давали себе высыпаться
-Чтобы сдать экзамен по проходу на следующий уровень качества жизни, необходимо быть в принятии, благодарности и в радости за имеющийся уровень. Если ты не благодарен и не рад, тому что уже есть, значит ещё не выучил урок этого уровня
 Время, которое мы имеем, — это деньги, которых мы не имеем (Ильф и Петров)
 Негатив к другому человеку - признак зависимости от него. Обвиняя другого, мы отдаём себя в зависимость от него
 Жизнь — это игра в деньги и время (Роберт Кийосаки)
@@ -31,7 +29,6 @@
 Если мы чем-то расстроены, то независимо от причины такого состояния - это обнажает дефекты души. Если нас кто-то обидел - это тоже обнажает дефект души
 Если человек оказывается в дурацком положении и долго от туда не выходит, то он становится дураком
 Жизнь повторяет уроки, которые ты не усвоил. Каждый новый повтор дороже предыдущего
-Необходимость значительных усилий при решении регулярных задач, указывает на недостаточный уровень компетентности.  В таких случаях следует больше налегать на обучение, а не на старательное выполнение работы
 Люди делятся на тех кому ЕЩЁ 30, и тех кому УЖЕ 30
 Побеждает не тот, кто готов жертвовать ради победы или даже умереть. Побеждает тот, кто готов долго и упорно трудится и жить ради для победы
 Не названные проблемы не решаются
@@ -87,7 +84,7 @@
 Счастье - не какой-то божий дар, а достижение, какого человек добивается своей внутренней плодотворностью
 Вдохновение даёт идею. Дисциплина даёт ей жизнь
 Если вы не совершаете ошибок, значит вы решаете слишком простые задачи. И это большая ошибка
-Лучше один раз взяться за ум, чем всю жизнь хвататься за голову (Марк Туллий Цицерон)
+Лучше один раз взяться за ум, чем всю жизнь хвататься за голову (Цицерон)
 Для того чтобы понимать чем хочешь и должен заниматься, важно как можно лучше понимать кто ты
 Счастлив тот, кто умеет видеть грань между «никогда не сдавайся» и «если лошадь сдохла, слезь»
 Чем дальше убегаешь от своих проблем, тем больше приходится возвращаться, чтоб их решить
@@ -170,7 +167,7 @@
 Хочешь иметь столько денег, чтобы хватало тебе и твоей семье – работай сам. Хочешь обеспечить свои будущие поколения – заставь людей работать на себя (Карл Маркс)
 Небольшая сумма, данная взаймы, делает должника другом; большая – врагом (Сенека)
 Остерегайтесь незначительных расходов: маленькая течь потопит большой корабль (Бенджамин Франклин)
-Не быть жадным — уже богатство, не быть расточительным — доход (Марк Тулий Цицерон)
+Не быть жадным — уже богатство, не быть расточительным — доход (Цицерон)
 Есть вещи важнее денег, но без денег эти вещи не купишь (Проспер Мериме)
 Лучше маленький доллар, чем большое спасибо (Михаил Жванецкий)
 Если у вас в жизни нет хобби, спорта, каких-то увлечений, кроме быта и работы, то не стоит ожидать, что ваши дети в подростковом возрасте будут интересоваться чем-то кроме телефона и компьютера (Дмитрий Шершень)
@@ -197,7 +194,10 @@
 Лучше тысяча врагов за стенами дома, чем один внутри
 Финансовая пропасть – самая глубокая из всех пропастей, в нее можно падать всю жизнь
 Кашу в голове иногда нужно помешивать, дабы не пригорала
-Мы видим мир не таким, каков он есть, а таким, каковы мы сами, или же таким, каким мы настроены его видеть (Стивен Кови)"</item>
+Мы видим мир не таким, каков он есть, а таким, каковы мы сами, или же таким, каким мы настроены его видеть (Стивен Кови)
+Отношения - это то, что должно спасать вас в тяжёлые дни, а не мучить ещё больше
+На земле бесконечное множество красивых мест, но самое лучшее то, где тебя просто ждут
+Понравились бы вы себе, если встретили себя в своей жизни? И дружили бы с самим собой?"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -587,6 +587,188 @@ Wohin Du auch gehst, geh mit deinem ganzen Herzen (Konfuzius)
 Zuerst ignorieren sie dich, dann lachen sie über dich, dann bekämpfen sie dich und dann gewinnst du (Mahatma Gandhi)
 Zwei Dinge sind unendlich, das Universum und die menschliche Dummheit, aber bei dem Universum bin ich mir noch nicht ganz sicher (Albert Einstein)
 Ändere die Welt: sie braucht es (Bertolt Brecht)"</item>
+    </string-array>
+
+    <string-array name="facts5" translatable="false" tools:ignore="UnusedResources">
+    <item>🇪🇸 Citas famosas</item>
+    <item>"//https://www.clara.es/estilo-de-vida/frases-de-la-vida/frases-celebres_26335
+A menudo damos a los niños respuestas que recordar en lugar de problemas a resolver (Roger Lewin)
+A veces podemos pasarnos años sin vivir en absoluto, y de pronto toda nuestra vida se concentra en un solo instante (Oscar Wilde)
+Al final, lo que importa no son los años de vida, sino la vida de los años (Abraham Lincoln)
+Antes de hablar, piensa, pero antes de pensar, lee (Frances Ann Lebowitz)
+Aprender sin reflexionar es malgastar la energía (Confucio)
+Aprendí que no se puede dar marcha atrás, que la esencia de la vida es ir hacia delante. La vida, en realidad, es una calle de sentido único (Agatha Christie)
+Asegúrate de que colocas tus pies en el lugar correcto, y luego mantente firme (Abraham Lincoln)
+Buenos amigos, buenos libros y tener una conciencia tranquila: esta es la vida ideal (Mark Twain)
+Crecer es perder ciertas ilusiones, para poder abrazar otras (Virginia Woolf)
+Cualquier tonto puede saber. La clave está en entender (Albert Einstein)
+Cuando cambias el modo en que ves las cosas, las cosas que ves cambian también (Wayne Dyer)
+Cuando las oportunidades no llamen a tu puerta, construye una (Milton Berle)
+Cuando no podemos seguir soñando, morimos (Emma Goldman)
+Cuando pierdas, no pierdas la lección (Dalai Lama)
+Cuanto más grande es la prueba, más glorioso es el triunfo (William Shakespeare)
+Cuanto más hacemos, más podemos hacer (William Hazlitt.)
+De nadie seré, solo de ti. Hasta que mis huesos se vuelvan cenizas y mi corazón deje de latir (Pablo Neruda)
+Debemos decirles a nuestras jóvenes que sus voces son importantes (Malala Yousafzai)
+Debes de estar dispuesto a ser un principiante cada una de tus mañanas (Meister Eckhart)
+Donde hay amor, hay vida (Mahatma Gandhi)
+Donde no hay amor, poned amor y encontraréis amor (San Juan de la Cruz)
+Educar la mente sin educar el corazón no es educación en absoluto (Aristóteles)
+El alma que hablar puede con los ojos, también puede besar con la mirada (Gustavo Adolfo Bécquer)
+El amor de los jóvenes en verdad no está en su corazón, sino más bien en sus ojos (William Shakespeare)
+El amor es como la música, como la pintura, como los libros… no se busca, se encuentra (Miguel de Cervantes)
+El amor es el anhelo de salir de uno mismo (Charles Baudelaire)
+El amor es el difícil descubrimiento de que hay algo más allá de uno mismo que es real (Iris Murdoch)
+El amor es invisible y entra y sale por donde quiere sin que nadie le pida cuenta de sus hechos (Miguel de Cervantes)
+El amor es la alegría de los buenos, la reflexión de los sabios, el asombro de los incrédulos (Platón)
+El amor es la poesía de los sentidos (Honoré de Balzac)
+El amor es mejor maestro que el deber (Albert Einstein)
+El amor es tan importante como la comida (Gabriel García Márquez)
+El amor es una amistad con momentos eróticos (Antonio Gala)
+El amor es una flor que debes dejar crecer (John Lennon)
+El amor es: el dolor de vivir lejos del ser amado
+El amor lo conquista todo (Virgilio)
+El amor más fuerte es aquel que puede mostrar su fragilidad (Paulo Coelho)
+El amor no tiene cura, pero es la única cura para todos los males (Leonard Cohen)
+El amor, como ciego que es, impide a los amantes ver las divertidas tonterías que cometen (William Shakespeare)
+El arte de vencer se aprende en las derrotas (Simón Bolívar)
+El conocimiento habla, pero la sabiduría escucha (Jimi Hendrix)
+El crimen del amor es el olvido (Maurice Chevalier)
+El cuerpo está hecho para ser visto, no para ser tapado (Marilyn Monroe)
+El destino es una palabra que usamos para ver en retrospectiva elecciones con dramáticas consecuencias (J. K. Rowling)
+El hombre que mueve montañas empieza apartando piedras pequeñas (Confucio)
+El primer deber del amor es escuchar (Paul Tillich)
+El punto de salida hacia todo logro es el deseo (Napoleon Hill)
+El que busca un amigo sin defectos se queda sin amigos (Proverbio turco)
+El sentido común no es resultado de la educación (Victor Hugo)
+El sexo alivia la tensión y el amor la causa (Woody Allen)
+El valor de una idea radica en su uso (Thomas Edison)
+Elige un trabajo que ames, y no tendrás que trabajar un solo día de tu vida (Confucio)
+En un beso, sabrás todo lo que he callado (Pablo Neruda)
+Eres mi todo, mi más, mi siempre (Danns Vega)
+Es mejor una verdad cruel que una ilusión agradable (Edward Abbey)
+Es sencillo hacer que las cosas sean complicadas, pero difícil hacer que sean sencillas (F. Nietzsche)
+Es siempre lo sencillo lo que genera lo maravilloso (Amelia Barr)
+Es tan corto el amor y tan largo el olvido (Pablo Neruda)
+Estar preparado es importante, saber esperar lo es aún más, pero aprovechar el momento adecuado es la clave de la vida (Arthur Schnitzler)
+Estaría arruinada si me importara una mierda lo que dice la gente (Taylor Swift)
+Hagas lo que hagas, hazlo bien (Abraham Lincoln)
+Hay amores tan bellos que justifican todas las locuras que hacen cometer (Plutarco)
+Hay besos que en los labios dejan huellas como un campo de sol entre dos hielos (Gabriela Mistral)
+Iré a cualquier parte, siempre que sea hacia adelante (David Livingstone)
+Iré a cualquier parte, siempre que sea hacia delante (David Livingstone)
+La belleza comienza en el instante en que decides ser tú misma (Coco Chanel)
+La comprensión es una calle de doble sentido (Eleanor Roosevelt)
+La conquista propia es la más grande de las victorias (Platón)
+La educación es el arma más poderosa que puedes usar para cambiar el mundo (Nelson Mandela)
+La educación es el vestido de gala para asistir a la fiesta de la vida (Miguel Rojas Sánchez)
+La educación no es preparación para la vida; la educación es la vida en sí misma (John Dewey)
+La enseñanza que deja huella no es la que se hace de cabeza a cabeza, sino de corazón a corazón (Howard G. Hendricks)
+La fantasía de un hombre es la mejor arma de la mujer (Sophia Loren)
+La felicidad no brota de la razón, sino de la imaginación (Immanuel Kant)
+La felicidad que se vive deriva del amor que se da (Isabel Allende)
+La gente me miraba como si yo fuese un espejo (Marilyn Monroe)
+La independencia es felicidad (Susan B. Anthony)
+La inteligencia no es sabiduría (Eurípides)
+La lógica te llevará desde A hasta B. La imaginación te llevará a cualquier parte (Albert Einstein)
+La mayor rémora de la vida es la espera del mañana y la pérdida del día de hoy (Séneca)
+La mejor arma contra la ignorancia es el estudio (Rafael Escandón)
+La mejor vida no es la más duradera, sino la más bien aquella que está repleta de buenas acciones (Marie Curie)
+La peor forma de extrañar a alguien es estar sentado a su lado y saber que nunca lo podrás tener (Gabriel García Márquez)
+La raíz de todas las pasiones es el amor. De él nace la tristeza, el gozo, la alegría y la desesperación (Lope de Vega)
+La reflexión es el camino hacia la inmortalidad; la falta de reflexión, el camino hacia la muerte (Buda)
+La sonrisa cuesta menos que la electricidad y da más luz (Proverbio escocés)
+La victoria más difícil es la victoria sobre uno mismo (Aristóteles)
+La vida consiste no en tener buenas cartas, sino en jugar bien las que uno tiene (Josh Billings)
+La vida debe ser comprendida hacia atrás. Pero debe ser vivida hacia delante (Kierkegaard)
+La vida es aquello que te va sucediendo mientras te empeñas en hacer otros planes (John Lennon)
+La vida es como el jazz… es mucho mejor si es improvisada (George Gershwin)
+La vida es corta: sonríele a quien llora, ignora a quien te critica, y sé feliz con quien te importa (Marilyn Monroe)
+La vida es demasiado corta para desperdiciarla en arrepentimientos (Jane Austen)
+La vida es el proceso de llegar a ser (Anaïs Nin)
+La vida es la constante sorpresa de saber que existo (R. Tagore)
+La vida es la cosa mejor que se ha inventado (Gabriel García Márquez)
+La vida es muy peligrosa. No por las personas que hacen el mal, sino por las que se sientan a ver lo que pasa (Albert Einstein)
+La vida es muy simple, pero insistimos en hacerla complicada (Confucio)
+La vida es simple, pero insistimos en hacerla complicada (Confucio)
+La vida es un 10% lo que te pasa y un 90% cómo reaccionas ante eso
+La vida es un lienzo en blanco, y debes lanzar sobre él toda la pintura que puedas (Danny Kane)
+La vida es un viaje de autodescubrimiento, atrévete a explorar (Anaïs Nin)
+La vida es una aventura atrevida o no es nada (Helen Keller)
+La vida es una obra teatral que no importa cuánto haya durado, sino lo bien que haya sido representada (Séneca)
+La vida es una oportunidad, benefíciate de ella. La vida es belleza, admírala. La vida es un sueño, alcánzalo. La vida es un desafío, enfréntalo. La vida es un juego, juégalo (Madre Teresa de Calcuta)
+La vida es una osada aventura o nada en absoluto (Helen Keller)
+La vida es una película que vuelve a empezar cada mañana al despertarnos. Olvídate de tus errores, cada día tienes una nueva oportunidad para triunfar y alcanzar la felicidad (Norkin Gilbert)
+La vida más dulce es la de no pensar en nada (Sófocles)
+La vida no se ha hecho para comprenderla, sino para vivirla (George Santayana)
+La vida no se trata de encontrarte a ti mismo, sino de crearte a ti mismo (Bernard Shaw)
+La única diferencia entre el éxito y el fracaso es la capacidad de actuar (Alexander Graham Bell)
+La única manera de salir del laberinto del sufrimiento es perdonar (John Green)
+Lo mejor de la vida se pasa diciendo "es demasiado pronto", y después es demasiado tarde
+Lo menos frecuente en este mundo es vivir. La mayoría de la gente existe, eso es todo (Oscar Wilde)
+Lo que haces por ti se desvanece cuando mueres. Lo que haces por el resto conforma tu legado (Kalu Ndukwe Kalu)
+Lo que no me mata, me alimenta (Frida Kahlo)
+Lo que se dé a los niños, los niños darán a la sociedad (Karl A. Meninger)
+Lo que se les dé a los niños, los niños darán a la sociedad (Karl A. Menninger)
+Los días más felices son aquellos que nos hacen sabios (Gabriela Mistral)
+Me pinto a mí misma porque soy a quien mejor conozco (Frida Kahlo)
+Mi mejor venganza siempre ha sido sonreír como si nunca me hubieran lastimado (Carolina Herrera)
+Mira atrás y sonríe ante los peligros pasados (Walter Scott)
+Más vale tarde que nunca (Libanius)
+Nada es imposible, la propia palabra lo dice: “puedo hacerlo” (Audrey Hepburn)
+Ni la ausencia ni el tiempo son nada cuando se ama (Alfred de Musset)
+No cuentes los días, haz que los días cuenten (Muhamed Alí)
+No dejes que el miedo se interponga en tu camino (Babe Ruth)
+No encuentres la falta, encuentra el remedio (Henry Ford)
+No es pobre el que tiene poco, sino el que necesita mucho (Séneca)
+No estar muerto, no es estar vivo (E. E. Cummings)
+No hay encanto que se pueda comparar a la ternura del corazón (Jane Austen)
+No hay límites para el poder del amor (John Morton)
+No hay nada más hermoso que la risa (Frida Kahlo)
+No hay pasión más ilusa y fanática que el odio (George Gordon)
+No lastimes a los demás con lo que te causa dolor a ti mismo (Buda)
+No nacemos como mujer, sino que nos convertimos en una (Simone de Beavoir)
+No puedo enseñar nada a nadie. Solo puedo hacerles pensar (Sócrates)
+No se puede encontrar la paz evitando la vida (Virginia Woolf)
+No temo a la muerte; es solo que no quiero estar allí cuando suceda (Woody Allen)
+No veo la miseria que hay, sino lo bello que aún queda (Anne Frank)
+Nuestra mayor gloria no es no caer nunca, sino levantarnos cada vez que caemos (Confucio)
+Nunca eres demasiado viejo para establecer un nuevo objetivo o para soñar un nuevo sueño (C.S. Lewis)
+Nunca sabes lo fuerte que eres, hasta que ser fuerte es la única opción que te queda (Bob Marley)
+Pensando en mi felicidad, me acordé de ti
+Pensar es fácil, actuar es difícil, y poner los pensamientos de uno mismo en acción es lo más difícil del mundo (Goethe)
+Piensa, Sueña, Cree y Atrévete (Walt Disney)
+Por la ignorancia nos equivocamos, y por las equivocaciones aprendemos (Proverbio Romano)
+Quien ama, delira (Lord Byron)
+Quien no ha caído nunca, no tiene una idea justa del esfuerzo que hay que hacer para tenerse en pie (Multatuli)
+Quien se atreve a enseñar, nunca debe dejar de aprender (John Cotton Dana)
+Quiero hacer contigo lo que la primavera hace con los cerezos (Pablo Neruda)
+Recuerda que la felicidad no depende en quién eres o qué tienes; depende únicamente en lo que piensas (Dale Carnegie)
+Se aprende a amar, amando (San Francisco de Sales)
+Si la montaña no viene a ti, ve tú a la montaña (Mahoma)
+Si no pierdes, no puedes disfrutar de las victorias (Rafael Nadal)
+Si se quiere viajar lejos, no hay mejor nave que un libro (Emily Dickinson)
+Siempre que enseñes, enseña a la vez a dudar de lo que enseñas (José Ortega y Gasset)
+Sin educación no vas a ninguna parte en este mundo (Malcolm X)
+Solo viven aquellos que luchan (Víctor Hugo)
+Somos una casualidad llena de intención (Mario Benedetti)
+Son nuestras decisiones las que muestran quiénes somos realmente, más que nuestras habilidades (J.K. Rowling)
+Te amo más que a mi propia piel (Frida Kahlo)
+Toda vida es una constante educación (Eleanor Roosevelt)
+Todas las personas grandes han sido niños antes. Pero pocas lo recuerdan (El Principito)
+Todo lo que importa son esos amigos a los que llamas a las 4 de la mañana (Marlene Dietrich)
+Todos caemos al suelo en algún momento. Es la forma en que te levantas, ese es el verdadero desafío. ¿No es así? (Madonna)
+Tu actitud, no tu aptitud, determinará tu altitud (Zig Ziglar)
+Uno nunca se vuelve mejor, sino diferente y más viejo, y eso es siempre un placer (Gertrude Stein)
+Usted no puede esperar construir un mundo mejor sin mejorar a las personas. Cada uno de nosotros debe trabajar para su propia mejora (Marie Curie)
+Ven a dormir conmigo: no haremos el amor, él nos lo hará (Julio Cortázar)
+Vive como si fueras a morir mañana, aprende como si fueras a vivir para siempre (James Dean)
+Vivir bien es mejor que vivir (Aristóteles)
+Vivir es nacer a cada instante (Erich Fromm)
+Vivir sin filosofar es, propiamente, tener los ojos cerrados, sin tratar de abrirlos jamás (René Descartes)
+Yo solo sé que no sé nada (Sócrates)
+¡Qué pequeñas son mis manos en relación con todo lo que la vida ha querido darme! (Ramón J. Sénder)
+¿Quién, siendo amado, es pobre? (Oscar Wilde)"</item>
     </string-array>
 
 </resources>

@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.4</item>
+        <item>Nuevo tipo de evento: Hecho (evento sin fecha)</item>
+        <item>Vacaciones actualizadas 2025 (ru, ua, de, by, us)</item>
+        <item>Posibilidad de seleccionar todos los calendarios disponibles</item>
+        <item>Se agregó visualización del número de eventos al seleccionar tipos y fuentes de eventos (funciones extra)</item>
+        <item>Corrección de errores</item>
+
         <item>#1.8.3</item>
         <item>Profundidad de búsqueda de eventos (Configuración->Lista de eventos->Profundidad de búsqueda) (funciones extra)</item>
         <item>Conjunto de siluetas eternas</item>

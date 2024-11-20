@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Дзяржаўныя святы</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Паказаць гэтыя дзяржаўныя святы</string>
 
+    <string name="pref_CustomEvents_Fact_title">Факты</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Згрупаваныя факты</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">"Паказаць гэтыя факты з аб'яднанай базы дадзеных"</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Паказаць факты з выбраных файлаў</string>
+
     <string name="pref_CustomEvents_Calendars_title">Календары</string>
     <string name="pref_CustomEvents_Calendars_summary">Паказваць падзеі з абраных календароў</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Усе,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Занадта мала падзей:</string>
     <string name="widget_config_layout_items">Разгарнуць, захаваць шырыню</string>
+    <string name="widget_config_scope_facts_label">Колькасць фактаў:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Каэфіцыент маштабавання памеру шрыфту</string>
     <string name="widget_config_font_description">Выкарыстоўваецца пры маштабаванні віджэта для павелічэння памеру шрыфту ўзросту, дыстанцыі да падзеі і інфармацыі пад фота</string>
@@ -1014,6 +1021,9 @@
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Колькасць фактаў</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Колькі выпадковых фактаў паказаць</string>
 
     <string name="pref_Notifications_AlarmHour_title">Час паведамлення</string>
     <string name="pref_Notifications_AlarmHour_summary">У які час паведамляць пра падзеі</string>

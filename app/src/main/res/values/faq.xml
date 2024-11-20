@@ -148,6 +148,9 @@
          </ul>
         </ol>]]></item>
 
+        <item>#<![CDATA[<a id="events_facts">Facts (events without dates)]]></item>
+        <item><![CDATA[The application allows you to display 1..3 facts in a random order in a list widget or in notifications. These can be quotes from famous people, motivating phrases, useful proverbs or something similar. You can select fact sources from a list of preset options or select your own files.<br><br>File data format: each fact takes up one line. Commented lines must begin with // or #]]></item>
+
         <item>#Importing events from social networks</item>
         <item><![CDATA[Facebook friends\' birthdays can be exported to calendar using the fb2cal tool: <a href="https://github.com/mobeigi/fb2cal">link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">video instructions</a>]]></item>
 

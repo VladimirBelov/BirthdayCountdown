@@ -1287,6 +1287,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 startActivity(intent);
                             } catch (ActivityNotFoundException e) { /**/ }
 
+                        } else if (item.getItemId() == R.id.menu_help_events_facts) {
+
+                            Intent intent = new Intent(this, FAQActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_events_facts));
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+
                         }
                         return false;
                     });

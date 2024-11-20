@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Święta państwowe</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Pokaż te święta</string>
 
+    <string name="pref_CustomEvents_Fact_title">Fakty</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Fakty w pakiecie</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Pokaż te fakty z bazy danych w pakiecie</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Pokaż fakty z wybranych plików</string>
+
     <string name="pref_CustomEvents_Custom_title">Wydarzenia niestandardowe</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Tytuł wydarzenia</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Wpisz tytuł wydarzenia, aby umożliwić jego użycie</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Wszystkie,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Kilka wydarzeń:</string>
     <string name="widget_config_layout_items">Rozwiń, zachowaj rozmiar</string>
+    <string name="widget_config_scope_facts_label">Liczba faktów:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Współczynnik skalowania rozmiaru czcionki</string>
     <string name="widget_config_font_description">Wykorzystywany przy skalowaniu widgetu w celu zwiększenia rozmiaru czcionki, wieku, odległości od wydarzenia oraz informacji pod zdjęciem</string>
@@ -1014,6 +1021,9 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Liczba faktów</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Ile losowych faktów pokazać</string>
 
     <string name="pref_Notifications_AlarmHour_title">Czas powiadomienia</string>
     <string name="pref_Notifications_AlarmHour_summary">O której godzinie powiadamiać o wydarzeniach</string>

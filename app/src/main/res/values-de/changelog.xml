@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.4</item>
+        <item>Neuer Ereignistyp: Fakt (Ereignis ohne Datum)</item>
+        <item>Aktualisierte Feiertage 2025 (ru, ua, de, by, us)</item>
+        <item>Möglichkeit, alle verfügbaren Kalender auszuwählen</item>
+        <item>Anzeige der Anzahl der Ereignisse bei der Auswahl von Ereignistypen und -quellen hinzugefügt (Extrafunktionen)</item>
+        <item>Fehlerkorrektur</item>
+
         <item>#1.8.3</item>
         <item>Suchtiefe für Ereignisse (Einstellungen->Liste der Ereignisse->Suchtiefe) (Extrafunktionen)</item>
         <item>Satz zeitloser Silhouetten</item>

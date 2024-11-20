@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Державні свята</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Показати ці державні свята</string>
 
+    <string name="pref_CustomEvents_Fact_title">Факти</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Збірні факти</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Показати ці факти з об’єднаної бази даних</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Показати факти з вибраних файлів</string>
+
     <string name="pref_CustomEvents_Custom_title">Подія, визначена користувачем</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Тема події</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Введіть підпис для цієї події, щоб почати використовувати її</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Всi,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Замало подій:</string>
     <string name="widget_config_layout_items">Розгорнути, зберегти ширину</string>
+    <string name="widget_config_scope_facts_label">Кількість фактів:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
     <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, часу до події та інформації під фото</string>
@@ -1014,6 +1021,9 @@
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Кількість фактів</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Скільки випадкових фактів для показу</string>
 
     <string name="pref_Notifications_AlarmHour_title">Час повідомлення</string>
     <string name="pref_Notifications_AlarmHour_summary">В який час повідомляти</string>

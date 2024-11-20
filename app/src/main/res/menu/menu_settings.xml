@@ -24,6 +24,10 @@
                 android:id="@+id/menu_help_events_files"
                 android:title="@string/menu_help_events_files"/>
 
+            <item
+                android:id="@+id/menu_help_events_facts"
+                android:title="@string/menu_help_events_facts"/>
+
         </menu>
 
     </item>

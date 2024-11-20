@@ -781,9 +781,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             //Факты
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
+            List<String> selectedEventTypes = new ArrayList<>();
+            for (String eventType: spinnerEventTypes.getSelectedStrings()) {
+                selectedEventTypes.add(ContactsEvents.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
+            }
             findViewById(R.id.blockFacts).setVisibility(
                     widgetType.equals(Constants.WIDGET_TYPE_LIST)
-                            && spinnerEventTypes.getSelectedStrings().contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
+                            && selectedEventTypes.contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
             );
 
         } catch (final Exception e) {

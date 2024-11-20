@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Jours vacances</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Afficher ces jours vacances</string>
 
+    <string name="pref_CustomEvents_Fact_title">Faits</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Faits groupés</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Afficher ces faits à partir de la base de données groupée</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Afficher les faits à partir des fichiers choisis</string>
+
     <string name="pref_CustomEvents_Custom_title">"Événement personnalisé"</string>
     <string name="pref_CustomEvents_Custom_Caption_title">"Titre de l'événement"</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">"Remplissez le titre de l'événement pour activer son utilisation"</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Tous,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">"Trop peu d'événements:"</string>
     <string name="widget_config_layout_items">Développer, Conserver la largeur</string>
+    <string name="widget_config_scope_facts_label">Nombre de faits:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">"Facteur de mise à l'échelle de la taille de police"</string>
     <string name="widget_config_font_description">"Utilisé lors de la mise à l'échelle du widget pour augmenter la taille de la police d'âge, la distance à l'événement et les informations sous la photo"</string>
@@ -1014,6 +1021,9 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Nombre de faits</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Combien de faits aléatoires à afficher</string>
 
     <string name="pref_Notifications_AlarmHour_title">"Heure de la notification"</string>
     <string name="pref_Notifications_AlarmHour_summary">À quelle heure signaler les événements</string>

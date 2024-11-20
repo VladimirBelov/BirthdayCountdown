@@ -146,6 +146,9 @@
                 </ul>
                 </ol>]]></item>
 
+                <item>#<![CDATA[<a id="events_facts">Fakten (Ereignisse ohne Datum)]]></item>
+                <item><![CDATA[Mit der Anwendung können Sie 1..3 Fakten in zufälliger Reihenfolge in einem Listen-Widget oder in Benachrichtigungen anzeigen. Dies können Zitate berühmter Persönlichkeiten, Motivationssätze, nützliche Sprichwörter oder ähnliches sein. Faktenquellen können aus einer Liste voreingestellter Optionen ausgewählt werden oder Sie können Ihre eigenen Dateien auswählen.<br><br>Dateidatenformat: Jeder Fakt belegt eine Zeile. Kommentierte Zeilen müssen mit // oder #]]></item> beginnen
+
                 <item>#Importieren von Ereignissen aus sozialen Netzwerken</item>
                 <item><![CDATA[Die Geburtstage von Facebook-Freunden können mit dem fb2cal-Tool in den Kalender exportiert werden: <a href="https://github.com/mobeigi/fb2cal">Link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">Videoanweisungen</a>]]></item>
 

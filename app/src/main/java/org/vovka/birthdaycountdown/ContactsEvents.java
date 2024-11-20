@@ -4722,11 +4722,11 @@ class ContactsEvents {
                 for (String dayValue : dayArray) {
                     String accountType = substringBefore(dayValue, Constants.STRING_COLON_SPACE);
                     String storedDate = substringBetween(dayValue, Constants.STRING_COLON_SPACE, Constants.STRING_COLON_SPACE);
-                    Date storedDate_Date = null;
-                    boolean storedDate_isYear = false;
 
                     increaseStatForEventSources(accountType);
 
+                    Date storedDate_Date = null;
+                    boolean storedDate_isYear = false;
                     if (accountType.contains(Constants.account_skype)) {
 
                         storedDate_isYear = true;

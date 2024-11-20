@@ -52,7 +52,6 @@
     <string name="menu_context_merge_event">Link to contact…</string>
     <string name="menu_context_unmerge_event">Unlink from contact</string>
     <string name="menu_context_remerge_event">Link to other contact…</string>
-    <string name="menu_context_remerge_event_short">Link to other…</string>
     <string name="menu_context_open_url">Open web link</string>
     <string name="menu_context_share">Share event…</string>
     <string name="menu_context_share_as_image">as image</string>
@@ -66,6 +65,7 @@
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>
     <string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>
+    <string name="menu_help_events_facts" tools:ignore="MissingTranslation">Facts</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
     <string name="msg_no_events">Events not found</string>
@@ -407,7 +407,7 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Show these public holidays</string>
 
     <string name="pref_CustomEvents_Fact_title">Facts</string>
-    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Budnled facts</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Bundled facts</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Show these facts from bundled database</string>
     <string name="pref_CustomEvents_Fact_LocalFiles_summary">Show facts from chosen files</string>
 
@@ -2233,6 +2233,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="faq_header" translatable="false"><![CDATA[<!DOCTYPE html><html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
     <string name="faq_anchor_events_calendar" translatable="false">events_calendar</string>
     <string name="faq_anchor_events_files" translatable="false">events_files</string>
+    <string name="faq_anchor_events_facts" translatable="false">events_facts</string>
     <string name="faq_anchor_widgets" translatable="false">widgets</string>
     <string name="faq_anchor_widgets_calendar" translatable="false">widgets_calendar</string>
 

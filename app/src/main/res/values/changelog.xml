@@ -10,7 +10,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
-        
+
+        <item>#1.8.4</item>
+        <item>New event type: Fact (event without date)</item>
+        <item>Updated holidays 2025 (ru, ua, de, by, us)</item>
+        <item>Ability to select all available calendars</item>
+        <item>Added display of the number of events when selecting types and sources of events (extra functions)</item>
+        <item>Bug fixes</item>
+
         <item>#1.8.3</item>
         <item>Events search depth (Settings->Event list->Search depth) (extra features)</item>
         <item>Set of ageless silhouettes</item>

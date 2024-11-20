@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Feiertage</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Diese Feiertage anzeigen</string>
 
+    <string name="pref_CustomEvents_Fact_title">Fakten</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Gebündelte Fakten</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Diese Fakten aus der gebündelten Datenbank anzeigen</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Fakten aus ausgewählten Dateien anzeigen</string>
+
     <string name="pref_CustomEvents_Custom_title">Benutzerdefiniertes Ereignis</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Bezeichnung des Ereignisses</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Geben Sie eine Bezeichnung für dieses Ereignis ein, um es zu verwenden</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Alle,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Zu wenige Ereignisse:</string>
     <string name="widget_config_layout_items">Erweitern, Breite beibehalten</string>
+    <string name="widget_config_scope_facts_label">Anzahl Fakten:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Schriftgrößenverhältnis</string>
     <string name="widget_config_font_description">Wird beim Skalieren des Widgets verwendet, um die Schriftgrößen des Alters, des Abstands zum Ereignis und der Informationen unter dem Foto zu erhöhen</string>
@@ -1014,6 +1021,9 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Anzahl der Fakten</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Wie viele zufällige Fakten sollen angezeigt werden</string>
 
     <string name="pref_Notifications_AlarmHour_title">Benachrichtigungszeit</string>
     <string name="pref_Notifications_AlarmHour_summary">Uhrzeit der Benachrichtigung</string>

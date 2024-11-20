@@ -10,6 +10,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.4</item>
+        <item>Novo tipo de evento: Fato (evento sem data)</item>
+        <item>Feriados atualizados para 2025 (ru, ua, de, by, us)</item>
+        <item>Capacidade de selecionar todos os calendários disponíveis</item>
+        <item>Adicionada exibição do número de eventos ao selecionar tipos e fontes de eventos (funções adicionais)</item>
+        <item>Correção de erros</item>
+
         <item>#1.8.3</item>
         <item>Profundidade de pesquisa de eventos (Configurações->Lista de eventos->Profundidade de pesquisa) (funções adicionais)</item>
         <item>Conjunto de silhuetas eternas</item>

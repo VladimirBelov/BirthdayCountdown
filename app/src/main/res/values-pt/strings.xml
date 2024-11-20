@@ -405,6 +405,11 @@
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Feriados</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Mostrar estes feriados</string>
 
+    <string name="pref_CustomEvents_Fact_title">Fatos</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Fatos agrupados</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Mostrar esses fatos do banco de dados agrupado</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Mostrar fatos dos arquivos escolhidos</string>
+
     <string name="pref_CustomEvents_Custom_title">Evento definido pelo usuário</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Legenda do evento</string>
     <string name="pref_CustomEvents_Custom_Caption_summary">Insira a legenda deste evento para começar a usá-lo</string>
@@ -813,6 +818,8 @@
     <string name="widget_config_scope_days_items">Todos,1,2,3,4,5,6,7,14,21,30</string>
     <string name="widget_config_layout_label">Poucos eventos:</string>
     <string name="widget_config_layout_items">Expandir,Manter largura</string>
+    <string name="widget_config_scope_facts_label">Contagem de fatos:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
 
     <string name="widget_config_font_label">Fator de ampliação da fonte</string>
     <string name="widget_config_font_description">Multiplicador de escala de fonte para idade, distância do evento e texto de informações abaixo da foto</string>
@@ -1014,6 +1021,9 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
         <item>@string/pref_EventInfo_JobTitle</item>
         <item>@string/pref_EventInfo_EventCaption</item>
     </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Contagem de fatos</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Quantos fatos aleatórios mostrar</string>
 
     <string name="pref_Notifications_AlarmHour_title">Hora do alarme</string>
     <string name="pref_Notifications_AlarmHour_summary">Qual é o horário para notificar</string>

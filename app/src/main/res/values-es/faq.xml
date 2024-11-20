@@ -124,6 +124,9 @@
                 </ul>
                 </ol>]]></item>
 
+                <item>#<![CDATA[<a id="events_facts">Hechos (eventos sin fechas)]]></item>
+                <item><![CDATA[La aplicación le permite mostrar 1..3 hechos en orden aleatorio en un widget de lista o en notificaciones. Podrían ser citas de personajes famosos, frases motivadoras, refranes útiles o algo similar. Las fuentes de hechos se pueden seleccionar de una lista de opciones preestablecidas o puede seleccionar sus propios archivos.<br><br>Formato de datos de archivo: cada hecho ocupa una línea. Las líneas comentadas deben comenzar con // o #]]></item>
+
                 <item>#Importación de eventos de redes sociales</item>
                 <item><![CDATA[Los cumpleaños de los amigos de Facebook se pueden exportar al calendario usando la herramienta fb2cal: <a href="https://github.com/mobeigi/fb2cal">enlace</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">instrucciones en video</a>]]></item>
 

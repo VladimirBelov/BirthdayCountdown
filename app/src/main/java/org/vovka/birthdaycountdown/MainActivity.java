@@ -350,8 +350,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
-                                .setIcon(R.drawable.ic_menu_copy)
-                                .setTitleCondensed(getString(R.string.menu_context_remerge_event_short));
+                                .setIcon(R.drawable.ic_menu_copy);
                     } else if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)
                             && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
