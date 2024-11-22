@@ -821,17 +821,22 @@
     <string name="widget_config_scope_facts_label">Recuento de hechos:</string>
     <string name="widget_config_scope_facts_items">1,2,3</string>
 
-    <string name="widget_config_font_label">Factor de escala del tamaño de fuente</string>
-    <string name="widget_config_font_description">Se usa al escalar el widget para aumentar el tamaño de fuente de la edad, la distancia al evento y la información debajo de la foto</string>
-    <string-array name="widget_config_font">
+    <string name="widget_config_magnify_caption">Factor de escala del tamaño de fuente</string>
+    <string name="widget_config_magnify_text_caption">Texto</string>
+    <string name="widget_config_magnify_photo_caption">Foto</string>
+    <string-array name="widget_config_magnify_variants">
         <item>Automáticamente</item>
         <item>x0.5</item>
         <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
+        <item>x1.1</item>
         <item>x1.2</item>
+        <item>x1.3</item>
+        <item>x1.4</item>
         <item>x1.5</item>
+        <item>x1.6</item>
         <item>x1.75</item>
         <item>x2.0</item>
     </string-array>

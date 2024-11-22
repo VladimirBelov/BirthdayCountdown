@@ -79,8 +79,10 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         try {
 
             //Размер
-            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_SMALL, 1.2));
-            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
+            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
+                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_SMALL, 1.2));
+            views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP,
+                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
 
             views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
             views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
@@ -179,12 +181,12 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
                         ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
                         : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
-                    if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel)
+                    if ((widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel) && !singleEventArray[ContactsEvents.Position_age_caption].isEmpty())
                         sbDetails.append(Constants.STRING_COLON_SPACE);
                     sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                 }
                 //Текущий возраст
-                if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_CurrentAge_ID))) {
+                if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
                     final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
                     if (!TextUtils.isEmpty(currentAge)) {
                         if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
@@ -270,12 +272,12 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                     int inWidth = photo.getWidth();
                     int inHeight = photo.getHeight();
+                    double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
                     if (inHeight > 0 && inWidth > 0) {
                         int outHeight = inHeight * outWidth / inWidth;
 
                         if (outHeight > 0 && outWidth > 0) {
-
-                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, outWidth, outHeight, true);
+                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
                             views.setImageViewBitmap(R.id.eventPhoto, photo_small);
                             views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
                         }

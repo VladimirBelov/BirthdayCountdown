@@ -38,7 +38,8 @@
             android:nestedScrollingEnabled="true"
             android:fadeScrollbars="true"
             android:layout_above="@id/widget_hint"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            tools:ignore="TooManyViews" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -229,6 +230,53 @@
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/blockEventShift"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/captionEventShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="3"
+                    android:paddingStart="8dp"
+                    android:text="@string/widget_config_index_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/spinnerEventShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/widget_config_index_label"
+                    android:entries="@array/widget_config_numbers"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
+
+            </LinearLayout>
+
+                <!--<View
+                    android:id="@+id/dividerEventShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />-->
+
+
+
+                <!--<TextView
+                    android:id="@+id/hintEventShift"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_index_description"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:ignore="VisualLintLongText" />-->
 
                 <LinearLayout
                     android:id="@+id/blockFacts"
@@ -656,39 +704,6 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/dividerEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
-
-                <TextView
-                    android:id="@+id/captionEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_config_index_label"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spinnerEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/widget_config_index_label"
-                    android:entries="@array/widget_config_numbers"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
-
-                <TextView
-                    android:id="@+id/hintEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_config_index_description"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:ignore="VisualLintLongText" />
-
-                <View
                     android:id="@+id/dividerFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -700,26 +715,66 @@
                     android:id="@+id/captionFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/widget_config_font_label"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:text="@string/widget_config_magnify_caption"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textStyle="bold"  />
 
-                <Spinner
-                    android:id="@+id/spinnerFontMagnify"
+                <LinearLayout
+                    android:id="@+id/blockTextMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/widget_config_font_label"
-                    android:entries="@array/widget_config_font"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/hintFontMagnify"
+                    <TextView
+                        android:id="@+id/captionTextMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_magnify_text_caption"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTextMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_magnify_text_caption"
+                        android:entries="@array/widget_config_magnify_variants"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blockPhotoMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/widget_config_font_description"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:ignore="VisualLintLongText" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionPhotoMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_magnify_photo_caption"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerPhotoMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_magnify_photo_caption"
+                        android:entries="@array/widget_config_magnify_variants"
+                        tools:ignore="DuplicateSpeakableTextCheck,TooManyViews" />
+
+                </LinearLayout>
 
                 <View
                     android:id="@+id/dividerPhotoStyle"
@@ -727,8 +782,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor"
-                    tools:ignore="TooManyViews" />
+                    android:background="?attr/listDividerColor" />
 
                 <TextView
                     android:id="@+id/captionPhotoStyle"

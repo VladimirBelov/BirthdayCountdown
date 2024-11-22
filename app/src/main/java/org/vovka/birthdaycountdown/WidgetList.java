@@ -138,7 +138,8 @@ public class WidgetList extends AppWidgetProvider {
             if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
-                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP,
+                        ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
                 views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, context.getResources().getDisplayMetrics()), 0, 0);
                 views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             } else {

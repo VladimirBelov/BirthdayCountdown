@@ -9262,48 +9262,64 @@ class ContactsEvents {
         }
     }
 
-    float getTextSizeForWidgetText(List<String> widgetPref, int sizeFactor, double fontMagnify) {
-        double magnify = fontMagnify;
+    static float getSizeForWidgetElement(List<String> widgetPref, int elementNumber, int baseSize, double defaultMagnify) {
+        double magnify = defaultMagnify;
         try {
 
-            if (widgetPref != null && widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
-                switch (widgetPref.get(1)) {
-                    case Constants.STRING_1:
-                        magnify = magnify * 0.5;
-                        break;
-                    case Constants.STRING_2:
-                        magnify = magnify * 0.65;
-                        break;
-                    case Constants.STRING_3:
-                        magnify = magnify * 0.75;
-                        break;
-                    case Constants.STRING_4:
-                        magnify = magnify * 0.85;
-                        break;
-                    case Constants.STRING_5:
-                        magnify = magnify * 1;
-                        break;
-                    case Constants.STRING_6:
-                        magnify = magnify * 1.2;
-                        break;
-                    case Constants.STRING_7:
-                        magnify = magnify * 1.5;
-                        break;
-                    case Constants.STRING_8:
-                        magnify = magnify * 1.75;
-                        break;
-                    case Constants.STRING_9:
-                        magnify = magnify * 2.0;
-                        break;
+            if (widgetPref != null && widgetPref.size() > elementNumber) {
+                String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
+                if (prefMagnify.length >= elementNumber) {
+                    String prefTextMagnifyIndex = prefMagnify[elementNumber - 1];
+
+                    switch (prefTextMagnifyIndex) {
+                        case Constants.STRING_1:
+                            magnify = magnify * 0.5;
+                            break;
+                        case Constants.STRING_2:
+                            magnify = magnify * 0.65;
+                            break;
+                        case Constants.STRING_3:
+                            magnify = magnify * 0.75;
+                            break;
+                        case Constants.STRING_4:
+                            magnify = magnify * 0.85;
+                            break;
+                        case Constants.STRING_5:
+                            magnify = magnify * 1;
+                            break;
+                        case Constants.STRING_6:
+                            magnify = magnify * 1.1;
+                            break;
+                        case Constants.STRING_7:
+                            magnify = magnify * 1.2;
+                            break;
+                        case Constants.STRING_8:
+                            magnify = magnify * 1.3;
+                            break;
+                        case Constants.STRING_9:
+                            magnify = magnify * 1.4;
+                            break;
+                        case Constants.STRING_10:
+                            magnify = magnify * 1.5;
+                            break;
+                        case Constants.STRING_11:
+                            magnify = magnify * 1.6;
+                            break;
+                        case Constants.STRING_12:
+                            magnify = magnify * 1.75;
+                            break;
+                        case Constants.STRING_13:
+                            magnify = magnify * 2.0;
+                            break;
+                    }
                 }
             }
-            return (float) (sizeFactor * magnify);
+            return (float) (baseSize * magnify);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return sizeFactor;
+        return baseSize;
     }
 
     @NonNull

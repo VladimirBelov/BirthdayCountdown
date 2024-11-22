@@ -821,18 +821,23 @@
     <string name="widget_config_scope_facts_label">Nombre de faits:</string>
     <string name="widget_config_scope_facts_items">1,2,3</string>
 
-    <string name="widget_config_font_label">"Facteur de mise à l'échelle de la taille de police"</string>
-    <string name="widget_config_font_description">"Utilisé lors de la mise à l'échelle du widget pour augmenter la taille de la police d'âge, la distance à l'événement et les informations sous la photo"</string>
-    <string-array name="widget_config_font">
+    <string name="widget_config_magnify_caption">"Facteur de mise à l'échelle de la taille de police"</string>
+    <string name="widget_config_magnify_text_caption">Texte</string>
+    <string name="widget_config_magnify_photo_caption">Photo</string>
+    <string-array name="widget_config_magnify_variants">
         <item>Automatiquement</item>
-        <item>x0,5</item>
-        <item>x0,65</item>
-        <item>x0,75</item>
-        <item>x0,85</item>
+        <item>x0.5</item>
+        <item>x0.65</item>
+        <item>x0.75</item>
+        <item>x0.85</item>
         <item>x1.0</item>
+        <item>x1.1</item>
         <item>x1.2</item>
-        <item>x1,5</item>
-        <item>x1,75</item>
+        <item>x1.3</item>
+        <item>x1.4</item>
+        <item>x1.5</item>
+        <item>x1.6</item>
+        <item>x1.75</item>
         <item>x2.0</item>
     </string-array>
 

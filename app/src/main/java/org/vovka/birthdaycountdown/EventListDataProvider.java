@@ -80,7 +80,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             eventsData.setLocale(false);
 
             //Размер
-            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP, eventsData.getTextSizeForWidgetText(widgetPref, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
+                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
 
             //Информация о событии
             String eventInfo = eventListView.get(position);

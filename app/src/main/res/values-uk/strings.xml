@@ -821,17 +821,22 @@
     <string name="widget_config_scope_facts_label">Кількість фактів:</string>
     <string name="widget_config_scope_facts_items">1,2,3</string>
 
-    <string name="widget_config_font_label">Коефіцієнт масштабування розміру шрифту</string>
-    <string name="widget_config_font_description">Використовується при масштабуванні віджета для збільшення розміру шрифту віку, часу до події та інформації під фото</string>
-    <string-array name="widget_config_font">
+    <string name="widget_config_magnify_caption">Коефіцієнт масштабування розміру шрифту</string>
+    <string name="widget_config_magnify_text_caption">Текст</string>
+    <string name="widget_config_magnify_photo_caption">Фото</string>
+    <string-array name="widget_config_magnify_variants">
         <item>Автоматично</item>
         <item>x0.5</item>
         <item>x0.65</item>
         <item>x0.75</item>
         <item>x0.85</item>
         <item>x1.0</item>
+        <item>x1.1</item>
         <item>x1.2</item>
+        <item>x1.3</item>
+        <item>x1.4</item>
         <item>x1.5</item>
+        <item>x1.6</item>
         <item>x1.75</item>
         <item>x2.0</item>
     </string-array>

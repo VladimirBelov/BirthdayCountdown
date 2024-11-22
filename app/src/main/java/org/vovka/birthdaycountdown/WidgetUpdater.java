@@ -179,38 +179,10 @@ class WidgetUpdater {
             eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
 
             //Увеличение шрифтов в зависимости от размеров окна
-            fontMagnify = 1;
             int cells = getCellsForSize(Math.min(width, height));
-            if (widgetPref.size() > 1 && !widgetPref.get(1).equals(Constants.STRING_0)) {
-                switch (widgetPref.get(1)) {
-                    case Constants.STRING_1:
-                        fontMagnify = cells * 0.5;
-                        break;
-                    case Constants.STRING_2:
-                        fontMagnify = cells * 0.65;
-                        break;
-                    case Constants.STRING_3:
-                        fontMagnify = cells * 0.75;
-                        break;
-                    case Constants.STRING_4:
-                        fontMagnify = cells * 0.85;
-                        break;
-                    case Constants.STRING_5:
-                        fontMagnify = cells * 1.0;
-                        break;
-                    case Constants.STRING_6:
-                        fontMagnify = cells * 1.2;
-                        break;
-                    case Constants.STRING_7:
-                        fontMagnify = cells * 1.5;
-                        break;
-                    case Constants.STRING_8:
-                        fontMagnify = cells * 1.75;
-                        break;
-                    case Constants.STRING_9:
-                        fontMagnify = cells * 2.0;
-                        break;
-                }
+
+            if (widgetPref.size() > 1) {
+                fontMagnify = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, 1, 1);
             } else {
                 fontMagnify = 1 + 1.0 * (cells - 1);
             }

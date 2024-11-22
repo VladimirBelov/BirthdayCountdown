@@ -159,14 +159,22 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
             spinnerIndex.setSelection(prefStartingIndex - 1, true);
 
-            //Коэффициент масштабирования размера шрифта
-            int prefMagnifyIndex = 0;
+            //Масштабирование размеров
+            int prefTextMagnifyIndex = 0;
+            int prefPhotoMagnifyIndex = 0;
             try {
-                if (widgetPref.size() > 1) prefMagnifyIndex = Integer.parseInt(widgetPref.get(1));
+                if (widgetPref.size() > 1) {
+                    String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
+                    prefTextMagnifyIndex = Integer.parseInt(prefMagnify[0]);
+                    if (prefMagnify.length > 1) prefPhotoMagnifyIndex = Integer.parseInt(prefMagnify[1]);
+                }
             } catch (Exception e) {/**/}
 
-            Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
-            spinnerMagnify.setSelection(prefMagnifyIndex, true);
+            Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
+            spinnerTextMagnify.setSelection(prefTextMagnifyIndex, true);
+
+            Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
+            spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);
 
             //Стиль фото
             int prefPhotoStyle = 0;
@@ -674,22 +682,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (this.isListWidget) {
 
-                //Скрываем стартовый номер
-                findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
-                findViewById(R.id.captionEventShift).setVisibility(View.GONE);
-                findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
-                findViewById(R.id.hintEventShift).setVisibility(View.GONE);
+                findViewById(R.id.blockEventShift).setVisibility(View.GONE);
 
                 findViewById(R.id.dividerCaptions).setVisibility(View.GONE);
                 findViewById(R.id.blockCaptionsUsePrefs).setVisibility(View.GONE);
 
             } else {
-
-                //Скрываем ограничение объёма
-                /*findViewById(R.id.dividerScope).setVisibility(View.GONE);
-                findViewById(R.id.captionScope).setVisibility(View.GONE);
-                findViewById(R.id.blockScopeEvents).setVisibility(View.GONE);
-                findViewById(R.id.blockScopeDays).setVisibility(View.GONE);*/
 
                 final TextView tv = findViewById(R.id.hintPhotoStyle);
                 if (tv != null) tv.setText(R.string.widget_config_photostyle_with_align_description);
@@ -697,6 +695,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.dividerCaptions).setVisibility(View.VISIBLE);
                 findViewById(R.id.blockCaptionsUsePrefs).setVisibility(View.VISIBLE);
 
+            }
+
+            if (!widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
+                findViewById(R.id.blockPhotoMagnify).setVisibility(View.GONE);
             }
 
             if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
@@ -711,11 +713,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (!this.eventsData.preferences_extrafun) {
 
-                //Скрываем стартовый номер события
-                findViewById(R.id.dividerEventShift).setVisibility(View.GONE);
-                findViewById(R.id.captionEventShift).setVisibility(View.GONE);
-                findViewById(R.id.spinnerEventShift).setVisibility(View.GONE);
-                findViewById(R.id.hintEventShift).setVisibility(View.GONE);
+                findViewById(R.id.blockEventShift).setVisibility(View.GONE);
 
                 //Скрываем заголовок виджета
                 findViewById(R.id.dividerCustomWidgetCaption).setVisibility(View.GONE);
@@ -801,7 +799,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             final Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
-            final Spinner spinnerMagnify = findViewById(R.id.spinnerFontMagnify);
+            final Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
+            final Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
             final Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
@@ -844,6 +843,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 final Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
                 scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
             }
+
+            String magnifyParams = String.valueOf(spinnerTextMagnify.getSelectedItemPosition())
+                    .concat(Constants.STRING_PLUS)
+                    .concat(String.valueOf(spinnerPhotoMagnify.getSelectedItemPosition()));
 
             //Параметры заголовков
             List<String> selectedCaptionsDetails = new ArrayList<>();
@@ -919,7 +922,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             List<String> prefsToStore = new ArrayList<>();
 
             prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
-            prefsToStore.add(String.valueOf(spinnerMagnify.getSelectedItemPosition())); //Коэффициент масштабирования (позиция в списке выбора)
+            prefsToStore.add(magnifyParams); //Масштабирование (позиции в списке выбора)
             prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)

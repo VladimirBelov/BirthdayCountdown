@@ -2377,8 +2377,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.isEmptyEventList()) {
                     showZeroEventsHints();
-                //} else {
-                //    eventsData.updateWidgets(0, null);
                 }
             }
 
