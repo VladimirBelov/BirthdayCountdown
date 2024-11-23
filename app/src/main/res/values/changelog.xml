@@ -13,7 +13,7 @@
 
         <item>#1.8.4</item>
         <item>New event type: Fact (event without date)</item>
-        <item>Updated holidays 2025 (ru, ua, de, by, us)</item>
+        <item>Updated holidays 2025</item>
         <item>Ability to select all available calendars</item>
         <item>Added display of the number of events when selecting types and sources of events (extra functions)</item>
         <item>A separate photo size setting has been added to the photo list widget</item>
