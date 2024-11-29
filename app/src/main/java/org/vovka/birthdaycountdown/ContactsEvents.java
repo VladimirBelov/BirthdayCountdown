@@ -4977,7 +4977,6 @@ class ContactsEvents {
 
             }
 
-            //Если событие в ближайшие 3 дня, то в eventDistance будет <число дней до события>, иначе: "Дней до <тип события>: " +  <число дней до события> + <день недели>
             singleEventArray[Position_eventDistance] = Long.toString(dayDiff);
             singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDiff, eventDateThisTime);
 
@@ -5236,6 +5235,11 @@ class ContactsEvents {
         }
     }
 
+    /** Return distance to event details
+     * @param dayDiff Days to event
+     * @param eventDate Event date
+     * @return Details divided by |, for example: через 5 дней|в понедельник|15 февраля|вт
+     */
     private String getEventDistanceText(long dayDiff, @NonNull Date eventDate) {
         //Если событие в ближайшие 3 дня, то вернёт "сегодня", "завтра", "послезавтра", если позже, то "через X дней" + "|в " + <день недели> + | + <MM dddd> | <день недели кратко>
 
