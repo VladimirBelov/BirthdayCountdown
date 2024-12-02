@@ -507,13 +507,14 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Определение периода показа дней
+            int monthsInYear = rowsToDraw * columnsToDraw;
             {
                 Calendar calFirstDay = (Calendar) cal.clone();
                 calFirstDay.add(Calendar.MONTH, prefMonthsShift);
                 calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
                 int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
                 Calendar calLastDay = (Calendar) calFirstDay.clone();
-                calLastDay.add(Calendar.MONTH, rowsToDraw * columnsToDraw - 1);
+                calLastDay.add(Calendar.MONTH, monthsInYear - 1);
                 calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
 
                 if (calFirstDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
@@ -563,7 +564,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
                         calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
                         calendarRv.setTextColor(R.id.next_month_button, colorArrows);
-                        if (prefElements.contains(res.getString(R.string.widget_config_elements_year))) {
+                        if (prefElements.contains(res.getString(R.string.widget_config_elements_year)) || (monthsInYear == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
                             calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
                         } else {
                             calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());

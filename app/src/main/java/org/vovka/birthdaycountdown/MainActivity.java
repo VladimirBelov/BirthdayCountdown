@@ -2219,7 +2219,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
             }
-            if (dataList.isEmpty()) {
+            if (dataList.isEmpty() && eventsData.eventListPrev.isEmpty()) {
 
                 findViewById(R.id.mainListView).setVisibility(View.GONE);
 
@@ -2259,9 +2259,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Получаем предыдущие события
-                if (!TextUtils.isEmpty(eventsData.preferences_list_prev_events) && eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden) {
-                    //todo: придумать, как ловить прошедшие 5K+
-                    dataList.addAll(0, eventsData.getPreviousEvents(dataList, eventsData.preferences_list_prev_events));
+                if (eventsData.preferences_list_prev_events_scan_distance > 0 && eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden) {
+                    dataList.addAll(0, eventsData.getPreviousEvents(dataList));
                 }
 
             }

@@ -202,7 +202,8 @@ class ContactsEvents {
 
     final List<String> eventList = new ArrayList<>(); //Список всех событий
     final List<String> eventListUpdated = new ArrayList<>(); //Список всех событий (обновлённый)
-    final List<String> eventListFacts = new ArrayList<>();
+    final List<String> eventListFacts = new ArrayList<>(); //Факты
+    final List<String> eventListPrev = new ArrayList<>(); //Список предыдущих событий
     final String systemLocale = Locale.getDefault().getLanguage();
     //final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
     final HashMap<String, Date> deathDatesForIds = new HashMap<>(); //Даты годовщин смерти по ID
@@ -324,13 +325,15 @@ class ContactsEvents {
     private boolean preferences_customevent5_enabled;
     private Matcher preferences_customevent5_labels;
     private boolean preferences_customevent5_useyear;
-    private Set<String> preferences_hiddenEvents = new HashSet<>();
-    private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
-    private Set<String> preferences_silentEvents = new HashSet<>();
-    private Set<String> preferences_silentEventsRawIds = new HashSet<>();
-    private Set<String> preferences_favoriteEvents = new HashSet<>();
-    private Set<String> preferences_favoriteEventsRawIds = new HashSet<>();
-    private Set<String> preferences_Accounts = new HashSet<>();
+    final private Set<String> preferences_hiddenEvents = new HashSet<>();
+    final private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
+    final private Set<String> preferences_silentEvents = new HashSet<>();
+    final private Set<String> preferences_silentEventsRawIds = new HashSet<>();
+    final private Set<String> preferences_favoriteEvents = new HashSet<>();
+    final private Set<String> preferences_favoriteEvents_ids = new HashSet<>();
+    final private Set<String> preferences_favoriteEventsRawIds = new HashSet<>();
+    final private Set<String> preferences_favoriteEventsRawIds_ids = new HashSet<>();
+    final private Set<String> preferences_Accounts = new HashSet<>();
     Set<String> preferences_BirthDay_calendars = new HashSet<>();
     Set<String> preferences_OtherEvent_calendars = new HashSet<>();
     Set<String> preferences_HolidayEvent_calendars = new HashSet<>();
@@ -350,6 +353,7 @@ class ContactsEvents {
     Set<String> preferences_list_event_types;
     Set<String> preferences_list_event_info;
     String preferences_list_prev_events;
+    int preferences_list_prev_events_scan_distance = 0;
     String preferences_list_custom_caption;
     String preferences_list_custom_todayevent_caption;
     int preferences_list_style;
@@ -1053,6 +1057,7 @@ class ContactsEvents {
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
             preferences_list_prev_events = getPreferenceString(preferences, context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
+            preferences_list_prev_events_scan_distance = getPreviousDaysScanDays(preferences_list_prev_events);
             preferences_list_style = getPreferenceInt(preferences, context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default));
             preferences_list_photostyle = getPreferenceInt(preferences, context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default));
             preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
@@ -1399,14 +1404,18 @@ class ContactsEvents {
                     preferences_theme.themeDialog = R.style.AlertDialog_Green;
             }
 
-            preferences_hiddenEvents = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Hidden_key), new HashSet<>());
-            preferences_hiddenEventsRawIds = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Hidden_rawIds_key), new HashSet<>());
-
-            preferences_silentEvents = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_key), new HashSet<>());
-            preferences_silentEventsRawIds = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_rawIds_key), new HashSet<>());
-
-            preferences_favoriteEvents = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_key), new HashSet<>());
-            preferences_favoriteEventsRawIds = getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_rawIds_key), new HashSet<>());
+            preferences_hiddenEvents.clear();
+            preferences_hiddenEvents.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Hidden_key), new HashSet<>()));
+            preferences_hiddenEventsRawIds.clear();
+            preferences_hiddenEventsRawIds.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Hidden_rawIds_key), new HashSet<>()));
+            preferences_silentEvents.clear();
+            preferences_silentEvents.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_key), new HashSet<>()));
+            preferences_silentEventsRawIds.clear();
+            preferences_silentEventsRawIds.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Silent_rawIds_key), new HashSet<>()));
+            preferences_favoriteEvents.clear();
+            preferences_favoriteEvents.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_key), new HashSet<>()));
+            preferences_favoriteEventsRawIds.clear();
+            preferences_favoriteEventsRawIds.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_rawIds_key), new HashSet<>()));
 
             preferences_mergedIDs.clear();
             for (String element : getPreferenceStringSet(preferences, context.getString(R.string.pref_MergedID_key), new HashSet<>())) {
@@ -1434,7 +1443,8 @@ class ContactsEvents {
 
             //Источники событий
 
-            preferences_Accounts = getPreferenceStringSet(preferences, context.getString(R.string.pref_Accounts_key), new HashSet<>());
+            preferences_Accounts.clear();
+            preferences_Accounts.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Accounts_key), new HashSet<>()));
 
             preferences_BirthDay_calendars = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Calendars_key), new HashSet<>());
 
@@ -1706,6 +1716,7 @@ class ContactsEvents {
                 eventList.clear();
                 eventList.addAll(eventListUpdated);
                 eventListUpdated.clear();
+                eventListPrev.clear();
                 computeDates();
             }
 
@@ -5018,7 +5029,8 @@ class ContactsEvents {
             final String eventKeyWithRawIs = getEventKeyWithRawId(singleEventArray);
 
             boolean isFavoriteEvent = Constants.STRING_1.equals(singleEventArray[Position_starred]);
-            singleEventArray[Position_eventDate_sorted] = (Constants.STRING_00 + dayDiff).substring((Constants.STRING_00 + dayDiff).length() - 3)
+            String textDistance = Constants.STRING_00 + dayDiff;
+            singleEventArray[Position_eventDate_sorted] = textDistance.substring(textDistance.length() - 3)
                     + (isFavoriteEvent ? "0" : checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1")
                     + (eventType.equals(getEventType(Constants.Type_BirthDay)) ? "1"
                     : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
@@ -5034,12 +5046,15 @@ class ContactsEvents {
                     //Вычисляем 5K даты
                     long days = countDaysDiff(eventDateFirstTime, currentDay);
                     long k = (days + 365) / 5000;
-                    long mdays = (days + 365) % 5000;
+                    long closestMagicDayDistance = (days + 365) % 5000;
 
-                    if (mdays >= 0 && mdays <= 365) {
+                    boolean isInsideYear = closestMagicDayDistance >= 0 && closestMagicDayDistance <= 365;
+                    boolean isPrevious = preferences_list_prev_events_scan_distance > 0 && closestMagicDayDistance - 365 <= preferences_list_prev_events_scan_distance;
+                    int magicDayDistance;
+                    if (isInsideYear || isPrevious) {
                         //Формируем новую запись
                         Calendar cal5K = Calendar.getInstance();
-                        int magicDayDistance = (int) (365 - mdays);
+                        magicDayDistance = (int) (365 - closestMagicDayDistance);
                         cal5K.add(Calendar.DATE, magicDayDistance);
 
                         String[] singleEventArray5K = singleEventArray.clone();
@@ -5058,16 +5073,21 @@ class ContactsEvents {
                         singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = resources.getString(R.string.event_type_5k_emoji);
                         singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay); //Возраст текущий
-                        //singleEventArray[Position_eventStorage] = STRING_STORAGE_CONTACTS; //Где искать событие по ID
 
                         final String event5kKey = getEventKey(singleEventArray5K);
                         final String event5kKeyWithRawId = getEventKeyWithRawId(singleEventArray5K);
 
-                        singleEventArray5K[Position_eventDate_sorted] = (Constants.STRING_00 + magicDayDistance).substring((Constants.STRING_00 + magicDayDistance).length() - 3)
-                                + (checkIsHiddenEvent(event5kKey, event5kKeyWithRawId) ? "3" : checkIsSilencedEvent(event5kKey, event5kKeyWithRawId) ? "2" : "1") + "5";
+                        textDistance = Constants.STRING_00 + Math.abs(magicDayDistance);
+                        singleEventArray5K[Position_eventDate_sorted] = textDistance.substring(textDistance.length() - 3)
+                                + (checkIsHiddenEvent(event5kKey, event5kKeyWithRawId) ? "3" : checkIsSilencedEvent(event5kKey, event5kKeyWithRawId) ? "2" : "1")
+                                + "5";
 
-                        magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
-                        increaseStatForEventTypes(getEventType(Constants.Type_5K));
+                        if (isInsideYear) {
+                            magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
+                            increaseStatForEventTypes(getEventType(Constants.Type_5K));
+                        } else if (isEventVisibleInList(singleEventArray5K)) {
+                            eventListPrev.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
+                        }
                     }
                 }
 
@@ -5294,7 +5314,7 @@ class ContactsEvents {
     }
 
     @SuppressLint("DiscouragedApi")
-    List<String> getPreviousEvents(@NonNull List<String> dataList, @NonNull String params) {
+    List<String> getPreviousEvents(@NonNull List<String> dataList) {
 
         List<String> result = new ArrayList<>();
         if (dataList.isEmpty()) return result;
@@ -5304,7 +5324,7 @@ class ContactsEvents {
             //Собираем события
             int params_days = 365;
             int params_events = 10000;
-            switch (params) {
+            switch (preferences_list_prev_events) {
                 case "1d":
                     params_days = 1;
                     break;
@@ -5340,12 +5360,13 @@ class ContactsEvents {
             now.set(Calendar.MILLISECOND, 0);
             Date currentDay = now.getTime();
 
-            List<String> newList = new ArrayList<>();
+            List<String> listPrevEventsPreparatory = new ArrayList<>();
             statEventsPrevEventsFound = 0;
+            
+            //События внизу списка событий (ежегодные)
             for (int i = dataList.size() - 1; i >= 0 && statEventsPrevEventsFound < params_events; i--) {
                 String li = dataList.get(i);
                 String[] singleEventArray = li.split(Constants.STRING_EOT, -1);
-                //todo: переделать на получение событий "сегодня минус предыдущие дни"
                 if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K)) //пропускаем 5K+
                         && !singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent)) //пропускаем события календаря
                 ) {
@@ -5358,11 +5379,15 @@ class ContactsEvents {
                     } catch (Exception e) { /**/ }
 
                     if (eventDate != null && !eventDate.equals(currentDay)) {
-                        if (params_days == 365) { //нет ограничения по дням
-                            newList.add(li);
-                            statEventsPrevEventsFound++;
-                        } else if (-countDaysDiff(currentDay, eventDate) <= params_days) {
-                            newList.add(li);
+                        long eventDistance = countDaysDiff(eventDate, currentDay);
+                        if (params_days == 365 || eventDistance <= params_days) {
+
+                            String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
+                            singleEventArray[Position_eventDate_sorted] = textDistance.substring(textDistance.length() - 3)
+                                    + singleEventArray[Position_eventDate_sorted].substring(3);
+                            singleEventArray[Position_eventDateNextTime] = sdf_DDMMYYYY.format(eventDate);
+
+                            listPrevEventsPreparatory.add(TextUtils.join(Constants.STRING_EOT, singleEventArray));
                             statEventsPrevEventsFound++;
                         } else {
                             break;
@@ -5370,11 +5395,41 @@ class ContactsEvents {
                     }
                 }
             }
+            
+            //Дополнительно заготовленные предыдущие события (5k, переходящие, календарные не ежегодные)
+            for (String event: eventListPrev) {
+                String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                if (isEventVisibleInList(singleEventArray)) listPrevEventsPreparatory.add(event);
+            }
+
+            Collections.sort(listPrevEventsPreparatory);
+
+            //Окончательный отбор после сортировки
+            List<String> listPrevEvents = new ArrayList<>();
+            statEventsPrevEventsFound = 0;
+            for (int i = 0; i < listPrevEventsPreparatory.size() && statEventsPrevEventsFound < params_events; i++) {
+                String li = listPrevEventsPreparatory.get(i);
+                String[] singleEventArray = li.split(Constants.STRING_EOT, -1);
+
+                Date eventDate = null;
+                try {
+                    eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateNextTime]);
+                } catch (Exception e) { /**/ }
+
+                if (eventDate != null) {
+                    if (params_days == 365 || countDaysDiff(eventDate, currentDay) <= params_days) {
+                        listPrevEvents.add(li);
+                        statEventsPrevEventsFound++;
+                    } else {
+                        break;
+                    }
+                }
+            }
 
             //Подправляем надписи и дату
-            if (!newList.isEmpty()) {
+            if (!listPrevEvents.isEmpty()) {
 
-                for (String li : newList) {
+                for (String li : listPrevEvents) {
                     String[] singleEventArray = li.split(Constants.STRING_EOT, -1);
                     Date eventDate = null;
                     try {
@@ -5383,11 +5438,13 @@ class ContactsEvents {
 
                     if (eventDate != null) {
 
-                        eventDate = addYear(eventDate, -1);
-                        singleEventArray[Position_eventDateNextTime] = sdf_DDMMYYYY.format(eventDate);
-                        long dayDistance = countDaysDiff(currentDay, eventDate);
-                        singleEventArray[Position_eventDistance] = Long.toString(dayDistance);
-                        singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDistance, eventDate);
+                        if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K))) {
+                            //eventDate = addYear(eventDate, -1);
+                            //singleEventArray[Position_eventDateNextTime] = sdf_DDMMYYYY.format(eventDate);
+                            long dayDistance = countDaysDiff(currentDay, eventDate);
+                            singleEventArray[Position_eventDistance] = Long.toString(dayDistance);
+                            singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDistance, eventDate);
+                        }
 
                         int Age = 0;
                         try {
@@ -5395,8 +5452,10 @@ class ContactsEvents {
                         } catch (NumberFormatException e) { /**/ }
                         if (Age > 1) {
                             Age--;
-                            singleEventArray[Position_age] = Integer.toString(Age);
-                            singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
+                            if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K))) {
+                                singleEventArray[Position_age] = Integer.toString(Age);
+                                singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
+                            }
 
                             if (singleEventArray[Position_eventType].equals(getEventType(Constants.Type_Anniversary))) {
                                 @Nullable String anCaption;
@@ -5424,6 +5483,68 @@ class ContactsEvents {
                 }
 
             }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return result;
+    }
+
+    int getPreviousDaysScanDays(@NonNull String params) {
+        int result = 0;
+        try {
+
+            switch (params) {
+                case "1d":
+                    result = 1;
+                    break;
+                case "2d":
+                    result = 2;
+                    break;
+                case "3d":
+                case "3d1e":
+                case "3d2e":
+                    result = 3;
+                    break;
+                default:
+                    result = 14;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return result;
+    }
+
+    private boolean isEventVisibleInList(@NonNull String[] singleEventArray) {
+        boolean result = false;
+        try {
+
+            //Фильтр по типам
+            if (preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
+
+                String eventKey = getEventKey(singleEventArray);
+                String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+
+                //Фильтр по режиму отображения
+                switch (preferences_list_events_scope) {
+                    case Constants.pref_Events_Scope_NotHidden: //Показывать нескрытые
+                        return !checkIsHiddenEvent(eventKey, eventKeyWithRawId);
+                    case Constants.pref_Events_Scope_Hidden: //Показывать только скрытые
+                        return checkIsHiddenEvent(eventKey, eventKeyWithRawId);
+                    case Constants.pref_Events_Scope_Silenced: //Показывать только без уведомлений
+                        return checkIsSilencedEvent(eventKey, eventKeyWithRawId);
+                    case Constants.pref_Events_Scope_XDays: //Показывать только счётчики дней
+                        return isXDaysEvent(eventKey)
+                                && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
+                    case Constants.pref_Events_Scope_Favorite: //Показывать только избранные
+                        return checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
+                    case Constants.pref_Events_Scope_All:
+                        return true;
+                }
+            }
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -6511,7 +6632,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_hiddenEvents == null || preferences_hiddenEvents.isEmpty() ? 0 : preferences_hiddenEvents.size();
+            return preferences_hiddenEvents.isEmpty() ? 0 : preferences_hiddenEvents.size();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -6524,8 +6645,8 @@ class ContactsEvents {
 
         try {
 
-            return (!key.isEmpty() && preferences_hiddenEvents != null && preferences_hiddenEvents.contains(key))
-                    || (keyWithRawId != null && !keyWithRawId.isEmpty() && preferences_hiddenEventsRawIds != null && preferences_hiddenEventsRawIds.contains(keyWithRawId));
+            return !key.isEmpty() && preferences_hiddenEvents.contains(key)
+                    || !TextUtils.isEmpty(keyWithRawId) && preferences_hiddenEventsRawIds.contains(keyWithRawId);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -6540,13 +6661,13 @@ class ContactsEvents {
 
             SharedPreferences.Editor editor = null;
 
-            if (!key.isEmpty() && preferences_hiddenEvents != null) {
+            if (!key.isEmpty()) {
                 preferences_hiddenEvents.add(key);
                 editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             }
 
-            if (!TextUtils.isEmpty(keyWithRawId) && preferences_hiddenEventsRawIds != null) {
+            if (!TextUtils.isEmpty(keyWithRawId)) {
                 preferences_hiddenEventsRawIds.add(keyWithRawId);
                 if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Hidden_rawIds_key), preferences_hiddenEventsRawIds);
@@ -6570,12 +6691,9 @@ class ContactsEvents {
 
             if (!checkIsHiddenEvent(key,keyWithRawId)) return false;
 
-            boolean idremoved = false;
+            boolean idremoved = preferences_hiddenEvents.remove(key);
 
-            if (preferences_hiddenEvents != null)
-                idremoved = preferences_hiddenEvents.remove(key);
-
-            if (preferences_hiddenEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
+            if (!TextUtils.isEmpty(keyWithRawId))
                 idremoved = idremoved | preferences_hiddenEventsRawIds.remove(keyWithRawId);
 
             if (idremoved) {
@@ -6626,7 +6744,7 @@ class ContactsEvents {
 
         try {
 
-            return preferences_silentEvents == null || preferences_silentEvents.isEmpty() ? 0 : preferences_silentEvents.size();
+            return preferences_silentEvents.isEmpty() ? 0 : preferences_silentEvents.size();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -6639,8 +6757,8 @@ class ContactsEvents {
 
         try {
 
-            return (!key.isEmpty() && preferences_silentEvents != null && preferences_silentEvents.contains(key))
-                    || (keyWithRawId != null && !keyWithRawId.isEmpty() && preferences_silentEventsRawIds != null && preferences_silentEventsRawIds.contains(keyWithRawId));
+            return !key.isEmpty() && preferences_silentEvents.contains(key)
+                    || !TextUtils.isEmpty(keyWithRawId) && preferences_silentEventsRawIds.contains(keyWithRawId);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -6655,13 +6773,13 @@ class ContactsEvents {
 
             SharedPreferences.Editor editor = null;
 
-            if (!key.isEmpty() && preferences_silentEvents != null) {
+            if (!key.isEmpty()) {
                 preferences_silentEvents.add(key);
                 editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
             }
 
-            if (!TextUtils.isEmpty(keyWithRawId) && preferences_silentEventsRawIds != null) {
+            if (!TextUtils.isEmpty(keyWithRawId)) {
                 preferences_silentEventsRawIds.add(keyWithRawId);
                 if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Silent_rawIds_key), preferences_silentEventsRawIds);
@@ -6685,12 +6803,9 @@ class ContactsEvents {
 
             if (!checkIsSilencedEvent(key, keyWithRawId)) return false;
 
-            boolean idremoved = false;
+            boolean idremoved = preferences_silentEvents.remove(key);
 
-            if (preferences_silentEvents != null)
-                idremoved = preferences_silentEvents.remove(key);
-
-            if (preferences_silentEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
+            if (!TextUtils.isEmpty(keyWithRawId))
                 idremoved = idremoved | preferences_silentEventsRawIds.remove(keyWithRawId);
 
             if (idremoved) {
@@ -6725,9 +6840,19 @@ class ContactsEvents {
 
         try {
 
-            return (!key.isEmpty() && preferences_favoriteEvents != null && preferences_favoriteEvents.contains(key))
-                    || (keyWithRawId != null && !keyWithRawId.isEmpty() && preferences_favoriteEventsRawIds != null && preferences_favoriteEventsRawIds.contains(keyWithRawId))
+            if (preferences_favoriteEvents_ids.isEmpty()) {
+                cacheFavoriteEventsIds();
+            }
+
+            return (!key.isEmpty() && preferences_favoriteEvents_ids.contains(
+                            key.substring(0, key.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH)))
+                    || (!TextUtils.isEmpty(keyWithRawId) && preferences_favoriteEventsRawIds_ids.contains(
+                            keyWithRawId.substring(0, keyWithRawId.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH)))
                     || (Constants.STRING_1.equals(isFavoriteContactEvent));
+
+            /*return (!key.isEmpty() && preferences_favoriteEvents.contains(key))
+                    || (!TextUtils.isEmpty(keyWithRawId) && preferences_favoriteEventsRawIds.contains(keyWithRawId))
+                    || (Constants.STRING_1.equals(isFavoriteContactEvent));*/
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -6742,13 +6867,13 @@ class ContactsEvents {
 
             SharedPreferences.Editor editor = null;
 
-            if (!key.isEmpty() && preferences_favoriteEvents != null) {
+            if (!key.isEmpty()) {
                 preferences_favoriteEvents.add(key);
                 editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
             }
 
-            if (!TextUtils.isEmpty(keyWithRawId) && preferences_favoriteEventsRawIds != null) {
+            if (!TextUtils.isEmpty(keyWithRawId)) {
                 preferences_favoriteEventsRawIds.add(keyWithRawId);
                 if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Favorite_rawIds_key), preferences_favoriteEventsRawIds);
@@ -6757,6 +6882,8 @@ class ContactsEvents {
             statFavoriteEventsCount++;
             if (editor != null) {
                 editor.apply();
+                preferences_favoriteEvents_ids.clear();
+                preferences_favoriteEventsRawIds_ids.clear();
                 return true;
             }
 
@@ -6773,12 +6900,9 @@ class ContactsEvents {
 
             //if (!checkIsFavoriteEvent(key, keyWithRawId)) return false;
 
-            boolean idremoved = false;
+            boolean idremoved = preferences_favoriteEvents.remove(key);
 
-            if (preferences_favoriteEvents != null)
-                idremoved = preferences_favoriteEvents.remove(key);
-
-            if (preferences_favoriteEventsRawIds != null && !TextUtils.isEmpty(keyWithRawId))
+            if (!TextUtils.isEmpty(keyWithRawId))
                 idremoved = idremoved | preferences_favoriteEventsRawIds.remove(keyWithRawId);
 
             if (idremoved) {
@@ -6798,6 +6922,8 @@ class ContactsEvents {
 
             }
 
+            preferences_favoriteEvents_ids.clear();
+            preferences_favoriteEventsRawIds_ids.clear();
             return true;
 
         } catch (Exception e) {
@@ -6806,6 +6932,32 @@ class ContactsEvents {
             return false;
         }
 
+    }
+
+    private void cacheFavoriteEventsIds() {
+        try {
+
+            preferences_favoriteEvents_ids.clear();
+
+            for (String id: preferences_favoriteEvents) {
+                preferences_favoriteEvents_ids.add(id.substring(0, id.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH));
+            }
+
+            preferences_favoriteEventsRawIds_ids.clear();
+
+            for (String id: preferences_favoriteEventsRawIds) {
+                preferences_favoriteEventsRawIds_ids.add(id.substring(0, id.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH));
+            }
+
+            if (preferences_favoriteEvents_ids.isEmpty() && preferences_favoriteEventsRawIds_ids.isEmpty()) {
+                preferences_favoriteEvents_ids.add(Constants.STRING_UNDERSCORE);
+                preferences_favoriteEventsRawIds_ids.add(Constants.STRING_UNDERSCORE);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @NonNull
@@ -7308,7 +7460,8 @@ class ContactsEvents {
     }
 
     void setPreferences_Accounts(Set<String> preferences_Accounts) {
-        this.preferences_Accounts = preferences_Accounts;
+        this.preferences_Accounts.clear();
+        this.preferences_Accounts.addAll(preferences_Accounts);
     }
 
     Set<String> getPreferences_Calendars(@NonNull String eventType) {
