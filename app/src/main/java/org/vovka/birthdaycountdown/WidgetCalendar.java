@@ -26,7 +26,6 @@ import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -230,7 +229,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (widgetOptions != null) {
                     int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                     float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify;
-                    int minWidthPixel = Dip2Px(res, minWidthDp);
+                    int minWidthPixel = ContactsEvents.Dip2Px(res, minWidthDp);
                     float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify / minWidthPixel;
 
                     if (heightRatio > 4.5) {
@@ -491,11 +490,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 rv.setViewVisibility(id, View.VISIBLE);
                                 rv.setViewVisibility(idDiv, View.VISIBLE);
                                 if (column == 1) { //Отступ слева
-                                    rv.setViewPadding(id, Dip2Px(res, sidePadding), 0, 0, Dip2Px(res, 4));
+                                    rv.setViewPadding(id, ContactsEvents.Dip2Px(res, sidePadding), 0, 0, ContactsEvents.Dip2Px(res, 4));
                                 } else if (column == columnsToDraw) { //Отступ справа
-                                    rv.setViewPadding(id, 0, 0, Dip2Px(res, sidePadding), Dip2Px(res, 4));
+                                    rv.setViewPadding(id, 0, 0, ContactsEvents.Dip2Px(res, sidePadding), ContactsEvents.Dip2Px(res, 4));
                                 } else {
-                                    rv.setViewPadding(id, 0, 0, 0, Dip2Px(res, 4));
+                                    rv.setViewPadding(id, 0, 0, 0, ContactsEvents.Dip2Px(res, 4));
                                 }
 
                             }
@@ -631,7 +630,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
                         calendarRv.setInt(R.id.prev_month_button, "setMinWidth", 1);
                     } else {
-                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", Dip2Px(res, 17));
+                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
@@ -647,7 +646,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
                         calendarRv.setInt(R.id.next_month_button, "setMinWidth", 1);
                     } else {
-                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", Dip2Px(res, 17));
+                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
@@ -827,10 +826,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return pendingIntent;
-    }
-
-    private static int Dip2Px(Resources res, int sizeDP) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeDP, res.getDisplayMetrics()));
     }
 
 }

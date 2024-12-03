@@ -26,7 +26,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_green_secondary</item>
-        <item name="borderWindowColor">@color/theme_green_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/light_green</item> <!-- Цвет вторичных элементов: переключатели в настройках и.т.п. -->
         <item name="colorPrimary">@color/theme_green_primary</item> <!-- Основной цвет: заголовки окон -->
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item> <!-- Цвет статусной строки -->
@@ -101,7 +101,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/lighter_gray</item>
-        <item name="borderWindowColor">@color/theme_grey_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/light_gray</item>
         <item name="colorPrimary">@color/theme_grey_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -240,7 +240,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_blue_secondary</item>
-        <item name="borderWindowColor">@color/theme_blue_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_blue_primary</item>
         <item name="colorPrimary">@color/theme_blue_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -314,7 +314,7 @@
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="borderCardColor">@color/blue_gray_dark_transp</item>
-        <item name="borderWindowColor">@color/blue_gray_light</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/blue_gray_light</item>
         <item name="colorPrimary">@color/theme_blue_gray_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -395,7 +395,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_orange_secondary</item>
-        <item name="borderWindowColor">@color/theme_orange_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_orange_primary</item>
         <item name="colorPrimary">@color/theme_orange_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -470,7 +470,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_teal_secondary</item>
-        <item name="borderWindowColor">@color/theme_teal_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_teal_primary</item>
         <item name="colorPrimary">@color/theme_teal_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -545,7 +545,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_brown_secondary</item>
-        <item name="borderWindowColor">@color/theme_brown_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_brown_primary</item>
         <item name="colorPrimary">@color/theme_brown_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -620,7 +620,7 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_indigo_secondary</item>
-        <item name="borderWindowColor">@color/theme_indigo_primary</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_indigo_primary</item>
         <item name="colorPrimary">@color/theme_indigo_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
@@ -767,6 +767,9 @@
     <style name="RightAlignedSpinnerItem">
         <item name="android:gravity">right|center_vertical</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="OptOutEdgeToEdgeEnforcement">
     </style>
 
 </resources>

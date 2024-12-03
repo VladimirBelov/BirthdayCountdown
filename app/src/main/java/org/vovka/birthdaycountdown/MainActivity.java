@@ -66,6 +66,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout.LayoutParams;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
@@ -96,7 +99,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -184,20 +190,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             super.onCreate(savedInstanceState);
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
-            //eventsData.setAppIcon();
-
             setContentView(R.layout.activity_main);
+            //eventsData.coordinator = this.findViewById(R.id.coordinator);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    AppBarLayout.LayoutParams lp = new LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4 / 5);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setVisibility(View.VISIBLE);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    return WindowInsetsCompat.CONSUMED;
+                });
+            } else {
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setVisibility(View.GONE);
+                findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
 
             //Цвет заголовка окна https://github.com/neokree/MaterialNavigationDrawer/issues/5
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
-            if (eventsData.preferences_list_custom_caption.isEmpty()) {
-                toolbar.setTitle(R.string.app_name);
-            } else {
-                toolbar.setTitle(eventsData.preferences_list_custom_caption);
-            }
             setSupportActionBar(toolbar);
 
             swipeRefresh = findViewById(R.id.swiperefresh);
@@ -2021,7 +2039,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (eventsData.currentTheme != eventsData.preferences_theme.themeMain) {
                 eventsData.currentTheme = eventsData.preferences_theme.themeMain;
-                this.recreate();
+
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                this.finish();
+                startActivity(intent);
                 return;
             }
 
@@ -3024,5 +3046,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
         }
     }
+
 }
 

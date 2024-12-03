@@ -21,20 +21,86 @@
 		android:layout_height="wrap_content"
 		android:background="?attr/backgroundColor">
 
-		<!--https://stackoverflow.com/questions/26455027/android-api-21-toolbar-padding-->
+		<TextView
+			android:id="@+id/toolbarPadding"
+			style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="?attr/windowStatusbarColor" />
+
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
+			android:layout_gravity="bottom"
 			android:background="@drawable/border_bottom"
-			android:theme="@style/AppTheme.ActionBar"
-			app:popupTheme="@style/AppTheme.Black.PopupOverlay"
-			app:titleTextAppearance="@style/ActivityTitleStyle"
 			android:contentInsetStart="6dp"
-			app:contentInsetStart="6dp"/>
+			android:theme="@style/AppTheme.ActionBar"
+			app:contentInsetStart="6dp"
+			app:popupTheme="@style/AppTheme.Black.PopupOverlay"
+			app:titleTextAppearance="@style/ActivityTitleStyle" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/mainStatsTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="?attr/colorPrimary"
+				android:gravity="bottom|fill_vertical|end"
+				android:maxLines="1"
+				android:minEms="50"
+				android:minLines="1"
+				android:paddingStart="5dp"
+				android:textAlignment="center"
+				android:textColor="?attr/windowTitleColor"
+				android:textSize="10sp"
+				tools:ignore="RtlSymmetry,SmallSp" />
+		</LinearLayout>
 
 	</com.google.android.material.appbar.AppBarLayout>
 
-	<include layout="@layout/list_main"/>
+	<LinearLayout
+		android:id="@+id/mainListLayout"
+		android:layout_width="fill_parent"
+		android:layout_height="match_parent"
+		android:background="?attr/backgroundColor"
+		android:orientation="vertical"
+		android:paddingTop="104dp">
+
+		<TextView
+			android:id="@+id/mainListViewEmpty"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center_vertical"
+			android:background="?attr/backgroundColor"
+			android:gravity="center_vertical"
+
+			android:paddingStart="20dp"
+			android:paddingTop="4dp"
+			android:paddingEnd="20dp"
+			android:paddingBottom="4dp"
+			android:scrollbars="vertical"
+			android:textColor="?attr/eventFullNameColor"/>
+
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:id="@+id/swiperefresh"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<ListView
+				android:id="@+id/mainListView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="?attr/backgroundColor"
+
+				android:foregroundGravity="top"
+				android:clipToPadding="false"/>
+
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+	</LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

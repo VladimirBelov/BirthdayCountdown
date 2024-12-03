@@ -5495,6 +5495,9 @@ class ContactsEvents {
         try {
 
             switch (params) {
+                case "":
+                    result = 0;
+                    break;
                 case "1d":
                     result = 1;
                     break;
@@ -10571,6 +10574,10 @@ class ContactsEvents {
             ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return Constants.STRING_EMPTY;
+    }
+
+    static int Dip2Px(Resources res, int sizeDP) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeDP, res.getDisplayMetrics()));
     }
 
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.09.2024, 23:21
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 16.09.2024, 23:21
+  ~  */
+  -->
+
+<resources>
+    <style name="OptOutEdgeToEdgeEnforcement">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

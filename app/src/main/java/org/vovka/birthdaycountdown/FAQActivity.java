@@ -20,7 +20,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Locale;
 
@@ -28,6 +33,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class FAQActivity extends AppCompatActivity {
 
@@ -71,8 +79,27 @@ public class FAQActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
+
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе нижняя кнопка на системном языке
+
             setContentView(R.layout.activity_faq);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4/5);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    return WindowInsetsCompat.CONSUMED;
+                });
+            } else {
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setVisibility(View.GONE);
+                findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);

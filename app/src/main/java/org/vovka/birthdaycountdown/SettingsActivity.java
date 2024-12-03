@@ -73,6 +73,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -98,7 +100,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -150,9 +155,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
+            this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
 
             setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.activity_settings);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4/5);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    return WindowInsetsCompat.CONSUMED;
+                });
+            } else {
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setVisibility(View.GONE);
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
@@ -1232,8 +1254,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Dialog dialog = preferenceScreen.getDialog();
             ListView list = dialog.findViewById(android.R.id.list);
             Toolbar bar;
-            //this.setTheme(eventsData.preferences_theme.themeMain);
-            //ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
 

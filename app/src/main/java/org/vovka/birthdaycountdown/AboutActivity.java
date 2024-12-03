@@ -28,10 +28,14 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -44,7 +48,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 //todo: подсветка нововведений в интерфейсе
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
@@ -95,6 +102,23 @@ public class AboutActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             setContentView(R.layout.activity_changelog);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        insets.top * 4/5);
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setLayoutParams(lp);
+                v.setPadding(0, 0, 0, 0);
+                return WindowInsetsCompat.CONSUMED;
+            });
+            } else {
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setVisibility(View.GONE);
+                findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);

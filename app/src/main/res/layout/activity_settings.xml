@@ -11,11 +11,21 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:orientation="vertical"
-    android:padding="0dp">
+    android:padding="0dp"
+    tools:ignore="VisualLintBounds">
+
+    <TextView
+        android:id="@+id/toolbarPadding"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/windowStatusbarColor" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -31,4 +41,5 @@
         android:background="?attr/backgroundColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 </LinearLayout>
