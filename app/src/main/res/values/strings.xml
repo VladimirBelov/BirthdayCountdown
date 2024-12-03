@@ -73,6 +73,7 @@
     <string name="msg_file_open_error">"Error opening file: "</string>
     <string name="msg_file_access_write_error">"Can't obtain write access to file. Try reselect file in application preference"</string>
     <string name="msg_file_access_read_error">"Can't obtain read access to file: %1$s"</string>
+    <string name="msg_file_no_app_for_file">There is not app on your device to open this file type</string>
     <string name="msg_before_event_prefix">"in "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>

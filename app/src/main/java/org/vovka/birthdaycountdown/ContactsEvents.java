@@ -4388,8 +4388,8 @@ class ContactsEvents {
                 bmHeight = bm.getHeight();
             }
 
-            if (addMourningTape) {
-                bm.getConfig();//Если контакт умер, добавлять чёрную ленточку
+            if (addMourningTape && bm.getConfig() != null) {
+                //Если контакт умер, добавлять чёрную ленточку
                 //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
@@ -4417,8 +4417,8 @@ class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
             if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
-                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
-                bm.getConfig();
+                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])
+                    && bm.getConfig() != null) {
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawBitmap(bm, new Matrix(), null);
@@ -5496,7 +5496,6 @@ class ContactsEvents {
 
             switch (params) {
                 case "":
-                    result = 0;
                     break;
                 case "1d":
                     result = 1;

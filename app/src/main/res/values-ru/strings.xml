@@ -73,6 +73,7 @@
     <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
     <string name="msg_file_access_write_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
     <string name="msg_file_access_read_error">"Не удалось получить доступ на чтение файла: %1$s"</string>
+    <string name="msg_file_no_app_for_file">На устройстве нет ни одного приложения, которое может открыть данный тип файла</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>

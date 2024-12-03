@@ -1652,159 +1652,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == R.id.menu_filter_events) {
 
-                List<String> filterVariants = new ArrayList<>();
-                List<Integer> filterValues = new ArrayList<>();
-
-                filterVariants.add(getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents));
-                filterValues.add(Constants.pref_Events_Scope_NotHidden);
-
-                filterVariants.add(getString(R.string.events_scope_all, statsAllEvents));
-                filterValues.add(Constants.pref_Events_Scope_All);
-
-                //Анализ на мёртвые связи
-                boolean isDeadLinks = false;
-                final boolean isDebugOrExtraFun = eventsData.preferences_debug_on || eventsData.preferences_extrafun;
-
-                final int hiddenEventsCount = eventsData.getHiddenEventsCount();
-                if (hiddenEventsCount > 0) {
-                    if (statsHiddenEvents != hiddenEventsCount && isDebugOrExtraFun) {
-                        filterVariants.add(getString(R.string.events_scope_hidden_dead, statsHiddenEvents, hiddenEventsCount));
-                        isDeadLinks = true;
-                    } else
-                        filterVariants.add(getString(R.string.events_scope_hidden, statsHiddenEvents));
-                    filterValues.add(Constants.pref_Events_Scope_Hidden);
-                }
-                final int silencedEventsCount = eventsData.getSilencedEventsCount();
-                if (silencedEventsCount > 0) {
-                    if (statsSilencedEvents != silencedEventsCount && isDebugOrExtraFun) {
-                        filterVariants.add(getString(R.string.events_scope_silenced_dead, statsSilencedEvents, silencedEventsCount));
-                        isDeadLinks = true;
-                    } else
-                        filterVariants.add(getString(R.string.events_scope_silenced, statsSilencedEvents));
-                    filterValues.add(Constants.pref_Events_Scope_Silenced);
-                }
-                final int xDaysEventsCount = eventsData.getXDaysEventsCount();
-                if (xDaysEventsCount > 0) {
-                    if (statsXDaysEvents != xDaysEventsCount && isDebugOrExtraFun) {
-                        filterVariants.add(getString(R.string.events_scope_xdays_dead, statsXDaysEvents, xDaysEventsCount));
-                        isDeadLinks = true;
-                    } else {
-                        filterVariants.add(getString(R.string.events_scope_xdays, xDaysEventsCount));
-                    }
-                    filterValues.add(Constants.pref_Events_Scope_XDays);
-                }
-                if (eventsData.statFavoriteEventsCount > 0) {
-                    filterVariants.add(getString(R.string.events_scope_favorite, eventsData.statFavoriteEventsCount));
-                    filterValues.add(Constants.pref_Events_Scope_Favorite);
-                }
-                if (statsUnrecognizedEvents > 0) {
-                    filterVariants.add(getString(R.string.events_scope_unrecognized, statsUnrecognizedEvents));
-                    filterValues.add(Constants.pref_Events_Scope_Unrecognized);
-                }
-
-                if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
-                    filterVariants.add(getString(R.string.events_scope_clear));
-                    filterValues.add(Constants.pref_Events_Scope_Clear);
-                }
-                if (isDebugOrExtraFun && isDeadLinks) {
-                    filterVariants.add(getString(R.string.events_scope_clean));
-                    filterValues.add(Constants.pref_Events_Scope_Clean);
-                }
-
-                builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.activity_title_events_scope)
-                        .setIcon(android.R.drawable.ic_menu_sort_by_size)
-                        .setSingleChoiceItems(filterVariants.toArray(new CharSequence[0]), filterValues.indexOf(eventsData.preferences_list_events_scope), (dialog, which) -> {
-                            final int choice = filterValues.get(((AlertDialog) dialog).getListView().getCheckedItemPosition());
-                            if (choice == Constants.pref_Events_Scope_Clear) {
-
-                                AlertDialog.Builder confirm = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                                        .setTitle(R.string.msg_title_confirmation)
-                                        .setMessage(R.string.msg_filter_clear_confirmation)
-                                        .setIcon(android.R.drawable.ic_menu_help)
-                                        .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
-                                        .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
-                                            eventsData.clearHiddenEvents();
-                                            eventsData.clearSilencedEvents();
-                                            eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
-                                            eventsData.savePreferences();
-                                            this.invalidateOptionsMenu();
-                                            filterEventsList();
-                                            drawList();
-                                        });
-
-                                AlertDialog confirm_dialog = confirm.create();
-
-                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                                confirm_dialog.setOnShowListener(arg0 -> {
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                });
-
-                                confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                confirm_dialog.show();
-
-                            } else if (choice == Constants.pref_Events_Scope_Clean) {
-
-                                AlertDialog.Builder confirm = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                                        .setTitle(R.string.msg_title_confirmation)
-                                        .setMessage(R.string.msg_filter_clean_confirmation)
-                                        .setIcon(android.R.drawable.ic_menu_help)
-                                        .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
-                                        .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
-                                            eventsData.clearDeadLinksHiddenEvents();
-                                            eventsData.clearDeadLinksSilencedEvents();
-                                            eventsData.clearDeadLinksXDaysEvents();
-                                            eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
-                                            eventsData.savePreferences();
-                                            this.invalidateOptionsMenu();
-                                            filterEventsList();
-                                            drawList();
-                                        });
-
-                                AlertDialog confirm_dialog = confirm.create();
-
-                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                                confirm_dialog.setOnShowListener(arg0 -> {
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                });
-
-                                confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                confirm_dialog.show();
-
-                            } else {
-
-                                eventsData.preferences_list_events_scope = choice;
-
-                            }
-                            eventsData.savePreferences();
-                            dialog.cancel();
-                            filterEventsList();
-                            drawList();
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
-
-                alertToShow = builder.create();
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-
-                    ListView listView = alertToShow.getListView();
-                    listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
-                    listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-
-                //Ширина диалога
-                /*Rect displayRectangle = new Rect();
-                Window window = this.getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-                alertToShow.getWindow().setLayout((int) (displayRectangle.width() * 0.9f), alertToShow.getWindow().getAttributes().height);*/
-
+                setFilter();
                 return true;
 
             } else if (itemId == R.id.menu_events_sources) {
@@ -1847,97 +1695,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == R.id.menu_open_file_with_events) {
 
-                //https://www.androidsnippets.com/open-any-type-of-file-with-default-intent.html
-                //https://www.androidsnippets.com/open-file-with-default-application-using-intents.html
-
-                List<String> fileNames = new ArrayList<>();
-                List<String> fileURIs = new ArrayList<>();
-                for (String file: eventsData.preferences_Birthday_files) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                        fileNames.add(fileDetails[0]);
-                        fileURIs.add(fileDetails[1]);
-                    }
-                }
-                for (String file: eventsData.preferences_OtherEvent_files) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                        fileNames.add(fileDetails[0]);
-                        fileURIs.add(fileDetails[1]);
-                    }
-                }
-                for (String file: eventsData.preferences_MultiType_files) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                        fileNames.add(fileDetails[0]);
-                        fileURIs.add(fileDetails[1]);
-                    }
-                }
-                for (String file: eventsData.preferences_HolidayEvent_files) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                        fileNames.add(fileDetails[0]);
-                        fileURIs.add(fileDetails[1]);
-                    }
-                }
-                for (String file: eventsData.preferences_FactEvent_files) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                        fileNames.add(fileDetails[0]);
-                        fileURIs.add(fileDetails[1]);
-                    }
-                }
-                if (fileURIs.isEmpty()) return true;
-
-                builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.pref_CustomEvents_LocalFiles_title)
-                        .setIcon(android.R.drawable.ic_menu_save)
-                        .setItems(fileNames.toArray(new CharSequence[0]), (dialog, which) -> {
-                            Uri uri = Uri.parse(fileURIs.get(which));
-                            if (uri != null) {
-                                try {
-                                    Intent intent = new Intent();
-                                    intent.setAction(Intent.ACTION_EDIT);
-                                    intent.setDataAndType(uri, "text/plain");
-                                    //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
-                                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-                                    intent.addFlags(flags);
-                                    dialog.cancel();
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        for (ResolveInfo resolveInfo : getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL)) {
-                                            String packageName = resolveInfo.activityInfo.packageName;
-                                            grantUriPermission(packageName, uri, flags);
-                                        }
-                                    }
-                                    try {
-                                        startActivity(intent);
-                                    } catch (ActivityNotFoundException e) { /**/ }
-                                } catch (SecurityException se) {
-                                    ToastExpander.showInfoMsg(this, getText(R.string.msg_file_access_write_error).toString());
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
-
-                alertToShow = builder.create();
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-
-                    ListView listView = alertToShow.getListView();
-                    listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
-                    listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
-                    listView.setPadding(
-                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, displayMetrics),
-                            0,
-                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics),
-                            0
-                    );
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
+                openFileWithEvents();
+                return true;
 
             } else if (itemId == R.id.menu_hints) {
 
@@ -1983,6 +1742,297 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openFileWithEvents() {
+        try {
+
+            AlertDialog.Builder builder;
+            AlertDialog alertToShow;
+            //https://www.androidsnippets.com/open-any-type-of-file-with-default-intent.html
+            //https://www.androidsnippets.com/open-file-with-default-application-using-intents.html
+
+            List<String> fileNames = new ArrayList<>();
+            List<String> fileURIs = new ArrayList<>();
+            for (String file: eventsData.preferences_Birthday_files) {
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                    fileNames.add(fileDetails[0]);
+                    fileURIs.add(fileDetails[1]);
+                }
+            }
+            for (String file: eventsData.preferences_OtherEvent_files) {
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                    fileNames.add(fileDetails[0]);
+                    fileURIs.add(fileDetails[1]);
+                }
+            }
+            for (String file: eventsData.preferences_MultiType_files) {
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                    fileNames.add(fileDetails[0]);
+                    fileURIs.add(fileDetails[1]);
+                }
+            }
+            for (String file: eventsData.preferences_HolidayEvent_files) {
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                    fileNames.add(fileDetails[0]);
+                    fileURIs.add(fileDetails[1]);
+                }
+            }
+            for (String file: eventsData.preferences_FactEvent_files) {
+                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
+                    fileNames.add(fileDetails[0]);
+                    fileURIs.add(fileDetails[1]);
+                }
+            }
+            if (fileURIs.isEmpty()) return;
+
+            builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_CustomEvents_LocalFiles_title)
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .setItems(fileNames.toArray(new CharSequence[0]), (dialog, which) -> {
+                        Uri uri = Uri.parse(fileURIs.get(which));
+                        if (uri != null) {
+                            try {
+                                String mime = getContentResolver().getType(uri);
+
+                                Intent intentEdit = new Intent();
+                                intentEdit.setAction(Intent.ACTION_EDIT);
+                                intentEdit.setDataAndType(uri, mime);
+
+                                Intent intentView = new Intent();
+                                intentView.setAction(Intent.ACTION_VIEW);
+                                intentView.setDataAndType(uri, mime);
+
+                                PackageManager packageManager = getPackageManager();
+                                List<ResolveInfo> appToEdit = packageManager.queryIntentActivities(intentEdit, PackageManager.MATCH_DEFAULT_ONLY);
+                                List<ResolveInfo> appsToView = packageManager.queryIntentActivities(intentView, PackageManager.MATCH_DEFAULT_ONLY);
+
+                                dialog.cancel();
+                                if (!appToEdit.isEmpty()) {
+                                    //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
+                                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+                                    intentEdit.addFlags(flags);
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        for (ResolveInfo resolveInfo : getPackageManager().queryIntentActivities(intentEdit, PackageManager.MATCH_ALL)) {
+                                            String packageName = resolveInfo.activityInfo.packageName;
+                                            grantUriPermission(packageName, uri, flags);
+                                        }
+                                    }
+
+                                    try {
+                                        startActivity(intentEdit);
+                                    } catch (ActivityNotFoundException e) { /**/ }
+                                } else if(!appsToView.isEmpty()) {
+                                    try {
+                                        final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+                                        intentView.addFlags(flags);
+                                        startActivity(intentView);
+                                    } catch (ActivityNotFoundException e) { /**/ }
+                                } else {
+                                    ToastExpander.showInfoMsg(this, getText(R.string.msg_file_no_app_for_file).toString());
+                                }
+
+                            } catch (SecurityException se) {
+                                ToastExpander.showInfoMsg(this, getText(R.string.msg_file_access_write_error).toString());
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                ListView listView = alertToShow.getListView();
+                listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
+                listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
+                listView.setPadding(
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, displayMetrics),
+                        0,
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, displayMetrics),
+                        0
+                );
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setFilter() {
+        try {
+
+            AlertDialog.Builder builder;
+            AlertDialog alertToShow;
+            List<String> filterVariants = new ArrayList<>();
+            List<Integer> filterValues = new ArrayList<>();
+
+            filterVariants.add(getString(R.string.events_scope_not_hidden, statsAllEvents - statsHiddenEvents));
+            filterValues.add(Constants.pref_Events_Scope_NotHidden);
+
+            filterVariants.add(getString(R.string.events_scope_all, statsAllEvents));
+            filterValues.add(Constants.pref_Events_Scope_All);
+
+            //Анализ на мёртвые связи
+            boolean isDeadLinks = false;
+            final boolean isDebugOrExtraFun = eventsData.preferences_debug_on || eventsData.preferences_extrafun;
+
+            final int hiddenEventsCount = eventsData.getHiddenEventsCount();
+            if (hiddenEventsCount > 0) {
+                if (statsHiddenEvents != hiddenEventsCount && isDebugOrExtraFun) {
+                    filterVariants.add(getString(R.string.events_scope_hidden_dead, statsHiddenEvents, hiddenEventsCount));
+                    isDeadLinks = true;
+                } else
+                    filterVariants.add(getString(R.string.events_scope_hidden, statsHiddenEvents));
+                filterValues.add(Constants.pref_Events_Scope_Hidden);
+            }
+            final int silencedEventsCount = eventsData.getSilencedEventsCount();
+            if (silencedEventsCount > 0) {
+                if (statsSilencedEvents != silencedEventsCount && isDebugOrExtraFun) {
+                    filterVariants.add(getString(R.string.events_scope_silenced_dead, statsSilencedEvents, silencedEventsCount));
+                    isDeadLinks = true;
+                } else
+                    filterVariants.add(getString(R.string.events_scope_silenced, statsSilencedEvents));
+                filterValues.add(Constants.pref_Events_Scope_Silenced);
+            }
+            final int xDaysEventsCount = eventsData.getXDaysEventsCount();
+            if (xDaysEventsCount > 0) {
+                if (statsXDaysEvents != xDaysEventsCount && isDebugOrExtraFun) {
+                    filterVariants.add(getString(R.string.events_scope_xdays_dead, statsXDaysEvents, xDaysEventsCount));
+                    isDeadLinks = true;
+                } else {
+                    filterVariants.add(getString(R.string.events_scope_xdays, xDaysEventsCount));
+                }
+                filterValues.add(Constants.pref_Events_Scope_XDays);
+            }
+            if (eventsData.statFavoriteEventsCount > 0) {
+                filterVariants.add(getString(R.string.events_scope_favorite, eventsData.statFavoriteEventsCount));
+                filterValues.add(Constants.pref_Events_Scope_Favorite);
+            }
+            if (statsUnrecognizedEvents > 0) {
+                filterVariants.add(getString(R.string.events_scope_unrecognized, statsUnrecognizedEvents));
+                filterValues.add(Constants.pref_Events_Scope_Unrecognized);
+            }
+
+            if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
+                filterVariants.add(getString(R.string.events_scope_clear));
+                filterValues.add(Constants.pref_Events_Scope_Clear);
+            }
+            if (isDebugOrExtraFun && isDeadLinks) {
+                filterVariants.add(getString(R.string.events_scope_clean));
+                filterValues.add(Constants.pref_Events_Scope_Clean);
+            }
+
+            builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.activity_title_events_scope)
+                    .setIcon(android.R.drawable.ic_menu_sort_by_size)
+                    .setSingleChoiceItems(filterVariants.toArray(new CharSequence[0]), filterValues.indexOf(eventsData.preferences_list_events_scope), (dialog, which) -> {
+                        final int choice = filterValues.get(((AlertDialog) dialog).getListView().getCheckedItemPosition());
+                        if (choice == Constants.pref_Events_Scope_Clear) {
+
+                            AlertDialog.Builder confirm = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                                    .setTitle(R.string.msg_title_confirmation)
+                                    .setMessage(R.string.msg_filter_clear_confirmation)
+                                    .setIcon(android.R.drawable.ic_menu_help)
+                                    .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
+                                    .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
+                                        eventsData.clearHiddenEvents();
+                                        eventsData.clearSilencedEvents();
+                                        eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                                        eventsData.savePreferences();
+                                        this.invalidateOptionsMenu();
+                                        filterEventsList();
+                                        drawList();
+                                    });
+
+                            AlertDialog confirm_dialog = confirm.create();
+
+                            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                            confirm_dialog.setOnShowListener(arg0 -> {
+                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+
+                            confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            confirm_dialog.show();
+
+                        } else if (choice == Constants.pref_Events_Scope_Clean) {
+
+                            AlertDialog.Builder confirm = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                                    .setTitle(R.string.msg_title_confirmation)
+                                    .setMessage(R.string.msg_filter_clean_confirmation)
+                                    .setIcon(android.R.drawable.ic_menu_help)
+                                    .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
+                                    .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
+                                        eventsData.clearDeadLinksHiddenEvents();
+                                        eventsData.clearDeadLinksSilencedEvents();
+                                        eventsData.clearDeadLinksXDaysEvents();
+                                        eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                                        eventsData.savePreferences();
+                                        this.invalidateOptionsMenu();
+                                        filterEventsList();
+                                        drawList();
+                                    });
+
+                            AlertDialog confirm_dialog = confirm.create();
+
+                            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                            confirm_dialog.setOnShowListener(arg0 -> {
+                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            });
+
+                            confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            confirm_dialog.show();
+
+                        } else {
+
+                            eventsData.preferences_list_events_scope = choice;
+
+                        }
+                        eventsData.savePreferences();
+                        dialog.cancel();
+                        filterEventsList();
+                        drawList();
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            alertToShow = builder.create();
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                ListView listView = alertToShow.getListView();
+                listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
+                listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+            //Ширина диалога
+                /*Rect displayRectangle = new Rect();
+                Window window = this.getWindow();
+                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+                alertToShow.getWindow().setLayout((int) (displayRectangle.width() * 0.9f), alertToShow.getWindow().getAttributes().height);*/
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @Override

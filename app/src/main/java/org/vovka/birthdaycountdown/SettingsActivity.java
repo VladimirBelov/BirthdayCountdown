@@ -211,7 +211,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if ((eventsData.preferences_notifications_ringtone.contains("/media/external/") || eventsData.preferences_notifications2_ringtone.contains("/media/external/")) &&
                             eventsData.checkNoStorageAccess()) {
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                             builder.setTitle(getString(R.string.msg_no_access_contacts));
@@ -760,7 +760,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Help_ContactsAccess_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS},
@@ -2912,17 +2912,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     void requestCalendarPermission(int resultCode) {
         try {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.READ_CALENDAR},
-                    resultCode
-            );
-        } else {
-            try {
-                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-            } catch (android.content.ActivityNotFoundException e) { /**/ }
-        }
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CALENDAR},
+                        resultCode
+                );
+            } else {
+                try {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
+            }
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
