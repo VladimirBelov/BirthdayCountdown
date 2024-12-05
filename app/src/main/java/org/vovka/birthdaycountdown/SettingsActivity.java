@@ -160,7 +160,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.activity_settings);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(

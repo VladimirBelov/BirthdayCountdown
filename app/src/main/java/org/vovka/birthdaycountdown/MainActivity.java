@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             setContentView(R.layout.activity_main);
             //eventsData.coordinator = this.findViewById(R.id.coordinator);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     AppBarLayout.LayoutParams lp = new LayoutParams(
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setRefreshing(false);
                 }
             };
-            swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
+            //swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
             ListView listView = findViewById(R.id.mainListView);
 
@@ -1627,10 +1627,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
-                    eventsData.needUpdateEventList = true;
-                    eventsData.clearDaysTypesAndInfo();
-                    swipeRefresh.postDelayed(() -> updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME), 300);
-                    eventsData.updateWidgets(0, null);
+                    swipeRefresh.postDelayed(() -> {
+                        eventsData.needUpdateEventList = true;
+                        eventsData.clearDaysTypesAndInfo();
+                        updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                        eventsData.updateWidgets(0, null);
+                    }, 300);
                 }
                 return true;
 
@@ -2397,16 +2399,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     synchronized void updateList(boolean disableSwipeRefresh, boolean useBackgroundThread) {
         try {
-
             if (disableSwipeRefresh) {
                 swipeRefresh.setEnabled(false); // setEnable(false) need to be before setRefreshing
                 swipeRefresh.setRefreshing(true);
             }
 
             if (useBackgroundThread) {
-
                 executor.execute(() -> {
-
                     //Background work
                     if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
                         eventsData.getEvents(this);
@@ -2426,15 +2425,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         if (eventsData.isEmptyEventList()) {
                             showZeroEventsHints();
-                        //} else {
-                        //    eventsData.updateWidgets(0, null);
                         }
 
                     });
                 });
 
             } else {
-
                 if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
                     eventsData.getEvents(this);
                 }
@@ -2919,9 +2915,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 holder.PhotoImageView.setImageAlpha(255);
                 holder.EventIconImageView.setImageAlpha(255);
 
-                if (eventsData.statEventsPrevEventsFound > 0 && filterNames.isEmpty()) {
-                    if (position <= eventsData.statEventsPrevEventsFound - 1) {
-                        final float alphaPrev = (float) 0.6;
+                if (eventsData.statEventsPrevEventsFound > 0) {
+                    int eventDistanceDays = 0;
+                    try {
+                        eventDistanceDays = Integer.parseInt(eventDistance);
+                    } catch (NumberFormatException ignored) { /**/ }
+                    if (eventDistanceDays < 0) {
+                        final float alphaPrev = (float) 0.7;
                         holder.NameTextView.setAlpha(alphaPrev);
                         holder.CounterTextView.setAlpha(alphaPrev);
                         holder.DateTextView.setAlpha(alphaPrev);

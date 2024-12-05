@@ -810,7 +810,6 @@
     <string name="widget_config_event_sources_empty">♻️ All sources</string>
 
     <string name="widget_config_index_label">Event start index to display</string>
-    <string name="widget_config_index_description">Value 1 means the first event from the list will be starting point, 2 - the second, and so on… You can add to the screen several widgets with different event start indexes to get a desired configuration</string>
 
     <string name="widget_config_scope_label">Events scope limit</string>
     <string name="widget_config_scope_events_label">Max events:</string>

@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Toutes les sources</string>
 
     <string name="widget_config_index_label">"Index de début d'événement à afficher"</string>
-    <string name="widget_config_index_description">"La valeur 1 signifie que les événements seront affichés à partir du début de la liste, 2 à partir de la deuxième et ainsi de suite… Vous pouvez ajouter à l'écran plusieurs widgets avec des valeurs différentes dans ce champ pour obtenir la configuration souhaitée"</string>
 
     <string name="widget_config_scope_label">Limite de portée des événements</string>
     <string name="widget_config_scope_events_label">"Quantité (maximum):"</string>

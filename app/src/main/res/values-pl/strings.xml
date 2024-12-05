@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Wszystkie źródła</string>
 
     <string name="widget_config_index_label">Numer wydarzenia początkowego</string>
-    <string name="widget_config_index_description">Wartość 1 oznacza, że wydarzenia będą wyświetlane od początku listy, 2 - od drugiej itd… Możesz dodać na ekran wiele widżetów o różnych wartościach w tym polu, aby uzyskać żądaną konfigurację</string>
 
     <string name="widget_config_scope_label">Limit zakresu wydarzenia</string>
     <string name="widget_config_scope_events_label">Ilość (maks.):</string>

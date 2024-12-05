@@ -69,7 +69,7 @@
 		android:layout_height="match_parent"
 		android:background="?attr/backgroundColor"
 		android:orientation="vertical"
-		android:paddingTop="104dp">
+		android:paddingTop="112dp">
 
 		<TextView
 			android:id="@+id/mainListViewEmpty"

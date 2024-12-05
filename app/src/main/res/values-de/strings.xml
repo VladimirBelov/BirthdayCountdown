@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Alle Quellen</string>
 
     <string name="widget_config_index_label">Ereignisstartnummer</string>
-    <string name="widget_config_index_description">Der Wert 1 bedeutet, dass Ereignisse ab dem Anfang der Liste angezeigt werden, 2 ab dem zweiten usw. Sie können dem Bildschirm mehrere Widgets mit unterschiedlichen Werten in diesem Feld hinzufügen, um die gewünschte Konfiguration zu erhalten</string>
 
     <string name="widget_config_scope_label">Begrenzung der Ereignisliste</string>
     <string name="widget_config_scope_events_label">Menge (max.)</string>

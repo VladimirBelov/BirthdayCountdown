@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Усе крыніцы</string>
 
     <string name="widget_config_index_label">Стартавы нумар падзей</string>
-    <string name="widget_config_index_description">Значэнне 1 азначае, што падзеі будуць адлюстроўвацца з пачатку спіса, 2 - з другога і гэтак далей… Вы можаце дадаць на экран некалькі віджэтаў з рознымі значэннямі ў дадзеным полі, каб атрымаць жаданую канфігурацыю</string>
 
     <string name="widget_config_scope_label">"Абмежаванне аб'ёму падзей"</string>
     <string name="widget_config_scope_events_label">Колькасць (макс):</string>

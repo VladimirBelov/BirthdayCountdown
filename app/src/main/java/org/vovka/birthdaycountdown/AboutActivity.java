@@ -103,17 +103,17 @@ public class AboutActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_changelog);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-            ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
-                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        insets.top * 4/5);
-                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                viewPadding.setLayoutParams(lp);
-                v.setPadding(0, 0, 0, 0);
-                return WindowInsetsCompat.CONSUMED;
-            });
+            if (ContactsEvents.isEdgeToEdge()) {
+                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4/5);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    return WindowInsetsCompat.CONSUMED;
+                });
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);

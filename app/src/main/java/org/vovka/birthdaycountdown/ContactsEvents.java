@@ -744,6 +744,10 @@ class ContactsEvents {
         return isSamsung() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
+    static boolean isEdgeToEdge() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM;
+    }
+
     Context getContext() {
         return context;
     }
@@ -782,37 +786,43 @@ class ContactsEvents {
         return this.resources;
     }
 
-    long countDaysDiff(@NonNull Date date1, @NonNull Date date2) {
+    private Calendar cacheCalendar1 = null;
+    private Calendar cacheCalendar2 = null;
+
+    long countDaysDiff(@NonNull Date dateFrom, @NonNull Date dateTo) {
         //https://stackoverflow.com/questions/1555262/calculating-the-difference-between-two-java-date-instances/43681941#43681941
 
         try {
 
-            boolean isNegative = false;
-            Calendar c1 = removeTime(getCalendarFromDate(date1));
-            Calendar c2 = removeTime(getCalendarFromDate(date2));
+            if (cacheCalendar1 == null) cacheCalendar1 = Calendar.getInstance();
+            if (cacheCalendar2 == null) cacheCalendar2 = Calendar.getInstance();
+
+            cacheCalendar1.setTime(dateFrom);
+            cacheCalendar2.setTime(dateTo);
+
+            Calendar c1;
+            Calendar c2;
+            int distanceSign = 1;
+            if (dateFrom.before(dateTo)) {
+                c1 = removeTime(cacheCalendar1);
+                c2 = removeTime(cacheCalendar2);
+            } else {
+                c1 = removeTime(cacheCalendar2);
+                c2 = removeTime(cacheCalendar1);
+                distanceSign = -1;
+            }
 
             if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) {
-                return c2.get(Calendar.DAY_OF_YEAR) - c1.get(Calendar.DAY_OF_YEAR);
-            }
-            // ensure c1 <= c2
-            if (c1.get(Calendar.YEAR) > c2.get(Calendar.YEAR)) {
-                isNegative = true;
-                Calendar c = c1;
-                c1 = c2;
-                c2 = c;
-            }
-            int y1 = c1.get(Calendar.YEAR);
-            int y2 = c2.get(Calendar.YEAR);
-            int d1 = c1.get(Calendar.DAY_OF_YEAR);
-            int d2 = c2.get(Calendar.DAY_OF_YEAR);
-
-            int minorYearSign = c1.get(Calendar.ERA) == GregorianCalendar.AD ? 1 : -1;
-
-            int resD = d2 + ((y2 - minorYearSign * y1) * 365) - d1;
-            if (isNegative) {
-                return -(resD + countLeapYearsBetween(minorYearSign * y1, y2));
+                return distanceSign * (c2.get(Calendar.DAY_OF_YEAR) - c1.get(Calendar.DAY_OF_YEAR));
             } else {
-                return resD + countLeapYearsBetween(minorYearSign * y1, y2);
+                int y1 = c1.get(Calendar.YEAR);
+                int y2 = c2.get(Calendar.YEAR);
+                int d1 = c1.get(Calendar.DAY_OF_YEAR);
+                int d2 = c2.get(Calendar.DAY_OF_YEAR);
+
+                int minorYearSign = c1.get(Calendar.ERA) == GregorianCalendar.AD ? 1 : -1;
+                int resD = d2 + ((y2 - minorYearSign * y1) * 365) - d1;
+                return distanceSign * (resD + countLeapYearsBetween(minorYearSign * y1, y2));
             }
 
         } catch (Exception e) {

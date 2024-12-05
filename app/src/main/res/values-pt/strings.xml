@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Todas as fontes</string>
 
     <string name="widget_config_index_label">Índice de início do evento a ser exibido</string>
-    <string name="widget_config_index_description">Valor 1 significa que o primeiro evento da lista será o ponto de partida, 2 - o segundo, e assim por diante… Você pode adicionar à tela vários widgets com diferentes índices de início de eventos para obter a configuração desejada</string>
 
     <string name="widget_config_scope_label">Limite de escopo de eventos</string>
     <string name="widget_config_scope_events_label">Máximo de eventos:</string>

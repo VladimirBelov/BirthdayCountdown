@@ -810,7 +810,6 @@
     <string name="widget_config_event_sources_empty">♻️ Все источники</string>
 
     <string name="widget_config_index_label">Стартовый номер событий</string>
-    <string name="widget_config_index_description">Значение 1 означает, что события будут отображаться с начала списка, 2 - со второго и так далее… Вы можете добавить на экран несколько виджетов с различными значениями в данном поле, чтобы получить желаемую конфигурацию</string>
 
     <string name="widget_config_scope_label">Ограничение объема событий</string>
     <string name="widget_config_scope_events_label">Количество (макс):</string>

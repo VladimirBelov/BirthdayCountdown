@@ -808,7 +808,6 @@
     <string name="widget_config_event_sources_empty">♻️ Todas las fuentes</string>
 
     <string name="widget_config_index_label">Número de inicio del evento</string>
-    <string name="widget_config_index_description">Un valor de 1 significa que los eventos se mostrarán desde el principio de la lista, 2 - desde el segundo, y así sucesivamente … Puede agregar varios widgets a la pantalla con diferentes valores en este campo para obtener la configuración deseada</string>
 
     <string name="widget_config_scope_label">Limitación del volumen de eventos</string>
     <string name="widget_config_scope_events_label">Cantidad (máx.):</string>
