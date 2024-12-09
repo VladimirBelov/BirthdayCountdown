@@ -608,7 +608,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
                 try {
                     colorWidgetBackground = Color.parseColor(widgetPref.get(5));
-                } catch (final Exception e) { /* */}
+                } catch (final Exception e) {/**/}
             }
             if (colorWidgetBackground == 0) {
                 colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
@@ -625,6 +625,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             updateEventSources();
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
+
+            //Реакция на нажатие
+            //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
 
         } catch (final Exception e) {
             Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);

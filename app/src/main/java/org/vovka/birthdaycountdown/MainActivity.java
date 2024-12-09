@@ -1837,6 +1837,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         startActivity(intentView);
                                     } catch (ActivityNotFoundException e) { /**/ }
                                 } else {
+                                    //https://www.codeproject.com/Tips/1097808/Custom-App-Chooser-in-Android
                                     ToastExpander.showInfoMsg(this, getText(R.string.msg_file_no_app_for_file).toString());
                                 }
 

@@ -300,7 +300,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="4"
-                        android:contentDescription="@string/widget_config_scope_facts_label" />
+                        android:contentDescription="@string/widget_config_scope_facts_label"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
 
