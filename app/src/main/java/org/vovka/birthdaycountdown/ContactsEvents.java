@@ -3247,7 +3247,6 @@ class ContactsEvents {
             long statCurrentModuleStart = System.currentTimeMillis();
 
             @Nullable Event event = null;
-
             TreeMap<Integer, String> userData = new TreeMap<>();
             Set<String> fileList;
             //todo: переделать на Date
@@ -3257,8 +3256,8 @@ class ContactsEvents {
             now.set(Calendar.SECOND, 0);
             now.set(Calendar.MILLISECOND, 0);
             final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
-
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
                 fileList = preferences_Birthday_files;
@@ -3391,9 +3390,7 @@ class ContactsEvents {
                     } else { //Birthdays Plus: ❙ДДДД-ММ-ДД❙ИОФ❙тип (Birthday, Anniversary, Custom)❙наименование события или null❚
 
                         final String[] eventBDPdetails = eventLine.split(Constants.STRING_BDP_DIV, -1);
-
                         if (eventBDPdetails.length == 5) {
-
                             eventDateString = eventBDPdetails[1];
                             eventTitle = eventBDPdetails[2];
                             if (eventBDPdetails[3].equals(Constants.STRING_BDP_CUSTOM)) {
@@ -3401,9 +3398,7 @@ class ContactsEvents {
                             } else {
                                 eventLabel_forSearch = eventBDPdetails[3];
                             }
-
                         }
-
                     }
 
                     if (eventDateString.isEmpty()) {
@@ -3712,16 +3707,16 @@ class ContactsEvents {
                                 needUpdate = true;
                             }
 
-                            if (!needUpdate) continue;
-
-                            StringBuilder dataRow = new StringBuilder();
-                            int rNum = 0;
-                            for (String entry : singleRowList) {
-                                rNum++;
-                                if (rNum != 1) dataRow.append(Constants.STRING_EOT);
-                                dataRow.append(entry);
+                            if (needUpdate) {
+                                StringBuilder dataRow = new StringBuilder();
+                                int rNum = 0;
+                                for (String entry : singleRowList) {
+                                    rNum++;
+                                    if (rNum != 1) dataRow.append(Constants.STRING_EOT);
+                                    dataRow.append(entry);
+                                }
+                                eventListUpdated.set(eventIndex, dataRow.toString());
                             }
-                            eventListUpdated.set(eventIndex, dataRow.toString());
                             userData.clear();
 
                         } else { //Такого события ещё не было
@@ -3757,79 +3752,81 @@ class ContactsEvents {
                         }
                     }
 
-                    if (!isPassedEvent) {
-                        statEventsCount++;
-                        statFilesEventCount++;
-                        fillEmptyUserData(userData);
+                    if (!userData.isEmpty()) {
+                        if (!isPassedEvent) {
+                            statEventsCount++;
+                            statFilesEventCount++;
+                            fillEmptyUserData(userData);
 
-                        StringBuilder dataRow = new StringBuilder();
-                        int rNum = 0;
-                        for (Map.Entry<Integer, String> entry : userData.entrySet()) {
-                            rNum++;
-                            if (rNum != 1) dataRow.append(Constants.STRING_EOT);
-                            dataRow.append(entry.getValue());
-                        }
-                        String eventData = dataRow.toString();
-                        if (!eventListUpdated.contains(eventData)) {
-                            eventListUpdated.add(eventData);
-                            if (contactID != null && !contactID.isEmpty()) {
-                                map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                            StringBuilder dataRow = new StringBuilder();
+                            int rNum = 0;
+                            for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                                rNum++;
+                                if (rNum != 1) dataRow.append(Constants.STRING_EOT);
+                                dataRow.append(entry.getValue());
                             }
-                            //Предыдущее появление плавающего события добавляем в список предыдущих
-                            if (datePrevFloatingEvent != null) {
-                                Date eventDatePrev = null;
-                                try {
-                                    eventDatePrev = sdf_DDMMYYYY.parse(datePrevFloatingEvent);
-                                } catch (ParseException pe) { /**/ }
-                                if (eventDatePrev != null) {
-                                    long eventDistance = countDaysDiff(eventDatePrev, now.getTime());
+                            String eventData = dataRow.toString();
+                            if (!eventListUpdated.contains(eventData)) {
+                                eventListUpdated.add(eventData);
+                                if (contactID != null && !contactID.isEmpty()) {
+                                    map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                                }
+                                //Предыдущее появление плавающего события добавляем в список предыдущих
+                                if (datePrevFloatingEvent != null) {
+                                    Date eventDatePrev = null;
+                                    try {
+                                        eventDatePrev = sdf_DDMMYYYY.parse(datePrevFloatingEvent);
+                                    } catch (ParseException pe) { /**/ }
+                                    if (eventDatePrev != null) {
+                                        long eventDistance = countDaysDiff(eventDatePrev, now.getTime());
 
-                                    if (eventDistance <= preferences_list_prev_events_scan_distance) {
-                                        String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
-                                        userData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDatePrev));
-                                        userData.put(Position_eventDistance, Long.toString(-eventDistance));
-                                        userData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
+                                        if (eventDistance <= preferences_list_prev_events_scan_distance) {
+                                            String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
+                                            userData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDatePrev));
+                                            userData.put(Position_eventDistance, Long.toString(-eventDistance));
+                                            userData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
 
-                                        String[] singleEventArray = new String[userData.size()];
-                                        rNum = 0;
-                                        for (Map.Entry<Integer, String> entry : userData.entrySet()) {
-                                            singleEventArray[rNum] = entry.getValue();
-                                            rNum++;
-                                        }
-                                        singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
-                                        eventData = TextUtils.join(Constants.STRING_EOT, singleEventArray);
-                                        if (!eventListPrev.contains(eventData)) {
-                                            eventListPrev.add(eventData);
+                                            String[] singleEventArray = new String[userData.size()];
+                                            rNum = 0;
+                                            for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                                                singleEventArray[rNum] = entry.getValue();
+                                                rNum++;
+                                            }
+                                            singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
+                                            eventData = TextUtils.join(Constants.STRING_EOT, singleEventArray);
+                                            if (!eventListPrev.contains(eventData)) {
+                                                eventListPrev.add(eventData);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    } else {
-                        long eventDistance = countDaysDiff(dateEvent, now.getTime());
+                        } else {
+                            long eventDistance = countDaysDiff(dateEvent, now.getTime());
 
-                        if (eventDistance <= preferences_list_prev_events_scan_distance) {
-                            fillEmptyUserData(userData);
+                            if (eventDistance <= preferences_list_prev_events_scan_distance) {
+                                fillEmptyUserData(userData);
 
-                            String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
-                            userData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateEvent));
-                            userData.put(Position_eventDistance, Long.toString(-eventDistance));
-                            userData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, dateEvent));
+                                String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
+                                userData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateEvent));
+                                userData.put(Position_eventDistance, Long.toString(-eventDistance));
+                                userData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, dateEvent));
 
-                            String[] singleEventArray = new String[userData.size()];
-                            int rNum = 0;
-                            for (Map.Entry<Integer, String> entry : userData.entrySet()) {
-                                singleEventArray[rNum] = entry.getValue();
-                                rNum++;
+                                String[] singleEventArray = new String[userData.size()];
+                                int rNum = 0;
+                                for (Map.Entry<Integer, String> entry : userData.entrySet()) {
+                                    singleEventArray[rNum] = entry.getValue();
+                                    rNum++;
+                                }
+                                singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
+                                final String eventData = TextUtils.join(Constants.STRING_EOT, singleEventArray);
+                                if (!eventListPrev.contains(eventData)) {
+                                    eventListPrev.add(eventData);
+                                }
                             }
-                            singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
-                            final String eventData = TextUtils.join(Constants.STRING_EOT, singleEventArray);
-                            if (!eventListPrev.contains(eventData)) {
-                                eventListPrev.add(eventData);
-                            }
                         }
+                        userData.clear();
                     }
-                    userData.clear();
                 }
             }
 
