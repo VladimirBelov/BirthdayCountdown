@@ -3249,7 +3249,7 @@ class ContactsEvents {
             @Nullable Event event = null;
             TreeMap<Integer, String> userData = new TreeMap<>();
             Set<String> fileList;
-            //todo: переделать на Date
+            //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
             Calendar now = new GregorianCalendar();
             now.set(Calendar.HOUR_OF_DAY, 0);
             now.set(Calendar.MINUTE, 0);
