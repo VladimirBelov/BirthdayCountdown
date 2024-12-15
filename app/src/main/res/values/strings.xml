@@ -474,9 +474,9 @@
         <item>Events for 3 previous days</item>
         <item>Events for 3 previous days but no more one</item>
         <item>Events for 3 previous days but no more two</item>
-        <item>One previous event</item>
-        <item>Two previous events</item>
-        <item>Three previous events</item>
+        <item>One previous event (within 14 days)</item>
+        <item>Two previous events (within 14 days)</item>
+        <item>Three previous events (within 14 days)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Font size</string>

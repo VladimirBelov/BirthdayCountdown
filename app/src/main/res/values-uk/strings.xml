@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
     <string name="msg_file_access_write_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
     <string name="msg_file_access_read_error">"Неможливо отримати доступ до читання файлу: %1$s"</string>
+    <string name="msg_file_no_app_for_file">На пристрої немає жодної програми, яка може відкрити даний тип файлу</string>
     <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -472,9 +473,9 @@
         <item>Події за 3 попередні дні</item>
         <item>Події за 3 попередні дні, але не більше одного</item>
         <item>Події за 3 попередні дні, але не більше двох</item>
-        <item>Одне попереднє подія</item>
-        <item>Два попередніх події</item>
-        <item>Три попередніх події</item>
+        <item>Одне попереднє подія (за 14 днів)</item>
+        <item>Два попередніх події (за 14 днів)</item>
+        <item>Три попередніх події (за 14 днів)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Розмір шрифту</string>

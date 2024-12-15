@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Błąd podczas otwierania pliku: "</string>
     <string name="msg_file_access_write_error">Nie udało się uzyskać dostępu do edycji pliku. Wybierz ponownie plik w ustawieniach aplikacji</string>
     <string name="msg_file_access_read_error">"Nie udało się uzyskać dostępu do odczytu pliku: %1$s"</string>
+    <string name="msg_file_no_app_for_file">Na urządzeniu nie ma aplikacji, które mogłyby otworzyć ten typ pliku</string>
     <string name="msg_before_event_prefix">"przez "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">"wstecz"</string>
@@ -472,9 +473,9 @@
         <item>Wydarzenia z ostatnich 3 dni</item>
         <item>Wydarzenia z ostatnich 3 dni, ale nie więcej niż jednego</item>
         <item>Wydarzenia z ostatnich 3 dni, ale nie więcej niż dwóch</item>
-        <item>Jedno poprzednie wydarzenie</item>
-        <item>Dwa poprzednie wydarzenia</item>
-        <item>Trzy poprzednie wydarzenia</item>
+        <item>Jedno poprzednie wydarzenie (w ciągu 14 dni)</item>
+        <item>Dwa poprzednie wydarzenia (w ciągu 14 dni)</item>
+        <item>Trzy poprzednie wydarzenia (w ciągu 14 dni)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Rozwiń tekst</string>

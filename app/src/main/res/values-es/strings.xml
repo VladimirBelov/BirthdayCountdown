@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
     <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
     <string name="msg_file_access_read_error">"No se pudo obtener acceso de lectura al archivo: %1$s"</string>
+    <string name="msg_file_no_app_for_file">No hay aplicaciones en el dispositivo que puedan abrir este tipo de archivo</string>
     <string name="msg_before_event_prefix">"dentro de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -472,9 +473,9 @@
         <item>Eventos de 3 días anteriores</item>
         <item>Eventos de los 3 días anteriores, pero no más de uno</item>
         <item>Eventos de los 3 días anteriores, pero no más de dos</item>
-        <item>Un evento anterior</item>
-        <item>Dos eventos anteriores</item>
-        <item>Tres eventos anteriores</item>
+        <item>Un evento anterior (dentro de los 14 días)</item>
+        <item>Dos eventos anteriores (dentro de los 14 días)</item>
+        <item>Tres eventos anteriores (dentro de los 14 días)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Tamaño de fuente</string>

@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Erro ao abrir arquivo: "</string>
     <string name="msg_file_access_write_error">"Não é possível obter acesso de gravação ao arquivo. Tente selecionar novamente o arquivo na preferência do aplicativo"</string>
     <string name="msg_file_access_read_error">"Não é possível obter acesso de leitura ao arquivo: %1$s"</string>
+    <string name="msg_file_no_app_for_file">Não há aplicativos no dispositivo que possam abrir este tipo de arquivo</string>
     <string name="msg_before_event_prefix">"em "</string>
     <string name="msg_after_event_postfix">" atrás"</string>
     <string name="msg_after_event_prefix">""</string>
@@ -472,9 +473,9 @@
         <item>Eventos dos 3 dias anteriores</item>
         <item>Eventos dos 3 dias anteriores, mas não mais um</item>
         <item>Eventos dos 3 dias anteriores, mas não mais dos dois</item>
-        <item>Um evento anterior</item>
-        <item>Dois eventos anteriores</item>
-        <item>Três eventos anteriores</item>
+        <item>Um evento anterior (dentro de 14 dias)</item>
+        <item>Dois eventos anteriores (dentro de 14 dias)</item>
+        <item>Três eventos anteriores (dentro de 14 dias)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Tamanho da fonte</string>

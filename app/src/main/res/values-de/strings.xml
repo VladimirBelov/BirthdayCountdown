@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>
     <string name="msg_file_access_read_error">"Es konnte kein Lesezugriff auf Datei erhalten werden: %1$s"</string>
+    <string name="msg_file_no_app_for_file">Es gibt keine Anwendungen auf dem Gerät, die diesen Dateityp öffnen können</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -472,9 +473,9 @@
         <item>Ereignisse der letzten 3 Tage</item>
         <item>Ereignisse der letzten 3 Tage, jedoch nicht mehr als eines</item>
         <item>Ereignisse der letzten 3 Tage, jedoch nicht mehr als zwei</item>
-        <item>Ein vorheriges Ereignis</item>
-        <item>Zwei frühere Ereignisse</item>
-        <item>Drei frühere Ereignisse</item>
+        <item>Ein vorheriges Ereignis (innerhalb von 14 Tagen)</item>
+        <item>Zwei frühere Ereignisse (innerhalb von 14 Tagen)</item>
+        <item>Drei frühere Ereignisse (innerhalb von 14 Tagen)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Schriftgröße</string>

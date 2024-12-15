@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Erreur d'ouverture du fichier: "</string>
     <string name="msg_file_access_write_error">"Impossible d'accéder à la modification du fichier. Réinitialisez le fichier dans les paramètres de l'application"</string>
     <string name="msg_file_access_read_error">"Impossible d'accéder à la lecture du fichier : %1$s"</string>
+    <string name="msg_file_no_app_for_file">"Aucune application sur l'appareil ne peut ouvrir ce type de fichier"</string>
     <string name="msg_before_event_prefix">"dans "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_after_event_prefix">"en arrière "</string>
@@ -472,9 +473,9 @@
         <item>Événements des 3 jours précédents</item>
         <item>Événements des 3 jours précédents mais pas plus</item>
         <item>Événements des 3 jours précédents mais pas plus de deux</item>
-        <item>Un événement précédent</item>
-        <item>Deux événements précédents</item>
-        <item>Trois événements précédents</item>
+        <item>Un événement précédent (dans les 14 jours)</item>
+        <item>Deux événements précédents (dans les 14 jours)</item>
+        <item>Trois événements précédents (dans les 14 jours)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Taille de police</string>

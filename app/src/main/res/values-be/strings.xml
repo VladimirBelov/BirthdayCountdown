@@ -72,6 +72,7 @@
     <string name="msg_file_open_error">"Памылка адкрыцця файла: "</string>
     <string name="msg_file_access_write_error">Не пашчасціла атрымаць доступ на рэдагаванне файла. Перавылучыце файл у наладах праграмы</string>
     <string name="msg_file_access_read_error">"Не пашчасціла атрымаць доступ на чытанне файла: %1$s"</string>
+    <string name="msg_file_no_app_for_file">На прыладзе няма ніводнага прыкладання, якое можа адкрыць дадзены тып файла</string>
     <string name="msg_before_event_prefix">"праз "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" таму"</string>
@@ -472,9 +473,9 @@
         <item>Падзеі за 3 папярэднія дні</item>
         <item>Падзеі за 3 папярэднія дні, але не больш за адное</item>
         <item>Падзеі за 3 папярэднія дні, але не больш за два</item>
-        <item>Адна папярэдняя падзея</item>
-        <item>Дзве папярэднія падзеі</item>
-        <item>Тры папярэднія падзеі</item>
+        <item>Адна папярэдняя падзея (за 14 дзён)</item>
+        <item>Дзве папярэднія падзеі (за 14 дзён)</item>
+        <item>Тры папярэднія падзеі (за 14 дзён)</item>
     </string-array>
 
     <string name="pref_List_FontMagnify_title">Велічыня шрыфту</string>
