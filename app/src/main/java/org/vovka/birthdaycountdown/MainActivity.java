@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
             setContentView(R.layout.activity_main);
-            //eventsData.coordinator = this.findViewById(R.id.coordinator);
 
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
