@@ -20,6 +20,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -112,6 +114,12 @@ public class AboutActivity extends AppCompatActivity {
                     TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                     viewPadding.setLayoutParams(lp);
                     v.setPadding(0, 0, 0, 0);
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                    } else {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                    }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -135,6 +143,9 @@ public class AboutActivity extends AppCompatActivity {
                 bar.setDisplayShowTitleEnabled(true);
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
             }
+
+            //Цвет CutoutAppearance на повёрнутом экране
+            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
             SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
@@ -292,7 +303,15 @@ public class AboutActivity extends AppCompatActivity {
                 for (String strChange : arrChangeLog) {
 
                     countRows++;
-                    if (strChange.charAt(0) == '#') {
+
+                    if (strChange.startsWith(Constants.STRING_2HASH)) {
+
+                        if (countRows > 1) sb.append(Constants.HTML_UL_END);
+                        sb.append(Constants.HTML_H2_START);
+                        sb.append(strChange.substring(2));
+                        sb.append(Constants.HTML_H2_END);
+
+                    } else if (strChange.startsWith(Constants.STRING_HASH)) {
 
                         if (countRows > 1) sb.append(Constants.HTML_UL_END);
                         sb.append(getString(R.string.changelog_release_title, strChange.substring(1)));

@@ -1,0 +1,1355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.12.2024, 11:27
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 16.12.2024, 11:27
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Narozeniny &amp; Události</string>
+    <string name="window_settings">Nastavení</string>
+    <string name="window_widget_settings">Nastavení widgetu</string>
+    <string name="window_about">O aplikaci</string>
+    <string name="window_faq">Často kladené otázky</string>
+    <string name="window_search_hints">Nápovědy pro vyhledávání</string>
+
+    <string name="activity_title_events_scope">Filtr</string>
+
+    <string name="shortcut_notify">Dnešní oznámení</string>
+    <string name="shortcut_quiz">Kvíz</string>
+    <string name="shortcut_settings">Nastavení</string>
+
+    <string name="menu_add_event">Přidat událost</string>
+    <string name="menu_add_event_to_contact">Přidat událost ke kontaktu…</string>
+    <string name="menu_add_event_to_contact_short">Přidat ke kontaktu…</string>
+    <string name="menu_add_event_to_calendar">Přidat událost do kalendáře…</string>
+    <string name="menu_add_event_to_calendar_short">Přidat do kalendáře…</string>
+    <string name="menu_open_file_with_events">Otevřít soubor s událostmi…</string>
+    <string name="menu_open_file_with_events_short">Otevřít soubor…</string>
+    <string name="menu_settings">Nastavení</string>
+    <string name="menu_refresh">Obnovit</string>
+    <string name="menu_search">Hledat</string>
+    <string name="menu_quiz">Kvíz</string>
+    <string name="menu_filter_events">Filtrovat…</string>
+    <string name="menu_events_sources">Zdroje…</string>
+    <string name="menu_events_types">Typy událostí…</string>
+    <string name="menu_hints">Nápovědy pro vyhledávání…</string>
+    <string name="menu_context_edit_contact">Upravit kontakt</string>
+    <string name="menu_context_create_contact">Vytvořit kontakt…</string>
+    <string name="menu_context_edit_event">Otevřít událost kalendáře</string>
+    <string name="menu_context_event_info">Údaje o události</string>
+    <string name="menu_context_hide_event">Skrýt událost</string>
+    <string name="menu_context_unhide_event">Zobrazit událost</string>
+    <string name="menu_context_remind">Připomenout…</string>
+    <string name="menu_context_remind_1h">Za hodinu</string>
+    <string name="menu_context_remind_morning">Příští ráno</string>
+    <string name="menu_context_anniversary_list">Všechny názvy výročí</string>
+    <string name="menu_context_silent_event">Neupozorňovat</string>
+    <string name="menu_context_unsilent_event">Oznámení o obnovení</string>
+    <string name="menu_context_merge_event">Odkaz na kontakt…</string>
+    <string name="menu_context_unmerge_event">Odpojit od kontaktu</string>
+    <string name="menu_context_remerge_event">Odkaz na jiný kontakt…</string>
+    <string name="menu_context_open_url">Otevřít webový odkaz</string>
+    <string name="menu_context_share">Sdílet událost…</string>
+    <string name="menu_context_share_as_image">jako obrázek</string>
+    <string name="menu_context_share_as_text">jako text</string>
+    <string name="menu_context_xDaysEvent_add">Přidat počítadlo dnů…</string>
+    <string name="menu_context_xDaysEvent_edit">Počítadlo dnů…</string>
+    <string name="menu_context_set_event_type">Vyberte typ události…</string>
+    <string name="menu_context_favorites_add">Přidat do oblíbených</string>
+    <string name="menu_context_favorites_remove">Odebrat z oblíbených</string>
+    <string name="menu_ok">OK</string>
+    <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
+    <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Události kalendáře</string>
+    <string name="menu_help_events_files" tools:ignore="MissingTranslation">Události místních souborů</string>
+    <string name="menu_help_events_facts" tools:ignore="MissingTranslation">Fakta</string>
+
+    <string name="msg_no_access_contacts">Žádný přístup ke kontaktům</string>
+    <string name="msg_no_events">Události nenalezeny</string>
+    <string name="msg_no_files_selected">" - nevybráno -"</string>
+    <string name="msg_file_open_error">"Chyba při otevírání souboru: "</string>
+    <string name="msg_file_access_write_error">"Nelze získat přístup k zápisu do souboru. Zkuste znovu vybrat soubor v předvolbách aplikace"</string>
+    <string name="msg_file_access_read_error">"Nelze získat přístup pro čtení k souboru: %1$s"</string>
+    <string name="msg_file_no_app_for_file">Ve vašem zařízení není aplikace pro otevření tohoto typu souboru</string>
+    <string name="msg_before_event_prefix">"za "</string>
+    <string name="msg_after_event_postfix">""</string>
+    <string name="msg_after_event_prefix">"před "</string>
+    <string name="msg_today">Dnes</string>
+    <string name="msg_tomorrow">Zítra</string>
+    <string name="msg_yesterday">Včera</string>
+    <string name="msg_before_yesterday">Předevčírem</string>
+    <string name="msg_day_after_tomorrow">pozítří</string>
+    <string name="msg_stats_prefix">"události: "</string>
+    <string name="msg_stats_filtered_prefix">"nalezené události: "</string>
+    <string name="msg_stats_hidden_prefix">"skryté události: "</string>
+    <string name="msg_stats_hidden_filtered_prefix">"nalezeny skryté události: "</string>
+    <string name="msg_stats_silenced_prefix">"umlčené události: "</string>
+    <string name="msg_stats_silenced_filtered_prefix">"nalezeny umlčené události: "</string>
+    <string name="msg_stats_xdays_prefix">"počítadla dnů: "</string>
+    <string name="msg_stats_xdays_filtered_prefix">"nalezené počítadla dnů: "</string>
+    <string name="msg_stats_unrecognized_prefix">"nerozpoznané události: "</string>
+    <string name="msg_stats_unrecognized_filtered_prefix">"nalezeny nerozpoznané události: "</string>
+    <string name="msg_stats_favorite_prefix">"oblíbené události: "</string>
+    <string name="msg_stats_favorite_filtered_prefix">"oblíbené události nalezeny: "</string>
+    <string name="msg_label_hidden">Skryté</string>
+    <string name="msg_label_silenced">Umlčeno</string>
+    <string name="msg_color_parse_error">Chyba analýzy barev!</string>
+    <string name="msg_date_parse_error">"Chyba analýzy data: "</string>
+    <string name="msg_event_parse_error">"Chyba analýzy události: '%1$s'"</string>
+    <string name="msg_type_parse_error">"Typ události nebyl rozpoznán: '%1$s' pro '%2$s'"</string>
+    <string name="msg_jump_to_event_error">Událost nenalezena! V nastavení aplikace povolte více typů událostí</string>
+    <string name="msg_errors_total">"Celkový počet chyb: "</string>
+    <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
+    <string name="msg_all">Vše</string>
+    <string name="msg_none">Žádné</string>
+
+    <string name="msg_plural_postfix">x</string>
+
+    <string name="msg_after_year_prefix_1">" rok"</string>
+    <string name="msg_after_year_prefix_5_20">" let"</string>
+    <string name="msg_after_year_prefix_1_">" let"</string> <!--21, 31, 41, ...-->
+    <string name="msg_after_year_prefix_2_3_4">" roky"</string>
+    <string name="msg_after_year_bc">" př. Kr E."</string>
+
+    <string name="msg_after_month_prefix_1">" měsíc"</string>
+    <string name="msg_after_month_prefix_2_3_4">" měsíce"</string>
+    <string name="msg_after_month_prefix_1_">" měsíců"</string> <!--21, 31, 41, ...-->
+    <string name="msg_after_month_prefix_5_20">" měsíců"</string>
+
+    <string name="msg_after_day_prefix_1">" den"</string>
+    <string name="msg_after_day_prefix_2_3_4">" dny"</string>
+    <string name="msg_after_day_prefix_1_">" dny"</string> <!--21, 31, ...-->
+    <string name="msg_after_day_prefix_5_20">" dny"</string>
+
+    <string name="msg_after_day_prefix_short">" d."</string>
+
+    <string name="msg_age_now">"Věk: "</string>
+    <string name="msg_age_was">"Věk úmrtí: "</string>
+    <string name="msg_age_could_be_now">"Může být nyní: "</string>
+    <string name="msg_age_will_be">"Bude: "</string>
+    <string name="msg_age_could_be">"Může být: "</string>
+    <string name="msg_age_passed">"Splněno: "</string>
+    <string name="msg_label_search">Zadejte část celého jména, typ kontaktu, práci, titul, část data události (čárkou):</string>
+    <string name="msg_hint_search">Hledaná hodnota</string>
+    <string name="msg_hint_global_search">Vyhledat narozeniny a události</string>
+    <string name="msg_notifications_soon_no_events">Žádné události pro vybrané dny</string>
+    <string name="msg_notifications_soon">"Události brzy - "</string>
+    <string name="msg_notifications_all">"Události - "</string>
+    <string name="msg_notifications_disabled">Oznámení deaktivována\n</string>
+    <string name="msg_exact_alarms_disabled">Přesné alarmy deaktivovány\n</string>
+    <string name="msg_no_events_hint">Nebyly nalezeny žádné události. Chcete-li zobrazit události, musí být vyplněny na vašich kartách kontaktů nebo ve vybraných kalendářích nebo ve vybraných soubor</string>
+    <string name="msg_no_accounts_hint">"Nebyly nalezeny žádné účty nebo jste k nim neudělili přístup"</string>
+    <string name="msg_no_calendars_hint">"Nebyly nalezeny žádné viditelné kalendáře nebo jste k nim neudělili přístup"</string>
+    <string name="msg_no_events_check_prefs">"Nebyly nalezeny žádné události. Zkontrolujte položku \"%1$s\" v části \"%2$s\" nastavení programu"</string>
+    <string name="msg_no_access_storage_hint">Žádný přístup k externímu úložišti. Zkontrolujte oprávnění aplikace</string>
+    <string name="msg_welcome_title">Vítejte!</string>
+    <string name="msg_welcome_text">Děkujeme za instalaci tohoto programu. Přestože je většina funkcí konfigurována tak informativně a minimálně otravně, jak je to jen možné, doporučujeme zkontrolovat nastavení aplikace. Můžete tam například povolit upozornění na nadcházející události nebo nastavit parametry pro widgety. Užijte si používání!</string>
+    <string name="msg_new_version_title">Co je nového ve verzi %1$s:</string>
+    <string name="msg_snoozed_until">"Odloženo do %1$s"</string>
+    <string name="msg_notify_time">"Oznámení je nastaveno na %1$s"</string>
+    <string name="msg_filter_clear_confirmation">Opravdu vymazat všechny filtry?</string>
+    <string name="msg_filter_clean_confirmation">Vymazat všechny filtry z odkazů na chybějící kontakty nebo události kalendáře?</string>
+    <string name="msg_filter_clean_silenced_result">"Vymazány ztišené události pro nepřítomné kontakty a události kalendáře: "</string>
+    <string name="msg_filter_clean_hidden_result">"Vymazány skryté události pro nepřítomné kontakty a události kalendáře: "</string>
+    <string name="msg_filter_clean_XDays_result">"Odstraněny počítadla dnů pro neexistující události: "</string>
+    <string name="msg_filter_clean_XDays_noresult">"Žádné počítadlo nebylo odstraněno. Pokud událost není uvedena, zkontrolujte typy událostí povolené pro zobrazení"</string>
+    <string name="msg_account_info">"Událost z účtu \"%1$s\""</string>
+    <string name="msg_calendar_info">"Událost z kalendáře \"%1$s\""</string>
+    <string name="msg_file_info">"Událost ze souboru \"%1$s\""</string>
+    <string name="msg_source_info">"Událost z \"%1$s\""</string>
+    <string name="msg_title_confirmation">Potvrzení</string>
+    <string name="msg_title_success">Akce dokončena</string>
+    <string name="msg_title_settings">Uložená nastavení</string>
+    <string name="msg_no_selection">Prázdný výběr! Je třeba vybrat cokoli</string>
+    <string name="msg_notifications_were_enabled">"Oznámení byla povolena\n"</string>
+    <string name="msg_notifications_were_disabled">"Oznámení byla zakázána\n"</string>
+    <string name="msg_widget_prefs_removed">"Předvolby pro widget #%s byly odstraněny"</string>
+    <string name="msg_widget_prefs_saved">"Předvolby uloženého widgetu #%1$s:\n#%2$s"</string>
+    <string name="msg_ringtone">"Vyzváněcí tón: "</string>
+    <string name="msg_deleted_channel">"Upozornit kanál %1$s byl smazán\n"</string>
+    <string name="msg_created_channel">"Upozornit kanál %1$s byl vytvořen\n"</string>
+    <string name="msg_sent_widgets_update_request">Odeslaný požadavek na aktualizaci widgetů</string>
+    <string name="msg_next_notification">"Další upozornění: %1$s\n"</string>
+    <string name="msg_next_widgetupdate">"Další aktualizace widgetu: %1$s\n"</string>
+    <string name="msg_no_action">Žádná akce pro událost</string>
+    <string name="msg_icon_changed">"Sada ikon aplikace: %1$s"</string>
+    <string name="msg_created_quiz_channel">Vytvořený kanál oznámení kvízu</string>
+    <string name="msg_prefs_import_clear_confirmation">Chcete před importem nového vymazat všechny uložené předvolby?</string>
+    <string name="msg_prefs_import_unknown">"Neznámá předvolba: %1$s"</string>
+    <string name="msg_prefs_import_error">"Chyba importu: %1$s"</string>
+    <string name="msg_event_type_select_title">Vyberte typ události</string>
+    <string name="msg_event_type_label_set">"Sada štítků: %1$s"</string>
+    <string name="msg_event_type_label_added">"Štítek přidán: %1$s"</string>
+    <string name="msg_event_type_label_absent">Událost nemá štítek!</string>
+
+    <string name="pref_Notifications_Notification_Channel_Name">Nadcházející události</string>
+    <string name="pref_Notifications_Notification_Channel_Description">Zobrazit upozornění na nadcházející události</string>
+    <string name="pref_Notifications_Quiz_Channel_Name">Kvíz</string>
+
+    <string name="hint_ContactIcon">Fotografie</string>
+    <string name="hint_Name">Celé jméno</string>
+    <string name="hint_Age">Věk</string>
+    <string name="hint_Date">Datum</string>
+    <string name="hint_EventDistance">Před událostí</string>
+    <string name="hint_EventDetails">Podrobnosti</string>
+    <string name="hint_VersionNumberDetails">Podrobnosti o čísle verze</string>
+    <string name="hint_EventIcon">Ikona</string>
+    <string name="hint_SearchPanel">Panel vyhledávání</string>
+    <string name="hint_AlertDialog">Dialogové okno výstrahy</string>
+    <string name="hint_AlertDialogIcon">Ikona dialogového okna výstrahy</string>
+    <string name="hint_DragItem">Přetahovatelná položka</string>
+    <string name="hint_Version_History">Historie verzí</string>
+    <string name="hint_Rate_PlayMarket">Ohodnoťte tuto aplikaci na Google Play</string>
+    <string name="hint_Rate_AppGallery">Ohodnoťte tuto aplikaci v HUAWEI AppGallery</string>
+    <string name="hint_Color">Hodnota ARGB</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_yes">Ano</string>
+    <string name="button_no">Ne</string>
+    <string name="button_cancel">Zrušit</string>
+    <string name="button_reset">Resetovat</string>
+    <string name="button_remove">Odebrat</string>
+    <string name="button_choose">Vybrat</string>
+    <string name="button_rate">Hodnocení aplikace</string>
+    <string name="button_mail">Pošta</string>
+    <string name="button_discuss">Diskutujte</string>
+    <string name="button_open_app_settings">Otevřít nastavení…</string>
+    <string name="button_open_version_history">Historie verzí</string>
+    <string name="button_all">Vše</string>
+    <string name="button_snooze">Připomenout</string>
+    <string name="button_attach">Připojit</string>
+    <string name="button_hide">Skrýt</string>
+    <string name="button_silent">Neupozorňovat</string>
+    <string name="button_dial">Vytočit</string>
+    <string name="button_question">Pošlete nový dotaz e-mailem</string>
+    <string name="button_close">Zavřít</string>
+    <string name="button_prefs">Předvolby</string>
+    <string name="button_off">Vypnout</string>
+    <string name="button_open">Otevřít</string>
+    <string name="button_share">Sdílet</string>
+    <string name="button_rgb">Barva RGB</string>
+
+    <string name="events_scope_not_hidden">Vše není skryté (%1$d)</string>
+    <string name="events_scope_all">Vše (%1$d)</string>
+    <string name="events_scope_hidden">Skryté (%1$d)</string>
+    <string name="events_scope_hidden_dead">Skryté (%1$d, uloženo %2$d)</string>
+    <string name="events_scope_silenced">Vypnuto (%1$d)</string>
+    <string name="events_scope_silenced_dead">Vypnuto (%1$d, uloženo %2$d)</string>
+    <string name="events_scope_xdays">Počítadla dnů (%1$d)</string>
+    <string name="events_scope_xdays_dead">Počítadla dnů (%1$d, uloženo %2$d)</string>
+    <string name="events_scope_unrecognized">Nerozpoznáno (%1$d)</string>
+    <string name="events_scope_favorite">Oblíbené (%1$d)</string>
+    <string name="events_scope_clear">Vymazat filtry</string>
+    <string name="events_scope_clean">Vyčistěte filtry od mrtvých odkazů</string>
+
+    <string name="event_type_birthday">Narozeniny</string>
+    <string name="event_type_anniversary">Výročí</string>
+    <string name="event_type_other">Jiná událost</string>
+    <string name="event_type_holiday">Svátky</string>
+    <string name="event_type_death">Výročí úmrtí</string>
+    <string name="event_type_crowning">Korunování</string>
+    <string name="event_type_nameday">Svátky</string>
+    <string name="event_type_calendar">Událost kalendáře</string>
+    <string name="event_type_file">Událost souboru</string>
+    <string name="event_type_unrecognized">Nerozpoznaná událost</string>
+
+    <string name="account_type_local">Místní účet</string>
+
+    <string name="appwidget_text">Načítání…</string>
+    <string name="appwidget_label_1_7">Pro 1–7 událostí</string>
+    <string name="appwidget_desc_1_7">Rozbalitelný horizontální fotografický widget</string>
+    <string name="appwidget_label_1">Pro 1 událost</string>
+    <string name="appwidget_desc_1">Fotografický widget rozšiřitelný všemi směry pouze pro 1 událost</string>
+    <string name="appwidget_label_5">Pro 5 událostí</string>
+    <string name="appwidget_desc_5">Vodorovný fotografický widget pro přesně 5 událostí</string>
+    <string name="appwidget_label_List">Seznam událostí</string>
+    <string name="appwidget_desc_List">Rozšiřitelný vertikální seznam widget s konstruktorem pro informace o události</string>
+    <string name="appwidget_label_PhotoList">Seznam s fotografiemi</string>
+    <string name="appwidget_desc_PhotoList">Rozbalitelný vertikální widget s fotografií a informacemi o události</string>
+    <string name="appwidget_label_Calendar">Kalendář</string>
+    <string name="appwidget_desc_Calendar">Widget Kalendář na 1 až 12 měsíců</string>
+    <string name="widget_Photo">Fotografie</string>
+    <string name="widget_FIO">Celé jméno</string>
+    <string name="widget_Age">YY</string>
+    <string name="widget_TypeIcon">Ikona</string>
+    <string name="widget_Distance">DD</string>
+    <string name="widget_msg_updated">"aktualizováno: "</string>
+    <string name="widget_msg_events">"události: "</string>
+
+    <string name="pref_Common_title">Společná nastavení</string>
+    <string name="pref_Common_summary">Jazyk, barevný motiv a další užitečná nastavení</string>
+    <string name="pref_Language_title">Jazyk</string>
+    <string name="pref_Language_description">Jazyk rozhraní a dat</string>
+    <string name="pref_Language_System">Jazyk systému</string>
+    <string name="pref_Theme_title">Barevný motiv</string>
+    <string name="pref_Theme_description">Barevný motiv rozhraní</string>
+    <string name="pref_Icon_title">Ikona aplikace</string>
+    <string name="pref_Icon_description">Vyberte ikonu aplikace pro spouštění systému</string>
+    <string name="pref_Accounts_title">Účty</string>
+    <string name="pref_Accounts_summary">Prohledávat události pouze u těchto kontaktů</string>
+    <string name="pref_IconPack_title">Sada ikon</string>
+    <string name="pref_IconPack_description">Použijte vybranou sadu ikon k zobrazení siluety kontaktu</string>
+    <string name="pref_MenuStyle_title">Kompaktní nabídka</string>
+    <string name="pref_MenuStyle_description">Použijte kompaktní nabídku s několika úrovněmi nebo rozšířenou nabídku s kategoriemi</string>
+
+    <string-array name="pref_IconPack_entries">
+        <item>Standardní (bez věku)</item>
+        <item>Standardní</item>
+        <item>Barva</item>
+        <item>Černá/bílá</item>
+        <item>Wagish</item>
+    </string-array>
+
+    <string-array name="pref_Icon_entries">
+        <item>Jaro</item>
+        <item>Léto</item>
+        <item>Podzim</item>
+        <item>Zima</item>
+        <item>Šedá</item>
+        <item>Černá</item>
+    </string-array>
+
+    <string-array name="weekDays">
+        <item>"v neděli"</item>
+        <item>"v pondělí"</item>
+        <item>"v úterý"</item>
+        <item>"ve středu"</item>
+        <item>"ve čtvrtek"</item>
+        <item>"v pátek"</item>
+        <item>"v sobotu"</item>
+    </string-array>
+
+    <string-array name="weekDaysShort">
+        <item>ne</item>
+        <item>po</item>
+        <item>út</item>
+        <item>st</item>
+        <item>čt</item>
+        <item>pá</item>
+        <item>so</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_title">Nastavení událostí</string>
+    <string name="pref_CustomEvents_summary">Zdroje událostí, klasifikace typů, přizpůsobení štítků</string>
+    <string name="pref_CustomEvents_hint">Zadejte štítky událostí (čárkou)</string>
+    <string name="pref_CustomEvent_Caption_hint">Popis události</string>
+
+    <string name="pref_CustomEvents_Sources_title">Zdroje událostí</string>
+    <string name="pref_CustomEvents_Sources_summary">Používejte tyto zdroje pro události různých typů (typ je určen uvnitř událostí nebo je určen \"štítky událostí\" níže)</string>
+    <string name="pref_CustomEvents_Sources_hint">Chcete-li zahrnout zdroje událostí pouze pro jeden typ události (pouze narozeniny nebo svátky), použijte nastavení pro konkrétní typ události (níže)</string>
+
+    <string name="pref_CustomEvents_Rules_title">Nastavení importu</string>
+    <string name="pref_CustomEvents_Rules_summary">Použít toto nastavení při importu událostí</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Pravidla rozpoznávání jmen</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Pravidla pro rozpoznávání jmen kontaktu z názvu události kalendáře</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Zadejte pravidla rozpoznávání jména kontaktu z názvu události kalendáře. Více pravidel je odděleno \"|\". Pravidlo musí obsahovat značku [name] obklopenou jiným textem (volitelné). Pravidlo \"[name ]\" nemůže být poslední (pokud je jich více):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Značky nebyly nalezeny!</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Nesprávný formát! Oddělovač musí být | symbol</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Formát názvu pro události kalendáře</string>
+    <string name="pref_CustomEvents_Rules_Calendars_NameFormat_summary">Kontakty v událostech kalendáře se zaznamenávají v tomto formátu</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_title">Formát názvu pro události souboru</string>
+    <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_summary">Kontakty v událostech z místních souborů jsou zaznamenány v tomto formátu</string>
+
+    <string name="pref_CustomEvents_Rules_Unrecognized_title">Nerozpoznané události</string>
+    <string name="pref_CustomEvents_Rules_Unrecognized_summary">Co dělat s událostmi, jejichž typ nebyl rozpoznán</string>
+    <string-array name="pref_CustomEvents_Rules_Unrecognized_entries">
+        <item>Nastavit jako typ události \'Ostatní\'</item>
+        <item>Nastavit jako typ události \'Nerozpoznaný\'</item>
+        <item>Přeskočit tuto událost</item>
+    </string-array>
+
+    <string name="pref_CustomEvents_Birthday_title">Narozeniny</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_title">Použít standardní štítky</string>
+    <string name="pref_CustomEvents_Birthday_UseInternal_summary">Používejte standardní štítky k detekci narozeninových událostí</string>
+    <string name="pref_CustomEvents_Birthday_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Birthday_Labels_summary">Události s těmito štítky budou označeny jako narozeniny (čárkou)</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_summary">Zobrazit narozeninové události z vybraných kalendářů</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Použít datum s rokem</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Použít pro událost celé datum události kalendáře (nejen den a měsíc)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Zobrazit narozeninové události z vybraných souborů</string>
+
+    <string name="pref_CustomEvents_Anniversary_title">Výročí</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_title">Použít standardní štítky</string>
+    <string name="pref_CustomEvents_Anniversary_UseInternal_summary">Používejte standardní štítky k detekci výročních událostí</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Anniversary_Labels_summary">Události s těmito štítky budou označeny jako výročí (čárkou)</string>
+    <string name="pref_CustomEvents_Anniversary_List_title">Seznam</string>
+    <string name="pref_CustomEvents_Anniversary_List_summary">Všechny známé názvy výročí (podle roku)</string>
+
+    <string name="pref_CustomEvents_NameDay_title">Svátky</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_title">Použít standardní štítky</string>
+    <string name="pref_CustomEvents_NameDay_UseInternal_summary">Používejte standardní štítky ke zjišťování událostí jmenin</string>
+    <string name="pref_CustomEvents_NameDay_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_NameDay_Labels_summary">Události s těmito štítky budou označeny jako jmeniny</string>
+
+    <string name="pref_CustomEvents_Crowning_title">Koruny</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_title">Použít standardní štítky</string>
+    <string name="pref_CustomEvents_Crowning_UseInternal_summary">Používejte standardní štítky k detekci vrcholných událostí</string>
+    <string name="pref_CustomEvents_Crowning_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Crowning_Labels_summary">Události s těmito štítky budou označeny jako koruny (čárkou)</string>
+
+    <string name="pref_CustomEvents_Death_title">Výročí úmrtí</string>
+    <string name="pref_CustomEvents_Death_UseInternal_title">Použít standardní štítky</string>
+    <string name="pref_CustomEvents_Death_UseInternal_summary">Používejte standardní štítky k detekci událostí výročí úmrtí</string>
+    <string name="pref_CustomEvents_Death_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Death_Labels_summary">Události s těmito štítky budou označeny jako výročí úmrtí (čárkou)</string>
+
+    <string name="pref_CustomEvents_Other_title">Další události</string>
+    <string name="pref_CustomEvents_Other_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Other_Labels_summary">Události s těmito štítky budou označeny jako jiné události (čárkou)</string>
+
+    <string name="pref_CustomEvents_Holiday_title">Svátky</string>
+    <string name="pref_CustomEvents_Holiday_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Události s těmito štítky budou označeny jako svátky (čárkou)</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_title">Svátky</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Zobrazit tyto státní svátky</string>
+
+    <string name="pref_CustomEvents_Fact_title">Fakta</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Sbalená fakta</string>
+    <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">Zobrazit tato fakta z databáze v balíčku</string>
+    <string name="pref_CustomEvents_Fact_LocalFiles_summary">Zobrazit fakta z vybraných souborů</string>
+
+    <string name="pref_CustomEvents_Custom_title">Události definované uživatelem</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Popis události</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Zadejte popisek pro tuto událost, abyste ji mohli začít používat</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Události s těmito štítky budou označeny jako tato událost (čárkou)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Použít datum s rokem</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">Použít informace o úplném datu události (nejen den a měsíc)</string>
+
+    <string name="pref_CustomEvents_Calendars_title">Kalendáře</string>
+    <string name="pref_CustomEvents_Calendars_summary">Zobrazit události z vybraných kalendářů</string>
+    <string name="pref_CustomEvents_LocalFiles_title">Místní soubory</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Zobrazit události z vybraných souborů</string>
+
+    <string-array name="pref_Theme_entries">
+        <item>Hnědá</item>
+        <item>Oranžová</item>
+        <item>Zelená</item>
+        <item>Čedovozelená</item>
+        <item>Modrá</item>
+        <item>Indigo</item>
+        <item>Modrošedá</item>
+        <item>Tmavě šedá</item>
+        <item>Černá</item>
+    </string-array>
+
+    <string name="pref_List_EventTypes_title">Typy událostí</string>
+    <string name="pref_List_EventTypes_summary">Jaké druhy událostí zahrnout do seznamu</string>
+
+    <string-array name="pref_List_EventTypes_entries">
+        <item>🎂 Narozeniny</item>
+        <item>💑 Výročí</item>
+        <item>🗓️ Další události</item>
+        <item>🏖️ Svátky</item>
+        <item>⏰ Vlastní události</item>
+        <item>🏆 Počet zaokrouhlených dní (5000, 10000, 15000 dní)</item>
+    </string-array>
+
+    <string name="pref_List_EventSources_title">Zdroje událostí</string>
+    <string name="pref_List_EventSources_description">Zobrazit události pouze z těchto zdrojů událostí. Pokud není vybrán žádný zdroj, zobrazí se události ze všech zdrojů</string>
+
+    <string name="pref_List_SadPhoto_title">Smuteční páska</string>
+    <string name="pref_List_SadPhoto_summary">Označení fotografií zesnulých kontaktů smuteční páskou</string>
+
+    <string-array name="pref_List_SadPhoto_entries">
+        <item>Nikdy</item>
+        <item>Pouze pro jednu událost</item>
+        <item>Pro všechny kontaktní události</item>
+    </string-array>
+
+    <string name="pref_EventList_title">Seznam událostí</string>
+    <string name="pref_EventList_summary">Přizpůsobení seznamu hlavních událostí</string>
+
+    <string name="pref_List_PrevEvents_title">Předchozí události</string>
+    <string name="pref_List_PrevEvents_summary">Zobrazit předchozí události v horní části seznamu událostí</string>
+
+    <string-array name="pref_List_PrevEvents_entries">
+        <item>Žádné</item>
+        <item>Včerejší události</item>
+        <item>Události za 2 předchozí dny</item>
+        <item>Události za 3 předchozí dny</item>
+        <item>Události za 3 předchozí dny, ale ne více</item>
+        <item>Události za 3 předchozí dny, ale ne více za dva</item>
+        <item>Jedna předchozí událost (za 14 dní)</item>
+        <item>Dvě předchozí události (za 14 dní)</item>
+        <item>Tři předchozí události (za 14 dní)</item>
+    </string-array>
+
+    <string name="pref_List_FontMagnify_title">Velikost písma</string>
+    <string name="pref_List_FontMagnify_summary">Nastavit velikost písma prvků události</string>
+    <string name="pref_List_FontMagnify_progress">"%1$s%%"</string>
+    <string name="pref_List_FontMagnify_seek_distance">Vzdálenost události:</string>
+    <string name="pref_List_FontMagnify_seek_name">Název nebo název události:</string>
+    <string name="pref_List_FontMagnify_seek_details">Podrobnosti události:</string>
+    <string name="pref_List_FontMagnify_seek_date">Datum:</string>
+    <string name="pref_List_FontMagnify_seek_age">Věk:</string>
+
+    <string name="pref_Color_title">Barva:</string>
+    <string name="pref_Red_title">Červená:</string>
+    <string name="pref_Blue_title">Modrá:</string>
+    <string name="pref_Green_title">Zelená:</string>
+    <string name="pref_Alpha_title">Transparentnost:</string>
+
+    <string name="pref_List_Style_title">Styl seznamu událostí</string>
+    <string name="pref_List_Style_summary">Nastavit styl seznamu událostí</string>
+
+    <string-array name="pref_List_Style_entries">
+        <item>Plochý</item>
+        <item>Karty</item>
+    </string-array>
+
+    <string name="pref_List_PhotoStyle_title">Styl fotek</string>
+    <string name="pref_List_PhotoStyle_summary">Nastavit styl fotografií kontaktů v seznamu událostí</string>
+
+    <string-array name="pref_List_PhotoStyle_entries">
+        <item>Původní</item>
+        <item>Mírně zaoblené</item>
+        <item>Středně zaoblené</item>
+        <item>Výrazně zaoblené</item>
+        <item>Kruh</item>
+    </string-array>
+
+    <string name="pref_List_AgeFormat_title">Věkový formát</string>
+    <string name="pref_List_AgeFormat_summary">Formát zobrazení věku pro nadcházející události</string>
+
+    <string-array name="pref_List_AgeFormat_entries">
+        <item>Popis čísla věku (dny, měsíce, roky)</item>
+        <item>Nahraďte tisíce za \"K\" (5K, 10K)</item>
+        <item>Oddělte tisíce míst</item>
+    </string-array>
+
+    <string name="pref_List_Filling_title">Typ vyplnění pozadí</string>
+    <string name="pref_List_Filling_summary">Nastavit typ vyplnění pro zástupný symbol události (gradient)</string>
+
+    <string-array name="pref_List_Filling_entries">
+        <item>Žádné vyplňování</item>
+        <item>Zleva doprava</item>
+        <item>Zprava doleva</item>
+        <item>Shora dolů</item>
+        <item>Odspodu nahoru</item>
+        <item>Ze středu</item>
+        <item>Do středu</item>
+    </string-array>
+
+    <string name="pref_List_Jubilee_Algorithm_title">Jubilejní narozeniny</string>
+    <string name="pref_List_Jubilee_Algorithm_summary">Jaký je princip považovat narozeniny za jubileum</string>
+
+    <string-array name="pref_List_Jubilee_Algorithm_entries">
+        <item>Každých 10 let</item>
+        <item>Každých 5 let</item>
+        <item>Flexibilní (1, 3, 5, 10, 14, 18, 21, 30, 45, poté každých 5 let)</item>
+    </string-array>
+
+    <string name="pref_List_NameFormat_title">Formát jména kontaktu</string>
+    <string name="pref_List_NameFormat_description">Jméno nebo příjmení na začátku</string>
+
+    <string-array name="pref_List_NameFormat_entries">
+        <item>Jméno Patronymické Příjmení</item>
+        <item>Příjmení Jméno Patronymické</item>
+    </string-array>
+
+    <string name="pref_List_DateFormat_title">Formát data</string>
+    <string name="pref_List_DateFormat_description">Formát dat zobrazovaných v seznamu událostí a widgetech</string>
+
+    <string-array name="pref_List_DateFormat_entries">
+        <item>Podle aktuálního jazyka</item>
+        <item>DD.MM.RRRR</item>
+        <item>MM.DD.RRRR</item>
+        <item>DD/MM/RRRR</item>
+        <item>MM/DD/RRRR</item>
+        <item>DD MMM RRRR</item>
+        <item>D MMMM RRRR</item>
+    </string-array>
+
+    <string name="pref_List_CustomCaption_title">Titulek seznamu vlastních událostí</string>
+    <string name="pref_List_CustomCaption_summary">Vlastní popis hlavního seznamu událostí (emodži 🎂 jsou podporovány)</string>
+    <string name="pref_List_CustomCaption_hint">Zadejte vlastní popisek</string>
+
+    <string name="pref_List_CustomTodayEventCaption_title">Vlastní titulky pro dnešní událost</string>
+    <string name="pref_List_CustomTodayEventCaption_summary">Vlastní titulky pro dnešní událost namísto zprávy \"dnes\" (emodži 🎂 jsou podporovány)</string>
+    <string name="pref_List_CustomTodayEventCaption_hint">Zadejte vlastní popisek</string>
+
+    <string name="pref_List_FastScroll_title">Rychlé posouvání</string>
+    <string name="pref_List_FastScroll_summary">Povolit rychlé posouvání seznamu událostí při dotyku pravé strany obrazovky</string>
+
+    <string name="pref_List_QuickAction_title">Rychlá akce</string>
+    <string name="pref_List_QuickAction_summary">Vždy zobrazit tuto akci na panelu akcí</string>
+    <string name="pref_List_QuickAction_none">Žádné</string>
+
+    <string name="pref_Female_Names_title">Ženská jména</string>
+    <string name="pref_Female_Names_description">Další ženská jména pro správné zobrazení ikon kontaktů bez fotografie a analýzu celých jmen</string>
+    <string name="pref_Female_Names_hint">Zadejte ženská jména (čárkou)</string>
+
+    <string name="pref_Male_Names_title">Mužská jména</string>
+    <string name="pref_Male_Names_description">Další mužská jména pro správné zobrazení ikon kontaktů bez fotografie a analýzu celých jmen</string>
+    <string name="pref_Male_Names_hint">Zadejte mužská jména (čárkou)</string>
+
+    <string name="pref_List_EventInfo_title">Podrobnosti události</string>
+    <string name="pref_List_EventInfo_summary">Jaké další podrobnosti události zobrazit</string>
+
+    <string-array name="pref_List_EventInfo_entries">
+        <item>Fotografie</item>
+        <item>Název</item>
+        <item>Úkol</item>
+        <item>Přezdívka</item>
+        <item>Typ události</item>
+        <item>Původní štítek události</item>
+        <item>Zdroj události</item>
+        <item>Ikona typu události</item>
+        <item>Ikona Oblíbené</item>
+        <item>Věk</item>
+        <item>Znamení zvěrokruhu</item>
+        <item>Čínský kalendářní rok</item>
+        <item>Webový odkaz</item>
+        <item>Poznámky nebo popis</item>
+        <item>Účet události a nezpracované datum</item>
+    </string-array>
+
+    <string name="pref_List_OnClick_title">Akce při kliknutí</string>
+    <string name="pref_List_OnClick_summary">Co dělat při kliknutí na událost</string>
+    <string-array name="pref_List_OnClick_entries">
+        <item>Otevřít kartu kontaktu, pokud chybí - událost kalendáře, pokud chybí - webový odkaz</item>
+        <item>Otevřít událost kalendáře, pokud chybí - kontaktní karta, pokud chybí - webový odkaz</item>
+        <item>Otevřít webový odkaz, pokud chybí - kontaktní karta, pokud chybí - událost kalendáře</item>
+        <item>Otevřít kartu kontaktu, pokud chybí - webový odkaz, pokud chybí - událost kalendáře</item>
+        <item>Otevřít kontextovou nabídku</item>
+        <item>Nic</item>
+    </string-array>
+
+    <string name="pref_List_SearchDeath_title">Hloubka vyhledávání</string>
+    <string name="pref_List_SearchDeath_summary">Jaké zdroje hledat události</string>
+    <string-array name="pref_List_SearchDeath_entries">
+        <item>Vybrané zdroje</item>
+        <item>Všechny zdroje</item>
+    </string-array>
+
+    <string name="pref_List_Color_EventToday_title">Dnešní události</string>
+    <string name="pref_List_Color_EventToday_summary">Titulek Barva dne pro dnešní události</string>
+
+    <string name="pref_List_Color_EventSoon_title">V blízkosti událostí</string>
+    <string name="pref_List_Color_EventSoon_summary">Barva denní vzdálenosti pro blízké události</string>
+
+    <string name="pref_List_Color_EventJubilee_title">Jubileum</string>
+    <string name="pref_List_Color_EventJubilee_summary">Barva jubilejního věku</string>
+
+    <string name="pref_List_Margin_title">Vodorovné okraje</string>
+    <string name="pref_List_Margin_summary">Vyrovnejte neprůhledné okraje obrazovky smartphonu přidáním okrajů</string>
+    <string-array name="pref_List_Margin_entries">
+        <item>Malý</item>
+        <item>Střední</item>
+        <item>Velký</item>
+    </string-array>
+
+    <string name="pref_Widgets_title">Widgety</string>
+    <string name="pref_Widgets_summary">Běžné předvolby widgetů</string>
+
+    <string name="pref_Widgets_UpdateInterval_title">Interval aktualizace</string>
+    <string name="pref_Widgets_UpdateInterval_summary">Interval nucené aktualizace widgetu</string>
+
+    <string-array name="pref_Widgets_UpdateInterval_entries">
+        <item>Automaticky (řízeno systémem Android)</item>
+        <item>Každou 1 hodinu + půlnoc</item>
+        <item>Každé 2 hodiny + půlnoc</item>
+        <item>Každé 4 hodiny + půlnoc</item>
+        <item>Každých 6 hodin + půlnoc</item>
+        <item>Každých 12 hodin + půlnoc</item>
+    </string-array>
+
+    <string name="pref_Widgets_EventInfo_title">Podrobnosti události</string>
+    <string name="pref_Widgets_EventInfo_summary">Jaké podrobnosti události a prvky widgetu zobrazit ve výchozím nastavení</string>
+
+    <string name="pref_EventInfo_None">Žádné</string>
+    <string name="pref_EventInfo_Border">Ohraničení widgetu</string>
+    <string name="pref_EventInfo_Dividers">Oddělovače událostí</string>
+    <string name="pref_EventInfo_ButtonConfig">Tlačítko Config</string>
+    <string name="pref_EventInfo_Photo">Fotka kontaktu</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Ikona typu události</string>
+    <string name="pref_EventInfo_EventCaption">Popis události</string>
+    <string name="pref_EventInfo_EventLabel">Původní štítek události</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Ikona oblíbených</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Ikona umlčené události</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ znamení zvěrokruhu</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 čínský kalendářní rok</string>
+    <string name="pref_EventInfo_EventDate_Original">Původní datum události</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Původní datum události s rokem</string>
+    <string name="pref_EventInfo_EventDate">Datum události</string>
+    <string name="pref_EventInfo_EventDate_WithYear">Datum události s rokem</string>
+    <string name="pref_EventInfo_EventTitle">Název události (jméno osoby)</string>
+    <string name="pref_EventInfo_Age">Věk (výročí)</string>
+    <string name="pref_EventInfo_CurrentAge">Aktuální věk</string>
+    <string name="pref_EventInfo_WeddingName">Název výročí svatby</string>
+    <string name="pref_EventInfo_DaysBeforeEvent">Dny před událostí</string>
+    <string name="pref_EventInfo_DaysBeforeEventShort">Dny před událostí (krátký formát)</string>
+    <string name="pref_EventInfo_DaysBeforeEventFar">Dny před událostí (nikoli blízko události)</string>
+    <string name="pref_EventInfo_EventDayOfWeek">Den události v týdnu</string>
+    <string name="pref_EventInfo_EventDayOfWeekShort">Den události v týdnu (krátký formát)</string>
+    <string name="pref_EventInfo_EventDayOfWeekFar">Den události v týdnu (není blízko události)</string>
+    <string name="pref_EventInfo_Organization">Organizace</string>
+    <string name="pref_EventInfo_JobTitle">Název</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ikona zdroje události</string>
+    <string name="pref_EventInfo_LinkIcon">🔗 Webový odkaz je k dispozici</string>
+    <string name="pref_EventInfo_DatesInBrackets">Data v závorkách</string>
+    <string name="pref_EventInfo_ColorizeEntireRow">Vybarvit všechny události barvou data</string>
+    <string name="pref_EventInfo_NewLine1">"- nový řádek -"</string>
+    <string name="pref_EventInfo_NewLine2">"- nový řádek - "</string>
+    <string name="pref_EventInfo_NewLine3">"- nový řádek -  "</string>
+
+    <string-array name="pref_Widgets_EventInfo_entries">
+        <item>@string/pref_EventInfo_Border</item>
+        <item>@string/pref_EventInfo_Photo</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_SilentedIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_ZodiacYear</item>
+    </string-array>
+
+    <string name="pref_Widgets_BottomInfo_title">Popis události (spodní řádek)</string>
+    <string name="pref_Widgets_BottomInfo_summary">Co zobrazit níže uvedenou fotografii na fotografických widgetech</string>
+
+    <string name="pref_Widgets_BottomInfo2nd_title">Popis události (horní řádek)</string>
+    <string name="pref_Widgets_BottomInfo2nd_summary">Co zobrazit níže uvedenou fotografii na fotografických widgetech</string>
+
+    <string-array name="pref_Widgets_BottomInfo_entries">
+        <item>Příjmení Jméno patronymické</item>
+        <item>Příjmení Jméno patronymické (přezdívka)</item>
+        <item>Příjmení N. P. (Patronymické jméno, pokud není uvedeno Příjmení)</item>
+        <item>Jméno Patronymické příjmení</item>
+        <item>Název</item>
+        <item>Přezdívka (jméno, pokud chybí)</item>
+        <item>Příjmení</item>
+        <item>Datum události</item>
+        <item>Typ události</item>
+        <item>Původní štítek události</item>
+        <item>Organizace (název, pokud chybí)</item>
+        <item>Nic</item>
+    </string-array>
+
+    <string name="widget_config_captions_use_prefs_caption">Titulky událostí</string>
+    <string name="widget_config_captions_use_prefs_label">Z běžných předvoleb</string>
+    <string name="pref_Widgets_captionCaptionsUpper">Horní řádek:</string>
+    <string name="pref_Widgets_captionCaptionsBottom">Spodní řádek:</string>
+    <string name="pref_Widgets_captionCaptionsAligning">Zarovnání:</string>
+    <string name="pref_Widgets_captionCaptionsRows">Řádky:</string>
+    <string name="pref_Widgets_captionCaptionsFontStyle">Styl:</string>
+    <string name="pref_Widgets_captionCaptionsSize">Velikost a barva:</string>
+
+    <string-array name="pref_Widgets_Aligning">
+        <item>Vlevo</item>
+        <item>Střed</item>
+        <item>Vpravo</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Rows">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_FontStyle">
+        <item>Normální</item>
+        <item>Tučné</item>
+        <item>Kurzíva</item>
+        <item>Tučná kurzíva</item>
+    </string-array>
+
+    <string-array name="pref_Widgets_Days_EventSoon_entries">
+        <item>Nezvýrazňovat</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>10</item>
+        <item>14</item>
+    </string-array>
+
+    <string name="pref_Widgets_OnClick_title">Akce při kliknutí</string>
+    <string name="pref_Widgets_OnClick_summary">Co dělat při kliknutí na událost</string>
+    <string-array name="pref_Widgets_OnClick_entries">
+        <item>Otevřít kartu kontaktu, pokud chybí - událost kalendáře, pokud chybí - webový odkaz</item>
+        <item>Otevřít událost kalendáře, pokud chybí - kontaktní karta, pokud chybí - webový odkaz</item>
+        <item>Otevřít webový odkaz, pokud chybí - kontaktní karta, pokud chybí - událost kalendáře</item>
+        <item>Otevřít kartu kontaktu, pokud chybí - webový odkaz, pokud chybí - událost kalendáře</item>
+        <item>Otevřít seznam událostí</item>
+        <item>Nic</item>
+    </string-array>
+
+    <string name="pref_Widgets_Color_EventCaption_title">Primární barva</string>
+    <string name="pref_Widgets_Color_EventCaption_summary">Primární barva prvků widgetu (titulky událostí, věk)</string>
+
+    <string name="pref_Widgets_Color_WidgetCaption_title">Barva popisku widgetu</string>
+    <string name="pref_Widgets_Color_WidgetCaption_summary">Barva pro popis widgetu seznamu</string>
+
+    <string name="pref_Widgets_Color_EventToday_title">Věk</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Barva věku pro dnešní události</string>
+
+    <string name="pref_Widgets_Color_EventSoon_title">Dny do události (blízko)</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Barva počtu dnů pro blízké události</string>
+
+    <string name="pref_Widgets_Color_EventFar_title">Dny do události (daleko)</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Barva počtu dnů pro vzdálené události</string>
+
+    <string name="pref_Widgets_Days_EventSoon_summary">Po kolik dní jsou události považovány za nejbližší</string>
+    <string name="pref_Widgets_Days_EventSoon_title">Částka pro nejbližší události ve dnech</string>
+
+    <string name="widget_config_event_types_title">Typy událostí</string>
+    <string name="widget_config_event_types_description">Jaké druhy událostí zobrazit na tomto widgetu</string>
+
+    <string name="widget_config_event_types_empty">Stejné se seznamem událostí</string>
+
+    <string name="widget_config_events_sources_label">Zdroje událostí</string>
+    <string name="widget_config_events_sources_description">Jaké zdroje událostí vybrané v nastavení aplikace použít v tomto widgetu</string>
+    <string name="widget_config_event_sources_empty">♻️ Všechny zdroje</string>
+
+    <string name="widget_config_index_label">Index zahájení události k zobrazení</string>
+
+    <string name="widget_config_scope_label">Limit rozsahu událostí</string>
+    <string name="widget_config_scope_events_label">Maximální počet událostí:</string>
+    <string name="widget_config_scope_days_label">Maximální počet dní:</string>
+    <string name="widget_config_scope_events_items">Vše,1,2,3,4,5,6,7,8,9,10,20,30,40,50,100</string>
+    <string name="widget_config_photo_scope_events_items">Automaticky,1,2,3,4,5,6,7</string>
+    <string name="widget_config_scope_days_items">Vše,1,2,3,4,5,6,7,14,21,30</string>
+    <string name="widget_config_layout_label">Příliš málo událostí:</string>
+    <string name="widget_config_layout_items">Rozbalit, ponechat šířku</string>
+    <string name="widget_config_scope_facts_label">Počet faktů:</string>
+    <string name="widget_config_scope_facts_items">1,2,3</string>
+
+    <string name="widget_config_magnify_caption">Velikost prvků</string>
+    <string name="widget_config_magnify_text_caption">Text</string>
+    <string name="widget_config_magnify_photo_caption">Fotografie</string>
+    <string-array name="widget_config_magnify_variants">
+        <item>Automaticky</item>
+        <item>x0,5</item>
+        <item>x0,65</item>
+        <item>x0,75</item>
+        <item>x0,85</item>
+        <item>x1.0</item>
+        <item>x1.1</item>
+        <item>x1,2</item>
+        <item>x1,3</item>
+        <item>x1,4</item>
+        <item>x1,5</item>
+        <item>x1,6</item>
+        <item>x1,75</item>
+        <item>x2.0</item>
+    </string-array>
+
+    <string name="widget_config_photostyle_label">Styl fotek</string>
+    <string name="widget_config_photostyle_description">Styl fotek kontaktů</string>
+    <string name="widget_config_photostyle_with_align_description">Styl fotek kontaktů. Zarovnání: původní - vyplňte celou buňku, zaoblené - svisle zarovnáno nahoru, kruh - svisle vystředěno</string>
+    <string-array name="widget_config_photostyle">
+        <item>Původní</item>
+        <item>Mírně zaoblené</item>
+        <item>Středně zaoblené</item>
+        <item>Výrazně zaoblené</item>
+        <item>Kruh</item>
+    </string-array>
+
+    <string name="widget_config_custom_widget_caption_label">Titulek vlastního widgetu</string>
+    <string name="widget_config_custom_widget_caption_description">Vlastní titulky pro tento widget (emodži jsou podporovány 🎂)</string>
+    <string name="widget_config_custom_widget_caption_hint">Zadejte zprávu…</string>
+
+    <string name="widget_config_custom_zero_events_label">Vlastní zpráva pro žádné události</string>
+    <string name="widget_config_custom_zero_events_description">Vlastní zpráva, když nejsou nalezeny žádné události (emodži jsou podporovány 🎂). Zadejte mezeru, aby byl widget průhledný, čistý text pro zobrazení standardní zprávy</string>
+    <string name="widget_config_custom_zero_events_hint">Zadejte zprávu…</string>
+
+    <string name="widget_config_events_count_label">Oprava</string>
+    <string-array name="widget_config_events_count">
+        <item>-</item>
+        <item>-2</item>
+        <item>-1</item>
+        <item>+1</item>
+        <item>+2</item>
+    </string-array>
+
+    <string name="widget_hint">Chcete-li upravit předvolby widgetu, klikněte na popisek události zcela vpravo:</string>
+
+    <string name="widget_config_event_info_empty">Použít nastavení předvoleb aplikace</string>
+
+    <string name="widget_config_color_back_label">Barva pozadí widgetu</string>
+    <string name="widget_config_color_back_description">Barva pozadí widgetu</string>
+
+    <string name="widget_config_layout_title">Rozvržení podle měsíců</string>
+    <string name="widget_config_layout_description">Kolik měsíců zobrazit</string>
+    <string name="widget_config_month_events_sources_label">Zdroje svátků a událostí</string>
+    <string name="widget_config_month_events_sources_description">"Zdroje k určení typu dne: pracovní den, volno, svátek.
+Dlouhým kliknutím na položku vyberte barvu.
+Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událostí->Dovolená"</string>
+    <string name="widget_config_month_shift_title">Počáteční měsíc</string>
+    <string name="widget_config_month_shift_label">Shift:</string>
+    <string name="widget_config_starting_month_position_label">Pozice:</string>
+    <string name="widget_config_month_sources_empty">-Žádné-</string>
+    <string name="widget_config_month_font_magnify_label">Velikost písma</string>
+    <string name="widget_config_month_font_magnify_description">Násobitel měřítka písma pro název měsíce, pracovní dny a dny</string>
+    <string name="widget_config_onclick_label">Chování při kliknutí</string>
+    <string name="widget_config_onclick_common_label">Běžné dny:</string>
+    <string name="widget_config_onclick_holidays_label">Dny s událostmi:</string>
+    <string name="widget_config_month_color_common_label">Barva běžných dnů</string>
+    <string name="widget_config_month_color_common_description">Barva běžných dnů</string>
+    <string name="widget_config_month_color_today_label">Dnešní barva</string>
+    <string name="widget_config_month_color_today_description">Barva dnešního data (pro běžné dny)</string>
+    <string name="widget_config_month_color_header_label">Barva záhlaví měsíce</string>
+    <string name="widget_config_month_color_header_description">Barva názvu měsíce</string>
+    <string name="widget_config_month_color_header_back_label">Pozadí záhlaví</string>
+    <string name="widget_config_month_color_header_back_description">Barva pozadí záhlaví kalendáře</string>
+    <string name="widget_config_month_color_arrows_label">Barva šipek</string>
+    <string name="widget_config_month_color_arrows_description">Šipky výběru barvy měsíce</string>
+    <string name="widget_config_month_color_weeks_label">Barva pracovních dnů</string>
+    <string name="widget_config_month_color_weeks_description">Barva pracovních dnů</string>
+
+    <string-array name="widget_config_layout_entries">
+        <item>Automaticky (podle velikosti widgetu)</item>
+        <item>1 měsíc</item>
+        <item>2 měsíce (vodorovně)</item>
+        <item>3 měsíce (vodorovně)</item>
+        <item>2 měsíce (vertikálně)</item>
+        <item>3 měsíce (vertikálně)</item>
+        <item>4 měsíce (2x2)</item>
+        <item>6 měsíců (3x2)</item>
+        <item>6 měsíců (2x3)</item>
+        <item>9 měsíců (3x3)</item>
+        <item>12 měsíců (3x4)</item>
+        <item>12 měsíců (4x3)</item>
+    </string-array>
+
+    <string name="widget_config_month_shift_current_month">Aktuální měsíc</string>
+    <string name="widget_config_month_shift_january">Začátek roku</string>
+
+    <string-array name="widget_config_month_shift_entries">
+        <item>-2</item>
+        <item>-1</item>
+        <item>@string/widget_config_month_shift_current_month</item>
+        <item>+1</item>
+        <item>+2</item>
+        <item>@string/widget_config_month_shift_january</item>
+    </string-array>
+
+    <string-array name="widget_config_starting_month_position_entries">
+        <item>Levý horní roh</item>
+        <item>Uprostřed nahoře</item>
+        <item>Střed</item>
+    </string-array>
+
+    <string name="widget_config_elements_title">Prvky kalendáře</string>
+    <string name="widget_config_elements_description">Který pokročilý prvek kalendáře zobrazit</string>
+
+    <string-array name="widget_config_elements_entries">
+        <item>Název měsíce</item>
+        <item>Rok</item>
+        <item>Štítky pracovních dnů</item>
+        <item>Dny před a po měsíci</item>
+        <item>Vnější okraje</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_holidays_entries">
+        <item>Žádné</item>
+        <item>Vyskakovací okno seznamu událostí</item>
+        <item>Otevřít kalendář</item>
+    </string-array>
+
+    <string-array name="pref_widget_month_onclick_common_entries">
+        <item>Žádné</item>
+        <item>Otevřít kalendář</item>
+    </string-array>
+
+    <string name="pref_Notifications_title">Oznámení</string>
+    <string name="pref_Notifications_summary">Kdy a jak zobrazovat oznámení o událostech</string>
+    <string name="pref_Notifications2_title">Oznámení (+)</string>
+    <string name="pref_Notifications2_summary">Druhá fronta pro oznámení událostí</string>
+
+    <string name="pref_Notifications_Type_title">Styl oznámení</string>
+    <string name="pref_Notifications_Type_summary">Jak budou vypadat oznámení</string>
+
+    <string-array name="pref_Notifications_Type_entries">
+        <item>Jedno souhrnné oznámení</item>
+        <item>Každá událost v samostatném oznámení</item>
+        <item>Události minus 3 -> jednotlivé, jinak -> souhrn</item>
+        <item>Události minus 4 -> jednotlivé, jinak -> souhrn</item>
+        <item>Dnešní události -> jednotlivci, ostatní -> shrnutí</item>
+    </string-array>
+
+    <string name="pref_Notifications_Priority_title">Priorita oznámení</string>
+    <string name="pref_Notifications_Priority_summary">Oznámení s vysokou prioritou, která nelze zavřít, jsou vždy nahoře. Chcete-li je skrýt, klikněte na něj</string>
+
+    <string-array name="pref_Notifications_Priority_entries">
+        <item>Standardní</item>
+        <item>Vysokou prioritu má pouze souhrnné oznámení</item>
+        <item>Všechna oznámení mají vysokou prioritu a nelze je zavřít</item>
+    </string-array>
+
+    <string name="pref_Notifications_Days_title">Období oznámení</string>
+    <string name="pref_Notifications_Days_summary">Kolik dní před událostí upozornit</string>
+
+    <string-array name="pref_Notifications_Days_entries">
+        <item>V den události</item>
+        <item>1 den předem</item>
+        <item>2 dny předem</item>
+        <item>3 dny předem</item>
+        <item>4 dny předem</item>
+        <item>5 dní předem</item>
+        <item>6 dní předem</item>
+        <item>1 týden předem</item>
+        <item>8 dní předem</item>
+        <item>9 dní předem</item>
+        <item>10 dní předem</item>
+        <item>11 dní předem</item>
+        <item>12 dní předem</item>
+        <item>13 dní předem</item>
+        <item>2 týdny předem</item>
+    </string-array>
+
+    <string name="pref_Notifications_EventTypes_title">Typy událostí</string>
+    <string name="pref_Notifications_EventTypes_summary">Jaké druhy událostí zahrnout do oznámení</string>
+
+    <string name="pref_Notifications_EventTypes_Facts">📝 Fakta</string>
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Narozeniny</item>
+        <item>💑 Výročí</item>
+        <item>🗓️ Další události</item>
+        <item>🏖️ Svátky</item>
+        <item>⏰ Vlastní události</item>
+        <item>🏆 Počet zaokrouhlených dní (5K, 10K, 15K dní)</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
+    </string-array>
+
+    <string name="pref_Notifications_EventSources_title">Zdroje událostí</string>
+    <string name="pref_Notifications_EventSources_description">Zobrazit oznámení pouze pro tyto zdroje událostí. Pokud není vybrán žádný zdroj, zobrazí se události ze všech zdrojů</string>
+
+    <string name="pref_Notifications_EventInfo_title">Podrobnosti události</string>
+    <string name="pref_Notifications_EventInfo_summary">Jaké podrobnosti o události zobrazit v oznámení</string>
+    <string-array name="pref_Notifications_EventInfo_entries">
+        <item>@string/pref_EventInfo_EventIcon</item>
+        <item>@string/pref_EventInfo_SourceIcon</item>
+        <item>@string/pref_EventInfo_FavIcon</item>
+        <item>@string/pref_EventInfo_ZodiacSign</item>
+        <item>@string/pref_EventInfo_EventDate</item>
+        <item>@string/pref_EventInfo_EventTitle</item>
+        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_WeddingName</item>
+        <item>@string/pref_EventInfo_Organization</item>
+        <item>@string/pref_EventInfo_JobTitle</item>
+        <item>@string/pref_EventInfo_EventCaption</item>
+    </string-array>
+
+    <string name="pref_Notifications_FactEvents_Count_title">Počet faktů</string>
+    <string name="pref_Notifications_FactEvents_Count_summary">Kolik náhodných faktů zobrazit</string>
+
+    <string name="pref_Notifications_AlarmHour_title">Čas budíku</string>
+    <string name="pref_Notifications_AlarmHour_summary">Kolik je třeba upozornit</string>
+
+    <string name="pref_Notifications_Ringtone_title">Zvuk upozornění</string>
+    <string name="pref_Notifications_Ringtone_summary">Zvuk nadcházejících událostí</string>
+
+    <string name="pref_Notifications_QuickActions_title">Rychlé akce</string>
+    <string name="pref_Notifications_QuickActions_summary">Které akce jsou k dispozici pro jednotlivá oznámení (až 3)</string>
+
+    <string-array name="pref_Notifications_QuickActions_entries">
+        <item>Zavolejte</item>
+        <item>Vyloučit z oznámení</item>
+        <item>Skrýt událost</item>
+        <item>Připomenout za 1 hodinu</item>
+        <item>Připojit</item>
+        <item>Zavřít (pro oznámení s vysokou prioritou)</item>
+    </string-array>
+
+    <string name="pref_Notifications_OnClick_title">Akce při kliknutí</string>
+    <string name="pref_Notifications_OnClick_summary">Co dělat při jednom kliknutí na oznámení</string>
+    <string-array name="pref_Notifications_OnClick_entries">
+        <item>Otevřít kartu kontaktu, pokud chybí - událost kalendáře, pokud chybí - webový odkaz</item>
+        <item>Otevřít událost kalendáře, pokud chybí - kontaktní karta, pokud chybí - webový odkaz</item>
+        <item>Otevřít webový odkaz, pokud chybí - kontaktní karta, pokud chybí - událost kalendáře</item>
+        <item>Otevřít kartu kontaktu, pokud chybí - webový odkaz, pokud chybí - událost kalendáře</item>
+        <item>Otevřít hlavní seznam událostí</item>
+        <item>Zavřít oznámení</item>
+    </string-array>
+
+    <string name="pref_Notifications_NotifyTest_title">Oznámení o testu</string>
+    <string name="pref_Notifications_NotifyTest_summary">Kliknutím zobrazíte oznámení pro dnešek</string>
+
+    <string name="pref_Quiz_title">Kvíz</string>
+    <string name="pref_Quiz_summary">Předvolby kvízu</string>
+    <string name="pref_Quiz_Interface_title">Rozhraní</string>
+    <string name="pref_Quiz_Interface_summary">Jaké rozhraní použít pro dotazy</string>
+
+    <string-array name="pref_Quiz_Interface_entries">
+        <item>Oznámení (můžete kdykoli přestat a jít hledat správnou odpověď)</item>
+        <item>Dialog (nemůžete spěchat s odpovědí, ale nemůžete hledat stopy)</item>
+    </string-array>
+
+    <string name="pref_FAQ_title">Otázky a odpovědi</string>
+    <string name="pref_FAQ_summary">Pokud něco nefunguje správně nebo si jen nevíte rady s nastavením některých předvoleb aplikace, toto je stránka pro vás</string>
+    <string name="pref_Help_title">Nápověda</string>
+    <string name="pref_Help_summary">Někdy může pomoci…</string>
+    <string name="pref_About_summary">Historie verzí, statistiky událostí, odkazy na obchody s aplikacemi</string>
+    <string name="pref_BatteryOptimization_title">Optimalizace baterie je ZAPNUTA</string>
+    <string name="pref_BatteryOptimization_summary">Otevřete nastavení a vypněte optimalizaci…</string>
+    <string name="pref_ExactAlarms_title">Alarmy &amp; připomenutí jsou VYPNUTÁ</string>
+    <string name="pref_ExactAlarms_summary">Otevřete nastavení a zapněte jej, chcete-li naplánovat aktualizace oznámení a widgetů na konkrétní čas…</string>
+    <string name="pref_ContactsAccess_title">Žádný přístup k událostem kontaktů</string>
+    <string name="pref_ContactsAccess_summary">Požádat o povolení k událostem kontaktů…</string>
+    <string name="pref_CalendarAccess_title">Žádný přístup ke kalendáři</string>
+    <string name="pref_CalendarAccess_summary">Požádat o povolení k datům kalendářů…</string>
+    <string name="pref_InfoMsg_On_title">Informační zprávy</string>
+    <string name="pref_InfoMsg_On_summary">Zobrazovat informační zprávy o provedených akcích nebo operacích na pozadí v aplikaci</string>
+    <string name="pref_Debug_On_title">Ladění zpráv</string>
+    <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Stiskněte ještě %1$d%2$s pro %3$s oznámení o ladění</string>
+    <string name="pref_Debug_On_summary">Zobrazit ladicí zprávy (doporučuje se povolit, pokud se widgety nebo události nezobrazují správně a odeslat autorovi aplikace)</string>
+    <string name="pref_ExtraFun_On_title">Další funkce</string>а
+    <string name="pref_ExtraFun_On_description">Povolte další funkce pro přizpůsobení různých aspektů aplikace</string>
+    <string name="pref_Help_CalendarSync_title">Synchronizace kalendářů</string>
+    <string name="pref_Help_CalendarSync_summary">Vynutit synchronizaci všech kalendářů</string>
+    <string name="pref_Help_CalendarSync_result">Vynucená synchronizace kalendářů…</string>
+
+    <string name="pref_Tools_title">Nástroje</string>
+    <string name="pref_Tools_summary">Různé nástroje pro manipulaci s daty</string>
+    <string name="pref_Tools_Preferences_title">Předvolby</string>
+    <string name="pref_Tools_Preferences_Show_title">Zobrazit uložené předvolby</string>
+    <string name="pref_Tools_Preferences_Export_title">Předvolby exportu</string>
+    <string name="pref_Tools_Preferences_Export_result">Exportované předvolby: %1$d</string>
+    <string name="pref_Tools_Preferences_Import_title">Předvolby importu</string>
+    <string name="pref_Tools_Preferences_Import_result">Importované předvolby: %1$d, chyby: %2$d</string>
+
+    <string name="changelog_version"><![CDATA[verze: %1$s (%2$s)<br>sestaveno: %3$s]]></string>
+    <string name="changelog_installer"><![CDATA[<br>instalováno z %1$s]]></string>
+    <string name="changelog_title"><![CDATA[<h1>Historie verzí:</h1>]]></string>
+    <string name="changelog_release_title"><![CDATA[<h2>Vydání: %1$s:</h2><ul>]]></string>
+
+    <string name="stats_title"><![CDATA[<h1>Statistiky:</h1>]]></string>
+
+    <string name="stats_speed_title"><![CDATA[<h2>Rychlost načítání:</h2><ul>]]></string>
+    <string name="stats_speed_contacts"><![CDATA[<li>prohledávání kontakty: %1$s msec]]></string>
+    <string name="stats_speed_calendar"><![CDATA[<li>prohledávání kalendáře: %1$s msec]]></string>
+    <string name="stats_speed_files"><![CDATA[<li>prohledávání souborů: %1$s msec]]></string>
+    <string name="stats_speed_dates"><![CDATA[<li>výpočet dat: %1$s msec]]></string>
+    <string name="stats_speed_widgets"><![CDATA[<li>aktualizace widgetů: %1$s msec]]></string>
+
+    <string name="stats_counters_title"><![CDATA[<h2>Počítadla:</h2><ul>]]></string>
+    <string name="stats_counters_events"><![CDATA[<li>celkem událostí: %1$d]]></string>
+    <string name="stats_counters_contacts_events"><![CDATA[<li>události od kontaktů: %1$d]]></string>
+    <string name="stats_counters_calendars_events"><![CDATA[<li>události z kalendářů: %1$d]]></string>
+    <string name="stats_counters_files_events"><![CDATA[<li>události ze souborů: %1$d]]></string>
+    <string name="stats_counters_favorite_events"><![CDATA[<li>oblíbené události: %1$d]]></string>
+    <string name="stats_counters_contacts"><![CDATA[<li>kontakty: %1$d]]></string>
+    <string name="stats_counters_titles"><![CDATA[<li>názvy kontaktů: %1$d]]></string>
+    <string name="stats_counters_organizations"><![CDATA[<li>kontakty na organizace: %1$d]]></string>
+    <string name="stats_counters_nicknames"><![CDATA[<li>přezdívky kontaktů: %1$d]]></string>
+    <string name="stats_counters_URLs"><![CDATA[<li>webové odkazy: %1$d]]></string>
+    <string name="stats_counters_widgets"><![CDATA[<li>widgety: %1$d]]></string>
+
+    <string name="stats_counters_events_title"><![CDATA[<h2>Události podle zdrojů:</h2><ul>]]></string>
+
+    <string name="stats_permissions_title"><![CDATA[<h1>Oprávnění a možnosti:</h1><ul>]]></string>
+    <string name="stats_permissions_accounts"><![CDATA[<li>přístup k účtům: %1$s]]></string>
+    <string name="stats_permissions_contacts"><![CDATA[<li>přístup ke kontaktům: %1$s]]></string>
+    <string name="stats_permissions_calendar"><![CDATA[<li>přístup ke kalendáři: %1$s]]></string>
+    <string name="stats_permissions_files"><![CDATA[<li>přístup k externímu úložišti: %1$s]]></string>
+    <string name="stats_permissions_post_notifications"><![CDATA[<li>oprávnění odesílat oznámení: %1$s]]></string>
+    <string name="stats_permissions_notifications_on"><![CDATA[<li>oznámení: %1$s]]></string>
+    <string name="stats_permissions_schedule_exact_alarm"><![CDATA[<li>oprávnění k plánování aktualizací oznámení a widgetů na konkrétní čas: %1$s]]></string>
+    <string name="stats_permissions_wakelock"><![CDATA[<li>přístup k aktualizaci widgetů (zámek probuzení): %1$s]]></string>
+    <string name="stats_permissions_battery"><![CDATA[<li>optimalizace baterie: %1$s]]></string>
+    <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>automatické spuštění (Xiaomi): %1$s]]></string>
+    <string name="stats_permissions_device"><![CDATA[<li>zařízení: %1$s %2$s]]></string>
+    <string name="stats_permissions_os"><![CDATA[<li>Verze systému Android: %1$s (api %2$d)]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>zobrazit: %1$s]]></string>
+
+    <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Nejsou zobrazeny žádné události</h2>Tyto informace mohou pomoci:<br>]]></string>
+    <string name="msg_zero_events_body"><![CDATA[
+        <p>Typy událostí: %1$s</p>
+        <p>Zdroje událostí: %14$s</p>
+        <p>Filtr: %13$s</p>
+        <h4>Události od kontaktů:</h4><ul>%2$s
+            <li>zobrazit události z účtů: %3$s</li>
+        </ul>
+        <h4>Události z kalendářů:</h4><ul>%4$s
+            <li>narozeniny: %5$s</li>
+            <li>ostatní události: %6$s</li>
+            <li>prázdninové události: %7$s</li>
+            <li>události více typů: %8$s</li>
+        </ul>
+        <h4>Události ze souborů:</h4><ul><li>narozeniny: %9$s</li>
+            <li>ostatní události: %10$s</li>
+            <li>prázdninové události: %11$s</li>
+            <li>vícetypové události: %12$s</li>
+        </ul>]]></string>
+    <string name="msg_zero_events_footer"><![CDATA[<h4>Pokud jsou pro vás tyto informace k ničemu, pošlete mi e-mail (klikněte na název aplikace a najděte tam tlačítko \"pošta\")</h4>]]></string>
+
+    <!-- https://www.helpforenglish.cz/article/2009042803-znameni-zverokruhu-signs-of-the-zodiac -->
+    <string name="zodiac_sign_aries">" Beran"</string>
+    <string name="zodiac_sign_taurus">" Býk"</string>
+    <string name="zodiac_sign_gemini">" Blíženci"</string>
+    <string name="zodiac_sign_cancer">"Rak"</string>
+    <string name="zodiac_sign_leo">" Lev"</string>
+    <string name="zodiac_sign_virgo">"Panna"</string>
+    <string name="zodiac_sign_libra">" Váhy"</string>
+    <string name="zodiac_sign_scorpio">" Štír"</string>
+    <string name="zodiac_sign_sagittarius">" Střelec"</string>
+    <string name="zodiac_sign_capricorn">" Kozoroh"</string>
+    <string name="zodiac_sign_aquarius">" Vodnář"</string>
+    <string name="zodiac_sign_pisces">" Ryby"</string>
+
+    <!-- https://forum.wordreference.com/threads/12-animals-of-the-chinese-zodiac.554164/ -->
+    <string name="zodiac_year_monkey">" Opice"</string>
+    <string name="zodiac_year_rooster">" Kohout"</string>
+    <string name="zodiac_year_dog">" Pes"</string>
+    <string name="zodiac_year_pig">" Vepř"</string>
+    <string name="zodiac_year_rat">" Krysa"</string>
+    <string name="zodiac_year_ox">" Buvol"</string>
+    <string name="zodiac_year_tiger">" Tygr"</string>
+    <string name="zodiac_year_rabbit">" Zajíc"</string>
+    <string name="zodiac_year_dragon">" Drak"</string>
+    <string name="zodiac_year_snake">" Had"</string>
+    <string name="zodiac_year_horse">" Kůň"</string>
+    <string name="zodiac_year_sheep">" Koza"</string>
+
+    <string name="msg_on">ZAPNUTO</string>
+    <string name="msg_off">VYP</string>
+    <string name="msg_unknown">NEZNÁMÝ</string>
+
+    <string name="quiz_msg_error_title">"Chyba"</string>
+    <string name="quiz_msg_error_get_question">"Chyba při přijímání další otázky!"</string>
+
+    <string name="quiz_answer_true">"Správně, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Odpověď: %1$s\nSprávná odpověď: %2$s (%3$s)"</string>
+
+    <string name="quiz_month01_title">"Jaký je měsíc narození?"</string>
+
+    <string name="quiz_year01_title">"Jaký je rok narození?"</string>
+
+    <string name="quiz_age01_title_future">"Kolik mu/jí bude?"</string>
+    <string name="quiz_age01_title_past">"Kolik je mu/jí?"</string>
+    <string name="quiz_age01_title_dead">"Kolik by mu/jí nyní bylo?"</string>
+
+    <string name="xDaysCounter_Dialog_Title">Počítadlo dnů</string>
+    <string name="xDaysCounter_Dialog_Repeats_Caption">Období:</string>
+    <string name="xDaysCounter_Dialog_Repeats_Hint">zadejte počet dní</string>
+    <string name="xDaysCounter_Dialog_Repeats_EditHint">počet dní, po kterých by se měla událost opakovat. např.: 1000, 5000 (čárkou)</string>
+    <string name="xDaysCounter_Dialog_Repeats_AutoFill">1000, 5000</string>
+    <string name="xDaysCounter_Dialog_Times_Caption">Časy:</string>
+    <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
+    <string name="xDaysCounter_Dialog_Times_EditHint">maximální počet opakování každého období</string>
+    <string name="xDaysCounter_Dialog_NearestEvents">Nejbližší opakování:</string>
+
+    <string name="Event_Easter">Velikonoce</string>
+    <string name="Event_CatholicEaster">Katolické_velikonoce</string>
+    <string name="Event_NY">NY</string>
+
+    <string name="previous_month">Předchozí měsíc</string>
+    <string name="month_title">Název měsíce</string>
+    <string name="next_month">Příští měsíc</string>
+
+    <string name="month_event_saturdays">Soboty</string>
+    <string name="month_event_sundays">Neděle</string>
+    <string name="month_event_popup_prefix">"Datum: "</string>
+
+    <!-- https://cs.wikipedia.org/wiki/V%C3%BDro%C4%8D%C3%AD_svatby -->
+    <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Bavlněná svatba</string>
+    <string name="event_type_wedding_2" tools:keep="@string/event_type_wedding_2">Papírová svatba</string>
+    <string name="event_type_wedding_3" tools:keep="@string/event_type_wedding_3">Kožená svatba</string>
+    <string name="event_type_wedding_4" tools:keep="@string/event_type_wedding_4">Květinová svatba (Ovocná)</string>
+    <string name="event_type_wedding_5" tools:keep="@string/event_type_wedding_5">Dřevěná svatba</string>
+    <string name="event_type_wedding_6" tools:keep="@string/event_type_wedding_6">Železná svatba (Zinková)</string>
+    <string name="event_type_wedding_7" tools:keep="@string/event_type_wedding_7">Vlněná svatba (Měděná)</string>
+    <string name="event_type_wedding_8" tools:keep="@string/event_type_wedding_8">Bronzová svatba (Plechová)</string>
+    <string name="event_type_wedding_9" tools:keep="@string/event_type_wedding_9">Hliněná svatba</string>
+    <string name="event_type_wedding_10" tools:keep="@string/event_type_wedding_10">Cínová svatba (Růžová)</string>
+    <string name="event_type_wedding_11" tools:keep="@string/event_type_wedding_11">Ocelová svatba</string>
+    <string name="event_type_wedding_12" tools:keep="@string/event_type_wedding_12">Hedvábná svatba</string>
+    <string name="event_type_wedding_13" tools:keep="@string/event_type_wedding_13">Krajková svatba</string>
+    <string name="event_type_wedding_14" tools:keep="@string/event_type_wedding_14">Slonovinová svatba</string>
+    <string name="event_type_wedding_15" tools:keep="@string/event_type_wedding_15">Křišťálová svatba (Skleněná)</string>
+    <string name="event_type_wedding_16" tools:keep="@string/event_type_wedding_16">""</string>
+    <string name="event_type_wedding_17" tools:keep="@string/event_type_wedding_17">""</string>
+    <string name="event_type_wedding_18" tools:keep="@string/event_type_wedding_18">""</string>
+    <string name="event_type_wedding_19" tools:keep="@string/event_type_wedding_19">""</string>
+    <string name="event_type_wedding_20" tools:keep="@string/event_type_wedding_20">Porcelánová svatba</string>
+    <string name="event_type_wedding_21" tools:keep="@string/event_type_wedding_21">""</string>
+    <string name="event_type_wedding_22" tools:keep="@string/event_type_wedding_22">""</string>
+    <string name="event_type_wedding_23" tools:keep="@string/event_type_wedding_23">""</string>
+    <string name="event_type_wedding_24" tools:keep="@string/event_type_wedding_24">""</string>
+    <string name="event_type_wedding_25" tools:keep="@string/event_type_wedding_25">Stříbrná svatba</string>
+    <string name="event_type_wedding_26" tools:keep="@string/event_type_wedding_26">""</string>
+    <string name="event_type_wedding_27" tools:keep="@string/event_type_wedding_27">""</string>
+    <string name="event_type_wedding_28" tools:keep="@string/event_type_wedding_28">""</string>
+    <string name="event_type_wedding_29" tools:keep="@string/event_type_wedding_29">""</string>
+    <string name="event_type_wedding_30" tools:keep="@string/event_type_wedding_30">Perlová svatba</string>
+    <string name="event_type_wedding_31" tools:keep="@string/event_type_wedding_31">""</string>
+    <string name="event_type_wedding_32" tools:keep="@string/event_type_wedding_32">""</string>
+    <string name="event_type_wedding_33" tools:keep="@string/event_type_wedding_33">""</string>
+    <string name="event_type_wedding_34" tools:keep="@string/event_type_wedding_34">""</string>
+    <string name="event_type_wedding_35" tools:keep="@string/event_type_wedding_35">Korálová svatba (Plátěná, Lněná)</string>
+    <string name="event_type_wedding_36" tools:keep="@string/event_type_wedding_36">""</string>
+    <string name="event_type_wedding_37" tools:keep="@string/event_type_wedding_37">""</string>
+    <string name="event_type_wedding_38" tools:keep="@string/event_type_wedding_38">""</string>
+    <string name="event_type_wedding_39" tools:keep="@string/event_type_wedding_39">""</string>
+    <string name="event_type_wedding_40" tools:keep="@string/event_type_wedding_40">Rubínová svatba</string>
+    <string name="event_type_wedding_41" tools:keep="@string/event_type_wedding_41">""</string>
+    <string name="event_type_wedding_42" tools:keep="@string/event_type_wedding_42">""</string>
+    <string name="event_type_wedding_43" tools:keep="@string/event_type_wedding_43">""</string>
+    <string name="event_type_wedding_44" tools:keep="@string/event_type_wedding_44">""</string>
+    <string name="event_type_wedding_45" tools:keep="@string/event_type_wedding_45">Safírová svatba</string>
+    <string name="event_type_wedding_46" tools:keep="@string/event_type_wedding_46">""</string>
+    <string name="event_type_wedding_47" tools:keep="@string/event_type_wedding_47">""</string>
+    <string name="event_type_wedding_48" tools:keep="@string/event_type_wedding_48">""</string>
+    <string name="event_type_wedding_49" tools:keep="@string/event_type_wedding_49">""</string>
+    <string name="event_type_wedding_50" tools:keep="@string/event_type_wedding_50">Zlatá svatba</string>
+    <string name="event_type_wedding_51" tools:keep="@string/event_type_wedding_51">""</string>
+    <string name="event_type_wedding_52" tools:keep="@string/event_type_wedding_52">""</string>
+    <string name="event_type_wedding_53" tools:keep="@string/event_type_wedding_53">""</string>
+    <string name="event_type_wedding_54" tools:keep="@string/event_type_wedding_54">""</string>
+    <string name="event_type_wedding_55" tools:keep="@string/event_type_wedding_55">Smaragdová svatba</string>
+    <string name="event_type_wedding_56" tools:keep="@string/event_type_wedding_56">""</string>
+    <string name="event_type_wedding_57" tools:keep="@string/event_type_wedding_57">""</string>
+    <string name="event_type_wedding_58" tools:keep="@string/event_type_wedding_58">""</string>
+    <string name="event_type_wedding_59" tools:keep="@string/event_type_wedding_59">""</string>
+    <string name="event_type_wedding_60" tools:keep="@string/event_type_wedding_60">Diamantová svatba</string>
+    <string name="event_type_wedding_61" tools:keep="@string/event_type_wedding_61">""</string>
+    <string name="event_type_wedding_62" tools:keep="@string/event_type_wedding_62">""</string>
+    <string name="event_type_wedding_63" tools:keep="@string/event_type_wedding_63">""</string>
+    <string name="event_type_wedding_64" tools:keep="@string/event_type_wedding_64">""</string>
+    <string name="event_type_wedding_65" tools:keep="@string/event_type_wedding_65">Kamenná svatba</string>
+    <string name="event_type_wedding_66" tools:keep="@string/event_type_wedding_66">""</string>
+    <string name="event_type_wedding_67" tools:keep="@string/event_type_wedding_67">""</string>
+    <string name="event_type_wedding_68" tools:keep="@string/event_type_wedding_68">""</string>
+    <string name="event_type_wedding_69" tools:keep="@string/event_type_wedding_69">""</string>
+    <string name="event_type_wedding_70" tools:keep="@string/event_type_wedding_70">Platinová svatba (Briliantová)</string>
+    <string name="event_type_wedding_71" tools:keep="@string/event_type_wedding_71">""</string>
+    <string name="event_type_wedding_72" tools:keep="@string/event_type_wedding_72">""</string>
+    <string name="event_type_wedding_73" tools:keep="@string/event_type_wedding_73">""</string>
+    <string name="event_type_wedding_74" tools:keep="@string/event_type_wedding_74">""</string>
+    <string name="event_type_wedding_75" tools:keep="@string/event_type_wedding_75">Nebeská svatba (Korunovační)</string>
+    <string name="event_type_wedding_76" tools:keep="@string/event_type_wedding_76">""</string>
+    <string name="event_type_wedding_77" tools:keep="@string/event_type_wedding_77">""</string>
+    <string name="event_type_wedding_78" tools:keep="@string/event_type_wedding_78">""</string>
+    <string name="event_type_wedding_79" tools:keep="@string/event_type_wedding_79">""</string>
+    <string name="event_type_wedding_80" tools:keep="@string/event_type_wedding_80">Rajská</string>
+    <string name="event_type_wedding_81" tools:keep="@string/event_type_wedding_81">""</string>
+    <string name="event_type_wedding_82" tools:keep="@string/event_type_wedding_82">""</string>
+    <string name="event_type_wedding_83" tools:keep="@string/event_type_wedding_83">""</string>
+    <string name="event_type_wedding_84" tools:keep="@string/event_type_wedding_84">""</string>
+    <string name="event_type_wedding_85" tools:keep="@string/event_type_wedding_85">""</string>
+    <string name="event_type_wedding_86" tools:keep="@string/event_type_wedding_86">""</string>
+    <string name="event_type_wedding_87" tools:keep="@string/event_type_wedding_87">""</string>
+    <string name="event_type_wedding_88" tools:keep="@string/event_type_wedding_88">""</string>
+    <string name="event_type_wedding_89" tools:keep="@string/event_type_wedding_89">""</string>
+    <string name="event_type_wedding_90" tools:keep="@string/event_type_wedding_90">""</string>
+    <string name="event_type_wedding_91" tools:keep="@string/event_type_wedding_91">""</string>
+    <string name="event_type_wedding_92" tools:keep="@string/event_type_wedding_92">""</string>
+    <string name="event_type_wedding_93" tools:keep="@string/event_type_wedding_93">""</string>
+    <string name="event_type_wedding_94" tools:keep="@string/event_type_wedding_94">""</string>
+    <string name="event_type_wedding_95" tools:keep="@string/event_type_wedding_95">""</string>
+    <string name="event_type_wedding_96" tools:keep="@string/event_type_wedding_96">""</string>
+    <string name="event_type_wedding_97" tools:keep="@string/event_type_wedding_97">""</string>
+    <string name="event_type_wedding_98" tools:keep="@string/event_type_wedding_98">""</string>
+    <string name="event_type_wedding_99" tools:keep="@string/event_type_wedding_99">""</string>
+    <string name="event_type_wedding_100" tools:keep="@string/event_type_wedding_100">""</string>
+
+</resources>

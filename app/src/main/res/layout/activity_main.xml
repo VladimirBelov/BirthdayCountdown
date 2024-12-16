@@ -47,7 +47,7 @@
 
 			<TextView
 				android:id="@+id/mainStatsTextView"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="?attr/colorPrimary"
 				android:gravity="bottom|fill_vertical|end"
@@ -68,8 +68,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="match_parent"
 		android:background="?attr/backgroundColor"
-		android:orientation="vertical"
-		android:paddingTop="112dp">
+		android:orientation="vertical">
 
 		<TextView
 			android:id="@+id/mainListViewEmpty"
@@ -96,7 +95,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:background="?attr/backgroundColor"
-
 				android:foregroundGravity="top"
 				android:clipToPadding="false"/>
 

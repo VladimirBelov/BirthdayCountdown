@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.5</item>
+        <item>Poprzednie wydarzenia na liście głównej: dodano 5k, wydarzenia z datami zmiennymi, wydarzenia z kalendarzy</item>
+        <item>W widżecie kalendarza na cały rok styczeń jest zawsze z numerem roku</item>
+        <item>Optymalizacja dla Androida 15</item>
+        <item>Dodano język interfejsu w języku czeskim</item>
+        <item>Poprawki błędów</item>
+
         <item>#1.8.4</item>
         <item>Nowy typ wydarzenia: Fakt (wydarzenie bez daty)</item>
         <item>Zaktualizowano święta 2025</item>
@@ -31,6 +38,8 @@
         <item>Ustawienie szybkiej akcji dla głównego menu listy (Ustawienia->Lista wydarzeń->Szybka akcja) (dodatkowe funkcje)</item>
         <item>Widżet kalendarza domyślnie używa kolorów kalendarzy źródłowych</item>
         <item>Dodano tłumaczenie na język polski</item>
+
+        <item>##Aby zobaczyć historię poprzednich wersji, w ustawieniach aplikacji przełącz się na język angielski lub rosyjski</item>
 
     </string-array>
 </resources>

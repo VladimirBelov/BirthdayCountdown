@@ -322,7 +322,7 @@
         <item>"on Saturday"</item>
     </string-array>
 
-    <string-array name="weekDaysShort"> <!-- https://tetran.ru/SiteContentEn/Details/4 -->
+    <string-array name="weekDaysShort">
         <item>su</item>
         <item>mo</item>
         <item>tu</item>
@@ -1373,11 +1373,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_VersionCode_LastRun" translatable="false">VersionCode_LastRun</string>
     <!--<string name="pref_BattOptiCheck" translatable="false">CheckBatteryOptimization</string>-->
 
-    <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento,aniversário,anniversaire,urodziny"</string>
-    <string name="event_type_wedding_labels" translatable="false">"anniversary,wedding,годовщина,свадьба,свадьбы,весілля,hochzeitstag,civil,boda,casamento,mariage,ślub"</string>
-    <string name="event_type_nameday_labels" translatable="false">"name-day,name day,именины,день ангела,іменини,namenstag,nom,imieniny"</string>
-    <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento,mort,мёрт,смерць,смерці,памёр,śmierć,śmierci"</string>
-    <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa,noce,couronnement"</string>
+    <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento,aniversário,anniversaire,urodziny,narozeniny"</string>
+    <string name="event_type_wedding_labels" translatable="false">"anniversary,wedding,годовщина,свадьба,свадьбы,весілля,hochzeitstag,civil,boda,casamento,mariage,ślub,výročí,svatba"</string>
+    <string name="event_type_nameday_labels" translatable="false">"name-day,name day,именины,день ангела,іменини,namenstag,nom,imieniny,jmeniny"</string>
+    <string name="event_type_death_labels" translatable="false">"death,смерти,смерть,смерті,todes,muerte,fallecimiento,mort,мёрт,смерць,смерці,памёр,śmierć,śmierci,smrt,zemřel"</string>
+    <string name="event_type_crowning_labels" translatable="false">"crowning,coronation,венчание,вінчання,kirchliche,iglesia,religiosa,noce,couronnement,korunovace,oddavky"</string>
 
     <string name="event_type_birthday_emoji" translatable="false">🎂</string>
     <string name="event_type_wedding_emoji" translatable="false">💑</string>
@@ -1414,6 +1414,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Language_es" translatable="false">es</string>
     <string name="pref_Language_pt" translatable="false">pt</string>
     <string name="pref_Language_pl" translatable="false">pl</string>
+    <string name="pref_Language_cs" translatable="false">cs</string>
 
     <string-array name="pref_Language_values" translatable="false">
         <item>@string/pref_Language_default</item>
@@ -1426,6 +1427,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_Language_uk</item>
         <item>@string/pref_Language_be</item>
         <item>@string/pref_Language_pl</item>
+        <item>@string/pref_Language_cs</item>
     </string-array>
 
     <!-- https://en.wikipedia.org/wiki/Regional_indicator_symbol -->
@@ -1440,6 +1442,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>🇺🇦 Українська</item>
         <item>🇧🇾 Беларускі</item>
         <item>🇵🇱 Polski</item>
+        <item>🇨🇿 Čeština</item>
     </string-array>
 
     <string name="pref_Icon_key" translatable="false">Icon</string>

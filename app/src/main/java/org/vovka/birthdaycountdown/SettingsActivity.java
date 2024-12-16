@@ -196,6 +196,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setTitle(R.string.window_settings);
             }
 
+            //Цвет CutoutAppearance на повёрнутом экране
+            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
+
             if (eventsData.preferences_menustyle_compact) {
                 addPreferencesFromResource(R.xml.settings_compact);
             } else {

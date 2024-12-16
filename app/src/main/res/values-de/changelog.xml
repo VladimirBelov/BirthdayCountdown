@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.5</item>
+        <item>Vorherige Ereignisse in der Hauptliste: 5k hinzugefügt, Ereignisse mit flexiblen Daten, Ereignisse aus Kalendern</item>
+        <item>Im Kalender-Widget für das ganze Jahr wird der Januar immer mit der Jahreszahl angezeigt</item>
+        <item>Optimierung für Android 15</item>
+        <item>Tschechische Schnittstellensprache hinzugefügt</item>
+        <item>Fehlerbehebungen</item>
+
         <item>#1.8.4</item>
         <item>Neuer Ereignistyp: Fakt (Ereignis ohne Datum)</item>
         <item>Aktualisierte Feiertage 2025</item>

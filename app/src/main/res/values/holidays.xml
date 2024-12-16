@@ -348,7 +348,7 @@
 
     <string-array name="holidays10" translatable="false" tools:ignore="UnusedResources">
         <item>🇪🇸 Feriados publicos</item>
-        <item>"Anual
+        <item>"//Anual
         01.01.0000,! Año Nuevo
         06.01.0000,! Epifanía del Señor
         28.02.0000,! Día de Andalucía
@@ -455,7 +455,7 @@
     </string-array>
 
     <string-array name="holidays14" translatable="false" tools:ignore="UnusedResources">
-    <item>🇵🇱 Święta</item>
+        <item>🇵🇱 Święta</item>
         <item>"//Coroczny
         01.01.0000,! Nowy Rok
         06.01.0000,! Trzech Króli
@@ -481,6 +481,29 @@
         21.04.2025,!1 Poniedziałek Wielkanocny
         08.06.2025,!1 Zielone Świątki
         19.06.2025,!1 Boże Ciało"</item>
+    </string-array>
+
+    <string-array name="holidays15" translatable="false" tools:ignore="UnusedResources">
+    <item>🇨🇿 Státními svátky</item>
+        <item>"//Výroční https://www.mpsv.cz/web/cz/svatky-v-ceske-republice
+        01.01.0000,! Nový rok
+        01.01.0000,! Den obnovy samostatného českého státu
+        01.05.0000,! Svátek práce
+        08.05.0000,! Den vítězství
+        05.07.0000,! Den slovanských věrozvěstů Cyrila a Metoděje
+        06.07.0000,! Den upálení mistra Jana Husa
+        28.09.0000,! Den české státnosti
+        28.10.0000,! Den vzniku samostatného československého státu
+        17.11.0000,! Den boje za svobodu a demokracii
+        24.12.0000,! Štědrý den
+        25.12.0000,! 1. svátek vánoční
+        26.12.0000,! 2. svátek vánoční"</item>
+        <item>"//2024 https://publicholidays.cz/2024-dates/
+        29.03.2024,!1 Velký pátek
+        01.04.2024,!1 Velikonoční pondělí"</item>
+        <item>"//2025 https://publicholidays.cz/2025-dates/
+        18.04.2025,!1 Velký pátek
+        21.04.2025,!1 Velikonoční pondělí"</item>
     </string-array>
 
 </resources>

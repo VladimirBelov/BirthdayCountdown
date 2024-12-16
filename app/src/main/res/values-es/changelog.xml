@@ -11,6 +11,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.5</item>
+        <item>Eventos anteriores en la lista principal: se agregaron 5k, eventos con fechas variables, eventos de calendarios</item>
+        <item>En el widget de calendario para todo el año, enero siempre tiene el número del año</item>
+        <item>Optimización para Android 15</item>
+        <item>Se agregó el idioma checo de la interfaz</item>
+        <item>Corrección de errores</item>
+
         <item>#1.8.4</item>
         <item>Nuevo tipo de evento: Hecho (evento sin fecha)</item>
         <item>Vacaciones actualizadas 2025</item>

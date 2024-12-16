@@ -50,6 +50,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -203,6 +204,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     viewPadding.setVisibility(View.VISIBLE);
                     viewPadding.setLayoutParams(lp);
                     v.setPadding(0, 0, 0, 0);
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
+                    } else {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
+                    }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -210,6 +217,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 viewPadding.setVisibility(View.GONE);
                 findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
             }
+            //Цвет CutoutAppearance на повёрнутом экране
+            //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
+            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);

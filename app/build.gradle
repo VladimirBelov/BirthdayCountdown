@@ -37,7 +37,7 @@ android {
     defaultConfig {
         buildToolsVersion  = "36.0.0-rc1" //https://developer.android.com/tools/releases/build-tools
 
-        def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl']
+        def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl', 'cs']
         buildConfigField "String[]", "TRANSLATIONS", "new String[]{\""+locales.join("\",\"")+"\"}"
         resConfigs locales
     }

@@ -10,6 +10,13 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.8.5</item>
+        <item>Eventos anteriores na lista principal: adicionado 5k, eventos com datas flutuantes, eventos de calendários</item>
+        <item>No widget de calendário para o ano inteiro, janeiro é sempre com o número do ano</item>
+        <item>Otimização para Android 15</item>
+        <item>Idioma de interface tcheco adicionado</item>
+        <item>Correções de bugs</item>
+
         <item>#1.8.4</item>
         <item>Novo tipo de evento: Fato (evento sem data)</item>
         <item>Feriados atualizados para 2025</item>
@@ -65,7 +72,7 @@
         <item>Adicionadas traduções para português e francês</item>
         <item>Otimizações para Android 14</item>
 
-        <item>#Para visualizar o histórico das versões anteriores, mude para inglês ou espanhol nas configurações do aplicativo</item>
+        <item>##Para visualizar o histórico das versões anteriores, mude para inglês ou espanhol nas configurações do aplicativo</item>
 
     </string-array>
 

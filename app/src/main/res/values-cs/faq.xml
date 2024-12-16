@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 16.12.2024, 13:39
+  ~  * Copyright (c) 2018 - 2024. All rights reserved.
+  ~  * Last modified 16.12.2024, 13:39
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="faq" tools:ignore="InconsistentArrays">
+
+        <item>###Obecné</item>
+        <item>Tato sekce není dostupná v jazyce vybraném v nastavení. V rozhraní programu přepněte do angličtiny a použijte Překladač Google.</item>
+
+        <item>#hledat</item>
+        <item><![CDATA[Chcete-li hledat více parametrů, oddělte je čárkami (libovolná hodnota) nebo \"+\" (všechny hodnoty), například:<ul>
+ <li>\"Jakub, Eliška\" – zobrazí události pro kontakty se jménem Jakub nebo Eliška
+ <li>\"Jan+Blíženci\" – zobrazí události od kontaktů jménem Jan a znamení zvěrokruhu Blíženci
+ </ul>]]></item>
+        <item>Vyhledávání používá všechna data událostí (pro kontrolu: povolte "Ladění zpráv" v nastavení aplikace, podržte událost, přejděte na \"Data události\")</item>
+        <item> </item>
+
+        <item>#Aplikační jazyky</item>
+        <item>Pokud chcete pomoci s překladem tohoto programu do jazyka, který je vám blízký, nebo pokud v překladu naleznete nějaké nepřesnosti, napište na e-mail (tlačítko níže).</item>
+    </string-array>
+
+</resources>

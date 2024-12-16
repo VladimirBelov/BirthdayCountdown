@@ -15,11 +15,13 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -93,6 +95,12 @@ public class FAQActivity extends AppCompatActivity {
                     TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                     viewPadding.setLayoutParams(lp);
                     v.setPadding(0, 0, 0, 0);
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                    } else {
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                    }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -116,6 +124,9 @@ public class FAQActivity extends AppCompatActivity {
                 bar.setDisplayShowTitleEnabled(true);
                 bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
             }
+
+            //Цвет CutoutAppearance на повёрнутом экране
+            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
             WebView webView = findViewById(R.id.webView);
