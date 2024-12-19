@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Pokaż urodziny z wybranych kalendarzy</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Użyj roku</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Użyj roku z wydarzenia w kalendarzu do obliczenia rocznic (a nie tylko dnia i miesiąca)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Pokaż urodziny z wybranych plików</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Pokaż urodziny z wybranych plików. Naciśnij i przytrzymaj element listy, aby wyświetlić plik</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Rocznice ślubu</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardowe tytuły</string>
@@ -422,7 +422,7 @@
     <string name="pref_CustomEvents_Calendars_title">Kalendarze</string>
     <string name="pref_CustomEvents_Calendars_summary">Pokaż wydarzenia z wybranych kalendarzy</string>
     <string name="pref_CustomEvents_LocalFiles_title">Pliki</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Pokaż wydarzenia z wybranych plików</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Pokaż wydarzenia z wybranych plików. Naciśnij i przytrzymaj element listy, aby wyświetlić plik</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brązowy</item>

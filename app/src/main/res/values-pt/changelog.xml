@@ -13,6 +13,7 @@
         <item>#1.8.5</item>
         <item>Eventos anteriores na lista principal: adicionado 5k, eventos com datas flutuantes, eventos de calendários</item>
         <item>No widget de calendário para o ano inteiro, janeiro é sempre com o número do ano</item>
+        <item>Manter pressionado um item da lista abre o arquivo para visualização (configurações do aplicativo)</item>
         <item>Otimização para Android 15</item>
         <item>Idioma de interface tcheco adicionado</item>
         <item>Correções de bugs</item>

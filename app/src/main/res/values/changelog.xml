@@ -14,6 +14,7 @@
         <item>#1.8.5</item>
         <item>Previous events in main list: added 5k, events with floating dates, events from calendars</item>
         <item>In the calendar widget for whole year, the January is always with year number</item>
+        <item>Long press on a list item opens the file for viewing (application settings)</item>
         <item>Optimization for Android 15</item>
         <item>Added Czech interface language</item>
         <item>Bug fixes</item>

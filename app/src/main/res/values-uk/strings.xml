@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Показувати події днів народження з вибраних календарів</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Використовувати рік</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Використовувати рік з події календаря для розрахунку річниць (не тільки день і місяць)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показувати події народження з вибраних файлів</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показувати події народження з вибраних файлів. Довге натискання на елементі списку для перегляду файлу</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Річниці весілля</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартні найменування</string>
@@ -422,7 +422,7 @@
     <string name="pref_CustomEvents_Calendars_title">Календарі</string>
     <string name="pref_CustomEvents_Calendars_summary">Показати події з обраних календарів</string>
     <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Показувати події з вибраних файлів</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Показувати події з вибраних файлів. Довге натискання на елементі списку для перегляду файлу</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричнева</item>

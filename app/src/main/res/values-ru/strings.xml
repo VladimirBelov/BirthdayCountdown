@@ -369,7 +369,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Показывать дни рождения из выбранных календарей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Использовать год из события календаря для расчёта годовщин (не только день и месяц)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов. Долгое нажатие на элементе списка для просмотра файла</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Годовщины свадеб</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартные наименования</string>
@@ -423,7 +423,7 @@
     <string name="pref_CustomEvents_Calendars_title">Календари</string>
     <string name="pref_CustomEvents_Calendars_summary">Показывать события из выбранных календарей</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Показывать события из выбранных файлов</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Показывать события из выбранных файлов. Долгое нажатие на элементе списка для просмотра файла</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричневая</item>

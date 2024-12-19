@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
       <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen. Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Hochzeitstage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>
@@ -422,7 +422,7 @@
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
     <string name="pref_CustomEvents_Calendars_summary">Ereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen. Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>

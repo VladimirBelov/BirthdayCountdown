@@ -35,7 +35,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        buildToolsVersion  = "36.0.0-rc1" //https://developer.android.com/tools/releases/build-tools
+        buildToolsVersion  = "36.0.0-rc3" //https://developer.android.com/tools/releases/build-tools
 
         def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl', 'cs']
         buildConfigField "String[]", "TRANSLATIONS", "new String[]{\""+locales.join("\",\"")+"\"}"

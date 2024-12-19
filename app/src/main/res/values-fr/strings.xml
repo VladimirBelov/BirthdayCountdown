@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">"Afficher les anniversaires à partir des calendriers sélectionnés"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">"Utiliser la date avec l'année"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">"Afficher les événements d'anniversaire à partir des fichiers choisis"</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">"Afficher les événements d'anniversaire à partir des fichiers choisis. Appuyez longuement sur un élément de la liste pour afficher un fichier"</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Anniversaires de mariage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Utiliser des étiquettes standards</string>
@@ -422,7 +422,7 @@
     <string name="pref_CustomEvents_Calendars_title">Calendriers</string>
     <string name="pref_CustomEvents_Calendars_summary">Afficher les événements des calendriers choisis</string>
     <string name="pref_CustomEvents_LocalFiles_title">Fichiers</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Afficher les événements des fichiers choisis</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Afficher les événements des fichiers choisis. Appuyez longuement sur un élément de la liste pour afficher un fichier</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brun</item>

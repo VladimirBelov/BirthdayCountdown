@@ -369,7 +369,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Zobrazit narozeninové události z vybraných kalendářů</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Použít datum s rokem</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Použít pro událost celé datum události kalendáře (nejen den a měsíc)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Zobrazit narozeninové události z vybraných souborů</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Zobrazit narozeninové události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Výročí</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Použít standardní štítky</string>
@@ -423,7 +423,7 @@
     <string name="pref_CustomEvents_Calendars_title">Kalendáře</string>
     <string name="pref_CustomEvents_Calendars_summary">Zobrazit události z vybraných kalendářů</string>
     <string name="pref_CustomEvents_LocalFiles_title">Místní soubory</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Zobrazit události z vybraných souborů</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Zobrazit události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
 
     <string-array name="pref_Theme_entries">
         <item>Hnědá</item>

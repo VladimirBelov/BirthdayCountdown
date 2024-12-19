@@ -19,13 +19,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -3201,6 +3204,53 @@ class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void launchIntentOnFile(@NonNull Uri uri) {
+        try {
+            String mime = context.getContentResolver().getType(uri);
+
+            Intent intentEdit = new Intent();
+            intentEdit.setAction(Intent.ACTION_EDIT);
+            intentEdit.setDataAndType(uri, mime);
+
+            Intent intentView = new Intent();
+            intentView.setAction(Intent.ACTION_VIEW);
+            intentView.setDataAndType(uri, mime);
+
+            PackageManager packageManager = context.getPackageManager();
+            List<ResolveInfo> appToEdit = packageManager.queryIntentActivities(intentEdit, PackageManager.MATCH_DEFAULT_ONLY);
+            List<ResolveInfo> appsToView = packageManager.queryIntentActivities(intentView, PackageManager.MATCH_DEFAULT_ONLY);
+
+            if (!appToEdit.isEmpty()) {
+                //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
+                final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+                intentEdit.addFlags(flags);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    for (ResolveInfo resolveInfo : context.getPackageManager().queryIntentActivities(intentEdit, PackageManager.MATCH_ALL)) {
+                        String packageName = resolveInfo.activityInfo.packageName;
+                        context.grantUriPermission(packageName, uri, flags);
+                    }
+                }
+
+                try {
+                    context.startActivity(intentEdit);
+                } catch (ActivityNotFoundException e) { /**/ }
+            } else if(!appsToView.isEmpty()) {
+                try {
+                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+                    intentView.addFlags(flags);
+                    context.startActivity(intentView);
+                } catch (ActivityNotFoundException e) { /**/ }
+            } else {
+                //https://www.codeproject.com/Tips/1097808/Custom-App-Chooser-in-Android
+                ToastExpander.showInfoMsg(context, context.getText(R.string.msg_file_no_app_for_file).toString());
+            }
+
+        } catch (SecurityException se) {
+            ToastExpander.showInfoMsg(context, context.getText(R.string.msg_file_access_write_error).toString());
         }
     }
 

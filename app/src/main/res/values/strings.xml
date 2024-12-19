@@ -369,7 +369,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files. Long press on list item to view a file</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Anniversaries</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
@@ -423,7 +423,7 @@
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
     <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
     <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Show events from chosen files</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Show events from chosen files. Long press on a list item to view a file</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brown</item>

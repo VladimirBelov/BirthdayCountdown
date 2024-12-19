@@ -2004,10 +2004,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
             AlertDialog alertToShow = builder.create();
+            ListView listView = alertToShow.getListView();
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                if (!filesPaths.isEmpty()) {
+                    listView.setOnItemLongClickListener((parent, view, position, id) -> {
+
+                        String[] fileDetails = filesFullData.get(position).split(Constants.STRING_PIPE);
+                        Uri uri = Uri.parse(fileDetails[1]);
+                        if (uri != null) {
+                            eventsData.launchIntentOnFile(uri);
+                        }
+                        return true;
+                    });
+                }
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

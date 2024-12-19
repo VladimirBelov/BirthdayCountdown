@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Паказваць дні нараджэння з абраных календароў</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Выкарыстаць год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Выкарыстаць год з падзеі календара для разліку гадавін (не толькі дзень і месяц)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Паказваць дні нараджэння з абраных файлаў</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Паказваць дні нараджэння з абраных файлаў. Доўгі націск на элеменце спісу для прагляду файла</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Гадовец вяселля</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартныя назвы</string>
@@ -414,7 +414,7 @@
     <string name="pref_CustomEvents_Calendars_title">Календары</string>
     <string name="pref_CustomEvents_Calendars_summary">Паказваць падзеі з абраных календароў</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Паказваць падзеі з абраных файлаў</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Паказваць падзеі з абраных файлаў. Доўгі націск на элеменце спісу для прагляду файла</string>
 
     <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>

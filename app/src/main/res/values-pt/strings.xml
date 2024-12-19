@@ -368,7 +368,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Mostrar eventos de aniversário dos calendários escolhidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Usar data com ano</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use a data completa do calendário para o evento (não apenas dia e mês)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de aniversário dos arquivos escolhidos</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de aniversário dos arquivos escolhidos. Pressione e segure um item da lista para visualizar um arquivo</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Aniversários de casamento</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use rótulos padrão</string>
@@ -422,7 +422,7 @@
     <string name="pref_CustomEvents_Calendars_title">Calendários</string>
     <string name="pref_CustomEvents_Calendars_summary">Mostrar eventos dos calendários escolhidos</string>
     <string name="pref_CustomEvents_LocalFiles_title">Arquivos locais</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Mostrar eventos dos arquivos escolhidos</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Mostrar eventos dos arquivos escolhidos. Pressione e segure um item da lista para visualizar um arquivo</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrom</item>

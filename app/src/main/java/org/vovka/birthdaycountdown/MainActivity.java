@@ -1806,53 +1806,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     .setTitle(R.string.pref_CustomEvents_LocalFiles_title)
                     .setIcon(android.R.drawable.ic_menu_save)
                     .setItems(fileNames.toArray(new CharSequence[0]), (dialog, which) -> {
+                        dialog.cancel();
                         Uri uri = Uri.parse(fileURIs.get(which));
                         if (uri != null) {
-                            try {
-                                String mime = getContentResolver().getType(uri);
-
-                                Intent intentEdit = new Intent();
-                                intentEdit.setAction(Intent.ACTION_EDIT);
-                                intentEdit.setDataAndType(uri, mime);
-
-                                Intent intentView = new Intent();
-                                intentView.setAction(Intent.ACTION_VIEW);
-                                intentView.setDataAndType(uri, mime);
-
-                                PackageManager packageManager = getPackageManager();
-                                List<ResolveInfo> appToEdit = packageManager.queryIntentActivities(intentEdit, PackageManager.MATCH_DEFAULT_ONLY);
-                                List<ResolveInfo> appsToView = packageManager.queryIntentActivities(intentView, PackageManager.MATCH_DEFAULT_ONLY);
-
-                                dialog.cancel();
-                                if (!appToEdit.isEmpty()) {
-                                    //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
-                                    final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-                                    intentEdit.addFlags(flags);
-
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        for (ResolveInfo resolveInfo : getPackageManager().queryIntentActivities(intentEdit, PackageManager.MATCH_ALL)) {
-                                            String packageName = resolveInfo.activityInfo.packageName;
-                                            grantUriPermission(packageName, uri, flags);
-                                        }
-                                    }
-
-                                    try {
-                                        startActivity(intentEdit);
-                                    } catch (ActivityNotFoundException e) { /**/ }
-                                } else if(!appsToView.isEmpty()) {
-                                    try {
-                                        final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-                                        intentView.addFlags(flags);
-                                        startActivity(intentView);
-                                    } catch (ActivityNotFoundException e) { /**/ }
-                                } else {
-                                    //https://www.codeproject.com/Tips/1097808/Custom-App-Chooser-in-Android
-                                    ToastExpander.showInfoMsg(this, getText(R.string.msg_file_no_app_for_file).toString());
-                                }
-
-                            } catch (SecurityException se) {
-                                ToastExpander.showInfoMsg(this, getText(R.string.msg_file_access_write_error).toString());
-                            }
+                            eventsData.launchIntentOnFile(uri);
                         }
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
