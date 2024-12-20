@@ -408,7 +408,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonOkOnClick(@SuppressWarnings("unused") final View view) {
+    public void buttonOkOnClick(final View view) {
         try {
 
             final Spinner spinnerLayout = findViewById(R.id.spinnerMonthsLayout);
@@ -544,7 +544,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonCancelOnClick(@SuppressWarnings("unused") final View view) {
+    public void buttonCancelOnClick(final View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
     }

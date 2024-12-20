@@ -23,7 +23,6 @@ final class SnackbarHandler extends Handler {
 
     private final WeakReference<FluentSnackbar> mSnackbarManager;
 
-    @SuppressWarnings("deprecation")
     SnackbarHandler(FluentSnackbar manager) {
         mSnackbarManager = new WeakReference<>(manager);
     }

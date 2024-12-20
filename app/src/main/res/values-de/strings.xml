@@ -1158,7 +1158,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>Autostart (Xiaomi): %1$s]]></string>
     <string name="stats_permissions_device"><![CDATA[<li>Modell: %1$s %2$s]]></string>
     <string name="stats_permissions_os"><![CDATA[<li>Android-Version: %1$s (api %2$d)]]></string>
-    <string name="stats_permissions_display"><![CDATA[<li>Anzeige: %1$s]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>Anzeige: %1$dx%2$d (%3$d dpi, density %4$.2f)]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Keine Ereignisse angezeigt</h2>Diese Informationen können hilfreich sein:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[

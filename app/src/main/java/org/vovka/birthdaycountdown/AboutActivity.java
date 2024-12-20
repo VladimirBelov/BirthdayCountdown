@@ -40,10 +40,8 @@ import android.widget.Toast;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -148,8 +146,6 @@ public class AboutActivity extends AppCompatActivity {
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
-            SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale);
-            formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
 
             ImageView imageIcon = findViewById(R.id.imageIcon);
             imageIcon.setImageBitmap(eventsData.getPreferences_Icon());
@@ -279,8 +275,8 @@ public class AboutActivity extends AppCompatActivity {
                     final float density = displayMetrics.density;
                     sb.append(getString(R.string.stats_permissions_device, Build.BRAND, Build.MODEL));
                     sb.append(getString(R.string.stats_permissions_os, Build.VERSION.RELEASE, Build.VERSION.SDK_INT));
-                    sb.append(getString(R.string.stats_permissions_display, displayMetrics.heightPixels + "x" + displayMetrics.widthPixels
-                            + " (" + displayMetrics.densityDpi + " dpi, density " + displayMetrics.density + ")"));
+                    sb.append(getString(R.string.stats_permissions_display, displayMetrics.heightPixels,
+                            displayMetrics.widthPixels, displayMetrics.densityDpi, displayMetrics.density));
 
                 } catch (Exception e) { /**/ }
                 sb.append(Constants.HTML_UL_END);
@@ -288,7 +284,8 @@ public class AboutActivity extends AppCompatActivity {
             }
 
             //Change log
-            //todo: когда количество строк превысит 700 - https://stackoverflow.com/questions/3522181/should-i-be-using-something-other-than-getresource-getstringarray-to-populat
+            //todo: когда количество строк превысит 700
+            // https://stackoverflow.com/questions/3522181/should-i-be-using-something-other-than-getresource-getstringarray-to-populat
             String[] arrChangeLog;
             try {
                 arrChangeLog = eventsData.getResources().getStringArray(R.array.changelog);
@@ -331,7 +328,7 @@ public class AboutActivity extends AppCompatActivity {
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);
                 webView.setBackgroundColor(Color.TRANSPARENT);
-                webView.loadData(sb.toString(), "text/html; charset=utf-8", "utf-8");
+                webView.loadData(sb.toString(), Constants.CHARSET_HTML_UTF_8, Constants.CHARSET_UTF_8);
 
                 //https://stackoverflow.com/questions/5107651/android-disable-text-selection-in-a-webview
                 webView.setOnLongClickListener(v -> true);
@@ -340,7 +337,7 @@ public class AboutActivity extends AppCompatActivity {
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" +
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(Constants.MAILTO_TEMPLATE +
                             getString(R.string.app_name) + "%20" + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
                 } catch (RuntimeException e) { /**/ }
                 finish();
@@ -348,10 +345,10 @@ public class AboutActivity extends AppCompatActivity {
 
             findViewById(R.id.buttonRate).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Constants.STORE_LINK_GOOGLE_MARKET, BuildConfig.APPLICATION_ID))));
                 } catch (ActivityNotFoundException e) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Constants.STORE_LINK_PLAY_MARKET, BuildConfig.APPLICATION_ID))));
                     } catch (android.content.ActivityNotFoundException e2) { /**/ }
                 }
                 finish();
@@ -359,14 +356,14 @@ public class AboutActivity extends AppCompatActivity {
 
             findViewById(R.id.buttonAppGallery).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://appgallery.huawei.com/app/C101143661")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_HUAWEI)));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
             findViewById(R.id.button4PDA).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://4pda.to/forum/index.php?showtopic=939391")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_4PDA)));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
@@ -379,7 +376,7 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
-    public void setDebug(@SuppressWarnings("unused") android.view.View view) {
+    public void setDebug(android.view.View view) {
 
         try {
 

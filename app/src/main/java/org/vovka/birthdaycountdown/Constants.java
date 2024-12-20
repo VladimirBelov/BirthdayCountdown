@@ -8,6 +8,7 @@
 
 package org.vovka.birthdaycountdown;
 
+/** @noinspection HardCodedStringLiteral*/
 final class Constants {
 
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
@@ -107,6 +108,8 @@ final class Constants {
     static final String DATE_JAVA_G = "yyyy-MM-dd G";
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
     static final String DATE_NO_DIV = "yyyyMMdd";
+    static final String DATE_YY_MM_DD_HH_MM = " yy.MM.dd HH:mm";
+    static final String DATE_LLLL_YYYY = "LLLL yyyy";
 
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
@@ -127,10 +130,8 @@ final class Constants {
     static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_LAYOUT = "textViewLayout";
-    //static final String WIDGET_TEXT_VIEW_CENTERED = "textViewCentered";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
     static final String WIDGET_TEXT_VIEW_2_ND_LAYOUT = "textView2ndLayout";
-    //static final String WIDGET_TEXT_VIEW_2_ND_CENTERED = "textView2ndCentered";
     static final String WIDGET_EVENT_INFO = "eventInfo";
     static final String WIDGET_IMAGE_VIEW = "imageView";
     static final String WIDGET_IMAGE_VIEW_CENTERED = "imageViewCentered";
@@ -265,16 +266,6 @@ final class Constants {
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 
-    /*static final int MENU_MAIN_SEARCH = 0;
-    static final int MENU_MAIN_ADD_EVENT = 1;
-    static final int MENU_MAIN_REFRESH = 2;
-    static final int MENU_MAIN_QUIZ = 3;
-    static final int MENU_MAIN_SETTINGS = 4;
-    static final int MENU_MAIN_FILTER = 5;
-    static final int MENU_MAIN_SOURCES = 6;
-    static final int MENU_MAIN_TYPES = 7;
-    static final int MENU_MAIN_HINTS = 8;*/
-
     static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
@@ -314,6 +305,7 @@ final class Constants {
     static final String RES_PACKAGE_ANDROID = "android";
     static final String RES_TYPE_STRING = "string";
     static final String RES_TYPE_STRING_ARRAY = "array";
+    static final String RES_TYPE_CALENDAR = "calendar";
     static final String URI_PACKAGE = "package:";
 
     static final int ContextMenu_EditContact = 1;
@@ -373,4 +365,28 @@ final class Constants {
     static final int Align_Center = 2;
     static final int Align_Right = 3;
     static final String TRANSPARENT = "transparent";
+
+    static final String PATH_MEDIA_EXTERNAL = "/media/external/";
+
+    static final String APP_PACKAGE = "app_package";
+    static final String APP_UID = "app_uid";
+    static final String QUERY_PARAM_DELETED_0 = "deleted=0";
+    static final String PREF_TYPE_STRING = " (string)";
+    static final String PREF_TYPE_BOOLEAN = " (boolean)";
+    static final String PREF_TYPE_INT = " (int)";
+    static final String PREF_TYPE_SET = " (string set)";
+    static final String CHARSET_HTML_UTF_8 = "text/html; charset=utf-8";
+    static final String CHARSET_UTF_8 = "utf-8";
+    static final String MAILTO_TEMPLATE = "mailto:belov.vladimir@mail.ru?subject=";
+    static final String ANCHOR_LINK = "<script>window.location.hash=\"%s\";</script>";
+    static final String DRAWABLE_BASE_URL = "file:///android_res/drawable/";
+
+    static final String STORE_LINK_GOOGLE_MARKET = "market://details?id=%s";
+    static final String STORE_LINK_PLAY_MARKET = "https://play.google.com/store/apps/details?id=%s";
+    static final String STORE_LINK_HUAWEI = "https://appgallery.huawei.com/app/C101143661";
+    static final String STORE_LINK_4PDA = "https://4pda.to/forum/index.php?showtopic=939391";
+
+    static final String METHOD_SET_BACKGROUND_COLOR = "setBackgroundColor";
+    static final String METHOD_SET_BACKGROUND_RES = "setBackgroundResource";
+    static final String METHOD_SET_MIN_WIDTH = "setMinWidth";
 }

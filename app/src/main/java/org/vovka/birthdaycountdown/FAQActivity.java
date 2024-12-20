@@ -165,23 +165,23 @@ public class FAQActivity extends AppCompatActivity {
                     if (!anchor.isEmpty()) {
                         // https://stackoverflow.com/questions/14062901/webview-jump-to-anchor-using-loaddatawithbaseurl
                         webView.getSettings().setJavaScriptEnabled(true);
-                        sb.append("<script>window.location.hash=\"").append(anchor).append("\";</script>");
+                        sb.append(String.format(Constants.ANCHOR_LINK, anchor));
                     }
                 }
                 sb.append("</body></html>");
 
                 webView.loadDataWithBaseURL(
-                        "file:///android_res/drawable/",
+                        Constants.DRAWABLE_BASE_URL,
                         sb.toString(),
-                        "text/html; charset=utf-8",
-                        "utf-8",
+                        Constants.CHARSET_HTML_UTF_8,
+                        Constants.CHARSET_UTF_8,
                         null
                 );
             }
 
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:belov.vladimir@mail.ru?subject=" + getString(R.string.app_name) + "%20"
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(Constants.MAILTO_TEMPLATE + getString(R.string.app_name) + "%20"
                             + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();

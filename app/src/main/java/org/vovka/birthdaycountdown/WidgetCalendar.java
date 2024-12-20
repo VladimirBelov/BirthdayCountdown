@@ -197,9 +197,9 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             //Прогресс обновления
             if (showUpdateProgress) {
-                rv.setInt(R.id.calendarAll, "setBackgroundColor", 0);
+                rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
                 for (int row = 1; row <= rowsMax; row++) {
-                    int id = res.getIdentifier("calendar".concat(String.valueOf(row)), "id", context.getPackageName());
+                    int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
                     rv.setViewVisibility(id, View.GONE);
                 }
                 rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
@@ -471,16 +471,16 @@ public class WidgetCalendar extends AppWidgetProvider {
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
 
-            rv.setInt(R.id.calendarAll,"setBackgroundColor", colorWidgetBackground);
+            rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
             for (int row = 1; row <= rowsMax; row++) {
-                int id = res.getIdentifier("calendar".concat(String.valueOf(row)), "id", context.getPackageName());
+                int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
                     for (int column = 1; column <= columnsMax; column++) {
-                        String idRow = "calendar".concat(String.valueOf(row)).concat("x");
-                        id = res.getIdentifier(idRow.concat(String.valueOf(column)), "id", context.getPackageName());
-                        int idDiv = res.getIdentifier(idRow.concat(String.valueOf(column)).concat("div"), "id", context.getPackageName());
+                        String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x");
+                        id = res.getIdentifier(idRow.concat(String.valueOf(column)), Constants.STRING_ID, context.getPackageName());
+                        int idDiv = res.getIdentifier(idRow.concat(String.valueOf(column)).concat("div"), Constants.STRING_ID, context.getPackageName());
                         if (id != 0) {
                             rv.removeAllViews(id);
                             if (column > columnsToDraw) {
@@ -556,7 +556,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     //Шапка
                     RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar_month);
-                    calendarRv.setInt(R.id.month_bar, "setBackgroundColor", colorHeaderBack);
+                    calendarRv.setInt(R.id.month_bar, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
 
                     if (enabledHeader) {
                         calendarRv.setViewVisibility(R.id.month_bar, View.VISIBLE);
@@ -564,7 +564,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
                         calendarRv.setTextColor(R.id.next_month_button, colorArrows);
                         if (prefElements.contains(res.getString(R.string.widget_config_elements_year)) || (monthsInYear == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
-                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL yyyy", cal).toString().toUpperCase());
+                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format(Constants.DATE_LLLL_YYYY, cal).toString().toUpperCase());
                         } else {
                             calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
                         }
@@ -605,7 +605,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
                             headerRowRv.addView(R.id.row_container, dayRv);
                         }
-                        headerRowRv.setInt(R.id.row_container,"setBackgroundColor", colorHeaderBack);
+                        headerRowRv.setInt(R.id.row_container, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             headerRowRv.setViewLayoutMargin(R.id.row_container, RemoteViews.MARGIN_TOP, -4, COMPLEX_UNIT_SP);
                         }
@@ -628,13 +628,13 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     if (row > 1 || (column != 1 && columnsToDraw > 1)) {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", 1);
+                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
                     } else {
-                        calendarRv.setInt(R.id.prev_month_button, "setMinWidth", ContactsEvents.Dip2Px(res, 17));
+                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
-                        calendarRv.setInt(R.id.prev_month_button, "setBackgroundResource", R.drawable.cell_day);
+                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_PREVIOUS_MONTH)
@@ -644,13 +644,13 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
                         calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", 1);
+                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
                     } else {
-                        calendarRv.setInt(R.id.next_month_button, "setMinWidth", ContactsEvents.Dip2Px(res, 17));
+                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                         calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
-                        calendarRv.setInt(R.id.next_month_button, "setBackgroundResource", R.drawable.cell_day);
+                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
                                         .setAction(Constants.ACTION_NEXT_MONTH)
@@ -658,7 +658,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
                     }
 
-                    calendarRv.setInt(R.id.month_label, "setBackgroundResource", R.drawable.cell_day);
+                    calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
                     if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
                         Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
                         intentConfig.setAction(Constants.ACTION_LAUNCH);
@@ -672,7 +672,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
                     }
 
-                    int id = res.getIdentifier("calendar" + row + "x" + column, "id", context.getPackageName());
+                    int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.STRING_ID, context.getPackageName());
                     if (id != 0) {
                         rv.addView(id, calendarRv);
                     }
@@ -706,15 +706,15 @@ public class WidgetCalendar extends AppWidgetProvider {
             cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
             if (isToday) {
                 color = colorToday;
-                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_today);
+                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_today);
                 atLeastOneDayInMonth = true;
             } else if (inMonth) {
                 color = colorCommon;
-                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day_this_month);
+                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day_this_month);
                 atLeastOneDayInMonth = true;
             } else {
                 color = colorCommonOutMonth;
-                cellRv.setInt(android.R.id.text1, "setBackgroundResource", R.drawable.cell_day);
+                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
             }
 
             if (enabledFillDays || inMonth) {
@@ -762,7 +762,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
             if (color != null) {
                 if (isToday) {
-                    cellRv.setInt(android.R.id.text1,"setBackgroundColor", color);
+                    cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
 
                     if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));

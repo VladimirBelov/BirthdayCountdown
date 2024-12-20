@@ -105,7 +105,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-@SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
@@ -211,7 +210,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     eventsData.getPreferences();
                     //todo: проверить для 13+
-                    if ((eventsData.preferences_notifications_ringtone.contains("/media/external/") || eventsData.preferences_notifications2_ringtone.contains("/media/external/")) &&
+                    if ((eventsData.preferences_notifications_ringtone.contains(Constants.PATH_MEDIA_EXTERNAL) || eventsData.preferences_notifications2_ringtone.contains(Constants.PATH_MEDIA_EXTERNAL)) &&
                             eventsData.checkNoStorageAccess()) {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -376,7 +375,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
 
-            Preference prefNotifyFactsCount = new Preference(eventsData.getContext());
+            Preference prefNotifyFactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
             prefNotifyFactsCount.setKey(getString(R.string.pref_Notifications_FactEvents_Count_key));
             prefNotifyFactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
             prefNotifyFactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
@@ -386,11 +385,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 return true;
             });
             hideOrAddPreference(!eventsData.preferences_notifications_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications_key,
-                    R.string.pref_Notifications_FactEvents_Count_key, prefNotifyFactsCount, R.string.pref_Notifications_EventInfo_key);
+                    R.string.pref_Notifications_FactEvents_Count_key, prefNotifyFactsCount,
+                    eventsData.preferences_extrafun ? R.string.pref_Notifications_EventInfo_key : R.string.pref_Notifications_Events_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Notifications2_key);
 
-            Preference prefNotify2FactsCount = new Preference(eventsData.getContext());
+            Preference prefNotify2FactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
             prefNotify2FactsCount.setKey(getString(R.string.pref_Notifications2_FactEvents_Count_key));
             prefNotify2FactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
             prefNotify2FactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
@@ -400,7 +400,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 return true;
             });
             hideOrAddPreference(!eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications2_key,
-                    R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount, R.string.pref_Notifications2_EventInfo_key);
+                    R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount,
+                    eventsData.preferences_extrafun ? R.string.pref_Notifications2_EventInfo_key : R.string.pref_Notifications2_Events_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
@@ -617,7 +618,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
@@ -757,7 +757,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     try {
-                        startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
+                        startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse(Constants.URI_PACKAGE + getPackageName())));
                     } catch (ActivityNotFoundException e) { /**/ }
                 }
 
@@ -1144,8 +1144,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         //for Android 5-7
-                        intent.putExtra("app_package", getPackageName());
-                        intent.putExtra("app_uid", getApplicationInfo().uid);
+                        intent.putExtra(Constants.APP_PACKAGE, getPackageName());
+                        intent.putExtra(Constants.APP_UID, getApplicationInfo().uid);
 
                         // for Android 8 and above
                         intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
@@ -1174,7 +1174,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             //https://stackoverflow.com/questions/70304940/android-12-redirect-to-alarms-reminders-settings-not-working
 
                             try {
-                                startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:"+ getPackageName())));
+                                startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse(Constants.URI_PACKAGE + getPackageName())));
                             } catch (ActivityNotFoundException e) { /**/ }
                         }
                 }
@@ -1410,7 +1410,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ContentResolver contentResolver = getApplicationContext().getContentResolver();
                 Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
                         new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
-                        "deleted=0",
+                        Constants.QUERY_PARAM_DELETED_0,
                         null,
                         null);
                 Set<String> accountsList = new HashSet<>();
@@ -2329,13 +2329,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 String prefType = Constants.STRING_EMPTY;
                 if (eventsData.preferences_debug_on) {
                     if (prefs.get(key) instanceof String) {
-                        prefType = " (string)";
+                        prefType = Constants.PREF_TYPE_STRING;
                     } else if (prefs.get(key) instanceof Boolean) {
-                        prefType = " (boolean)";
+                        prefType = Constants.PREF_TYPE_BOOLEAN;
                     } else if (prefs.get(key) instanceof Integer) {
-                        prefType = " (int)";
+                        prefType = Constants.PREF_TYPE_INT;
                     } else if (prefs.get(key) instanceof Set) {
-                        prefType = " (string set)";
+                        prefType = Constants.PREF_TYPE_SET;
                     }
                 }
 
@@ -2375,7 +2375,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
-                                + new SimpleDateFormat(" yy.MM.dd HH:mm", Locale.US).format(Calendar.getInstance().getTime())
+                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(Calendar.getInstance().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
@@ -2910,10 +2910,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             //https://stackoverflow.com/questions/7094637/trigger-android-calendar-to-sync-after-adding-events-programmatically
             Account[] accounts = AccountManager.get(this).getAccounts();
-            Log.d(TAG, "Refreshing " + accounts.length + " accounts");
             String authority = CalendarContract.Calendars.CONTENT_URI.getAuthority();
             for (Account account : accounts) {
-                Log.d(TAG, "Refreshing calendars for: " + account);
                 Bundle extras = new Bundle();
                 extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 ContentResolver.requestSync(account, authority, extras);

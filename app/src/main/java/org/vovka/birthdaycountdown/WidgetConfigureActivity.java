@@ -797,7 +797,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonOkOnClick(@SuppressWarnings("unused") final View view) {
+    public void buttonOkOnClick(final View view) {
         try {
 
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
@@ -953,7 +953,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonCancelOnClick(@SuppressWarnings("unused") final View view) {
+    public void buttonCancelOnClick(final View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
     }

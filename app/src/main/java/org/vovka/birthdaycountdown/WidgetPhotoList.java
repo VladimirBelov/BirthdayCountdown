@@ -165,15 +165,15 @@ public class WidgetPhotoList extends AppWidgetProvider {
                 colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             }
             //Иначе не скрывается caption_bar
-            views.setInt(R.id.caption_bar, "setBackgroundColor", !prefWidgetCaption.isEmpty() ? colorWidgetBackground : 0);
-            views.setInt(R.id.widget_list,"setBackgroundColor", colorWidgetBackground);
+            views.setInt(R.id.caption_bar, Constants.METHOD_SET_BACKGROUND_COLOR, !prefWidgetCaption.isEmpty() ? colorWidgetBackground : 0);
+            views.setInt(R.id.widget_list,Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
             //Если события есть - рисуем бордюр, иначе - прозрачность
             if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
-                views.setInt(R.id.widget_layout,"setBackgroundResource", R.drawable.layout_bg);
+                views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
             } else {
-                views.setInt(R.id.widget_layout,"setBackgroundResource", 0);
+                views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, 0);
             }
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?

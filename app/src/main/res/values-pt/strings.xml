@@ -1158,7 +1158,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>inicialização automática (Xiaomi): %1$s]]></string>
     <string name="stats_permissions_device"><![CDATA[<li>dispositivo: %1$s %2$s]]></string>
     <string name="stats_permissions_os"><![CDATA[<li>Versão do Android: %1$s (api %2$d)]]></string>
-    <string name="stats_permissions_display"><![CDATA[<li>display: %1$s]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>display: %1$dx%2$d (%3$d dpi, density %4$.2f)]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Nenhum evento exibido</h2>Essas informações podem ajudar:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[

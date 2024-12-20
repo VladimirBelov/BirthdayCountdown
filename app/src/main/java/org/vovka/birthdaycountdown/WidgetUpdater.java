@@ -313,15 +313,15 @@ class WidgetUpdater {
             if (colorWidgetBackground == 0) {
                 colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             }
-            views.setInt(R.id.events,"setBackgroundColor", colorWidgetBackground);
+            views.setInt(R.id.events,Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
             //Если события есть - рисуем бордюр, иначе - прозрачность
             if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
-                views.setInt(R.id.appwidget_main,"setBackgroundResource", R.drawable.layout_bg);
+                views.setInt(R.id.appwidget_main,Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
             } else {
-                views.setInt(R.id.appwidget_main,"setBackgroundResource", 0);
+                views.setInt(R.id.appwidget_main,Constants.METHOD_SET_BACKGROUND_RES, 0);
             }
 
             if (eventsData.preferences_debug_on) {

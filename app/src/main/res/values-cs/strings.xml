@@ -1159,7 +1159,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>automatické spuštění (Xiaomi): %1$s]]></string>
     <string name="stats_permissions_device"><![CDATA[<li>zařízení: %1$s %2$s]]></string>
     <string name="stats_permissions_os"><![CDATA[<li>Verze systému Android: %1$s (api %2$d)]]></string>
-    <string name="stats_permissions_display"><![CDATA[<li>zobrazit: %1$s]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>zobrazit: %1$dx%2$d (%3$d dpi, density %4$.2f)]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Nejsou zobrazeny žádné události</h2>Tyto informace mohou pomoci:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[

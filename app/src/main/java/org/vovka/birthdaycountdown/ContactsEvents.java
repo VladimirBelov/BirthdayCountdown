@@ -24,7 +24,6 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -1971,7 +1970,9 @@ class ContactsEvents {
                     projectionContactsEvents,
                     ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
                     new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
-                    ContactsContract.Data.DISPLAY_NAME + " ASC, " + ContactsContract.CommonDataKinds.Event.TYPE + " ASC, " + ContactsContract.CommonDataKinds.Event.LABEL + " ASC"
+                    ContactsContract.Data.DISPLAY_NAME + " ASC, "
+                            + ContactsContract.CommonDataKinds.Event.TYPE + " ASC, "
+                            + ContactsContract.CommonDataKinds.Event.LABEL + " ASC"
             );
             if (cursor == null) return false;
 
@@ -6140,7 +6141,7 @@ class ContactsEvents {
                     if (listFacts.isEmpty()) {
                         textSmall = context.getString(R.string.msg_notifications_soon_no_events);
                     } else {
-                        textSmall = "Facts";
+                        textSmall = context.getString(R.string.pref_CustomEvents_Fact_title);
                     }
                 }
 

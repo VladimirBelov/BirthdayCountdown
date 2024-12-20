@@ -1158,7 +1158,7 @@
     <string name="stats_permissions_xiaomi_autostart"><![CDATA[<li>авто старт (Xiaomi): %1$s]]></string>
     <string name="stats_permissions_device"><![CDATA[<li>пристрій: %1$s %2$s]]></string>
     <string name="stats_permissions_os"><![CDATA[<li>версія Android: %1$s (api %2$d)]]></string>
-    <string name="stats_permissions_display"><![CDATA[<li>дисплей: %1$s]]></string>
+    <string name="stats_permissions_display"><![CDATA[<li>дисплей: %1$dx%2$d (%3$d dpi, density %4$.2f)]]></string>
 
     <string name="msg_zero_events_title"><![CDATA[<h2>🚫 Події не відображаються</h2>Ця інформація може допомогти:<br>]]></string>
     <string name="msg_zero_events_body"><![CDATA[
