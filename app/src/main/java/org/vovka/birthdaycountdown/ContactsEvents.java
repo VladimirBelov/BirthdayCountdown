@@ -6329,7 +6329,7 @@ class ContactsEvents {
                             .setColor(this.getResources().getColor(R.color.dark_green))
                             .setSmallIcon(R.drawable.ic_icon_notify)
                             .setContentText(eventDetails)
-                            .setContentTitle("Facts")
+                            .setContentTitle(context.getString(R.string.pref_CustomEvents_Fact_title))
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setAutoCancel(true);
