@@ -549,9 +549,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cal.setMinimalDaysInFirstWeek(1);
                         cal.add(Calendar.MONTH, ((row - 1) * columnsToDraw) + column - 1);
                     }
-                    int thisMonth;
                     cal.add(Calendar.MONTH, prefMonthsShift);
-                    thisMonth = cal.get(Calendar.MONTH);
+                    final int thisMonth = cal.get(Calendar.MONTH);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
 
                     //Шапка

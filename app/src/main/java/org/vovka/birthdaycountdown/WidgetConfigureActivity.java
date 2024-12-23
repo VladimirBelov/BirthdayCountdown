@@ -929,7 +929,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
-            prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
+            prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ?
+                    ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
             prefsToStore.add(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий
@@ -1059,12 +1060,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (colorBottom != 0) colorCaptionBottom = colorBottom;
 
             TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
-            captionCaptionsUpperColor.setText(Html.fromHtml("<bold><font color=#"
-                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + ">●</font></bold>"));
+            captionCaptionsUpperColor.setText(Html.fromHtml(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorCaptionUpper & 0x00ffffff)).trim()));
 
             TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
-            captionCaptionsBottomColor.setText(Html.fromHtml("<bold><font color=#"
-                    + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + ">●</font></bold>"));
+            captionCaptionsBottomColor.setText(Html.fromHtml(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorCaptionBottom & 0x00ffffff)).trim()));
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1076,18 +1075,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             if (!colorId.isEmpty()) {
-                ToastExpander.showDebugMsg(getApplicationContext(), "Выбран цвет:" + colorValue + " для " + colorId);
+                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(colorValue & 0x00ffffff), colorId));
 
                 if (colorId.equals(UPPER_ROW)) {
                     colorCaptionUpper = colorValue;
                     TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
-                    captionCaptionsUpperColor.setText(Html.fromHtml("<bold><font color=#"
-                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + ">●</font></bold>"));
+                    captionCaptionsUpperColor.setText(Html.fromHtml(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorCaptionUpper & 0x00ffffff)).trim()));
                 } else if (colorId.equals(BOTTOM_ROW)) {
                     colorCaptionBottom = colorValue;
                     TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
-                    captionCaptionsBottomColor.setText(Html.fromHtml("<bold><font color=#"
-                            + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + ">●</font></bold>"));
+                    captionCaptionsBottomColor.setText(Html.fromHtml(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorCaptionBottom & 0x00ffffff)).trim()));
                 }
             }
 

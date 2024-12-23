@@ -107,6 +107,7 @@
     <string name="msg_none">None</string>
     <string name="msg_version">"Set last run version: %s"</string>
     <string name="msg_error_get_event_image">Error getting event image</string>
+    <string name="msg_event_color_selected">"Selected color #%1$s for %2$s"</string>
 
     <string name="msg_plural_postfix">s</string>
 
