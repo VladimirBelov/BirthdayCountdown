@@ -623,6 +623,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
 
+            //События избранных контактов
+            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFavoritePrefix));
+            eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
+
             //Календари
             if (!eventsData.checkNoCalendarAccess()){
                 if (eventsData.map_calendars.isEmpty()) eventsData.fillCalendarList();
@@ -678,10 +682,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (Color.alpha(colorValue) == 0) {
                             colorValue = ta.getColor(R.styleable.Theme_backgroundColor, colorValue);
                         }
-
-                        sb.append("<bold><font color=#")
-                                .append(Integer.toHexString(colorValue & 0x00ffffff))
-                                .append(">●</font></bold> ");
+                        sb.append(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorValue & 0x00ffffff)));
                     }
                     sb.append(eventSourcesTitles.get(ind));
 

@@ -21,6 +21,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,8 +33,10 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +96,7 @@ public class AboutActivity extends AppCompatActivity {
                         locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
                     }
                 }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
+                applicationConf.setLocales(new LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
             }
@@ -335,6 +338,7 @@ public class AboutActivity extends AppCompatActivity {
                 webView.setLongClickable(false);
             }
 
+            //Кнопки
             findViewById(R.id.buttonMail).setOnClickListener(view -> {
                 try {
                     startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(Constants.MAILTO_TEMPLATE +
@@ -349,24 +353,63 @@ public class AboutActivity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Constants.STORE_LINK_PLAY_MARKET, BuildConfig.APPLICATION_ID))));
-                    } catch (android.content.ActivityNotFoundException e2) { /**/ }
+                    } catch (ActivityNotFoundException e2) { /**/ }
                 }
                 finish();
             });
 
-            findViewById(R.id.buttonAppGallery).setOnClickListener(view -> {
+            int installedFrom = 0;
+            Button button4PDA = findViewById(R.id.button4PDA);
+            button4PDA.setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_HUAWEI)));
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_4PDA)));
+                } catch (ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
-            findViewById(R.id.button4PDA).setOnClickListener(view -> {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_4PDA)));
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
-                finish();
-            });
+            String contentDescription = Constants.STRING_EMPTY;
+            Drawable storeDrawable = null;
+            String storeLink = Constants.STRING_EMPTY;
+            String installerInfo = eventsData.getInstallerInfo(0);
+            switch (installerInfo) {
+                case Constants.STORE_NAME_HUAWEI:
+                    contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
+                    storeDrawable = getDrawable(R.drawable.ic_huawei_appgallery);
+                    storeLink = Constants.STORE_LINK_HUAWEI;
+                    installedFrom = 1;
+                    break;
+                case Constants.STORE_NAME_RUSTORE:
+                    contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
+                    storeDrawable = getDrawable(R.drawable.ic_rustore);
+                    storeLink = Constants.STORE_LINK_RUSTORE;
+                    installedFrom = 2;
+                    break;
+                case Constants.STORE_NAME_SAMSUNG:
+                    contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
+                    storeDrawable = getDrawable(R.drawable.ic_samsung);
+                    storeLink = Constants.STORE_LINK_SAMSUNG;
+                    installedFrom = 3;
+                    break;
+            }
+            if (installedFrom > 0) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) button4PDA.getLayoutParams();
+                params.addRule(RelativeLayout.END_OF, R.id.centerPoint);
+                params.leftMargin = ContactsEvents.Dip2Px(getResources(), 5);
+                button4PDA.setLayoutParams(params);
+
+                Button buttonOtherAppStore = findViewById(R.id.buttonOtherAppStore);
+                String finalStoreLink = storeLink;
+                buttonOtherAppStore.setOnClickListener(view -> {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(finalStoreLink)));
+                    } catch (ActivityNotFoundException e) { /**/ }
+                    finish();
+                });
+                buttonOtherAppStore.setContentDescription(contentDescription);
+                buttonOtherAppStore.setCompoundDrawablesWithIntrinsicBounds(storeDrawable, null, null, null);
+                buttonOtherAppStore.setVisibility(View.VISIBLE);
+
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -376,7 +419,7 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
-    public void setDebug(android.view.View view) {
+    public void setDebug(View view) {
 
         try {
 

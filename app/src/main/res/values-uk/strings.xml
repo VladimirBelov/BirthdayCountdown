@@ -202,7 +202,7 @@
     <string name="hint_DragItem">Перетягнутий елемент</string>
     <string name="hint_Version_History">Історія версій</string>
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
-    <string name="hint_Rate_AppGallery">Оцініть цю програму в HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Оцініть цю програму в %s"</string>
     <string name="hint_Color">Значення ARGB</string>
 
     <string name="button_ok">OK</string>

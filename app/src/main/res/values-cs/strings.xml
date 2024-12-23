@@ -203,7 +203,7 @@
     <string name="hint_DragItem">Přetahovatelná položka</string>
     <string name="hint_Version_History">Historie verzí</string>
     <string name="hint_Rate_PlayMarket">Ohodnoťte tuto aplikaci na Google Play</string>
-    <string name="hint_Rate_AppGallery">Ohodnoťte tuto aplikaci v HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Ohodnoťte tuto aplikaci v %s"</string>
     <string name="hint_Color">Hodnota ARGB</string>
 
     <string name="button_ok">OK</string>

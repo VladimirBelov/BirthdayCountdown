@@ -237,6 +237,7 @@ final class Constants {
     static final String HTML_COLOR_START = "<font color=\"#%s\">";
     static final String HTML_COLOR_END = "</font>";
     static final String FONT_COLOR_RED = "<font color=red>";
+    static final String FONT_COLOR_DOT = "<bold><font color=#%s>●</font></bold> ";
     static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";
     static final String HTML_LI = "<li>";
     static final String HTML_LI_API21 = "&nbsp;-&nbsp;";
@@ -250,6 +251,7 @@ final class Constants {
     static final String HTML_H2_END = "</h2>";
     static final String HTML_H3_START = "<h3>";
     static final String HTML_H3_END = "</h3>";
+    static final String HTML_LI_ITEM = "<br>&nbsp;-&nbsp;";
 
     static final String Broadcast_ANDROID_INTENT_ACTION_TIME_SET = "android.intent.action.TIME_SET";
     static final String Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED = "android.intent.action.DATE_CHANGED";
@@ -337,6 +339,7 @@ final class Constants {
     static final String eventSourceMultiFilePrefix = "multifile:";
     static final String eventSourceHolidayPrefix = "holiday:";
     static final String eventSourceFactPrefix = "fact:";
+    static final String eventSourceFavoritePrefix = "fav:";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";
@@ -371,6 +374,7 @@ final class Constants {
     static final String APP_PACKAGE = "app_package";
     static final String APP_UID = "app_uid";
     static final String QUERY_PARAM_DELETED_0 = "deleted=0";
+    static final String QUERY_PARAM_YEARLY = "FREQ=YEARLY";
     static final String PREF_TYPE_STRING = " (string)";
     static final String PREF_TYPE_BOOLEAN = " (boolean)";
     static final String PREF_TYPE_INT = " (int)";
@@ -384,9 +388,19 @@ final class Constants {
     static final String STORE_LINK_GOOGLE_MARKET = "market://details?id=%s";
     static final String STORE_LINK_PLAY_MARKET = "https://play.google.com/store/apps/details?id=%s";
     static final String STORE_LINK_HUAWEI = "https://appgallery.huawei.com/app/C101143661";
+    static final String STORE_NAME_HUAWEI = "Huawei AppGallery";
+    static final String STORE_LINK_RUSTORE = "https://www.rustore.ru/catalog/app/org.vovka.birthdaycountdown";
+    static final String STORE_NAME_RUSTORE = "RuStore";
+    static final String STORE_LINK_SAMSUNG = "https://apps.samsung.com/appquery/appDetail.as?appId=org.vovka.birthdaycountdown";
+    static final String STORE_NAME_SAMSUNG = "Galaxy Store";
     static final String STORE_LINK_4PDA = "https://4pda.to/forum/index.php?showtopic=939391";
 
     static final String METHOD_SET_BACKGROUND_COLOR = "setBackgroundColor";
     static final String METHOD_SET_BACKGROUND_RES = "setBackgroundResource";
     static final String METHOD_SET_MIN_WIDTH = "setMinWidth";
+
+    static final String MIME_IMAGE_ALL = "image/*";
+    static final String MIME_IMAGE_JPEG = "image/jpeg";
+    static final String MIME_IMAGE_PNG = "image/png";
+
 }

@@ -6996,14 +6996,41 @@ class ContactsEvents {
 
         try {
 
-            //if (!checkIsFavoriteEvent(key, keyWithRawId)) return false;
+            boolean idRemoved = false;
+            HashSet<String> newValues = new HashSet<>();
 
-            boolean idremoved = preferences_favoriteEvents.remove(key);
+            String keyPrefix = key.substring(0, key.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
+            for (String event: preferences_favoriteEvents) {
+                if (event.startsWith(keyPrefix)) {
+                    idRemoved = true;
+                } else {
+                    newValues.add(event);
+                }
+            }
+            if (idRemoved) {
+                preferences_favoriteEvents.clear();
+                preferences_favoriteEvents.addAll(newValues);
+            }
 
-            if (!TextUtils.isEmpty(keyWithRawId))
-                idremoved = idremoved | preferences_favoriteEventsRawIds.remove(keyWithRawId);
+            if (!TextUtils.isEmpty(keyWithRawId)) {
+                boolean idRawRemoved = false;
+                newValues.clear();
+                keyPrefix = keyWithRawId.substring(0, keyWithRawId.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
+                for (String event: preferences_favoriteEventsRawIds) {
+                    if (event.startsWith(keyPrefix)) {
+                        idRawRemoved = true;
+                    } else {
+                        newValues.add(event);
+                    }
+                }
+                if (idRawRemoved) {
+                    preferences_favoriteEventsRawIds.clear();
+                    preferences_favoriteEventsRawIds.addAll(newValues);
+                    idRemoved = true;
+                }
+            }
 
-            if (idremoved) {
+            if (idRemoved) {
 
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
                 editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
@@ -7019,8 +7046,7 @@ class ContactsEvents {
                 editor.apply();
             }
 
-            preferences_favoriteEvents_ids.clear();
-            preferences_favoriteEventsRawIds_ids.clear();
+            cacheFavoriteEventsIds();
             return true;
 
         } catch (Exception e) {
@@ -9351,7 +9377,7 @@ class ContactsEvents {
 
     }
 
-    String getInstallerInfo(@StringRes int decorString) {
+    @NonNull String getInstallerInfo(@StringRes int decorString) {
 
         //https://stackoverflow.com/questions/5841161/get-application-name-from-package-name
         final PackageManager packageManager = context.getPackageManager();
@@ -9367,6 +9393,7 @@ class ContactsEvents {
         return decorString != 0 ? context.getString(decorString, installer)  : installer;
 
     }
+
     @NonNull
     String addLabelToEventType(int eventTypeId, @NonNull String eventLabel, String eventTitle) {
 
@@ -9614,9 +9641,7 @@ class ContactsEvents {
                     @ColorInt Integer dotColor = this.colorDots.get(position);
                     if (dotColor != null) {
                         if (Color.alpha(dotColor) == 0 && ta != null) dotColor = ta.getColor(R.styleable.Theme_dialogBackgroundColor, dotColor);
-                        textView.setText(Html.fromHtml("<bold><font color=#"
-                                + Integer.toHexString(dotColor & 0x00ffffff)
-                                + ">●</font></bold> " + textView.getText()));
+                        textView.setText(Html.fromHtml(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(dotColor & 0x00ffffff)).concat(textView.getText().toString())));
                     }
                 }
 
@@ -9700,14 +9725,14 @@ class ContactsEvents {
                 if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null){
                     String[] eventsList = checkForNull(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1);
                     for (String eventInfo: eventsList) {
-                        dayInfo.add("<bold><font color=#" + colorRGB + ">●</font></bold> " + eventInfo);
+                        dayInfo.add(String.format(Constants.FONT_COLOR_DOT, colorRGB).concat(eventInfo));
                     }
                 }
                 if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
                     //dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
                     String[] eventsList = checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
                     for (String eventInfo: eventsList) {
-                        dayInfo.add("<bold><font color=#" + colorRGB + ">●</font></bold> " + eventInfo);
+                        dayInfo.add(String.format(Constants.FONT_COLOR_DOT, colorRGB).concat(eventInfo));
                     }
                 }
             }
@@ -9762,18 +9787,19 @@ class ContactsEvents {
             for (String file : fileList) {
 
                 final String packHash = getHash(Constants.eventSourceFilePrefix + file);
-                if (!preferences_DaysTypes.containsKey(packHash)) {
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
-                    Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
-                    String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
-                    if (eventsArray[0].isEmpty()) {
-                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
-                        continue;
+                if (fileHashes == null || fileHashes.contains(packHash)) {
+                    if (!preferences_DaysTypes.containsKey(packHash)) {
+                        String[] fileDetails = file.split(Constants.STRING_PIPE);
+                        Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
+                        String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                        if (eventsArray[0].isEmpty()) {
+                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                            continue;
+                        }
+                        fillDaysTypesFromFile(packHash, eventsArray, "📁 ");
                     }
-                    fillDaysTypesFromFile(packHash, eventsArray, "📁 ");
+                    preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
-                preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
-
             }
 
         } catch (Exception e) {

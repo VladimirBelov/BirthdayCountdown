@@ -202,7 +202,7 @@
     <string name="hint_DragItem">Item arrastável</string>
     <string name="hint_Version_History">Histórico de versões</string>
     <string name="hint_Rate_PlayMarket">Avalie este aplicativo no Google Play</string>
-    <string name="hint_Rate_AppGallery">Avalie este aplicativo na HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Avalie este aplicativo na %s"</string>
     <string name="hint_Color">Valor ARGB</string>
 
     <string name="button_ok">OK</string>

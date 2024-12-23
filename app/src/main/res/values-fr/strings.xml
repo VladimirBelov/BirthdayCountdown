@@ -202,7 +202,7 @@
     <string name="hint_DragItem">Élément déplaçable</string>
     <string name="hint_Version_History">Historique des versions</string>
     <string name="hint_Rate_PlayMarket">"Évaluez l'application sur Google Play"</string>
-    <string name="hint_Rate_AppGallery">"Évaluez l'application sur HUAWEI AppGallery"</string>
+    <string name="hint_Rate_OtherAppStore">"Évaluez l'application sur %s"</string>
     <string name="hint_Color">Valeur dans ARVB</string>
 
     <string name="button_ok">OK</string>

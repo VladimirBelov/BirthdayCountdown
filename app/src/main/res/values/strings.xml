@@ -105,6 +105,8 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">All</string>
     <string name="msg_none">None</string>
+    <string name="msg_version">"Set last run version: %s"</string>
+    <string name="msg_error_get_event_image">Error getting event image</string>
 
     <string name="msg_plural_postfix">s</string>
 
@@ -203,7 +205,7 @@
     <string name="hint_DragItem">Draggable item</string>
     <string name="hint_Version_History">Version history</string>
     <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
-    <string name="hint_Rate_AppGallery">Rate this app on HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Rate this app on %s"</string>
     <string name="hint_Color">ARGB value</string>
 
     <string name="button_ok">OK</string>
@@ -959,6 +961,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>None</item>
         <item>Open calendar</item>
     </string-array>
+
+    <string name="widget_config_events_favorites">🌟 Favorites</string>
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">When and how to show event notifications</string>

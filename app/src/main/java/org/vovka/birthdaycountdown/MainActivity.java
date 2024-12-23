@@ -713,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 childView.buildDrawingCache(true);
                 Bitmap bmp = childView.getDrawingCache(true);
                 if (bmp == null) {
-                    ToastExpander.showInfoMsg(this, "Error getting event image");
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_error_get_event_image));
                     return false;
                 }
 
@@ -735,11 +735,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (bitmapShareUri != null) {
                     //https://stackoverflow.com/questions/48045626/chooser-created-with-createchooserintent-title-doesnt-display-a-title
                     Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("image/*");
-                    final String[] mimeTypes = {"image/jpeg", "image/png"};
+                    intent.setType(Constants.MIME_IMAGE_ALL);
+                    final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
                     intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
                     intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
-                    //intent.putExtra(Intent.EXTRA_TITLE, "Share event as image");
                     Intent chooser = Intent.createChooser(intent, "");
                     //https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
                     List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
@@ -1351,7 +1350,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             editor.putString(getString(R.string.pref_VersionCode_LastRun), Integer.toString(BuildConfig.VERSION_CODE));
             editor.apply();
 
-            ToastExpander.showDebugMsg(this, "Set last run version: " + BuildConfig.VERSION_NAME);
+            ToastExpander.showDebugMsg(this, String.format(getString(R.string.msg_version), BuildConfig.VERSION_NAME));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1698,7 +1697,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Intent addEventIntent = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.Events.ALL_DAY, true)
-                        .putExtra(CalendarContract.Events.RRULE, "FREQ=YEARLY");
+                        .putExtra(CalendarContract.Events.RRULE, Constants.QUERY_PARAM_YEARLY);
                 try {
                     startActivity(addEventIntent);
                 } catch (ActivityNotFoundException e) { /**/ }
@@ -1728,7 +1727,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else {
                             sb.append(Constants.HTML_BR);
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                sb.append(strLine.replaceAll(Constants.HTML_LI, "<br>&nbsp;-&nbsp;"));
+                                sb.append(strLine.replaceAll(Constants.HTML_LI, Constants.HTML_LI_ITEM));
                             } else {
                                 sb.append(strLine);
                             }
@@ -2991,9 +2990,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 try {
                     if (results != null && results.values != null) {
                         dataList.clear();
-                        @SuppressWarnings("unchecked")
-                        ArrayList<String> res = (ArrayList<String>) results.values;
-                        dataList.addAll(res);
+                        List<?> result = (List<?>) results.values;
+                        for (Object object : result) {
+                            if (object instanceof String) {
+                                dataList.add((String) object);
+                            }
+                        }
                     }
 
                     if (!dataList.isEmpty()) {

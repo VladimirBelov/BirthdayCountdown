@@ -202,7 +202,7 @@
     <string name="hint_DragItem">Перацягвальны элемент</string>
     <string name="hint_Version_History">Гісторыя версій</string>
     <string name="hint_Rate_PlayMarket">Ацаніць праграму ў Google Play</string>
-    <string name="hint_Rate_AppGallery">Ацаніць праграму ў HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Ацаніць праграму ў %s"</string>
     <string name="hint_Color">Значэнне ў ARGB</string>
 
     <string name="button_ok">OK</string>

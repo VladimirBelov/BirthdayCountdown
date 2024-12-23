@@ -202,7 +202,7 @@
     <string name="hint_DragItem">Ziehbares Element</string>
     <string name="hint_Version_History">Versionsverlauf</string>
     <string name="hint_Rate_PlayMarket">Bewerten Sie diese App im Google Play</string>
-    <string name="hint_Rate_AppGallery">Bewerten Sie diese App in der HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Bewerten Sie diese App in der %s"</string>
     <string name="hint_Color">ARGB-Wert</string>
 
     <string name="button_ok">OK</string>

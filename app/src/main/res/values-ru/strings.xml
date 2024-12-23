@@ -203,7 +203,7 @@
     <string name="hint_DragItem">Перетаскиваемый элемент</string>
     <string name="hint_Version_History">История версий</string>
     <string name="hint_Rate_PlayMarket">Оценить приложение в Google Play</string>
-    <string name="hint_Rate_AppGallery">Оценить приложение в HUAWEI AppGallery</string>
+    <string name="hint_Rate_OtherAppStore">"Оценить приложение в %s"</string>
     <string name="hint_Color">Значение в ARGB</string>
 
     <string name="button_ok">OK</string>
@@ -959,6 +959,8 @@
         <item>Ничего</item>
         <item>Открыть календарь</item>
     </string-array>
+
+    <string name="widget_config_events_favorites">🌟 Избранные</string>
 
     <string name="pref_Notifications_title">Уведомления</string>
     <string name="pref_Notifications_summary">Когда и как показывать уведомления о событиях</string>
