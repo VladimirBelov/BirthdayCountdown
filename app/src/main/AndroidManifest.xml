@@ -220,6 +220,11 @@
             android:exported="false"
             android:excludeFromRecents="true"/>
 
+        <activity android:name=".FactsPopup"
+            android:theme="@android:style/Theme.Dialog"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+
         <!--Receivers-->
         <receiver
             android:name=".DateReceiver"

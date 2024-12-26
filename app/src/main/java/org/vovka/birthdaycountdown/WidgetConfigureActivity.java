@@ -651,11 +651,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                     String sourceId = ContactsEvents.checkForNull(eventSources.getIds().get(ind));
                     if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
-                        sb.append("📆 ");
+                        sb.append(Constants.eventTitleCalendarPrefix);
                     } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
-                        sb.append("📁 ");
+                        sb.append(Constants.eventTitleFilePrefix);
                     } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
-                        sb.append("👨‍💼 ");
+                        sb.append(Constants.eventTitleContactPrefix);
                     }
                     sb.append(eventSources.getTitles().get(ind));
                 }

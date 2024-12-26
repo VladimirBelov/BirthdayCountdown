@@ -165,7 +165,7 @@ public class AboutActivity extends AppCompatActivity {
                     BuildConfig.VERSION_NAME,
                     Integer.toString(BuildConfig.VERSION_CODE),
                     eventsData.getDateTimePreferable(BuildConfig.BUILD_TIME)
-                    ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), 0));
+                    ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), 0)); //
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 

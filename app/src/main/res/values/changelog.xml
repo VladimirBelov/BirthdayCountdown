@@ -15,8 +15,11 @@
         <item>Previous events in main list: added 5k, events with floating dates, events from calendars</item>
         <item>In the calendar widget for whole year, the January is always with year number</item>
         <item>Long press on a list item opens the file for viewing (application settings)</item>
+        <item>Added quick action to display facts (long tap on app icon)</item>
+        <item>Added \"Share\" button to the pop-up window with facts and calendar events</item>
+        <item>Added 🌟 favorite contact events to calendar widget</item>
         <item>Optimization for Android 15</item>
-        <item>Added Czech interface language</item>
+        <item>Added 🇨🇿 Czech interface language</item>
         <item>Bug fixes</item>
 
         <item>#1.8.4</item>
@@ -38,7 +41,7 @@
         <item>Quick selection of sources and types of events for the main list (extra features)</item>
         <item>Setting a quick action for main list menu (Settings->Events list->Quick action) (extra features)</item>
         <item>The calendar widget uses the colors of the source calendars by default</item>
-        <item>Added Polish translation</item>
+        <item>Added 🇵🇱 Polish translation</item>
 
         <item>#1.8.2</item>
         <item>Ability to select event sources for the main list and notifications (extra features)</item>
@@ -55,7 +58,7 @@
         <item>Public holidays for 15 countries are available in the list and widgets (built-in reference book)</item>
         <item>A setting has been added to the calendar to show days before and after the month. For already configured widgets, this option must be enabled in the element list</item>
         <item>Pop-up window with event data when clicking on holidays in the calendar</item>
-        <item>Belarusian translation added</item>
+        <item>🇧🇾 Belarusian translation added</item>
         <item>Support for calendar events lasting more than one day</item>
         <item>The number of recent colors has been increased to 20</item>
         <item>Added setting for click response to day (calendar widgets)</item>
@@ -71,7 +74,7 @@
         <item>Added the ability to add any event to favorites. Added filter for favorite events</item>
         <item>Added the ability to specify a caption for list widget (extra features)</item>
         <item>Added the ability to specify event sources for each widget (extra features)</item>
-        <item>Added Portuguese and French translations</item>
+        <item>Added 🇧🇷 Portuguese and 🇫🇷 French translations</item>
         <item>Optimizations for Android 14</item>
 
         <item>#1.7.8</item>
@@ -237,7 +240,7 @@
         <item>Fixed some bugs</item>
 
         <item>#1.5.2</item>
-        <item>Added Spain translation</item>
+        <item>Added 🇪🇸 Spain translation</item>
         <item>Added display of zodiac signs</item>
         <item>Fixed search for several parameters at once (see \"How to\" guide)</item>
         <item>Fixed some bugs</item>
@@ -329,7 +332,7 @@
         <item>Android 10 ready</item>
 
         <item>#1.3.6</item>
-        <item>Added German localization</item>
+        <item>Added 🇩🇪 German localization</item>
         <item>\"Find\" function switched to regexp, so you can find via complex queries. Examples - in the program description</item>
         <item>Added option to display the original label of a custom event</item>
         <item>Bugfixing</item>
@@ -356,7 +359,7 @@
         <item>Minor bugs fixed</item>
 
         <item>#1.3.1</item>
-        <item>Added Ukrainian translation</item>
+        <item>Added 🇺🇦 Ukrainian translation</item>
         <item>Added event details option for list: event type, contact title and organization and so on</item>
         <item>Some theme colors changes and events list elements alignment</item>
         <item>User pics for persons w/o photos choosing by age and gender (4 variants)</item>

@@ -19,6 +19,7 @@
     <string name="activity_title_events_scope">Filtrar</string>
 
     <string name="shortcut_notify">Notificaciones</string>
+    <string name="shortcut_facts">Hechos</string>
     <string name="shortcut_quiz">Encuesta</string>
     <string name="shortcut_settings">Configuraciones</string>
 
@@ -65,6 +66,7 @@
     <string name="menu_help">Referencia</string>
     <string name="menu_help_events_calendar">Eventos del calendario</string>
     <string name="menu_help_events_files">Eventos de archivos locales</string>
+    <string name="menu_help_events_facts">Hechos</string>
 
     <string name="msg_no_access_contacts">Sin acceso a contactos</string>
     <string name="msg_no_events">No se encontraron eventos</string>
@@ -104,6 +106,9 @@
     <string name="msg_errors_details">"clave de cuenta=%1$s, tipo de evento=%2$s, fecha=%3$s"</string>
     <string name="msg_all">Todos</string>
     <string name="msg_none">Nada</string>
+    <string name="msg_version">"Versión instalada: %s"</string>
+    <string name="msg_error_get_event_image">Error al obtener la imagen del evento</string>
+    <string name="msg_event_color_selected">"Color #%1$s seleccionado para %2$s"</string>
 
     <string name="msg_plural_postfix">es</string>
 
@@ -959,6 +964,8 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>Abrir calendario</item>
     </string-array>
 
+    <string name="widget_config_events_favorites">🌟 Favoritos</string>
+
     <string name="pref_Notifications_title">Notificaciones</string>
     <string name="pref_Notifications_summary">Cuándo y cómo mostrar notificaciones de eventos</string>
     <string name="pref_Notifications2_title">Notificaciones (+)</string>
@@ -1246,6 +1253,11 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="month_event_saturdays">Sábados</string>
     <string name="month_event_sundays">Domingos</string>
     <string name="month_event_popup_prefix">"Fecha: "</string>
+
+    <string name="facts_popup_caption">Hecho</string>
+    <string name="facts_popup_action_next_fact">📝 Siguiente</string>
+    <string name="facts_popup_action_share">📤 Compartir</string>
+    <string name="facts_popup_empty">El grupo de hechos está vacío</string>
 
     <!-- https://es.wikipedia.org/wiki/Aniversario_de_bodas -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>

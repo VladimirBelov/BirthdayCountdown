@@ -297,6 +297,7 @@ final class Constants {
     static final String WIDGET_TYPE_CALENDAR = "WidgetCalendar";
 
     static final String quiz_error_button_OK = "-##OK##";
+    static final String BUTTON_X = "X";
     static final String FilePrefix_Media = "com.android.providers.media.documents";
     static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
     static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
@@ -340,6 +341,11 @@ final class Constants {
     static final String eventSourceHolidayPrefix = "holiday:";
     static final String eventSourceFactPrefix = "fact:";
     static final String eventSourceFavoritePrefix = "fav:";
+
+    static final String eventTitleFilePrefix = "📁 ";
+    static final String eventTitleCalendarPrefix = "📆 ";
+    static final String eventTitleContactPrefix = "👨‍💼 ";
+    static final String eventTitleFavoritePrefix = "🌟 ";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";

@@ -19,6 +19,7 @@
     <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Today notifications</string>
+    <string name="shortcut_facts">Facts</string>
     <string name="shortcut_quiz">Quiz</string>
     <string name="shortcut_settings">Settings</string>
 
@@ -62,10 +63,10 @@
     <string name="menu_context_favorites_add">Add to favorites</string>
     <string name="menu_context_favorites_remove">Remove from favorites</string>
     <string name="menu_ok">OK</string>
-    <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
-    <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>
-    <string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>
-    <string name="menu_help_events_facts" tools:ignore="MissingTranslation">Facts</string>
+    <string name="menu_help">Reference</string>
+    <string name="menu_help_events_calendar">Calendar events</string>
+    <string name="menu_help_events_files">Local files events</string>
+    <string name="menu_help_events_facts">Facts</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
     <string name="msg_no_events">Events not found</string>
@@ -105,7 +106,7 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">All</string>
     <string name="msg_none">None</string>
-    <string name="msg_version">"Set last run version: %s"</string>
+    <string name="msg_version">"Set version: %s"</string>
     <string name="msg_error_get_event_image">Error getting event image</string>
     <string name="msg_event_color_selected">"Selected color #%1$s for %2$s"</string>
 
@@ -1254,6 +1255,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="month_event_saturdays">Saturdays</string>
     <string name="month_event_sundays">Sundays</string>
     <string name="month_event_popup_prefix">"Date: "</string>
+
+    <string name="facts_popup_caption">Fact</string>
+    <string name="facts_popup_action_next_fact">📝 Next one</string>
+    <string name="facts_popup_action_share">📤 Share</string>
+    <string name="facts_popup_empty">The facts pool is empty</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->

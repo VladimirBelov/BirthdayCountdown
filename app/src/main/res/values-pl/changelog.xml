@@ -15,8 +15,11 @@
         <item>Poprzednie wydarzenia na liście głównej: dodano 5k, wydarzenia z datami zmiennymi, wydarzenia z kalendarzy</item>
         <item>W widżecie kalendarza na cały rok styczeń jest zawsze z numerem roku</item>
         <item>Długie naciśnięcie elementu listy otwiera plik do przeglądania (ustawienia aplikacji)</item>
+        <item>Dodano szybką akcję wyświetlania faktów (długie dotknięcie ikony aplikacji)</item>
+        <item>Do wyskakującego okna z faktami i wydarzeniami w kalendarzu dodano przycisk \"Udostępnij\"</item>
+        <item>Dodano 🌟 ulubione wydarzenia kontaktów do widżetu kalendarza</item>
         <item>Optymalizacja dla Androida 15</item>
-        <item>Dodano język interfejsu w języku czeskim</item>
+        <item>Dodano język interfejsu w języku 🇨🇿 czeskim</item>
         <item>Poprawki błędów</item>
 
         <item>#1.8.4</item>
@@ -34,11 +37,11 @@
         <item>Wymuszona synchronizacja kalendarzy (Ustawienia->Pomoc)</item>
         <item>Optymalizacja dla Androida 14</item>
         <item>Obsługa dni nieświątecznych z plików w widżecie kalendarza</item>
-        <item>Nowa akcja dla powiadomień: „Załącz”</item>
+        <item>Nowa akcja dla powiadomień: \"Załącz\"</item>
         <item>Szybki wybór źródeł i typów wydarzeń dla listy głównej (dodatkowe funkcje)</item>
         <item>Ustawienie szybkiej akcji dla głównego menu listy (Ustawienia->Lista wydarzeń->Szybka akcja) (dodatkowe funkcje)</item>
         <item>Widżet kalendarza domyślnie używa kolorów kalendarzy źródłowych</item>
-        <item>Dodano tłumaczenie na język polski</item>
+        <item>Dodano tłumaczenie na język 🇵🇱 polski</item>
 
         <item>##Aby zobaczyć historię poprzednich wersji, w ustawieniach aplikacji przełącz się na język angielski lub rosyjski</item>
 

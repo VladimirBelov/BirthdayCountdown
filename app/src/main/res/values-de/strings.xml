@@ -19,6 +19,7 @@
     <string name="activity_title_events_scope">Filter</string>
 
     <string name="shortcut_notify">Benachrichtigungen</string>
+    <string name="shortcut_facts">Fakten</string>
     <string name="shortcut_quiz">Quiz</string>
     <string name="shortcut_settings">Einstellungen</string>
 
@@ -65,6 +66,7 @@
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
     <string name="menu_help_events_files">Lokale Ereignisse aus Dateien</string>
+    <string name="menu_help_events_facts">Fakten</string>
 
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
     <string name="msg_no_events">Keine Ereignissе gefunden</string>
@@ -104,6 +106,9 @@
     <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>
     <string name="msg_all">Alle</string>
     <string name="msg_none">Keine</string>
+    <string name="msg_version">"Installierte Version: %s"</string>
+    <string name="msg_error_get_event_image">Fehler beim Abrufen des Ereignisbildes</string>
+    <string name="msg_event_color_selected">"Farbe #%1$s für %2$s ausgewählt"</string>
 
     <string name="msg_plural_postfix">e</string>
 
@@ -959,6 +964,8 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Kalender öffnen</item>
     </string-array>
 
+    <string name="widget_config_events_favorites">🌟 Favoriten</string>
+
     <string name="pref_Notifications_title">Benachrichtigungen</string>
     <string name="pref_Notifications_summary">Wann und wie Benachrichtigungen zu Ereignissen angezeigt werden</string>
     <string name="pref_Notifications2_title">Benachrichtigungen (+)</string>
@@ -1246,6 +1253,11 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="month_event_saturdays">Samstags</string>
     <string name="month_event_sundays">Sonntage</string>
     <string name="month_event_popup_prefix">"Datum: "</string>
+
+    <string name="facts_popup_caption">Fakt</string>
+    <string name="facts_popup_action_next_fact">📝 Nächster</string>
+    <string name="facts_popup_action_share">📤 Teilen</string>
+    <string name="facts_popup_empty">Der Faktenpool ist leer</string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierne Hochzeit</string>

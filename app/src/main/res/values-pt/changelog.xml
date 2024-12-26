@@ -14,8 +14,11 @@
         <item>Eventos anteriores na lista principal: adicionado 5k, eventos com datas flutuantes, eventos de calendários</item>
         <item>No widget de calendário para o ano inteiro, janeiro é sempre com o número do ano</item>
         <item>Manter pressionado um item da lista abre o arquivo para visualização (configurações do aplicativo)</item>
+        <item>Adicionada uma ação rápida para exibir fatos (toque longo no ícone do aplicativo)</item>
+        <item>Um botão \"Compartilhar\" foi adicionado à janela pop-up com fatos e eventos da agenda</item>
+        <item>Adicionados 🌟 eventos de contato favoritos ao widget de calendário</item>
         <item>Otimização para Android 15</item>
-        <item>Idioma de interface tcheco adicionado</item>
+        <item>Idioma de interface 🇨🇿 tcheco adicionado</item>
         <item>Correções de bugs</item>
 
         <item>#1.8.4</item>
@@ -37,7 +40,7 @@
         <item>Seleção rápida de fontes e tipos de eventos para a lista principal (funções adicionais)</item>
         <item>Definindo uma ação rápida para o menu da lista principal (Configurações->Lista de eventos->Ação rápida) (funções adicionais)</item>
         <item>O widget de calendário usa as cores dos calendários de origem por padrão</item>
-        <item>Adicionada tradução para polonês</item>
+        <item>Adicionada tradução para 🇵🇱 polonês</item>
 
         <item>#1.8.2</item>
         <item>Selecionar fontes de eventos para a lista principal e notificações (funções adicionais)</item>
@@ -54,7 +57,7 @@
         <item>Feriados de 15 países estão disponíveis na lista e nos widgets (livro de referência integrado)</item>
         <item>Uma configuração foi adicionada ao calendário para mostrar os dias antes e depois do mês. Para widgets já configurados, esta opção deve estar habilitada na lista de elementos</item>
         <item>Janela pop-up com dados do evento ao clicar em feriados no calendário</item>
-        <item>Tradução para bielorrusso adicionada</item>
+        <item>Tradução para 🇧🇾 bielorrusso adicionada</item>
         <item>Suporte para eventos de calendário com duração superior a um dia</item>
         <item>O número de cores recentes aumentou para 20</item>
         <item>Adicionada configuração para resposta de clique ao dia (widgets de calendário)</item>

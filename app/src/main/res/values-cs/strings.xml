@@ -19,6 +19,7 @@
     <string name="activity_title_events_scope">Filtr</string>
 
     <string name="shortcut_notify">Dnešní oznámení</string>
+    <string name="shortcut_facts">Fakta</string>
     <string name="shortcut_quiz">Kvíz</string>
     <string name="shortcut_settings">Nastavení</string>
 
@@ -105,6 +106,9 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">Vše</string>
     <string name="msg_none">Žádné</string>
+    <string name="msg_version">"Verze nainstalována: %s"</string>
+    <string name="msg_error_get_event_image">Chyba při získávání obrázku události</string>
+    <string name="msg_event_color_selected">"Barva #%1$s vybrána pro %2$s"</string>
 
     <string name="msg_plural_postfix">x</string>
 
@@ -960,6 +964,8 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
         <item>Otevřít kalendář</item>
     </string-array>
 
+    <string name="widget_config_events_favorites">🌟 Oblíbené</string>
+
     <string name="pref_Notifications_title">Oznámení</string>
     <string name="pref_Notifications_summary">Kdy a jak zobrazovat oznámení o událostech</string>
     <string name="pref_Notifications2_title">Oznámení (+)</string>
@@ -1249,6 +1255,11 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="month_event_saturdays">Soboty</string>
     <string name="month_event_sundays">Neděle</string>
     <string name="month_event_popup_prefix">"Datum: "</string>
+
+    <string name="facts_popup_caption">Fakt</string>
+    <string name="facts_popup_action_next_fact">📝 Další</string>
+    <string name="facts_popup_action_share">📤 Sdílet</string>
+    <string name="facts_popup_empty">Soubor faktů je prázdný</string>
 
     <!-- https://cs.wikipedia.org/wiki/V%C3%BDro%C4%8D%C3%AD_svatby -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Bavlněná svatba</string>

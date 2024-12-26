@@ -13,28 +13,26 @@ import android.app.LocaleManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.provider.CalendarContract;
-import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import androidx.annotation.Nullable;
 
-public class WidgetCalendarPopup extends Activity {
+public class FactsPopup extends Activity {
 
-    private static final String TAG = "WidgetCalendarPopup";
+    private static final String TAG = "FactsPopup";
     ContactsEvents eventsData;
 
-    public WidgetCalendarPopup() {
+    public FactsPopup() {
     }
 
     @Override
@@ -63,7 +61,7 @@ public class WidgetCalendarPopup extends Activity {
                         locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
                     }
                 }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
+                applicationConf.setLocales(new LocaleList(locale));
             } else {
                 applicationConf.setLocale(locale);
             }
@@ -75,64 +73,45 @@ public class WidgetCalendarPopup extends Activity {
 
             setContentView(R.layout.activity_popup);
 
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            String dayInfo = null;
-            String dayCaption = null;
-            @Nullable String dayMills;
-            if (extras != null) {
-                dayInfo = extras.getString(Constants.EXTRA_DAY_INFO);
-                dayCaption = extras.getString(Constants.EXTRA_DAY_CAPTION);
-                dayMills = extras.getString(Constants.EXTRA_VALUES);
-            } else {
-                dayMills = null;
-            }
-            if (!TextUtils.isEmpty(dayInfo)) {
-                TextView txtInfo = findViewById(R.id.textInfo);
-                if (txtInfo != null) {
-                    if (dayInfo.contains(Constants.TRANSPARENT)) {
-                        TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                        dayInfo = dayInfo.replaceAll(Constants.TRANSPARENT,
-                                Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0)  & 0x00ffffff));
-                    }
-                    txtInfo.setText(Html.fromHtml(dayInfo));
-                }
-            } else {
-                ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");
-                finish();
-            }
-            if (!TextUtils.isEmpty(dayCaption)) {
-                TextView txtCaption = findViewById(R.id.textCaption);
-                if (txtCaption != null) {
-                    txtCaption.setText(dayCaption);
-                }
+            eventsData.getFactsEvents(false);
+
+            Set<String> eventSources = new HashSet<String>(){};
+            for (String file: eventsData.preferences_FactEvent_files) {
+                eventSources.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
             }
 
-            if (dayMills != null) {
-                TextView buttonAction = findViewById(R.id.buttonFirstAction);
-                buttonAction.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
+            TextView txtCaption = findViewById(R.id.textCaption);
+            txtCaption.setText(R.string.facts_popup_caption);
+
+            TextView txtInfo = findViewById(R.id.textInfo);
+            List<String> facts = eventsData.getNextRandomFacts(1, eventSources);
+            if (!facts.isEmpty()) {
+                txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(facts.get(0)));
+            } else {
+                txtInfo.setText(R.string.facts_popup_empty);
+            }
+
+            TextView buttonAction = findViewById(R.id.buttonFirstAction);
+            TextView buttonShareAction = findViewById(R.id.buttonSecondAction);
+            if (!facts.isEmpty()) {
+                buttonAction.setText(R.string.facts_popup_action_next_fact);
                 buttonAction.setOnClickListener(view -> {
-                    Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                    builder.appendPath("time");
-                    builder.appendPath(dayMills);
-                    Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
-                    intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intentCalendar);
-                    finish();
+                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
+                    if (!factsNext.isEmpty()) {
+                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+                    }
                 });
-
-                TextView buttonShareAction = findViewById(R.id.buttonSecondAction);
                 buttonShareAction.setText(R.string.facts_popup_action_share);
                 buttonShareAction.setOnClickListener(v -> {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType("text/plain");
-                    TextView txtCaption = findViewById(R.id.textCaption);
-                    TextView txtInfo = findViewById(R.id.textInfo);
-                    intentShare.putExtra(Intent.EXTRA_TEXT,
-                            txtCaption.getText().toString().concat(Constants.STRING_EOL).concat(txtInfo.getText().toString()));
+                    intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
                     startActivity(Intent.createChooser(intentShare, ""));
                 });
                 buttonShareAction.setVisibility(View.VISIBLE);
+            } else {
+                buttonShareAction.setVisibility(View.GONE);
+                buttonShareAction.setVisibility(View.GONE);
             }
 
             TextView buttonClose = findViewById(R.id.buttonClose);

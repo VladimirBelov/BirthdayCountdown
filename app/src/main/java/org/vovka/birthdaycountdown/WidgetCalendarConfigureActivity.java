@@ -636,7 +636,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (eventsData.map_calendars.containsKey(calendar)) {
                             String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar);
                             eventSourcesIds.add(calendarId);
-                            eventSourcesTitles.add("📆 " + ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
+                            eventSourcesTitles.add(Constants.eventTitleCalendarPrefix + ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
                             if (eventsData.map_calendars_colors.containsKey(calendarId)) {
                                 eventSourcesColors.put(calendarId, eventsData.map_calendars_colors.get(calendarId));
                             }
@@ -649,7 +649,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
-                    eventSourcesTitles.add("📁 " + ContactsEvents.substringBefore(file, Constants.STRING_BAR));
+                    eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(ContactsEvents.substringBefore(file, Constants.STRING_BAR)));
                 }
             }
 

@@ -15,8 +15,11 @@
         <item>Vorherige Ereignisse in der Hauptliste: 5k hinzugefügt, Ereignisse mit flexiblen Daten, Ereignisse aus Kalendern</item>
         <item>Im Kalender-Widget für das ganze Jahr wird der Januar immer mit der Jahreszahl angezeigt</item>
         <item>Durch langes Drücken auf ein Listenelement wird die Datei zur Ansicht geöffnet (Anwendungseinstellungen)</item>
+        <item>Eine Schnellaktion zum Anzeigen von Fakten hinzugefügt (langes Tippen auf das Anwendungssymbol)</item>
+        <item>Eine Schaltfläche \"Teilen\" wurde zum Popup-Fenster mit Fakten und Kalenderereignissen hinzugefügt</item>
+        <item>🌟 Bevorzugte Kontaktereignisse zum Kalender-Widget hinzugefügt</item>
         <item>Optimierung für Android 15</item>
-        <item>Tschechische Schnittstellensprache hinzugefügt</item>
+        <item>🇨🇿 Tschechische Schnittstellensprache hinzugefügt</item>
         <item>Fehlerbehebungen</item>
 
         <item>#1.8.4</item>
@@ -38,7 +41,7 @@
         <item>Schnelle Auswahl von Quellen und Ereignistypen für die Hauptliste (Extrafunktionen)</item>
         <item>Festlegen einer Schnellaktion für das Hauptlistenmenü (Einstellungen->Liste der Ereignisse->Schnelle Aktion) (Extrafunktionen)</item>
         <item>Das Kalender-Widget verwendet die Farben der Quellkalender durch Standard</item>
-        <item>Polnische Übersetzung hinzugefügt</item>
+        <item>🇵🇱 Polnische Übersetzung hinzugefügt</item>
 
         <item>#1.8.2</item>
         <item>Möglichkeit zur Auswahl von Ereignisquellen für die Hauptliste und Benachrichtigungen (Extrafunktionen)</item>
@@ -55,7 +58,7 @@
         <item>Gesetzliche Feiertage für 15 Länder sind in der Liste und in den Widgets (integriertes Nachschlagewerk) verfügbar</item>
         <item>Dem Kalender wurde eine Einstellung hinzugefügt, um Tage vor und nach dem Monat anzuzeigen. Für bereits konfigurierte Widgets muss diese Option in der Elementliste</item> aktiviert werden
         <item>Popup-Fenster mit Ereignisdaten beim Klicken auf Feiertage im Kalender</item>
-        <item>Belarussische Übersetzung hinzugefügt</item>
+        <item>🇧🇾 Belarussische Übersetzung hinzugefügt</item>
         <item>Unterstützung für Kalenderereignisse, die länger als einen Tag dauern</item>
         <item>Die Anzahl der aktuellen Farben wurde auf 20 erhöht</item>
         <item>Einstellung für Klickreaktion auf Tag hinzugefügt (Kalender-Widgets)</item>
@@ -71,7 +74,7 @@
         <item>Möglichkeit hinzugefügt, jedes Ereignis zu den Favoriten hinzuzufügen. Filter für Lieblingsereignisse hinzugefügt</item>
         <item>Möglichkeit hinzugefügt, eine Beschriftung für das Listen-Widget anzugeben (Extrafunktionen)</item>
         <item>Es wurde die Möglichkeit hinzugefügt, Ereignisquellen für jedes Widget anzugeben (Extrafunktionen)</item>
-        <item>Portugiesische und französische Übersetzungen hinzugefügt</item>
+        <item>🇧🇷 Portugiesische und 🇫🇷 französische Übersetzungen hinzugefügt</item>
         <item>Optimierungen für Android 14</item>
 
         <item>#1.7.8</item>
@@ -230,7 +233,7 @@
         <item>Fehlerbehebungen</item>
 
         <item>#1.5.2</item>
-        <item>Spanische Übersetzung hinzugefügt</item>
+        <item>🇪🇸 Spanische Übersetzung hinzugefügt</item>
         <item>Anzeige der Sternzeichen hinzugefügt</item>
         <item>Behobene Fehler</item>
 

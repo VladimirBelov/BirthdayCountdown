@@ -1495,49 +1495,65 @@ class ContactsEvents {
     private void updateShortcuts(boolean enableExtraShortcuts) {
         //https://habr.com/ru/articles/593863/
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return;
 
-                Intent intentNotify = new Intent(context, NotifyActivity.class);
-                intentNotify.setAction(Intent.ACTION_VIEW);
-                ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
-                        .setShortLabel(resources.getString(R.string.shortcut_notify))
-                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
-                        .setIntent(intentNotify)
-                        .setRank(1)
+            List<String> shortcutIdsToRemove = new ArrayList<>();
+
+            Intent intentNotify = new Intent(context, NotifyActivity.class);
+            intentNotify.setAction(Intent.ACTION_VIEW);
+            ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
+                    .setShortLabel(resources.getString(R.string.shortcut_notify))
+                    .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
+                    .setIntent(intentNotify)
+                    .setRank(1)
+                    .build();
+            ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+
+            if (!preferences_FactEvent_ids.isEmpty() || !preferences_FactEvent_files.isEmpty()) {
+
+                Intent intentFactsPopup = new Intent(context, FactsPopup.class);
+                intentFactsPopup.setAction(Intent.ACTION_VIEW);
+                ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
+                        .setShortLabel(resources.getString(R.string.shortcut_facts))
+                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_facts))
+                        .setIntent(intentFactsPopup)
+                        .setRank(2)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
 
-                if (enableExtraShortcuts) {
+            } else {
+                shortcutIdsToRemove.add(Constants.SHORTCUT_NOTIFY);
+            }
 
-                    Intent intentQuiz = new Intent(context, QuizActivity.class);
-                    intentQuiz.setAction(Intent.ACTION_VIEW);
-                    ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
-                            .setShortLabel(resources.getString(R.string.shortcut_quiz))
-                            .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_quiz))
-                            .setIntent(intentQuiz)
-                            .setRank(2)
-                            .build();
-                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
+            if (enableExtraShortcuts) {
 
-                    Intent intentSettings = new Intent(context, SettingsActivity.class);
-                    intentSettings.setAction(Intent.ACTION_VIEW);
-                    ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)
-                            .setShortLabel(resources.getString(R.string.shortcut_settings))
-                            .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_settings))
-                            .setIntent(intentSettings)
-                            .setRank(3)
-                            .build();
-                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+                Intent intentQuiz = new Intent(context, QuizActivity.class);
+                intentQuiz.setAction(Intent.ACTION_VIEW);
+                ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
+                        .setShortLabel(resources.getString(R.string.shortcut_quiz))
+                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_quiz))
+                        .setIntent(intentQuiz)
+                        .setRank(3)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
 
-                } else {
+                Intent intentSettings = new Intent(context, SettingsActivity.class);
+                intentSettings.setAction(Intent.ACTION_VIEW);
+                ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)
+                        .setShortLabel(resources.getString(R.string.shortcut_settings))
+                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_settings))
+                        .setIntent(intentSettings)
+                        .setRank(4)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
 
-                    List<String> shortcutIds = new ArrayList<>();
-                    shortcutIds.add(Constants.SHORTCUT_QUIZ);
-                    shortcutIds.add(Constants.SHORTCUT_SETTINGS);
-                    ShortcutManagerCompat.removeDynamicShortcuts(context, shortcutIds);
-                    //context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutIds);
+            } else {
+                shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
+                shortcutIdsToRemove.add(Constants.SHORTCUT_SETTINGS);
+            }
 
-                }
+            if (!shortcutIdsToRemove.isEmpty()) {
+                ShortcutManagerCompat.removeDynamicShortcuts(context, shortcutIdsToRemove);
             }
 
         } catch (Exception e) {
@@ -1722,7 +1738,7 @@ class ContactsEvents {
                     | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
                     | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent))
                     | getHolidayEvents()
-                    | getFactsEvents();
+                    | getFactsEvents(true);
 
             statFavoriteEventsCount += preferences_favoriteEvents.size();
 
@@ -5114,6 +5130,18 @@ class ContactsEvents {
 
             eventList.set(i, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
+            //Избранные для календарного виджета
+            if (Constants.STRING_1.equals(singleEventArray[Position_starred])) {
+                final String packHash = getHash(Constants.eventSourceFavoritePrefix);
+                final String eventTitle = Constants.eventTitleFavoritePrefix
+                        .concat(singleEventArray[Position_eventCaption])
+                        .concat(Constants.STRING_COLON_SPACE)
+                        .concat(singleEventArray[preferences_name_format == 2 ? Position_personFullNameAlt : Position_personFullName]);
+                final DayType.Type dayType = DayType.Type.Holiday;
+                final String key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(eventDateThisTime));
+                fillDayTypeAndInfo(key, dayType, eventTitle);
+            }
+
             if (age > 0) {
 
                 if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -5451,6 +5479,7 @@ class ContactsEvents {
             Date currentDay = now.getTime();
 
             List<String> listPrevEventsPreparatory = new ArrayList<>();
+            List<String> listPrevEventsDates = new ArrayList<>();
             statEventsPrevEventsFound = 0;
             
             //События внизу списка событий (ежегодные)
@@ -5479,6 +5508,7 @@ class ContactsEvents {
                             singleEventArray[Position_eventDateNextTime] = sdf_DDMMYYYY.format(eventDate);
 
                             listPrevEventsPreparatory.add(TextUtils.join(Constants.STRING_EOT, singleEventArray));
+                            listPrevEventsDates.addAll(Arrays.asList(singleEventArray[Position_dates].split(Constants.STRING_2TILDA, -1)));
                             statEventsPrevEventsFound++;
                         } else {
                             break;
@@ -5488,8 +5518,15 @@ class ContactsEvents {
             }
             
             //Дополнительно заготовленные предыдущие события (5k, переходящие, календарные не ежегодные)
-            for (String event: eventListPrev) {
+            eventsLoop: for (String event: eventListPrev) {
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+
+                //Убираем дубли
+                for (String eventDate : singleEventArray[Position_dates].split(Constants.STRING_2TILDA, -1)) {
+                    if (listPrevEventsDates.contains(eventDate)) continue eventsLoop;
+                }
+
+                //Берём не скрытые
                 if (isEventVisibleInList(singleEventArray)) listPrevEventsPreparatory.add(event);
             }
 
@@ -8173,9 +8210,9 @@ class ContactsEvents {
                         .setWhen(0)
                         .setAutoCancel(true);
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { //
+                /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { //
                     builder.setSound(Uri.parse("content://media/internal/audio/media/29"));
-                }
+                }*/
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -9768,7 +9805,12 @@ class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                fillDaysTypesFromFile(packHash, days, "🏖️ ");
+
+                                String eventIcon = "🏖️ ";
+                                if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
+                                    eventIcon = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
+                                }
+                                fillDaysTypesFromFile(packHash, days, eventIcon);
                             }
                             preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                         }
@@ -9796,7 +9838,7 @@ class ContactsEvents {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                             continue;
                         }
-                        fillDaysTypesFromFile(packHash, eventsArray, "📁 ");
+                        fillDaysTypesFromFile(packHash, eventsArray, Constants.eventTitleFilePrefix);
                     }
                     preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
@@ -9875,25 +9917,36 @@ class ContactsEvents {
                     } else {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent));
                     }
-                    DayType.Type dayTypeStored = preferences_DaysTypes.get(key);
-                    if (dayTypeStored != null) {
-                        if (dayTypeStored == DayType.Type.Common) {
-                            preferences_DaysTypes.put(key, dayType);
-                        }
-                    } else {
-                        preferences_DaysTypes.put(key, dayType);
-                    }
-                    String dayInfo = preferences_DaysInfo.get(key);
-                    if (dayInfo != null) {
-                        if (!dayInfo.contains(eventTitle)) {
-                            preferences_DaysInfo.put(key, dayInfo.concat(Constants.STRING_EOT).concat(eventTitle));
-                        }
-                    } else {
-                        preferences_DaysInfo.put(key, eventTitle);
-                    }
+                    fillDayTypeAndInfo(key, dayType, eventTitle);
                 } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));
                 }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void fillDayTypeAndInfo(String key, DayType.Type dayType, String eventTitle) {
+        try {
+
+            DayType.Type dayTypeStored = preferences_DaysTypes.get(key);
+            if (dayTypeStored != null) {
+                if (dayTypeStored == DayType.Type.Common) {
+                    preferences_DaysTypes.put(key, dayType);
+                }
+            } else {
+                preferences_DaysTypes.put(key, dayType);
+            }
+            String dayInfo = preferences_DaysInfo.get(key);
+            if (dayInfo != null) {
+                if (!dayInfo.contains(eventTitle)) {
+                    preferences_DaysInfo.put(key, dayInfo.concat(Constants.STRING_EOT).concat(eventTitle));
+                }
+            } else {
+                preferences_DaysInfo.put(key, eventTitle);
             }
 
         } catch (Exception e) {
@@ -9962,7 +10015,7 @@ class ContactsEvents {
 
                         final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
                         final String calHash = getHash(Constants.eventSourceCalendarPrefix + calId);
-                        final String eventTitle = "📆 " + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
+                        final String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
 
                         while (dateStart.before(startPeriod)) {
                             dateStart.add(Calendar.DATE, 1);
@@ -9996,7 +10049,7 @@ class ContactsEvents {
     }
 
     @SuppressLint("DiscouragedApi")
-    private boolean getFactsEvents() {
+    protected boolean getFactsEvents(boolean setCounters) {
         try {
 
             if (preferences_FactEvent_ids.isEmpty() && preferences_FactEvent_files.isEmpty()) return false;
@@ -10031,7 +10084,7 @@ class ContactsEvents {
                                             increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
                                             increaseStatForEventSourcesIds(packHash);
                                             increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
-                                            statEventsCount++;
+                                            if (setCounters) statEventsCount++;
                                         }
                                     }
                                 }
@@ -10071,8 +10124,10 @@ class ContactsEvents {
                             increaseStatForEventSources(substringBefore(Constants.eventSourceFactPrefix, Constants.STRING_COLON));
                             increaseStatForEventSourcesIds(packHash);
                             increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
-                            statEventsCount++;
-                            statFilesEventCount++;
+                            if (setCounters) {
+                                statEventsCount++;
+                                statFilesEventCount++;
+                            }
                         }
                     }
 
@@ -10083,8 +10138,10 @@ class ContactsEvents {
             eventListFacts.addAll(factsBundled);
             eventListFacts.addAll(factsFiles);
 
-            statTimeGetFactEvents += System.currentTimeMillis() - statCurrentModuleStart;
-            statEventsCount += eventListFacts.size();
+            if (setCounters) {
+                statTimeGetFactEvents += System.currentTimeMillis() - statCurrentModuleStart;
+                statEventsCount += eventListFacts.size();
+            }
             return true;
 
         } catch (Exception e) {
@@ -10114,6 +10171,11 @@ class ContactsEvents {
                     if (countEvents > 1) {
                         final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (preferences_HolidayEvent_ids.contains(packHash)) {
+
+                            String eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                            if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
+                                eventEmoji = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE));
+                            }
 
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
@@ -10194,8 +10256,8 @@ class ContactsEvents {
                                     eventData.put(Position_eventDateNextTime, eventDateString);
                                     eventData.put(Position_eventDateFirstTime, eventDateString);
                                     eventData.put(Position_dates, eventNewDate);
-                                    eventData.put(Position_eventIcon, Integer.toString(R.drawable.ic_event_holiday));
-                                    eventData.put(Position_eventEmoji, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️");
+                                    eventData.put(Position_eventIcon, Integer.toString(R.drawable.ic_event_holiday)); //todo: добавить Position_eventEmoji
+                                    eventData.put(Position_eventEmoji, eventEmoji);
                                     eventData.put(Position_eventStorage, Constants.STRING_STORAGE_HOLIDAYS); //Где искать событие по ID
                                     eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
                                     eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + getHash(packHash + day));

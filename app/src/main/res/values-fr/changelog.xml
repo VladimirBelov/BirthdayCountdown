@@ -15,8 +15,11 @@
     <item>Événements précédents dans la liste principale: ajout de 5k, événements avec dates flottantes, événements à partir de calendriers</item>
     <item>"Dans le widget de calendrier pour l'année entière, le mois de janvier est toujours avec le numéro de l'année"</item>
     <item>"Un appui long sur un élément de la liste ouvre le fichier pour visualisation (paramètres de l'application)"</item>
+    <item>"Ajout d'une action rapide pour afficher les faits (appui long sur l'icône de l'application)"</item>
+    <item>Un bouton \"Partager\" a été ajouté à la fenêtre pop-up avec des faits et des événements de calendrier</item>
+    <item>Ajout de 🌟 événements de contact favoris au widget de calendrier</item>
     <item>Optimisation pour Android 15</item>
-    <item>"Ajout de la langue d'interface tchèque"</item>
+    <item>"Ajout de la langue d'interface 🇨🇿 tchèque"</item>
     <item>Corrections de bugs</item>
 
     <item>#1.8.4</item>
@@ -38,7 +41,7 @@
     <item>"Sélection rapide des sources et types d'événements pour la liste principale (fonctions supplémentaires)"</item>
     <item>"Définition d'une action rapide pour le menu de la liste principale (Paramètres->Liste des événements->Action rapide) (fonctions supplémentaires)"</item>
     <item>Le widget de calendrier utilise les couleurs des calendriers sources par défaut</item>
-    <item>"Ajout d'une traduction polonaise"</item>
+    <item>"Ajout d'une traduction 🇵🇱 polonaise"</item>
 
     <item>#1.8.2</item>
     <item>"Sélection des sources d'événements pour la liste principale et les notifications (fonctions supplémentaires)"</item>
@@ -55,7 +58,7 @@
     <item>Les jours fériés pour 15 pays sont disponibles dans la liste et les widgets (ouvrage de référence intégré)</item>
     <item>Un paramètre a été ajouté au calendrier pour afficher les jours avant et après le mois. Pour les widgets déjà configurés, cette option doit être activée dans la liste des éléments</item>
     <item>"Fenêtre pop-up avec les données d'événement lorsque vous cliquez sur les jours fériés dans le calendrier"</item>
-    <item>Traduction biélorusse ajoutée</item>
+    <item>Traduction 🇧🇾 biélorusse ajoutée</item>
     <item>"Prise en charge des événements de calendrier d'une durée de plus d'un jour"</item>
     <item>Le nombre de couleurs récentes a été augmenté à 20</item>
     <item>"Ajout d'un paramètre pour la réponse aux clics par jour (widgets de calendrier)"</item>

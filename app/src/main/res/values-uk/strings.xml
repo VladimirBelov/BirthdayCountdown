@@ -19,6 +19,7 @@
     <string name="activity_title_events_scope">Фільтр</string>
 
     <string name="shortcut_notify">Повідомлення</string>
+    <string name="shortcut_facts">Факти</string>
     <string name="shortcut_quiz">Вікторина</string>
     <string name="shortcut_settings">Налаштування</string>
 
@@ -62,9 +63,10 @@
     <string name="menu_context_favorites_add">Додати до вибраного</string>
     <string name="menu_context_favorites_remove">Видалити з вибраного</string>
     <string name="menu_ok">Добре</string>
-    <!--<string name="menu_help" tools:ignore="MissingTranslation">Reference</string>-->
-    <!--<string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Calendar events</string>-->
-    <!--<string name="menu_help_events_files" tools:ignore="MissingTranslation">Local files events</string>-->
+    <string name="menu_help">Довідка</string>
+    <string name="menu_help_events_calendar">Події календаря</string>
+    <string name="menu_help_events_files">Події локальних файлів</string>
+    <string name="menu_help_events_facts">Факти</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
     <string name="msg_no_events">Подій не знайдено</string>
@@ -104,6 +106,9 @@
     <string name="msg_errors_details">"акаунт=%1$s, тип події=%2$s, дата=%3$s"</string>
     <string name="msg_all">Всі</string>
     <string name="msg_none">Ніякі</string>
+    <string name="msg_version">"Встановлено версію: %s"</string>
+    <string name="msg_error_get_event_image">Помилка отримання зображення події</string>
+    <string name="msg_event_color_selected">"Вибраний колір #%1$s для %2$s"</string>
 
     <string name="msg_plural_postfix">и</string>
 
@@ -959,6 +964,8 @@
         <item>Відкрити календар</item>
     </string-array>
 
+    <string name="widget_config_events_favorites">🌟 Вибране</string>
+
     <string name="pref_Notifications_title">Повідомлення</string>
     <string name="pref_Notifications_summary">Коли та як показувати сповіщення про події</string>
     <string name="pref_Notifications2_title">Повідомлення (+)</string>
@@ -1246,6 +1253,11 @@
     <string name="month_event_saturdays">Суботи</string>
     <string name="month_event_sundays">Неділі</string>
     <string name="month_event_popup_prefix">"Дата: "</string>
+
+    <string name="facts_popup_caption">Факт</string>
+    <string name="facts_popup_action_next_fact">📝 Наступний</string>
+    <string name="facts_popup_action_share">📤 Поділіться</string>
+    <string name="facts_popup_empty">Блок фактів порожній</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/
