@@ -1256,7 +1256,7 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
     <string name="month_event_popup_prefix">"Data: "</string>
 
     <string name="facts_popup_caption">Fakt</string>
-    <string name="facts_popup_action_next_fact">📝 Następny</string>
+    <string name="facts_popup_action_next_fact">⏩ Następny</string>
     <string name="facts_popup_action_share">📤 Udostępnij</string>
     <string name="facts_popup_empty">Pula faktów jest pusta</string>
 

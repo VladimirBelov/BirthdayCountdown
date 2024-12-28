@@ -1256,7 +1256,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="month_event_popup_prefix">"Datum: "</string>
 
     <string name="facts_popup_caption">Fakt</string>
-    <string name="facts_popup_action_next_fact">📝 Nächster</string>
+    <string name="facts_popup_action_next_fact">⏩ Nächster</string>
     <string name="facts_popup_action_share">📤 Teilen</string>
     <string name="facts_popup_empty">Der Faktenpool ist leer</string>
 

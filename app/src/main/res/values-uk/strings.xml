@@ -1256,7 +1256,7 @@
     <string name="month_event_popup_prefix">"Дата: "</string>
 
     <string name="facts_popup_caption">Факт</string>
-    <string name="facts_popup_action_next_fact">📝 Наступний</string>
+    <string name="facts_popup_action_next_fact">⏩ Наступний</string>
     <string name="facts_popup_action_share">📤 Поділіться</string>
     <string name="facts_popup_empty">Блок фактів порожній</string>
 

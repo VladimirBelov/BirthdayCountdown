@@ -13,6 +13,10 @@ import android.app.LocaleManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -20,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -91,27 +96,46 @@ public class FactsPopup extends Activity {
                 txtInfo.setText(R.string.facts_popup_empty);
             }
 
-            TextView buttonAction = findViewById(R.id.buttonFirstAction);
-            TextView buttonShareAction = findViewById(R.id.buttonSecondAction);
+            List<String> listPrevFacts = new ArrayList<String>(){};
+
             if (!facts.isEmpty()) {
-                buttonAction.setText(R.string.facts_popup_action_next_fact);
-                buttonAction.setOnClickListener(view -> {
-                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
-                    if (!factsNext.isEmpty()) {
-                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
-                    }
-                });
-                buttonShareAction.setText(R.string.facts_popup_action_share);
-                buttonShareAction.setOnClickListener(v -> {
+                TextView buttonShare = findViewById(R.id.buttonSecondAction);
+                buttonShare.setText(R.string.facts_popup_action_share);
+                buttonShare.setOnClickListener(v -> {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType("text/plain");
                     intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
                     startActivity(Intent.createChooser(intentShare, ""));
                 });
-                buttonShareAction.setVisibility(View.VISIBLE);
-            } else {
-                buttonShareAction.setVisibility(View.GONE);
-                buttonShareAction.setVisibility(View.GONE);
+                addClickEffect(buttonShare);
+                buttonShare.getBackground().setAlpha(50);
+                buttonShare.setVisibility(View.VISIBLE);
+
+                TextView buttonAction = findViewById(R.id.buttonThirdAction);
+                buttonAction.setText(R.string.facts_popup_action_next_fact);
+                buttonAction.setOnClickListener(view -> {
+                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
+                    if (!factsNext.isEmpty()) {
+
+                        listPrevFacts.add(txtInfo.getText().toString());
+                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+
+                        TextView buttonPrev = findViewById(R.id.buttonFirstAction);
+                        buttonPrev.setText(R.string.facts_popup_action_prev_fact);
+                        buttonPrev.setOnClickListener(viewPrev -> {
+                            txtInfo.setText(listPrevFacts.remove(listPrevFacts.size() - 1));
+                            if (listPrevFacts.isEmpty()) {
+                                buttonPrev.setVisibility(View.GONE);
+                            }
+                        });
+                        addClickEffect(buttonPrev);
+                        buttonPrev.getBackground().setAlpha(50);
+                        buttonPrev.setVisibility(View.VISIBLE);
+                    }
+                });
+                addClickEffect(buttonAction);
+                buttonAction.getBackground().setAlpha(50);
+                buttonAction.setVisibility(View.VISIBLE);
             }
 
             TextView buttonClose = findViewById(R.id.buttonClose);
@@ -124,6 +148,21 @@ public class FactsPopup extends Activity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
 
+    void addClickEffect(View view)
+    {
+        Drawable drawableNormal = view.getBackground();
+
+        if (view.getBackground().getConstantState() != null) {
+            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
+            drawablePressed.mutate();
+            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+
+            StateListDrawable listDrawable = new StateListDrawable();
+            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
+            listDrawable.addState(new int[]{}, drawableNormal);
+            view.setBackground(listDrawable);
+        }
     }
 }

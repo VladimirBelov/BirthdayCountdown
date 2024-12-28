@@ -14,6 +14,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -120,10 +124,13 @@ public class WidgetCalendarPopup extends Activity {
                     startActivity(intentCalendar);
                     finish();
                 });
+                addClickEffect(buttonAction);
+                buttonAction.getBackground().setAlpha(50);
+                buttonAction.setVisibility(View.VISIBLE);
 
-                TextView buttonShareAction = findViewById(R.id.buttonSecondAction);
-                buttonShareAction.setText(R.string.facts_popup_action_share);
-                buttonShareAction.setOnClickListener(v -> {
+                TextView buttonShare = findViewById(R.id.buttonSecondAction);
+                buttonShare.setText(R.string.facts_popup_action_share);
+                buttonShare.setOnClickListener(v -> {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType("text/plain");
                     TextView txtCaption = findViewById(R.id.textCaption);
@@ -132,7 +139,9 @@ public class WidgetCalendarPopup extends Activity {
                             txtCaption.getText().toString().concat(Constants.STRING_EOL).concat(txtInfo.getText().toString()));
                     startActivity(Intent.createChooser(intentShare, ""));
                 });
-                buttonShareAction.setVisibility(View.VISIBLE);
+                addClickEffect(buttonShare);
+                buttonShare.getBackground().setAlpha(50);
+                buttonShare.setVisibility(View.VISIBLE);
             }
 
             TextView buttonClose = findViewById(R.id.buttonClose);
@@ -145,6 +154,21 @@ public class WidgetCalendarPopup extends Activity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
 
+    void addClickEffect(View view)
+    {
+        Drawable drawableNormal = view.getBackground();
+
+        if (view.getBackground().getConstantState() != null) {
+            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
+            drawablePressed.mutate();
+            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+
+            StateListDrawable listDrawable = new StateListDrawable();
+            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
+            listDrawable.addState(new int[]{}, drawableNormal);
+            view.setBackground(listDrawable);
+        }
     }
 }

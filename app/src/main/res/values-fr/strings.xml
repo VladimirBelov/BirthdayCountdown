@@ -1258,7 +1258,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="month_event_popup_prefix">"Date: "</string>
 
     <string name="facts_popup_caption">Fait</string>
-    <string name="facts_popup_action_next_fact">📝 Le suivant</string>
+    <string name="facts_popup_action_next_fact">⏩ Le suivant</string>
     <string name="facts_popup_action_share">📤 Partager</string>
     <string name="facts_popup_empty">Le pool de faits est vide</string>
 

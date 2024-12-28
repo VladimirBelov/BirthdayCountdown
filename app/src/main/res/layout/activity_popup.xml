@@ -73,8 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
+            android:padding="5dp"
             android:maxLines="1"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/buttonSecondAction"
@@ -83,8 +86,24 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:layout_marginStart="20dp"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
             android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/buttonThirdAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
             tools:ignore="TouchTargetSizeCheck"
             android:visibility="gone" />
 

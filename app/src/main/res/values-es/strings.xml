@@ -1256,7 +1256,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="month_event_popup_prefix">"Fecha: "</string>
 
     <string name="facts_popup_caption">Hecho</string>
-    <string name="facts_popup_action_next_fact">📝 Siguiente</string>
+    <string name="facts_popup_action_next_fact">⏩ Siguiente</string>
     <string name="facts_popup_action_share">📤 Compartir</string>
     <string name="facts_popup_empty">El grupo de hechos está vacío</string>
 

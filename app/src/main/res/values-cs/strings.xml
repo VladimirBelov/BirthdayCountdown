@@ -1258,7 +1258,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="month_event_popup_prefix">"Datum: "</string>
 
     <string name="facts_popup_caption">Fakt</string>
-    <string name="facts_popup_action_next_fact">📝 Další</string>
+    <string name="facts_popup_action_next_fact">⏩ Další</string>
     <string name="facts_popup_action_share">📤 Sdílet</string>
     <string name="facts_popup_empty">Soubor faktů je prázdný</string>
 

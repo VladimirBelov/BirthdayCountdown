@@ -1258,7 +1258,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="month_event_popup_prefix">"Date: "</string>
 
     <string name="facts_popup_caption">Fact</string>
-    <string name="facts_popup_action_next_fact">📝 Next one</string>
+    <string name="facts_popup_action_next_fact">⏩ Next one</string>
     <string name="facts_popup_action_share">📤 Share</string>
     <string name="facts_popup_empty">The facts pool is empty</string>
 
@@ -1412,6 +1412,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_source_calendar" translatable="false">📆</string>
     <string name="event_source_file" translatable="false">📁</string>
     <string name="event_source_internal" translatable="false">🌐</string>
+
+    <string name="facts_popup_action_prev_fact" translatable="false">⏪</string>
 
     <string name="pref_Root_key" translatable="false">Pref</string>
     <string name="pref_Common_key" translatable="false">Common</string>
