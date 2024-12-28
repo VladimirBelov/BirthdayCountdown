@@ -6197,12 +6197,13 @@ class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
+                    int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
                         builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                            int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                             Intent intentClose = new Intent(context, ActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -6210,6 +6211,16 @@ class ContactsEvents {
                             NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
                         }
+                    }
+
+                    if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
+                        Intent intentShare = new Intent(context, ActionReceiver.class);
+                        intentShare.setAction(Constants.ACTION_SHARE);
+                        intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                        intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, textBig.toString().concat(Constants.STRING_EOL).concat(textSmall));
+                        PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
+                        NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
+                        builder.addAction(actionShare);
                     }
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -6239,12 +6250,13 @@ class ContactsEvents {
                         int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                         final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
                         final String eventDetails = composeNotifyEventDetails(event, prefEventDetails);
+                        final String eventTitle = event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1];
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                                 .setColor(this.getResources().getColor(R.color.dark_green))
                                 .setSmallIcon(R.drawable.ic_icon_notify)
                                 .setContentText(eventDetails)
-                                .setContentTitle(event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
+                                .setContentTitle(eventTitle)
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
@@ -6315,6 +6327,16 @@ class ContactsEvents {
                             PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
                             NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
                             builder.addAction(actionSnooze);
+                        }
+
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
+                            Intent intentShare = new Intent(context, ActionReceiver.class);
+                            intentShare.setAction(Constants.ACTION_SHARE);
+                            intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                            intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventTitle.concat(Constants.STRING_EOL).concat(eventDetails));
+                            PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
+                            NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
+                            builder.addAction(actionShare);
                         }
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {

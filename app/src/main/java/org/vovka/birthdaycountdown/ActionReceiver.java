@@ -47,8 +47,10 @@ public class ActionReceiver extends BroadcastReceiver {
 
                 if (!notificationData.equals(Constants.STRING_EMPTY)) {
                     singleEventArray = notificationData.split(Constants.STRING_EOT, -1);
-                    eventKey = eventsData.getEventKey(singleEventArray);
-                    eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                    if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+                        eventKey = eventsData.getEventKey(singleEventArray);
+                        eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                    }
                 }
             }
 
@@ -107,10 +109,27 @@ public class ActionReceiver extends BroadcastReceiver {
                         false
                 );
 
+            } else if (action.equalsIgnoreCase(Constants.ACTION_SHARE)) {
+
+                if (notificationData.equals(Constants.STRING_EMPTY)) {
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_SHARE + Constants.STRING_COLON_SPACE + "Empty request");
+                    return;
+                }
+
+                Intent intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType("text/plain");
+                intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    Intent intentChooser = Intent.createChooser(intentShare, "");
+                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intentChooser);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
+
             } else if (action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
 
                 if (notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_ATTACH + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -130,7 +149,7 @@ public class ActionReceiver extends BroadcastReceiver {
             } else if (action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 
                 if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
+                    ToastExpander.showInfoMsg(context, Constants.ACTION_DIAL + Constants.STRING_COLON_SPACE + "Empty request");
                     return;
                 }
 
@@ -140,7 +159,6 @@ public class ActionReceiver extends BroadcastReceiver {
                 if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
                     String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
                     if (!phone.equals(Constants.STRING_EMPTY)) {
-
                         //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
                         Intent intentDial = new Intent(Intent.ACTION_DIAL);
                         intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));

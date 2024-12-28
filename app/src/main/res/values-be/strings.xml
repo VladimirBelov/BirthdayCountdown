@@ -1048,11 +1048,12 @@
 
     <string-array name="pref_Notifications_QuickActions_entries">
         <item>Патэлефанаваць</item>
-        <item>Выключыць з паведамленняў</item>
+        <item>Выключыць з апавяшчэнняў</item>
         <item>Схаваць падзею</item>
-        <item>Напомніць праз 1 гадзіну</item>
+        <item>Нагадаць праз 1 гадзіну</item>
+        <item>Падзяліцца</item>
         <item>Замацаваць</item>
-        <item>Зачыніць (для паведамленняў з высокім прыярытэтам)</item>
+        <item>Закрыць (для апавяшчэнняў з высокім прыярытэтам)</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Дзеянне на націск</string>

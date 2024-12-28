@@ -1051,6 +1051,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
         <item>Excluir das notificações</item>
         <item>Ocultar evento</item>
         <item>Lembrar em 1 hora</item>
+        <item>Compartilhar</item>
         <item>Fixar</item>
         <item>Fechar (para notificações de alta prioridade)</item>
     </string-array>

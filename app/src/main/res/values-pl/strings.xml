@@ -1051,6 +1051,7 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
         <item>Wyklucz z powiadomień</item>
         <item>Ukryj wydarzenie</item>
         <item>Przypomnij za 1 godzinę</item>
+        <item>Udostępnij</item>
         <item>Przypnij</item>
         <item>Zamknij (dla powiadomień o wysokim priorytecie)</item>
     </string-array>

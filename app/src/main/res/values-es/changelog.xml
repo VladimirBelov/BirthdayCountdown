@@ -15,7 +15,7 @@
         <item>Eventos anteriores en la lista principal: se agregaron 5k, eventos con fechas variables, eventos de calendarios</item>
         <item>En el widget de calendario para todo el año, enero siempre tiene el número del año</item>
         <item>Se agregó una acción rápida para mostrar datos (toque prolongado en el ícono de la aplicación)</item>
-        <item>Se ha agregado un botón \"Compartir\" a la ventana emergente con datos y eventos del calendario</item>
+        <item>La acción \"Compartir\" se ha agregado a notificaciones, ventanas emergentes con datos y eventos del calendario</item>
         <item>Se agregaron 🌟 eventos de contactos favoritos al widget de calendario</item>
         <item>Optimización para Android 15</item>
         <item>Se agregó el 🇨🇿 idiomacheco de la interfaz</item>

@@ -1051,6 +1051,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Exclure des notifications</item>
         <item>"Masquer l'événement"</item>
         <item>Rappel dans 1 heure</item>
+        <item>Partager</item>
         <item>Attacher</item>
         <item>Fermer (pour les notifications de haute priorité)</item>
     </string-array>

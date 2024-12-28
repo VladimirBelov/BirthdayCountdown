@@ -15,7 +15,7 @@
         <item>No widget de calendário para o ano inteiro, janeiro é sempre com o número do ano</item>
         <item>Manter pressionado um item da lista abre o arquivo para visualização (configurações do aplicativo)</item>
         <item>Adicionada uma ação rápida para exibir fatos (toque longo no ícone do aplicativo)</item>
-        <item>Um botão \"Compartilhar\" foi adicionado à janela pop-up com fatos e eventos da agenda</item>
+        <item>A ação \"Compartilhar\" foi adicionada às notificações, janelas pop-up com fatos e eventos da agenda</item>
         <item>Adicionados 🌟 eventos de contato favoritos ao widget de calendário</item>
         <item>Otimização para Android 15</item>
         <item>Idioma de interface 🇨🇿 tcheco adicionado</item>

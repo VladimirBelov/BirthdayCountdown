@@ -1051,6 +1051,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>Excluir de notificaciones</item>
         <item>Ocultar evento</item>
         <item>Recuérdame en 1 hora</item>
+        <item>Compartir</item>
         <item>Alfiler</item>
         <item>Cerrar (para notificaciones de alta prioridad)</item>
     </string-array>

@@ -1062,6 +1062,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>Exclude from notifications</item>
         <item>Hide event</item>
         <item>Remind in 1 hour</item>
+        <item>Share</item>
         <item>Attach</item>
         <item>Close (for high priority notifications)</item>
     </string-array>
@@ -2183,12 +2184,14 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_QuickActions_Remind" translatable="false">4</string>
     <string name="pref_Notifications_QuickActions_Close" translatable="false">5</string>
     <string name="pref_Notifications_QuickActions_Attach" translatable="false">6</string>
+    <string name="pref_Notifications_QuickActions_Share" translatable="false">7</string>
 
     <string-array name="pref_Notifications_QuickActions_values" translatable="false">
         <item>@string/pref_Notifications_QuickActions_Dial</item> <!--Позвонить-->
         <item>@string/pref_Notifications_QuickActions_Silent</item> <!--Не уведомлять-->
         <item>@string/pref_Notifications_QuickActions_Hide</item> <!--Скрыть событие-->
         <item>@string/pref_Notifications_QuickActions_Remind</item> <!--Напомнить-->
+        <item>@string/pref_Notifications_QuickActions_Share</item> <!--Поделиться-->
         <item>@string/pref_Notifications_QuickActions_Attach</item> <!--Закрепить-->
         <item>@string/pref_Notifications_QuickActions_Close</item> <!--Закрыть-->
     </string-array>
@@ -2196,6 +2199,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string-array name="pref_Notifications_QuickActions_values_default" translatable="false">
         <item>@string/pref_Notifications_QuickActions_Silent</item>
         <item>@string/pref_Notifications_QuickActions_Hide</item>
+        <item>@string/pref_Notifications_QuickActions_Share</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_key" translatable="false">Notifications_OnClick</string>

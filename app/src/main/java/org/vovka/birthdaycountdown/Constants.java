@@ -201,6 +201,7 @@ final class Constants {
     static final String ACTION_PREVIOUS_MONTH = "action.PREVIOUS_MONTH";
     static final String ACTION_NEXT_MONTH = "action.NEXT_MONTH";
     static final String ACTION_RESET_MONTH = "action.RESET_MONTH";
+    static final String ACTION_SHARE = "action.SHARE";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";

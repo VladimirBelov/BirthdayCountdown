@@ -16,7 +16,7 @@
         <item>In the calendar widget for whole year, the January is always with year number</item>
         <item>Long press on a list item opens the file for viewing (application settings)</item>
         <item>Added quick action to display facts (long tap on app icon)</item>
-        <item>Added \"Share\" button to the pop-up window with facts and calendar events</item>
+        <item>A \"Share\" action has been added to notifications, pop-up windows with facts and calendar events</item>
         <item>Added 🌟 favorite contact events to calendar widget</item>
         <item>Optimization for Android 15</item>
         <item>Added 🇨🇿 Czech interface language</item>

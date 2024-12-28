@@ -1062,6 +1062,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
         <item>Vyloučit z oznámení</item>
         <item>Skrýt událost</item>
         <item>Připomenout za 1 hodinu</item>
+        <item>Sdílet</item>
         <item>Připojit</item>
         <item>Zavřít (pro oznámení s vysokou prioritou)</item>
     </string-array>
