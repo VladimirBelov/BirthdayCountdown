@@ -79,11 +79,9 @@ public class Widget4x1 extends AppWidgetProvider {
                 List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
                 ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        widgetType + Constants.STRING_COLON_SPACE + appWidgetId +
-                                ", layout=" + context.getResources().getResourceEntryName(views.getLayoutId()) +
-                                "\n minWidth=" + minWidth + ", minHeight=" + minHeight +
-                                "\n widgetPref=" + widgetPref
-                        : widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref
+                        context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
+                                context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, String.join(Constants.STRING_COMMA, widgetPref))
+                        : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(String.join(Constants.STRING_COMMA, widgetPref))
                 );
             }
 

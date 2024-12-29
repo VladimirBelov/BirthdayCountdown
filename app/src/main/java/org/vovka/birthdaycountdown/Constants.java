@@ -351,6 +351,7 @@ final class Constants {
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";
     public static final String SHORTCUT_NOTIFY = "Notify";
+    public static final String SHORTCUT_FACTS = "Facts";
 
     static final int onClick_None = 0;
     static final int onClick_Popup = 1;
@@ -382,6 +383,8 @@ final class Constants {
     static final String APP_UID = "app_uid";
     static final String QUERY_PARAM_DELETED_0 = "deleted=0";
     static final String QUERY_PARAM_YEARLY = "FREQ=YEARLY";
+    static final String QUERY_PARAM_AND = " AND ";
+    static final String QUERY_PARAM_OR = " OR ";
     static final String PREF_TYPE_STRING = " (string)";
     static final String PREF_TYPE_BOOLEAN = " (boolean)";
     static final String PREF_TYPE_INT = " (int)";

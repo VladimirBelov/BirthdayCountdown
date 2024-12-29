@@ -1499,21 +1499,27 @@ class ContactsEvents {
 
             List<String> shortcutIdsToRemove = new ArrayList<>();
 
-            Intent intentNotify = new Intent(context, NotifyActivity.class);
-            intentNotify.setAction(Intent.ACTION_VIEW);
-            ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
-                    .setShortLabel(resources.getString(R.string.shortcut_notify))
-                    .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
-                    .setIntent(intentNotify)
-                    .setRank(1)
-                    .build();
-            ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+            if (!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) {
+
+                Intent intentNotify = new Intent(context, NotifyActivity.class);
+                intentNotify.setAction(Intent.ACTION_VIEW);
+                ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
+                        .setShortLabel(resources.getString(R.string.shortcut_notify))
+                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
+                        .setIntent(intentNotify)
+                        .setRank(1)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+
+            } else {
+                shortcutIdsToRemove.add(Constants.SHORTCUT_NOTIFY);
+            }
 
             if (!preferences_FactEvent_ids.isEmpty() || !preferences_FactEvent_files.isEmpty()) {
 
                 Intent intentFactsPopup = new Intent(context, FactsPopup.class);
                 intentFactsPopup.setAction(Intent.ACTION_VIEW);
-                ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
+                ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_FACTS)
                         .setShortLabel(resources.getString(R.string.shortcut_facts))
                         .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_facts))
                         .setIntent(intentFactsPopup)
@@ -1522,7 +1528,7 @@ class ContactsEvents {
                 ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
 
             } else {
-                shortcutIdsToRemove.add(Constants.SHORTCUT_NOTIFY);
+                shortcutIdsToRemove.add(Constants.SHORTCUT_FACTS);
             }
 
             if (enableExtraShortcuts) {
@@ -2056,13 +2062,13 @@ class ContactsEvents {
             selection.append(ContactsContract.Data.MIMETYPE).append(" = '").append(ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).append("' ");
             if (accountType != null) {
                 if (Constants.STRING_NULL.equalsIgnoreCase(accountType)) {
-                    selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" is null ");
+                    selection.append(Constants.QUERY_PARAM_AND).append(Constants.ColumnNames_ACCOUNT_TYPE).append(" is null ");
                 } else {
-                    selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_TYPE).append(" = '").append(accountType).append("' ");
+                    selection.append(Constants.QUERY_PARAM_AND).append(Constants.ColumnNames_ACCOUNT_TYPE).append(" = '").append(accountType).append("' ");
                 }
             }
             if (accountName != null) {
-                selection.append(" AND ").append(Constants.ColumnNames_ACCOUNT_NAME).append(" = '").append(accountName).append("' ");
+                selection.append(Constants.QUERY_PARAM_AND).append(Constants.ColumnNames_ACCOUNT_NAME).append(" = '").append(accountName).append("' ");
             }
             Cursor cursor = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
@@ -2732,7 +2738,7 @@ class ContactsEvents {
             StringBuilder calIDs = new StringBuilder();
             for (String calID : preferences_calendars) {
                 if (calIDs.length() > 0)
-                    calIDs.append(" OR " + CalendarContract.Instances.CALENDAR_ID + " = ");
+                    calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Instances.CALENDAR_ID + " = ");
                 calIDs.append(calID);
             }
             String selection = CalendarContract.Instances.CALENDAR_ID + " = " + calIDs;
@@ -5065,7 +5071,6 @@ class ContactsEvents {
                 }
 
                 if (eventDateFirstTime != null) {
-                    //dayDiff = countDaysDiff(currentDay, eventDateThisTime);
                     age = countYearsDiff(eventDateFirstTime, eventDateThisTime); //Считаем, сколько будет лет
                     if (!TextUtils.isEmpty(contactID)) {
                         if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !birthdayDatesForIds.containsKey(contactID)) {
@@ -8200,7 +8205,14 @@ class ContactsEvents {
                     //https://www.w3schools.com/colors/colors_names.asp
 
                     //todo: https://issuetracker.google.com/190786028 How to check Android 12 API level?
-                    handler.post(() -> Toast.makeText(context, HtmlCompat.fromHtml((isNotifyInterface && Build.VERSION.SDK_INT < Build.VERSION_CODES.S ? "<b>" + question.replace(Constants.STRING_EOL, "</b><br>") + "<br><br>" : Constants.STRING_EMPTY) + "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>" + a[2].replace(Constants.STRING_EOL, "<br>") + Constants.HTML_COLOR_END, HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show());
+                    handler.post(() -> Toast.makeText(context, HtmlCompat.fromHtml(
+                            (isNotifyInterface && Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                                    "<b>" + question.replace(Constants.STRING_EOL, "</b><br>") + "<br><br>" :
+                                    Constants.STRING_EMPTY)
+                                    + "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>"
+                                    + a[2].replace(Constants.STRING_EOL, "<br>")
+                                    + Constants.HTML_COLOR_END, HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG)
+                            .show());
                 }
             }
 
@@ -9990,7 +10002,7 @@ class ContactsEvents {
                         if (getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
                             Log.i("CALENDAR", calId + Constants.STRING_PARENTHESIS_OPEN + calHash + Constants.STRING_PARENTHESIS_CLOSE);
                             if (calIDs.length() > 0)
-                                calIDs.append(" OR " + CalendarContract.Events.CALENDAR_ID + " = ");
+                                calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Events.CALENDAR_ID + " = ");
                             calIDs.append(calId);
                            break;
                         }
@@ -10472,7 +10484,7 @@ class ContactsEvents {
                         ContentResolver contentResolver = context.getContentResolver();
                         Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
                                 new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
-                                "deleted=0",
+                                Constants.QUERY_PARAM_DELETED_0,
                                 null,
                                 null);
                         if (cursor != null && cursor.getCount() > 0) {

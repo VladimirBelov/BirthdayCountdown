@@ -2304,4 +2304,6 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="widget_config_month_events_saturday_id" translatable="false">01</string>
     <string name="widget_config_month_events_sunday_id" translatable="false">02</string>
 
+    <string name="msg_debug_widget_photo_config" translatable="false">"%s: %d, layout=%s\n minWidth=%d, minHeight=%d\n widgetPref=%s"</string>
+    <string name="msg_debug_widget_list_config" translatable="false">"%s: %d, layout=%s\n widgetPref=%s"</string>
 </resources>
