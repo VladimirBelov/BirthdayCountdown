@@ -18,7 +18,7 @@
 
     <string name="activity_title_events_scope">Filtre</string>
 
-    <string name="shortcut_notify">"Notifications d'aujourd'hui"</string>
+    <string name="shortcut_notify">Notifications</string>
     <string name="shortcut_facts">Faits</string>
     <string name="shortcut_quiz">Quiz</string>
     <string name="shortcut_settings">Paramètres</string>

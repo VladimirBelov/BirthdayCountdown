@@ -18,7 +18,7 @@
 
     <string name="activity_title_events_scope">Filtr</string>
 
-    <string name="shortcut_notify">Dnešní oznámení</string>
+    <string name="shortcut_notify">Oznámení</string>
     <string name="shortcut_facts">Fakta</string>
     <string name="shortcut_quiz">Kvíz</string>
     <string name="shortcut_settings">Nastavení</string>
