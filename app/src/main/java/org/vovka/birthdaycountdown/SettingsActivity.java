@@ -2950,61 +2950,64 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            if (requestCode == Constants.RESULT_PICK_FILE && resultCode == Activity.RESULT_OK) {
-                if (resultData != null) {
-                    Uri uri = resultData.getData();
-                    if (uri != null) {
-                        if (!eventsData.readFileToString(uri.toString(), null).isEmpty()) {
-                            String filename = eventsData.getPath(this, uri);
-                            if (!filename.isEmpty()) {
-                                try {
-                                    this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                                    this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                    filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
-                                    selectFiles(this.eventTypeForSelect);
-                                } catch (Exception e) {
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == Constants.RESULT_PICK_FILE) {
+                    if (resultData != null) {
+                        Uri uri = resultData.getData();
+                        if (uri != null) {
+                            if (!eventsData.readFileToString(uri.toString(), null).isEmpty()) {
+                                String filename = eventsData.getPath(this, uri);
+                                if (!filename.isEmpty()) {
+                                    try {
+                                        this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                                        this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                        filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
+                                        selectFiles(this.eventTypeForSelect);
+                                    } catch (Exception e) {
+                                        ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
+                                    }
                                 }
+                            } else {
+                                ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
+                            }
+                        }
+                    }
+                } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {
+                    if (resultData != null) {
+                        Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                        int queueNumber = runningQueue;
+                        if (ringtone != null) {
+                            if (queueNumber == 1) {
+                                eventsData.preferences_notifications_ringtone = ringtone.toString();
+                            } else if (queueNumber == 2) {
+                                eventsData.preferences_notifications2_ringtone = ringtone.toString();
                             }
                         } else {
-                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
+                            if (queueNumber == 1) {
+                                eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                            } else if (queueNumber == 2) {
+                                eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                            }
+                        }
+                        runningQueue = 0;
+                        eventsData.savePreferences();
+                    }
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT) {
+                    if (resultData != null) {
+                        Uri uri = resultData.getData();
+                        if (uri != null) {
+                            exportPreferences(uri);
+                        }
+                    }
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT) {
+                    if (resultData != null) {
+                        Uri uri = resultData.getData();
+                        if (uri != null) {
+                            importPreferences(importStage.doClean, uri);
                         }
                     }
                 }
-            } else if (requestCode == Constants.RESULT_PICK_RINGTONE && resultCode == Activity.RESULT_OK) {
-                if (resultData != null) {
-                    Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    int queueNumber = runningQueue;
-                    if (ringtone != null) {
-                        if (queueNumber == 1) {
-                            eventsData.preferences_notifications_ringtone = ringtone.toString();
-                        } else if (queueNumber == 2) {
-                            eventsData.preferences_notifications2_ringtone = ringtone.toString();
-                        }
-                    } else {
-                        if (queueNumber == 1) {
-                        eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
-                        } else if (queueNumber == 2) {
-                            eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
-                        }
-                    }
-                    runningQueue = 0;
-                    eventsData.savePreferences();
-                }
-            } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT && resultCode == Activity.RESULT_OK) {
-                if (resultData != null) {
-                    Uri uri = resultData.getData();
-                    if (uri != null) {
-                        exportPreferences(uri);
-                    }
-                }
-            } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT && resultCode == Activity.RESULT_OK) {
-                if (resultData != null) {
-                    Uri uri = resultData.getData();
-                    if (uri != null) {
-                        importPreferences(importStage.doClean, uri);
-                    }
-                }
+
             } else {
 
                 super.onActivityResult(requestCode, resultCode, resultData);
