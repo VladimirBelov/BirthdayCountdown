@@ -811,6 +811,11 @@
         android:layout="@layout/settings_category_with_icon"
         android:icon="@android:drawable/ic_menu_crop">
 
+        <Preference
+            android:key="@string/pref_Widgets_AddWidget_key"
+            android:title="Добавить виджет"
+            android:summary="Выбрать виджет для добавления в лаунчер"/>
+
         <ListPreference
             android:key="@string/pref_Widgets_UpdateInterval_key"
             android:title="@string/pref_Widgets_UpdateInterval_title"

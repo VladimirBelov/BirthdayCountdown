@@ -18,7 +18,10 @@ import android.app.Dialog;
 import android.app.LocaleManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -902,6 +905,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 selectQuickAction();
                 return true;
+
+            } else if (getString(R.string.pref_Widgets_AddWidget_key).equals(key)) {
+
+                //https://stackoverflow.com/questions/16100926/how-to-add-a-widget-to-the-android-home-screen-from-my-app
+                //todo: сделать выбор виджетов
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    AppWidgetManager appWidgetManager = getSystemService(AppWidgetManager.class);
+                    ComponentName myProvider = new ComponentName(this, Widget5x1.class);
+                    assert appWidgetManager != null;
+                    if (appWidgetManager.isRequestPinAppWidgetSupported()) {
+                        Intent pinnedWidgetCallbackIntent = new Intent(this, MainActivity.class);
+                        PendingIntent successCallback = PendingIntent.getBroadcast(this, 0,
+                                pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
+                    }
+                }
 
             }
 

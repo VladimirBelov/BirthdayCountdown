@@ -1865,6 +1865,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="pref_Widgets_key" translatable="false">Widgets</string>
+    <string name="pref_Widgets_AddWidget_key" translatable="false">Widgets_Add</string>
     <string name="pref_Widgets_UpdateInterval_key" translatable="false">Widgets_UpdateInterval</string>
     <string name="pref_Widgets_UpdateInterval_default" translatable="false">0</string>
 
