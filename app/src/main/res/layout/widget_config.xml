@@ -260,24 +260,6 @@
 
             </LinearLayout>
 
-                <!--<View
-                    android:id="@+id/dividerEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />-->
-
-
-
-                <!--<TextView
-                    android:id="@+id/hintEventShift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_config_index_description"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:ignore="VisualLintLongText" />-->
-
                 <LinearLayout
                     android:id="@+id/blockFacts"
                     android:layout_width="match_parent"

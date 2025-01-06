@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -198,7 +199,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
             eventTypesValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
 
-            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
                 eventTypesValues.add(getString(R.string.pref_Notifications_EventTypes_Facts));
             }
@@ -231,11 +232,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerEventTypes.setZeroSelectedTitle(getString(R.string.widget_config_event_types_empty));
             spinnerEventTypes.setItems(eventTypesValues);
             spinnerEventTypes.setSelection(listEventTypes);
-            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 spinnerEventTypes.onDismissListener = dialog -> updateVisibility();
             }
 
-            isListWidget = widgetType.equals(Constants.WIDGET_TYPE_LIST) || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST);
+            isListWidget = Constants.WIDGET_TYPE_LIST.equals(widgetType) || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType);
             CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
             checkCaptionsUsePrefs.setOnClickListener(v -> updateVisibility());
             checkCaptionsUsePrefs.setChecked(true);
@@ -272,8 +273,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerScopeDays.setAdapter(spinnerScopeDaysAdapter);
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
-            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+            if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
 
                 List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
                 ArrayAdapter<String> spinnerLayoutAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerLayoutItems);
@@ -317,8 +318,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
                         }
                     }
-                    if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                            || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+                    if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                            || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
                         final String scopeLayout = matchScopes.group(3);
                         if (scopeLayout != null) {
                             if (scopeLayout.equals(Constants.STRING_PLUS)) { //Расширить
@@ -327,7 +328,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                                 spinnerLayout.setSelection(1);
                             }
                         }
-                    } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+                    } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                         try {
                             final String scopeFacts = matchScopes.group(3);
                             if (scopeFacts != null) {
@@ -555,7 +556,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             String[] infoArray = null;
             try {
                 if (widgetPref.size() > 4) {
-                    if (widgetType.equals(Constants.WIDGET_TYPE_LIST) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
+                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
                         widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
                     }
 
@@ -568,7 +569,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             } catch (final Exception e) {/**/}
 
-            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 spinnerEventInfo.setSortable(true);
                 spinnerEventInfo.fm = getSupportFragmentManager();
                 spinnerEventInfo.setZeroSelectedIndex(-1);
@@ -676,10 +677,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void updateVisibility() {
         try {
 
-            boolean isNotPhotoWidget = !widgetType.equals(Constants.WIDGET_TYPE_5X1) && !widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                    && !widgetType.equals(Constants.WIDGET_TYPE_2X2);
+            boolean isNotPhotoWidget = !Constants.WIDGET_TYPE_5X1.equals(widgetType) && !Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    && !Constants.WIDGET_TYPE_2X2.equals(widgetType);
 
-            if (isNotPhotoWidget) {
+            if (!Constants.WIDGET_TYPE_5X1.equals(widgetType)) {
                 findViewById(R.id.blockLayout).setVisibility(View.GONE);
             }
 
@@ -700,11 +701,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (!widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
+            if (!Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
                 findViewById(R.id.blockPhotoMagnify).setVisibility(View.GONE);
             }
 
-            if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
 
                 //Скрываем стиль фото
                 findViewById(R.id.dividerPhotoStyle).setVisibility(View.GONE);
@@ -738,8 +739,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+            if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
 
                 //Скрываем заголовок виджета
                 findViewById(R.id.dividerCustomWidgetCaption).setVisibility(View.GONE);
@@ -750,8 +751,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
-                    || widgetType.equals(Constants.WIDGET_TYPE_LIST)
-                    || widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
+                    || Constants.WIDGET_TYPE_LIST.equals(widgetType)
+                    || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
 
                 //Скрываем фото подсказку для существующих виджетов
                 findViewById(R.id.widget_hint).setVisibility(View.GONE);
@@ -775,9 +776,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
 
             //Ограничение объёма
+            final LinearLayout blockScopeEvents = findViewById(R.id.blockScopeEvents);
+            blockScopeEvents.setVisibility(Constants.WIDGET_TYPE_5X1.equals(widgetType) || isListWidget ? View.VISIBLE : View.GONE);
             final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
-            findViewById(R.id.blockScopeEventsCount).setVisibility(
-                    isNotPhotoWidget || spinnerScopeEvents.getSelectedItemPosition() != 0 ? View.GONE : View.VISIBLE
+            final LinearLayout blockScopeEventsCount = findViewById(R.id.blockScopeEventsCount);
+            blockScopeEventsCount.setVisibility(
+                    !Constants.WIDGET_TYPE_5X1.equals(widgetType) || spinnerScopeEvents.getSelectedItemPosition() != 0 ? View.GONE : View.VISIBLE
             );
 
             //Факты
@@ -787,7 +791,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 selectedEventTypes.add(ContactsEvents.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
             }
             findViewById(R.id.blockFacts).setVisibility(
-                    widgetType.equals(Constants.WIDGET_TYPE_LIST)
+                    Constants.WIDGET_TYPE_LIST.equals(widgetType)
                             && selectedEventTypes.contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
             );
 
@@ -832,8 +836,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
-            if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
-                    || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
+            if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
 
                 List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
                 if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
@@ -842,7 +846,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     scopeInfo.append(Constants.STRING_MINUS);
                 }
 
-            } else if (widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
+            } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 final Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
                 scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
             }
