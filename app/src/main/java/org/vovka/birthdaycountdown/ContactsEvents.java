@@ -3501,13 +3501,13 @@ class ContactsEvents {
                                                 isEndless = false;
                                             } catch (NumberFormatException ignored) { /**/ }
                                         }
-                                        eventDateString = dateNextFloatingEvent;
-
 
                                         //Дата предыдущего года
                                         if (preferences_list_prev_events_scan_distance > 0) {
                                             datePrevFloatingEvent = computeFloatingDate(eventDateString, -1);
                                         }
+
+                                        eventDateString = dateNextFloatingEvent;
                                     }
                                 }
                                 dateEvent = sdf_DDMMYYYY.parse(eventDateString);
@@ -3844,7 +3844,7 @@ class ContactsEvents {
                                     if (eventDatePrev != null) {
                                         long eventDistance = countDaysDiff(eventDatePrev, now.getTime());
 
-                                        if (eventDistance <= preferences_list_prev_events_scan_distance) {
+                                        if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
                                             String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
                                             eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDatePrev));
                                             eventData.put(Position_eventDistance, Long.toString(-eventDistance));
