@@ -6161,6 +6161,7 @@ class ContactsEvents {
                 if (!listFacts.isEmpty()) {
                     textBig.append(composeFactsAsString(listFacts));
                 }
+                boolean noEventsMsg = false;
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
                     for (NotifyEvent event : listNotify) {
@@ -6182,6 +6183,7 @@ class ContactsEvents {
                 } else if (prefType != 4) {
                     if (listFacts.isEmpty()) {
                         textSmall = context.getString(R.string.msg_notifications_soon_no_events);
+                        noEventsMsg = true;
                     } else {
                         textSmall = context.getString(R.string.pref_CustomEvents_Fact_title);
                     }
@@ -6218,7 +6220,7 @@ class ContactsEvents {
                         }
                     }
 
-                    if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
+                    if (!noEventsMsg && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
                         Intent intentShare = new Intent(context, ActionReceiver.class);
                         intentShare.setAction(Constants.ACTION_SHARE);
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);

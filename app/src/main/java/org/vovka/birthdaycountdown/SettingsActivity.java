@@ -2571,6 +2571,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_FontMagnify_Date_key),
                         getString(R.string.pref_List_FontMagnify_Age_key),
                         getString(R.string.pref_List_QuickAction_key),
+                        getString(R.string.pref_List_SearchDeath_key),
                         getString(R.string.pref_Widgets_Color_EventToday_key),
                         getString(R.string.pref_Widgets_Color_EventSoon_key),
                         getString(R.string.pref_Widgets_Color_EventFar_key),

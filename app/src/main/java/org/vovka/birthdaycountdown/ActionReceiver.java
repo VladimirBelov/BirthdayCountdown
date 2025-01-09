@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 
 import androidx.core.app.NotificationManagerCompat;
 
@@ -30,7 +31,8 @@ public class ActionReceiver extends BroadcastReceiver {
             if (action == null) return;
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context);
+            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
+            eventsData.getPreferences();
             eventsData.setLocale(true);
 
             //Получаем входные параметры
@@ -54,12 +56,14 @@ public class ActionReceiver extends BroadcastReceiver {
                 }
             }
 
-            if (action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
+            if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
+                ToastExpander.showDebugMsg(context, eventsData.getContext().getString(R.string.msg_debug_notify_action_empty, action));
+                return;
+            } else {
+                ToastExpander.showDebugMsg(context, action.concat(Constants.STRING_COLON_SPACE).concat(notificationData));
+            }
 
-                if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_SNOOZE + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
+            if (action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
 
                 //https://stackoverflow.com/questions/5746582/implementing-snooze-in-android-notifications
                 //https://stackoverflow.com/questions/44232699/specific-snooze-functionality-in-notification-button
@@ -70,11 +74,6 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if  (action.equalsIgnoreCase(Constants.ACTION_SILENT)) {
 
-                if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_SILENT + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
-
                 eventsData.setSilencedEvent(eventKey, eventKeyWithRawId);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -82,22 +81,12 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if  (action.equalsIgnoreCase(Constants.ACTION_HIDE)) {
 
-                if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_HIDE + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
-
                 eventsData.setHiddenEvent(eventKey, eventKeyWithRawId);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
-
-                if (notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_NOTIFY + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
 
                 String[] notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
                 String[] notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
@@ -111,11 +100,6 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_SHARE)) {
 
-                if (notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_SHARE + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
-
                 Intent intentShare = new Intent(Intent.ACTION_SEND);
                 intentShare.setType("text/plain");
                 intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
@@ -123,15 +107,10 @@ public class ActionReceiver extends BroadcastReceiver {
                 try {
                     Intent intentChooser = Intent.createChooser(intentShare, "");
                     intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intentChooser);
+                    context.getApplicationContext().startActivity(intentChooser);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
-
-                if (notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_ATTACH + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
@@ -148,11 +127,6 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_DIAL)) {
 
-                if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
-                    ToastExpander.showInfoMsg(context, Constants.ACTION_DIAL + Constants.STRING_COLON_SPACE + "Empty request");
-                    return;
-                }
-
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
@@ -161,7 +135,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     if (!phone.equals(Constants.STRING_EMPTY)) {
                         //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
                         Intent intentDial = new Intent(Intent.ACTION_DIAL);
-                        intentDial.setData(Uri.parse("tel:" + Uri.encode(phone.trim())));
+                        intentDial.setData(Uri.parse(WebView.SCHEME_TEL + Uri.encode(phone.trim())));
                         intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
                             context.startActivity(intentDial);
