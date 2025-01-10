@@ -1483,8 +1483,6 @@ class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
-            updateShortcuts(preferences_extrafun);
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -1492,12 +1490,13 @@ class ContactsEvents {
 
     }
 
-    private void updateShortcuts(boolean enableExtraShortcuts) {
+    void updateShortcuts() {
         //https://habr.com/ru/articles/593863/
         try {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return;
 
             List<String> shortcutIdsToRemove = new ArrayList<>();
+            boolean enableExtraShortcuts = preferences_extrafun;
 
             if (!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) {
 
@@ -1509,7 +1508,9 @@ class ContactsEvents {
                         .setIntent(intentNotify)
                         .setRank(1)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_NOTIFY);
@@ -1525,7 +1526,9 @@ class ContactsEvents {
                         .setIntent(intentFactsPopup)
                         .setRank(2)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_FACTS);
@@ -1541,7 +1544,6 @@ class ContactsEvents {
                         .setIntent(intentQuiz)
                         .setRank(3)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
 
                 Intent intentSettings = new Intent(context, SettingsActivity.class);
                 intentSettings.setAction(Intent.ACTION_VIEW);
@@ -1551,7 +1553,10 @@ class ContactsEvents {
                         .setIntent(intentSettings)
                         .setRank(4)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
@@ -1620,6 +1625,12 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
+
+            editor.putString("ColorsResent", null);
+            Map<String, ?> prefs = preferences.getAll();
+            if (prefs.get(context.getString(R.string.pref_List_SearchDeath_key)) instanceof Integer) {
+                editor.putString(context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
+            }
 
             editor.commit();
 

@@ -5,6 +5,7 @@
  *  * Last modified 24.02.2022, 11:13
  *
  */
+//file:noinspection HardCodedStringLiteral
 
 apply plugin: 'com.android.application'
 

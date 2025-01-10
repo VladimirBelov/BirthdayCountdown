@@ -2147,6 +2147,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
                 eventsData.updateWidgets(0, null);
+                eventsData.updateShortcuts();
 
             }
 
