@@ -1518,7 +1518,7 @@ class ContactsEvents {
 
             if (!preferences_FactEvent_ids.isEmpty() || !preferences_FactEvent_files.isEmpty()) {
 
-                Intent intentFactsPopup = new Intent(context, FactsPopup.class);
+                Intent intentFactsPopup = new Intent(context, FactsPopupActivity.class);
                 intentFactsPopup.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_FACTS)
                         .setShortLabel(resources.getString(R.string.shortcut_facts))

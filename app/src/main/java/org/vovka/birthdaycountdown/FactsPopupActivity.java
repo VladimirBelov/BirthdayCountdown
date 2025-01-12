@@ -32,12 +32,12 @@ import java.util.Set;
 
 import androidx.annotation.Nullable;
 
-public class FactsPopup extends Activity {
+public class FactsPopupActivity extends Activity {
 
-    private static final String TAG = "FactsPopup";
+    private static final String TAG = "FactsPopupActivity";
     ContactsEvents eventsData;
 
-    public FactsPopup() {
+    public FactsPopupActivity() {
     }
 
     @Override

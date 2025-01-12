@@ -100,14 +100,11 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_SHARE)) {
 
-                Intent intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType("text/plain");
+                Intent intentShare = new Intent(context, ShareFromNotifyActivity.class);
                 intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
-                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
-                    Intent intentChooser = Intent.createChooser(intentShare, "");
-                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.getApplicationContext().startActivity(intentChooser);
+                    context.getApplicationContext().startActivity(intentShare);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
