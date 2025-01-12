@@ -627,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_Remind_1H) {
 
-                eventsData.snoozeNotification(selectedEvent_str, 1, null);
+                eventsData.snoozeNotification(selectedEvent_str, null, null, 1, null);
                 return true;
 
             } else if (itemId == Constants.ContextMenu_Remind_Morning) {
@@ -639,7 +639,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 wakeTime.set(Calendar.SECOND, 0);
                 wakeTime.set(Calendar.MILLISECOND, 0);
 
-                eventsData.snoozeNotification(selectedEvent_str, 0, wakeTime.getTime());
+                eventsData.snoozeNotification(selectedEvent_str, null, null, 0, wakeTime.getTime());
                 return true;
 
             } else if (itemId == Constants.ContextMenu_AnniversaryList) {

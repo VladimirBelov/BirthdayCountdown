@@ -6643,17 +6643,25 @@ class ContactsEvents {
         return eventKey.replace(Constants.STRING_2HASH, Constants.STRING_EOT).split(Constants.STRING_EOT, -1);
     }
 
-    void snoozeNotification(@NonNull String dataNotify, int snoozeHours, Date wakeDateTime) {
+    void snoozeNotification(@NonNull String notifyData, String[] notifyDetails, String[] notifyActions, int snoozeHours, Date wakeDateTime) {
 
         try {
 
-            if (TextUtils.isEmpty(dataNotify) || (snoozeHours <= 0 && wakeDateTime == null)) return;
+            if (TextUtils.isEmpty(notifyData) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
             Intent alarmIntent = new Intent(context, ActionReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, preferences_notifications_details.toArray(new String[0])); //Берём из основных
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0]));
+            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notifyData);
+            if (notifyDetails != null) {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, notifyDetails);
+            } else {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, preferences_notifications_details.toArray(new String[0])); //Берём из основных
+            }
+            if (notifyActions != null) {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, notifyActions);
+            } else {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0])); //Берём из основных
+            }
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), alarmIntent, PendingIntentMutable); //PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

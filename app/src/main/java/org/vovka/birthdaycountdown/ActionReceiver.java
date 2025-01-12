@@ -39,6 +39,8 @@ public class ActionReceiver extends BroadcastReceiver {
             Bundle extras = intent.getExtras();
             int notificationID = 0;
             String notificationData = Constants.STRING_EMPTY;
+            String[] notificationActions = null;
+            String[] notificationDetails = null;
             String[] singleEventArray = null;
             String eventKey = Constants.STRING_EMPTY;
             String eventKeyWithRawId = Constants.STRING_EMPTY;
@@ -54,6 +56,9 @@ public class ActionReceiver extends BroadcastReceiver {
                         eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                     }
                 }
+
+                notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
+                notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
             }
 
             if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
@@ -67,7 +72,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
                 //https://stackoverflow.com/questions/5746582/implementing-snooze-in-android-notifications
                 //https://stackoverflow.com/questions/44232699/specific-snooze-functionality-in-notification-button
-                eventsData.snoozeNotification(notificationData, 1, null);
+                eventsData.snoozeNotification(notificationData, notificationDetails, notificationActions, 1, null);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
@@ -88,8 +93,6 @@ public class ActionReceiver extends BroadcastReceiver {
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_NOTIFY)) {
 
-                String[] notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
-                String[] notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
                 eventsData.showNotification(
                         notificationData,
                         notificationActions,
@@ -102,7 +105,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
                 Intent intentShare = new Intent(context, ShareFromNotifyActivity.class);
                 intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
-                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     context.getApplicationContext().startActivity(intentShare);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
@@ -112,8 +115,6 @@ public class ActionReceiver extends BroadcastReceiver {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.cancel(notificationID);
 
-                String[] notificationActions = extras.getStringArray(Constants.EXTRA_NOTIFICATION_ACTIONS);
-                String[] notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
                 eventsData.showNotification(
                         notificationData,
                         notificationActions,
