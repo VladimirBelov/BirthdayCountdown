@@ -220,8 +220,13 @@
             android:exported="false"
             android:excludeFromRecents="true"/>
 
-        <activity android:name=".FactsPopup"
+        <activity android:name=".FactsPopupActivity"
             android:theme="@android:style/Theme.Dialog"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+
+        <activity android:name=".ShareFromNotifyActivity"
+            android:theme="@style/AppTheme.DarkGray.NoActionBar"
             android:exported="false"
             android:excludeFromRecents="true"/>
 

@@ -2307,4 +2307,5 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="msg_debug_widget_photo_config" translatable="false">"%s: %d, layout=%s\n minWidth=%d, minHeight=%d\n widgetPref=%s"</string>
     <string name="msg_debug_widget_list_config" translatable="false">"%s: %d, layout=%s\n widgetPref=%s"</string>
+    <string name="msg_debug_notify_action_empty" translatable="false">"%s: Empty id or request"</string>
 </resources>

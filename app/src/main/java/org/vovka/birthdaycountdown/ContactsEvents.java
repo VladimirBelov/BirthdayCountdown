@@ -1483,8 +1483,6 @@ class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
-            updateShortcuts(preferences_extrafun);
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -1492,12 +1490,13 @@ class ContactsEvents {
 
     }
 
-    private void updateShortcuts(boolean enableExtraShortcuts) {
+    void updateShortcuts() {
         //https://habr.com/ru/articles/593863/
         try {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return;
 
             List<String> shortcutIdsToRemove = new ArrayList<>();
+            boolean enableExtraShortcuts = preferences_extrafun;
 
             if (!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) {
 
@@ -1509,7 +1508,9 @@ class ContactsEvents {
                         .setIntent(intentNotify)
                         .setRank(1)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_NOTIFY);
@@ -1517,7 +1518,7 @@ class ContactsEvents {
 
             if (!preferences_FactEvent_ids.isEmpty() || !preferences_FactEvent_files.isEmpty()) {
 
-                Intent intentFactsPopup = new Intent(context, FactsPopup.class);
+                Intent intentFactsPopup = new Intent(context, FactsPopupActivity.class);
                 intentFactsPopup.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_FACTS)
                         .setShortLabel(resources.getString(R.string.shortcut_facts))
@@ -1525,7 +1526,9 @@ class ContactsEvents {
                         .setIntent(intentFactsPopup)
                         .setRank(2)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutFactsPopup);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_FACTS);
@@ -1541,7 +1544,6 @@ class ContactsEvents {
                         .setIntent(intentQuiz)
                         .setRank(3)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
 
                 Intent intentSettings = new Intent(context, SettingsActivity.class);
                 intentSettings.setAction(Intent.ACTION_VIEW);
@@ -1551,7 +1553,10 @@ class ContactsEvents {
                         .setIntent(intentSettings)
                         .setRank(4)
                         .build();
-                ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
+                } catch (RuntimeException ignored) { /**/ }
 
             } else {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
@@ -1620,6 +1625,12 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
+
+            editor.putString("ColorsResent", null);
+            Map<String, ?> prefs = preferences.getAll();
+            if (prefs.get(context.getString(R.string.pref_List_SearchDeath_key)) instanceof Integer) {
+                editor.putString(context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
+            }
 
             editor.commit();
 
@@ -3501,13 +3512,13 @@ class ContactsEvents {
                                                 isEndless = false;
                                             } catch (NumberFormatException ignored) { /**/ }
                                         }
-                                        eventDateString = dateNextFloatingEvent;
-
 
                                         //Дата предыдущего года
                                         if (preferences_list_prev_events_scan_distance > 0) {
                                             datePrevFloatingEvent = computeFloatingDate(eventDateString, -1);
                                         }
+
+                                        eventDateString = dateNextFloatingEvent;
                                     }
                                 }
                                 dateEvent = sdf_DDMMYYYY.parse(eventDateString);
@@ -3844,7 +3855,7 @@ class ContactsEvents {
                                     if (eventDatePrev != null) {
                                         long eventDistance = countDaysDiff(eventDatePrev, now.getTime());
 
-                                        if (eventDistance <= preferences_list_prev_events_scan_distance) {
+                                        if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
                                             String textDistance = Constants.STRING_00 + Math.abs(eventDistance);
                                             eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDatePrev));
                                             eventData.put(Position_eventDistance, Long.toString(-eventDistance));
@@ -6161,6 +6172,7 @@ class ContactsEvents {
                 if (!listFacts.isEmpty()) {
                     textBig.append(composeFactsAsString(listFacts));
                 }
+                boolean noEventsMsg = false;
                 if (!listNotify.isEmpty()) {
                     int countEvents = 0;
                     for (NotifyEvent event : listNotify) {
@@ -6182,6 +6194,7 @@ class ContactsEvents {
                 } else if (prefType != 4) {
                     if (listFacts.isEmpty()) {
                         textSmall = context.getString(R.string.msg_notifications_soon_no_events);
+                        noEventsMsg = true;
                     } else {
                         textSmall = context.getString(R.string.pref_CustomEvents_Fact_title);
                     }
@@ -6218,7 +6231,7 @@ class ContactsEvents {
                         }
                     }
 
-                    if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
+                    if (!noEventsMsg && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
                         Intent intentShare = new Intent(context, ActionReceiver.class);
                         intentShare.setAction(Constants.ACTION_SHARE);
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -6630,17 +6643,25 @@ class ContactsEvents {
         return eventKey.replace(Constants.STRING_2HASH, Constants.STRING_EOT).split(Constants.STRING_EOT, -1);
     }
 
-    void snoozeNotification(@NonNull String dataNotify, int snoozeHours, Date wakeDateTime) {
+    void snoozeNotification(@NonNull String notifyData, String[] notifyDetails, String[] notifyActions, int snoozeHours, Date wakeDateTime) {
 
         try {
 
-            if (TextUtils.isEmpty(dataNotify) || (snoozeHours <= 0 && wakeDateTime == null)) return;
+            if (TextUtils.isEmpty(notifyData) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
             Intent alarmIntent = new Intent(context, ActionReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, preferences_notifications_details.toArray(new String[0])); //Берём из основных
-            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0]));
+            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notifyData);
+            if (notifyDetails != null) {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, notifyDetails);
+            } else {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, preferences_notifications_details.toArray(new String[0])); //Берём из основных
+            }
+            if (notifyActions != null) {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, notifyActions);
+            } else {
+                alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0])); //Берём из основных
+            }
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), alarmIntent, PendingIntentMutable); //PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

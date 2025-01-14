@@ -27,6 +27,7 @@ public class NotifyActivity extends Activity {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
+            eventsData.getPreferences();
             eventsData.setLocale(true);
 
             boolean isNeedNotify = !eventsData.preferences_notifications_days.isEmpty();

@@ -32,12 +32,12 @@ import java.util.Set;
 
 import androidx.annotation.Nullable;
 
-public class FactsPopup extends Activity {
+public class FactsPopupActivity extends Activity {
 
-    private static final String TAG = "FactsPopup";
+    private static final String TAG = "FactsPopupActivity";
     ContactsEvents eventsData;
 
-    public FactsPopup() {
+    public FactsPopupActivity() {
     }
 
     @Override
@@ -113,29 +113,31 @@ public class FactsPopup extends Activity {
 
                 TextView buttonAction = findViewById(R.id.buttonThirdAction);
                 buttonAction.setText(R.string.facts_popup_action_next_fact);
-                buttonAction.setOnClickListener(view -> {
-                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
-                    if (!factsNext.isEmpty()) {
-
-                        listPrevFacts.add(txtInfo.getText().toString());
-                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
-
-                        TextView buttonPrev = findViewById(R.id.buttonFirstAction);
-                        buttonPrev.setText(R.string.facts_popup_action_prev_fact);
-                        buttonPrev.setOnClickListener(viewPrev -> {
-                            txtInfo.setText(listPrevFacts.remove(listPrevFacts.size() - 1));
-                            if (listPrevFacts.isEmpty()) {
-                                buttonPrev.setVisibility(View.GONE);
-                            }
-                        });
-                        addClickEffect(buttonPrev);
-                        buttonPrev.getBackground().setAlpha(50);
-                        buttonPrev.setVisibility(View.VISIBLE);
-                    }
-                });
                 addClickEffect(buttonAction);
                 buttonAction.getBackground().setAlpha(50);
                 buttonAction.setVisibility(View.VISIBLE);
+
+                TextView buttonPrev = findViewById(R.id.buttonFirstAction);
+                buttonPrev.setText(R.string.facts_popup_action_prev_fact);
+                addClickEffect(buttonPrev);
+                buttonPrev.getBackground().setAlpha(50);
+
+                buttonAction.setOnClickListener(view -> {
+                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
+                    if (!factsNext.isEmpty()) {
+                        listPrevFacts.add(txtInfo.getText().toString());
+                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+                        buttonPrev.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                buttonPrev.setOnClickListener(viewPrev -> {
+                    txtInfo.setText(listPrevFacts.remove(listPrevFacts.size() - 1));
+                    if (listPrevFacts.isEmpty()) {
+                        buttonPrev.setVisibility(View.GONE);
+                    }
+                });
+
             }
 
             TextView buttonClose = findViewById(R.id.buttonClose);
