@@ -105,9 +105,9 @@ public class ActionReceiver extends BroadcastReceiver {
 
                 Intent intentShare = new Intent(context, ShareFromNotifyActivity.class);
                 intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
-                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 try {
-                    context.getApplicationContext().startActivity(intentShare);
+                    context.startActivity(intentShare);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else if (action.equalsIgnoreCase(Constants.ACTION_ATTACH)) {
@@ -133,7 +133,7 @@ public class ActionReceiver extends BroadcastReceiver {
                     if (!phone.equals(Constants.STRING_EMPTY)) {
                         //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
                         Intent intentDial = new Intent(Intent.ACTION_DIAL);
-                        intentDial.setData(Uri.parse(WebView.SCHEME_TEL + Uri.encode(phone.trim())));
+                        intentDial.setData(Uri.parse(WebView.SCHEME_TEL.concat(Uri.encode(phone.trim()))));
                         intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
                             context.startActivity(intentDial);

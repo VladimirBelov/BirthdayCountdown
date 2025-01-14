@@ -29,15 +29,16 @@ public class ShareFromNotifyActivity extends Activity {
             if (extras != null) {
                 notificationData = extras.getString(Intent.EXTRA_TEXT, Constants.STRING_EMPTY);
             }
+            //ToastExpander.showDebugMsg(this, TAG.concat(Constants.STRING_COLON_SPACE).concat(notificationData));
             if (notificationData.equals(Constants.STRING_EMPTY)) finish();
 
             Intent intentShare = new Intent(Intent.ACTION_SEND);
             intentShare.setType("text/plain");
             intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
-            intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             try {
                 Intent intentChooser = Intent.createChooser(intentShare, "");
-                intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intentChooser);
             } catch (android.content.ActivityNotFoundException e) { /**/ }
 
