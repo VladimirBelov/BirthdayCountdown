@@ -24,7 +24,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
 
         ContactsEvents eventsData = ContactsEvents.getInstance();
         try {
-            if (Objects.equals(intent.getAction(), Constants.Broadcast_ANDROID_INTENT_ACTION_BOOT_COMPLETED)) { // on device boot complete, reset the alarm
+            if (Objects.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) { // on device boot complete, reset the alarm
 
                 StringBuilder log = new StringBuilder();
                 if (eventsData.getContext() == null) eventsData.setContext(context);

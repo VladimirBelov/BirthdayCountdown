@@ -365,7 +365,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDeath_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDepth_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
@@ -418,6 +418,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
+            hidePreference(Build.VERSION.SDK_INT < Build.VERSION_CODES.O, R.string.pref_Widgets_key, R.string.pref_Widgets_AddWidget_key);
 
             //Уведомления
             PreferenceScreen prefScreen;
@@ -908,19 +909,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Widgets_AddWidget_key).equals(key)) {
 
-                //https://stackoverflow.com/questions/16100926/how-to-add-a-widget-to-the-android-home-screen-from-my-app
-                //todo: сделать выбор виджетов
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    AppWidgetManager appWidgetManager = getSystemService(AppWidgetManager.class);
-                    ComponentName myProvider = new ComponentName(this, Widget5x1.class);
-                    assert appWidgetManager != null;
-                    if (appWidgetManager.isRequestPinAppWidgetSupported()) {
-                        Intent pinnedWidgetCallbackIntent = new Intent(this, MainActivity.class);
-                        PendingIntent successCallback = PendingIntent.getBroadcast(this, 0,
-                                pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                        appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
-                    }
-                }
+                selectWidgetToAdd();
+                return true;
 
             }
 
@@ -930,6 +920,80 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
 
         return false;
+    }
+
+    private void selectWidgetToAdd() {
+        try {
+
+            List<String> widgetTitles = new ArrayList<>();
+            List<Integer> widgetIcons = new ArrayList<>();
+            List<Class<?>> widgetClasses = new ArrayList<>();
+
+            widgetTitles.add(getString(R.string.appwidget_desc_1));
+            widgetIcons.add(R.drawable.preview_widget2x2);
+            widgetClasses.add(Widget2x2.class);
+
+            widgetTitles.add(getString(R.string.appwidget_desc_Calendar));
+            widgetIcons.add(R.drawable.preview_widget_calendar);
+            widgetClasses.add(WidgetCalendar.class);
+
+            widgetTitles.add(getString(R.string.appwidget_desc_5));
+            widgetIcons.add(R.drawable.preview_widget4x1bc);
+            widgetClasses.add(Widget4x1.class);
+
+            widgetTitles.add(getString(R.string.appwidget_desc_1_7));
+            widgetIcons.add(R.drawable.preview_widget5x1);
+            widgetClasses.add(Widget5x1.class);
+
+            widgetTitles.add(getString(R.string.appwidget_desc_List));
+            widgetIcons.add(R.drawable.preview_widget_list);
+            widgetClasses.add(WidgetList.class);
+
+            widgetTitles.add(getString(R.string.appwidget_desc_PhotoList));
+            widgetIcons.add(R.drawable.preview_widget_photo_list);
+            widgetClasses.add(WidgetPhotoList.class);
+
+            ListAdapter adapter = new ImageSelectAdapter(this, widgetTitles, widgetIcons, ImageSelectAdapter.Scale.NO_SCALE, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_Widgets_title)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            List<String> packIds = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_values)));
+
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    AppWidgetManager appWidgetManager = getSystemService(AppWidgetManager.class);
+                    ComponentName widgetProvider = new ComponentName(this, widgetClasses.get(position));
+                    if (appWidgetManager.isRequestPinAppWidgetSupported()) {
+                        Intent pinnedWidgetCallbackIntent = new Intent(this, WidgetPinnedReceiver.class);
+                        PendingIntent successCallback = PendingIntent.getBroadcast(this, 0,
+                                pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        appWidgetManager.requestPinAppWidget(widgetProvider, null, successCallback);
+                    }
+                    alertToShow.dismiss();
+                }
+            });
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                listView.setItemChecked(packIds.indexOf(String.valueOf(eventsData.getPreferences_IconPackNumber())), true);
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @SuppressLint("DiscouragedApi")
@@ -1633,7 +1697,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             packIcons.add(R.drawable.ic_pack02_f2);
             packIcons.add(R.drawable.ic_pack03_f3);
 
-            ListAdapter adapter = new ImageSelectAdapter(this, packNames, packIcons, false, ta);
+            ListAdapter adapter = new ImageSelectAdapter(this, packNames, packIcons, ImageSelectAdapter.Scale.ONE_THIRD, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_IconPack_title)
@@ -1682,7 +1746,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             iconImages.add(R.mipmap.ic_launcher_grey_round);
             iconImages.add(R.mipmap.ic_launcher_black_round);
 
-            ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages, true, ta);
+            ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages, ImageSelectAdapter.Scale.SQUARED, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_Icon_title)
@@ -2302,7 +2366,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
            menuIds.add(R.id.menu_events_types);
            menuImages.add(R.drawable.ic_menu_copy);
 
-           ListAdapter adapter = new ImageSelectAdapter(this, menuTitles, menuImages, true, ta);
+           ListAdapter adapter = new ImageSelectAdapter(this, menuTitles, menuImages, ImageSelectAdapter.Scale.SQUARED, ta);
 
            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                    .setTitle(R.string.pref_List_QuickAction_title)
@@ -2657,7 +2721,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_PrevEvents_key),
                         getString(R.string.pref_List_PrevEvents_key),
                         getString(R.string.pref_List_SadPhoto_key),
-                        getString(R.string.pref_List_SearchDeath_key),
+                        getString(R.string.pref_List_SearchDepth_key),
                         getString(R.string.pref_List_Style_key),
                         getString(R.string.pref_Male_Names_key),
                         getString(R.string.pref_Notifications2_AlarmHour_key),

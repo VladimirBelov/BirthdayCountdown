@@ -624,9 +624,9 @@
         <item>Ne rien faire</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Profondeur de recherche</string>
-    <string name="pref_List_SearchDeath_summary">Quelles sources rechercher les événements</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Profondeur de recherche</string>
+    <string name="pref_List_SearchDepth_summary">Quelles sources rechercher les événements</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Sources sélectionnées</item>
         <item>Toutes les sources</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Paramètres généraux des widgets</string>
+
+    <string name="pref_Widgets_AddWidget_title">Ajouter un widget</string>
+    <string name="pref_Widgets_AddWidget_summary">Sélectionnez et ajoutez un widget au lanceur</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Intervalle de mise à jour</string>
     <string name="pref_Widgets_UpdateInterval_summary">Intervalle de mise à jour forcée du widget</string>

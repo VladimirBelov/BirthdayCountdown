@@ -18,7 +18,7 @@ import android.webkit.WebView;
 
 import androidx.core.app.NotificationManagerCompat;
 
-public class ActionReceiver extends BroadcastReceiver {
+public class NotifyActionReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ActionReceiver";
 

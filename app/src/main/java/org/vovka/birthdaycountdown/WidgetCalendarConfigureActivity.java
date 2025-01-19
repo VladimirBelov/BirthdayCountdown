@@ -63,6 +63,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private final HashMap<String, Integer> eventSourcesColors = new HashMap<>();
     private AppCompatActivity thisActivity;
     private int customMonthShift = 0;
+    private boolean isNewPinnedWidget;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,7 +130,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if (extras != null) widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+            if (extras != null) {
+                widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+                if (extras.containsKey(Constants.EXTRA_NEW_WIDGET)) isNewPinnedWidget = true;
+            }
+            if (widgetId == 0) return;
+
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId);
             String widgetType;
             if (appWidgetInfo != null) {
@@ -404,6 +410,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
+            updateVisibility();
             if (ta != null) ta.recycle();
         }
     }
@@ -810,6 +817,19 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                 alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 alertToShow.show();
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void updateVisibility() {
+        try {
+
+            if (isNewPinnedWidget) {
+                findViewById(R.id.button_cancel).setVisibility(View.GONE);
             }
 
         } catch (final Exception e) {

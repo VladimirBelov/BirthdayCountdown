@@ -624,9 +624,9 @@
         <item>Nic</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Hloubka vyhledávání</string>
-    <string name="pref_List_SearchDeath_summary">Jaké zdroje hledat události</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Hloubka vyhledávání</string>
+    <string name="pref_List_SearchDepth_summary">Jaké zdroje hledat události</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Vybrané zdroje</item>
         <item>Všechny zdroje</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Widgety</string>
     <string name="pref_Widgets_summary">Běžné předvolby widgetů</string>
+
+    <string name="pref_Widgets_AddWidget_title">Přidat widget</string>
+    <string name="pref_Widgets_AddWidget_summary">Vyberte widget a přidejte jej do spouštěče</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Interval aktualizace</string>
     <string name="pref_Widgets_UpdateInterval_summary">Interval nucené aktualizace widgetu</string>

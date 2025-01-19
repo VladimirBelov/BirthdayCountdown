@@ -224,6 +224,7 @@ final class Constants {
     static final String EXTRA_CONTACT_ON_SAVE_RESULT = "finishActivityOnSaveCompleted";
     static final String EXTRA_DAY_CAPTION = "dayCaption";
     static final String EXTRA_DAY_INFO = "dayInfo";
+    static final String EXTRA_NEW_WIDGET = "isNewWidget";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -257,7 +258,7 @@ final class Constants {
     static final String Broadcast_ANDROID_INTENT_ACTION_TIME_SET = "android.intent.action.TIME_SET";
     static final String Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED = "android.intent.action.DATE_CHANGED";
     static final String Broadcast_ANDROID_INTENT_ACTION_TIMEZONE_CHANGED = "android.intent.action.TIMEZONE_CHANGED";
-    static final String Broadcast_ANDROID_INTENT_ACTION_BOOT_COMPLETED = "android.intent.action.BOOT_COMPLETED";
+    //static final String Broadcast_ANDROID_INTENT_ACTION_BOOT_COMPLETED = "android.intent.action.BOOT_COMPLETED";
 
     static final int pref_Events_Scope_NotHidden = 0;
     static final int pref_Events_Scope_All = 1;

@@ -624,9 +624,9 @@
         <item>Ничего не делать</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Глубина поиска</string>
-    <string name="pref_List_SearchDeath_summary">В каких источниках искать события</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Глубина поиска</string>
+    <string name="pref_List_SearchDepth_summary">В каких источниках искать события</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Выбранные источники</item>
         <item>Все источники</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Виджеты</string>
     <string name="pref_Widgets_summary">Общие настройки для виджетов</string>
+
+    <string name="pref_Widgets_AddWidget_title">Добавить виджет</string>
+    <string name="pref_Widgets_AddWidget_summary">Выбрать и добавить виджет в лаунчер</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Период обновления</string>
     <string name="pref_Widgets_UpdateInterval_summary">Интервал принудительного обновления виджетов</string>

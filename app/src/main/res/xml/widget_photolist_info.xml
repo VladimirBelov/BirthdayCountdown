@@ -18,7 +18,7 @@
     android:minResizeHeight="40dp"
     android:minResizeWidth="110dp"
     android:minWidth="400dp"
-    android:previewImage="@drawable/pref_widget_photo_list"
+    android:previewImage="@drawable/preview_widget_photo_list"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen"

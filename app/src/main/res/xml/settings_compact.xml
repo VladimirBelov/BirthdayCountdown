@@ -715,12 +715,12 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <ListPreference
-            android:key="@string/pref_List_SearchDeath_key"
-            android:title="@string/pref_List_SearchDeath_title"
-            android:summary="@string/pref_List_SearchDeath_summary"
-            android:defaultValue="@string/pref_List_SearchDeath_default"
-            android:entries="@array/pref_List_SearchDeath_entries"
-            android:entryValues="@array/pref_List_SearchDeath_values"
+            android:key="@string/pref_List_SearchDepth_key"
+            android:title="@string/pref_List_SearchDepth_title"
+            android:summary="@string/pref_List_SearchDepth_summary"
+            android:defaultValue="@string/pref_List_SearchDepth_default"
+            android:entries="@array/pref_List_SearchDepth_entries"
+            android:entryValues="@array/pref_List_SearchDepth_values"
             android:icon="@android:drawable/ic_menu_search"
             android:dialogIcon="@android:drawable/ic_menu_search"
             android:negativeButtonText="@string/button_cancel"/>
@@ -813,8 +813,9 @@
 
         <Preference
             android:key="@string/pref_Widgets_AddWidget_key"
-            android:title="Добавить виджет"
-            android:summary="Выбрать виджет для добавления в лаунчер"/>
+            android:title="@string/pref_Widgets_AddWidget_title"
+            android:summary="@string/pref_Widgets_AddWidget_summary"
+            android:icon="@android:drawable/ic_menu_crop"/>
 
         <ListPreference
             android:key="@string/pref_Widgets_UpdateInterval_key"

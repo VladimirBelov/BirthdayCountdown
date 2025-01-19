@@ -624,9 +624,9 @@
         <item>Nic nie rób</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Głębokość wyszukiwania</string>
-    <string name="pref_List_SearchDeath_summary">W jakich źródłach szukać wydarzeń</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Głębokość wyszukiwania</string>
+    <string name="pref_List_SearchDepth_summary">W jakich źródłach szukać wydarzeń</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Wybrane źródła</item>
         <item>Wszystkie źródła</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Widżety</string>
     <string name="pref_Widgets_summary">Ogólne ustawienia widżetów</string>
+
+    <string name="pref_Widgets_AddWidget_title">Dodaj widżet</string>
+    <string name="pref_Widgets_AddWidget_summary">Wybierz i dodaj widżet do programu uruchamiającego</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Okres aktualizacji</string>
     <string name="pref_Widgets_UpdateInterval_summary">Wymuszony interwał aktualizacji widgetu</string>

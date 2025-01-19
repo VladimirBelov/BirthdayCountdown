@@ -860,7 +860,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent5_caption);
                 eventIcons.add(R.drawable.ic_event_custom5);
 
-                ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, true, ta);
+                ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, ImageSelectAdapter.Scale.SQUARED, ta);
 
                 AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(R.string.msg_event_type_select_title)
@@ -2947,7 +2947,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         //для поиска OR используем <строка1>,<строка2>
                         filterNames = ContactsEvents.normalizeName(constraint.toString());
                         final List<String> searchSource =
-                                eventsData.preferences_list_search_death == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all)) ? eventsData.eventList : listAll;
+                                eventsData.preferences_list_search_depth == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all)) ? eventsData.eventList : listAll;
                         if (filterNames.contains("+")) {
                             String[] params = filterNames.split(Constants.REGEX_PLUS);
                             for (String listItem : searchSource) {

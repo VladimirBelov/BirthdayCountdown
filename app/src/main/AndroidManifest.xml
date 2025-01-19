@@ -188,10 +188,9 @@
 
         <activity android:name=".AboutActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
-            android:parentActivityName=".SettingsActivity"
             tools:ignore="LockedOrientationActivity"
-            android:exported="false"
-            android:autoRemoveFromRecents="true"/>
+            android:parentActivityName=".MainActivity"
+            android:exported="false"/>
 
         <activity android:name=".FAQActivity"
             android:theme="@style/AppTheme.DarkGray.NoActionBar"
@@ -253,7 +252,7 @@
         </receiver>
 
         <receiver android:name=".AlarmReceiver" />
-        <receiver android:name=".ActionReceiver" />
+        <receiver android:name=".NotifyActionReceiver" />
         <receiver android:name=".WidgetUpdateReceiver" />
         <receiver android:name=".WidgetUpdateDailyReceiver" />
         <receiver android:name=".QuizReceiver" />
@@ -331,6 +330,14 @@
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_calendar_info" />
             <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity"/>
+        </receiver>
+
+        <receiver
+            android:name=".WidgetPinnedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
         </receiver>
 
         <service android:name=".EventListWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS" />

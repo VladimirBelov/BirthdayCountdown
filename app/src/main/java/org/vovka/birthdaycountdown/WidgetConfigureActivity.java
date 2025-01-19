@@ -68,6 +68,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private List<String> eventSourcesSelected = new ArrayList<>();
     @ColorInt private int colorCaptionUpper;
     @ColorInt private int colorCaptionBottom;
+    private boolean isNewPinnedWidget;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if (extras != null) widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+            if (extras != null) {
+                widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+                if (extras.containsKey(Constants.EXTRA_NEW_WIDGET)) isNewPinnedWidget = true;
+            }
+            if (widgetId == 0) return;
+
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId);
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
@@ -631,7 +637,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             //Обновляем видимость элементов
@@ -669,7 +675,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
@@ -794,6 +800,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     Constants.WIDGET_TYPE_LIST.equals(widgetType)
                             && selectedEventTypes.contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
             );
+
+            if (isNewPinnedWidget) {
+                findViewById(R.id.button_cancel).setVisibility(View.GONE);
+            }
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -953,7 +963,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             finish();
         } catch (final Exception e) {
-            Log.e(WidgetConfigureActivity.TAG, e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }

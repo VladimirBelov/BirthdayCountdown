@@ -624,9 +624,9 @@
         <item>Keine Aktion</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Suchtiefe</string>
-    <string name="pref_List_SearchDeath_summary">Welche Quellen sollen nach Ereignissen durchsucht werden</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Suchtiefe</string>
+    <string name="pref_List_SearchDepth_summary">Welche Quellen sollen nach Ereignissen durchsucht werden</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Ausgewählte Quellen</item>
         <item>Alle Quellen</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>
+
+    <string name="pref_Widgets_AddWidget_title">Widget hinzufügen</string>
+    <string name="pref_Widgets_AddWidget_summary">Wählen Sie ein Widget aus und fügen Sie es dem Launcher hinzu</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Aktualisierungsintervall</string>
     <string name="pref_Widgets_UpdateInterval_summary">Intervall für erzwungene Aktualisierung von Widgets</string>

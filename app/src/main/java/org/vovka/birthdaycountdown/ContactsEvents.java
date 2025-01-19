@@ -377,7 +377,7 @@ class ContactsEvents {
     private Set<String> pref_List_Event_Info_Default;
     private Set<String> pref_List_Age_Format_Default;
     Set<String> preferences_list_EventSources = new HashSet<>();
-    int preferences_list_search_death;
+    int preferences_list_search_depth;
     int preferences_list_quick_action;
 
     //Уведомления
@@ -428,6 +428,7 @@ class ContactsEvents {
     @ColorInt int preferences_widgets_color_event_soon;
     @ColorInt int preferences_widgets_color_event_far;
     int preferences_widgets_on_click_action;
+    int pinnedWidgetId;
 
     //Статистика
     long statTimeGetContactEvents = 0;
@@ -1094,7 +1095,11 @@ class ContactsEvents {
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
-            preferences_list_search_death = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
+            if (preferences.contains(context.getString(R.string.pref_List_SearchDepth_pre186_key))) {
+                preferences_list_search_depth = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDepth_pre186_key), context.getString(R.string.pref_List_SearchDepth_default));
+            } else {
+                preferences_list_search_depth = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDepth_key), context.getString(R.string.pref_List_SearchDepth_default));
+            }
             preferences_list_quick_action = getPreferenceInt(preferences, context.getString(R.string.pref_List_QuickAction_key), R.id.menu_add);
 
             //Уведомления
@@ -1626,10 +1631,15 @@ class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
 
+            //Чистка
             editor.putString("ColorsResent", null);
             Map<String, ?> prefs = preferences.getAll();
-            if (prefs.get(context.getString(R.string.pref_List_SearchDeath_key)) instanceof Integer) {
-                editor.putString(context.getString(R.string.pref_List_SearchDeath_key), context.getString(R.string.pref_List_SearchDeath_default));
+            if (prefs.get(context.getString(R.string.pref_List_SearchDepth_key)) instanceof Integer) {
+                editor.putString(context.getString(R.string.pref_List_SearchDepth_key), context.getString(R.string.pref_List_SearchDepth_default));
+            }
+            if (preferences.contains(context.getString(R.string.pref_List_SearchDepth_pre186_key))) {
+                editor.putString(context.getString(R.string.pref_List_SearchDepth_key), preferences.getString(context.getString(R.string.pref_List_SearchDepth_pre186_key), context.getString(R.string.pref_List_SearchDepth_default)));
+                editor.putString(context.getString(R.string.pref_List_SearchDepth_pre186_key), null);
             }
 
             editor.commit();
@@ -6222,7 +6232,7 @@ class ContactsEvents {
                         builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                            Intent intentClose = new Intent(context, ActionReceiver.class);
+                            Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
@@ -6232,7 +6242,7 @@ class ContactsEvents {
                     }
 
                     if (!noEventsMsg && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
-                        Intent intentShare = new Intent(context, ActionReceiver.class);
+                        Intent intentShare = new Intent(context, NotifyActionReceiver.class);
                         intentShare.setAction(Constants.ACTION_SHARE);
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, textBig.toString().concat(Constants.STRING_EOL).concat(textSmall));
@@ -6304,7 +6314,7 @@ class ContactsEvents {
                                 && !TextUtils.isEmpty(event.singleEventArray[Position_contactID])
                                 && !TextUtils.isEmpty(getContactPhone(parseToLong(event.singleEventArray[Position_contactID])))) {
 
-                            Intent intentDial = new Intent(context, ActionReceiver.class);
+                            Intent intentDial = new Intent(context, NotifyActionReceiver.class);
                             intentDial.setAction(Constants.ACTION_DIAL);
                             intentDial.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentDial.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
@@ -6316,7 +6326,7 @@ class ContactsEvents {
 
                         final String eventKey = getEventKey(event.singleEventArray);
                         if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
-                            Intent intentSilent = new Intent(context, ActionReceiver.class);
+                            Intent intentSilent = new Intent(context, NotifyActionReceiver.class);
                             intentSilent.setAction(Constants.ACTION_SILENT);
                             intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
@@ -6326,7 +6336,7 @@ class ContactsEvents {
                         }
 
                         if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
-                            Intent intentHide = new Intent(context, ActionReceiver.class);
+                            Intent intentHide = new Intent(context, NotifyActionReceiver.class);
                             intentHide.setAction(Constants.ACTION_HIDE);
                             intentHide.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentHide.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
@@ -6336,7 +6346,7 @@ class ContactsEvents {
                         }
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Remind))) {
-                            Intent intentSnooze = new Intent(context, ActionReceiver.class);
+                            Intent intentSnooze = new Intent(context, NotifyActionReceiver.class);
                             intentSnooze.setAction(Constants.ACTION_SNOOZE);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
@@ -6348,7 +6358,7 @@ class ContactsEvents {
                         }
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
-                            Intent intentShare = new Intent(context, ActionReceiver.class);
+                            Intent intentShare = new Intent(context, NotifyActionReceiver.class);
                             intentShare.setAction(Constants.ACTION_SHARE);
                             intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventTitle.concat(Constants.STRING_EOL).concat(eventDetails));
@@ -6358,7 +6368,7 @@ class ContactsEvents {
                         }
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {
-                            Intent intentAttach = new Intent(context, ActionReceiver.class);
+                            Intent intentAttach = new Intent(context, NotifyActionReceiver.class);
                             intentAttach.setAction(Constants.ACTION_ATTACH);
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
@@ -6370,7 +6380,7 @@ class ContactsEvents {
                         }
 
                         if (prefPriority > 2 && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                            Intent intentClose = new Intent(context, ActionReceiver.class);
+                            Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
@@ -6649,7 +6659,7 @@ class ContactsEvents {
 
             if (TextUtils.isEmpty(notifyData) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
-            Intent alarmIntent = new Intent(context, ActionReceiver.class);
+            Intent alarmIntent = new Intent(context, NotifyActionReceiver.class);
             alarmIntent.setAction(Constants.ACTION_NOTIFY);
             alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notifyData);
             if (notifyDetails != null) {
@@ -6768,7 +6778,7 @@ class ContactsEvents {
 
             if (setOnGoing) {
                 if (actions != null && Arrays.asList(actions).contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                    Intent intentClose = new Intent(context, ActionReceiver.class);
+                    Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                     intentClose.setAction(Constants.ACTION_CLOSE);
                     intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                     intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
@@ -7618,7 +7628,12 @@ class ContactsEvents {
 
         try {
 
-            String strPref = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.widget_config_PrefName) + widgetID, defaultPrefString);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String prefKey = context.getString(R.string.widget_config_PrefName) + widgetID;
+            if (!preferences.contains(prefKey)) {
+                pinnedWidgetId = widgetID;
+            }
+            String strPref = preferences.getString(prefKey, defaultPrefString);
             String[] pref = strPref.split(Constants.STRING_COMMA, -1);
             List<String> prefWidget = new ArrayList<>(Arrays.asList(pref));
 

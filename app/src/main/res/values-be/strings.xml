@@ -624,9 +624,9 @@
         <item>Нічога не рабіць</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Глыбіня пошуку</string>
-    <string name="pref_List_SearchDeath_summary">У якіх крыніцах шукаць падзеі</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Глыбіня пошуку</string>
+    <string name="pref_List_SearchDepth_summary">У якіх крыніцах шукаць падзеі</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Выбраныя крыніцы</item>
         <item>Усе крыніцы</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Віджэты</string>
     <string name="pref_Widgets_summary">Агульныя налады для віджэтаў</string>
+
+    <string name="pref_Widgets_AddWidget_title">Дадаць віджэт</string>
+    <string name="pref_Widgets_AddWidget_summary">Выбраць і дадаць віджэт у лаўнчар</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Перыяд абнаўлення</string>
     <string name="pref_Widgets_UpdateInterval_summary">Інтэрвал прымусовага абнаўлення віджэтаў</string>

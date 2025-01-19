@@ -624,9 +624,9 @@
         <item>Нічого</item>
     </string-array>
 
-    <string name="pref_List_SearchDeath_title">Глибина пошуку</string>
-    <string name="pref_List_SearchDeath_summary">У яких джерелах шукати події</string>
-    <string-array name="pref_List_SearchDeath_entries">
+    <string name="pref_List_SearchDepth_title">Глибина пошуку</string>
+    <string name="pref_List_SearchDepth_summary">У яких джерелах шукати події</string>
+    <string-array name="pref_List_SearchDepth_entries">
         <item>Вибрані джерела</item>
         <item>Усі джерела</item>
     </string-array>
@@ -650,6 +650,9 @@
 
     <string name="pref_Widgets_title">Віджети</string>
     <string name="pref_Widgets_summary">Загальні налаштування віджетів</string>
+
+    <string name="pref_Widgets_AddWidget_title">Додати віджет</string>
+    <string name="pref_Widgets_AddWidget_summary">Вибрати та додати віджет у лаунчер</string>
 
     <string name="pref_Widgets_UpdateInterval_title">Період оновлення</string>
     <string name="pref_Widgets_UpdateInterval_summary">Інтервал примусового поновлення віджетів</string>
