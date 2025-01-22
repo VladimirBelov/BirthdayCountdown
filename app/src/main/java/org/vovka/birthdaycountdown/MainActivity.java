@@ -196,18 +196,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    AppBarLayout.LayoutParams lp = new LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            insets.top * 4 / 5);
-                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                    viewPadding.setVisibility(View.VISIBLE);
-                    viewPadding.setLayoutParams(lp);
-                    v.setPadding(0, 0, 0, 0);
-                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
+                    if (insets.top > 0) { //Если EdgeToEdge включён
+                        AppBarLayout.LayoutParams lp = new LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                insets.top * 4 / 5);
+                        TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                        viewPadding.setVisibility(View.VISIBLE);
+                        viewPadding.setLayoutParams(lp);
+                        v.setPadding(0, 0, 0, 0);
+                        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                            findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
+                        } else {
+                            findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
+                        }
                     } else {
-                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
+                        TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                        viewPadding.setVisibility(View.GONE);
+                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
@@ -2137,7 +2143,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                     && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-                    && !eventsData.preferences_notifications_days.isEmpty()) {
+                    && (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty())) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
             }
 
