@@ -109,9 +109,15 @@
         </ul>]]></item>
 
         <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> event format</b> (in square brackets - optional parameters):<br>]]></item>
-        <item><![CDATA[<b></b># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt; [([ORGANIZATION,] TITLE)] [WEB LINK]<br><br>]]></item>
+        <item><![CDATA[<b></b># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt; [| DESCRIPTION]  [([ORGANIZATION,] TITLE)] [WEB LINK]<br><br>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]
-        <br><br>Examples:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (neighbour)<br>01.01.2022,1 Beginning of 2022<br>15.3.44,BC Yu.Caesar was killed<br>02.03.1819,Birthday Nemo (captain,)<br>]]></item>
+        <br><br>Examples:
+        <br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/
+        <br>02.01.2000 Richard Roe (Enigma,)
+        <br>03.01.0000 Friedman v. Ferguson (neighbour)
+        <br>01.01.2022,1 Beginning of 2022
+        <br>15.3.44,BC Yu.Caesar was killed<br>02.03.1819,Birthday Nemo (captain,)
+        <br>]]></item>
         <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>Event_label - for files containing events of different types, the event type is determined by this label. If there is a space in the label, then it must be replaced with an underscore \"_\"<br>]]></item>
 
         <item><![CDATA[<b>Events with floating dates format</b>:<br>]]></item>
@@ -131,7 +137,7 @@
          <br>1TH+1.10.0000 the next day after the first Thursday in October
          <br>3TU-10.08.0000 10 days until the third Tuesday in August
          <br>YSA.06.0000 second to last Saturday of June
-         <br>NY+255.0000 Programmers Day (256th day of the year)
+         <br>NY+255.0000 Programmers Day | 256th day of the year
          <br>Easter.0000 Orthodox Easter
          <br>Easter+49.0000 Orthodox Trinity
          <br>Catholic_Easter.0000 Catholic Easter

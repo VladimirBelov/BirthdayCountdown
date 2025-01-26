@@ -21,6 +21,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ClipDescription;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -2455,7 +2456,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("text/plain");
+                intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
                                 + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(Calendar.getInstance().getTime())
@@ -2510,7 +2511,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         builder.setNegativeButton(R.string.button_open, (dialog, which) -> {
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
-                            intent.setDataAndType(uri, "text/plain");
+                            intent.setDataAndType(uri, ClipDescription.MIMETYPE_TEXT_PLAIN);
                             final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
                             intent.addFlags(flags);
                             dialog.dismiss();
@@ -2526,7 +2527,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         });
                         builder.setNeutralButton(R.string.button_share, (dialog, which) -> {
                             Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.setType("text/plain");
+                            intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
                             Intent chooser = Intent.createChooser(intent, "");
                             List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);

@@ -107,7 +107,7 @@
                 </ul>]]></item>
 
                 <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>-Ereignisformat</b> (in eckigen Klammern - optionale Parameter):<br>]]></item>
-                <item><![CDATA[<b></b># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME oder EREIGNISTITEL</b>&gt; [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
+                <item><![CDATA[<b></b># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>NAME oder EREIGNISTITEL</b>&gt; [|BESCHREIBUNG] [([ORGANISATION,] TITEL)] [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Anderes Ereignis. Format (in eckigen Klammern - optionale Parameter):<br><br># KOMMENTAR<br>&lt;<b>DATUM</b>&gt;[,FLAGS] &lt;<b>EREIGNISTITEL</b>&gt; [WEBLINK]<br><br>]]></item>
                 <item><![CDATA[FLAGS:<br>1 - Einzelveranstaltung, die nur einmal gezeigt werden muss (Jahr ist erforderlich).<br>BC - Datum BC (Jahr ist erforderlich)<br>Ereignisbezeichnung - Bei Dateien, die Ereignisse unterschiedlicher Art enthalten, wird die Ereignisart durch diese Bezeichnung bestimmt. Wenn das Label ein Leerzeichen enthält, muss es durch einen Unterstrich \"_\" ersetzt werden.
                 <br><br>Beispiele:<br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/<br>02.01.2000 Richard Roe (Enigma,)<br>03.01.0000 Friedman v. Ferguson (Nachbar)<br>01.01.2022,1 Anfang 2022<br>15.3.44,BC Yu.Caesar wurde getötet<br>02.03.1819,Geburtstag Nemo (Kapitän)<br>]]></item>

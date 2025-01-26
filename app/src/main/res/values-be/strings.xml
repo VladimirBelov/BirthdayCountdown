@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Скарыстаць гэтыя налады пры імпарце падзей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правілы распазнання імёнаў</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Правілы распазнання імёнаў кантактаў з загалоўкаў каляндарных падзей</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Увядзіце правілы распазнання імя кантакту з загалоўка каляндарнай падзеі. Некалькі правілаў падзяляюцца \"|\". Правіла павінна ўтрымваць тэг [name], акружаны іншым тэкстам (апцыйнае). Правіла \"[name]\" не павінна быць апошнім (калі іх некалькі):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Увядзіце правілы распазнання імя кантакту з загалоўка каляндарнай падзеі. Некалькі правілаў падзяляюцца \"|\". Правіла павінна ўтрымваць тэг [name], акружаны іншым тэкстам (апцыйнае). Правіла \"[name]\" не павінна быць апошнім (калі іх некалькі). Каб задаць тып падзеі, дадайце тэг [type]:</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Тэгі не знойдзены!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некарэктны фармат правіл! Падзельнікам служыць сімвал |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Фармат імя для каляндарных падзей</string>

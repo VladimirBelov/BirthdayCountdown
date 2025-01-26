@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Use esta configuración al importar eventos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Reglas</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Reglas para reconocer el nombre del contacto del encabezado del evento del calendario</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Ingrese las reglas para reconocer el nombre del contacto del encabezado del evento del calendario (varias reglas están separadas |). La regla debe contener la etiqueta [name] rodeada de otro texto (opcional):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Ingrese las reglas para reconocer el nombre del contacto del encabezado del evento del calendario (varias reglas están separadas |). La regla debe contener la etiqueta [name] rodeada de otro texto (opcional). Para establecer el tipo de evento, agregue la etiqueta [type]:</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">¡No se encontraron etiquetas!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">¡Formato de regla incorrecto! El separador es el símbolo |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Formato de nombre para eventos de calendario</string>

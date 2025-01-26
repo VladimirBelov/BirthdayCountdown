@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Použít toto nastavení při importu událostí</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Pravidla rozpoznávání jmen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Pravidla pro rozpoznávání jmen kontaktu z názvu události kalendáře</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Zadejte pravidla rozpoznávání jména kontaktu z názvu události kalendáře. Více pravidel je odděleno \"|\". Pravidlo musí obsahovat značku [name] obklopenou jiným textem (volitelné). Pravidlo \"[name ]\" nemůže být poslední (pokud je jich více):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Zadejte pravidla rozpoznávání jména kontaktu z názvu události kalendáře. Více pravidel je odděleno \"|\". Pravidlo musí obsahovat značku [name] obklopenou jiným textem (volitelné). Pravidlo \"[name ]\" nemůže být poslední (pokud je jich více). Chcete-li nastavit typ události, přidejte značku [type]:"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Značky nebyly nalezeny!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Nesprávný formát! Oddělovač musí být | symbol</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Formát názvu pro události kalendáře</string>

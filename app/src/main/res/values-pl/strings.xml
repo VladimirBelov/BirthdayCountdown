@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Użyj tych ustawień podczas importowania wydarzeń</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Zasady rozpoznawania nazw</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Reguły rozpoznawania nazw kontaktów z tytułów wydarzeń w kalendarzu</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Wprowadź reguły rozpoznawania nazwy kontaktu z tytułu wydarzenia w kalendarzu. Poszczególne reguły są oddzielone znakiem „|”. Reguła musi zawierać tag [name] otoczony innym tekstem (opcjonalnie). Reguła \"[nazwa]\ " nie powinna być ostatnią (jeśli jest ich kilka):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Wprowadź reguły rozpoznawania nazwy kontaktu z tytułu wydarzenia w kalendarzu. Poszczególne reguły są oddzielone znakiem „|”. Reguła musi zawierać tag [name] otoczony innym tekstem (opcjonalnie). Reguła \"[nazwa]\ " nie powinna być ostatnią (jeśli jest ich kilka). Aby ustawić typ zdarzenia dodaj tag [type]:"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Nie znaleziono tagów!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Nieprawidłowy format reguł! Separatorem jest |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Format nazw wydarzeń w kalendarzu</string>

@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">"Utiliser ces paramètres lors de l'importation des événements"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Règles de reconnaissance de nom</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">"Règles pour les règles de reconnaissance du nom des contacts à partir du titre de l'événement du calendrier"</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Saisissez les règles de reconnaissance du nom du contact à partir du titre de l'événement du calendrier. Plusieurs règles sont séparées par \"|\". La règle doit contenir le tag [nom] entourée d'un autre texte (facultatif). Règle \"[nom ]\" ne peut pas être le dernier (s'il y en a plusieurs):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Saisissez les règles de reconnaissance du nom du contact à partir du titre de l'événement du calendrier. Plusieurs règles sont séparées par \"|\". La règle doit contenir le tag [nom] entourée d'un autre texte (facultatif). Règle \"[nom ]\" ne peut pas être le dernier (s'il y en a plusieurs). Pour définir le type d'événement, ajoutez une balise [type]:"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags introuvables!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Format incorrect! Le délimiteur doit être symbole |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Format de nom pour les événements du calendrier</string>

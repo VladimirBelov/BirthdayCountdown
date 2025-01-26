@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Verwenden Sie diese Einstellung beim Importieren von Ereignissen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Regeln für die Erkennungsregeln von Kontaktnamen aus dem Titel des Kalenderereignisses</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional). Um den Ereignistyp festzulegen, fügen Sie das Tag [type] hinzu.:</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Namensformat für Kalenderereignisse</string>

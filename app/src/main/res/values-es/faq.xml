@@ -109,7 +109,7 @@
                 </ul>]]></item>
 
                 <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> formato de evento</b> (entre corchetes - parámetros opcionales):<br>]]></item>
-                <item><![CDATA[<b></b># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE y TÍTULO DEL EVENTO</b>&gt; [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
+                <item><![CDATA[<b></b># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE y TÍTULO DEL EVENTO</b>&gt; [|DESCRIPCIÓN] [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
                 <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
                 <item tools:ignore="Typos"><![CDATA[<b>BANDERAS</b>:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>BC: antes de la fecha de la era común (¡se requiere el año!)<br>Etiqueta_de_evento: para archivos que contienen eventos de diferentes tipos, el tipo de evento está determinado por esta etiqueta. Si hay un espacio en la etiqueta, debe reemplazarse con un guión bajo \"_\"<br><br>por ejemplo:<br>01/01/2000 John Doe (Enigma, jefe) https://enigma.com/<br>02/01/2000 Richard Roe (Enigma,)<br>01 /03/0000 Friedman v. Ferguson (vecino)<br>01/01/2022, 1 a principios de 2022<br>15/03/44, BC Yu.Caesar fue asesinado<br>02/03/1819, cumpleaños Nemo (capitán)<br>]]></item>
 

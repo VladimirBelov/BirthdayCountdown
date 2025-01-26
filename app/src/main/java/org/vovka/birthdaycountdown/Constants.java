@@ -288,6 +288,7 @@ final class Constants {
     static final String account_none = "none";
 
     static final String RULE_TAG_NAME = "[name]";
+    static final String RULE_TAG_TYPE = "[type]";
     //static final String RULE_TAG_ALIAS = "[alias]";
 
     static final String PARAM_APP_WIDGET_ID = "appWidgetId";
@@ -414,4 +415,5 @@ final class Constants {
     static final String MIME_IMAGE_JPEG = "image/jpeg";
     static final String MIME_IMAGE_PNG = "image/png";
 
+    public static String LocalEventsFilename = "Events";
 }

@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Настройки</string>
 
     <string name="menu_add_event">Добавить событие</string>
+    <string name="menu_add_event_to_local">Добавить событие…</string>
     <string name="menu_add_event_to_contact">Добавить событие в контакт…</string>
     <string name="menu_add_event_to_contact_short">Добавить в контакт…</string>
     <string name="menu_add_event_to_calendar">Добавить событие в календарь…</string>
@@ -349,7 +350,7 @@
     <string name="pref_CustomEvents_Rules_summary">Использовать эти настройки при импорте событий</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила распознавания имён</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Правила распознавания имён контактов из заголовков календарных событий</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько). Для определения типа события добавьте тег [type]:"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не найдены!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Формат имени для календарных событий</string>
@@ -1153,6 +1154,7 @@
     <string name="stats_counters_nicknames"><![CDATA[<li>псевдонимов: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web ссылок: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>виджетов: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>не распознано событий: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>События по источникам:</h2><ul>]]></string>
 

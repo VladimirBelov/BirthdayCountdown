@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
 import android.app.LocaleManager;
+import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -103,7 +104,7 @@ public class FactsPopupActivity extends Activity {
                 buttonShare.setText(R.string.facts_popup_action_share);
                 buttonShare.setOnClickListener(v -> {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
-                    intentShare.setType("text/plain");
+                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                     intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
                     startActivity(Intent.createChooser(intentShare, ""));
                 });

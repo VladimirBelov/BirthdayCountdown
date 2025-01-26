@@ -9,6 +9,7 @@
 package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
+import android.content.ClipDescription;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class ShareFromNotifyActivity extends Activity {
             if (notificationData.equals(Constants.STRING_EMPTY)) finish();
 
             Intent intentShare = new Intent(Intent.ACTION_SEND);
-            intentShare.setType("text/plain");
+            intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
             intentShare.putExtra(Intent.EXTRA_TEXT, notificationData);
             intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             try {

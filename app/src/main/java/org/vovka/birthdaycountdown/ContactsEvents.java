@@ -453,6 +453,7 @@ class ContactsEvents {
     int statEventsPrevEventsFound = 0;
     int statFavoriteEventsCount = 0;
     int statActiveWidgets = 0;
+    int statUnrecognizedEvents = 0;
     final HashMap<String, Integer> statEventSources = new HashMap<>();
     final HashMap<String, Integer> statEventSourcesIds = new HashMap<>();
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
@@ -1765,6 +1766,7 @@ class ContactsEvents {
                     | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
                     | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent))
                     | getHolidayEvents()
+                    | getLocalEvents()
                     | getFactsEvents(true);
 
             statFavoriteEventsCount += preferences_favoriteEvents.size();
@@ -2271,7 +2273,7 @@ class ContactsEvents {
                 if (eventDateString.isEmpty()) continue;
 
                 if (isMultiTypeSource || needEventLabel) {
-                    event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle);
+                    event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle, true);
                 }
 
                 if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
@@ -2542,8 +2544,8 @@ class ContactsEvents {
                 }
                 if (isEventLabel && eventCaption.isEmpty()) eventCaption = eventLabel;
 
-                if (eventIcon == R.drawable.ic_event_unknown)
-                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, contactName));
+                /*if (eventIcon == R.drawable.ic_event_unknown)
+                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, contactName));*/
 
                 String eventKey_next = contactName.concat(Constants.STRING_COMMA).concat(eventType);
 
@@ -2705,6 +2707,9 @@ class ContactsEvents {
 
             String[] arrRules;
             List<Matcher> matcherNames = new ArrayList<>();
+            List<Matcher> matcherTypes = new ArrayList<>();
+            List<Matcher> matcherNameAndTypes = new ArrayList<>();
+            List<Matcher> matcherTypeAndNames = new ArrayList<>();
             boolean useEventYear;
             final List<String> eventURLs = new ArrayList<>();
 
@@ -2749,8 +2754,22 @@ class ContactsEvents {
                 arrRules = preferences_birthday_calendars_rules.split(Constants.STRING_PIPE, -1);
                 if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
-                        if (rule.contains(Constants.RULE_TAG_NAME)) {
-                            matcherNames.add(Pattern.compile(rule.replace(Constants.RULE_TAG_NAME, "(.*)")).matcher(Constants.STRING_EMPTY));
+                        final int indName = rule.indexOf(Constants.RULE_TAG_NAME);
+                        final int indType = rule.indexOf(Constants.RULE_TAG_TYPE);
+
+                        if (indName > -1) {
+                            if (indType > -1) {
+                                final String ruleRegexp = rule.replace(Constants.RULE_TAG_NAME, "(.*)").replace(Constants.RULE_TAG_TYPE, "(.*)");
+                                if (indName < indType) {
+                                    matcherNameAndTypes.add(Pattern.compile(ruleRegexp).matcher(Constants.STRING_EMPTY));
+                                } else {
+                                    matcherTypeAndNames.add(Pattern.compile(ruleRegexp).matcher(Constants.STRING_EMPTY));
+                                }
+                            } else {
+                                matcherNames.add(Pattern.compile(rule.replace(Constants.RULE_TAG_NAME, "(.*)")).matcher(Constants.STRING_EMPTY));
+                            }
+                        } else if (indType > -1) {
+                            matcherTypes.add(Pattern.compile(rule.replace(Constants.RULE_TAG_TYPE, "(.*)")).matcher(Constants.STRING_EMPTY));
                         }
                     }
                 }
@@ -2825,7 +2844,7 @@ class ContactsEvents {
                         do {
                             eventData.clear();
                             final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE
-                                    + (useEventYear ? sdf_java.format(dateFirstTime.getTime()) : sdf_java_no_year.format(dateFirstTime.getTime())) + Constants.STRING_COLON_SPACE
+                                    + (useEventYear ? sdf_java.format(dateStartNextTime.getTime()) : sdf_java_no_year.format(dateStartNextTime.getTime())) + Constants.STRING_COLON_SPACE
                                     + getHash(Constants.eventSourceCalendarPrefix + calendarId);
                             int importMethod = importMethod_Standalone;
                             final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
@@ -2863,9 +2882,45 @@ class ContactsEvents {
                                 }
 
                                 if (isMultiTypeSource) {
-                                    event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, eventTitle);
+                                    event.icon = R.drawable.ic_event_unknown;
+                                    event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, eventTitle, false);
                                 }
 
+                            }
+                            String foundName = null;
+
+                            if (isMultiTypeSource && event.icon == R.drawable.ic_event_unknown) {
+                                String foundLabel = null;
+                                if (!matcherNameAndTypes.isEmpty()) { // ..[name]..[type]..
+                                    for (Matcher matcher : matcherNameAndTypes) {
+                                        if (matcher.reset(eventTitle).find()) {
+                                            foundName = matcher.group(1);
+                                            foundLabel = matcher.group(2);
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (foundName == null && !matcherTypeAndNames.isEmpty()) { // ..[type]..[name]..
+                                    for (Matcher matcher : matcherTypeAndNames) {
+                                        if (matcher.reset(eventTitle).find()) {
+                                            foundName = matcher.group(2);
+                                            foundLabel = matcher.group(1);
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (foundLabel == null && !matcherTypes.isEmpty()) { // ..[type]..
+                                    for (Matcher matcher : matcherTypes) {
+                                        if (matcher.reset(eventTitle).find()) {
+                                            foundLabel = matcher.group(1);
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (foundLabel != null) {
+                                    event = recognizeEventByLabel(foundLabel, Constants.Storage_Calendar, eventTitle, true);
+                                }
                             }
 
                             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown) {
@@ -2877,62 +2932,62 @@ class ContactsEvents {
                             String contactTitle = Constants.STRING_EMPTY;
                             boolean namedFromEvent = false;
 
-                            if (contactID == null && event.needScanContacts && !matcherNames.isEmpty()) {
-                                String foundName;
+                            if (foundName == null) {
                                 for (Matcher matcherName : matcherNames) {
                                     if (matcherName.reset(eventTitle).find()) {
                                         foundName = matcherName.group(1);
-
-                                        if (foundName != null) {
-
-                                            //всё, что внутри скобок в имени - в должность
-                                            int pStart = foundName.indexOf(Constants.STRING_PARENTHESIS_START);
-                                            int pEnd = foundName.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                                            if (pStart > -1 && pEnd > pStart) {
-                                                contactTitle = foundName.substring(pStart + 1, pEnd);
-                                                foundName = foundName.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY);
-                                            }
-
-                                            String personFullNameNormalized;
-                                            String personFullNameAltNormalized;
-                                            final String personFullNameAlt = Person.getAltName(foundName, preferences_rules_calendars_name_format, context);
-                                            if (isFirstSecondLastFormat) {
-                                                personFullNameNormalized = normalizeName(foundName);
-                                                personFullNameAltNormalized = normalizeName(personFullNameAlt);
-                                                eventData.put(Position_personFullName, foundName);
-                                                eventData.put(Position_personFullNameAlt, personFullNameAlt);
-                                            } else {
-                                                personFullNameNormalized = normalizeName(personFullNameAlt);
-                                                personFullNameAltNormalized = normalizeName(foundName);
-                                                eventData.put(Position_personFullName, personFullNameAlt);
-                                                eventData.put(Position_personFullNameAlt, foundName);
-                                            }
-                                            namedFromEvent = true;
-
-                                            //Ищем контакт
-                                            if (!TextUtils.isEmpty(personFullNameNormalized) && !TextUtils.isEmpty(personFullNameAltNormalized)) {
-                                                contactID = map_contacts_names.get(personFullNameNormalized);
-                                                if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                                                    contactID = map_contacts_names.get(personFullNameAltNormalized);
-                                                }
-                                                if (contactID == null) {
-                                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
-                                                }
-                                                if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
-                                                }
-                                            }
-
-                                            if (contactID != null) {
-
-                                                if (contactTitle.isEmpty()) {
-                                                    contactTitle = checkForNull(map_contacts_titles.get(contactID));
-                                                }
-
-                                                break;
-                                            }
-                                        }
+                                        //break;
                                     }
+                                }
+                            }
+
+                            if (contactID == null && event.needScanContacts && foundName != null) {
+
+                                //всё, что внутри скобок в имени - в должность
+                                int pStart = foundName.indexOf(Constants.STRING_PARENTHESIS_START);
+                                int pEnd = foundName.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                                if (pStart > -1 && pEnd > pStart) {
+                                    contactTitle = foundName.substring(pStart + 1, pEnd);
+                                    foundName = foundName.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY);
+                                }
+
+                                String personFullNameNormalized;
+                                String personFullNameAltNormalized;
+                                final String personFullNameAlt = Person.getAltName(foundName, preferences_rules_calendars_name_format, context);
+                                if (isFirstSecondLastFormat) {
+                                    personFullNameNormalized = normalizeName(foundName);
+                                    personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                                    eventData.put(Position_personFullName, foundName);
+                                    eventData.put(Position_personFullNameAlt, personFullNameAlt);
+                                } else {
+                                    personFullNameNormalized = normalizeName(personFullNameAlt);
+                                    personFullNameAltNormalized = normalizeName(foundName);
+                                    eventData.put(Position_personFullName, personFullNameAlt);
+                                    eventData.put(Position_personFullNameAlt, foundName);
+                                }
+                                namedFromEvent = true;
+
+                                //Ищем контакт
+                                if (!TextUtils.isEmpty(personFullNameNormalized) && !TextUtils.isEmpty(personFullNameAltNormalized)) {
+                                    contactID = map_contacts_names.get(personFullNameNormalized);
+                                    if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                        contactID = map_contacts_names.get(personFullNameAltNormalized);
+                                    }
+                                    if (contactID == null) {
+                                        contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
+                                    }
+                                    if (contactID == null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                        contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                                    }
+                                }
+
+                                if (contactID != null) {
+
+                                    if (contactTitle.isEmpty()) {
+                                        contactTitle = checkForNull(map_contacts_titles.get(contactID));
+                                    }
+
+                                    //break;
                                 }
                             }
 
@@ -3136,6 +3191,28 @@ class ContactsEvents {
         } finally {
             eventData.clear();
             if (cursor != null) cursor.close();
+        }
+    }
+
+    private boolean getLocalEvents() {
+        try {
+
+            SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+            Map<String, ?> prefs = preferences.getAll();
+
+            for (String eventId: prefs.keySet()) {
+                if (prefs.get(eventId) instanceof String) {
+                    String eventData = (String) prefs.get(eventId);
+                    
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
         }
     }
 
@@ -3499,7 +3576,7 @@ class ContactsEvents {
                     }
 
                     if (isMultiTypeSource) {
-                        event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle);
+                        event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle, true);
                     }
 
                     if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
@@ -3650,6 +3727,23 @@ class ContactsEvents {
                     //Description
                     int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
                     if (indStartDescription > -1) {
+                        int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                        if (pStartFirst > -1) {
+                            if (indStartDescription < pStartFirst) { //"|" до "("
+                                String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
+                                if (!eventDescription.isEmpty()) {
+                                    eventData.put(Position_eventDescription, eventDescription.trim());
+                                    eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                                }
+                            }
+                        } else {
+                            String eventDescription = eventTitle.substring(indStartDescription + 1);
+                            if (!eventDescription.isEmpty()) {
+                                eventData.put(Position_eventDescription, eventDescription.trim());
+                                eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                            }
+                        }
+
                         eventData.put(Position_eventDescription, eventTitle.substring(indStartDescription + 1).trim());
                         eventTitle = eventTitle.substring(0, indStartDescription).trim();
                     }
@@ -4187,12 +4281,11 @@ class ContactsEvents {
     }
 
     @NonNull
-    private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, @NonNull String eventSubject) {
+    private Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, @NonNull String fullEventData, boolean setOtherIfUnknown) {
 
         String eventLabel_forSearch = eventLabel.toLowerCase();
         final boolean isEmptyLabel = eventLabel_forSearch.isEmpty();
         Event event = new Event();
-        event.label = eventLabel;
 
         try {
 
@@ -4203,6 +4296,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_BirthDay);
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_other_event_labels != null && preferences_other_event_labels.reset(eventLabel_forSearch).find()) {
@@ -4211,6 +4305,7 @@ class ContactsEvents {
                 event.type = getEventType(Constants.Type_Other);
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel_forSearch).find()) {
@@ -4219,6 +4314,7 @@ class ContactsEvents {
                 event.type = getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = false;
 
             } else if (!isEmptyLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel_forSearch).find()) {
@@ -4228,6 +4324,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Death);
                 event.icon = R.drawable.ic_event_death;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel_forSearch).find()) {
@@ -4237,6 +4334,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Anniversary);
                 event.icon = R.drawable.ic_event_wedding;
                 event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel_forSearch).find()) {
@@ -4246,6 +4344,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_NameDay);
                 event.icon = R.drawable.ic_event_nameday;
                 event.emoji = getResources().getString(R.string.event_type_nameday_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_crowning_labels != null && preferences_crowning_labels.reset(eventLabel_forSearch).find()) {
@@ -4255,6 +4354,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Crowning);
                 event.icon = R.drawable.ic_event_crowning;
                 event.emoji = getResources().getString(R.string.event_type_crowning_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel_forSearch).find()) {
@@ -4264,6 +4364,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Custom1);
                 event.icon = R.drawable.ic_event_custom1;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel_forSearch).find()) {
@@ -4273,6 +4374,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Custom2);
                 event.icon = R.drawable.ic_event_custom2;
                 event.emoji = getResources().getString(R.string.event_type_custom2_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel_forSearch).find()) {
@@ -4282,6 +4384,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Custom3);
                 event.icon = R.drawable.ic_event_custom3;
                 event.emoji = getResources().getString(R.string.event_type_custom3_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel_forSearch).find()) {
@@ -4291,6 +4394,7 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Custom4);
                 event.icon = R.drawable.ic_event_custom4;
                 event.emoji = getResources().getString(R.string.event_type_custom4_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else if (!isEmptyLabel && preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel_forSearch).find()) {
@@ -4300,11 +4404,12 @@ class ContactsEvents {
                 event.subType = getEventType(Constants.Type_Custom5);
                 event.icon = R.drawable.ic_event_custom5;
                 event.emoji = getResources().getString(R.string.event_type_custom5_emoji);
+                event.label = eventLabel_forSearch;
                 event.needScanContacts = true;
 
             } else {
 
-                if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other) {
+                if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other && setOtherIfUnknown) {
 
                     event.caption = getResources().getString(R.string.event_type_other);
                     event.type = getEventType(Constants.Type_Other);
@@ -4319,8 +4424,6 @@ class ContactsEvents {
                     event.icon = R.drawable.ic_event_unknown;
                     event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
                     event.needScanContacts = false;
-
-                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, eventSubject));
 
                 } else {
 
@@ -8263,7 +8366,7 @@ class ContactsEvents {
             }
 
             if (quest == null) {
-                handler.post(() -> Toast.makeText(context, HtmlCompat.fromHtml("<font color='#dd0000'>" + getResources().getString(R.string.quiz_msg_error_get_question) + Constants.HTML_COLOR_END, 0), Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, HtmlCompat.fromHtml(setHTMLColor(getResources().getString(R.string.quiz_msg_error_get_question), Constants.HTML_COLOR_RED), 0), Toast.LENGTH_LONG).show());
                 return;
             }
 

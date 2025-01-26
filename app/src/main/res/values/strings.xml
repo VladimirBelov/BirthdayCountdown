@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Settings</string>
 
     <string name="menu_add_event">Add event</string>
+    <string name="menu_add_event_to_local">Add event…</string>
     <string name="menu_add_event_to_contact">Add event to contact…</string>
     <string name="menu_add_event_to_contact_short">Add to contact…</string>
     <string name="menu_add_event_to_calendar">Add event to calendar…</string>
@@ -349,7 +350,7 @@
     <string name="pref_CustomEvents_Rules_summary">Use these setting while importing events</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Name recognition rules</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Rules for contact name recognition rules from calendar event title</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are multi):"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are several rules). To set event type add tag [type]:"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags not found!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Incorrect format! Delimiter must be | symbol</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Name format for calendar events</string>
@@ -1153,6 +1154,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="stats_counters_nicknames"><![CDATA[<li>contacts nicknames: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web links: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>unrecognized events: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Events by sources:</h2><ul>]]></string>
 

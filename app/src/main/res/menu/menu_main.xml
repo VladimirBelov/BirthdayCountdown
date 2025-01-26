@@ -31,6 +31,12 @@
         tools:ignore="AlwaysShowAction">
 
         <menu>
+
+            <item
+                android:id="@+id/menu_add_event_local"
+                android:title="@string/menu_add_event_to_local"
+                android:icon="@android:drawable/ic_menu_add" />
+
             <item
                 android:id="@+id/menu_add_event_to_contact"
                 android:title="@string/menu_add_event_to_contact"

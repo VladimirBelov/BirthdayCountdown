@@ -215,6 +215,9 @@ public class AboutActivity extends AppCompatActivity {
                             sb.append(getString(R.string.stats_counters_favorite_events, eventsData.statFavoriteEventsCount));
                         if (eventsData.statActiveWidgets > 0)
                             sb.append(getString(R.string.stats_counters_widgets, eventsData.statActiveWidgets));
+                        if (eventsData.statUnrecognizedEvents > 0)
+                            sb.append(getString(R.string.stats_counters_unrecognized,
+                                    eventsData.setHTMLColor(String.valueOf(eventsData.statUnrecognizedEvents), Constants.HTML_COLOR_RED).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         sb.append(Constants.HTML_UL_END);
 
                         if (!eventsData.statEventSources.entrySet().isEmpty()) {

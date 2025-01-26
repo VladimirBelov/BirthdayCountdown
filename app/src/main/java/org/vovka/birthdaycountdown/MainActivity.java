@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.LocaleManager;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
+import android.content.ClipDescription;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    if (insets.top > 0) { //Если EdgeToEdge включён
+                    //if (insets.top > 0) { //Если EdgeToEdge включён
                         AppBarLayout.LayoutParams lp = new LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 insets.top * 4 / 5);
@@ -210,11 +211,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else {
                             findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
                         }
-                    } else {
+                    /*} else {
                         TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                         viewPadding.setVisibility(View.GONE);
                         findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
-                    }
+                    }*/
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -821,7 +822,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
+                intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TEXT, textBig.toString());
                 startActivity(Intent.createChooser(intent, ""));
                 return true;
@@ -1498,6 +1499,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
             menu.add(Menu.NONE, R.id.menu_refresh, Menu.NONE, R.string.menu_refresh).setIcon(android.R.drawable.ic_menu_rotate);
             SubMenu subMenuFile = menu.addSubMenu(Menu.NONE, R.id.menu_add, Menu.NONE, R.string.menu_add_event).setIcon(android.R.drawable.ic_menu_add);
+            subMenuFile.add(Menu.NONE, R.id.menu_add_event_local, Menu.NONE, R.string.menu_add_event_to_local)
+                    .setIcon(android.R.drawable.ic_menu_add);
             subMenuFile.add(Menu.NONE, R.id.menu_add_event_to_contact, Menu.NONE, R.string.menu_add_event_to_contact)
                     .setIcon(android.R.drawable.ic_menu_my_calendar)
                     .setTitleCondensed(getString(R.string.menu_add_event_to_contact_short));
@@ -1682,6 +1685,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == R.id.menu_events_types) {
 
                 selectEventsTypes();
+                return true;
+
+            } else if (itemId == R.id.menu_add_event_local) {
+
+                Intent intent = new Intent(this, LocalEventActivity.class);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == R.id.menu_add_event_to_contact) {
@@ -2312,6 +2323,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
 
+            if (statsUnrecognizedEvents > 0 && eventsData.preferences_rules_unrecognized == ContactsEvents.Rules_Unrecognized_Type_Unrecognized) {
+                ToastExpander.showInfoMsg(this, toProperCase(resources.getString(R.string.msg_stats_unrecognized_prefix)) + statsUnrecognizedEvents);
+            }
+
+            eventsData.statUnrecognizedEvents = statsUnrecognizedEvents;
             dataListFull.clear();
             dataListFull.addAll(dataList);
 
@@ -2321,8 +2337,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean isUnrecognizedEvent(String[] singleEventArray) {
+    private boolean isUnrecognizedEvent(@NonNull String[] singleEventArray) {
         return ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);
+    }
+
+    @NonNull
+    private String toProperCase(@NonNull String str) {
+        if (!str.isEmpty()) {
+            char[] chars = str.toLowerCase().toCharArray();
+            chars[0] = Character.toUpperCase(chars[0]);
+            return new String(chars);
+        } else {return str;}
     }
 
     synchronized private void drawList() {
@@ -3074,4 +3099,3 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 }
-

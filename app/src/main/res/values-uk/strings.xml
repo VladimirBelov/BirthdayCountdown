@@ -349,7 +349,7 @@
     <string name="pref_CustomEvents_Rules_summary">Використовуйте ці налаштування під час імпорту подій</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Правила для правил розпізнавання імені контакту з назви події календаря</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введіть правила розпізнавання імені контакту з заголовка календарного події (кілька правил поділяються |). Правило повинне містити тег [name], оточений іншим текстом (опціонально):</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Введіть правила розпізнавання імені контакту з заголовка календарного події (кілька правил поділяються |). Правило повинне містити тег [name], оточений іншим текстом (опціонально). Щоб встановити тип події, додайте тег [type]:</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не знайдені!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Формат імені для календарних подій</string>
