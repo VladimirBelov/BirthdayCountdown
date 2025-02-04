@@ -77,7 +77,7 @@ class Person {
         }
     }
 
-    static String getAltName(@NonNull String fullName, int formatName, @NonNull Context context) {
+    static String getAltName(@NonNull String fullName, ContactsEvents.FormatName nameFormat, @NonNull Context context) {
 
         try{
 
@@ -87,7 +87,7 @@ class Person {
             } else {
                 final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
 
-                if (formatName == Constants.pref_List_NameFormat_FirstSecondLast) {
+                if (nameFormat == ContactsEvents.FormatName.NameFirst) {
                     return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
                 } else {
                     //if (spaceFirst != spaceLast) { //Имя из 3+ слов

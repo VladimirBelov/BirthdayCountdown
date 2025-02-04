@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class FactsPopupActivity extends Activity {
@@ -153,7 +154,7 @@ public class FactsPopupActivity extends Activity {
         }
     }
 
-    void addClickEffect(View view)
+    void addClickEffect(@NonNull View view)
     {
         Drawable drawableNormal = view.getBackground();
 

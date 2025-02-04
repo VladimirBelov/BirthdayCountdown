@@ -40,7 +40,7 @@
     <string name="menu_hints">Astuces de recherche…</string>
     <string name="menu_context_edit_contact">Modifier le contact</string>
     <string name="menu_context_create_contact">Créer un contact…</string>
-    <string name="menu_context_edit_event">"Événement du calendrier ouvert"</string>
+    <string name="menu_context_open_calendar_event">"Événement du calendrier ouvert"</string>
     <string name="menu_context_event_info">"Données sur l'événement"</string>
     <string name="menu_context_hide_event">"Masquer l'événement"</string>
     <string name="menu_context_unhide_event">"Affichage de l'événement de retour"</string>

@@ -248,7 +248,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
                     intentView = new Intent(context, MainActivity.class);
                     intentView.setAction(Constants.ACTION_LAUNCH);
                 } else if (actionPref >= 1 & actionPref <=4) {
-                    intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref);
+                    intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
                 }
 
                 if (intentView != null) {

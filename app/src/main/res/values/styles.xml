@@ -678,6 +678,7 @@
         <item name="android:textColorAlertDialogListItem">@color/theme_black_primary</item>
         <item name="listDividerColor">@color/theme_indigo_status_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
+        <item name="android:editTextBackground">@android:color/transparent</item>
     </style>
 
     <!-- Кнопки и UI ===========================================================================-->

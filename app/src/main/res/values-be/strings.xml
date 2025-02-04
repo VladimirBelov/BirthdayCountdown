@@ -40,7 +40,7 @@
     <string name="menu_hints">Падказкі для пошука…</string>
     <string name="menu_context_edit_contact">Рэдагаваць кантакт</string>
     <string name="menu_context_create_contact">Стварыць кантакт…</string>
-    <string name="menu_context_edit_event">Адкрыць падзею ў календары</string>
+    <string name="menu_context_open_calendar_event">Адкрыць падзею ў календары</string>
     <string name="menu_context_event_info">Дадзеныя аб падзеі</string>
     <string name="menu_context_hide_event">Схаваць падзею</string>
     <string name="menu_context_unhide_event">Вярнуць падзею</string>

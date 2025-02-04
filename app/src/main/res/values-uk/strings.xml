@@ -40,7 +40,7 @@
     <string name="menu_hints">Пошукові підказки…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_create_contact">Crear contacto…</string>
-    <string name="menu_context_edit_event">Показати подію у календарі</string>
+    <string name="menu_context_open_calendar_event">Показати подію у календарі</string>
     <string name="menu_context_event_info">Дані про подію</string>
     <string name="menu_context_hide_event">Приховати подію</string>
     <string name="menu_context_unhide_event">Повернути показ події</string>

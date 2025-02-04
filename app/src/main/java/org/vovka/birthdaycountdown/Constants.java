@@ -120,12 +120,15 @@ final class Constants {
     static final String STRING_STORAGE_FILE = "file";
     static final String STRING_STORAGE_XDAYS = "x days";
     static final String STRING_STORAGE_HOLIDAYS = "holidays";
+    static final String STRING_STORAGE_PREF = "pref";
     static final int Storage_Calendar = 0;
     static final int Storage_Contacts = 1;
     static final int Storage_File = 2;
+    static final int Storage_Prefs = 3;
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
     static final String EVENT_PREFIX_HOLIDAY_EVENT = "holiday";
+    static final String EVENT_PREFIX_PREF_EVENT = "pref";
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
@@ -185,6 +188,7 @@ final class Constants {
     static final int RESULT_PICK_RINGTONE = 203;
     static final int RESULT_PICK_FILE_FOR_EXPORT = 204;
     static final int RESULT_PICK_FILE_FOR_IMPORT = 205;
+    static final int RESULT_EDIT_EVENT = 206;
 
     static final int defaultNotificationID = 1000;
     static final int defaultNotification2ID = 1100;
@@ -225,6 +229,11 @@ final class Constants {
     static final String EXTRA_DAY_CAPTION = "dayCaption";
     static final String EXTRA_DAY_INFO = "dayInfo";
     static final String EXTRA_NEW_WIDGET = "isNewWidget";
+    static final String EXTRA_EVENT_DATA = "eventData";
+    static final String EXTRA_DAY = "day";
+    static final String EXTRA_MONTH = "month";
+    static final String EXTRA_YEAR = "year";
+    static final String EXTRA_USE_YEAR = "useYear";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;
@@ -310,8 +319,10 @@ final class Constants {
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
     static final String RES_TYPE_STRING = "string";
+    static final String RES_TYPE_ID = "id";
     static final String RES_TYPE_STRING_ARRAY = "array";
     static final String RES_TYPE_CALENDAR = "calendar";
+    static final String RES_TYPE_YEAR = "year";
     static final String URI_PACKAGE = "package:";
 
     static final int ContextMenu_EditContact = 1;
@@ -335,6 +346,7 @@ final class Constants {
     static final int ContextMenu_SetEvenType = 20;
     static final int ContextMenu_AddToFavorites = 21;
     static final int ContextMenu_RemoveFromFavorites = 22;
+    static final int ContextMenu_EditLocalEvent = 23;
 
     static final String eventSourceLocalPrefix = "local:";
     static final String eventSourceContactPrefix = "contact:";
@@ -344,6 +356,7 @@ final class Constants {
     static final String eventSourceHolidayPrefix = "holiday:";
     static final String eventSourceFactPrefix = "fact:";
     static final String eventSourceFavoritePrefix = "fav:";
+    static final String eventSourcePrefPrefix = "pref:";
 
     static final String eventTitleFilePrefix = "📁 ";
     static final String eventTitleCalendarPrefix = "📆 ";

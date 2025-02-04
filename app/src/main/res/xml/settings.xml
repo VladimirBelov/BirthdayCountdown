@@ -1235,6 +1235,18 @@
             android:title="@string/pref_Tools_Preferences_Import_title"
             android:icon="@android:drawable/ic_menu_upload"/>
 
+        <PreferenceCategory
+            android:key="@string/pref_Tools_Events_key"
+            android:title="@string/pref_Tools_Events_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@android:drawable/ic_menu_agenda">
+
+            <Preference
+                android:key="@string/pref_Tools_Events_Show_key"
+                android:title="@string/pref_Tools_Events_Show_title"/>
+
+        </PreferenceCategory>
+
     </PreferenceCategory>
 
     <PreferenceCategory

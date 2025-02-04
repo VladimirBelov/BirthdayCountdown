@@ -41,7 +41,7 @@
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_create_contact">Создать контакт…</string>
-    <string name="menu_context_edit_event">Открыть событие в календаре</string>
+    <string name="menu_context_open_calendar_event">Открыть событие в календаре</string>
     <string name="menu_context_event_info">Данные о событии</string>
     <string name="menu_context_hide_event">Скрыть событие</string>
     <string name="menu_context_unhide_event">Вернуть показ события</string>
@@ -63,6 +63,7 @@
     <string name="menu_context_set_event_type">Указать тип события…</string>
     <string name="menu_context_favorites_add">Добавить в избранные</string>
     <string name="menu_context_favorites_remove">Удалить из избранных</string>
+    <string name="menu_context_edit_local_event">Редактировать событие</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -165,9 +166,11 @@
     <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>
     <string name="msg_source_info">"Событие из \"%1$s\""</string>
+    <string name="msg_source_local">Локальное событие</string>
     <string name="msg_title_confirmation">Подтверждение</string>
     <string name="msg_title_success">Действие выполнено</string>
     <string name="msg_title_settings">Сохранённые настройки</string>
+    <string name="msg_title_local_events">Локальные события</string>
     <string name="msg_no_selection">Пустой выбор! Нужно выбрать что-нибудь</string>
     <string name="msg_notifications_were_enabled">"Уведомления были включены\n"</string>
     <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
@@ -189,6 +192,7 @@
     <string name="msg_event_type_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_event_type_label_added">"Метка добавлена: %1$s"</string>
     <string name="msg_event_type_label_absent">У события отсутствует метка!</string>
+    <string name="msg_empty_required_field">"Не заполнено обязательное поле: %s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
@@ -1127,6 +1131,8 @@
     <string name="pref_Tools_Preferences_Export_result">Экспортировано настроек: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Импортировать настройки</string>
     <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d, ошибок: %2$d</string>
+    <string name="pref_Tools_Events_title">События</string>
+    <string name="pref_Tools_Events_Show_title">Показать сохранённые локальные события</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>
@@ -1264,6 +1270,15 @@
     <string name="facts_popup_action_next_fact">⏩ Следующий</string>
     <string name="facts_popup_action_share">📤 Поделиться</string>
     <string name="facts_popup_empty">Факты не найдены</string>
+
+    <string name="local_event_date_picker_use_year">Показать год</string>
+    <string name="local_event_date_picker_title">Выберите дату:</string>
+    <string name="local_event_dialog_title_new_event">Добавление события</string>
+    <string name="local_event_dialog_title_edit_event">Редактирование события</string>
+    <string name="local_event_dialog_caption_title">Имя Фамилия (наименование события):</string>
+    <string name="local_event_dialog_caption_title_alt">Фамилия Имя (наименование события):</string>
+    <string name="local_event_dialog_date_title">Дата:</string>
+    <string name="local_event_dialog_type_title">Тип события:</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

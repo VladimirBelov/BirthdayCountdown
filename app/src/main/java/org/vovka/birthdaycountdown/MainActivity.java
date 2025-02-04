@@ -300,7 +300,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <= 4) {
                         Intent intent = ContactsEvents.getViewActionIntent(
                                 ((String) l.getItemAtPosition(position)).split(Constants.STRING_EOT, -1),
-                                eventsData.preferences_list_on_click_action
+                                eventsData.preferences_list_on_click_action,
+                                this
                         );
                         if (intent != null) {
                             try {
@@ -359,6 +360,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
 
+            String eventStorage = selectedEvent[ContactsEvents.Position_eventStorage];
+            if (eventStorage.contains(Constants.STRING_STORAGE_PREF)) {
+                MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_EditLocalEvent, Menu.NONE, getString(R.string.menu_context_edit_local_event))
+                        .setIcon(android.R.drawable.ic_menu_edit);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                }
+            }
+
             String contactID = selectedEvent[ContactsEvents.Position_contactID];
             boolean isRealContactID = contactID != null && !contactID.isEmpty() && ContactsEvents.isRealContactEventID(contactID);
             if (isRealContactID) {
@@ -374,8 +384,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
 
-                if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)) {
-                    menu.add(Menu.NONE, Constants.ContextMenu_OpenCalendar, Menu.NONE, getString(R.string.menu_context_edit_event))
+                if (eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
+                    menu.add(Menu.NONE, Constants.ContextMenu_OpenCalendar, Menu.NONE, getString(R.string.menu_context_open_calendar_event))
                             .setIcon(android.R.drawable.ic_menu_month);
                 }
 
@@ -385,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
-                    } else if (selectedEvent[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR)
+                    } else if (eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)
                             && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
@@ -512,7 +522,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             int itemId = item.getItemId();
 
-            if (itemId == Constants.ContextMenu_EditContact) {
+            if (itemId == Constants.ContextMenu_EditLocalEvent) {
+
+                Intent intent = new Intent(this, LocalEventActivity.class);
+                intent.setAction(Intent.ACTION_EDIT);
+                intent.putExtra(Constants.EXTRA_EVENT_DATA, selectedEvent[ContactsEvents.Position_eventID]);
+                try {
+                    startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
+                } catch (ActivityNotFoundException e) { /**/ }
+                return true;
+
+            } else if (itemId == Constants.ContextMenu_EditContact) {
 
                 Uri selectedContactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, selectedEvent[ContactsEvents.Position_contactID]);
                 Intent editContactIntent = new Intent(Intent.ACTION_EDIT);
@@ -1690,8 +1710,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == R.id.menu_add_event_local) {
 
                 Intent intent = new Intent(this, LocalEventActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
                 try {
-                    startActivity(intent);
+                    startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
@@ -2023,26 +2044,34 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
-            if ((requestCode == Constants.RESULT_PICK_CONTACT || requestCode == Constants.RESULT_PICK_OTHER_CONTACT) && resultCode == RESULT_OK) {
 
-                Uri contactUri = data.getData();
-                if (contactUri != null) {
-                    String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
-                    if (!contactID.isEmpty() && !selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
-                        if (eventsData.setMergedID(
-                                selectedEvent[ContactsEvents.Position_eventID],
-                                contactID,
-                                eventsData.map_contacts_ids.get(contactID))) {
-                            eventsData.needUpdateEventList = true;
-                            updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+            if (resultCode == RESULT_OK) {
+                if ((requestCode == Constants.RESULT_PICK_CONTACT || requestCode == Constants.RESULT_PICK_OTHER_CONTACT)) {
+
+                    Uri contactUri = data.getData();
+                    if (contactUri != null) {
+                        String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
+                        if (!contactID.isEmpty() && !selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
+                            if (eventsData.setMergedID(
+                                    selectedEvent[ContactsEvents.Position_eventID],
+                                    contactID,
+                                    eventsData.map_contacts_ids.get(contactID))) {
+                                eventsData.needUpdateEventList = true;
+                                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                            }
                         }
                     }
+
+                } else if (requestCode == Constants.RESULT_EDIT_EVENT) {
+
+                    eventsData.needUpdateEventList = true;
+                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+
+                } else {
+
+                    super.onActivityResult(requestCode, resultCode, data);
+
                 }
-
-            } else {
-
-                super.onActivityResult(requestCode, resultCode, data);
-
             }
 
         } catch (Exception e) {

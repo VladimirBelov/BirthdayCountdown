@@ -106,7 +106,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             eventsData.setLocale(true);
 
-            this.setTheme(eventsData.preferences_theme.themeMain);
+            setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.widget_config);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,7 +114,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.window_widget_settings);
 
             //Цвет заголовка окна
-            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 

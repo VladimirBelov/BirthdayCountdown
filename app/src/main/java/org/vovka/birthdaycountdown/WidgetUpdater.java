@@ -873,7 +873,7 @@ class WidgetUpdater {
                     intent = new Intent(context, MainActivity.class);
                     intent.setAction(Constants.ACTION_LAUNCH);
                 } else if (eventsData.preferences_widgets_on_click_action >= 1 & eventsData.preferences_widgets_on_click_action <=4) {
-                    intent = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action);
+                    intent = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action, context);
                 }
 
                 if (intent != null) {

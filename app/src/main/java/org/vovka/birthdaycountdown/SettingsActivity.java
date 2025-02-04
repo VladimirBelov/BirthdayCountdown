@@ -883,6 +883,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 importPreferences(importStage.selectFile, null);
                 return true;
 
+            } else if (getString(R.string.pref_Tools_Events_Show_key).equals(key)) {
+
+                showLocalEvents();
+                return true;
+
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
 
                 selectHolidays();
@@ -2423,7 +2428,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                sb.append(key).append(prefType).append(Constants.STRING_COLON_SPACE).append(prefs.get(key)).append(Constants.HTML_BR);
+                sb.append(key)
+                        .append(prefType)
+                        .append(Constants.STRING_COLON_SPACE)
+                        .append(prefs.get(key))
+                        .append(Constants.HTML_BR);
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
@@ -2880,6 +2889,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
+        }
+    }
+
+    private void showLocalEvents() {
+
+        try {
+
+            SharedPreferences preferences = this.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+            Map<String, ?> prefs = preferences.getAll();
+            StringBuilder sb = new StringBuilder();
+
+            for (String eventId: prefs.keySet()) {
+                if (prefs.get(eventId) instanceof String) {
+                    String eventData = (String) prefs.get(eventId);
+                    if (eventData != null) {
+                        sb.append(eventId)
+                                .append(Constants.STRING_COLON_SPACE)
+                                .append(eventData.replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
+                                .append(Constants.HTML_BR);
+                    }
+                }
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(R.string.msg_title_local_events);
+            builder.setIcon(android.R.drawable.ic_menu_info_details);
+            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+            TextView textView = alertToShow.findViewById(android.R.id.message);
+            if (textView != null) textView.setTextSize(11);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
