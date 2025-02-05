@@ -2563,7 +2563,7 @@ class ContactsEvents {
                 }
 
                 String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDate + Constants.STRING_COLON_SPACE
-                        + getHash((!accountType.equals(Constants.STRING_NULL) ? Constants.eventSourceContactPrefix : Constants.eventSourceLocalPrefix) + accountKey);
+                        + getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourceLocalPrefix) + accountKey);
 
                 if (!eventKey_next.equalsIgnoreCase(eventKey_current)) { //Начало данных нового контакта
 
@@ -10756,42 +10756,17 @@ class ContactsEvents {
                     }
                 }
 
-                //Online аккаунты
-                final Set<String> preferences_accounts = getPreferences_Accounts();
+
+
                 if (!checkNoContactsAccess()) {
+                    final Set<String> preferences_accounts = getPreferences_Accounts();
                     AuthenticatorDescription[] descriptions = AccountManager.get(context).getAuthenticatorTypes();
-                    if (!preferences_accounts.isEmpty()) { //Только из настроек
-                        for (String account : preferences_accounts) {
-                            String accountType = ContactsEvents.substringBetween(account, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                            if (!accountType.equals(Constants.STRING_NULL)) {
-                                for (AuthenticatorDescription desc : descriptions) {
-                                    if (accountType.equals(desc.type)) {
-                                        ids.add(Constants.eventSourceContactPrefix + account);
-                                        titles.add(account);
-                                        icons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
-                                        packages.add(desc.packageName);
-                                        hashes.add(ContactsEvents.getHash(Constants.eventSourceContactPrefix + account));
-                                        break;
-                                    }
-                                }
-                            } else {
 
-                                ids.add(Constants.eventSourceLocalPrefix + account);
-                                titles.add(account);
-                                if (account.toLowerCase().contains(Constants.account_sim)) {
-                                    icons.add(R.drawable.sim_card);
-                                } else {
-                                    icons.add(R.drawable.emo_im_happy);
-                                }
-                                packages.add(packageName);
-                                hashes.add(ContactsEvents.getHash(Constants.eventSourceLocalPrefix + account));
-
-                            }
-                        }
-                    } else { //Перебираем все аккаунты
-                        Account[] accounts = AccountManager.get(context).getAccounts();
-                        for (Account account : accounts) {
-                            final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                    //Online аккаунты
+                    Account[] accounts = AccountManager.get(context).getAccounts();
+                    for (Account account : accounts) {
+                        final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                        if (preferences_accounts.isEmpty() || preferences_accounts.contains(accountName)) {
                             for (AuthenticatorDescription desc : descriptions) {
                                 if (account.type.equals(desc.type)) {
                                     String eventId = Constants.eventSourceContactPrefix + accountName;
@@ -10804,24 +10779,26 @@ class ContactsEvents {
                                 }
                             }
                         }
+                    }
 
-                        //Raw аккаунты
-                        ContentResolver contentResolver = context.getContentResolver();
-                        Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
-                                new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
-                                Constants.QUERY_PARAM_DELETED_0,
-                                null,
-                                null);
-                        if (cursor != null && cursor.getCount() > 0) {
-                            if (cursor.moveToFirst()) {
-                                final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
-                                final int indexTypeColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
-                                do {
-                                    String sysAccountName = cursor.getString(indexNameColumn);
-                                    if (sysAccountName == null) sysAccountName = resources.getString(R.string.account_type_local);
-                                    String accountName = sysAccountName + Constants.STRING_PARENTHESIS_OPEN
-                                            + cursor.getString(indexTypeColumn) + Constants.STRING_PARENTHESIS_CLOSE;
-                                    if (!titles.contains(accountName)) {
+                    //Raw аккаунты
+                    ContentResolver contentResolver = context.getContentResolver();
+                    Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
+                            new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
+                            Constants.QUERY_PARAM_DELETED_0,
+                            null,
+                            null);
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
+                            final int indexTypeColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_TYPE);
+                            do {
+                                String sysAccountName = cursor.getString(indexNameColumn);
+                                if (sysAccountName == null) sysAccountName = resources.getString(R.string.account_type_local);
+                                String accountName = sysAccountName + Constants.STRING_PARENTHESIS_OPEN
+                                        + cursor.getString(indexTypeColumn) + Constants.STRING_PARENTHESIS_CLOSE;
+                                if (!titles.contains(accountName)) {
+                                    if (preferences_accounts.isEmpty() || preferences_accounts.contains(accountName)) {
                                         String eventId = Constants.eventSourceLocalPrefix + accountName;
                                         ids.add(eventId);
                                         titles.add(accountName);
@@ -10833,9 +10810,9 @@ class ContactsEvents {
                                         packages.add(packageName);
                                         hashes.add(ContactsEvents.getHash(eventId));
                                     }
-                                } while (cursor.moveToNext());
-                                cursor.close();
-                            }
+                                }
+                            } while (cursor.moveToNext());
+                            cursor.close();
                         }
                     }
                 }
