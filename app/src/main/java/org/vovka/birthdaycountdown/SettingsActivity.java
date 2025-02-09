@@ -3063,16 +3063,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     void requestCalendarPermission(int resultCode) {
         try {
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(
                         this,
                         new String[]{Manifest.permission.READ_CALENDAR},
                         resultCode
                 );
-            } else {
+            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CALENDAR},
+                        resultCode
+                );
+                ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
                 try {
                     startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { /**/ }
+            } else {
+                ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
+                try {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                } catch (ActivityNotFoundException e) { /**/ }
             }
 
         } catch (Exception e) {

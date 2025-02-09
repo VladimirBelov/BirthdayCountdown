@@ -150,6 +150,7 @@
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
     <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
     <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" item in the \"%2$s\" section of program settings"</string>
+    <string name="msg_no_access_calendar_hint">No access to calendars. Check application permissions</string>
     <string name="msg_no_access_storage_hint">No access to external storage. Check application permissions</string>
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
