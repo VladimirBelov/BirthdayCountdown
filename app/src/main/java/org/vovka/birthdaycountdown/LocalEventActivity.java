@@ -191,7 +191,8 @@ public class LocalEventActivity extends Activity {
 
             eventsData.setLocale(true);
 
-            setTheme(eventsData.preferences_theme.themeDialog);
+            setTheme(eventsData.preferences_theme.themeMain);
+            this.getTheme().applyStyle(R.style.FloatingActivity, true);
             setContentView(R.layout.activity_event);
 
             TextView viewActivityTitle = findViewById(R.id.textCaption);
@@ -199,7 +200,7 @@ public class LocalEventActivity extends Activity {
             EditText editCaption = findViewById(R.id.editTitle);
             TextView editDate = findViewById(R.id.editDate);
             ImageView imagePhoto = findViewById(R.id.imagePhoto);
-            editCaption.setBackgroundColor(Color.TRANSPARENT);
+
             eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
             eventTypesIds.add(Constants.Type_BirthDay);
             eventTypesValues.add(getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_anniversary));
@@ -218,7 +219,7 @@ public class LocalEventActivity extends Activity {
             Spinner spinnerEventTypes = findViewById(R.id.spinnerEventType);
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, eventTypesValues);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
-
+            TextView viewEventType = findViewById(R.id.viewEventType);
 
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -275,8 +276,8 @@ public class LocalEventActivity extends Activity {
                             String oldEventType = eventData.get(ContactsEvents.Position_eventType);
                             if (oldEventType != null && eventTypesIds.contains(Integer.valueOf(oldEventType))) {
                                 spinnerEventTypes.setSelection(eventTypesIds.indexOf(Integer.valueOf(oldEventType)));
+                                viewEventType.setText(eventTypesValues.get(eventTypesIds.indexOf(Integer.valueOf(oldEventType))));
                             }
-
                         }
                     }
                 }
@@ -319,8 +320,11 @@ public class LocalEventActivity extends Activity {
             if (isReadOnly) {
 
                 setReadOnly(editCaption, true);
+                editCaption.setBackgroundColor(Color.TRANSPARENT);
                 setReadOnly(editDate, true);
-                setReadOnly(spinnerEventTypes, true);
+                //setReadOnly(spinnerEventTypes, true);
+                spinnerEventTypes.setVisibility(View.GONE);
+                viewEventType.setVisibility(View.VISIBLE);
 
                 TextView buttonSave = findViewById(R.id.buttonThirdAction);
                 buttonSave.setText(R.string.button_ok);
@@ -330,6 +334,11 @@ public class LocalEventActivity extends Activity {
                 buttonSave.setOnClickListener(view -> finish());
 
             } else {
+
+                spinnerEventTypes.setVisibility(View.VISIBLE);
+                viewEventType.setVisibility(View.GONE);
+
+                editDate.setPadding(ContactsEvents.Dip2Px(getResources(), 10), 0, 0, 0);
 
                 TextView buttonCancel = findViewById(R.id.buttonSecondAction);
                 buttonCancel.setText(R.string.button_cancel);

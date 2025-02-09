@@ -782,4 +782,8 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
+    <style name="FloatingActivity">
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

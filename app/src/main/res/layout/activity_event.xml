@@ -26,10 +26,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:background="?attr/windowTitleColor"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="?attr/windowTitleTextColor" />
+            android:background="?attr/colorPrimary"
+            android:textColor="?attr/windowTitleColor"
+            /><!--android:background="?attr/colorPrimary"--><!--android:textColor="?attr/windowTitleColor"-->
 
         <TextView
             android:id="@+id/buttonClose"
@@ -37,16 +38,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:background="?attr/windowTitleColor"
             android:contentDescription="@string/button_close"
             android:gravity="end"
             android:maxLines="1"
             android:paddingEnd="6dp"
             android:textAlignment="textEnd"
-            android:textColor="?attr/windowTitleTextColor"
             android:textSize="14sp"
             android:textStyle="bold"
-            tools:ignore="TextSizeCheck" />
+            android:background="?attr/colorPrimary"
+            android:textColor="?attr/windowTitleColor"
+            tools:ignore="TextSizeCheck" /><!--android:textColor="?attr/windowTitleTextColor"-->
     </LinearLayout>
 
     <ScrollView
@@ -86,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     app:cardCornerRadius="4dp"
-                    app:cardBackgroundColor="?attr/listDividerColor"
-                    app:contentPadding="1dp">
+                    app:contentPadding="1dp"
+                    app:cardBackgroundColor="?attr/listDividerColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                             android:labelFor="@id/editTitle"
                             android:text="@string/local_event_dialog_caption_title"
                             android:textSize="12sp"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="?attr/dialogTextColor" />
 
                         <EditText
                             android:id="@+id/editTitle"
@@ -114,7 +115,7 @@
                             android:inputType="textMultiLine"
                             android:maxLines="3"
                             android:minHeight="40dp"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="?attr/dialogTextColor"
                             tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
 
                     </LinearLayout>
@@ -126,14 +127,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     app:cardCornerRadius="4dp"
-                    app:cardBackgroundColor="?attr/listDividerColor"
-                    app:contentPadding="1dp">
+                    app:contentPadding="1dp"
+                    app:cardBackgroundColor="?attr/listDividerColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="4dp">
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="2dp"
+                        android:background="?attr/backgroundColor">
 
                         <TextView
                             android:id="@+id/captionDate"
@@ -142,18 +145,16 @@
                             android:labelFor="@id/editDate"
                             android:text="@string/local_event_dialog_date_title"
                             android:textSize="12sp"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="?attr/dialogTextColor" />
 
                         <TextView
                             android:id="@+id/editDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:ems="10"
-                            android:gravity="center_vertical|end"
+                            android:gravity="center_vertical"
                             android:importantForAutofill="no"
                             android:paddingHorizontal="2dp"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="?attr/dialogTextColor" /><!--android:layout_gravity="end"  |end android:ems="10"-->
 
                     </LinearLayout>
 
@@ -170,7 +171,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp">
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="2dp"
+                        android:background="?attr/backgroundColor">
 
                         <TextView
                             android:id="@+id/captionType"
@@ -179,7 +182,7 @@
                             android:labelFor="@id/spinnerEventType"
                             android:text="@string/local_event_dialog_type_title"
                             android:textSize="12sp"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="?attr/dialogTextColor" />
 
                         <Spinner
                             android:id="@+id/spinnerEventType"
@@ -188,6 +191,13 @@
                             android:paddingHorizontal="2dp"
                             android:theme="@style/RightAlignedSpinner"
                             tools:ignore="TouchTargetSizeCheck" />
+
+                        <TextView
+                            android:id="@+id/viewEventType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
 
@@ -213,13 +223,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/border_button"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingVertical="6dp"
             android:paddingHorizontal="10dp"
             android:textSize="18sp"
             android:visibility="gone"
+            android:background="@drawable/border_button"
             android:textColor="?android:attr/textColorPrimary"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -247,13 +257,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/border_button"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingVertical="6dp"
             android:paddingHorizontal="10dp"
             android:textSize="18sp"
             android:visibility="gone"
+            android:background="@drawable/border_button"
             android:textColor="?android:attr/textColorPrimary"
             tools:ignore="TouchTargetSizeCheck" />
 
