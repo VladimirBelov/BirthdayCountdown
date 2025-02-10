@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 11.02.2025, 00:24
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 11.02.2025, 00:24
+  ~  */
+  -->
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
+    android:background="?attr/dialogBackgroundColor"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:textColor="?attr/dialogTextColor" />

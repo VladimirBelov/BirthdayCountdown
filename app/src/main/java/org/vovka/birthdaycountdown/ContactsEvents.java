@@ -5496,7 +5496,7 @@ class ContactsEvents {
 
                             singleEventArrayXdays[Position_eventDateNextTime] = sdf_DDMMYYYY.format(event.date);
                             singleEventArrayXdays[Position_age_caption] = setAgeFormatting(event.distance);
-                            singleEventArrayXdays[Position_eventStorage] = Constants.STRING_STORAGE_XDAYS;
+                            //singleEventArrayXdays[Position_eventStorage] = Constants.STRING_STORAGE_XDAYS;
                             singleEventArrayXdays[Position_eventDistance] = Long.toString(xDaysDistance);
                             singleEventArrayXdays[Position_eventDistanceText] = getEventDistanceText(xDaysDistance, event.date);
                             singleEventArrayXdays[Position_eventEmoji] = resources.getString(R.string.event_type_xdays_emoji);
@@ -5971,7 +5971,8 @@ class ContactsEvents {
                         return checkIsSilencedEvent(eventKey, eventKeyWithRawId);
                     case Constants.pref_Events_Scope_XDays: //Показывать только счётчики дней
                         return isXDaysEvent(eventKey)
-                                && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
+                                && !singleEventArray[ContactsEvents.Position_eventSubType].equals(getEventType(Constants.Type_Xdays));
+                                //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                     case Constants.pref_Events_Scope_Favorite: //Показывать только избранные
                         return checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
                     case Constants.pref_Events_Scope_All:

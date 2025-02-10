@@ -12,7 +12,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/dialogBackgroundColor">
 
     <LinearLayout
         android:id="@+id/windowTitle"
@@ -96,7 +97,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/backgroundColor">
+                        android:background="?attr/dialogBackgroundColor">
 
                         <TextView
                             android:id="@+id/captionTitle"
@@ -136,7 +137,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/backgroundColor">
+                        android:background="?attr/dialogBackgroundColor">
 
                         <TextView
                             android:id="@+id/captionDate"
@@ -173,7 +174,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/backgroundColor">
+                        android:background="?attr/dialogBackgroundColor">
 
                         <TextView
                             android:id="@+id/captionType"
@@ -189,7 +190,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="2dp"
-                            android:theme="@style/RightAlignedSpinner"
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <TextView

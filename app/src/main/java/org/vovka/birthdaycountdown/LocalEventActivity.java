@@ -217,7 +217,8 @@ public class LocalEventActivity extends Activity {
             eventTypesIds.add(Constants.Type_HolidayEvent);
 
             Spinner spinnerEventTypes = findViewById(R.id.spinnerEventType);
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, eventTypesValues);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
+            spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
             TextView viewEventType = findViewById(R.id.viewEventType);
 

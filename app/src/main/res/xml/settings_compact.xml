@@ -10,6 +10,7 @@
 <!--suppress DeprecatedClassUsageInspection -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:key="@string/pref_Root_key">
 
     <PreferenceScreen
@@ -1228,15 +1229,18 @@
 
             <Preference
                 android:key="@string/pref_Tools_Preferences_Show_key"
-                android:title="@string/pref_Tools_Preferences_Show_title"/>
+                android:title="@string/pref_Tools_Preferences_Show_title"
+                android:icon="@android:drawable/ic_menu_info_details"/>
 
             <Preference
                 android:key="@string/pref_Tools_Preferences_Export_key"
-                android:title="@string/pref_Tools_Preferences_Export_title"/>
+                android:title="@string/pref_Tools_Preferences_Export_title"
+                android:icon="@android:drawable/ic_menu_set_as"/>
 
             <Preference
                 android:key="@string/pref_Tools_Preferences_Import_key"
-                android:title="@string/pref_Tools_Preferences_Import_title"/>
+                android:title="@string/pref_Tools_Preferences_Import_title"
+                android:icon="@android:drawable/ic_menu_upload"/>
 
         </PreferenceCategory>
 
@@ -1248,7 +1252,10 @@
 
             <Preference
                 android:key="@string/pref_Tools_Events_Show_key"
-                android:title="@string/pref_Tools_Events_Show_title"/>
+                android:title="@string/pref_Tools_Events_Show_title"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:singleLineTitle="false"
+                tools:ignore="UnusedAttribute" />
 
         </PreferenceCategory>
 

@@ -2286,7 +2286,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
                         boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
                         boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
-                                && !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
+                                && !singleEventArray[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Xdays));
+                                //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                         boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
 
                         if (isHiddenEvent) statsHiddenEvents++;
