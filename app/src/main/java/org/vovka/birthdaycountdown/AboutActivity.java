@@ -112,21 +112,22 @@ public class AboutActivity extends AppCompatActivity {
                     AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             insets.top * 4/5);
+                    lp.setScrollFlags(0);
                     TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                     viewPadding.setLayoutParams(lp);
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
                     } else {
-                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);

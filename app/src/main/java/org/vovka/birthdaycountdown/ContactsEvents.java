@@ -622,6 +622,8 @@ class ContactsEvents {
                 return intent;
             }
 
+
+
             if (prefAction == 1) { //Контакт, календарь, ссылка
                 if (isRealContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
@@ -753,7 +755,9 @@ class ContactsEvents {
     }
 
     static boolean isWidgetSupportConfig() {
-        return isSamsung() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
+        return isSamsung()
+                || (!isXiaomi() & Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                || (isXiaomi() & Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q);
     }
 
     static boolean isEdgeToEdge() {
@@ -2862,6 +2866,7 @@ class ContactsEvents {
                             eventData.put(Position_personFullName, eventTitle);
                             eventData.put(Position_personFullNameAlt, eventTitle);
                             eventData.put(Position_eventStorage, Constants.STRING_STORAGE_CALENDAR);
+                            eventData.put(Position_eventID, eventID);
 
                             eventURLs.clear();
                             String eventURL;
@@ -2894,9 +2899,11 @@ class ContactsEvents {
                                     event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, eventTitle, false);
                                 }
 
+                            } else if (isMultiTypeSource) {
+                                event.icon = R.drawable.ic_event_unknown;
                             }
-                            String foundName = null;
 
+                            String foundName = null;
                             if (isMultiTypeSource && event.icon == R.drawable.ic_event_unknown) {
                                 String foundLabel = null;
                                 if (!matcherNameAndTypes.isEmpty()) { // ..[name]..[type]..
@@ -3124,7 +3131,7 @@ class ContactsEvents {
                                 }
 
                                 eventData.put(Position_eventCaption, event.caption); //Наименование события
-                                eventData.put(Position_eventID, eventID);
+                                //eventData.put(Position_eventID, eventID);
                                 eventData.put(Position_eventLabel, event.label); //Заголовок события
                                 eventData.put(Position_eventType, event.type); //Тип события
                                 eventData.put(Position_eventSubType, event.subType); //Подтип события
@@ -3556,7 +3563,7 @@ class ContactsEvents {
             } else if (eventType.equals(getEventType(Constants.Type_Other))) {
 
                 fileList = preferences_OtherEvent_files;
-                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
                 event.subType = getEventType(Constants.Type_FileEvent);
 
             } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {

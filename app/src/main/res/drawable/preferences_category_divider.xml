@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 12.02.2025, 22:35
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 12.02.2025, 22:35
+  ~  */
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/borderWindowColor" />
+    <size android:height="?attr/android:dividerHeight" />
+</shape>

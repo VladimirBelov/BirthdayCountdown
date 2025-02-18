@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +51,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
@@ -108,6 +114,30 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.widget_config);
+
+            if (ContactsEvents.isEdgeToEdge()) {
+                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4/5);
+                    lp.setScrollFlags(0);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                    } else {
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                    }
+                    return WindowInsetsCompat.CONSUMED;
+                });
+            } else {
+                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                viewPadding.setVisibility(View.GONE);
+                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
@@ -475,10 +505,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
-                    if (ContactsEvents.isWidgetSupportConfig()) {
-                        eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID));
-                        eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
-                    }
+                    //if (ContactsEvents.isWidgetSupportConfig()) {
+                        eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
+                    //}
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DatesInBrackets));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));

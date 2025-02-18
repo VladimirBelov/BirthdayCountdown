@@ -20,7 +20,7 @@
     <PreferenceCategory
         android:key="@string/pref_Common_key"
         android:title="@string/pref_Common_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <!-- todo: добавить другие языки https://crowdin.com/ -->
         <ListPreference
@@ -614,7 +614,7 @@
     <PreferenceCategory
         android:key="@string/pref_EventList_key"
         android:title="@string/pref_EventList_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <MultiSelectListPreference
             android:key="@string/pref_List_Events_key"
@@ -816,7 +816,7 @@
     <PreferenceCategory
         android:key="@string/pref_Widgets_key"
         android:title="@string/pref_Widgets_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <Preference
             android:key="@string/pref_Widgets_AddWidget_key"
@@ -955,7 +955,7 @@
     <PreferenceCategory
         android:key="@string/pref_Notifications_key"
         android:title="@string/pref_Notifications_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <MultiSelectListPreference
             android:key="@string/pref_Notifications_Days_key"
@@ -1079,7 +1079,7 @@
     <PreferenceCategory
         android:key="@string/pref_Notifications2_key"
         android:title="@string/pref_Notifications2_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <MultiSelectListPreference
             android:key="@string/pref_Notifications2_Days_key"
@@ -1202,7 +1202,7 @@
     <PreferenceCategory
         android:key="@string/pref_Quiz_key"
         android:title="@string/pref_Quiz_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <ListPreference
             android:key="@string/pref_Quiz_Interface_key"
@@ -1219,7 +1219,7 @@
     <PreferenceCategory
         android:key="@string/pref_Tools_key"
         android:title="@string/pref_Tools_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <Preference
             android:key="@string/pref_Tools_Preferences_Show_key"
@@ -1236,27 +1236,27 @@
             android:title="@string/pref_Tools_Preferences_Import_title"
             android:icon="@android:drawable/ic_menu_upload"/>
 
-        <PreferenceCategory
-            android:key="@string/pref_Tools_Events_key"
-            android:title="@string/pref_Tools_Events_title"
-            android:layout="@layout/settings_category_with_icon"
-            android:icon="@android:drawable/ic_menu_agenda">
+    </PreferenceCategory>
 
-            <Preference
-                android:key="@string/pref_Tools_Events_Show_key"
-                android:title="@string/pref_Tools_Events_Show_title"
-                android:icon="@android:drawable/ic_menu_info_details"
-                android:singleLineTitle="false"
-                tools:ignore="UnusedAttribute"/>
+    <PreferenceCategory
+        android:key="@string/pref_Tools_Events_key"
+        android:title="@string/pref_Tools_Events_title"
+        android:layout="@layout/settings_category_with_divider"
+        android:icon="@android:drawable/ic_menu_agenda">
 
-        </PreferenceCategory>
+        <Preference
+            android:key="@string/pref_Tools_Events_Show_key"
+            android:title="@string/pref_Tools_Events_Show_title"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:singleLineTitle="false"
+            tools:ignore="UnusedAttribute"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="@string/pref_Help_key"
         android:title="@string/pref_Help_title"
-        android:layout="@layout/settings_category">
+        android:layout="@layout/settings_category_with_divider">
 
         <Preference
             android:key="@string/pref_FAQActivity_key"

@@ -40,7 +40,7 @@
 	</com.google.android.material.appbar.AppBarLayout>
 
 	<RelativeLayout
-		android:id="@+id/mainListLayout"
+		android:id="@+id/layout_main"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="?attr/backgroundColor">

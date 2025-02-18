@@ -409,6 +409,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
+            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Events_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);

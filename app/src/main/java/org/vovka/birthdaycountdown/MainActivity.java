@@ -197,31 +197,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    //if (insets.top > 0) { //Если EdgeToEdge включён
-                        AppBarLayout.LayoutParams lp = new LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                insets.top * 4 / 5);
-                        TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                        viewPadding.setVisibility(View.VISIBLE);
-                        viewPadding.setLayoutParams(lp);
-                        v.setPadding(0, 0, 0, 0);
-                        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                            findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
-                        } else {
-                            findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
-                        }
-                    /*} else {
-                        TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                        viewPadding.setVisibility(View.GONE);
-                        findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
-                    }*/
+                    AppBarLayout.LayoutParams lp = new LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            insets.top * 4/5);
+                    lp.setScrollFlags(0);
+                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
+                    viewPadding.setVisibility(View.VISIBLE);
+                    viewPadding.setLayoutParams(lp);
+                    v.setPadding(0, 0, 0, 0);
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
+                    } else {
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
+                    }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.mainListLayout).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
             }
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
@@ -563,7 +558,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
                 Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
                 try {
-                    startActivity(editEventIntent);
+                    if (editEventIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(editEventIntent);
+                    }
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
@@ -2173,10 +2170,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             //Отступы списка событий
+            int prefTopMargin = 0; //todo: отступ прибавляется каждый рефреш (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics);
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) swipeRefresh.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                    marginParams.topMargin,
+                    marginParams.topMargin + prefTopMargin,
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
             swipeRefresh.setLayoutParams(marginParams);

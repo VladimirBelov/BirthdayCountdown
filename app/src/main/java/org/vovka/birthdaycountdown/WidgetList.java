@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -266,6 +267,18 @@ public class WidgetList extends AppWidgetProvider {
                         context.getApplicationContext().startActivity(intentView);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
+
+            } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
+
+                Intent intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                try {
+                    Intent intentChooser = Intent.createChooser(intentShare, "");
+                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentChooser);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             }
 

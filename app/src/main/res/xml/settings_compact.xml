@@ -1224,7 +1224,7 @@
         <PreferenceCategory
             android:key="@string/pref_Tools_Preferences_key"
             android:title="@string/pref_Tools_Preferences_title"
-            android:layout="@layout/settings_category_with_icon"
+            android:layout="@layout/settings_category_with_divider"
             android:icon="@drawable/ic_sysbar_quicksettings">
 
             <Preference
@@ -1247,7 +1247,7 @@
         <PreferenceCategory
             android:key="@string/pref_Tools_Events_key"
             android:title="@string/pref_Tools_Events_title"
-            android:layout="@layout/settings_category_with_icon"
+            android:layout="@layout/settings_category_with_divider"
             android:icon="@android:drawable/ic_menu_agenda">
 
             <Preference
