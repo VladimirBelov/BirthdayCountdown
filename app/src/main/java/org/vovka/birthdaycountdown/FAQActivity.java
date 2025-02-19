@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 23.08.2023, 19:34
+ *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 19.02.2025, 12:30
  *
  */
 
@@ -27,10 +27,6 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
-
-import java.util.Locale;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +34,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.appbar.AppBarLayout;
+
+import java.util.Locale;
 
 public class FAQActivity extends AppCompatActivity {
 
@@ -107,7 +107,7 @@ public class FAQActivity extends AppCompatActivity {
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);

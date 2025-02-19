@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 15.01.2024, 00:56
+ *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 19.02.2025, 12:44
  *
  */
 
@@ -37,15 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +46,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
+
+import com.google.android.material.appbar.AppBarLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -136,7 +136,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);

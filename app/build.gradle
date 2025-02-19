@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.03.2022, 22:54
- *  * Copyright (c) 2018 - 2022. All rights reserved.
- *  * Last modified 24.02.2022, 11:13
+ *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 19.02.2025, 02:02
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -36,7 +36,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        buildToolsVersion  = "36.0.0-rc3" //https://developer.android.com/tools/releases/build-tools
+        buildToolsVersion  = "36.0.0-rc5" //https://developer.android.com/tools/releases/build-tools
 
         def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl', 'cs']
         buildConfigField "String[]", "TRANSLATIONS", "new String[]{\""+locales.join("\",\"")+"\"}"
