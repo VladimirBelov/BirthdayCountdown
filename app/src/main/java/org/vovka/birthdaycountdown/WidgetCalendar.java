@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.2025, 11:26
+ *  * Created by Vladimir Belov on 21.02.2025, 01:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.02.2025, 11:20
+ *  * Last modified 20.02.2025, 22:04
  *
  */
 
@@ -160,8 +160,12 @@ public class WidgetCalendar extends AppWidgetProvider {
             AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             if (appWidgetInfo == null) return;
 
-            if (eventsData.getContext() == null) eventsData.setContext(context);
-            eventsData.getPreferences();
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                if (eventsData.getContext() == null) eventsData.setContext(context);
+                eventsData.getPreferences();
+                eventsData.setLocale(true);
+                eventsData.getEvents(context);
+            }
 
             //Без этого на Android 8 и 9 не меняет динамически язык
             Locale locale;

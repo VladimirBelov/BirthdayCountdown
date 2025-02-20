@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 04.02.2023, 11:43
+  ~  * Created by Vladimir Belov on 21.02.2025, 01:05
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.02.2025, 00:57
   ~  */
   -->
 
@@ -58,6 +58,8 @@
                  <li>Realizar la acción especificada en la configuración del widget para un día festivo (ventana emergente, calendario)
                  <li>Realice la acción especificada en la configuración del widget para un día normal (ventana emergente, calendario)
                  </ol>]]></item>
+
+                <item><![CDATA[Si se selecciona el recuento automático de meses, <font color=red>los botones de navegación del mes siguiente y anterior pueden no funcionar correctamente</font>. Para corregir este comportamiento, es necesario configurar manualmente el número de meses en la configuración del widget.]]></item>
 
                 <item>###Eventos</item>
 

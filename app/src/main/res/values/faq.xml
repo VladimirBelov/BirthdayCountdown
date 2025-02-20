@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 19.09.2023, 11:17
+  ~  * Created by Vladimir Belov on 21.02.2025, 01:05
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.02.2025, 00:55
   ~  */
   -->
 
@@ -57,6 +57,8 @@
                  <li>Perform the action specified in the widget settings for a holiday (pop-up window, calendar)
                  <li>Perform the action specified in the widget settings for a regular day (pop-up window, calendar)
                  </ol>]]></item>
+
+        <item><![CDATA[If automatic determination of months number is selected, <font color=red>the navigation buttons for the next and previous months may not work correctly</font>. To correct this behavior, you must manually set the number of months in the widget settings.]]></item>
 
         <item>###Events</item>
 

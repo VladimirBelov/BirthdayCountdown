@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.02.2025, 11:26
+ *  * Created by Vladimir Belov on 21.02.2025, 01:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.02.2025, 09:57
+ *  * Last modified 20.02.2025, 22:04
  *
  */
 
@@ -5425,8 +5425,11 @@ class ContactsEvents {
 
             eventList.set(i, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
+            final String eventKey = getEventKey(singleEventArray);
+            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+
             //Избранные для календарного виджета
-            if (Constants.STRING_1.equals(singleEventArray[Position_starred])) {
+            if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                 final String packHash = getHash(Constants.eventSourceFavoritePrefix);
                 final String eventTitle = Constants.eventTitleFavoritePrefix
                         .concat(singleEventArray[Position_eventCaption])
@@ -5483,7 +5486,6 @@ class ContactsEvents {
                 }
 
                 //Счётчики дней
-                final String eventKey = getEventKey(singleEventArray);
                 if (getXDaysEventsCount() > 0 && isXDaysEvent(eventKey)) {
                     final List<String> valuePeriods = getXDaysEvent(eventKey);
                     Calendar dateStart = ContactsEvents.removeTime(Calendar.getInstance());

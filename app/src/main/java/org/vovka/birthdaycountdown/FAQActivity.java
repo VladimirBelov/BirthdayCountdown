@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Created by Vladimir Belov on 21.02.2025, 01:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.02.2025, 12:30
+ *  * Last modified 21.02.2025, 00:48
  *
  */
 
@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -81,9 +82,6 @@ public class FAQActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
-
-            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе нижняя кнопка на системном языке
-
             setContentView(R.layout.activity_faq);
 
             if (ContactsEvents.isEdgeToEdge()) {
@@ -180,7 +178,9 @@ public class FAQActivity extends AppCompatActivity {
                 );
             }
 
-            findViewById(R.id.buttonMail).setOnClickListener(view -> {
+            Button buttonMail = findViewById(R.id.buttonMail);
+            buttonMail.setText(R.string.button_question);
+            buttonMail.setOnClickListener(view -> {
                 try {
                     startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(Constants.MAILTO_TEMPLATE + getString(R.string.app_name) + "%20"
                             + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
