@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 17.01.2024, 20:35
+ *  * Created by Vladimir Belov on 20.02.2025, 11:26
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 20.02.2025, 09:57
  *
  */
 
@@ -76,6 +76,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.text.HtmlCompat;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -108,23 +125,6 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.text.HtmlCompat;
 
 class ContactsEvents {
 
@@ -2133,28 +2133,28 @@ class ContactsEvents {
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
 
-            Calendar startTime = Calendar.getInstance();
-            startTime.set(Calendar.HOUR_OF_DAY, 0);
-            startTime.set(Calendar.MINUTE, 0);
-            startTime.set(Calendar.SECOND, 0);
-            startTime.set(Calendar.MILLISECOND, 0);
-            final int zoneOffset = TimeZone.getDefault().getOffset(startTime.getTimeInMillis()); //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
-            startTime.add(Calendar.MILLISECOND, zoneOffset);
+            Calendar startPeriod = Calendar.getInstance();
+            startPeriod.set(Calendar.HOUR_OF_DAY, 0);
+            startPeriod.set(Calendar.MINUTE, 0);
+            startPeriod.set(Calendar.SECOND, 0);
+            startPeriod.set(Calendar.MILLISECOND, 0);
+            final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis()); //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
+            startPeriod.add(Calendar.MILLISECOND, zoneOffset);
 
-            Calendar endTime = (Calendar) startTime.clone();
-            endTime.set(Calendar.YEAR, startTime.get(Calendar.YEAR) + 1);
-            endTime.set(Calendar.HOUR_OF_DAY, 0);
-            endTime.set(Calendar.MINUTE, 0);
-            endTime.set(Calendar.SECOND, 0);
-            endTime.set(Calendar.MILLISECOND, 0);
-            endTime.add(Calendar.MILLISECOND, zoneOffset);
-            endTime.add(Calendar.SECOND, -1);
+            Calendar endPeriod = (Calendar) startPeriod.clone();
+            endPeriod.set(Calendar.YEAR, startPeriod.get(Calendar.YEAR) + 1);
+            endPeriod.set(Calendar.HOUR_OF_DAY, 0);
+            endPeriod.set(Calendar.MINUTE, 0);
+            endPeriod.set(Calendar.SECOND, 0);
+            endPeriod.set(Calendar.MILLISECOND, 0);
+            endPeriod.add(Calendar.MILLISECOND, zoneOffset);
+            endPeriod.add(Calendar.SECOND, -1);
 
             String[] projection = {CalendarContract.Instances.EVENT_ID};
             String selection = CalendarContract.Events.CALENDAR_ID + " = " + calID;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-            ContentUris.appendId(builder, startTime.getTimeInMillis());
-            ContentUris.appendId(builder, endTime.getTimeInMillis());
+            ContentUris.appendId(builder, startPeriod.getTimeInMillis());
+            ContentUris.appendId(builder, endPeriod.getTimeInMillis());
 
             Cursor cursor = contentResolver.query(builder.build(), projection, selection, null, "dtstart ASC");
             if (cursor != null) {
@@ -2711,6 +2711,12 @@ class ContactsEvents {
 
             Calendar endPeriod = (Calendar) startPeriod.clone();
             endPeriod.set(Calendar.YEAR, startPeriod.get(Calendar.YEAR) + 1);
+            endPeriod.set(Calendar.HOUR_OF_DAY, 0);
+            endPeriod.set(Calendar.MINUTE, 0);
+            endPeriod.set(Calendar.SECOND, 0);
+            endPeriod.set(Calendar.MILLISECOND, 0);
+            endPeriod.add(Calendar.MILLISECOND, zoneOffset);
+            endPeriod.add(Calendar.SECOND, -1);
 
             Calendar dateRubicon = (Calendar) startPeriod.clone();
             if (preferences_list_prev_events_scan_distance > 0) {

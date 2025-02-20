@@ -1,12 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 17.01.2024, 23:18
+ *  * Created by Vladimir Belov on 20.02.2025, 11:26
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 20.02.2025, 11:20
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 import android.annotation.SuppressLint;
 import android.app.LocaleManager;
@@ -29,6 +31,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 public class WidgetCalendar extends AppWidgetProvider {
 
@@ -774,9 +774,11 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Реакция на нажатие
-            PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
-            if (pendingIntent != null) {
-                cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
+            if (enabledFillDays || inMonth) {
+                PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
+                if (pendingIntent != null) {
+                    cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
+                }
             }
 
         } catch (Exception e) {
