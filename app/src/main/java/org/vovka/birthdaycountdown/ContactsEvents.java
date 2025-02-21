@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 01:05
+ *  * Created by Vladimir Belov on 21.02.2025, 13:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.02.2025, 22:04
+ *  * Last modified 21.02.2025, 12:52
  *
  */
 
@@ -1069,7 +1069,7 @@ class ContactsEvents {
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
 
-            //Общие нстройки
+            //Общие настройки
             preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
             preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
@@ -2027,9 +2027,9 @@ class ContactsEvents {
                     projectionContactsEvents,
                     ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
                     new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
-                    ContactsContract.Data.DISPLAY_NAME + " ASC, "
-                            + ContactsContract.CommonDataKinds.Event.TYPE + " ASC, "
-                            + ContactsContract.CommonDataKinds.Event.LABEL + " ASC"
+                    ContactsContract.Data.DISPLAY_NAME + Constants.SQL_SORT_ASC_CONT
+                            + ContactsContract.CommonDataKinds.Event.TYPE + Constants.SQL_SORT_ASC_CONT
+                            + ContactsContract.CommonDataKinds.Event.LABEL + Constants.SQL_SORT_ASC
             );
             if (cursor == null) return false;
 
@@ -2399,7 +2399,6 @@ class ContactsEvents {
         String accountKey = null;
 
         try {
-            //StringBuilder dataRow;
             eventDate = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
             eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
             String eventSubType = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE)));
@@ -2413,6 +2412,9 @@ class ContactsEvents {
 
                 String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)));
                 String contactNameAlt = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)));
+                if (contactNameAlt.contains(Constants.STRING_PARENTHESIS_START)) {
+                    contactNameAlt = contactNameAlt.substring(0, contactNameAlt.indexOf(Constants.STRING_PARENTHESIS_START)).trim();
+                }
                 String eventLabel = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL)));
                 boolean isEventLabel = !TextUtils.isEmpty(eventLabel);
                 String eventCaption = Constants.STRING_EMPTY;
@@ -2424,6 +2426,7 @@ class ContactsEvents {
                 if (eventType.equals(getEventType(Constants.Type_BirthDay))
                         || (isEventLabel && preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel.toLowerCase()).find())) {
 
+                    //todo: переделать на @createTypedEvent
                     eventCaption = getResources().getString(R.string.event_type_birthday);
                     eventIcon = R.drawable.ic_event_birthday; //https://icons8.com/icon/21460/birthday
                     eventEmoji = getResources().getString(R.string.event_type_birthday_emoji);
@@ -2582,10 +2585,12 @@ class ContactsEvents {
 
                     String contactID = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_CONTACT_ID));
                     if (contactID == null) return eventKey_current;
-                    String contactFIO = contactName.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_SPACE);
+                    String contactFIO = contactName;
 
                     String contactTitle = map_contacts_titles.get(contactID);
-                    if (contactTitle != null && !contactTitle.isEmpty()) {
+                    if (contactTitle == null || contactTitle.isEmpty()) {
+
+                        contactTitle = Constants.STRING_EMPTY;
 
                         //всё, что внутри скобок в имени - в должность
                         int pStartFirst = contactFIO.indexOf(Constants.STRING_PARENTHESIS_START);
@@ -2618,6 +2623,7 @@ class ContactsEvents {
                     } else {
                         contactTitle = Constants.STRING_EMPTY;
                     }
+                    contactFIO = contactFIO.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_SPACE);
 
                     eventKey_current = eventKey_next;
 
@@ -2809,14 +2815,14 @@ class ContactsEvents {
                     projection,
                     selection,
                     null,
-                    CalendarContract.Events.DTSTART + " ASC"
+                    CalendarContract.Events.DTSTART + Constants.SQL_SORT_ASC
             );
 
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
 
                     int importMethod_Standalone = 0; //Календарное событие без контакта
-                    int importMethod_NewContactEvent = 1; //Контакт найден, но у него нет данных о cобытии этого типа - обновляем событие по карточке контакта
+                    int importMethod_NewContactEvent = 1; //Контакт найден, но у него нет данных о событии этого типа - обновляем событие по карточке контакта
                     int importMethod_AdditionalDateToContactEvent = 2; //Контакт найден, у него есть такое же событие - добавляем к источникам дат ещё одно значение
 
                     cursor_loop: while (cursor.moveToNext()) {
@@ -10354,7 +10360,7 @@ class ContactsEvents {
                     projection,
                     selection,
                     null,
-                    CalendarContract.Instances.BEGIN + " ASC"
+                    CalendarContract.Instances.BEGIN + Constants.SQL_SORT_ASC
             );
             if (cursor != null) {
                 if (cursor.getCount() > 0) {

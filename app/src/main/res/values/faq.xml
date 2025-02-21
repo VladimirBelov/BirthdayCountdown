@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 01:05
+  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 00:55
+  ~  * Last modified 21.02.2025, 13:28
   ~  */
   -->
 
@@ -32,12 +32,13 @@
         <item>Go to the widget settings and try to modify \"Custom events number\" setting.</item>
 
         <item>#Widgets are not updating</item>
-        <item><![CDATA[You must disable battery optimization for the application. There are different settings for different Android shells: <ul>
+
+        <item><![CDATA[<font color=red>Check that there are no red warnings in \"Settings-> Help\".</font> For Android 12+, to update widgets and trigger notifications, you need to enable alarms; for Android versions earlier, disable battery optimization for this application.<br>]]></item>
+
+        <item><![CDATA[Disable battery consumption optimization for different Android shells:<ul>
         <li>for Xiaomi MIUI this is \"Enable Autostart\" (Security–> Permissions–> Autostart)
         <li>for pure Android 9-11 this is \"Disable Battery optimization\" (Apps and notifications-> Advanced-> Special app access-> Battery optimization)
         <li>for Huawei EMUI this is \"Enable Autostart\" (Settings-> Battery-> Start applications)</ul>]]></item>
-        <item>When battery optimization is enabled, there will be a warning message at the top of the screen in each widget preference screen. A similar inscription will be at the bottom of the application settings. To turn off optimization, click on the red label</item>
-        <item><![CDATA[<img src="battery_optimization_on_en.png" width=100%><br>]]></item>
         <item><![CDATA[Sometimes on Android 9-10 widgets stop updating after installing a new version of the app. To fix widget updates you need to:<ol>
         <li>remove the widget from the screen
         <li>clear the launcher cache (in Android settings in the list of applications find the launcher and select \"clear cache\" in properties)

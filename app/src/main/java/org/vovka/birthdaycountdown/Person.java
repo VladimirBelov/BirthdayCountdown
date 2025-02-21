@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 10.10.2023, 16:23
+ *  * Created by Vladimir Belov on 21.02.2025, 13:56
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 21.02.2025, 12:35
  *
  */
 
@@ -38,7 +38,7 @@ class Person {
 
             this.context = context;
 
-            FIO_str = eventArray[ContactsEvents.Position_personFullNameAlt];
+            FIO_str = eventArray[ContactsEvents.Position_personFullNameAlt].trim();
             int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 final ContactsEvents contactsEvents = ContactsEvents.getInstance();

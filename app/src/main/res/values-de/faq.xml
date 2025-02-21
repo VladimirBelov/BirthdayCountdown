@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 01:05
+  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 00:53
+  ~  * Last modified 21.02.2025, 13:28
   ~  */
   -->
 
@@ -32,14 +32,14 @@
                 <item>Gehen Sie zu den Widget-Einstellungen und versuchen Sie, die Einstellung \"Benutzerdefinierte Anzahl der Ereignisse\" zu ändern.</item>
 
                 <item>#Widgets werden nicht aktualisiert</item>
-                <item><![CDATA[Sie müssen die Batterieoptimierung für die Anwendung deaktivieren. Es gibt verschiedene Einstellungen für verschiedene Android-Oberflächen: <ul>
+
+                <item><![CDATA[<font color=red>Überprüfen Sie, dass unter \"Einstellungen-> Hilfe\" keine roten Warnungen angezeigt werden.</font> Unter Android 12+ müssen Sie zum Aktualisieren von Widgets und Auslösen von Warnungen Alarme aktivieren. Deaktivieren Sie unter früheren Android-Versionen die Batterieoptimierung für diese Anwendung.<br>]]></item>
+
+                <item><![CDATA[Deaktivieren der Batterieoptimierung für verschiedene Android-Oberflächen:<ul>
                 <li>für Xiaomi MIUI ist dies \"Enable Autostart\" (Security–> Permissions–> Autostart)
                 <li>für reines Android 9-11 ist dies \"Akkuoptimierung\" (Apps und Benachrichtigungen–> Erweitert–> Spezieller App-Zugriff–> Akkuoptimierung oder Energiesparfunktion)
                 <li>für Huawei EMUI ist das \"Enable Autostart\" (Settings-> Battery-> Start applications)
                 </ul>]]></item>
-
-                <item>Wenn die Akkuoptimierung aktiviert ist, wird in jedem Widget-Einstellungsbildschirm oben auf dem Bildschirm eine Warnmeldung angezeigt. Eine ähnliche Inschrift befindet sich unten in den Anwendungseinstellungen. Um die Optimierung zu deaktivieren, klicken Sie auf die rote Schrift.</item>
-                <item><![CDATA[<img src="battery_optimization_on_de.png" width=100%><br>]]></item>
                 <item><![CDATA[Manchmal stoppen auf Android 9-10 Widgets die Aktualisierung nach der Installation einer neuen Version der App. Um dies zu beheben:<ol>
                 <li>entfernen Sie das Widget vom Bildschirm
                 <li>deaktivieren Sie den Launcher-Cache (in den Android-Einstellungen in der Liste der Anwendungen wählen Sie das Programm aus und löschen in den Eigenschaften den Cache)

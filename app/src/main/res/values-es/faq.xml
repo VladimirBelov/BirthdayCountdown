@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 01:05
+  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 00:57
+  ~  * Last modified 21.02.2025, 13:28
   ~  */
   -->
 
@@ -33,12 +33,13 @@
                 <item>Vaya a la configuración del widget de fotos y experimente con la configuración \"Número de eventos\".</item>
 
                 <item>#Los widgets no se actualizan</item>
-                <item><![CDATA[Debe deshabilitar la optimización de la batería para la aplicación. Hay diferentes configuraciones para diferentes shells de Android: <ul>
+
+                <item><![CDATA[<font color=red>Verifique que no haya alertas rojas en \"Configuración-> Ayuda\".</font> Para Android 12+, para actualizar los widgets y activar alertas, debe habilitar las alarmas; para las versiones de Android anteriores, deshabilite la optimización de la batería para esta aplicación.<br>]]></item>
+
+                <item><![CDATA[Deshabilitar la optimización de la batería para diferentes máscaras de Android:<ul>
                 <li>para Xiaomi MIUI esto es \"Habilitar inicio automático\" (Seguridad–> Permisos–> Inicio automático)
                 <li>para Android 9-11 puro, esto es \"Deshabilitar la optimización de la batería\" (Aplicaciones y notificaciones-> Avanzado-> Acceso a aplicaciones especiales-> Optimización de la batería)
                 <li>para Huawei EMUI esto es \"Habilitar inicio automático\" (Configuración-> Batería-> Iniciar aplicaciones)</ul>]]></item>
-                <item>Cuando la optimización de la batería está habilitada, habrá un mensaje de advertencia en la parte superior de la pantalla en cada pantalla de preferencias de widgets. Una inscripción similar estará en la parte inferior de la configuración de la aplicación. Para desactivar la optimización, haga clic en la etiqueta roja.</item>
-                <item><![CDATA[<img src="battery_optimization_on_es.png" width=100%><br>]]></item>
                 <item><![CDATA[A veces, en Android 9-10, los widgets dejan de actualizarse después de instalar una nueva versión de la aplicación. Para corregir las actualizaciones de widgets, debe:<ol>
                 <li>eliminar el widget de la pantalla
                 <li>borre el caché del iniciador (en la configuración de Android en la lista de aplicaciones, busque el iniciador y seleccione "borrar caché" en propiedades)

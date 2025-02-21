@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 17.01.2024, 17:07
+ *  * Created by Vladimir Belov on 21.02.2025, 13:56
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 21.02.2025, 12:52
  *
  */
 
@@ -427,6 +427,9 @@ final class Constants {
     static final String MIME_IMAGE_ALL = "image/*";
     static final String MIME_IMAGE_JPEG = "image/jpeg";
     static final String MIME_IMAGE_PNG = "image/png";
+
+    public static final String SQL_SORT_ASC = " ASC";
+    public static final String SQL_SORT_ASC_CONT = " ASC, ";
 
     public static String LocalEventsFilename = "Events";
 }
