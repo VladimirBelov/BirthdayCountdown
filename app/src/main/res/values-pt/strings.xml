@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 28.12.2023, 00:38
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:37
   ~  */
   -->
 
@@ -1116,7 +1116,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_ExtraFun_On_description">Ative recursos adicionais para personalizar vários aspectos do aplicativo</string>
     <string name="pref_Help_CalendarSync_title">Sincronização de calendários</string>
     <string name="pref_Help_CalendarSync_summary">Forçar sincronização de todos os calendários</string>
-    <string name="pref_Help_CalendarSync_result">Sincronização forçada para calendários…</string>
+    <string name="pref_Help_CalendarSync_result">"Sincronização forçada para %s"</string>
 
     <string name="pref_Tools_title">Ferramentas</string>
     <string name="pref_Tools_summary">Diferentes ferramentas para manipulação de dados</string>

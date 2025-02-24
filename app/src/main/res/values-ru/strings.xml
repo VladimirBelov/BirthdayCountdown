@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 17.01.2024, 21:03
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:37
   ~  */
   -->
 
@@ -241,6 +241,7 @@
     <string name="button_open">Открыть</string>
     <string name="button_share">Поделиться</string>
     <string name="button_rgb">RGB цвет</string>
+    <string name="button_save">Сохранить</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
@@ -1122,7 +1123,7 @@
     <string name="pref_ExtraFun_On_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
     <string name="pref_Help_CalendarSync_title">Синхронизация календарей</string>
     <string name="pref_Help_CalendarSync_summary">Принудительно запустить синхронизацию всех календарей</string>
-    <string name="pref_Help_CalendarSync_result">Запущена синхронизация календарей…</string>
+    <string name="pref_Help_CalendarSync_result">"Запущена синхронизация %s"</string>
 
     <string name="pref_Tools_title">Инструменты</string>
     <string name="pref_Tools_summary">Различные инструменты для манипуляций с данными</string>
@@ -1280,6 +1281,7 @@
     <string name="local_event_dialog_caption_title_alt">Фамилия Имя (наименование события):</string>
     <string name="local_event_dialog_date_title">Дата:</string>
     <string name="local_event_dialog_type_title">Тип события:</string>
+    <string name="local_event_dialog_confirmation_remove">Вы уверены, что хотите удалить это событие?</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

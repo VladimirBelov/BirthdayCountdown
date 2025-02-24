@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 28.12.2023, 00:38
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:35
   ~  */
   -->
 
@@ -1116,7 +1116,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="pref_ExtraFun_On_description">Habilite funciones adicionales para personalizar varios aspectos de la aplicación</string>
     <string name="pref_Help_CalendarSync_title">Sincronización de calendarios</string>
     <string name="pref_Help_CalendarSync_summary">Forzar sincronización de todos los calendarios</string>
-    <string name="pref_Help_CalendarSync_result">Sincronización forzada para calendarios…</string>
+    <string name="pref_Help_CalendarSync_result">"Sincronización forzada para %s"</string>
 
     <string name="pref_Tools_title">Herramientas</string>
     <string name="pref_Tools_summary">Diferentes herramientas para la manipulación de datos</string>

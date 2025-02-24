@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.02.2024, 12:16
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 20.02.2024, 12:16
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:35
   ~  */
   -->
 
@@ -1116,7 +1116,7 @@
     <string name="pref_ExtraFun_On_description">Уключыць дадатковыя функцыі па наладзе розных аспектаў праграмы</string>
     <string name="pref_Help_CalendarSync_title">Сінхранізацыя календароў</string>
     <string name="pref_Help_CalendarSync_summary">Прымусова сінхранізаваць усе календары</string>
-    <string name="pref_Help_CalendarSync_result">Прымусовая сінхранізацыя для календароў…</string>
+    <string name="pref_Help_CalendarSync_result">"Прымусовая сінхранізацыя для %s"</string>
 
     <string name="pref_Tools_title">Прылады</string>
     <string name="pref_Tools_summary">Розныя прылады для маніпуляцый з дадзенымі</string>

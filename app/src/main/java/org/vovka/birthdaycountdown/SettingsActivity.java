@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 17.01.2024, 21:55
+ *  * Created by Vladimir Belov on 24.02.2025, 17:52
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 24.02.2025, 17:37
  *
  */
 
@@ -77,6 +77,21 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.io.OutputStream;
@@ -93,21 +108,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.text.HtmlCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
@@ -418,6 +418,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 hidePreference(eventsData.checkCanExactAlarm(), R.string.pref_Help_key, R.string.pref_Help_ExactAlarms_key);
                 hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
             }
+            hidePreference(!eventsData.preferences_extrafun || eventsData.checkNoContactsAccess() || eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
             hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
             hidePreference(Build.VERSION.SDK_INT < Build.VERSION_CODES.O, R.string.pref_Widgets_key, R.string.pref_Widgets_AddWidget_key);
@@ -3045,15 +3046,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     public void syncCalendars() {
         try {
 
-            //https://stackoverflow.com/questions/7094637/trigger-android-calendar-to-sync-after-adding-events-programmatically
-            Account[] accounts = AccountManager.get(this).getAccounts();
+            if (eventsData.checkNoCalendarAccess()) return;
+
             String authority = CalendarContract.Calendars.CONTENT_URI.getAuthority();
+            AccountManager accountManager = AccountManager.get(getApplicationContext());
+
+            Account[] accounts = accountManager.getAccountsByType(null);
             for (Account account : accounts) {
                 Bundle extras = new Bundle();
                 extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                ToastExpander.showMsg(this, getString(R.string.pref_Help_CalendarSync_result, account.type));
                 ContentResolver.requestSync(account, authority, extras);
             }
-            ToastExpander.showInfoMsg(this, getString(R.string.pref_Help_CalendarSync_result));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -3076,10 +3080,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         new String[]{Manifest.permission.READ_CALENDAR},
                         resultCode
                 );
-                ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
-                try {
-                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                } catch (ActivityNotFoundException e) { /**/ }
+                /*if (eventsData.checkNoCalendarAccess()) {
+                    ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
+                    try {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                    } catch (ActivityNotFoundException e) { *//**//* }
+                }*/
             } else {
                 ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
                 try {

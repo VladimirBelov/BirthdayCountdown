@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 28.12.2023, 00:38
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:35
   ~  */
   -->
 
@@ -1116,7 +1116,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
     <string name="pref_Help_CalendarSync_title">Kalender synchronisieren</string>
     <string name="pref_Help_CalendarSync_summary">Synchronisierung aller Kalender erzwingen</string>
-    <string name="pref_Help_CalendarSync_result">Erzwungene Synchronisierung für Kalender…</string>
+    <string name="pref_Help_CalendarSync_result">"Erzwungene Synchronisierung für %s"</string>
 
     <string name="pref_Tools_title">Werkzeuge</string>
     <string name="pref_Tools_summary">Verschiedene Werkzeuge zur Datenbearbeitung</string>

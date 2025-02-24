@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.07.2024, 20:35
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 15.07.2024, 20:35
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 16:37
   ~  */
   -->
 
@@ -1116,7 +1116,7 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
     <string name="pref_ExtraFun_On_description">Włącz dodatkowe funkcje umożliwiające dostosowywanie różnych aspektów aplikacji</string>
     <string name="pref_Help_CalendarSync_title">Synchronizacja kalendarzy</string>
     <string name="pref_Help_CalendarSync_summary">Wymuś synchronizację wszystkich kalendarzy</string>
-    <string name="pref_Help_CalendarSync_result">Rozpoczęto synchronizację kalendarza…</string>
+    <string name="pref_Help_CalendarSync_result">"Rozpoczęto synchronizację %s"</string>
 
     <string name="pref_Tools_title">Narzędzia</string>
     <string name="pref_Tools_summary">Różne narzędzia do manipulacji danymi</string>

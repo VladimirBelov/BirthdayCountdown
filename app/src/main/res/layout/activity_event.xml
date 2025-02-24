@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2024, 20:57
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 21.02.2024, 20:56
+  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 24.02.2025, 13:17
   ~  */
   -->
 
@@ -215,7 +215,8 @@
         android:layout_height="wrap_content"
         android:gravity="end|center_horizontal"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/buttonFirstAction"
@@ -224,10 +225,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:paddingVertical="6dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
+            android:singleLine="true"
             android:textSize="18sp"
+            android:ellipsize="marquee"
             android:visibility="gone"
             android:background="@drawable/border_button"
             android:textColor="?android:attr/textColorPrimary"
@@ -242,10 +244,11 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/border_button"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:paddingVertical="6dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
+            android:singleLine="true"
             android:textSize="18sp"
+            android:ellipsize="marquee"
             android:visibility="gone"
             android:textColor="?android:attr/textColorPrimary"
             tools:ignore="TouchTargetSizeCheck" />
@@ -258,10 +261,11 @@
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:paddingVertical="6dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
+            android:singleLine="true"
             android:textSize="18sp"
+            android:ellipsize="marquee"
             android:visibility="gone"
             android:background="@drawable/border_button"
             android:textColor="?android:attr/textColorPrimary"

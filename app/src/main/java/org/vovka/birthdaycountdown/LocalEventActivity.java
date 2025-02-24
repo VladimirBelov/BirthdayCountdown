@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.01.2025, 22:00
+ *  * Created by Vladimir Belov on 24.02.2025, 17:52
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.01.2025, 22:00
+ *  * Last modified 24.02.2025, 13:33
  *
  */
 
@@ -18,6 +18,7 @@ import android.app.LocaleManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -34,6 +36,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -44,10 +50,6 @@ import java.util.Locale;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 public class LocalEventActivity extends Activity {
 
@@ -341,6 +343,15 @@ public class LocalEventActivity extends Activity {
 
                 editDate.setPadding(ContactsEvents.Dip2Px(getResources(), 10), 0, 0, 0);
 
+                if (Intent.ACTION_EDIT.equals(action)) {
+                    TextView buttonRemove = findViewById(R.id.buttonFirstAction);
+                    buttonRemove.setText(R.string.button_remove);
+                    addClickEffect(buttonRemove);
+                    buttonRemove.getBackground().setAlpha(50);
+                    buttonRemove.setVisibility(View.VISIBLE);
+                    buttonRemove.setOnClickListener(this::buttonRemoveOnClick);
+                }
+
                 TextView buttonCancel = findViewById(R.id.buttonSecondAction);
                 buttonCancel.setText(R.string.button_cancel);
                 addClickEffect(buttonCancel);
@@ -349,7 +360,7 @@ public class LocalEventActivity extends Activity {
                 buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
                 TextView buttonSave = findViewById(R.id.buttonThirdAction);
-                buttonSave.setText(R.string.button_ok);
+                buttonSave.setText(R.string.button_save);
                 addClickEffect(buttonSave);
                 buttonSave.getBackground().setAlpha(50);
                 buttonSave.setVisibility(View.VISIBLE);
@@ -429,6 +440,36 @@ public class LocalEventActivity extends Activity {
         finish();
     }
 
+    void buttonRemoveOnClick(final View view) {
+        ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
+        try {
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            builder.setTitle(getString(R.string.msg_title_confirmation));
+            builder.setIcon(android.R.drawable.ic_menu_help);
+            builder.setMessage(getString(R.string.local_event_dialog_confirmation_remove));
+            builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                eventsData.removeLocalEvent(eventData);
+                setResult(RESULT_OK);
+                finish();
+            });
+            builder.setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+            androidx.appcompat.app.AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     void buttonSaveOnClick(final View view) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
         try {
@@ -438,7 +479,8 @@ public class LocalEventActivity extends Activity {
 
             String eventTitle = editCaption.getText().toString();
             if (eventTitle.isEmpty()) {
-                ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field, getString(R.string.local_event_dialog_caption_title)));
+                TextView viewEventTitle = findViewById(R.id.captionTitle);
+                ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field, viewEventTitle.getText()));
                 return;
             }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 13:56
+ *  * Created by Vladimir Belov on 24.02.2025, 17:52
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.02.2025, 12:52
+ *  * Last modified 24.02.2025, 13:22
  *
  */
 
@@ -3310,6 +3310,20 @@ class ContactsEvents {
             SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(eventData.get(Position_eventID), getEventData(eventData));
+            editor.apply();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void removeLocalEvent(@NonNull TreeMap<Integer, String> eventData) {
+        try {
+
+            SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(eventData.get(Position_eventID), null);
             editor.apply();
 
         } catch (Exception e) {
