@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.02.2025, 17:52
+ *  * Created by Vladimir Belov on 25.02.2025, 02:09
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.02.2025, 13:22
+ *  * Last modified 25.02.2025, 02:05
  *
  */
 
@@ -4525,6 +4525,7 @@ class ContactsEvents {
 
                 event.caption = getResources().getString(R.string.event_type_holiday);
                 event.type = getEventType(Constants.Type_HolidayEvent);
+                event.subType = getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
@@ -10713,7 +10714,7 @@ class ContactsEvents {
 
                 //Локальные события
 
-                if (getLocalEventsCount() > 0) {
+                //if (getLocalEventsCount() > 0) {
                     titles.add(
                             getResources().getString(R.string.msg_title_local_events)
                                     + Constants.STRING_BRACKETS_OPEN
@@ -10723,7 +10724,7 @@ class ContactsEvents {
                     icons.add(android.R.drawable.ic_menu_add);
                     packages.add(packageName);
                     hashes.add(getHash(Constants.eventSourcePrefPrefix));
-                }
+                //}
 
                 //Справочники праздников и выходных
 

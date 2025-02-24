@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.02.2025, 17:52
+ *  * Created by Vladimir Belov on 25.02.2025, 02:09
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.02.2025, 13:33
+ *  * Last modified 25.02.2025, 01:54
  *
  */
 
@@ -100,6 +100,7 @@ public class LocalEventActivity extends Activity {
                     useYear.set(true);
                 }
 
+                getActivity().setTheme(eventsData.preferences_theme.themeDialog);
                 View viewActivity = getActivity().getLayoutInflater().inflate(R.layout.datepicker, null);
 
                 TextView editDate = getActivity().findViewById(R.id.editDate);

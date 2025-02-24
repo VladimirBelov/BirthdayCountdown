@@ -1,9 +1,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 17.01.2024, 23:16
+  ~  * Created by Vladimir Belov on 25.02.2025, 02:09
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 25.02.2025, 00:32
   ~  */
   -->
 
@@ -39,6 +39,8 @@
             android:contentDescription="@string/month_title"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:padding="0dp" />
 
         <TextView

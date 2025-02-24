@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.02.2025, 17:52
+ *  * Created by Vladimir Belov on 25.02.2025, 02:09
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.02.2025, 14:48
+ *  * Last modified 25.02.2025, 01:28
  *
  */
 
@@ -2087,7 +2087,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(this);
-            if (eventsData.statLastPausedForOtherActivity > 0 //&& !this.dataList.isEmpty()
+            if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
                     && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) return; //если "выходили" посмотреть карточку контакта или события на 5 сек
 
             eventsData.getPreferences();
@@ -2188,8 +2188,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             //Тему не меняли, просто обновляем данные
-            if (eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-//this.dataList.isEmpty() ||
+            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
                 eventsData.updateWidgets(0, null);

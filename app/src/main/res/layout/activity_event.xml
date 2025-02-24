@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Created by Vladimir Belov on 25.02.2025, 02:09
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.02.2025, 13:17
+  ~  * Last modified 25.02.2025, 01:25
   ~  */
   -->
 
@@ -232,7 +232,7 @@
             android:ellipsize="marquee"
             android:visibility="gone"
             android:background="@drawable/border_button"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/dialogButtonColor"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
@@ -250,7 +250,7 @@
             android:textSize="18sp"
             android:ellipsize="marquee"
             android:visibility="gone"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/dialogButtonColor"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
@@ -268,7 +268,7 @@
             android:ellipsize="marquee"
             android:visibility="gone"
             android:background="@drawable/border_button"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/dialogButtonColor"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
