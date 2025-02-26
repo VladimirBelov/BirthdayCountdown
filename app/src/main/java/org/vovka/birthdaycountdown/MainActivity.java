@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.02.2025, 02:09
+ *  * Created by Vladimir Belov on 26.02.2025, 15:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.02.2025, 01:28
+ *  * Last modified 26.02.2025, 14:34
  *
  */
 
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
 
             String eventStorage = selectedEvent[ContactsEvents.Position_eventStorage];
-            if (eventStorage.contains(Constants.STRING_STORAGE_PREF)) {
+            if (eventStorage.contains(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_EditLocalEvent, Menu.NONE, getString(R.string.menu_context_edit_local_event))
                         .setIcon(android.R.drawable.ic_menu_edit);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

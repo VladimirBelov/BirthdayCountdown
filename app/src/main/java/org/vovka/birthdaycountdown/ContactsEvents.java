@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2025, 13:18
+ *  * Created by Vladimir Belov on 26.02.2025, 15:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.02.2025, 12:51
+ *  * Last modified 26.02.2025, 15:23
  *
  */
 
@@ -615,14 +615,12 @@ class ContactsEvents {
             final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
             final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
 
-            if (Constants.STRING_STORAGE_PREF.equals(singleEventArray[Position_eventStorage])) {
+            if (Constants.EVENT_PREFIX_LOCAL_EVENT.equals(singleEventArray[Position_eventStorage])) {
                 Intent intent = new Intent(context, LocalEventActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
                 return intent;
             }
-
-
 
             if (prefAction == 1) { //Контакт, календарь, ссылка
                 if (isRealContactID) {
@@ -2564,7 +2562,7 @@ class ContactsEvents {
                 }
 
                 String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDate + Constants.STRING_COLON_SPACE
-                        + getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourceLocalPrefix) + accountKey);
+                        + getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
 
                 if (!eventKey_next.equalsIgnoreCase(eventKey_current)) { //Начало данных нового контакта
 
@@ -3260,10 +3258,10 @@ class ContactsEvents {
                             dateEventNextTime.setYear(dateEventNextTime.getYear() + 1);
                         }
 
-                        String eventDates = Constants.EVENT_PREFIX_PREF_EVENT + Constants.STRING_COLON_SPACE
+                        String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
                                 + (eventUseYear ? sdf_java.format(dateEventNextTime) : sdf_java_no_year.format(dateEventNextTime))
                                 + Constants.STRING_COLON_SPACE
-                                + getHash(Constants.eventSourcePrefPrefix);
+                                + getHash(Constants.eventSourceLocalPrefix);
 
                         Event event = createTypedEvent(eventType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
                         TreeMap<Integer, String> eventData = getEventData(eventString);
@@ -3277,7 +3275,7 @@ class ContactsEvents {
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventType, event.type);
                         eventData.put(Position_eventSubType, event.subType);
-                        eventData.put(Position_eventStorage, Constants.STRING_STORAGE_PREF);
+                        eventData.put(Position_eventStorage, Constants.EVENT_PREFIX_LOCAL_EVENT);
                         eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_local));
 
                         statEventsCount++;
@@ -10720,10 +10718,10 @@ class ContactsEvents {
                                     + Constants.STRING_BRACKETS_OPEN
                                     + getLocalEventsCount()
                                     + Constants.STRING_BRACKETS_CLOSE);
-                    ids.add(Constants.eventSourcePrefPrefix);
+                    ids.add(Constants.eventSourceLocalPrefix);
                     icons.add(android.R.drawable.ic_menu_add);
                     packages.add(packageName);
-                    hashes.add(getHash(Constants.eventSourcePrefPrefix));
+                    hashes.add(getHash(Constants.eventSourceLocalPrefix));
                 //}
 
                 //Справочники праздников и выходных
@@ -10833,7 +10831,7 @@ class ContactsEvents {
                                         + cursor.getString(indexTypeColumn) + Constants.STRING_PARENTHESIS_CLOSE;
                                 if (!titles.contains(accountName)) {
                                     if (preferences_accounts.isEmpty() || preferences_accounts.contains(accountName)) {
-                                        String eventId = Constants.eventSourceLocalPrefix + accountName;
+                                        String eventId = Constants.eventSourcePhonePrefix + accountName;
                                         ids.add(eventId);
                                         titles.add(accountName);
                                         if (eventId.toLowerCase().contains(Constants.account_sim)) {
@@ -10954,7 +10952,7 @@ class ContactsEvents {
                                 + getContactsEventsCount(accountType, substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
                                 + Constants.STRING_BRACKETS_CLOSE);
 
-                    } else if (sourceId.startsWith(Constants.eventSourceLocalPrefix)) {
+                    } else if (sourceId.startsWith(Constants.eventSourcePhonePrefix)) {
 
                         final String accountType = substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                         sourceChoices.add(sourceTitle

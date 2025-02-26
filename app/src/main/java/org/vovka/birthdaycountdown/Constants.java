@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 13:56
+ *  * Created by Vladimir Belov on 26.02.2025, 15:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.02.2025, 12:52
+ *  * Last modified 26.02.2025, 14:25
  *
  */
 
@@ -120,7 +120,7 @@ final class Constants {
     static final String STRING_STORAGE_FILE = "file";
     static final String STRING_STORAGE_XDAYS = "x days";
     static final String STRING_STORAGE_HOLIDAYS = "holidays";
-    static final String STRING_STORAGE_PREF = "pref";
+    static final String STRING_STORAGE_PHONE = "phone";
     static final int Storage_Calendar = 0;
     static final int Storage_Contacts = 1;
     static final int Storage_File = 2;
@@ -128,7 +128,7 @@ final class Constants {
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
     static final String EVENT_PREFIX_HOLIDAY_EVENT = "holiday";
-    static final String EVENT_PREFIX_PREF_EVENT = "pref";
+    static final String EVENT_PREFIX_LOCAL_EVENT = "local";
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
     static final String WIDGET_TEXT_VIEW = "textView";
@@ -348,7 +348,7 @@ final class Constants {
     static final int ContextMenu_RemoveFromFavorites = 22;
     static final int ContextMenu_EditLocalEvent = 23;
 
-    static final String eventSourceLocalPrefix = "local:";
+    static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";
     static final String eventSourceCalendarPrefix = "calendar:";
     static final String eventSourceFilePrefix = "file:";
@@ -356,7 +356,7 @@ final class Constants {
     static final String eventSourceHolidayPrefix = "holiday:";
     static final String eventSourceFactPrefix = "fact:";
     static final String eventSourceFavoritePrefix = "fav:";
-    static final String eventSourcePrefPrefix = "pref:";
+    static final String eventSourceLocalPrefix = "local:";
 
     static final String eventTitleFilePrefix = "📁 ";
     static final String eventTitleCalendarPrefix = "📆 ";
