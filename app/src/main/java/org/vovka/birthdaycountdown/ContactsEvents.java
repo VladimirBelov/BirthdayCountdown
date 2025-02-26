@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.02.2025, 02:09
+ *  * Created by Vladimir Belov on 26.02.2025, 13:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.02.2025, 02:05
+ *  * Last modified 26.02.2025, 12:51
  *
  */
 
@@ -2186,21 +2186,15 @@ class ContactsEvents {
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
-                event = new Event();
-                event.caption = getResources().getString(R.string.event_type_birthday);
-                event.type = eventType;
-                event.subType = getEventType(Constants.Type_BirthDay);
-                event.icon = R.drawable.ic_event_birthday;
-                event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
+                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
 
             } else if (eventType.equals(getEventType(Constants.Type_Other))) {
 
-                event = new Event();
-                event.caption = getResources().getString(R.string.event_type_other);
-                event.type = eventType;
-                event.subType = getEventType(Constants.Type_FileEvent);
-                event.icon = R.drawable.ic_event_other;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+
+            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+
+                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
 
             }
 
@@ -4506,9 +4500,11 @@ class ContactsEvents {
 
             if (eventType == Constants.Type_BirthDay) {
 
+                String eventTypeInt = getEventType(Constants.Type_BirthDay);
+
                 event.caption = getResources().getString(R.string.event_type_birthday);
-                event.type = getEventType(Constants.Type_BirthDay);
-                event.subType = getEventType(Constants.Type_BirthDay);
+                event.type = eventTypeInt;
+                event.subType = eventTypeInt;
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
                 event.needScanContacts = true;
@@ -4523,9 +4519,11 @@ class ContactsEvents {
 
             } else if (eventType == Constants.Type_HolidayEvent) {
 
+                String eventTypeInt = getEventType(Constants.Type_HolidayEvent);
+
                 event.caption = getResources().getString(R.string.event_type_holiday);
-                event.type = getEventType(Constants.Type_HolidayEvent);
-                event.subType = getEventType(Constants.Type_HolidayEvent);
+                event.type = eventTypeInt;
+                event.subType = eventTypeInt;
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
@@ -4541,9 +4539,11 @@ class ContactsEvents {
 
             } else if (eventType == Constants.Type_Anniversary) {
 
+                String eventTypeInt = getEventType(Constants.Type_Anniversary);
+
                 event.caption = getResources().getString(R.string.event_type_anniversary);
-                event.type = getEventType(Constants.Type_Anniversary);
-                event.subType = getEventType(Constants.Type_Anniversary);
+                event.type = eventTypeInt;
+                event.subType = eventTypeInt;
                 event.icon = R.drawable.ic_event_wedding;
                 event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
                 event.needScanContacts = true;

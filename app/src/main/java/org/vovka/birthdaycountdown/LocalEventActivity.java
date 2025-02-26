@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.02.2025, 02:09
+ *  * Created by Vladimir Belov on 26.02.2025, 13:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.02.2025, 01:54
+ *  * Last modified 26.02.2025, 13:06
  *
  */
 
@@ -288,15 +288,42 @@ public class LocalEventActivity extends Activity {
                 if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
             }
 
-            if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
-                viewEventTitle.setText(R.string.local_event_dialog_caption_title_alt);
-            }
-
             updateEventDate(editDate, day, month, year, useYear);
 
             if (imagePhoto != null) imagePhoto.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_pack00_m1));
 
-            if (!isReadOnly) {
+            TextView buttonClose = findViewById(R.id.buttonClose);
+            if (buttonClose != null) {
+                buttonClose.setText(Constants.BUTTON_X);
+                buttonClose.setOnClickListener(this::buttonCancelOnClick);
+            }
+
+            if (isReadOnly) {
+
+                viewEventTitle.setVisibility(View.GONE);
+
+                setReadOnly(editCaption, true);
+                editCaption.setBackgroundColor(Color.TRANSPARENT);
+                setReadOnly(editDate, true);
+                //setReadOnly(spinnerEventTypes, true);
+                spinnerEventTypes.setVisibility(View.GONE);
+                viewEventType.setVisibility(View.VISIBLE);
+
+                TextView buttonSave = findViewById(R.id.buttonThirdAction);
+                buttonSave.setText(R.string.button_ok);
+                addClickEffect(buttonSave);
+                buttonSave.getBackground().setAlpha(50);
+                buttonSave.setVisibility(View.VISIBLE);
+                buttonSave.setOnClickListener(view -> finish());
+
+                setFinishOnTouchOutside(true);
+
+            } else {
+
+                if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                    viewEventTitle.setText(R.string.local_event_dialog_caption_title_alt);
+                }
+
                 editDate.setOnClickListener(v -> {
 
                     DatePicker dialogFragment = DatePicker.newInstance();
@@ -313,31 +340,6 @@ public class LocalEventActivity extends Activity {
                             .commit();
 
                 });
-            }
-
-            TextView buttonClose = findViewById(R.id.buttonClose);
-            if (buttonClose != null) {
-                buttonClose.setText(Constants.BUTTON_X);
-                buttonClose.setOnClickListener(this::buttonCancelOnClick);
-            }
-
-            if (isReadOnly) {
-
-                setReadOnly(editCaption, true);
-                editCaption.setBackgroundColor(Color.TRANSPARENT);
-                setReadOnly(editDate, true);
-                //setReadOnly(spinnerEventTypes, true);
-                spinnerEventTypes.setVisibility(View.GONE);
-                viewEventType.setVisibility(View.VISIBLE);
-
-                TextView buttonSave = findViewById(R.id.buttonThirdAction);
-                buttonSave.setText(R.string.button_ok);
-                addClickEffect(buttonSave);
-                buttonSave.getBackground().setAlpha(50);
-                buttonSave.setVisibility(View.VISIBLE);
-                buttonSave.setOnClickListener(view -> finish());
-
-            } else {
 
                 spinnerEventTypes.setVisibility(View.VISIBLE);
                 viewEventType.setVisibility(View.GONE);
