@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2025, 15:42
+ *  * Created by Vladimir Belov on 27.02.2025, 10:48
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.02.2025, 15:23
+ *  * Last modified 27.02.2025, 10:48
  *
  */
 
@@ -2149,12 +2149,17 @@ class ContactsEvents {
             endPeriod.add(Calendar.SECOND, -1);
 
             String[] projection = {CalendarContract.Instances.EVENT_ID};
-            String selection = CalendarContract.Events.CALENDAR_ID + " = " + calID;
+            String selection = CalendarContract.Events.CALENDAR_ID + Constants.SQL_EQUAL + calID;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startPeriod.getTimeInMillis());
             ContentUris.appendId(builder, endPeriod.getTimeInMillis());
 
-            Cursor cursor = contentResolver.query(builder.build(), projection, selection, null, "dtstart ASC");
+            Cursor cursor = contentResolver.query(
+                    builder.build(),
+                    projection,
+                    selection, null,
+                    CalendarContract.Events.DTSTART + Constants.SQL_SORT_ASC
+            );
             if (cursor != null) {
                 count = cursor.getCount();
                 cursor.close();
@@ -2794,10 +2799,10 @@ class ContactsEvents {
             StringBuilder calIDs = new StringBuilder();
             for (String calID : preferences_calendars) {
                 if (calIDs.length() > 0)
-                    calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Instances.CALENDAR_ID + " = ");
+                    calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Instances.CALENDAR_ID + Constants.SQL_EQUAL);
                 calIDs.append(calID);
             }
-            String selection = CalendarContract.Instances.CALENDAR_ID + " = " + calIDs;
+            String selection = CalendarContract.Instances.CALENDAR_ID + Constants.SQL_EQUAL + calIDs;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startPeriod.getTimeInMillis());
             ContentUris.appendId(builder, endPeriod.getTimeInMillis());
@@ -5039,7 +5044,8 @@ class ContactsEvents {
             if (contentResolver == null) contentResolver = context.getContentResolver();
             Cursor phoneCursor = contentResolver.query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + Constants.SQL_EQUAL + contactId,
                     null,
                     null
             );
@@ -9249,7 +9255,15 @@ class ContactsEvents {
 
         try {
 
-            try (Cursor cursor = context.getContentResolver().query(uri, null, selection, selectionArgs, null)) {
+            try (
+                    Cursor cursor = context.getContentResolver().query(
+                            uri,
+                            null,
+                            selection,
+                            selectionArgs,
+                            null
+                    )
+            ) {
                 if (cursor != null && cursor.moveToFirst()) {
                     final int indexName = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     if (indexName > -1) {
@@ -10344,7 +10358,7 @@ class ContactsEvents {
                         if (getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
                             Log.i("CALENDAR", calId + Constants.STRING_PARENTHESIS_OPEN + calHash + Constants.STRING_PARENTHESIS_CLOSE);
                             if (calIDs.length() > 0)
-                                calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Events.CALENDAR_ID + " = ");
+                                calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Events.CALENDAR_ID + Constants.SQL_EQUAL);
                             calIDs.append(calId);
                            break;
                         }
@@ -10363,7 +10377,7 @@ class ContactsEvents {
                     CalendarContract.Instances.TITLE
             };
             ColumnIndexCache cache = new ColumnIndexCache();
-            String selection = CalendarContract.Instances.CALENDAR_ID + " = " + calIDs;
+            String selection = CalendarContract.Instances.CALENDAR_ID + Constants.SQL_EQUAL + calIDs;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, startPeriod.getTimeInMillis());
             ContentUris.appendId(builder, endPeriod.getTimeInMillis());
@@ -10815,11 +10829,13 @@ class ContactsEvents {
 
                     //Raw аккаунты
                     ContentResolver contentResolver = context.getContentResolver();
-                    Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI,
+                    Cursor cursor = contentResolver.query(
+                            ContactsContract.RawContacts.CONTENT_URI,
                             new String[]{ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE},
                             Constants.QUERY_PARAM_DELETED_0,
                             null,
-                            null);
+                            null
+                    );
                     if (cursor != null && cursor.getCount() > 0) {
                         if (cursor.moveToFirst()) {
                             final int indexNameColumn = cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.ACCOUNT_NAME);
