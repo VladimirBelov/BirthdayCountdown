@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2025, 13:18
+ *  * Created by Vladimir Belov on 02.03.2025, 03:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.02.2025, 13:06
+ *  * Last modified 02.03.2025, 03:26
  *
  */
 
@@ -26,10 +26,13 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -55,14 +58,24 @@ public class LocalEventActivity extends Activity {
 
     private static final String TAG = "LocalEventActivity";
     private static final ContactsEvents eventsData;
-    private TreeMap<Integer, String> eventData = new TreeMap<>();
+    private static TreeMap<Integer, String> eventData = new TreeMap<>();
     private static int eventYear;
     private static int eventMonth;
     private static int eventDay;
     private static boolean eventUseYear = true;
-    private final List<String> eventTypesValues = new ArrayList<>();
-    private final List<Integer> eventTypesIds = new ArrayList<>();
+    private static final List<String> eventTypesValues = new ArrayList<>();
+    private static final List<Integer> eventTypesIds = new ArrayList<>();
+    private static final List<Integer> eventSubTypesIds = new ArrayList<>();
     boolean isReadOnly;
+
+    Spinner spinnerEventTypes;
+    TextView viewActivityTitle;
+    TextView viewEventTitle;
+    EditText editTitle;
+    TextView editDate;
+    TextView viewEventType;
+    ImageView imagePhoto;
+
 
     static {
         eventsData = ContactsEvents.getInstance();
@@ -140,8 +153,10 @@ public class LocalEventActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                         .setView(viewActivity)
                         .setTitle(R.string.local_event_date_picker_title)
-                        .setPositiveButton(R.string.button_ok, (dialog, which) ->
-                                updateEventDate(editDate, dayToChange.get(), monthToChange.get(), yearToChange.get(), useYear.get()))
+                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                            updateEventDate(editDate, dayToChange.get(), monthToChange.get(), yearToChange.get(), useYear.get());
+                            updateEventPhoto((LocalEventActivity) getActivity());
+                        })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dismiss());
 
                 return builder.create();
@@ -198,32 +213,40 @@ public class LocalEventActivity extends Activity {
             this.getTheme().applyStyle(R.style.FloatingActivity, true);
             setContentView(R.layout.activity_event);
 
-            TextView viewActivityTitle = findViewById(R.id.textCaption);
-            TextView viewEventTitle = findViewById(R.id.captionTitle);
-            EditText editCaption = findViewById(R.id.editTitle);
-            TextView editDate = findViewById(R.id.editDate);
-            ImageView imagePhoto = findViewById(R.id.imagePhoto);
+            viewActivityTitle = findViewById(R.id.textCaption);
+            viewEventTitle = findViewById(R.id.captionTitle);
+            editTitle = findViewById(R.id.editTitle);
+            editDate = findViewById(R.id.editDate);
+            spinnerEventTypes = findViewById(R.id.spinnerEventType);
+            viewEventType = findViewById(R.id.viewEventType);
+            imagePhoto = findViewById(R.id.imagePhoto);
 
             eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
             eventTypesIds.add(Constants.Type_BirthDay);
+            eventSubTypesIds.add(Constants.Type_BirthDay);
             eventTypesValues.add(getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_anniversary));
             eventTypesIds.add(Constants.Type_Anniversary);
+            eventSubTypesIds.add(Constants.Type_Anniversary);
             eventTypesValues.add(getString(R.string.event_type_death_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_death));
-            eventTypesIds.add(Constants.Type_Death);
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Death);
             eventTypesValues.add(getString(R.string.event_type_crowning_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_crowning));
-            eventTypesIds.add(Constants.Type_Crowning);
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Crowning);
             eventTypesValues.add(getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_nameday));
-            eventTypesIds.add(Constants.Type_NameDay);
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_NameDay);
             eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
             eventTypesIds.add(Constants.Type_Other);
+            eventSubTypesIds.add(Constants.Type_Other);
             eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
             eventTypesIds.add(Constants.Type_HolidayEvent);
+            eventSubTypesIds.add(Constants.Type_HolidayEvent);
 
-            Spinner spinnerEventTypes = findViewById(R.id.spinnerEventType);
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
-            TextView viewEventType = findViewById(R.id.viewEventType);
+
 
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -243,6 +266,7 @@ public class LocalEventActivity extends Activity {
             } else if (Intent.ACTION_EDIT.equals(action) || isReadOnly) {
                 if (extras != null) {
                     if (extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
+                        //noinspection AssignmentToStaticFieldFromInstanceMethod
                         eventData = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
                         if (eventData != null) {
                             String oldCaption;
@@ -251,7 +275,7 @@ public class LocalEventActivity extends Activity {
                             } else {
                                 oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
                             }
-                            if (oldCaption != null) editCaption.setText(oldCaption);
+                            if (oldCaption != null) editTitle.setText(oldCaption);
 
                             String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
                             if (eventDateString != null) {
@@ -277,10 +301,11 @@ public class LocalEventActivity extends Activity {
                                 }
                             }
 
-                            String oldEventType = eventData.get(ContactsEvents.Position_eventType);
-                            if (oldEventType != null && eventTypesIds.contains(Integer.valueOf(oldEventType))) {
-                                spinnerEventTypes.setSelection(eventTypesIds.indexOf(Integer.valueOf(oldEventType)));
-                                viewEventType.setText(eventTypesValues.get(eventTypesIds.indexOf(Integer.valueOf(oldEventType))));
+                            String savedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                            if (savedEventSubType != null && eventSubTypesIds.contains(Integer.valueOf(savedEventSubType))) {
+                                int indexEventType = eventSubTypesIds.indexOf(Integer.valueOf(savedEventSubType));
+                                spinnerEventTypes.setSelection(indexEventType);
+                                viewEventType.setText(eventTypesValues.get(indexEventType));
                             }
                         }
                     }
@@ -289,8 +314,7 @@ public class LocalEventActivity extends Activity {
             }
 
             updateEventDate(editDate, day, month, year, useYear);
-
-            if (imagePhoto != null) imagePhoto.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_pack00_m1));
+            updateEventPhoto(this);
 
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {
@@ -302,9 +326,9 @@ public class LocalEventActivity extends Activity {
 
                 viewEventTitle.setVisibility(View.GONE);
 
-                setReadOnly(editCaption, true);
-                editCaption.setBackgroundColor(Color.TRANSPARENT);
-                setReadOnly(editDate, true);
+                setReadOnly(editTitle);
+                editTitle.setBackgroundColor(Color.TRANSPARENT);
+                setReadOnly(editDate);
                 //setReadOnly(spinnerEventTypes, true);
                 spinnerEventTypes.setVisibility(View.GONE);
                 viewEventType.setVisibility(View.VISIBLE);
@@ -324,6 +348,21 @@ public class LocalEventActivity extends Activity {
                     viewEventTitle.setText(R.string.local_event_dialog_caption_title_alt);
                 }
 
+                editTitle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) { /**/ }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (editTitle.getContext() instanceof LocalEventActivity) {
+                            updateEventPhoto((LocalEventActivity) editTitle.getContext());
+                        }
+                    }
+                });
+
                 editDate.setOnClickListener(v -> {
 
                     DatePicker dialogFragment = DatePicker.newInstance();
@@ -342,6 +381,20 @@ public class LocalEventActivity extends Activity {
                 });
 
                 spinnerEventTypes.setVisibility(View.VISIBLE);
+                spinnerEventTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (editTitle.getContext() instanceof LocalEventActivity) {
+                            updateEventPhoto((LocalEventActivity) editTitle.getContext());
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
                 viewEventType.setVisibility(View.GONE);
 
                 editDate.setPadding(ContactsEvents.Dip2Px(getResources(), 10), 0, 0, 0);
@@ -370,7 +423,7 @@ public class LocalEventActivity extends Activity {
                 buttonSave.setOnClickListener(this::buttonSaveOnClick);
 
                 setFinishOnTouchOutside(false);
-                editCaption.requestFocus();
+                editTitle.requestFocus();
                 if (getWindow() != null) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
 
@@ -407,7 +460,7 @@ public class LocalEventActivity extends Activity {
         }
     }
 
-    void addClickEffect(@NonNull View view)
+    private void addClickEffect(@NonNull View view)
     {
         Drawable drawableNormal = view.getBackground();
 
@@ -423,19 +476,19 @@ public class LocalEventActivity extends Activity {
         }
     }
 
-    public static void setReadOnly(@NonNull final View view, final boolean readOnly) {
-        view.setFocusable(!readOnly);
-        view.setFocusableInTouchMode(!readOnly);
-        view.setClickable(!readOnly);
-        view.setLongClickable(!readOnly);
+    private static void setReadOnly(@NonNull final View view) {
+        view.setFocusable(false);
+        view.setFocusableInTouchMode(false);
+        view.setClickable(false);
+        view.setLongClickable(false);
         if (view instanceof TextView) {
-            ((TextView) view).setCursorVisible(!readOnly);
+            ((TextView) view).setCursorVisible(false);
         }
         view.setBackgroundResource(android.R.color.transparent);
-        view.setEnabled(!readOnly);
+        view.setEnabled(false);
     }
 
-    void buttonCancelOnClick(final View view) {
+    private void buttonCancelOnClick(final View view) {
         if (!isReadOnly) {
             //todo: если добавление или редактирование - предупреждение
         }
@@ -443,7 +496,7 @@ public class LocalEventActivity extends Activity {
         finish();
     }
 
-    void buttonRemoveOnClick(final View view) {
+    private void buttonRemoveOnClick(final View view) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
         try {
 
@@ -473,42 +526,20 @@ public class LocalEventActivity extends Activity {
         }
     }
 
-    void buttonSaveOnClick(final View view) {
+    private void buttonSaveOnClick(final View view) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
         try {
 
             EditText editCaption = findViewById(R.id.editTitle);
-            Spinner spinnerEventTypes = findViewById(R.id.spinnerEventType);
-
             String eventTitle = editCaption.getText().toString();
+
             if (eventTitle.isEmpty()) {
                 TextView viewEventTitle = findViewById(R.id.captionTitle);
                 ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field, viewEventTitle.getText()));
                 return;
             }
 
-            if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
-                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, context);
-                eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
-            } else {
-                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, context);
-                eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
-            }
-
-            if (eventUseYear) {
-                eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                        eventsData.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)));
-            } else {
-                eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                        eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)));
-            }
-
-            eventData.put(ContactsEvents.Position_eventType,
-                    String.valueOf(eventTypesIds.get(eventTypesValues.indexOf((String) spinnerEventTypes.getSelectedItem()))));
-
-            eventsData.fillEmptyEventData(eventData);
+            prepareEventData(this);
             eventsData.saveLocalEvent(eventData);
 
             setResult(RESULT_OK);
@@ -516,8 +547,89 @@ public class LocalEventActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private static void prepareEventData(LocalEventActivity activity) {
+       try {
+
+           String eventTitle = activity.editTitle.getText().toString();
+
+           if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+               eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+               String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
+               eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
+           } else {
+               eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+               String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, activity);
+               eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+           }
+
+           if (eventUseYear) {
+               eventData.put(ContactsEvents.Position_eventDateFirstTime,
+                       eventsData.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)));
+           } else {
+               eventData.put(ContactsEvents.Position_eventDateFirstTime,
+                       eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)));
+           }
+
+           int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
+           eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
+           eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(indexType)));
+
+           eventData.put(ContactsEvents.Position_age, Constants.STRING_EMPTY);
+
+           eventsData.fillEmptyEventData(eventData);
+
+       } catch (Exception e) {
+           Log.e(TAG, e.getMessage(), e);
+           ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+       }
+    }
+
+    private static void updateEventPhoto(LocalEventActivity activity) {
+        try {
+
+            if (activity.imagePhoto != null) {
+                prepareEventData(activity);
+
+                if (eventUseYear) {
+                    Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
+                    Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
+                    int age = -1;
+                    if (eventDate.before(today)) {
+                        age = eventsData.countYearsDiff(eventDate, today) + 1;
+                    }
+                    eventData.put(ContactsEvents.Position_age, String.valueOf(age));
+                }
+
+                String eventType = eventData.get(ContactsEvents.Position_eventType);
+                if (eventType != null) {
+                    eventData.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
+                }
+                String eventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                if (eventSubType != null) {
+                    eventData.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
+                }
+
+                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventData), true, false, false, 1));
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(activity, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        eventData.clear();
+        eventTypesValues.clear();
+        eventTypesIds.clear();
+        eventSubTypesIds.clear();
+
+        super.onDestroy();
     }
 
 }

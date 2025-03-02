@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2025, 15:42
+ *  * Created by Vladimir Belov on 02.03.2025, 03:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.02.2025, 14:34
+ *  * Last modified 01.03.2025, 22:00
  *
  */
 
@@ -2821,7 +2821,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Фото
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
                     int roundingFactor;
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
+                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent))
+                            || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))
+                            || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_HolidayEvent))) {
                         roundingFactor = 1;
                     } else {
                         roundingFactor = eventsData.preferences_list_photostyle;

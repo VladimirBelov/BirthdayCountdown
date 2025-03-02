@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.02.2025, 10:48
+ *  * Created by Vladimir Belov on 02.03.2025, 03:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.02.2025, 10:48
+ *  * Last modified 02.03.2025, 02:34
  *
  */
 
@@ -966,7 +966,7 @@ class ContactsEvents {
         }
     }
 
-    private int countYearsDiff(@NonNull Date date1, @NonNull Date date2) {
+    int countYearsDiff(@NonNull Date date1, @NonNull Date date2) {
         try {
 
             Calendar c1;
@@ -3232,7 +3232,7 @@ class ContactsEvents {
                     if (eventString != null) {
 
                         String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
-                        int eventType = Integer.parseInt(singleEventArray[Position_eventType]);
+
                         boolean eventUseYear = false;
                         Date dateEventFirstTime = null;
                         Date dateEventNextTime = null;
@@ -3268,7 +3268,11 @@ class ContactsEvents {
                                 + Constants.STRING_COLON_SPACE
                                 + getHash(Constants.eventSourceLocalPrefix);
 
-                        Event event = createTypedEvent(eventType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
+                        int eventSubType = Constants.Type_BirthDay;
+                        try {
+                            eventSubType = Integer.parseInt(singleEventArray[Position_eventSubType]);
+                        } catch (NumberFormatException ignored) { /**/ }
+                        Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
                         TreeMap<Integer, String> eventData = getEventData(eventString);
 
                         eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
@@ -3354,7 +3358,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    private String getEventData(@NonNull TreeMap<Integer, String> eventData) {
+    String getEventData(@NonNull TreeMap<Integer, String> eventData) {
         StringBuilder dataRow = new StringBuilder();
         try {
 
