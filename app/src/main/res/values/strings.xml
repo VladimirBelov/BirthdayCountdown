@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2025, 15:42
+  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.02.2025, 14:47
+  ~  * Last modified 02.03.2025, 23:11
   ~  */
   -->
 
@@ -1279,8 +1279,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="local_event_date_picker_title">Choose date:</string>
     <string name="local_event_dialog_title_new_event">Add new event</string>
     <string name="local_event_dialog_title_edit_event">Edit event</string>
-    <string name="local_event_dialog_caption_title">Name Lastname (event caption):</string>
-    <string name="local_event_dialog_caption_title_alt">Lastname Name (event caption)</string>
+    <string name="local_event_dialog_caption_name">Name Lastname:</string>
+    <string name="local_event_dialog_caption_name_alt">Lastname Name:</string>
+    <string name="local_event_dialog_caption_name_holiday">Event caption:</string>
+    <string name="local_event_dialog_caption_title">Position, occupation:</string>
+    <string name="local_event_dialog_caption_org">Organization:</string>
     <string name="local_event_dialog_date_title">Date:</string>
     <string name="local_event_dialog_type_title">Event type:</string>
     <string name="local_event_dialog_confirmation_remove">Are you sure you want to remove this event?</string>

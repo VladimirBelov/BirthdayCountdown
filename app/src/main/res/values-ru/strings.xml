@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.02.2025, 16:37
+  ~  * Last modified 02.03.2025, 23:15
   ~  */
   -->
 
@@ -1277,8 +1277,11 @@
     <string name="local_event_date_picker_title">Выберите дату:</string>
     <string name="local_event_dialog_title_new_event">Добавление события</string>
     <string name="local_event_dialog_title_edit_event">Редактирование события</string>
-    <string name="local_event_dialog_caption_title">Имя Фамилия (наименование события):</string>
-    <string name="local_event_dialog_caption_title_alt">Фамилия Имя (наименование события):</string>
+    <string name="local_event_dialog_caption_name">Имя Фамилия:</string>
+    <string name="local_event_dialog_caption_name_alt">Фамилия Имя:</string>
+    <string name="local_event_dialog_caption_name_holiday">Наименование события:</string>
+    <string name="local_event_dialog_caption_title">Должность, занятие:</string>
+    <string name="local_event_dialog_caption_org">Организация:</string>
     <string name="local_event_dialog_date_title">Дата:</string>
     <string name="local_event_dialog_type_title">Тип события:</string>
     <string name="local_event_dialog_confirmation_remove">Вы уверены, что хотите удалить это событие?</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.03.2025, 03:26
+ *  * Created by Vladimir Belov on 03.03.2025, 00:23
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 02.03.2025, 03:26
+ *  * Last modified 03.03.2025, 00:23
  *
  */
 
@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -43,6 +44,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.cardview.widget.CardView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -68,13 +70,19 @@ public class LocalEventActivity extends Activity {
     private static final List<Integer> eventSubTypesIds = new ArrayList<>();
     boolean isReadOnly;
 
-    Spinner spinnerEventTypes;
     TextView viewActivityTitle;
-    TextView viewEventTitle;
+    ImageView imagePhoto;
+    TextView viewName;
+    EditText editName;
+    CardView cardTitle;
+    TextView viewTitle;
     EditText editTitle;
+    CardView cardOrganization;
+    TextView viewOrganization;
+    EditText editOrganization;
     TextView editDate;
     TextView viewEventType;
-    ImageView imagePhoto;
+    Spinner spinnerEventTypes;
 
 
     static {
@@ -211,11 +219,25 @@ public class LocalEventActivity extends Activity {
 
             setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.FloatingActivity, true);
+
             setContentView(R.layout.activity_event);
 
+            //Ширина диалога
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            layoutParams.width = displayMetrics.widthPixels * 9 / 10;
+            getWindow().setAttributes(layoutParams);
+
             viewActivityTitle = findViewById(R.id.textCaption);
-            viewEventTitle = findViewById(R.id.captionTitle);
+            viewName = findViewById(R.id.captionName);
+            editName = findViewById(R.id.editName);
+            cardTitle = findViewById(R.id.cardTitle);
+            viewTitle = findViewById(R.id.captionTitle);
             editTitle = findViewById(R.id.editTitle);
+            cardOrganization = findViewById(R.id.cardOrganization);
+            viewOrganization = findViewById(R.id.captionOrganization);
+            editOrganization = findViewById(R.id.editOrganization);
             editDate = findViewById(R.id.editDate);
             spinnerEventTypes = findViewById(R.id.spinnerEventType);
             viewEventType = findViewById(R.id.viewEventType);
@@ -275,7 +297,10 @@ public class LocalEventActivity extends Activity {
                             } else {
                                 oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
                             }
-                            if (oldCaption != null) editTitle.setText(oldCaption);
+                            if (oldCaption != null) editName.setText(oldCaption);
+
+                            editTitle.setText(eventData.get(ContactsEvents.Position_title));
+                            editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
 
                             String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
                             if (eventDateString != null) {
@@ -313,9 +338,6 @@ public class LocalEventActivity extends Activity {
                 if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
             }
 
-            updateEventDate(editDate, day, month, year, useYear);
-            updateEventPhoto(this);
-
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {
                 buttonClose.setText(Constants.BUTTON_X);
@@ -324,13 +346,28 @@ public class LocalEventActivity extends Activity {
 
             if (isReadOnly) {
 
-                viewEventTitle.setVisibility(View.GONE);
+                viewName.setVisibility(View.GONE);
+                setReadOnly(editName);
+                editName.setBackgroundColor(Color.TRANSPARENT);
 
-                setReadOnly(editTitle);
-                editTitle.setBackgroundColor(Color.TRANSPARENT);
+                if (editTitle.getText().toString().isEmpty()) {
+                    cardTitle.setVisibility(View.GONE);
+                } else {
+                    viewTitle.setVisibility(View.GONE);
+                    setReadOnly(editTitle);
+                }
+
+                if (editOrganization.getText().toString().isEmpty()) {
+                    cardOrganization.setVisibility(View.GONE);
+                } else {
+                    viewOrganization.setVisibility(View.GONE);
+                    setReadOnly(editOrganization);
+                }
+
                 setReadOnly(editDate);
-                //setReadOnly(spinnerEventTypes, true);
+
                 spinnerEventTypes.setVisibility(View.GONE);
+
                 viewEventType.setVisibility(View.VISIBLE);
 
                 TextView buttonSave = findViewById(R.id.buttonThirdAction);
@@ -344,11 +381,7 @@ public class LocalEventActivity extends Activity {
 
             } else {
 
-                if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
-                    viewEventTitle.setText(R.string.local_event_dialog_caption_title_alt);
-                }
-
-                editTitle.addTextChangedListener(new TextWatcher() {
+                editName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
 
@@ -357,8 +390,8 @@ public class LocalEventActivity extends Activity {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (editTitle.getContext() instanceof LocalEventActivity) {
-                            updateEventPhoto((LocalEventActivity) editTitle.getContext());
+                        if (editName.getContext() instanceof LocalEventActivity) {
+                            updateEventPhoto((LocalEventActivity) editName.getContext());
                         }
                     }
                 });
@@ -384,8 +417,9 @@ public class LocalEventActivity extends Activity {
                 spinnerEventTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (editTitle.getContext() instanceof LocalEventActivity) {
-                            updateEventPhoto((LocalEventActivity) editTitle.getContext());
+                        if (editName.getContext() instanceof LocalEventActivity) {
+                            updateCaptionsAndVisibility((LocalEventActivity) editName.getContext());
+                            updateEventPhoto((LocalEventActivity) editName.getContext());
                         }
                     }
 
@@ -423,9 +457,13 @@ public class LocalEventActivity extends Activity {
                 buttonSave.setOnClickListener(this::buttonSaveOnClick);
 
                 setFinishOnTouchOutside(false);
-                editTitle.requestFocus();
+                editName.requestFocus();
                 if (getWindow() != null) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
+
+            updateCaptionsAndVisibility(this);
+            updateEventDate(editDate, day, month, year, useYear);
+            updateEventPhoto(this);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -481,6 +519,7 @@ public class LocalEventActivity extends Activity {
         view.setFocusableInTouchMode(false);
         view.setClickable(false);
         view.setLongClickable(false);
+
         if (view instanceof TextView) {
             ((TextView) view).setCursorVisible(false);
         }
@@ -530,11 +569,11 @@ public class LocalEventActivity extends Activity {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
         try {
 
-            EditText editCaption = findViewById(R.id.editTitle);
+            EditText editCaption = findViewById(R.id.editName);
             String eventTitle = editCaption.getText().toString();
 
             if (eventTitle.isEmpty()) {
-                TextView viewEventTitle = findViewById(R.id.captionTitle);
+                TextView viewEventTitle = findViewById(R.id.captionOrganization);
                 ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field, viewEventTitle.getText()));
                 return;
             }
@@ -554,7 +593,7 @@ public class LocalEventActivity extends Activity {
     private static void prepareEventData(LocalEventActivity activity) {
        try {
 
-           String eventTitle = activity.editTitle.getText().toString();
+           String eventTitle = activity.editName.getText().toString();
 
            if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
@@ -578,6 +617,14 @@ public class LocalEventActivity extends Activity {
            eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
            eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(indexType)));
 
+           if (eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent)) {
+               eventData.put(ContactsEvents.Position_title, Constants.STRING_EMPTY);
+               eventData.put(ContactsEvents.Position_organization, Constants.STRING_EMPTY);
+           } else {
+               eventData.put(ContactsEvents.Position_title, activity.editTitle.getText().toString());
+               eventData.put(ContactsEvents.Position_organization, activity.editOrganization.getText().toString());
+           }
+
            eventData.put(ContactsEvents.Position_age, Constants.STRING_EMPTY);
 
            eventsData.fillEmptyEventData(eventData);
@@ -599,7 +646,7 @@ public class LocalEventActivity extends Activity {
                     Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
                     int age = -1;
                     if (eventDate.before(today)) {
-                        age = eventsData.countYearsDiff(eventDate, today) + 1;
+                        age = eventsData.countYearsDiff(eventDate, today);
                     }
                     eventData.put(ContactsEvents.Position_age, String.valueOf(age));
                 }
@@ -614,6 +661,33 @@ public class LocalEventActivity extends Activity {
                 }
 
                 activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventData), true, false, false, 1));
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(activity, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private static void updateCaptionsAndVisibility(LocalEventActivity activity) {
+        try {
+
+            int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
+
+            if (eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent)) {
+                activity.viewName.setText(R.string.local_event_dialog_caption_name_holiday);
+                activity.cardTitle.setVisibility(View.GONE);
+                activity.cardOrganization.setVisibility(View.GONE);
+            } else {
+                if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                    activity.viewName.setText(R.string.local_event_dialog_caption_name_alt);
+                } else {
+                    activity.viewName.setText(R.string.local_event_dialog_caption_name);
+                }
+                if (!activity.isReadOnly) {
+                    activity.cardTitle.setVisibility(View.VISIBLE);
+                    activity.cardOrganization.setVisibility(View.VISIBLE);
+                }
             }
 
         } catch (Exception e) {

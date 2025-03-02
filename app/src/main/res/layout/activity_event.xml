@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.02.2025, 02:09
+  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.02.2025, 01:25
+  ~  * Last modified 03.03.2025, 00:12
   ~  */
   -->
 
@@ -31,7 +31,7 @@
             android:maxLines="1"
             android:background="?attr/colorPrimary"
             android:textColor="?attr/windowTitleColor"
-            /><!--android:background="?attr/colorPrimary"--><!--android:textColor="?attr/windowTitleColor"-->
+            />
 
         <TextView
             android:id="@+id/buttonClose"
@@ -100,12 +100,53 @@
                         android:background="?attr/dialogBackgroundColor">
 
                         <TextView
+                            android:id="@+id/captionName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@id/editName"
+                            android:textSize="12sp"
+                            android:contentDescription="@string/local_event_dialog_caption_name"
+                            android:textColor="?attr/dialogTextColor" />
+
+                        <EditText
+                            android:id="@+id/editName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textMultiLine|textCapWords"
+                            android:maxLines="3"
+                            android:textColor="?attr/dialogTextColor"
+                            android:textSize="14sp"
+                            tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="4dp"
+                    app:contentPadding="1dp"
+                    app:cardBackgroundColor="?attr/listDividerColor" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="2dp"
+                        android:background="?attr/dialogBackgroundColor">
+
+                        <TextView
                             android:id="@+id/captionTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:labelFor="@id/editTitle"
-                            android:text="@string/local_event_dialog_caption_title"
                             android:textSize="12sp"
+                            android:text="@string/local_event_dialog_caption_title"
                             android:textColor="?attr/dialogTextColor" />
 
                         <EditText
@@ -113,10 +154,51 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:importantForAutofill="no"
-                            android:inputType="textMultiLine"
+                            android:inputType="textMultiLine|textCapSentences"
                             android:maxLines="3"
-                            android:minHeight="40dp"
                             android:textColor="?attr/dialogTextColor"
+                            android:textSize="12sp"
+                            tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOrganization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="4dp"
+                    app:contentPadding="1dp"
+                    app:cardBackgroundColor="?attr/listDividerColor" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="2dp"
+                        android:background="?attr/dialogBackgroundColor">
+
+                        <TextView
+                            android:id="@+id/captionOrganization"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@id/editName"
+                            android:textSize="12sp"
+                            android:text="@string/local_event_dialog_caption_org"
+                            android:textColor="?attr/dialogTextColor" />
+
+                        <EditText
+                            android:id="@+id/editOrganization"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLines="3"
+                            android:textColor="?attr/dialogTextColor"
+                            android:textSize="12sp"
                             tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
 
                     </LinearLayout>
