@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:16
+ *  * Created by Vladimir Belov on 03.03.2025, 15:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 15:10
+ *  * Last modified 03.03.2025, 15:48
  *
  */
 
@@ -1542,7 +1542,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            final boolean isItemQuizVisible = !this.dataList.isEmpty() && eventsData.preferences_extrafun;
+            final boolean isItemQuizVisible = !this.dataList.isEmpty()
+                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
             //показывать, если есть события или выбран фильтр
             final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
                     (
@@ -1551,8 +1552,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     || statsUnrecognizedEvents > 0
                                     || eventsData.statFavoriteEventsCount > 0
                     );
-            final boolean isItemSourcesVisible = eventsData != null && eventsData.preferences_extrafun;
-            final boolean isItemTypesVisible = eventsData != null && eventsData.preferences_extrafun;
+            final boolean isItemSourcesVisible = eventsData != null
+                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);
+            final boolean isItemTypesVisible = eventsData != null
+                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
 
             MenuItem searchItem = menu.findItem(Constants.MainMenu_Search);
             if (searchItem != null) {

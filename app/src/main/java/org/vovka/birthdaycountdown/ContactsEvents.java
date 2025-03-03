@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:16
+ *  * Created by Vladimir Belov on 03.03.2025, 15:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 15:13
+ *  * Last modified 03.03.2025, 15:39
  *
  */
 
@@ -1111,6 +1111,9 @@ class ContactsEvents {
                 preferences_list_search_depth = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDepth_key), context.getString(R.string.pref_List_SearchDepth_default));
             }
             preferences_list_quick_action = getPreferenceInt(preferences, context.getString(R.string.pref_List_QuickAction_key), Constants.MainMenu_AddEvent);
+            if (preferences_list_quick_action > 0 && preferences_list_quick_action > 100) {
+                preferences_list_quick_action = Constants.MainMenu_AddEvent;
+            }
 
             //Уведомления
             preferences_notifications_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_ChannelID), Constants.defaultNotificationID);
