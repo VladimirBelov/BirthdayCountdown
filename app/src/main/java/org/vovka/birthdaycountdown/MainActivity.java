@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 01:29
+ *  * Created by Vladimir Belov on 04.03.2025, 01:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 01:02
+ *  * Last modified 04.03.2025, 01:40
  *
  */
 
@@ -2173,13 +2173,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             //Отступы списка событий
-            ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) swipeRefresh.getLayoutParams();
+            LinearLayout mainLayout = findViewById(R.id.layout_main);
+            LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
-            swipeRefresh.setLayoutParams(marginParams);
+            mainLayout.setLayoutParams(marginParams);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                     && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
