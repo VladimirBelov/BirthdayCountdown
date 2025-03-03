@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:50
+ *  * Created by Vladimir Belov on 04.03.2025, 00:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 15:39
+ *  * Last modified 03.03.2025, 23:43
  *
  */
 
@@ -5460,8 +5460,8 @@ class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
-            //Избранные для календарного виджета
             if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+                //Избранные для календарного виджета
                 final String packHash = getHash(Constants.eventSourceFavoritePrefix);
                 final String eventTitle = Constants.eventTitleFavoritePrefix
                         .concat(singleEventArray[Position_eventCaption])
@@ -5470,6 +5470,20 @@ class ContactsEvents {
                 final DayType.Type dayType = DayType.Type.Holiday;
                 final String key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(eventDateThisTime));
                 fillDayTypeAndInfo(key, dayType, eventTitle);
+            } else if (getEventType(Constants.Type_HolidayEvent).equals(singleEventArray[Position_eventSubType])
+                    && singleEventArray[ContactsEvents.Position_dates].contains(Constants.eventSourceLocalPrefix)) {
+                //Праздники в локальном событии для календарного виджета
+                String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                for (String date : dates) {
+                    String[] dateElements = date.split(Constants.STRING_COLON_SPACE, -1);
+                    if (dateElements.length == 3 && dateElements[0].equals(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
+                        String key = dateElements[2].concat(Constants.STRING_COLON).concat(dateElements[1]);
+                        String eventTitle = Constants.eventTitleLocalPrefix
+                                .concat(singleEventArray[ContactsEvents.Position_personFullName]);
+                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                        break;
+                    }
+                }
             }
 
             if (age > 0) {
@@ -6899,6 +6913,8 @@ class ContactsEvents {
                         icons.add(resources.getString(R.string.event_source_calendar));
                     } else if (date.startsWith(Constants.EVENT_PREFIX_FILE_EVENT)) {
                         icons.add(resources.getString(R.string.event_source_file));
+                    } else if (date.startsWith(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
+                        icons.add(resources.getString(R.string.event_source_local));
                     } else if (date.startsWith(Constants.EVENT_PREFIX_HOLIDAY_EVENT)) {
 
                         String icon = Constants.STRING_EMPTY;
@@ -10314,6 +10330,7 @@ class ContactsEvents {
                     } else {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(dateEvent));
                     }
+                    //todo: если ежегодное событие начинается с какой-то даты в прошлом, то в календаре будут отражаться это событие и до этой даты
                     fillDayTypeAndInfo(key, dayType, eventTitle);
                 } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));

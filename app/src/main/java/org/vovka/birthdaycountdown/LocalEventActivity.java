@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:16
+ *  * Created by Vladimir Belov on 04.03.2025, 00:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 14:46
+ *  * Last modified 03.03.2025, 23:34
  *
  */
 
@@ -594,8 +594,13 @@ public class LocalEventActivity extends Activity {
        try {
 
            String eventTitle = activity.editName.getText().toString();
+           int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
+           boolean isHoliday = eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent);
 
-           if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+           if (isHoliday) {
+               eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+               eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+           } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
                eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
@@ -613,11 +618,10 @@ public class LocalEventActivity extends Activity {
                        eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)));
            }
 
-           int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
            eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
            eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(indexType)));
 
-           if (eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent)) {
+           if (isHoliday) {
                eventData.put(ContactsEvents.Position_title, Constants.STRING_EMPTY);
                eventData.put(ContactsEvents.Position_organization, Constants.STRING_EMPTY);
            } else {

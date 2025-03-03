@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
+  ~  * Created by Vladimir Belov on 04.03.2025, 00:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.03.2025, 23:11
+  ~  * Last modified 03.03.2025, 23:53
   ~  */
   -->
 
@@ -975,6 +975,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Favorites</string>
+    <string name="widget_config_events_local_events">📱 Local events</string>
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">When and how to show event notifications</string>
@@ -1438,6 +1439,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_source_calendar" translatable="false">📆</string>
     <string name="event_source_file" translatable="false">📁</string>
     <string name="event_source_internal" translatable="false">🌐</string>
+    <string name="event_source_local" translatable="false">📱</string>🗂
 
     <string name="facts_popup_action_prev_fact" translatable="false">⏪</string>
 

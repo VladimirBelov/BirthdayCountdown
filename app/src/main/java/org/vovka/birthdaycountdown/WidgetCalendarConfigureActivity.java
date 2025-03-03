@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Created by Vladimir Belov on 04.03.2025, 00:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.02.2025, 12:30
+ *  * Last modified 03.03.2025, 23:53
  *
  */
 
@@ -664,6 +664,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             //События избранных контактов
             eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFavoritePrefix));
             eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
+
+            //Локальные события
+            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceLocalPrefix));
+            eventSourcesTitles.add(getString(R.string.widget_config_events_local_events));
 
             //Календари
             if (!eventsData.checkNoCalendarAccess()){

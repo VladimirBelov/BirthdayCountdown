@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:16
+ *  * Created by Vladimir Belov on 04.03.2025, 00:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 15:10
+ *  * Last modified 03.03.2025, 23:35
  *
  */
 
@@ -376,6 +376,7 @@ final class Constants {
     static final String eventTitleCalendarPrefix = "📆 ";
     static final String eventTitleContactPrefix = "👨‍💼 ";
     static final String eventTitleFavoritePrefix = "🌟 ";
+    static final String eventTitleLocalPrefix = "📱 ";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";

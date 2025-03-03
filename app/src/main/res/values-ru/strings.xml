@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
+  ~  * Created by Vladimir Belov on 04.03.2025, 00:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.03.2025, 23:15
+  ~  * Last modified 03.03.2025, 23:53
   ~  */
   -->
 
@@ -975,6 +975,7 @@
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Избранные</string>
+    <string name="widget_config_events_local_events">📱 Локальные события</string>
 
     <string name="pref_Notifications_title">Уведомления</string>
     <string name="pref_Notifications_summary">Когда и как показывать уведомления о событиях</string>
