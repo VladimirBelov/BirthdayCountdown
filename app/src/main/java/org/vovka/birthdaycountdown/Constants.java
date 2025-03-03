@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.02.2025, 10:48
+ *  * Created by Vladimir Belov on 03.03.2025, 15:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.02.2025, 10:41
+ *  * Last modified 03.03.2025, 15:10
  *
  */
 
@@ -324,6 +324,20 @@ final class Constants {
     static final String RES_TYPE_CALENDAR = "calendar";
     static final String RES_TYPE_YEAR = "year";
     static final String URI_PACKAGE = "package:";
+
+    static final int MainMenu_Search = 1;
+    static final int MainMenu_Refresh = 2;
+    static final int MainMenu_AddEvent = 3;
+    static final int MainMenu_AddEvent_Local = 31;
+    static final int MainMenu_AddEvent_ToContact = 32;
+    static final int MainMenu_AddEvent_ToCalendar = 33;
+    static final int MainMenu_AddEvent_OpenFile = 34;
+    static final int MainMenu_Quiz = 4;
+    static final int MainMenu_Settings = 5;
+    static final int MainMenu_Filter = 6;
+    static final int MainMenu_EventsSources = 7;
+    static final int MainMenu_EventsTypes = 8;
+    static final int MainMenu_Hints = 9;
 
     static final int ContextMenu_EditContact = 1;
     static final int ContextMenu_CreateContact = 2;

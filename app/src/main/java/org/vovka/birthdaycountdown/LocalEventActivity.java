@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 00:23
+ *  * Created by Vladimir Belov on 03.03.2025, 15:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 00:23
+ *  * Last modified 03.03.2025, 14:46
  *
  */
 
@@ -222,13 +222,6 @@ public class LocalEventActivity extends Activity {
 
             setContentView(R.layout.activity_event);
 
-            //Ширина диалога
-            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            layoutParams.width = displayMetrics.widthPixels * 9 / 10;
-            getWindow().setAttributes(layoutParams);
-
             viewActivityTitle = findViewById(R.id.textCaption);
             viewName = findViewById(R.id.captionName);
             editName = findViewById(R.id.editName);
@@ -268,7 +261,6 @@ public class LocalEventActivity extends Activity {
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
-
 
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -337,6 +329,14 @@ public class LocalEventActivity extends Activity {
                 }
                 if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
             }
+
+            //Ширина диалога
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            layoutParams.width = (int) (displayMetrics.widthPixels * (isReadOnly ? 0.8 : 0.9));
+            getWindow().setAttributes(layoutParams);
+
 
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {

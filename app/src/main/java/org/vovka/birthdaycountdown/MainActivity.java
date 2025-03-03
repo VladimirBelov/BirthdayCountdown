@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.03.2025, 03:26
+ *  * Created by Vladimir Belov on 03.03.2025, 15:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.03.2025, 22:00
+ *  * Last modified 03.03.2025, 15:10
  *
  */
 
@@ -1507,34 +1507,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ((MenuBuilder) menu).setOptionalIconsVisible(true);
             }
 
-            //boolean onlyLocalEvents =
-
             MenuItem menuItem;
-            menuItem = menu.add(Menu.NONE, R.id.menu_search, Menu.NONE, R.string.menu_search).setIcon(android.R.drawable.ic_menu_search)
+            menuItem = menu.add(Menu.NONE, Constants.MainMenu_Search, Menu.NONE, R.string.menu_search).setIcon(android.R.drawable.ic_menu_search)
                     .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
                     .setActionView(new SearchView(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themePopup)));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 menuItem.setContentDescription(getString(R.string.hint_SearchPanel));
             }
-            menu.add(Menu.NONE, R.id.menu_refresh, Menu.NONE, R.string.menu_refresh).setIcon(android.R.drawable.ic_menu_rotate);
-            SubMenu subMenuFile = menu.addSubMenu(Menu.NONE, R.id.menu_add, Menu.NONE, R.string.menu_add_event).setIcon(android.R.drawable.ic_menu_add);
-            subMenuFile.add(Menu.NONE, R.id.menu_add_event_local, Menu.NONE, R.string.menu_add_event_to_local)
+            menu.add(Menu.NONE, Constants.MainMenu_Refresh, Menu.NONE, R.string.menu_refresh).setIcon(android.R.drawable.ic_menu_rotate);
+            SubMenu subMenuFile = menu.addSubMenu(Menu.NONE, Constants.MainMenu_AddEvent, Menu.NONE, R.string.menu_add_event).setIcon(android.R.drawable.ic_menu_add);
+            subMenuFile.add(Menu.NONE, Constants.MainMenu_AddEvent_Local, Menu.NONE, R.string.menu_add_event_to_local)
                     .setIcon(android.R.drawable.ic_menu_add);
-            subMenuFile.add(Menu.NONE, R.id.menu_add_event_to_contact, Menu.NONE, R.string.menu_add_event_to_contact)
+            subMenuFile.add(Menu.NONE, Constants.MainMenu_AddEvent_ToContact, Menu.NONE, R.string.menu_add_event_to_contact)
                     .setIcon(android.R.drawable.ic_menu_my_calendar)
                     .setTitleCondensed(getString(R.string.menu_add_event_to_contact_short));
-            subMenuFile.add(Menu.NONE, R.id.menu_add_event_to_calendar, Menu.NONE, R.string.menu_add_event_to_calendar)
+            subMenuFile.add(Menu.NONE, Constants.MainMenu_AddEvent_ToCalendar, Menu.NONE, R.string.menu_add_event_to_calendar)
                     .setIcon(android.R.drawable.ic_menu_month)
                     .setTitleCondensed(getString(R.string.menu_add_event_to_calendar_short));
-            subMenuFile.add(Menu.NONE, R.id.menu_open_file_with_events, Menu.NONE, R.string.menu_open_file_with_events)
+            subMenuFile.add(Menu.NONE, Constants.MainMenu_AddEvent_OpenFile, Menu.NONE, R.string.menu_open_file_with_events)
                     .setIcon(android.R.drawable.ic_menu_save)
                     .setTitleCondensed(getString(R.string.menu_open_file_with_events_short));
-            menu.add(Menu.NONE, R.id.menu_quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_help);
-            menu.add(Menu.NONE, R.id.menu_settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
-            menu.add(Menu.NONE, R.id.menu_filter_events, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
-            menu.add(Menu.NONE, R.id.menu_events_sources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
-            menu.add(Menu.NONE, R.id.menu_events_types, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
-            menu.add(Menu.NONE, R.id.menu_hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);
+            menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_help);
+            menu.add(Menu.NONE, Constants.MainMenu_Settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
+            menu.add(Menu.NONE, Constants.MainMenu_Filter, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
+            menu.add(Menu.NONE, Constants.MainMenu_EventsSources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
+            menu.add(Menu.NONE, Constants.MainMenu_EventsTypes, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
+            menu.add(Menu.NONE, Constants.MainMenu_Hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);
 
             //Быстрое действие
             if (eventsData.preferences_list_quick_action > 0) {
@@ -1556,7 +1554,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final boolean isItemSourcesVisible = eventsData != null && eventsData.preferences_extrafun;
             final boolean isItemTypesVisible = eventsData != null && eventsData.preferences_extrafun;
 
-            MenuItem searchItem = menu.findItem(R.id.menu_search);
+            MenuItem searchItem = menu.findItem(Constants.MainMenu_Search);
             if (searchItem != null) {
                 SearchView searchView = (SearchView) searchItem.getActionView();
                 searchItem.setVisible(!eventsData.isEmptyEventList());
@@ -1580,14 +1578,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
                         try {
-                            menu.findItem(R.id.menu_add).setVisible(false);
-                            menu.findItem(R.id.menu_refresh).setVisible(false);
-                            menu.findItem(R.id.menu_settings).setVisible(false);
-                            menu.findItem(R.id.menu_quiz).setVisible(false);
-                            menu.findItem(R.id.menu_filter_events).setVisible(false);
-                            menu.findItem(R.id.menu_events_sources).setVisible(false);
-                            menu.findItem(R.id.menu_events_types).setVisible(false);
-                            menu.findItem(R.id.menu_hints).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                            menu.findItem(Constants.MainMenu_AddEvent).setVisible(false);
+                            menu.findItem(Constants.MainMenu_Refresh).setVisible(false);
+                            menu.findItem(Constants.MainMenu_Settings).setVisible(false);
+                            menu.findItem(Constants.MainMenu_Quiz).setVisible(false);
+                            menu.findItem(Constants.MainMenu_Filter).setVisible(false);
+                            menu.findItem(Constants.MainMenu_EventsSources).setVisible(false);
+                            menu.findItem(Constants.MainMenu_EventsTypes).setVisible(false);
+                            menu.findItem(Constants.MainMenu_Hints).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
                             ToastExpander.showDebugMsg(getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -1599,14 +1597,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
                         try {
-                            menu.findItem(R.id.menu_add).setVisible(true);
-                            menu.findItem(R.id.menu_refresh).setVisible(true);
-                            menu.findItem(R.id.menu_settings).setVisible(true);
-                            menu.findItem(R.id.menu_quiz).setVisible(isItemQuizVisible);
-                            menu.findItem(R.id.menu_filter_events).setVisible(isItemFilterVisible);
-                            menu.findItem(R.id.menu_events_sources).setVisible(isItemSourcesVisible);
-                            menu.findItem(R.id.menu_events_types).setVisible(isItemTypesVisible);
-                            menu.findItem(R.id.menu_hints).setVisible(false).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                            menu.findItem(Constants.MainMenu_AddEvent).setVisible(true);
+                            menu.findItem(Constants.MainMenu_Refresh).setVisible(true);
+                            menu.findItem(Constants.MainMenu_Settings).setVisible(true);
+                            menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
+                            menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
+                            menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
+                            menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
+                            menu.findItem(Constants.MainMenu_Hints).setVisible(false).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                             filterEventsList();
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
@@ -1627,7 +1625,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            menu.findItem(R.id.menu_open_file_with_events).setVisible(
+            menu.findItem(Constants.MainMenu_AddEvent_OpenFile).setVisible(
                     !eventsData.preferences_Birthday_files.isEmpty()
                             || !eventsData.preferences_OtherEvent_files.isEmpty()
                             || !eventsData.preferences_MultiType_files.isEmpty()
@@ -1638,11 +1636,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // https://stackoverflow.com/questions/54475665/how-to-insert-contact-birthday-date-by-intent
             // https://stackoverflow.com/questions/20890855/adding-a-contactscontract-commondatakinds-event-to-android-contacts-does-not-sh
 
-            menu.findItem(R.id.menu_quiz).setVisible(isItemQuizVisible);
-            menu.findItem(R.id.menu_filter_events).setVisible(isItemFilterVisible);
-            menu.findItem(R.id.menu_events_sources).setVisible(isItemSourcesVisible);
-            menu.findItem(R.id.menu_events_types).setVisible(isItemTypesVisible);
-            menu.findItem(R.id.menu_hints).setVisible(false);
+            menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
+            menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
+            menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
+            menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
+            menu.findItem(Constants.MainMenu_Hints).setVisible(false);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1658,7 +1656,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             AlertDialog alertToShow;
 
             int itemId = item.getItemId();
-            if (itemId == R.id.menu_refresh) {
+            if (itemId == Constants.MainMenu_Refresh) {
 
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
@@ -1672,7 +1670,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 return true;
 
-            } else if (itemId == R.id.menu_settings) {
+            } else if (itemId == Constants.MainMenu_Settings) {
 
                 Intent intent = new Intent(this, SettingsActivity.class);
                 try {
@@ -1680,7 +1678,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == R.id.menu_quiz) {
+            } else if (itemId == Constants.MainMenu_Quiz) {
 
                 Intent intent = new Intent(this, QuizActivity.class);
                 try {
@@ -1688,12 +1686,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == R.id.menu_filter_events) {
+            } else if (itemId == Constants.MainMenu_Filter) {
 
                 setFilter();
                 return true;
 
-            } else if (itemId == R.id.menu_events_sources) {
+            } else if (itemId == Constants.MainMenu_EventsSources) {
 
                 final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
                 eventSources.getEventSources(getString(R.string.pref_List_EventSources_key));
@@ -1701,12 +1699,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         this, getString(R.string.pref_List_EventSources_key));
                 return true;
 
-            } else if (itemId == R.id.menu_events_types) {
+            } else if (itemId == Constants.MainMenu_EventsTypes) {
 
                 selectEventsTypes();
                 return true;
 
-            } else if (itemId == R.id.menu_add_event_local) {
+            } else if (itemId == Constants.MainMenu_AddEvent_Local) {
 
                 Intent intent = new Intent(this, LocalEventActivity.class);
                 intent.setAction(Intent.ACTION_INSERT);
@@ -1715,7 +1713,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == R.id.menu_add_event_to_contact) {
+            } else if (itemId == Constants.MainMenu_AddEvent_ToContact) {
 
                 Intent editIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
                 editIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
@@ -1725,7 +1723,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == R.id.menu_add_event_to_calendar) {
+            } else if (itemId == Constants.MainMenu_AddEvent_ToCalendar) {
 
                 // https://developer.android.com/guide/topics/providers/calendar-provider#java
                 // https://stackoverflow.com/questions/20563476/how-to-add-a-calendar-event-using-intents
@@ -1740,12 +1738,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
-            } else if (itemId == R.id.menu_open_file_with_events) {
+            } else if (itemId == Constants.MainMenu_AddEvent_OpenFile) {
 
                 openFileWithEvents();
                 return true;
 
-            } else if (itemId == R.id.menu_hints) {
+            } else if (itemId == Constants.MainMenu_Hints) {
 
                 StringBuilder sb = new StringBuilder();
                 String[] arrFAQ = resources.getStringArray(R.array.faq);

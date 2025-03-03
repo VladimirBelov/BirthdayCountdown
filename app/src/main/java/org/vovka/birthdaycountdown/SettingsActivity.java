@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.02.2025, 17:52
+ *  * Created by Vladimir Belov on 03.03.2025, 15:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.02.2025, 17:37
+ *  * Last modified 03.03.2025, 15:10
  *
  */
 
@@ -2351,27 +2351,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
            menuImages.add(null);
 
            menuTitles.add(getString(R.string.menu_add_event));
-           menuIds.add(R.id.menu_add);
+           menuIds.add(Constants.MainMenu_AddEvent);
            menuImages.add(android.R.drawable.ic_menu_add);
 
            menuTitles.add(getString(R.string.menu_refresh));
-           menuIds.add(R.id.menu_refresh);
+           menuIds.add(Constants.MainMenu_Refresh);
            menuImages.add(android.R.drawable.ic_menu_rotate);
 
            menuTitles.add(getString(R.string.menu_settings));
-           menuIds.add(R.id.menu_settings);
+           menuIds.add(Constants.MainMenu_Settings);
            menuImages.add(R.drawable.ic_sysbar_quicksettings);
 
            menuTitles.add(getString(R.string.menu_filter_events));
-           menuIds.add(R.id.menu_filter_events);
+           menuIds.add(Constants.MainMenu_Filter);
            menuImages.add(android.R.drawable.ic_menu_view);
 
            menuTitles.add(getString(R.string.menu_events_sources));
-           menuIds.add(R.id.menu_events_sources);
+           menuIds.add(Constants.MainMenu_EventsSources);
            menuImages.add(android.R.drawable.ic_menu_agenda);
 
            menuTitles.add(getString(R.string.menu_events_types));
-           menuIds.add(R.id.menu_events_types);
+           menuIds.add(Constants.MainMenu_EventsTypes);
            menuImages.add(R.drawable.ic_menu_copy);
 
            ListAdapter adapter = new ImageSelectAdapter(this, menuTitles, menuImages, ImageSelectAdapter.Scale.SQUARED, ta);
