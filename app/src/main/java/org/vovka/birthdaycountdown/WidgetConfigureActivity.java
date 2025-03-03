@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Created by Vladimir Belov on 04.03.2025, 01:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.02.2025, 12:44
+ *  * Last modified 04.03.2025, 01:27
  *
  */
 
@@ -23,7 +23,9 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -76,6 +78,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @ColorInt private int colorCaptionBottom;
     private boolean isNewPinnedWidget;
 
+    private static DisplayMetrics displayMetrics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -113,8 +117,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             setTheme(eventsData.preferences_theme.themeMain);
+            setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.widget_config);
 
+            RelativeLayout mainLayout = findViewById(R.id.layout_main);
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
@@ -127,17 +133,26 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
                     } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
+
+            //Отступы всего окна
+            RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) mainLayout.getLayoutParams();
+            marginParams.setMargins(
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    marginParams.bottomMargin);
+            mainLayout.setLayoutParams(marginParams);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
@@ -149,7 +164,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
 
             //Отступы всего окна
-            if (eventsData.preferences_list_margin > 0) {
+            /*if (eventsData.preferences_list_margin > 0) {
                 RelativeLayout main = findViewById(R.id.layout_main);
                 main.setPadding(
                         main.getPaddingLeft() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
@@ -157,7 +172,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         main.getPaddingRight() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                         main.getPaddingBottom()
                 );
-            }
+            }*/
 
             //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color
 
@@ -1136,5 +1151,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
+
+    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 }

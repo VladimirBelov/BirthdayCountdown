@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 00:13
+ *  * Created by Vladimir Belov on 04.03.2025, 01:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 23:43
+ *  * Last modified 04.03.2025, 00:53
  *
  */
 
@@ -363,6 +363,7 @@ class ContactsEvents {
     int preferences_list_photostyle;
     int preferences_list_filling;
     int preferences_list_margin;
+    int preferences_list_top_padding;
     Set<String> preferences_list_age_format;
     @ColorInt int preferences_list_color_eventtoday;
     @ColorInt int preferences_list_color_eventsoon;
@@ -1087,6 +1088,7 @@ class ContactsEvents {
             preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
             preferences_jubilee_algorithm = getPreferenceInt(preferences, context.getString(R.string.pref_List_Jubilee_Algorithm_key), context.getString(R.string.pref_List_Jubilee_Algorithm_default));
             preferences_list_margin = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
+            preferences_list_top_padding = getPreferenceInt(preferences, context.getString(R.string.pref_List_TopPadding_key), 0);
             preferences_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
             preferences_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)) == 1 ? FormatName.NameFirst : FormatName.LastnameFirst;
             preferences_date_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));

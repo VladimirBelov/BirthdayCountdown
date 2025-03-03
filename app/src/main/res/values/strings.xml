@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.03.2025, 00:13
+  ~  * Created by Vladimir Belov on 04.03.2025, 01:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 03.03.2025, 23:53
+  ~  * Last modified 04.03.2025, 00:41
   ~  */
   -->
 
@@ -654,6 +654,10 @@
         <item>Medium</item>
         <item>Big</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_title">Top padding</string>
+    <string name="pref_List_TopPadding_summary">Use this setting if the event list crawls under the window title</string>
+    <string name="pref_List_TopPadding_hint">Enter padding size</string>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Common widgets preferences</string>
@@ -1892,6 +1896,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>5</item>
         <item>10</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_key" translatable="false">List_TopPadding</string>
 
     <string name="pref_Widgets_key" translatable="false">Widgets</string>
     <string name="pref_Widgets_AddWidget_key" translatable="false">Widgets_Add</string>

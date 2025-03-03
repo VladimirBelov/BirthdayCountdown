@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 04.03.2025, 01:29
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 04.03.2025, 00:49
   ~  */
   -->
 
@@ -809,6 +809,17 @@
             android:title="@string/pref_List_Margin_title"
             android:icon="@drawable/ic_menu_chat_dashboard"
             android:dialogIcon="@drawable/ic_menu_chat_dashboard"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_List_TopPadding_key"
+            android:title="@string/pref_List_TopPadding_title"
+            android:summary="@string/pref_List_TopPadding_summary"
+            android:hint="@string/pref_List_TopPadding_hint"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:dialogIcon="@android:drawable/ic_menu_preferences"
             android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceCategory>

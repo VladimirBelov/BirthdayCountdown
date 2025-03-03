@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.03.2025, 15:50
+ *  * Created by Vladimir Belov on 04.03.2025, 01:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 15:48
+ *  * Last modified 04.03.2025, 01:02
  *
  */
 
@@ -2173,11 +2173,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             //Отступы списка событий
-            int prefTopMargin = 0; //todo: отступ прибавляется каждый рефреш (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics);
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) swipeRefresh.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                    marginParams.topMargin + prefTopMargin,
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
             swipeRefresh.setLayoutParams(marginParams);
