@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 01:29
+ *  * Created by Vladimir Belov on 04.03.2025, 10:48
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 01:10
+ *  * Last modified 04.03.2025, 10:26
  *
  */
 
@@ -178,16 +178,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
             }
-
-            //Отступы
-            ListView mainContent = findViewById(android.R.id.list);
-            ListView.MarginLayoutParams marginParams = (ListView.MarginLayoutParams) mainContent.getLayoutParams();
-            marginParams.setMargins(
-                    marginParams.leftMargin,
-                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
-                    marginParams.rightMargin,
-                    marginParams.bottomMargin);
-            mainContent.setLayoutParams(marginParams);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
