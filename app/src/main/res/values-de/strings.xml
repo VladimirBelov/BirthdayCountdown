@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.02.2025, 16:35
+  ~  * Last modified 05.03.2025, 01:29
   ~  */
   -->
 
@@ -100,7 +100,6 @@
     <string name="msg_color_parse_error">Farbparsing-Fehler!</string>
     <string name="msg_date_parse_error">"Fehler bei der Datumsanalyse: "</string>
     <string name="msg_event_parse_error">"Ereignisanalysefehler: '%1$s'"</string>
-    <string name="msg_type_parse_error">"Ereignistyp unbekannt: '%1$s' für '%2$s'"</string>
     <string name="msg_jump_to_event_error">Ereignis nicht gefunden! Aktivieren Sie weitere Ereignistypen in den App-Einstellungen</string>
     <string name="msg_errors_total">"Gesamtfehler: "</string>
     <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.02.2025, 12:44
+ *  * Created by Vladimir Belov on 05.03.2025, 02:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.02.2025, 12:30
+ *  * Last modified 05.03.2025, 01:18
  *
  */
 
@@ -149,7 +149,7 @@ public class AboutActivity extends AppCompatActivity {
             //Цвет CutoutAppearance на повёрнутом экране
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
-            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
+            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе WebView грузит язык по-умолчанию
 
             ImageView imageIcon = findViewById(R.id.imageIcon);
             imageIcon.setImageBitmap(eventsData.getPreferences_Icon());
@@ -221,7 +221,7 @@ public class AboutActivity extends AppCompatActivity {
                                     eventsData.setHTMLColor(String.valueOf(eventsData.statUnrecognizedEvents), Constants.HTML_COLOR_RED).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         sb.append(Constants.HTML_UL_END);
 
-                        if (!eventsData.statEventSources.entrySet().isEmpty()) {
+                        if (!eventsData.statEventSources.isEmpty()) {
                             sb.append(getString(R.string.stats_counters_events_title));
                             for (Map.Entry<String, Integer> entry : eventsData.statEventSources.entrySet()) {
                                 sb.append(Constants.HTML_LI).append(entry.getKey()).append(Constants.STRING_COLON_SPACE).append(entry.getValue());

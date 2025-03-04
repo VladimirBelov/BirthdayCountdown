@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 01:05
+ *  * Created by Vladimir Belov on 05.03.2025, 02:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.02.2025, 22:04
+ *  * Last modified 05.03.2025, 01:29
  *
  */
 
@@ -33,6 +33,8 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+
+import org.intellij.lang.annotations.JdkConstants;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -696,7 +698,7 @@ public class WidgetCalendar extends AppWidgetProvider {
         }
     }
 
-    private RemoteViews composeDayCell(Calendar cal, int todayYear, int thisMonth, int today, int appWidgetId) {
+    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today, int appWidgetId) {
         RemoteViews cellRv = null;
 
         try {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 01:29
+ *  * Created by Vladimir Belov on 05.03.2025, 02:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 00:53
+ *  * Last modified 05.03.2025, 01:29
  *
  */
 
@@ -2412,6 +2412,7 @@ class ContactsEvents {
 
             if (eventDate != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
+                Event event = new Event();
                 String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)));
                 String contactNameAlt = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE)));
                 if (contactNameAlt.contains(Constants.STRING_PARENTHESIS_START)) {
@@ -2419,138 +2420,89 @@ class ContactsEvents {
                 }
                 String eventLabel = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.LABEL)));
                 boolean isEventLabel = !TextUtils.isEmpty(eventLabel);
-                String eventCaption = Constants.STRING_EMPTY;
-                int eventIcon = R.drawable.ic_event_unknown;
-                String eventEmoji = getResources().getString(R.string.event_type_unknown_emoji);
                 statContactsEventCount++;
                 boolean isUnrecognized = false;
 
                 if (eventType.equals(getEventType(Constants.Type_BirthDay))
                         || (isEventLabel && preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    //todo: переделать на @createTypedEvent
-                    eventCaption = getResources().getString(R.string.event_type_birthday);
-                    eventIcon = R.drawable.ic_event_birthday; //https://icons8.com/icon/21460/birthday
-                    eventEmoji = getResources().getString(R.string.event_type_birthday_emoji);
-                    eventSubType = getEventType(Constants.Type_BirthDay);
+                    event = createTypedEvent(Constants.Type_BirthDay, eventLabel, Constants.Storage_Contacts);
 
                 } else if (eventType.equals(getEventType(Constants.Type_Death))
                         || (isEventLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    eventCaption = getResources().getString(R.string.event_type_death);
-                    eventIcon = R.drawable.ic_event_death;
-                    //https://emojipedia.org/google/android-6.0.1/new/
-                    eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
-                    eventSubType = getEventType(Constants.Type_Death);
+                    event = createTypedEvent(Constants.Type_Death, eventLabel, Constants.Storage_Contacts);
 
                 } else if (eventType.equals(getEventType(Constants.Type_Anniversary))
                         || (isEventLabel && preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    eventCaption = getResources().getString(R.string.event_type_anniversary);
-                    eventIcon = R.drawable.ic_event_wedding; //https://www.flaticon.com/free-icon/wedding-rings_224802
-                    eventEmoji = getResources().getString(R.string.event_type_wedding_emoji);
-                    eventSubType = getEventType(Constants.Type_Anniversary);
+                    event = createTypedEvent(Constants.Type_Anniversary, eventLabel, Constants.Storage_Contacts);
 
                 } else if (eventType.equals(getEventType(Constants.Type_Other))
                         || (isEventLabel && preferences_other_event_labels != null && preferences_other_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    eventCaption = getResources().getString(R.string.event_type_other);
-                    eventIcon = R.drawable.ic_event_other; //https://icons8.com/icon/set/event/office
-                    eventEmoji = getResources().getString(R.string.event_type_other_emoji);
-                    eventSubType = getEventType(Constants.Type_Other);
+                    event = createTypedEvent(Constants.Type_Other, eventLabel, Constants.Storage_Contacts);
 
                 } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))
                         || (isEventLabel && preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    eventCaption = getResources().getString(R.string.event_type_holiday);
-                    eventIcon = R.drawable.ic_event_holiday;
-                    eventEmoji = getResources().getString(R.string.event_type_holiday_emoji);
-                    eventSubType = getEventType(Constants.Type_HolidayEvent);
+                    event = createTypedEvent(Constants.Type_HolidayEvent, eventLabel, Constants.Storage_Contacts);
 
                 } else if (isEventLabel) {
 
                     if (preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = preferences_customevent1_caption;
-                        eventIcon = R.drawable.ic_event_custom1;
-                        eventEmoji = getResources().getString(R.string.event_type_custom1_emoji);
-                        eventSubType = getEventType(Constants.Type_Custom1);
+                        event = createTypedEvent(Constants.Type_Custom1, eventLabel, Constants.Storage_Contacts);
                         if (!preferences_customevent1_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = preferences_customevent2_caption;
-                        eventIcon = R.drawable.ic_event_custom2;
-                        eventEmoji = getResources().getString(R.string.event_type_custom2_emoji);
-                        eventSubType = getEventType(Constants.Type_Custom2);
+                        event = createTypedEvent(Constants.Type_Custom2, eventLabel, Constants.Storage_Contacts);
                         if (!preferences_customevent2_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = preferences_customevent3_caption;
-                        eventIcon = R.drawable.ic_event_custom3;
-                        eventEmoji = getResources().getString(R.string.event_type_custom3_emoji);
-                        eventSubType = getEventType(Constants.Type_Custom3);
+                        event = createTypedEvent(Constants.Type_Custom3, eventLabel, Constants.Storage_Contacts);
                         if (!preferences_customevent3_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = preferences_customevent4_caption;
-                        eventIcon = R.drawable.ic_event_custom4;
-                        eventEmoji = getResources().getString(R.string.event_type_custom4_emoji);
-                        eventSubType = getEventType(Constants.Type_Custom4);
+                        event = createTypedEvent(Constants.Type_Custom4, eventLabel, Constants.Storage_Contacts);
                         if (!preferences_customevent4_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = preferences_customevent5_caption;
-                        eventIcon = R.drawable.ic_event_custom5;
-                        eventEmoji = getResources().getString(R.string.event_type_custom5_emoji);
-                        eventSubType = getEventType(Constants.Type_Custom5);
+                        event = createTypedEvent(Constants.Type_Custom5, eventLabel, Constants.Storage_Contacts);
                         if (!preferences_customevent5_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = getResources().getString(R.string.event_type_nameday);
-                        eventIcon = R.drawable.ic_event_nameday;
-                        eventEmoji = getResources().getString(R.string.event_type_nameday_emoji);
-                        eventSubType = getEventType(Constants.Type_NameDay);
+                        event = createTypedEvent(Constants.Type_NameDay, eventLabel, Constants.Storage_Contacts);
 
                     } else if (preferences_crowning_labels != null && preferences_crowning_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        eventCaption = getResources().getString(R.string.event_type_crowning);
-                        eventIcon = R.drawable.ic_event_crowning; //https://iconscout.com/icon/wedding-destination-romance-building-emoj-symbol
-                        eventEmoji = getResources().getString(R.string.event_type_crowning_emoji);
-                        eventSubType = getEventType(Constants.Type_Crowning);
+                        event = createTypedEvent(Constants.Type_Crowning, eventLabel, Constants.Storage_Contacts);
 
                     } else {
 
                         isUnrecognized = true;
                         if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other) {
 
-                            eventCaption = getResources().getString(R.string.event_type_other);
-                            eventIcon = R.drawable.ic_event_other;
-                            eventEmoji = getResources().getString(R.string.event_type_other_emoji);
-                            eventType = getEventType(Constants.Type_Other);
-                            eventSubType = getEventType(Constants.Type_Other);
+                            event = createTypedEvent(Constants.Type_Other, eventLabel, Constants.Storage_Contacts);
 
                         } else if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Unrecognized) {
 
-                            eventCaption = getResources().getString(R.string.event_type_unrecognized);
-                            eventIcon = R.drawable.ic_event_unknown;
-                            eventEmoji = getResources().getString(R.string.event_type_unknown_emoji);
-                            eventType = getEventType(Constants.Type_Unrecognized);
-                            eventSubType = getEventType(Constants.Type_Unrecognized);
+                            event = createTypedEvent(Constants.Type_Unrecognized, eventLabel, Constants.Storage_Contacts);
 
                         } else {
                             return eventKey_current; //Пропускаем событие
@@ -2559,10 +2511,7 @@ class ContactsEvents {
                     }
 
                 }
-                if (isEventLabel && eventCaption.isEmpty()) eventCaption = eventLabel;
-
-                /*if (eventIcon == R.drawable.ic_event_unknown)
-                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_type_parse_error, eventLabel, contactName));*/
+                if (isEventLabel && event.caption.isEmpty()) event.caption = event.label;
 
                 String eventKey_next = contactName.concat(Constants.STRING_COMMA).concat(eventType);
 
@@ -2621,9 +2570,6 @@ class ContactsEvents {
 
                             }
                         }
-
-                    } else {
-                        contactTitle = Constants.STRING_EMPTY;
                     }
                     contactFIO = contactFIO.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_SPACE);
 
@@ -2633,16 +2579,15 @@ class ContactsEvents {
                     eventData.put(Position_personFullNameAlt, contactNameAlt.replace(Constants.STRING_COMMA_SPACE, Constants.STRING_SPACE));
                     eventData.put(Position_contactID, contactID);
                     eventData.put(Position_photo_uri, cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.PHOTO_URI)));
-                    eventData.put(Position_eventCaption, eventCaption); //Наименование события
-                    //подпорка: почему-то для одиноких Skype событий в eventLabel находится дата события
-                    eventData.put(Position_eventLabel, !eventLabel.equals(eventCaption) & !newEventDate.contains(eventLabel) ? eventLabel : Constants.STRING_EMPTY); //Заголовок пользовательского события
-                    eventData.put(Position_eventType, eventType); //Тип события
-                    eventData.put(Position_eventSubType, eventSubType); //Подтип события
+                    eventData.put(Position_eventCaption, event.caption); //Наименование события
+                    eventData.put(Position_eventLabel, event.label); //Заголовок пользовательского события
+                    eventData.put(Position_eventType, event.type); //Тип события
+                    eventData.put(Position_eventSubType, event.subType); //Подтип события
                     eventData.put(Position_organization, checkForNull(map_organizations.get(contactID)));
                     eventData.put(Position_title, contactTitle);
                     eventData.put(Position_dates, newEventDate);
-                    eventData.put(Position_eventIcon, Integer.toString(eventIcon));
-                    eventData.put(Position_eventEmoji, eventEmoji);
+                    eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(Position_eventEmoji, event.emoji);
                     if (Constants.STRING_1.equals(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)))) {
                         eventData.put(Position_starred, Constants.STRING_1);
                         statFavoriteEventsCount++;
@@ -2742,30 +2687,36 @@ class ContactsEvents {
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
-                event.caption = getResources().getString(R.string.event_type_birthday);
+                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+
+                /*event.caption = getResources().getString(R.string.event_type_birthday);
                 event.type = eventType;
                 event.subType = getEventType(Constants.Type_BirthDay);
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
-                event.needScanContacts = true;
+                event.needScanContacts = true;*/
                 useEventYear = preferences_birthday_calendars_useyear;
 
             } else if (eventType.equals(getEventType(Constants.Type_Other))) {
 
-                event.caption = getResources().getString(R.string.event_type_calendar);
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+
+                /*event.caption = getResources().getString(R.string.event_type_calendar);
                 event.type = eventType;
                 event.subType = getEventType(Constants.Type_CalendarEvent);
                 event.icon = R.drawable.ic_event_other;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";*/
                 useEventYear = true;
 
             } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
 
-                event.caption = getResources().getString(R.string.event_type_holiday);
+                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+
+                /*event.caption = getResources().getString(R.string.event_type_holiday);
                 event.type = eventType;
                 event.subType = eventType; //getEventType(Constants.Type_HolidayEvent);
                 event.icon = R.drawable.ic_event_holiday;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";*/
                 useEventYear = true;
 
             } else if (isMultiTypeSource) {
@@ -4584,7 +4535,7 @@ class ContactsEvents {
                 event.type = getEventType(Constants.Type_Custom);
                 event.subType = getEventType(Constants.Type_Custom1);
                 event.icon = R.drawable.ic_event_custom1;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_custom1_emoji) : "\uD83D\uDCC6";
                 event.needScanContacts = true;
 
             } else if (eventType == Constants.Type_Custom2) {
@@ -4635,8 +4586,10 @@ class ContactsEvents {
 
             if (event.subType.isEmpty()) {
                 if (eventSource == Constants.Storage_Calendar) {
+                    event.caption = getResources().getString(R.string.event_type_calendar);
                     event.subType = getEventType(Constants.Type_CalendarEvent);
                 } else if (eventSource == Constants.Storage_File) {
+                    event.caption = getResources().getString(R.string.event_type_file);
                     event.subType = getEventType(Constants.Type_FileEvent);
                 }
             }

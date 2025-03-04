@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.02.2025, 16:35
+  ~  * Last modified 05.03.2025, 01:29
   ~  */
   -->
 
@@ -100,7 +100,6 @@
     <string name="msg_color_parse_error">"Erreur de reconnaissance de couleur!"</string>
     <string name="msg_date_parse_error">"Erreur de reconnaissance de date: "</string>
     <string name="msg_event_parse_error">"Erreur de reconnaissance d'événement: '%1$s'"</string>
-    <string name="msg_type_parse_error">"Type d'événement non défini: '%1$s' pour '%2$s'"</string>
     <string name="msg_jump_to_event_error">"Aucun événement trouvé ! Activer plus de types des événements dans les paramètres de l'application"</string>
     <string name="msg_errors_total">"Total des erreurs: "</string>
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>

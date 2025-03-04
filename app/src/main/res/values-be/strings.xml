@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.02.2025, 17:52
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.02.2025, 16:35
+  ~  * Last modified 05.03.2025, 01:29
   ~  */
   -->
 
@@ -100,7 +100,6 @@
     <string name="msg_color_parse_error">Памылка распазнання колеру!</string>
     <string name="msg_date_parse_error">"Памылка распазнання даты: "</string>
     <string name="msg_event_parse_error">"Памылка распазнання падзеі: '%1$s'"</string>
-    <string name="msg_type_parse_error">"Тып падзеі не вызначаны: '%1$s' для '%2$s'"</string>
     <string name="msg_jump_to_event_error">Падзея не знойдзена! Уключыце больш тыпаў падзей у наладах праграмы</string>
     <string name="msg_errors_total">"Усяго памылак: "</string>
     <string name="msg_errors_details">"акаўнт=%1$s, тып падзеі=%2$s, дата=%3$s"</string>

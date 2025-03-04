@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 00:13
+ *  * Created by Vladimir Belov on 05.03.2025, 02:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 23:35
+ *  * Last modified 05.03.2025, 01:29
  *
  */
 
@@ -447,5 +447,5 @@ final class Constants {
     public static final String SQL_SORT_ASC_CONT = " ASC, ";
     public static final String SQL_EQUAL = " = ";
 
-    public static String LocalEventsFilename = "Events";
+    public static final String LocalEventsFilename = "Events";
 }

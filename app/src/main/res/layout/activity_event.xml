@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.03.2025, 00:23
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 03.03.2025, 00:12
+  ~  * Last modified 05.03.2025, 01:29
   ~  */
   -->
 
@@ -13,7 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/dialogBackgroundColor">
+    android:background="?attr/dialogBackgroundColor"
+    tools:ignore="Overdraw">
 
     <LinearLayout
         android:id="@+id/windowTitle"
@@ -97,7 +98,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor">
+                        android:background="?attr/dialogBackgroundColor" >
 
                         <TextView
                             android:id="@+id/captionName"
@@ -138,7 +139,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor">
+                        android:background="?attr/dialogBackgroundColor" >
 
                         <TextView
                             android:id="@+id/captionTitle"
@@ -179,7 +180,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor">
+                        android:background="?attr/dialogBackgroundColor" >
 
                         <TextView
                             android:id="@+id/captionOrganization"
@@ -219,7 +220,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor">
+                        android:background="?attr/dialogBackgroundColor" >
 
                         <TextView
                             android:id="@+id/captionDate"
@@ -236,8 +237,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:importantForAutofill="no"
-                            android:paddingHorizontal="2dp"
-                            android:textColor="?attr/dialogTextColor" /><!--android:layout_gravity="end"  |end android:ems="10"-->
+                            android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
 
@@ -248,7 +248,8 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="4dp"
                     app:cardBackgroundColor="?attr/listDividerColor"
-                    app:contentPadding="1dp">
+                    app:contentPadding="1dp"
+                    android:layout_marginBottom="2dp" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -256,7 +257,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor">
+                        android:background="?attr/dialogBackgroundColor" >
 
                         <TextView
                             android:id="@+id/captionType"

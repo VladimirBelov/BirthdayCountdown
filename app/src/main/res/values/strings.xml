@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.03.2025, 01:29
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.03.2025, 00:41
+  ~  * Last modified 05.03.2025, 01:29
   ~  */
   -->
 
@@ -102,7 +102,6 @@
     <string name="msg_color_parse_error">Color parsing error!</string>
     <string name="msg_date_parse_error">"Date parsing error: "</string>
     <string name="msg_event_parse_error">"Event parsing error: '%1$s'"</string>
-    <string name="msg_type_parse_error">"Event type unrecognized: '%1$s' for '%2$s'"</string>
     <string name="msg_jump_to_event_error">Event not found! Enable more event types in app settings</string>
     <string name="msg_errors_total">"Total errors: "</string>
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>

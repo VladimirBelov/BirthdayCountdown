@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 00:13
+ *  * Created by Vladimir Belov on 05.03.2025, 02:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.03.2025, 23:34
+ *  * Last modified 05.03.2025, 01:29
  *
  */
 
@@ -527,7 +527,7 @@ public class LocalEventActivity extends Activity {
         view.setEnabled(false);
     }
 
-    private void buttonCancelOnClick(final View view) {
+    public void buttonCancelOnClick(final View view) {
         if (!isReadOnly) {
             //todo: если добавление или редактирование - предупреждение
         }
@@ -574,7 +574,8 @@ public class LocalEventActivity extends Activity {
 
             if (eventTitle.isEmpty()) {
                 TextView viewEventTitle = findViewById(R.id.captionOrganization);
-                ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field, viewEventTitle.getText()));
+                ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field,
+                        ContactsEvents.substringBefore(viewEventTitle.getText().toString(), Constants.STRING_COLON)));
                 return;
             }
 

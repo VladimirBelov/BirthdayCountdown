@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 16.01.2024, 12:14
+  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 05.03.2025, 02:29
   ~  */
   -->
 
@@ -772,14 +772,6 @@
     </style>
 
     <style name="OptOutEdgeToEdgeEnforcement">
-    </style>
-
-    <style name="MySpinnerDatePickerStyle" parent="android:Theme.Material.Dialog">
-        <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
-    </style>
-
-    <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
-        <item name="android:datePickerMode">spinner</item>
     </style>
 
     <style name="FloatingActivity">
