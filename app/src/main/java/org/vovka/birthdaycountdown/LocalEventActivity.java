@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 02:55
+ *  * Created by Vladimir Belov on 05.03.2025, 14:22
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 01:29
+ *  * Last modified 05.03.2025, 14:03
  *
  */
 
@@ -94,7 +94,8 @@ public class LocalEventActivity extends Activity {
 
     public static class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-        final String TAG = "DatePicker";
+        private static final String TAG = "DatePicker";
+        View spinnerYear = null;
 
         @Nullable
         @Override
@@ -127,9 +128,13 @@ public class LocalEventActivity extends Activity {
                 TextView editDate = getActivity().findViewById(R.id.editDate);
                 CheckBox checkUseYear = viewActivity.findViewById(R.id.check_use_year);
                 android.widget.DatePicker datePicker = viewActivity.findViewById(R.id.datePicker);
-                @SuppressLint("DiscouragedApi")
-                View spinnerYear = datePicker.findViewById(getResources().getIdentifier(Constants.RES_TYPE_YEAR, Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID));
 
+                //В разных версиях Android этот spinner назывался по-разному. Попробуем найти его
+                @SuppressLint("DiscouragedApi")
+                int yearSpinnerId = getResources().getIdentifier(Constants.RES_TYPE_YEAR, Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
+                if (yearSpinnerId!=0){
+                    spinnerYear = datePicker.findViewById(yearSpinnerId);
+                }
                 datePicker.init(yearToChange.get(), monthToChange.get(), dayToChange.get(), (
                                 view, year, monthOfYear, dayOfMonth) -> {
                             yearToChange.set(year);
@@ -138,13 +143,15 @@ public class LocalEventActivity extends Activity {
                             useYear.set(checkUseYear.isChecked());
                         }
                 );
-                if (useYear.get()) {
-                    spinnerYear.setVisibility(View.VISIBLE);
-                    checkUseYear.setChecked(true);
-                } else {
-                    spinnerYear.setVisibility(View.GONE);
-                    checkUseYear.setChecked(false);
-                    yearBeforeHide.set(today.get(Calendar.YEAR));
+                if (spinnerYear != null) {
+                    if (useYear.get()) {
+                        spinnerYear.setVisibility(View.VISIBLE);
+                        checkUseYear.setChecked(true);
+                    } else {
+                        spinnerYear.setVisibility(View.GONE);
+                        checkUseYear.setChecked(false);
+                        yearBeforeHide.set(today.get(Calendar.YEAR));
+                    }
                 }
 
                 checkUseYear.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -278,6 +285,7 @@ public class LocalEventActivity extends Activity {
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
 
             } else if (Intent.ACTION_EDIT.equals(action) || isReadOnly) {
+                if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
                 if (extras != null) {
                     if (extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
                         //noinspection AssignmentToStaticFieldFromInstanceMethod
@@ -319,15 +327,19 @@ public class LocalEventActivity extends Activity {
                             }
 
                             String savedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
-                            if (savedEventSubType != null && eventSubTypesIds.contains(Integer.valueOf(savedEventSubType))) {
-                                int indexEventType = eventSubTypesIds.indexOf(Integer.valueOf(savedEventSubType));
-                                spinnerEventTypes.setSelection(indexEventType);
-                                viewEventType.setText(eventTypesValues.get(indexEventType));
+                            if (savedEventSubType != null) {
+                                try {
+                                    Integer eventSubTypeId = Integer.valueOf(savedEventSubType);
+                                    if (eventSubTypesIds.contains(eventSubTypeId)) {
+                                        int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
+                                        spinnerEventTypes.setSelection(indexEventSubType);
+                                        viewEventType.setText(eventTypesValues.get(indexEventSubType));
+                                    }
+                                } catch (NumberFormatException ignored) { /**/ }
                             }
                         }
                     }
                 }
-                if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
             }
 
             //Ширина диалога
@@ -647,8 +659,8 @@ public class LocalEventActivity extends Activity {
                 prepareEventData(activity);
 
                 if (eventUseYear) {
-                    Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
-                    Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
+                    final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
+                    final Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
                     int age = -1;
                     if (eventDate.before(today)) {
                         age = eventsData.countYearsDiff(eventDate, today);

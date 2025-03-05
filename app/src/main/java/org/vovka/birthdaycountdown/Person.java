@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 13:56
+ *  * Created by Vladimir Belov on 05.03.2025, 14:22
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.02.2025, 12:35
+ *  * Last modified 05.03.2025, 12:06
  *
  */
 
@@ -77,6 +77,7 @@ class Person {
         }
     }
 
+    @NonNull
     static String getAltName(@NonNull String fullName, ContactsEvents.FormatName nameFormat, @NonNull Context context) {
 
         try{
@@ -145,6 +146,7 @@ class Person {
         this(context, eventData.split(Constants.STRING_EOT, -1));
     }
 
+    @NonNull
     String getFullNameShort () { //Фамилия И. О.
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {

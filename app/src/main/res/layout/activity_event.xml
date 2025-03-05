@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 05.03.2025, 14:22
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 05.03.2025, 14:03
   ~  */
   -->
 
@@ -106,7 +106,7 @@
                             android:layout_height="wrap_content"
                             android:labelFor="@id/editName"
                             android:textSize="12sp"
-                            android:contentDescription="@string/local_event_dialog_caption_name"
+                            android:text="@string/local_event_dialog_caption_name"
                             android:textColor="?attr/dialogTextColor" />
 
                         <EditText
