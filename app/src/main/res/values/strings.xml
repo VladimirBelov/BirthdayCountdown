@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1112,8 +1112,10 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_About_summary">Version history, events statistics, appstores links</string>
     <string name="pref_BatteryOptimization_title">Battery optimization is ON</string>
     <string name="pref_BatteryOptimization_summary">Open the setting and turn off the optimization…</string>
-    <string name="pref_ExactAlarms_title">Alarms &amp; reminders are OFF</string>
-    <string name="pref_ExactAlarms_summary">Open the setting and turn this on to schedule notifications and widgets updates for a specific time…</string>
+    <string name="pref_NotificationsAccess_title">Notifications are OFF</string>
+    <string name="pref_NotificationsAccess_summary">Open the setting and turn this on to show notifications…</string>
+    <string name="pref_ExactAlarmsAccess_title">Alarms &amp; reminders are OFF</string>
+    <string name="pref_ExactAlarmsAccess_summary">Open the setting and turn this on to schedule notifications and widgets updates for a specific time…</string>
     <string name="pref_ContactsAccess_title">No access to contacts events</string>
     <string name="pref_ContactsAccess_summary">Request permission to contacts events…</string>
     <string name="pref_CalendarAccess_title">No access to calendar</string>
@@ -1139,6 +1141,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Tools_Preferences_Import_result">Preferences imported: %1$d, errors: %2$d</string>
     <string name="pref_Tools_Events_title">Events</string>
     <string name="pref_Tools_Events_Show_title">Show saved local events</string>
+    <string name="pref_Tools_Events_Export_title">Export local events</string>
+    <string name="pref_Tools_Events_Import_title">Import local events</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installed from %1$s]]></string>
@@ -2277,7 +2281,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <bool name="pref_Help_ExtraFun_On_default" translatable="false">false</bool>
 
     <string name="pref_Help_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
-    <string name="pref_Help_ExactAlarms_key" translatable="false">ExactAlarms</string>
+    <string name="pref_Help_NotificationsAccess_key" translatable="false">NotificationsAccess</string>
+    <string name="pref_Help_ExactAlarmsAccess_key" translatable="false">ExactAlarmsAccess</string>
     <string name="pref_Help_ContactsAccess_key" translatable="false">ContactsAccess</string>
     <string name="pref_Help_CalendarAccess_key" translatable="false">CalendarAccess</string>
     <string name="pref_Help_CalendarSync_key" translatable="false">CalendarSync</string>
@@ -2289,6 +2294,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Tools_Preferences_Import_key" translatable="false">ToolsPreferencesImport</string>
     <string name="pref_Tools_Events_key" translatable="false">ToolsEvents</string>
     <string name="pref_Tools_Events_Show_key" translatable="false">ToolsEventsShow</string>
+    <string name="pref_Tools_Events_Export_key" translatable="false">ToolsEventsExport</string>
+    <string name="pref_Tools_Events_Import_key" translatable="false">ToolsEventsImport</string>
 
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 

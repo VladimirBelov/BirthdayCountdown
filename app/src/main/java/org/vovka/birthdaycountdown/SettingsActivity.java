@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 10:48
+ *  * Created by Vladimir Belov on 08.03.2025, 23:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 10:26
+ *  * Last modified 08.03.2025, 23:29
  *
  */
 
@@ -409,17 +409,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     eventsData.preferences_extrafun ? R.string.pref_Notifications2_EventInfo_key : R.string.pref_Notifications2_Events_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
+
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
-            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Events_key);
+            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Preferences_Show_key);
+            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Events_Show_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
-                hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_ExactAlarms_key);
+                hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
             } else {
-                hidePreference(eventsData.checkCanExactAlarm(), R.string.pref_Help_key, R.string.pref_Help_ExactAlarms_key);
+                hidePreference(eventsData.checkCanExactAlarm(), R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
                 hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
             }
             hidePreference(!eventsData.preferences_extrafun || eventsData.checkNoContactsAccess() || eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
+            hidePreference(!eventsData.checkNoNotificationAccess(), R.string.pref_Help_key, R.string.pref_Help_NotificationsAccess_key);
             hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
             hidePreference(Build.VERSION.SDK_INT < Build.VERSION_CODES.O, R.string.pref_Widgets_key, R.string.pref_Widgets_AddWidget_key);
@@ -639,6 +642,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 setUpNestedScreen((PreferenceScreen) preference);
 
+                if (getString(R.string.pref_Notifications_key).equals(key) || getString(R.string.pref_Notifications2_key).equals(key)) {
+                    checkAndRequestNotificationAccess(eventsData);
+                }
+
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Тест уведомления 1
 
                 testNotify(1);
@@ -761,7 +768,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     } catch (ActivityNotFoundException e) { /**/ }
                 }
 
-            } else if (getString(R.string.pref_Help_ExactAlarms_key).equals(key)) {
+            } else if (getString(R.string.pref_Help_NotificationsAccess_key).equals(key)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Intent intent =  new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                    }
+                } else {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                }
+
+            } else if (getString(R.string.pref_Help_ExactAlarmsAccess_key).equals(key)) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     try {
@@ -1248,27 +1270,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         } catch (ActivityNotFoundException e) { /**/ }
                     }
                     //Нет доступа на отправку уведомлений
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                        if (eventsData.checkNoNotificationAccess()) {
-                            String[] permissions;
-                            if (!eventsData.checkCanExactAlarm()) {
-                                permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
-                            } else {
-                                permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
-                            }
-                            ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-
-                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-                                && !eventsData.checkCanExactAlarm() && !eventsData.checkNoBatteryOptimization()) {
-
-                            //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
-                            //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
-                            //https://stackoverflow.com/questions/70304940/android-12-redirect-to-alarms-reminders-settings-not-working
-
-                            try {
-                                startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse(Constants.URI_PACKAGE + getPackageName())));
-                            } catch (ActivityNotFoundException e) { /**/ }
-                        }
+                    checkAndRequestNotificationAccess(eventsData);
                 }
 
                 if (eventsData.preferences_menustyle_compact) {
@@ -1310,6 +1312,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    private void checkAndRequestNotificationAccess(ContactsEvents eventsData) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (eventsData.checkNoNotificationAccess()) {
+                String[] permissions;
+                if (!eventsData.checkCanExactAlarm()) {
+                    permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
+                } else {
+                    permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
+                }
+                ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
+
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                    && !eventsData.checkCanExactAlarm() && !eventsData.checkNoBatteryOptimization()) {
+
+                //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
+                //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
+                //https://stackoverflow.com/questions/70304940/android-12-redirect-to-alarms-reminders-settings-not-working
+
+                try {
+                    startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse(Constants.URI_PACKAGE + getPackageName())));
+                } catch (ActivityNotFoundException e) { /**/ }
+            }
+        }
     }
 
     //https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference

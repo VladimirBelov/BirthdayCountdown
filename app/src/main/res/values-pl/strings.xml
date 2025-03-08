@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
     <string name="pref_About_summary">Historia wersji, statystyki wydarzeń, linki do sklepów z aplikacjami</string>
     <string name="pref_BatteryOptimization_title">Optymalizacja baterii WŁĄCZONA</string>
     <string name="pref_BatteryOptimization_summary">Otwórz ustawienie i wyłącz optymalizację…</string>
-    <string name="pref_ExactAlarms_title">Alarmy i przypomnienia WYŁĄCZONE</string>
-    <string name="pref_ExactAlarms_summary">Otwórz ustawienie i włącz planowanie powiadomień i aktualizacji widżetów o określonej godzinie…</string>
+    <string name="pref_ExactAlarmsAccess_title">Alarmy i przypomnienia WYŁĄCZONE</string>
+    <string name="pref_ExactAlarmsAccess_summary">Otwórz ustawienie i włącz planowanie powiadomień i aktualizacji widżetów o określonej godzinie…</string>
     <string name="pref_ContactsAccess_title">Brak dostępu do kontaktów</string>
     <string name="pref_ContactsAccess_summary">Poproś o dostęp do danych kontaktowych…</string>
     <string name="pref_CalendarAccess_title">Brak dostępu do kalendarzy</string>

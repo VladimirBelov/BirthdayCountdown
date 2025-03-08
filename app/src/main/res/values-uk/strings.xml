@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@
     <string name="pref_About_summary">Історія версій, статистика подій, посилання на магазини програм</string>
     <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_summary">Відкрити налаштування і вимкнути оптимізацію…</string>
-    <string name="pref_ExactAlarms_title">Будильники та нагадування ВИМКНЕНО</string>
-    <string name="pref_ExactAlarms_summary">Відкрийте налаштування та ввімкніть це, щоб запланувати оновлення сповіщень і віджетів на певний час…</string>
+    <string name="pref_ExactAlarmsAccess_title">Будильники та нагадування ВИМКНЕНО</string>
+    <string name="pref_ExactAlarmsAccess_summary">Відкрийте налаштування та ввімкніть це, щоб запланувати оновлення сповіщень і віджетів на певний час…</string>
     <string name="pref_ContactsAccess_title">Немає доступу до подій контактів</string>
     <string name="pref_ContactsAccess_summary">Запитати дозвіл на події контактів…</string>
     <string name="pref_CalendarAccess_title">Немає доступу до календаря</string>

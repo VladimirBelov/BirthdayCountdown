@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 01:43
+ *  * Created by Vladimir Belov on 08.03.2025, 23:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 01:40
+ *  * Last modified 08.03.2025, 22:42
  *
  */
 
@@ -1608,6 +1608,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
                             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
                             menu.findItem(Constants.MainMenu_Hints).setVisible(false).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                            filterNames = "";
                             filterEventsList();
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
@@ -2088,8 +2089,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(this);
+
+            //если "выходили" посмотреть карточку контакта или события на 5 сек
             if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
-                    && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) return; //если "выходили" посмотреть карточку контакта или события на 5 сек
+                    && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+
+                eventsData.statLastPausedForOtherActivity = 0;
+                return;
+            }
 
             eventsData.getPreferences();
 
@@ -2182,14 +2189,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     marginParams.bottomMargin);
             mainLayout.setLayoutParams(marginParams);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                    && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-                    && (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty())) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-            }
-
             //Тему не меняли, просто обновляем данные
-            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+            if (eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                // || this.dataList.isEmpty() != eventsData.isEmptyEventList()
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
@@ -2251,13 +2253,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
+                boolean isSearchAllTypesAndSources = !filterNames.isEmpty() && eventsData.preferences_list_search_depth == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all));
+
                 for (String event : eventsData.eventList) {
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                     String eventKey = eventsData.getEventKey(singleEventArray);
                     String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
                     //Фильтр по источникам
-                    if (!eventsData.preferences_list_EventSources.isEmpty()) {
+                    if (!(eventsData.preferences_list_EventSources.isEmpty() || isSearchAllTypesAndSources)) {
                         final String eventDates = singleEventArray[ContactsEvents.Position_dates];
                         boolean isVisibleEvent = false;
                         for (String source: eventsData.preferences_list_EventSources) {
@@ -2281,7 +2285,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     //Фильтр по типам
-                    if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType])) {
+                    if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]) || isSearchAllTypesAndSources) {
                         statsAllEvents++;
 
                         boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
@@ -2308,6 +2312,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
             }
+
             if (dataList.isEmpty() && eventsData.eventListPrev.isEmpty()) {
 
                 findViewById(R.id.mainListView).setVisibility(View.GONE);
@@ -2393,8 +2398,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             View v = listView.getChildAt(0);
             int top = (v == null) ? 0 : (v.getTop()) - listView.getPaddingTop();
 
-            adapter = new EventsAdapter(this, dataListFull, dataList);
-            listView.setAdapter(adapter);
+            if (dataList.isEmpty()) {
+                findViewById(R.id.mainListView).setVisibility(View.GONE);
+                if (filterNames.isEmpty()) {
+                    findViewById(R.id.mainListViewEmpty).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
+                }
+            } else {
+                findViewById(R.id.mainListView).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
+            }
+
+            //if (listView.getAdapter() == null) {
+                adapter = new EventsAdapter(this, dataListFull, dataList);
+                listView.setAdapter(adapter);
+            //} //todo:
 
             //Возвращаемся к ранее сохранённой позиции после обновления
             //Почему-то при index = 0 идёт сдвиг вверх на getPaddingTop
@@ -3003,7 +3022,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 try {
 
-                    if (constraint == null || constraint.length() == 0) {
+                    if (constraint == null || constraint.length() < 2) {
                         dataList_filtered.addAll(listAll);
                         filterNames = Constants.STRING_EMPTY;
                     } else {
@@ -3105,6 +3124,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else {
                         setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW).concat(Constants.STRING_SPACE));
                     }
+
                     drawList();
 
                 } catch (Exception e) {

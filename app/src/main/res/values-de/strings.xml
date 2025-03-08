@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_About_summary">Versionsverlauf, Ereignisstatistiken, Appstores-Links</string>
     <string name="pref_BatteryOptimization_title">Batterieoptimierung EIN</string>
     <string name="pref_BatteryOptimization_summary">Öffnen Sie die Einstellung und schalten Sie die Optimierung aus…</string>
-    <string name="pref_ExactAlarms_title">Alarme und Erinnerungen sind AUS</string>
-    <string name="pref_ExactAlarms_summary">Öffnen Sie die Einstellung und aktivieren Sie diese, um Benachrichtigungen und Widget-Updates für eine bestimmte Zeit zu planen…</string>
+    <string name="pref_ExactAlarmsAccess_title">Alarme und Erinnerungen sind AUS</string>
+    <string name="pref_ExactAlarmsAccess_summary">Öffnen Sie die Einstellung und aktivieren Sie diese, um Benachrichtigungen und Widget-Updates für eine bestimmte Zeit zu planen…</string>
     <string name="pref_ContactsAccess_title">Kein Zugriff auf Kontaktereignisse</string>
     <string name="pref_ContactsAccess_summary">Berechtigung für Zugriff auf Kontaktereignisse anfordern…</string>
     <string name="pref_CalendarAccess_title">Kein Zugriff auf den Kalender</string>

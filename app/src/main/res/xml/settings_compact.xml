@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.03.2025, 01:29
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.03.2025, 00:44
+  ~  * Last modified 08.03.2025, 22:54
   ~  */
   -->
 
@@ -1268,6 +1268,16 @@
                 android:singleLineTitle="false"
                 tools:ignore="UnusedAttribute" />
 
+            <Preference
+                android:key="@string/pref_Tools_Events_Export_key"
+                android:title="@string/pref_Tools_Events_Export_title"
+                android:icon="@android:drawable/ic_menu_set_as"/>
+
+            <Preference
+                android:key="@string/pref_Tools_Events_Import_key"
+                android:title="@string/pref_Tools_Events_Import_title"
+                android:icon="@android:drawable/ic_menu_upload"/>
+
         </PreferenceCategory>
 
     </PreferenceScreen>
@@ -1313,9 +1323,16 @@
             android:layout="@layout/settings_item_red"/>
 
         <Preference
-            android:key="@string/pref_Help_ExactAlarms_key"
-            android:title="@string/pref_ExactAlarms_title"
-            android:summary="@string/pref_ExactAlarms_summary"
+            android:key="@string/pref_Help_NotificationsAccess_key"
+            android:title="@string/pref_NotificationsAccess_title"
+            android:summary="@string/pref_NotificationsAccess_summary"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:layout="@layout/settings_item_red"/>
+
+        <Preference
+            android:key="@string/pref_Help_ExactAlarmsAccess_key"
+            android:title="@string/pref_ExactAlarmsAccess_title"
+            android:summary="@string/pref_ExactAlarmsAccess_summary"
             android:icon="@android:drawable/ic_menu_info_details"
             android:layout="@layout/settings_item_red"/>
 

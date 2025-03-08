@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1112,8 +1112,10 @@
     <string name="pref_About_summary">История версий, статистика событий, ссылки на магазины приложений</string>
     <string name="pref_BatteryOptimization_title">Оптимизация батареи ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_summary">Открыть настройку и выключить оптимизацию…</string>
-    <string name="pref_ExactAlarms_title">Будильники и напоминания ВЫКЛЮЧЕНЫ</string>
-    <string name="pref_ExactAlarms_summary">Открыть настройку и включить планирование уведомлений и обновлений виджетов на точное время…</string>
+    <string name="pref_NotificationsAccess_title">Уведомления ВЫКЛЮЧЕНЫ</string>
+    <string name="pref_NotificationsAccess_summary">Открыть настройку и включить показ уведомлений о событиях…</string>
+    <string name="pref_ExactAlarmsAccess_title">Будильники и напоминания ВЫКЛЮЧЕНЫ</string>
+    <string name="pref_ExactAlarmsAccess_summary">Открыть настройку и включить планирование уведомлений и обновлений виджетов на точное время…</string>
     <string name="pref_ContactsAccess_title">Нет доступа к контактам</string>
     <string name="pref_ContactsAccess_summary">Запросить доступ к данным контактов…</string>
     <string name="pref_CalendarAccess_title">Нет доступа к календарям</string>
@@ -1139,6 +1141,8 @@
     <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d, ошибок: %2$d</string>
     <string name="pref_Tools_Events_title">События</string>
     <string name="pref_Tools_Events_Show_title">Показать сохранённые локальные события</string>
+    <string name="pref_Tools_Events_Export_title">Экспортировать локальные события</string>
+    <string name="pref_Tools_Events_Import_title">Импортировать локальные события</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>

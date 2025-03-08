@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@
     <string name="pref_About_summary">Гісторыя версій, статыстыка падзей, спасылкі на крамы праграмаў</string>
     <string name="pref_BatteryOptimization_title">Аптымізацыя батарэі ЎКЛЮЧАНА</string>
     <string name="pref_BatteryOptimization_summary">Адкрыць настройку і выключыць аптымізацыю…</string>
-    <string name="pref_ExactAlarms_title">Будзільнікі і напаміны ВЫКЛЮЧАНЫ</string>
-    <string name="pref_ExactAlarms_summary">Адкрыйце наладу і ўключыце гэта, каб запланаваць абнаўленні апавяшчэнняў і віджэтаў на пэўны час…</string>
+    <string name="pref_ExactAlarmsAccess_title">Будзільнікі і напаміны ВЫКЛЮЧАНЫ</string>
+    <string name="pref_ExactAlarmsAccess_summary">Адкрыйце наладу і ўключыце гэта, каб запланаваць абнаўленні апавяшчэнняў і віджэтаў на пэўны час…</string>
     <string name="pref_ContactsAccess_title">Няма доступу да кантактаў</string>
     <string name="pref_ContactsAccess_summary">Запытаць доступ да дадзеных кантактаў…</string>
     <string name="pref_CalendarAccess_title">Няма доступу да календароў</string>

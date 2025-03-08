@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_About_summary">"Historique des versions, statistiques des événements liens vers les magasins d'applications"</string>
     <string name="pref_BatteryOptimization_title">"L'optimisation de la batterie est activée"</string>
     <string name="pref_BatteryOptimization_summary">"Ouvrez le paramètre et désactivez L'optimisation…"</string>
-    <string name="pref_ExactAlarms_title">Les alarmes et rappels sont désactivés</string>
-    <string name="pref_ExactAlarms_summary">Ouvrez le paramètre et activez-le pour planifier les notifications et les mises à jour des widgets à une heure spécifique…</string>
+    <string name="pref_ExactAlarmsAccess_title">Les alarmes et rappels sont désactivés</string>
+    <string name="pref_ExactAlarmsAccess_summary">Ouvrez le paramètre et activez-le pour planifier les notifications et les mises à jour des widgets à une heure spécifique…</string>
     <string name="pref_ContactsAccess_title">Aucun accès aux contacts</string>
     <string name="pref_ContactsAccess_summary">"Demander l'accès aux données de contacts…"</string>
     <string name="pref_CalendarAccess_title">Aucun accès au calendrier</string>

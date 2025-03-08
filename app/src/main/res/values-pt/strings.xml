@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_About_summary">Histórico de versões, estatísticas de eventos, links de lojas de aplicativos</string>
     <string name="pref_BatteryOptimization_title">A otimização da bateria está ATIVADA</string>
     <string name="pref_BatteryOptimization_summary">Abra a configuração e desative a otimização…</string>
-    <string name="pref_ExactAlarms_title">Alarmes e lembretes estão DESATIVADOS</string>
-    <string name="pref_ExactAlarms_summary">Abra a configuração e ative-a para agendar notificações e atualizações de widgets para um horário específico…</string>
+    <string name="pref_ExactAlarmsAccess_title">Alarmes e lembretes estão DESATIVADOS</string>
+    <string name="pref_ExactAlarmsAccess_summary">Abra a configuração e ative-a para agendar notificações e atualizações de widgets para um horário específico…</string>
     <string name="pref_ContactsAccess_title">Sem acesso a eventos de contatos</string>
     <string name="pref_ContactsAccess_summary">Solicitar permissão para eventos de contatos…</string>
     <string name="pref_CalendarAccess_title">Sem acesso ao calendário</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 02:55
+ *  * Created by Vladimir Belov on 08.03.2025, 23:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 01:29
+ *  * Last modified 07.03.2025, 12:07
  *
  */
 
@@ -2921,6 +2921,10 @@ class ContactsEvents {
                                 }
                             }
 
+                            if (map_contacts_names.isEmpty()) {
+                                event.needScanContacts = false;
+                            }
+
                             if (contactID == null && event.needScanContacts && foundName != null) {
 
                                 //всё, что внутри скобок в имени - в должность
@@ -3840,6 +3844,10 @@ class ContactsEvents {
                         eventTitle = eventTitle.substring(0, indStartDescription).trim();
                     }
 
+                    if (map_contacts_names.isEmpty()) {
+                        event.needScanContacts = false;
+                    }
+
                     if (event.needScanContacts) { //Нужно искать в контактах
 
                         //всё, что внутри скобок в имени - в должность
@@ -3926,7 +3934,7 @@ class ContactsEvents {
                     //Проверка по организации, что нашли именно требуемый контакт
                     String orgNameFile = Constants.STRING_EMPTY;
                     String titleFile = Constants.STRING_EMPTY;
-                    if (contactID != null) {
+                    if (!TextUtils.isEmpty(contactID)) {
                         orgNameFile = checkForNull(eventData.get(Position_organization)).trim().toLowerCase();
                         titleFile = checkForNull(eventData.get(Position_title)).trim();
                         String orgNameContact = checkForNull(map_organizations.get(contactID)).trim().toLowerCase();
@@ -4040,7 +4048,7 @@ class ContactsEvents {
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
                                 eventListUpdated.add(eventRow);
-                                if (contactID != null && !contactID.isEmpty()) {
+                                if (!TextUtils.isEmpty(contactID)) {
                                     map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                                 }
                                 //Предыдущее появление плавающего события добавляем в список предыдущих
@@ -9416,6 +9424,15 @@ class ContactsEvents {
             }
             if (map_calendars.isEmpty()) fillCalendarList();
 
+            List<String> allFiltersList = Arrays.asList(
+                    resources.getString(R.string.events_scope_not_hidden),
+                    resources.getString(R.string.events_scope_all),
+                    resources.getString(R.string.events_scope_hidden),
+                    resources.getString(R.string.events_scope_silenced),
+                    resources.getString(R.string.events_scope_xdays),
+                    resources.getString(R.string.events_scope_unrecognized),
+                    resources.getString(R.string.events_scope_favorite));
+
             final String result = resources.getString(R.string.msg_zero_events_body,
                     (preferences_list_event_types.isEmpty() ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none) : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END,
                     resources.getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END)
@@ -9442,14 +9459,7 @@ class ContactsEvents {
                             : String.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files)),
                     (preferences_MultiType_files.isEmpty() ? Constants.STRING_MINUS
                             : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files)),
-                    (preferences_list_events_scope < 2 ? Constants.FONT_COLOR_GREEN : Constants.FONT_COLOR_RED + substringBefore(Arrays.asList(
-                            resources.getString(R.string.events_scope_not_hidden),
-                            resources.getString(R.string.events_scope_all),
-                            resources.getString(R.string.events_scope_hidden),
-                            resources.getString(R.string.events_scope_silenced),
-                            resources.getString(R.string.events_scope_xdays),
-                            resources.getString(R.string.events_scope_unrecognized),
-                            resources.getString(R.string.events_scope_favorite)).get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END),
+                    ((preferences_list_events_scope < 2 ? Constants.FONT_COLOR_GREEN : Constants.FONT_COLOR_RED) + substringBefore(allFiltersList.get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END),
                     (listEventsSources.length() == 0 ? resources.getString(R.string.msg_all) : listEventsSources.toString())
             );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

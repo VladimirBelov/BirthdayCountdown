@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 02:55
+  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 01:29
+  ~  * Last modified 08.03.2025, 23:16
   ~  */
   -->
 
@@ -1100,8 +1100,8 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="pref_About_summary">Historie verzí, statistiky událostí, odkazy na obchody s aplikacemi</string>
     <string name="pref_BatteryOptimization_title">Optimalizace baterie je ZAPNUTA</string>
     <string name="pref_BatteryOptimization_summary">Otevřete nastavení a vypněte optimalizaci…</string>
-    <string name="pref_ExactAlarms_title">Alarmy &amp; připomenutí jsou VYPNUTÁ</string>
-    <string name="pref_ExactAlarms_summary">Otevřete nastavení a zapněte jej, chcete-li naplánovat aktualizace oznámení a widgetů na konkrétní čas…</string>
+    <string name="pref_ExactAlarmsAccess_title">Alarmy &amp; připomenutí jsou VYPNUTÁ</string>
+    <string name="pref_ExactAlarmsAccess_summary">Otevřete nastavení a zapněte jej, chcete-li naplánovat aktualizace oznámení a widgetů na konkrétní čas…</string>
     <string name="pref_ContactsAccess_title">Žádný přístup k událostem kontaktů</string>
     <string name="pref_ContactsAccess_summary">Požádat o povolení k událostem kontaktů…</string>
     <string name="pref_CalendarAccess_title">Žádný přístup ke kalendáři</string>
