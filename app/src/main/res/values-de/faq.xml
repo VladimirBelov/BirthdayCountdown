@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
+  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 13:28
+  ~  * Last modified 09.03.2025, 00:25
   ~  */
   -->
 
@@ -87,7 +87,8 @@
                 <li>Erstellen Sie einen neuen Kalender in ihrer Standardkalender-App oder wählen Sie beispielsweise einen Kalender für Feiertage
                 <li>Ist dieser Kalender leer, erstellen oder importieren Sie die gewünschten Ereignisse
                 <li>Ein Link zu den Anweisungen, wie man Geburtstage von Freunden aus sozialen Netzwerken hochlädt, steht unten
-                <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Ereignisse einrichten-> Importeinstellungen-> Regeln. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
+                <li>Wenn in einem Geburtstagskalender-Ereignis der Kontaktname nur einen Teil des Ereignisnamens belegt, können Sie Regeln für den Abruf des Namens definieren. Dieser Name wird verwendet, um nach Kontakten im Adressbuch zu suchen, um zusätzliche Attribute hinzuzufügen: Foto, Unternehmen, Titel, Alias. Diese Regeln werden konfiguriert in: Einstellungen-> Ereignisse einrichten-> Importeinstellungen-> Regeln. Um den Namen zu extrahieren, müssen Sie das Tag <b>[name]</b> verwenden. Zum Beispiel: Bezeichnung des Kalender-Ereignisses \"Geburtstag. Max Mustermann\", Regel: \"Geburtstag. [name]\" (ohne Anführungszeichen)
+                <li>Der Ereignisname kann neben dem Kontaktnamen auch den Ereignistyp enthalten. Um den Ereignistyp abzurufen, müssen Sie das Tag <b>[type]</b> verwenden. Beispiel: "[name]\'s [type]" oder "[type]. [name]" (ohne Anführungszeichen)
                 <li>Nach dem Erstellen (Aktivieren) muss der Kalender in einem der Absätze (in nur einem!) ausgewählt werden: <ul>
                          <li>Einstellungen-> Ereignisse einrichten-> Ereignisquellen-> Kalender
                          <li>Einstellungen-> Ereignisse einrichten-> Geburtstag-> Kalender

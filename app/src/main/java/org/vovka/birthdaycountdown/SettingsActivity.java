@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.03.2025, 23:36
+ *  * Created by Vladimir Belov on 09.03.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.03.2025, 23:29
+ *  * Last modified 09.03.2025, 00:44
  *
  */
 
@@ -411,8 +411,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
-            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Preferences_Show_key);
-            hidePreference(eventsData.preferences_debug_on, 0, R.string.pref_Tools_Events_Show_key);
+            hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_Preferences_key, R.string.pref_Tools_Preferences_Show_key);
+            hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Show_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
@@ -1209,13 +1209,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.getPreferences();
             eventsData.needUpdateEventList = true;
 
-            if (getString(R.string.pref_Language_key).equals(key)) {
+            if (getString(R.string.pref_Language_key).equals(key) || getString(R.string.pref_MenuStyle_key).equals(key) || getString(R.string.pref_Help_ExtraFun_On_key).equals(key)) {
 
                 //https://stackoverflow.com/questions/2486934/programmatically-relaunch-recreate-an-activity
                 //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen!
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
+
+            } else if (getString(R.string.pref_Help_Debug_On_key).equals(key)) {
+
+                if (!eventsData.preferences_debug_on) {
+                    updateVisibility();
+                } else {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
 
             } else if (getString(R.string.pref_Theme_key).equals(key)) {
 
@@ -1224,18 +1234,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 finish();
                 startActivity(intent);
                 //todo: созданные программно настройки не подхватывают стиль
-
-            } else if (getString(R.string.pref_MenuStyle_key).equals(key)) {
-
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-
-            } else if (getString(R.string.pref_Help_ExtraFun_On_key).equals(key)) {
-
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
 
             } else if (getString(R.string.pref_CustomEvents_Custom1_Caption_key).equals(key) ||
                     getString(R.string.pref_CustomEvents_Custom2_Caption_key).equals(key) ||
@@ -1282,26 +1280,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)
-                    || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)) {
+                    || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)
+                    || getString(R.string.pref_Notifications_Events_key).equals(key)
+                    || getString(R.string.pref_Notifications2_Events_key).equals(key)) {
 
                 updateVisibility();
-
-            } else if (getString(R.string.pref_Notifications_Events_key).equals(key)) {
-                /*if (eventsData.preferences_notifications_types.contains(getString(R.string.pref_EventTypes_Facts))) {
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                } else {*/
-                    updateVisibility();
-                //}
-            } else if (getString(R.string.pref_Notifications2_Events_key).equals(key)) {
-                /*if (eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts))) {
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                } else {*/
-                    updateVisibility();
-                //}
 
             }
         /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged

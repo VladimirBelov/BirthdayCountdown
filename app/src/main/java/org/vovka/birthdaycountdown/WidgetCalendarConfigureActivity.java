@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.03.2025, 01:29
+ *  * Created by Vladimir Belov on 09.03.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.03.2025, 01:24
+ *  * Last modified 08.03.2025, 23:51
  *
  */
 
@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -73,7 +72,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private AppCompatActivity thisActivity;
     private int customMonthShift = 0;
     private boolean isNewPinnedWidget;
-    private static DisplayMetrics displayMetrics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +112,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             eventsData.setLocale(true);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
-            setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.widget_calendar_config);
 
             RelativeLayout mainLayout = findViewById(R.id.layout_main);
@@ -146,7 +143,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) mainLayout.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, this.getResources().getDisplayMetrics()),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             mainLayout.setLayoutParams(marginParams);
@@ -894,7 +891,5 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
         selectEventSources();
     }
-
-    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 }

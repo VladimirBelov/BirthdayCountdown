@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
+  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 22:54
+  ~  * Last modified 08.03.2025, 23:43
   ~  */
   -->
 
@@ -808,7 +808,7 @@
             android:title="@string/pref_List_TopPadding_title"
             android:summary="@string/pref_List_TopPadding_summary"
             android:hint="@string/pref_List_TopPadding_hint"
-            android:inputType="number"
+            android:inputType="number|numberSigned"
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_preferences"
             android:dialogIcon="@android:drawable/ic_menu_preferences"

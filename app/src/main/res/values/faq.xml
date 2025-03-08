@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
+  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 13:28
+  ~  * Last modified 09.03.2025, 00:20
   ~  */
   -->
 
@@ -90,7 +90,8 @@
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
         <li>If the calendar is empty, create or import the required events
         <li>A link to instructions on how to upload friends\' birthdays from social networks is below
-        <li>If in a birthday calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events setup-> Import settings-> Name recognition rules. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
+        <li>If in a calendar event, the contact name occupies only part of the event name, you can define rules for name retrieval. This name will be used to search for contacts in the address book to add additional attributes: photo, organization, title, alias. Rules are configured in Settings-> Events setup-> Import settings-> Name recognition rules. Use tag <b>[name]</b> for name recognition. For example: calendar event title \"Birthday. John Doe\", rule: \"Birthday. [name]\" (without quotes)
+        <li>Besides the contact\'s name, the event\'s title can also contain the event type. To extract the event type, you need to use the tag <b>[type]</b>. For example: "[name]'s [type]" or "[type]. [name]" (without quotes)
         <li>After creating (turning on) the calendar must be selected in one of the settings (in only one!): <ul>
                          <li>Settings-> Events setup-> Event Sources-> Calendars
                          <li>Settings-> Events setup-> Birthday-> Calendars

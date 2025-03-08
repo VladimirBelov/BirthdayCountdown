@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 02:55
+ *  * Created by Vladimir Belov on 09.03.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 01:18
+ *  * Last modified 08.03.2025, 23:51
  *
  */
 
@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
@@ -106,6 +107,7 @@ public class AboutActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_changelog);
 
+            View layoutMain = findViewById(R.id.layout_main);
             if (ContactsEvents.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
@@ -118,17 +120,26 @@ public class AboutActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
                     } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
                 TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                 viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
+
+            //Отступы всего окна
+            RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
+            marginParams.setMargins(
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, this.getResources().getDisplayMetrics()),
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    marginParams.bottomMargin);
+            layoutMain.setLayoutParams(marginParams);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
