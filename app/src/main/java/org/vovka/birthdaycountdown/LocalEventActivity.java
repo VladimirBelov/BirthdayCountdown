@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 14:22
+ *  * Created by Vladimir Belov on 09.03.2025, 18:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 14:03
+ *  * Last modified 09.03.2025, 17:33
  *
  */
 
@@ -31,7 +31,6 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,9 +39,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
 
@@ -68,7 +69,8 @@ public class LocalEventActivity extends Activity {
     private static final List<String> eventTypesValues = new ArrayList<>();
     private static final List<Integer> eventTypesIds = new ArrayList<>();
     private static final List<Integer> eventSubTypesIds = new ArrayList<>();
-    boolean isReadOnly;
+    private boolean isReadOnly;
+    private String eventDataSaved = null;
 
     TextView viewActivityTitle;
     ImageView imagePhoto;
@@ -156,11 +158,13 @@ public class LocalEventActivity extends Activity {
 
                 checkUseYear.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        datePicker.updateDate(yearBeforeHide.get(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                        datePicker.updateDate(yearBeforeHide.get() != 0 ? yearBeforeHide.get() : today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
+                        useYear.set(true);
                         spinnerYear.setVisibility(View.VISIBLE);
                     } else {
                         yearBeforeHide.set(datePicker.getYear());
-                        datePicker.updateDate(2000, datePicker.getMonth(), datePicker.getDayOfMonth());
+                        useYear.set(false);
+                        datePicker.updateDate(today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         spinnerYear.setVisibility(View.GONE);
                     }
                 });
@@ -349,7 +353,6 @@ public class LocalEventActivity extends Activity {
             layoutParams.width = (int) (displayMetrics.widthPixels * (isReadOnly ? 0.8 : 0.9));
             getWindow().setAttributes(layoutParams);
 
-
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {
                 buttonClose.setText(Constants.BUTTON_X);
@@ -476,6 +479,7 @@ public class LocalEventActivity extends Activity {
             updateCaptionsAndVisibility(this);
             updateEventDate(editDate, day, month, year, useYear);
             updateEventPhoto(this);
+            this.eventDataSaved = eventsData.getEventData(eventData);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -540,35 +544,70 @@ public class LocalEventActivity extends Activity {
     }
 
     public void buttonCancelOnClick(final View view) {
-        if (!isReadOnly) {
-            //todo: если добавление или редактирование - предупреждение
+
+        if (isReadOnly) {
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
         }
-        setResult(RESULT_CANCELED);
-        finish();
+
+        ContextThemeWrapper themedContext = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
+        try {
+
+            prepareEventData(this);
+            if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
+                Builder builder = new Builder(themedContext);
+                builder
+                        .setTitle(getString(R.string.msg_title_confirmation))
+                        .setIcon(android.R.drawable.ic_menu_help)
+                        .setMessage(getString(R.string.local_event_dialog_confirmation_cancel))
+                        .setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                            dialog.dismiss();
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        })
+                        .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+                androidx.appcompat.app.AlertDialog alertToShow = builder.create();
+                alertToShow.setOnShowListener(dialog -> {
+                    TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    ta.recycle();
+                });
+                alertToShow.show();
+            } else {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(themedContext, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private void buttonRemoveOnClick(final View view) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
         try {
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
-            builder.setTitle(getString(R.string.msg_title_confirmation));
-            builder.setIcon(android.R.drawable.ic_menu_help);
-            builder.setMessage(getString(R.string.local_event_dialog_confirmation_remove));
-            builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
-                eventsData.removeLocalEvent(eventData);
-                setResult(RESULT_OK);
-                finish();
-            });
-            builder.setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+            Builder builder = new Builder(context);
+            builder
+                    .setTitle(getString(R.string.msg_title_confirmation))
+                    .setIcon(android.R.drawable.ic_menu_help)
+                    .setMessage(getString(R.string.local_event_dialog_confirmation_remove))
+                    .setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        eventsData.removeLocalEvent(eventData);
+                        setResult(RESULT_OK);
+                        finish();
+                    })
+                    .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
-            alertToShow.setOnShowListener(arg0 -> {
+            alertToShow.setOnShowListener(dialog -> {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
                 alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 ta.recycle();
             });
-            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
 
         } catch (Exception e) {
@@ -586,8 +625,8 @@ public class LocalEventActivity extends Activity {
 
             if (eventTitle.isEmpty()) {
                 TextView viewEventTitle = findViewById(R.id.captionOrganization);
-                ToastExpander.showMsg(context, getString(R.string.msg_empty_required_field,
-                        ContactsEvents.substringBefore(viewEventTitle.getText().toString(), Constants.STRING_COLON)));
+                Toast.makeText(context, getString(R.string.msg_empty_required_field,
+                        ContactsEvents.substringBefore(viewEventTitle.getText().toString(), Constants.STRING_COLON)), Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -657,6 +696,7 @@ public class LocalEventActivity extends Activity {
 
             if (activity.imagePhoto != null) {
                 prepareEventData(activity);
+                TreeMap<Integer, String> eventDataForPhoto = new TreeMap<>(eventData);
 
                 if (eventUseYear) {
                     final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
@@ -665,19 +705,19 @@ public class LocalEventActivity extends Activity {
                     if (eventDate.before(today)) {
                         age = eventsData.countYearsDiff(eventDate, today);
                     }
-                    eventData.put(ContactsEvents.Position_age, String.valueOf(age));
+                    eventDataForPhoto.put(ContactsEvents.Position_age, String.valueOf(age));
                 }
 
-                String eventType = eventData.get(ContactsEvents.Position_eventType);
+                String eventType = eventDataForPhoto.get(ContactsEvents.Position_eventType);
                 if (eventType != null) {
-                    eventData.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
+                    eventDataForPhoto.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
                 }
-                String eventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                String eventSubType = eventDataForPhoto.get(ContactsEvents.Position_eventSubType);
                 if (eventSubType != null) {
-                    eventData.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
+                    eventDataForPhoto.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
                 }
 
-                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventData), true, false, false, 1));
+                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventDataForPhoto), true, false, false, 1));
             }
 
         } catch (Exception e) {

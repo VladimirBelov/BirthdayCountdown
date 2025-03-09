@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.03.2025, 23:36
+ *  * Created by Vladimir Belov on 09.03.2025, 18:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.03.2025, 22:42
+ *  * Last modified 09.03.2025, 08:33
  *
  */
 
@@ -2190,8 +2190,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             mainLayout.setLayoutParams(marginParams);
 
             //Тему не меняли, просто обновляем данные
-            if (eventsData.needUpdateEventList || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                // || this.dataList.isEmpty() != eventsData.isEmptyEventList()
+            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();

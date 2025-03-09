@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
+  ~  * Created by Vladimir Belov on 09.03.2025, 18:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:16
+  ~  * Last modified 09.03.2025, 14:01
   ~  */
   -->
 
@@ -1295,6 +1295,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="local_event_dialog_date_title">Date:</string>
     <string name="local_event_dialog_type_title">Event type:</string>
     <string name="local_event_dialog_confirmation_remove">Are you sure you want to remove this event?</string>
+    <string name="local_event_dialog_confirmation_cancel">Event data has been modified. Are you sure you want to close this dialog?</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->

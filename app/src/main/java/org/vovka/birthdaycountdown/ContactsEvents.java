@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.03.2025, 23:36
+ *  * Created by Vladimir Belov on 09.03.2025, 18:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 07.03.2025, 12:07
+ *  * Last modified 09.03.2025, 11:18
  *
  */
 
@@ -3195,36 +3195,36 @@ class ContactsEvents {
 
                         boolean eventUseYear = false;
                         Date dateEventFirstTime = null;
-                        Date dateEventNextTime = null;
+                        //Date dateEventNextTime = null;
                         String eventDateString = singleEventArray[Position_eventDateFirstTime];
 
                         try  {
                             dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString);
                             if (dateEventFirstTime != null) {
-                                dateEventNextTime = new Date (dateEventFirstTime.getTime());
-                                dateEventNextTime.setYear(c.get(Calendar.YEAR) - 1900);
+                                //dateEventNextTime = new Date (dateEventFirstTime.getTime());
+                                //dateEventNextTime.setYear(c.get(Calendar.YEAR) - 1900);
                                 eventUseYear = true;
                             }
                         } catch (ParseException pe) {
                             try {
                                 dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString
                                         .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
-                                if (dateEventFirstTime != null) {
+                                /*if (dateEventFirstTime != null) {
                                     dateEventNextTime = new Date (dateEventFirstTime.getTime());
-                                }
+                                }*/
                             } catch (ParseException ignored) { /**/ }
                         }
 
-                        if (dateEventNextTime == null) {
+                        if (dateEventFirstTime == null) {
                             continue;
                         }
 
-                        if (dateEventNextTime.before(c.getTime())) {
-                            dateEventNextTime.setYear(dateEventNextTime.getYear() + 1);
-                        }
+                        /*if (dateEventFirstTime.before(c.getTime())) {
+                            dateEventFirstTime.setYear(dateEventFirstTime.getYear() + 1);
+                        }*/
 
                         String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
-                                + (eventUseYear ? sdf_java.format(dateEventNextTime) : sdf_java_no_year.format(dateEventNextTime))
+                                + (eventUseYear ? sdf_java.format(dateEventFirstTime) : sdf_java_no_year.format(dateEventFirstTime))
                                 + Constants.STRING_COLON_SPACE
                                 + getHash(Constants.eventSourceLocalPrefix);
 
@@ -3236,7 +3236,7 @@ class ContactsEvents {
                         TreeMap<Integer, String> eventData = getEventData(eventString);
 
                         eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
-                        eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateEventNextTime.getTime()));
+                        //eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateEventNextTime.getTime()));
                         eventData.put(Position_dates, eventDates);
                         eventData.put(Position_eventCaption, event.caption);
                         eventData.put(Position_eventLabel, event.label);

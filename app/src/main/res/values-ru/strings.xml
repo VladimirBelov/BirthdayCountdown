@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
+  ~  * Created by Vladimir Belov on 09.03.2025, 18:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:16
+  ~  * Last modified 09.03.2025, 13:39
   ~  */
   -->
 
@@ -1293,6 +1293,7 @@
     <string name="local_event_dialog_date_title">Дата:</string>
     <string name="local_event_dialog_type_title">Тип события:</string>
     <string name="local_event_dialog_confirmation_remove">Вы уверены, что хотите удалить это событие?</string>
+    <string name="local_event_dialog_confirmation_cancel">Данные были изменены. Вы уверены, что хотите закрыть диалог?</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>
