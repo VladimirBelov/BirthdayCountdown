@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 18:19
+ *  * Created by Vladimir Belov on 12.03.2025, 13:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.03.2025, 11:18
+ *  * Last modified 11.03.2025, 09:39
  *
  */
 
@@ -4634,8 +4634,10 @@ class ContactsEvents {
 
                     String line = reader.readLine();
                     while (line != null) {
-                        sb.append(line);
-                        if (delimeter != null) sb.append(delimeter);
+                        if (!line.startsWith(Constants.STRING_HASH) || !line.startsWith(Constants.STRING_DSLASH)) {
+                            sb.append(line);
+                            if (delimeter != null) sb.append(delimeter);
+                        }
                         line = reader.readLine();
                     }
                     if (inputStream != null) inputStream.close();

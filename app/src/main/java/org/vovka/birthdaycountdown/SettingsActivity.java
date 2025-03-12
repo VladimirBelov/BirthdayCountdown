@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 00:51
+ *  * Created by Vladimir Belov on 12.03.2025, 13:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.03.2025, 00:44
+ *  * Last modified 11.03.2025, 00:45
  *
  */
 
@@ -911,6 +911,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Tools_Events_Show_key).equals(key)) {
 
                 showLocalEvents();
+                return true;
+
+            } else if (getString(R.string.pref_Tools_Events_Export_key).equals(key)) {
+
+                exportLocalEvents(null);
                 return true;
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
@@ -2470,6 +2475,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private enum importStage {
+        selectFile, doClean, doImport
+    }
+
     private void exportPreferences(Uri uri) {
 
         try {
@@ -2485,7 +2494,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_EXPORT);
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else {
@@ -2583,10 +2592,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private enum importStage {
-        selectFile, doClean, doImport
-    }
-
     private void importPreferences(importStage stage, Uri uri) {
 
         try {
@@ -2598,7 +2603,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setType("*/*");
                 try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT);
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES);
                 } catch (ActivityNotFoundException e) { /**/ }
 
             } else if (stage == importStage.doClean) {
@@ -2906,6 +2911,443 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    private void exportLocalEvents(Uri uri) {
+
+        try {
+
+            if (uri == null) {
+
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intent.putExtra(Intent.EXTRA_TITLE,
+                        getString(R.string.msg_title_local_events)
+                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(Calendar.getInstance().getTime())
+                                + ".txt");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+                try {
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
+
+            } else {
+
+                ContentResolver contentResolver = getContentResolver();
+
+                try (
+                        OutputStream outputStream = contentResolver.openOutputStream(uri)
+                ) {
+
+                    final String prefix = "# ";
+                    String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
+                            + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
+                            + prefix + eventsData.getDateTimePreferable(Calendar.getInstance().getTime()) + Constants.STRING_EOL
+                            + Constants.STRING_EOL;
+                    int countExported = 0;
+
+                    if (outputStream != null) {
+                        outputStream.write(sb.getBytes(StandardCharsets.UTF_8));
+
+                        SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+                        Map<String, ?> prefs = preferences.getAll();
+
+                        for (String key : prefs.keySet()) {
+                            Object pref = prefs.get(key);
+                            if (pref != null) {
+                                outputStream.write(pref.toString().replaceAll(Constants.STRING_EOT, Constants.STRING_BAR)
+                                        .concat(Constants.STRING_EOL)
+                                        .getBytes(StandardCharsets.UTF_8)
+                                );
+                                countExported++;
+                            }
+                        }
+                    }
+
+                    if (countExported > 0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                        builder.setTitle(getString(R.string.msg_title_success));
+                        builder.setIcon(android.R.drawable.ic_menu_set_as);
+                        builder.setMessage(getString(R.string.pref_Tools_Events_Export_result, countExported));
+                        builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
+                        builder.setNegativeButton(R.string.button_open, (dialog, which) -> {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setDataAndType(uri, ClipDescription.MIMETYPE_TEXT_PLAIN);
+                            final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                            intent.addFlags(flags);
+                            dialog.dismiss();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                for (ResolveInfo resolveInfo : getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL)) {
+                                    String packageName = resolveInfo.activityInfo.packageName;
+                                    grantUriPermission(packageName, uri, flags);
+                                }
+                            }
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+                        });
+                        builder.setNeutralButton(R.string.button_share, (dialog, which) -> {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                            intent.putExtra(Intent.EXTRA_STREAM, uri);
+                            Intent chooser = Intent.createChooser(intent, "");
+                            List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+                            for (ResolveInfo resolveInfo : resInfoList) {
+                                String packageName = resolveInfo.activityInfo.packageName;
+                                this.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+                            try {
+                                startActivity(chooser);
+                            } catch (ActivityNotFoundException e) { /**/ }
+                        });
+                        AlertDialog alertToShow = builder.create();
+                        alertToShow.setOnShowListener(arg0 -> {
+                            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        });
+                        alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertToShow.show();
+                    }
+
+                } catch (java.lang.SecurityException se) {
+                    ToastExpander.showDebugMsg(this, getResources().getText(R.string.msg_file_open_error) + eventsData.getPath(this, uri));
+                }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void importLocalEvents(importStage stage, Uri uri) {
+
+        try {
+
+            if (stage == importStage.selectFile) {
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setType("*/*");
+                try {
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
+                } catch (ActivityNotFoundException e) { /**/ }
+
+            } else if (stage == importStage.doClean) {
+
+                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                if (prefsArray[0].isEmpty()) {
+                    ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
+                    return;
+                }
+
+                SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+                Map<String, ?> prefs = preferences.getAll();
+
+                if (!prefs.isEmpty()) {
+
+                /*
+                int countPreferencesToImport = 0;
+                for (String prefLine: prefsArray) {
+                    String[] pref = prefLine.trim().split(Constants.STRING_COLON_SPACE, -1);
+                    if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH) && pref.length == 2)  countPreferencesToImport++;
+                }
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                Map<String, ?> prefs = preferences.getAll();
+
+                if (countPreferencesToImport != prefs.size()) {
+                    //Надо спросить, не хотят ли почистить настройки
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                    builder.setTitle(getString(R.string.msg_title_confirmation));
+                    builder.setIcon(android.R.drawable.ic_menu_help);
+                    builder.setMessage(getString(R.string.msg_prefs_import_clear_confirmation));
+                    builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        if (editor.commit()) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                                for (NotificationChannel channel: notificationManager.getNotificationChannels()) {
+                                    notificationManager.deleteNotificationChannel(channel.getId());
+                                }
+                            }
+
+                            importPreferences(importStage.doImport, uri);
+                        }
+                    });
+                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> importLocalEvents(importStage.doImport, uri));
+                    AlertDialog alertToShow = builder.create();
+                    alertToShow.setOnShowListener(arg0 -> {
+                        alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    });
+                    alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertToShow.show();*/
+
+                } else {
+                    importLocalEvents(importStage.doImport, uri);
+                }
+
+            } else if (stage == importStage.doImport && uri != null) {
+
+                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                if (prefsArray[0].isEmpty()) {
+                    ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
+                    return;
+                }
+
+                int countSuccess = 0;
+                int countErrors = 0;
+
+                SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+                Map<String, ?> prefs = preferences.getAll();
+                SharedPreferences.Editor editor = preferences.edit();
+
+                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = preferences.edit();
+                skipSharedPreferenceChangedEvent = true;
+
+                ArrayList<String> listIntegers = new ArrayList<>(Arrays.asList(
+                        getString(R.string.pref_Events_Scope),
+                        getString(R.string.pref_IconPack_key),
+                        getString(R.string.pref_List_Color_EventJubilee_key),
+                        getString(R.string.pref_List_Color_EventSoon_key),
+                        getString(R.string.pref_List_Color_EventToday_key),
+                        getString(R.string.pref_List_FontMagnify_Age_key),
+                        getString(R.string.pref_List_FontMagnify_Date_key),
+                        getString(R.string.pref_List_FontMagnify_Details_key),
+                        getString(R.string.pref_List_FontMagnify_Distance_key),
+                        getString(R.string.pref_List_FontMagnify_Name_key),
+                        getString(R.string.pref_List_QuickAction_key),
+                        getString(R.string.pref_Notifications2_ChannelID),
+                        getString(R.string.pref_Notifications_ChannelID),
+                        getString(R.string.pref_Widgets_Color_EventCaption_key),
+                        getString(R.string.pref_Widgets_Color_EventFar_key),
+                        getString(R.string.pref_Widgets_Color_EventSoon_key),
+                        getString(R.string.pref_Widgets_Color_EventToday_key),
+                        getString(R.string.pref_Widgets_Color_WidgetCaption_key)
+                ));
+
+                ArrayList<String> listBooleans = new ArrayList<>(Arrays.asList(
+                        getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key),
+                        getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Birthday_UseInternal_key),
+                        getString(R.string.pref_CustomEvents_Crowning_UseInternal_key),
+                        getString(R.string.pref_CustomEvents_Custom1_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Custom2_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Custom3_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Custom4_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Custom5_UseYear_key),
+                        getString(R.string.pref_CustomEvents_Death_UseInternal_key),
+                        getString(R.string.pref_CustomEvents_NameDay_UseInternal_key),
+                        getString(R.string.pref_Help_Debug_On_key),
+                        getString(R.string.pref_Help_ExtraFun_On_key),
+                        getString(R.string.pref_Help_InfoMsg_On_key),
+                        getString(R.string.pref_List_FastScroll_key),
+                        getString(R.string.pref_MenuStyle_key)
+                ));
+
+                ArrayList<String> listStrings = new ArrayList<>(Arrays.asList(
+                        getString(R.string.pref_Colors_Recent_key),
+                        getString(R.string.pref_CustomEvents_Anniversary_Labels_key),
+                        getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key),
+                        getString(R.string.pref_CustomEvents_Birthday_Labels_key),
+                        getString(R.string.pref_CustomEvents_Crowning_Labels_key),
+                        getString(R.string.pref_CustomEvents_Custom1_Caption_key),
+                        getString(R.string.pref_CustomEvents_Custom1_Labels_key),
+                        getString(R.string.pref_CustomEvents_Custom2_Caption_key),
+                        getString(R.string.pref_CustomEvents_Custom2_Labels_key),
+                        getString(R.string.pref_CustomEvents_Custom3_Caption_key),
+                        getString(R.string.pref_CustomEvents_Custom3_Labels_key),
+                        getString(R.string.pref_CustomEvents_Custom4_Caption_key),
+                        getString(R.string.pref_CustomEvents_Custom4_Labels_key),
+                        getString(R.string.pref_CustomEvents_Custom5_Caption_key),
+                        getString(R.string.pref_CustomEvents_Custom5_Labels_key),
+                        getString(R.string.pref_CustomEvents_Death_Labels_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Labels_key),
+                        getString(R.string.pref_CustomEvents_NameDay_Labels_key),
+                        getString(R.string.pref_CustomEvents_Other_Labels_key),
+                        getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key),
+                        getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key),
+                        getString(R.string.pref_CustomEvents_Rules_Unrecognized_key),
+                        getString(R.string.pref_Female_Names_key),
+                        getString(R.string.pref_Icon_key),
+                        getString(R.string.pref_Language_key),
+                        getString(R.string.pref_List_CustomCaption_key),
+                        getString(R.string.pref_List_CustomTodayEventCaption_key),
+                        getString(R.string.pref_List_DateFormat_key),
+                        getString(R.string.pref_List_Filling_key),
+                        getString(R.string.pref_List_Jubilee_Algorithm_key),
+                        getString(R.string.pref_List_Margin_key),
+                        getString(R.string.pref_List_TopPadding_key),
+                        getString(R.string.pref_List_NameFormat_key),
+                        getString(R.string.pref_List_OnClick_key),
+                        getString(R.string.pref_List_PhotoStyle_key),
+                        getString(R.string.pref_List_PrevEvents_key),
+                        getString(R.string.pref_List_PrevEvents_key),
+                        getString(R.string.pref_List_SadPhoto_key),
+                        getString(R.string.pref_List_SearchDepth_key),
+                        getString(R.string.pref_List_Style_key),
+                        getString(R.string.pref_Male_Names_key),
+                        getString(R.string.pref_Notifications2_AlarmHour_key),
+                        getString(R.string.pref_Notifications2_AlarmMinute_key),
+                        getString(R.string.pref_Notifications2_FactEvents_Count_key),
+                        getString(R.string.pref_Notifications2_OnClick_key),
+                        getString(R.string.pref_Notifications2_Priority_key),
+                        getString(R.string.pref_Notifications2_Ringtone_key),
+                        getString(R.string.pref_Notifications2_Type_key),
+                        getString(R.string.pref_Notifications_AlarmHour_key),
+                        getString(R.string.pref_Notifications_AlarmMinute_key),
+                        getString(R.string.pref_Notifications_FactEvents_Count_key),
+                        getString(R.string.pref_Notifications_OnClick_key),
+                        getString(R.string.pref_Notifications_Priority_key),
+                        getString(R.string.pref_Notifications_Ringtone_key),
+                        getString(R.string.pref_Notifications_Type_key),
+                        getString(R.string.pref_Quiz_Interface_key),
+                        getString(R.string.pref_Theme_key),
+                        getString(R.string.pref_VersionCode_LastRun),
+                        getString(R.string.pref_Version_LastRun),
+                        getString(R.string.pref_Widgets_BottomInfo2nd_key),
+                        getString(R.string.pref_Widgets_BottomInfo_key),
+                        getString(R.string.pref_Widgets_Days_EventSoon_key),
+                        getString(R.string.pref_Widgets_OnClick_key),
+                        getString(R.string.pref_Widgets_UpdateInterval_key)
+                ));
+
+                ArrayList<String> listSets = new ArrayList<>(Arrays.asList(
+                        getString(R.string.pref_Accounts_key),
+                        getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Other_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Fact_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key),
+                        getString(R.string.pref_CustomEvents_Birthday_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Other_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
+                        getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
+                        getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
+                        getString(R.string.pref_List_Events_key),
+                        getString(R.string.pref_Events_Hidden_key),
+                        getString(R.string.pref_Events_Hidden_rawIds_key),
+                        getString(R.string.pref_Events_Favorite_key),
+                        getString(R.string.pref_Events_Favorite_rawIds_key),
+                        getString(R.string.pref_List_EventInfo_key),
+                        getString(R.string.pref_List_EventSources_key),
+                        getString(R.string.pref_List_AgeFormat_key),
+                        getString(R.string.pref_MergedID_key),
+                        getString(R.string.pref_MergedRawID_key),
+                        getString(R.string.pref_Notifications_Days_key),
+                        getString(R.string.pref_Notifications2_Days_key),
+                        getString(R.string.pref_Notifications_Events_key),
+                        getString(R.string.pref_Notifications2_Events_key),
+                        getString(R.string.pref_Notifications_EventInfo_key),
+                        getString(R.string.pref_Notifications2_EventInfo_key),
+                        getString(R.string.pref_Notifications_QuickActions_key),
+                        getString(R.string.pref_Notifications2_QuickActions_key),
+                        getString(R.string.pref_Notifications_EventSources_key),
+                        getString(R.string.pref_Notifications2_EventSources_key),
+                        getString(R.string.pref_Events_Silent_key),
+                        getString(R.string.pref_Events_Silent_rawIds_key),
+                        getString(R.string.pref_xDaysEvents_key),
+                        getString(R.string.pref_Widgets_EventInfo_key)
+                ));
+
+                for (String prefLine: prefsArray) {
+                    int indColon = prefLine.indexOf(Constants.STRING_COLON);
+                    if (indColon > -1) {
+                        String[] pref = new String[2];
+                        pref[0] = prefLine.substring(0, indColon).trim();
+
+                        if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH)) {
+                            pref[1] = prefLine.substring(indColon + 1).trim();
+                            if (listIntegers.contains(pref[0])) { // Integers
+
+                                Integer valInt = null;
+                                try {
+                                    valInt = Integer.parseInt(pref[1]);
+                                } catch (NumberFormatException e) {
+                                    countErrors++;
+                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                }
+                                if (valInt != null) {
+                                    editor.putInt(pref[0], valInt);
+                                    countSuccess++;
+                                }
+
+                            } else if (listBooleans.contains(pref[0])) { // Booleans
+
+                                Boolean valBoolean = null;
+                                try {
+                                    valBoolean = Boolean.parseBoolean(pref[1]);
+                                } catch (NumberFormatException e) {
+                                    countErrors++;
+                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                }
+                                if (valBoolean != null) {
+                                    editor.putBoolean(pref[0], valBoolean);
+                                    countSuccess++;
+                                }
+
+                            } else if (listSets.contains(pref[0])) { // Sets
+
+                                Set<String> valSet = null;
+                                int brake1 = pref[1].indexOf(Constants.STRING_BRACKETS_START);
+                                int brake2 = pref[1].lastIndexOf(Constants.STRING_BRACKETS_CLOSE);
+                                if (brake1 != -1 && brake2 != -1) {
+                                    String[] values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_COMMA, -1);
+                                    valSet = new HashSet<>();
+                                    for (String value : values) {
+                                        final String valueTrimmed = value.trim();
+                                        if (!valueTrimmed.isEmpty()) valSet.add(valueTrimmed);
+                                    }
+                                }
+
+                                if (valSet == null) {
+                                    countErrors++;
+                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                } else {
+                                    editor.putStringSet(pref[0], valSet);
+                                    countSuccess++;
+                                }
+
+                            } else if (listStrings.contains(pref[0]) || pref[0].startsWith(getString(R.string.widget_config_PrefName))) { // Strings
+
+                                editor.putString(pref[0], pref[1]);
+                                countSuccess++;
+
+                            } else {
+
+                                countErrors++;
+                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_unknown, prefLine));
+
+                            }
+                        }
+                    }
+
+                }*/
+
+                ToastExpander.showMsg(this, getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
+                if (countSuccess > 0) {
+                    eventsData.needUpdateEventList = true;
+                    editor.commit();
+                }
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            skipSharedPreferenceChangedEvent = false;
+        }
+    }
+
     private void showLocalEvents() {
 
         try {
@@ -3158,20 +3600,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         runningQueue = 0;
                         eventsData.savePreferences();
                     }
-                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT) {
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES) {
                     if (resultData != null) {
                         Uri uri = resultData.getData();
                         if (uri != null) {
                             exportPreferences(uri);
                         }
                     }
-                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT) {
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES) {
                     if (resultData != null) {
                         Uri uri = resultData.getData();
                         if (uri != null) {
                             importPreferences(importStage.doClean, uri);
                         }
                     }
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS) {
+                    if (resultData != null) {
+                        Uri uri = resultData.getData();
+                        if (uri != null) {
+                            exportLocalEvents(uri);
+                        }
+                    }
+
+
                 }
 
             } else {

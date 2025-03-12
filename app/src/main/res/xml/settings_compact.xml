@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
+  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:43
+  ~  * Last modified 10.03.2025, 23:27
   ~  */
   -->
 
@@ -1148,17 +1148,6 @@
             android:icon="@android:drawable/ic_menu_agenda"
             android:dialogIcon="@android:drawable/ic_menu_agenda"
             android:negativeButtonText="@string/button_cancel"/>
-
-<!--        <ListPreference
-            android:key="@string/pref_Notifications2_FactEvents_Count_key"
-            android:title="@string/pref_Notifications_FactEvents_Count_title"
-            android:summary="@string/pref_Notifications_FactEvents_Count_summary"
-            android:defaultValue="@string/pref_Notifications_FactEvents_Count_default"
-            android:entries="@array/pref_Notifications_FactEvents_Count_entries"
-            android:entryValues="@array/pref_Notifications_FactEvents_Count_values"
-            android:icon="@android:drawable/ic_menu_day"
-            android:dialogIcon="@android:drawable/ic_menu_day"
-            android:negativeButtonText="@string/button_cancel"/>-->
 
         <Preference
             android:key="@string/pref_Notifications2_AlarmHour_key"

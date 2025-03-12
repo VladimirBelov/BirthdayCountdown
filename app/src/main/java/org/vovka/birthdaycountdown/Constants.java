@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 02:55
+ *  * Created by Vladimir Belov on 12.03.2025, 13:36
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 01:29
+ *  * Last modified 12.03.2025, 10:11
  *
  */
 
@@ -52,6 +52,7 @@ final class Constants {
     static final String STRING_COMMA_SPACE = ", ";
     static final String STRING_EMPTY = "";
     static final String STRING_EOL = "\n";
+    static final String STRING_EOL_RN = "\\r?\\n";
     static final String STRING_EOT = "\u0004";
     static final String STRING_EQ = "=?";
     static final String STRING_MINUS1 = "-1";
@@ -186,9 +187,11 @@ final class Constants {
     static final int RESULT_PICK_FILE = 201;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_RINGTONE = 203;
-    static final int RESULT_PICK_FILE_FOR_EXPORT = 204;
-    static final int RESULT_PICK_FILE_FOR_IMPORT = 205;
+    static final int RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES = 204;
+    static final int RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES = 205;
     static final int RESULT_EDIT_EVENT = 206;
+    static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
+    static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
 
     static final int defaultNotificationID = 1000;
     static final int defaultNotification2ID = 1100;

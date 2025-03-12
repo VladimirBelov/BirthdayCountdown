@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 17.01.2024, 00:51
+ *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 12.03.2025, 13:21
  *
  */
 
@@ -21,6 +21,9 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class ToastExpander {
 
     public static final String TAG = "ToastExpander";
@@ -29,34 +32,34 @@ public class ToastExpander {
     FluentSnackbar mFluentSnackbar;
     private static final int msgTypeDebug = 1;
     private static final int msgTypeInfo = 2;
+    private static final int TOAST_SHOW_INTERVAL_MS = 1750;
 
     @NonNull
     static ToastExpander getInstance() {
         return ourInstance;
     }
 
-        public static void showFor(final Toast aToast, final long durationInMilliseconds) {
+    public static void showFor(final Toast aToast, final long durationInMilliseconds) {
+
+        if (durationInMilliseconds <= 0) return;
 
         aToast.setDuration(Toast.LENGTH_SHORT);
 
-        Thread t = new Thread() {
+        new Thread(() -> {
             long timeElapsed = 0;
 
-            public void run() {
                 try {
                     while (timeElapsed <= durationInMilliseconds) {
                         long start = System.currentTimeMillis();
                         aToast.show();
-                        //noinspection BusyWait
-                        sleep(1750);
+                        Thread.sleep(TOAST_SHOW_INTERVAL_MS);
                         timeElapsed += System.currentTimeMillis() - start;
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, e.toString());
+                    Thread.currentThread().interrupt();
                 }
-            }
-        };
-        t.start();
+        }).start();
     }
 
     private synchronized void showText(@NonNull Context context, @NonNull String msg, int type) {
@@ -76,7 +79,7 @@ public class ToastExpander {
                             TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
                             colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
                             colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
-                        } catch (Resources.NotFoundException e) { /**/ }
+                        } catch (Resources.NotFoundException ignored) { /**/ }
 
                         mFluentSnackbar
                                 .create(msg)
@@ -88,49 +91,74 @@ public class ToastExpander {
                                 .action(v -> {
                                     if (type == msgTypeDebug) {
                                         eventsData.disableDebugMsg();
-                                        mFluentSnackbar.removeAllMessagesByType(type);
                                     } else if (type == msgTypeInfo) {
                                         eventsData.disableInfoMsg();
-                                        mFluentSnackbar.removeAllMessagesByType(type);
                                     }
+                                    mFluentSnackbar.removeAllMessagesByType(type);
                                 })
                                 .type(type)
                                 .show();
                     });
                 } else {
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
+                    showToast(context, msg);
                 }
             } catch (IllegalArgumentException e) {
-                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
+                showToast(context, msg);
             }
         } else {
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
+            showToast(context, msg);
         }
+    }
+
+    private void showToast(@NonNull Context context, @NonNull String msg){
+        new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show());
     }
 
     static public void showInfoMsg(@NonNull Context context, @NonNull String msg) {
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception e) { /**/ }
-        if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, msg.trim(), msgTypeInfo);
+        } catch (Exception ignored) { /**/ }
+        if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, removeDuplicateLines(msg), msgTypeInfo);
     }
 
     static public void showMsg(@NonNull Context context, @NonNull String msg) {
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception e) { /**/ }
-        getInstance().showText(context, msg.trim(), msgTypeInfo);
+        } catch (Exception ignored) { /**/ }
+        getInstance().showText(context, removeDuplicateLines(msg), msgTypeInfo);
     }
 
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
         try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception e) { /**/ }
-        if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, msg.trim(), msgTypeDebug);
+        } catch (Exception ignored) { /**/ }
+        if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, removeDuplicateLines(msg), msgTypeDebug);
     }
 
     void dismissSnackBar() {
         if (mFluentSnackbar != null) mFluentSnackbar = null;
     }
 
+    private static String removeDuplicateLines(String inputString) {
+        if (inputString == null || inputString.isEmpty()) {
+            return Constants.STRING_EMPTY;
+        }
+
+        String[] lines = inputString.split(Constants.STRING_EOL_RN, -1);
+        Set<String> uniqueLines = new LinkedHashSet<>();
+        StringBuilder result = new StringBuilder();
+
+        for (String line : lines) {
+            String trimmedLine = line.trim();
+            if (uniqueLines.add(trimmedLine)) {
+                result.append(trimmedLine).append(Constants.STRING_EOL);
+            }
+        }
+
+        if (result.length() > 0 && result.lastIndexOf(Constants.STRING_EOL) == result.length() - Constants.STRING_EOL.length()) {
+            result.delete(result.length() - Constants.STRING_EOL.length(), result.length());
+        }
+
+        return result.toString();
+    }
 }

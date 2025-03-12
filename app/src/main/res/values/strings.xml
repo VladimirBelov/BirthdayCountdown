@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 18:19
+  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.03.2025, 14:01
+  ~  * Last modified 10.03.2025, 23:58
   ~  */
   -->
 
@@ -1142,6 +1142,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Tools_Events_title">Events</string>
     <string name="pref_Tools_Events_Show_title">Show saved local events</string>
     <string name="pref_Tools_Events_Export_title">Export local events</string>
+    <string name="pref_Tools_Events_Export_result">Events exported: %1$d</string>
     <string name="pref_Tools_Events_Import_title">Import local events</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>

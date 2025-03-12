@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 18:19
+  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.03.2025, 13:39
+  ~  * Last modified 10.03.2025, 23:58
   ~  */
   -->
 
@@ -1142,6 +1142,7 @@
     <string name="pref_Tools_Events_title">События</string>
     <string name="pref_Tools_Events_Show_title">Показать сохранённые локальные события</string>
     <string name="pref_Tools_Events_Export_title">Экспортировать локальные события</string>
+    <string name="pref_Tools_Events_Export_result">Экспортировано настроек: %1$d</string>
     <string name="pref_Tools_Events_Import_title">Импортировать локальные события</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>

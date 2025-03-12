@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 23.08.2023, 19:34
+ *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 12.03.2025, 13:36
  *
  */
 
@@ -36,6 +36,7 @@ public class NotifyActivity extends Activity {
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(null)) {
 
+                    //Этот класс используется только для shortcut на иконке. Текущие уведомления не нужны
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
                     notificationManager.cancelAll();
 
