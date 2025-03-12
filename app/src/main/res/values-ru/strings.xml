@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
+  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 10.03.2025, 23:58
+  ~  * Last modified 12.03.2025, 19:02
   ~  */
   -->
 
@@ -138,7 +138,8 @@
     <string name="msg_age_could_be">"Было бы: "</string>
     <string name="msg_age_passed">"Прошло: "</string>
     <string name="msg_label_search">Введите часть Ф.И.О., тип контакта, место работы, должность, даты (через запятую):</string>
-    <string name="msg_hint_search">Поисковый запрос</string>
+    <string name="msg_hint_search">Искать в списке</string>
+    <string name="msg_hint_search_all">Искать везде</string>
     <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
     <string name="msg_notifications_soon">"Событий скоро - "</string>
@@ -185,9 +186,10 @@
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
     <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
-    <string name="msg_prefs_import_clear_confirmation">Удалить все сохранённые настройки перед импортированием новых?</string>
+    <string name="msg_prefs_import_prefs_clear_confirmation">Удалить все сохранённые настройки перед импортированием новых?</string>
     <string name="msg_prefs_import_unknown">"Неизвестная настройка: %1$s"</string>
     <string name="msg_prefs_import_error">"Ошибка импорта: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Удалить все локальные события перед импортированием новых?</string>
     <string name="msg_event_type_select_title">Выберите тип события</string>
     <string name="msg_event_type_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_event_type_label_added">"Метка добавлена: %1$s"</string>
@@ -1144,6 +1146,7 @@
     <string name="pref_Tools_Events_Export_title">Экспортировать локальные события</string>
     <string name="pref_Tools_Events_Export_result">Экспортировано настроек: %1$d</string>
     <string name="pref_Tools_Events_Import_title">Импортировать локальные события</string>
+    <string name="pref_Tools_Events_Import_result">Импортировано событий: %1$d, пропущено: %2$d, ошибок: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>

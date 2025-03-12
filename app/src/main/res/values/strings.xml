@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
+  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 10.03.2025, 23:58
+  ~  * Last modified 12.03.2025, 18:59
   ~  */
   -->
 
@@ -138,7 +138,8 @@
     <string name="msg_age_could_be">"Could be: "</string>
     <string name="msg_age_passed">"Passed: "</string>
     <string name="msg_label_search">Enter part of full name, contact type, job, title, some part of event date (by comma):</string>
-    <string name="msg_hint_search">Search value</string>
+    <string name="msg_hint_search">Search in list</string>
+    <string name="msg_hint_search_all">Search everywhere</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>
     <string name="msg_notifications_soon_no_events">No events for chosen days</string>
     <string name="msg_notifications_soon">"Events soon - "</string>
@@ -185,9 +186,10 @@
     <string name="msg_no_action">No action for event</string>
     <string name="msg_icon_changed">"App icon set: %1$s"</string>
     <string name="msg_created_quiz_channel">Created Quiz notification channel</string>
-    <string name="msg_prefs_import_clear_confirmation">Clear all saved preferences before import new one?</string>
+    <string name="msg_prefs_import_prefs_clear_confirmation">Clear all saved preferences before import new ones?</string>
     <string name="msg_prefs_import_unknown">"Unknown pref: %1$s"</string>
     <string name="msg_prefs_import_error">"Import error: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Clear all local events before import new ones?</string>
     <string name="msg_event_type_select_title">Select event type</string>
     <string name="msg_event_type_label_set">"Label set: %1$s"</string>
     <string name="msg_event_type_label_added">"Label added: %1$s"</string>
@@ -1144,6 +1146,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Tools_Events_Export_title">Export local events</string>
     <string name="pref_Tools_Events_Export_result">Events exported: %1$d</string>
     <string name="pref_Tools_Events_Import_title">Import local events</string>
+    <string name="pref_Tools_Events_Import_result">Events imported: %1$d, skipped: %2$d, errors: %3$d</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installed from %1$s]]></string>
@@ -1733,11 +1736,11 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_List_SearchDepth_key" translatable="false">List_SearchDepth</string>
     <string name="pref_List_SearchDepth_pre186_key" translatable="false">List_SearchDeath</string>
     <string name="pref_List_SearchDepth_default" translatable="false">1</string>
-    <string name="pref_List_SearchDeath_selected" translatable="false">1</string>
-    <string name="pref_List_SearchDeath_all" translatable="false">2</string>
+    <string name="pref_List_SearchDeath_eventList" translatable="false">1</string>
+    <string name="pref_List_SearchDeath_allEvents" translatable="false">2</string>
     <string-array name="pref_List_SearchDepth_values" translatable="false">
-        <item>@string/pref_List_SearchDeath_selected</item> <!--Источники для списка событий-->
-        <item>@string/pref_List_SearchDeath_all</item> <!--Все указанные источники-->
+        <item>@string/pref_List_SearchDeath_eventList</item> <!--Источники для списка событий-->
+        <item>@string/pref_List_SearchDeath_allEvents</item> <!--Все указанные источники-->
     </string-array>
 
     <string name="pref_List_Color_EventToday_key" translatable="false">List_Color_EventToday</string>

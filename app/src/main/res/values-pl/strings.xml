@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
+  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:16
+  ~  * Last modified 12.03.2025, 18:59
   ~  */
   -->
 
@@ -180,7 +180,7 @@
     <string name="msg_no_action">Brak akcji dla wydarzenia</string>
     <string name="msg_icon_changed">"Zestaw ikon: %1$s"</string>
     <string name="msg_created_quiz_channel">Kanał powiadomień dla quizu został utworzony</string>
-    <string name="msg_prefs_import_clear_confirmation">Czy chcesz wyczyścić wszystkie zapisane ustawienia przed zaimportowaniem nowych?</string>
+    <string name="msg_prefs_import_prefs_clear_confirmation">Czy chcesz wyczyścić wszystkie zapisane ustawienia przed zaimportowaniem nowych?</string>
     <string name="msg_prefs_import_unknown">"Nieznane ustawienie: %1$s"</string>
     <string name="msg_prefs_import_error">"Błąd importu: %1$s"</string>
     <string name="msg_event_type_select_title">Wybierz typ wydarzenia</string>

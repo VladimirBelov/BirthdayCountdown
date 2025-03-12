@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2025, 23:36
+  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:16
+  ~  * Last modified 12.03.2025, 18:59
   ~  */
   -->
 
@@ -180,7 +180,7 @@
     <string name="msg_no_action">"Pas d'action pour l'événement"</string>
     <string name="msg_icon_changed">"Icône installée: %1$s"</string>
     <string name="msg_created_quiz_channel">"Création d'un canal de notification pour le Quiz"</string>
-    <string name="msg_prefs_import_clear_confirmation">"Voulez-vous supprimer tous les paramètres enregistrés avant d'en importer de nouveaux?"</string>
+    <string name="msg_prefs_import_prefs_clear_confirmation">"Voulez-vous supprimer tous les paramètres enregistrés avant d'en importer de nouveaux?"</string>
     <string name="msg_prefs_import_unknown">"Configuration inconnue: %1$s"</string>
     <string name="msg_prefs_import_error">"Erreur d'importation: %1$s"</string>
     <string name="msg_event_type_select_title">"Sélectionner le type d'événement"</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Created by Vladimir Belov on 12.03.2025, 19:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.03.2025, 09:39
+ *  * Last modified 12.03.2025, 19:07
  *
  */
 
@@ -378,7 +378,7 @@ class ContactsEvents {
     private Set<String> pref_List_Event_Info_Default;
     private Set<String> pref_List_Age_Format_Default;
     Set<String> preferences_list_EventSources = new HashSet<>();
-    int preferences_list_search_depth;
+    SearchDepth preferences_list_search_depth;
     int preferences_list_quick_action;
 
     //Уведомления
@@ -1107,11 +1107,7 @@ class ContactsEvents {
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
-            if (preferences.contains(context.getString(R.string.pref_List_SearchDepth_pre186_key))) {
-                preferences_list_search_depth = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDepth_pre186_key), context.getString(R.string.pref_List_SearchDepth_default));
-            } else {
-                preferences_list_search_depth = getPreferenceInt(preferences, context.getString(R.string.pref_List_SearchDepth_key), context.getString(R.string.pref_List_SearchDepth_default));
-            }
+            preferences_list_search_depth = getSearchDepthFromPrefs(preferences);
             preferences_list_quick_action = getPreferenceInt(preferences, context.getString(R.string.pref_List_QuickAction_key), Constants.MainMenu_AddEvent);
             if (preferences_list_quick_action > 0 && preferences_list_quick_action > 100) {
                 preferences_list_quick_action = Constants.MainMenu_AddEvent;
@@ -1508,6 +1504,31 @@ class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    @NonNull
+    private SearchDepth getSearchDepthFromPrefs(@NonNull SharedPreferences preferences) {
+        SearchDepth result = SearchDepth.ListEvents;
+        try {
+
+            String depthDefault = context.getString(R.string.pref_List_SearchDepth_default);
+            String depthAllEvents = context.getString(R.string.pref_List_SearchDeath_allEvents);
+            String depthStored;
+
+            if (preferences.contains(context.getString(R.string.pref_List_SearchDepth_pre186_key))) {
+                depthStored = preferences.getString(context.getString(R.string.pref_List_SearchDepth_pre186_key), depthDefault);
+            } else {
+                depthStored = preferences.getString(context.getString(R.string.pref_List_SearchDepth_key), depthDefault);
+            }
+            if (depthStored.equals(depthAllEvents)) {
+                result = SearchDepth.AllEvents;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return result;
     }
 
     void updateShortcuts() {
@@ -6016,8 +6037,6 @@ class ContactsEvents {
     void updateWidgets(int widgetID, StringBuilder log) {
 
         if (context == null) return;
-        statTimeUpdateWidgets = 0;
-        statActiveWidgets = 0;
 
         //Посылаем сообщения на обновление виджетов
         try {
@@ -6042,6 +6061,9 @@ class ContactsEvents {
                             return;
                         }
                     }
+
+                    statTimeUpdateWidgets = 0;
+                    statActiveWidgets = 0;
 
                     ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
                     if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
@@ -6096,7 +6118,7 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            if (log != null)
+            if (log != null && statActiveWidgets > 0)
                 log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
         }
     }
@@ -9619,6 +9641,10 @@ class ContactsEvents {
 
     enum ZodiacInfo {
         SIGN, SIGN_TITLE, YEAR, YEAR_TITLE
+    }
+
+    enum SearchDepth {
+        ListEvents, AllEvents
     }
 
     static class ColorTheme {

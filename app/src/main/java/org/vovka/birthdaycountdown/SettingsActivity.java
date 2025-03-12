@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Created by Vladimir Belov on 12.03.2025, 19:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.03.2025, 00:45
+ *  * Last modified 12.03.2025, 19:45
  *
  */
 
@@ -916,6 +916,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Tools_Events_Export_key).equals(key)) {
 
                 exportLocalEvents(null);
+                return true;
+
+            } else if (getString(R.string.pref_Tools_Events_Import_key).equals(key)) {
+
+                importLocalEvents(importStage.selectFile, null);
                 return true;
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
@@ -2628,7 +2633,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_title_confirmation));
                     builder.setIcon(android.R.drawable.ic_menu_help);
-                    builder.setMessage(getString(R.string.msg_prefs_import_clear_confirmation));
+                    builder.setMessage(getString(R.string.msg_prefs_import_prefs_clear_confirmation));
                     builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.clear();
@@ -2893,9 +2898,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 ToastExpander.showMsg(this, getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
                 if (countSuccess > 0) {
-                    eventsData.needUpdateEventList = true;
                     if (editor.commit()) {
                         eventsData.setAppIcon();
+                        eventsData.needUpdateEventList = true;
                     }
                 }
                 Intent intent = getIntent();
@@ -3021,6 +3026,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     private void importLocalEvents(importStage stage, Uri uri) {
 
         try {
@@ -3048,35 +3054,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (!prefs.isEmpty()) {
 
-                /*
-                int countPreferencesToImport = 0;
-                for (String prefLine: prefsArray) {
-                    String[] pref = prefLine.trim().split(Constants.STRING_COLON_SPACE, -1);
-                    if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH) && pref.length == 2)  countPreferencesToImport++;
-                }
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                Map<String, ?> prefs = preferences.getAll();
-
-                if (countPreferencesToImport != prefs.size()) {
                     //Надо спросить, не хотят ли почистить настройки
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_title_confirmation));
                     builder.setIcon(android.R.drawable.ic_menu_help);
-                    builder.setMessage(getString(R.string.msg_prefs_import_clear_confirmation));
+                    builder.setMessage(getString(R.string.msg_prefs_import_events_clear_confirmation));
                     builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.clear();
-                        if (editor.commit()) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                                for (NotificationChannel channel: notificationManager.getNotificationChannels()) {
-                                    notificationManager.deleteNotificationChannel(channel.getId());
-                                }
-                            }
-
-                            importPreferences(importStage.doImport, uri);
-                        }
+                        editor.clear().commit();
+                        importLocalEvents(importStage.doImport, uri);
                     });
                     builder.setNegativeButton(R.string.button_no, (dialog, which) -> importLocalEvents(importStage.doImport, uri));
                     AlertDialog alertToShow = builder.create();
@@ -3085,7 +3071,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                     });
                     alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    alertToShow.show();*/
+                    alertToShow.show();
 
                 } else {
                     importLocalEvents(importStage.doImport, uri);
@@ -3093,247 +3079,59 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == importStage.doImport && uri != null) {
 
-                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
-                if (prefsArray[0].isEmpty()) {
+                String[] eventsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                if (eventsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
                 }
 
                 int countSuccess = 0;
-                int countErrors = 0;
+                int countSkip = 0;
+                int countError = 0;
 
                 SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
                 Map<String, ?> prefs = preferences.getAll();
                 SharedPreferences.Editor editor = preferences.edit();
 
-                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = preferences.edit();
-                skipSharedPreferenceChangedEvent = true;
+                Set<Integer> prefHashes = new HashSet<>();
+                for (String eventId: prefs.keySet()) {
+                    if (prefs.get(eventId) instanceof String) {
+                        String eventString = (String) prefs.get(eventId);
+                        if (eventString != null) {
+                            prefHashes.add(eventString.hashCode());
+                        }
+                    }
+                }
 
-                ArrayList<String> listIntegers = new ArrayList<>(Arrays.asList(
-                        getString(R.string.pref_Events_Scope),
-                        getString(R.string.pref_IconPack_key),
-                        getString(R.string.pref_List_Color_EventJubilee_key),
-                        getString(R.string.pref_List_Color_EventSoon_key),
-                        getString(R.string.pref_List_Color_EventToday_key),
-                        getString(R.string.pref_List_FontMagnify_Age_key),
-                        getString(R.string.pref_List_FontMagnify_Date_key),
-                        getString(R.string.pref_List_FontMagnify_Details_key),
-                        getString(R.string.pref_List_FontMagnify_Distance_key),
-                        getString(R.string.pref_List_FontMagnify_Name_key),
-                        getString(R.string.pref_List_QuickAction_key),
-                        getString(R.string.pref_Notifications2_ChannelID),
-                        getString(R.string.pref_Notifications_ChannelID),
-                        getString(R.string.pref_Widgets_Color_EventCaption_key),
-                        getString(R.string.pref_Widgets_Color_EventFar_key),
-                        getString(R.string.pref_Widgets_Color_EventSoon_key),
-                        getString(R.string.pref_Widgets_Color_EventToday_key),
-                        getString(R.string.pref_Widgets_Color_WidgetCaption_key)
-                ));
-
-                ArrayList<String> listBooleans = new ArrayList<>(Arrays.asList(
-                        getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key),
-                        getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Birthday_UseInternal_key),
-                        getString(R.string.pref_CustomEvents_Crowning_UseInternal_key),
-                        getString(R.string.pref_CustomEvents_Custom1_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Custom2_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Custom3_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Custom4_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Custom5_UseYear_key),
-                        getString(R.string.pref_CustomEvents_Death_UseInternal_key),
-                        getString(R.string.pref_CustomEvents_NameDay_UseInternal_key),
-                        getString(R.string.pref_Help_Debug_On_key),
-                        getString(R.string.pref_Help_ExtraFun_On_key),
-                        getString(R.string.pref_Help_InfoMsg_On_key),
-                        getString(R.string.pref_List_FastScroll_key),
-                        getString(R.string.pref_MenuStyle_key)
-                ));
-
-                ArrayList<String> listStrings = new ArrayList<>(Arrays.asList(
-                        getString(R.string.pref_Colors_Recent_key),
-                        getString(R.string.pref_CustomEvents_Anniversary_Labels_key),
-                        getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key),
-                        getString(R.string.pref_CustomEvents_Birthday_Labels_key),
-                        getString(R.string.pref_CustomEvents_Crowning_Labels_key),
-                        getString(R.string.pref_CustomEvents_Custom1_Caption_key),
-                        getString(R.string.pref_CustomEvents_Custom1_Labels_key),
-                        getString(R.string.pref_CustomEvents_Custom2_Caption_key),
-                        getString(R.string.pref_CustomEvents_Custom2_Labels_key),
-                        getString(R.string.pref_CustomEvents_Custom3_Caption_key),
-                        getString(R.string.pref_CustomEvents_Custom3_Labels_key),
-                        getString(R.string.pref_CustomEvents_Custom4_Caption_key),
-                        getString(R.string.pref_CustomEvents_Custom4_Labels_key),
-                        getString(R.string.pref_CustomEvents_Custom5_Caption_key),
-                        getString(R.string.pref_CustomEvents_Custom5_Labels_key),
-                        getString(R.string.pref_CustomEvents_Death_Labels_key),
-                        getString(R.string.pref_CustomEvents_Holiday_Labels_key),
-                        getString(R.string.pref_CustomEvents_NameDay_Labels_key),
-                        getString(R.string.pref_CustomEvents_Other_Labels_key),
-                        getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key),
-                        getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key),
-                        getString(R.string.pref_CustomEvents_Rules_Unrecognized_key),
-                        getString(R.string.pref_Female_Names_key),
-                        getString(R.string.pref_Icon_key),
-                        getString(R.string.pref_Language_key),
-                        getString(R.string.pref_List_CustomCaption_key),
-                        getString(R.string.pref_List_CustomTodayEventCaption_key),
-                        getString(R.string.pref_List_DateFormat_key),
-                        getString(R.string.pref_List_Filling_key),
-                        getString(R.string.pref_List_Jubilee_Algorithm_key),
-                        getString(R.string.pref_List_Margin_key),
-                        getString(R.string.pref_List_TopPadding_key),
-                        getString(R.string.pref_List_NameFormat_key),
-                        getString(R.string.pref_List_OnClick_key),
-                        getString(R.string.pref_List_PhotoStyle_key),
-                        getString(R.string.pref_List_PrevEvents_key),
-                        getString(R.string.pref_List_PrevEvents_key),
-                        getString(R.string.pref_List_SadPhoto_key),
-                        getString(R.string.pref_List_SearchDepth_key),
-                        getString(R.string.pref_List_Style_key),
-                        getString(R.string.pref_Male_Names_key),
-                        getString(R.string.pref_Notifications2_AlarmHour_key),
-                        getString(R.string.pref_Notifications2_AlarmMinute_key),
-                        getString(R.string.pref_Notifications2_FactEvents_Count_key),
-                        getString(R.string.pref_Notifications2_OnClick_key),
-                        getString(R.string.pref_Notifications2_Priority_key),
-                        getString(R.string.pref_Notifications2_Ringtone_key),
-                        getString(R.string.pref_Notifications2_Type_key),
-                        getString(R.string.pref_Notifications_AlarmHour_key),
-                        getString(R.string.pref_Notifications_AlarmMinute_key),
-                        getString(R.string.pref_Notifications_FactEvents_Count_key),
-                        getString(R.string.pref_Notifications_OnClick_key),
-                        getString(R.string.pref_Notifications_Priority_key),
-                        getString(R.string.pref_Notifications_Ringtone_key),
-                        getString(R.string.pref_Notifications_Type_key),
-                        getString(R.string.pref_Quiz_Interface_key),
-                        getString(R.string.pref_Theme_key),
-                        getString(R.string.pref_VersionCode_LastRun),
-                        getString(R.string.pref_Version_LastRun),
-                        getString(R.string.pref_Widgets_BottomInfo2nd_key),
-                        getString(R.string.pref_Widgets_BottomInfo_key),
-                        getString(R.string.pref_Widgets_Days_EventSoon_key),
-                        getString(R.string.pref_Widgets_OnClick_key),
-                        getString(R.string.pref_Widgets_UpdateInterval_key)
-                ));
-
-                ArrayList<String> listSets = new ArrayList<>(Arrays.asList(
-                        getString(R.string.pref_Accounts_key),
-                        getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key),
-                        getString(R.string.pref_CustomEvents_Other_LocalFiles_key),
-                        getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key),
-                        getString(R.string.pref_CustomEvents_Fact_LocalFiles_key),
-                        getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key),
-                        getString(R.string.pref_CustomEvents_Birthday_Calendars_key),
-                        getString(R.string.pref_CustomEvents_Other_Calendars_key),
-                        getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
-                        getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
-                        getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
-                        getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
-                        getString(R.string.pref_List_Events_key),
-                        getString(R.string.pref_Events_Hidden_key),
-                        getString(R.string.pref_Events_Hidden_rawIds_key),
-                        getString(R.string.pref_Events_Favorite_key),
-                        getString(R.string.pref_Events_Favorite_rawIds_key),
-                        getString(R.string.pref_List_EventInfo_key),
-                        getString(R.string.pref_List_EventSources_key),
-                        getString(R.string.pref_List_AgeFormat_key),
-                        getString(R.string.pref_MergedID_key),
-                        getString(R.string.pref_MergedRawID_key),
-                        getString(R.string.pref_Notifications_Days_key),
-                        getString(R.string.pref_Notifications2_Days_key),
-                        getString(R.string.pref_Notifications_Events_key),
-                        getString(R.string.pref_Notifications2_Events_key),
-                        getString(R.string.pref_Notifications_EventInfo_key),
-                        getString(R.string.pref_Notifications2_EventInfo_key),
-                        getString(R.string.pref_Notifications_QuickActions_key),
-                        getString(R.string.pref_Notifications2_QuickActions_key),
-                        getString(R.string.pref_Notifications_EventSources_key),
-                        getString(R.string.pref_Notifications2_EventSources_key),
-                        getString(R.string.pref_Events_Silent_key),
-                        getString(R.string.pref_Events_Silent_rawIds_key),
-                        getString(R.string.pref_xDaysEvents_key),
-                        getString(R.string.pref_Widgets_EventInfo_key)
-                ));
-
-                for (String prefLine: prefsArray) {
-                    int indColon = prefLine.indexOf(Constants.STRING_COLON);
-                    if (indColon > -1) {
-                        String[] pref = new String[2];
-                        pref[0] = prefLine.substring(0, indColon).trim();
-
-                        if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH)) {
-                            pref[1] = prefLine.substring(indColon + 1).trim();
-                            if (listIntegers.contains(pref[0])) { // Integers
-
-                                Integer valInt = null;
+                final Calendar c = Calendar.getInstance();
+                for (String eventLine: eventsArray) {
+                    if (eventLine != null) {
+                        String eventString = eventLine.replaceAll(Constants.STRING_PIPE, Constants.STRING_EOT);
+                        if (!eventString.isEmpty() && !eventString.startsWith(Constants.STRING_HASH) && !eventLine.startsWith(Constants.STRING_DSLASH)) {
+                            String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
+                            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+                                String eventId = null;
                                 try {
-                                    valInt = Integer.parseInt(pref[1]);
-                                } catch (NumberFormatException e) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                }
-                                if (valInt != null) {
-                                    editor.putInt(pref[0], valInt);
+                                    eventId = String.valueOf(singleEventArray[ContactsEvents.Position_eventID]);
+                                } catch (Exception ignored) { /**/ }
+                                if (eventId != null && !prefs.containsKey(eventId)) {
+                                    editor.putString(eventId, eventString);
                                     countSuccess++;
-                                }
-
-                            } else if (listBooleans.contains(pref[0])) { // Booleans
-
-                                Boolean valBoolean = null;
-                                try {
-                                    valBoolean = Boolean.parseBoolean(pref[1]);
-                                } catch (NumberFormatException e) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                }
-                                if (valBoolean != null) {
-                                    editor.putBoolean(pref[0], valBoolean);
-                                    countSuccess++;
-                                }
-
-                            } else if (listSets.contains(pref[0])) { // Sets
-
-                                Set<String> valSet = null;
-                                int brake1 = pref[1].indexOf(Constants.STRING_BRACKETS_START);
-                                int brake2 = pref[1].lastIndexOf(Constants.STRING_BRACKETS_CLOSE);
-                                if (brake1 != -1 && brake2 != -1) {
-                                    String[] values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_COMMA, -1);
-                                    valSet = new HashSet<>();
-                                    for (String value : values) {
-                                        final String valueTrimmed = value.trim();
-                                        if (!valueTrimmed.isEmpty()) valSet.add(valueTrimmed);
-                                    }
-                                }
-
-                                if (valSet == null) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
                                 } else {
-                                    editor.putStringSet(pref[0], valSet);
-                                    countSuccess++;
+                                    countSkip++;
                                 }
-
-                            } else if (listStrings.contains(pref[0]) || pref[0].startsWith(getString(R.string.widget_config_PrefName))) { // Strings
-
-                                editor.putString(pref[0], pref[1]);
-                                countSuccess++;
-
                             } else {
-
-                                countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_unknown, prefLine));
-
+                                countError++;
                             }
                         }
                     }
+                }
 
-                }*/
-
-                ToastExpander.showMsg(this, getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
+                ToastExpander.showMsg(this, getString(R.string.pref_Tools_Events_Import_result, countSuccess, countSkip, countError));
                 if (countSuccess > 0) {
-                    eventsData.needUpdateEventList = true;
-                    editor.commit();
+                    if (editor.commit()) {
+                        eventsData.needUpdateEventList = true;
+                    }
                 }
                 Intent intent = getIntent();
                 finish();
@@ -3621,8 +3419,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             exportLocalEvents(uri);
                         }
                     }
-
-
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
+                    if (resultData != null) {
+                        Uri uri = resultData.getData();
+                        if (uri != null) {
+                            importLocalEvents(importStage.doClean, uri);
+                        }
+                    }
                 }
 
             } else {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Created by Vladimir Belov on 12.03.2025, 19:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.03.2025, 10:11
+ *  * Last modified 12.03.2025, 19:50
  *
  */
 
@@ -289,7 +289,7 @@ final class Constants {
     static final int WIDGET_CALENDAR_OUT_MONTH_TINT = (int) (255 * 0.4);
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
-    static final int TIME_FORCE_UPDATE = 60000;
+    static final int TIME_FORCE_UPDATE = 30000;
     static final int PREV_EVENTS_MAX_DAYS = 14;
     static final String account_google = "com.google";
     static final String account_skype = "com.skype.";

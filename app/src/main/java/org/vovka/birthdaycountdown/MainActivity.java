@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 18:19
+ *  * Created by Vladimir Belov on 12.03.2025, 19:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.03.2025, 08:33
+ *  * Last modified 12.03.2025, 19:50
  *
  */
 
@@ -1620,7 +1620,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 });
 
                 if (searchView != null) {
-                    searchView.setQueryHint(getString(R.string.msg_hint_search));
+                    if (eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents) {
+                        searchView.setQueryHint(getString(R.string.msg_hint_search_all));
+                    } else {
+                        searchView.setQueryHint(getString(R.string.msg_hint_search));
+                    }
                     searchView.setMaxWidth(Integer.MAX_VALUE);
 
                     //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
@@ -2190,7 +2194,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             mainLayout.setLayoutParams(marginParams);
 
             //Тему не меняли, просто обновляем данные
-            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
+                    || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
@@ -2252,7 +2257,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
-                boolean isSearchAllTypesAndSources = !filterNames.isEmpty() && eventsData.preferences_list_search_depth == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all));
+                boolean isSearchAllTypesAndSources = !filterNames.isEmpty() && eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents;
 
                 for (String event : eventsData.eventList) {
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
@@ -3028,30 +3033,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         //для поиска AND используем <строка1>+<строка2>
                         //для поиска OR используем <строка1>,<строка2>
                         filterNames = ContactsEvents.normalizeName(constraint.toString());
-                        final List<String> searchSource =
-                                eventsData.preferences_list_search_depth == Integer.parseInt(getString(R.string.pref_List_SearchDeath_all)) ? eventsData.eventList : listAll;
-                        if (filterNames.contains("+")) {
-                            String[] params = filterNames.split(Constants.REGEX_PLUS);
-                            for (String listItem : searchSource) {
-                                final String item = listItem.toLowerCase();
-                                int matches = 0;
-                                for (String param: params) {
-                                    if (!item.contains(param)) {
-                                        break;
+                        if (filterNames != null) {
+                            final List<String> searchSource =
+                                    eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents ? eventsData.eventList : listAll;
+                            if (filterNames.contains("+")) {
+                                String[] params = filterNames.split(Constants.REGEX_PLUS);
+                                for (String listItem : searchSource) {
+                                    final String item = listItem.toLowerCase();
+                                    int matches = 0;
+                                    for (String param : params) {
+                                        if (!item.contains(param)) {
+                                            break;
+                                        }
+                                        matches++;
                                     }
-                                    matches++;
-                                }
-                                if (matches == params.length) {
-                                    dataList_filtered.add(listItem);
-                                }
-                            }
-
-                        } else {
-                            Matcher filter = Pattern.compile(filterNames.replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA).replace(Constants.STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
-                            for (String listItem : searchSource) {
-                                if (filter.reset(listItem).find()) {
-                                    if (!dataList_filtered.contains(listItem)) {
+                                    if (matches == params.length) {
                                         dataList_filtered.add(listItem);
+                                    }
+                                }
+
+                            } else {
+                                Matcher filter = Pattern.compile(filterNames.replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA).replace(Constants.STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+                                for (String listItem : searchSource) {
+                                    if (filter.reset(listItem).find()) {
+                                        if (!dataList_filtered.contains(listItem)) {
+                                            dataList_filtered.add(listItem);
+                                        }
                                     }
                                 }
                             }
