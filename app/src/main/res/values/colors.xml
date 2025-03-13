@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 17.01.2024, 12:20
+  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 13.03.2025, 13:50
   ~  */
   -->
 
@@ -27,41 +27,50 @@
     <color name="theme_green_secondary">@color/theme_secondary</color>
     <color name="theme_green_status">#004f04</color>
     <color name="theme_green_status_transp">#32004f04</color>
+    <color name="theme_green_panels">#1A2E7D32</color>
 
     <color name="theme_blue_primary">#0276bd</color>
     <color name="theme_blue_secondary">@color/theme_secondary</color>
     <color name="theme_blue_status">#004c8c</color>
+    <color name="theme_blue_panels">#330276BD</color>
 
     <color name="theme_teal_primary">#00796b</color>
     <color name="theme_teal_secondary">@color/theme_secondary</color>
     <color name="theme_teal_status">#004c40</color>
     <color name="theme_teal_status_transp">#32004c40</color>
+    <color name="theme_teal_panels">#3300796B</color>
 
     <color name="theme_orange_primary">#fb8c00</color>
     <color name="theme_orange_primary_transp">#80fb8c00</color>
     <color name="theme_orange_secondary">@color/theme_secondary</color>
     <color name="theme_orange_status">#c25e00</color>
     <color name="theme_orange_status_transp">#32c25e00</color>
+    <color name="theme_orange_panels">#33FB8C00</color>
 
     <color name="theme_brown_primary">@color/brown</color>
     <color name="theme_brown_primary_transp">#80873A07</color>
     <color name="theme_brown_secondary">@color/theme_secondary</color>
     <color name="theme_brown_status">#602701</color>
     <color name="theme_brown_status_transp">#32602701</color>
+    <color name="theme_brown_panels">#33873A07</color>
 
     <color name="theme_blue_gray_primary">#455a64</color>
     <color name="theme_blue_gray_secondary">@color/theme_secondary</color>
-    <color name="theme_blue_gray_status">#384951</color> <!--#263847-->
+    <color name="theme_blue_gray_status">#384951</color>
+    <color name="theme_blue_gray_panels">#33455A64</color>
 
     <color name="theme_black_primary">#FF121212</color>
+    <color name="theme_black_panels">#80323232</color>
 
     <color name="theme_grey_primary">#FF323232</color>
+    <color name="theme_grey_panels">#804B4B4B</color>
 
-    <color name="theme_indigo_primary">#303f9f</color> <!--#3f51b5-->
+    <color name="theme_indigo_primary">#303f9f</color>
     <color name="theme_indigo_primary_transp">#80303F9F</color>
     <color name="theme_indigo_secondary">@color/theme_secondary</color>
-    <color name="theme_indigo_status">#001970</color> <!--#002984-->
-    <color name="theme_indigo_status_transp">#32001970</color> <!--#32002984-->
+    <color name="theme_indigo_status">#001970</color>
+    <color name="theme_indigo_status_transp">#32001970</color>
+    <color name="theme_indigo_panels">#33303F9F</color>
 
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#FF1B5E20</color>
@@ -70,7 +79,6 @@
     <color name="dark_blue_transp">#70004c8c</color>
     <color name="light_blue">#FF2196F3</color>
     <color name="light_blue_transp">#66D3D5D8</color>
-
 
     <color name="blue_gray_light">#FF718792</color>
     <color name="blue_gray_dark">#FF1c313a</color>

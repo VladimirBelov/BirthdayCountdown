@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.03.2025, 14:22
+  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.03.2025, 14:03
+  ~  * Last modified 13.03.2025, 13:47
   ~  */
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/dialogBackgroundColor"
-    tools:ignore="Overdraw">
+    android:background="?attr/dialogBackgroundColor">
 
     <LinearLayout
         android:id="@+id/windowTitle"
@@ -49,7 +49,7 @@
             android:textStyle="bold"
             android:background="?attr/colorPrimary"
             android:textColor="?attr/windowTitleColor"
-            tools:ignore="TextSizeCheck" /><!--android:textColor="?attr/windowTitleTextColor"-->
+            tools:ignore="TextSizeCheck" />
     </LinearLayout>
 
     <ScrollView
@@ -85,28 +85,29 @@
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    app:cardElevation="3dp"
                     app:cardCornerRadius="4dp"
-                    app:contentPadding="1dp"
-                    app:cardBackgroundColor="?attr/listDividerColor" >
+                    app:cardUseCompatPadding="true"
+                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor" >
+                        android:layout_margin="4dp"
+                        android:paddingTop="6dp" >
 
                         <TextView
                             android:id="@+id/captionName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:labelFor="@id/editName"
-                            android:textSize="12sp"
                             android:text="@string/local_event_dialog_caption_name"
+                            android:textSize="12sp"
+                            android:paddingStart="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                         <EditText
@@ -116,9 +117,9 @@
                             android:importantForAutofill="no"
                             android:inputType="textMultiLine|textCapWords"
                             android:maxLines="3"
-                            android:textColor="?attr/dialogTextColor"
                             android:textSize="14sp"
-                            tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
+                            android:paddingHorizontal="4dp"
+                            android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
 
@@ -128,26 +129,26 @@
                     android:id="@+id/cardTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    app:cardElevation="3dp"
                     app:cardCornerRadius="4dp"
-                    app:contentPadding="1dp"
-                    app:cardBackgroundColor="?attr/listDividerColor" >
+                    app:cardUseCompatPadding="true"
+                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor" >
+                        android:layout_margin="4dp"
+                        android:paddingTop="6dp" >
 
                         <TextView
                             android:id="@+id/captionTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:labelFor="@id/editTitle"
-                            android:textSize="12sp"
                             android:text="@string/local_event_dialog_caption_title"
+                            android:textSize="12sp"
+                            android:paddingStart="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                         <EditText
@@ -157,9 +158,9 @@
                             android:importantForAutofill="no"
                             android:inputType="textMultiLine|textCapSentences"
                             android:maxLines="3"
-                            android:textColor="?attr/dialogTextColor"
                             android:textSize="12sp"
-                            tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
+                            android:paddingHorizontal="4dp"
+                            android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
 
@@ -169,26 +170,26 @@
                     android:id="@+id/cardOrganization"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    app:cardElevation="3dp"
                     app:cardCornerRadius="4dp"
-                    app:contentPadding="1dp"
-                    app:cardBackgroundColor="?attr/listDividerColor" >
+                    app:cardUseCompatPadding="true"
+                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor" >
+                        android:layout_margin="4dp"
+                        android:paddingTop="6dp" >
 
                         <TextView
                             android:id="@+id/captionOrganization"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:labelFor="@id/editName"
-                            android:textSize="12sp"
                             android:text="@string/local_event_dialog_caption_org"
+                            android:textSize="12sp"
+                            android:paddingStart="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                         <EditText
@@ -198,29 +199,29 @@
                             android:importantForAutofill="no"
                             android:inputType="textMultiLine|textCapSentences"
                             android:maxLines="3"
-                            android:textColor="?attr/dialogTextColor"
                             android:textSize="12sp"
-                            tools:ignore="VisualLintTextFieldSize,TouchTargetSizeCheck" />
+                            android:paddingHorizontal="4dp"
+                            android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    app:cardElevation="3dp"
                     app:cardCornerRadius="4dp"
-                    app:contentPadding="1dp"
-                    app:cardBackgroundColor="?attr/listDividerColor" >
+                    app:cardUseCompatPadding="true"
+                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor" >
+                        android:layout_margin="4dp"
+                        android:paddingTop="6dp" >
 
                         <TextView
                             android:id="@+id/captionDate"
@@ -229,14 +230,16 @@
                             android:labelFor="@id/editDate"
                             android:text="@string/local_event_dialog_date_title"
                             android:textSize="12sp"
+                            android:paddingStart="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                         <TextView
                             android:id="@+id/editDate"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:importantForAutofill="no"
+                            android:paddingHorizontal="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>
@@ -246,18 +249,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    app:cardElevation="3dp"
                     app:cardCornerRadius="4dp"
-                    app:cardBackgroundColor="?attr/listDividerColor"
-                    app:contentPadding="1dp"
-                    android:layout_marginBottom="2dp" >
+                    app:cardUseCompatPadding="true"
+                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
-                        android:background="?attr/dialogBackgroundColor" >
+                        android:layout_margin="4dp"
+                        android:paddingTop="6dp" >
 
                         <TextView
                             android:id="@+id/captionType"
@@ -266,13 +269,15 @@
                             android:labelFor="@id/spinnerEventType"
                             android:text="@string/local_event_dialog_type_title"
                             android:textSize="12sp"
+                            android:paddingStart="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                         <Spinner
                             android:id="@+id/spinnerEventType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingHorizontal="2dp"
+                            android:paddingHorizontal="4dp"
+                            android:textColor="?attr/dialogTextColor"
                             tools:ignore="TouchTargetSizeCheck" />
 
                         <TextView
@@ -280,6 +285,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:importantForAutofill="no"
+                            android:paddingHorizontal="4dp"
                             android:textColor="?attr/dialogTextColor" />
 
                     </LinearLayout>

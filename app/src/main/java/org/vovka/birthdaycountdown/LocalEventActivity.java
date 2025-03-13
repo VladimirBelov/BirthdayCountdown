@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 18:19
+ *  * Created by Vladimir Belov on 13.03.2025, 13:55
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.03.2025, 17:33
+ *  * Last modified 13.03.2025, 12:46
  *
  */
 
@@ -37,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -233,6 +234,14 @@ public class LocalEventActivity extends Activity {
 
             setContentView(R.layout.activity_event);
 
+            LinearLayout layout = findViewById(R.id.layoutMain);
+            /*TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            int backColorInt = ta.getColor(R.styleable.Theme_colorPrimary, 0);
+            int newAlpha = (int) (255 * 0.3f);
+            int newColor = Color.argb(newAlpha, Color.red(backColorInt), Color.green(backColorInt), Color.blue(backColorInt));
+            layout.setBackgroundColor(newColor);
+            ta.recycle();*/
+
             viewActivityTitle = findViewById(R.id.textCaption);
             viewName = findViewById(R.id.captionName);
             editName = findViewById(R.id.editName);
@@ -268,6 +277,7 @@ public class LocalEventActivity extends Activity {
             eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
             eventTypesIds.add(Constants.Type_HolidayEvent);
             eventSubTypesIds.add(Constants.Type_HolidayEvent);
+            //todo: добавить пользовательские типы событий
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -387,6 +397,12 @@ public class LocalEventActivity extends Activity {
 
                 TextView buttonSave = findViewById(R.id.buttonThirdAction);
                 buttonSave.setText(R.string.button_ok);
+                buttonSave.setPadding(
+                        ContactsEvents.Dip2Px(getResources(), 15),
+                        buttonSave.getPaddingTop(),
+                        ContactsEvents.Dip2Px(getResources(), 15),
+                        buttonSave.getPaddingBottom()
+                );
                 addClickEffect(buttonSave);
                 buttonSave.getBackground().setAlpha(50);
                 buttonSave.setVisibility(View.VISIBLE);
