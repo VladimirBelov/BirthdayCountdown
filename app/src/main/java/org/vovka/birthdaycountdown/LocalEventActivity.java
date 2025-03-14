@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.03.2025, 13:55
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.03.2025, 12:46
+ *  * Last modified 14.03.2025, 13:56
  *
  */
 
@@ -321,7 +321,7 @@ public class LocalEventActivity extends Activity {
                                 Date dateEventFirstTime;
 
                                 try {
-                                    dateEventFirstTime = eventsData.sdf_DDMMYYYY.parse(eventDateString);
+                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
                                     if (dateEventFirstTime != null) {
                                         day = dateEventFirstTime.getDate();
                                         month = dateEventFirstTime.getMonth();
@@ -329,7 +329,7 @@ public class LocalEventActivity extends Activity {
                                     }
                                 } catch (ParseException pe) {
                                     try {
-                                        dateEventFirstTime = eventsData.sdf_DDMMYYYY.parse(eventDateString
+                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
                                                 .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
                                         if (dateEventFirstTime != null) {
                                             day = dateEventFirstTime.getDate();
@@ -515,7 +515,7 @@ public class LocalEventActivity extends Activity {
 
             if (eventUseYear) {
                 dateFormated = eventsData.getDateFormatted(
-                        eventsData.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithYear);
+                        ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithYear);
             } else {
                 dateFormated = eventsData.getDateFormatted(
                         eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithoutYear);
@@ -680,7 +680,7 @@ public class LocalEventActivity extends Activity {
 
            if (eventUseYear) {
                eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                       eventsData.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)));
+                       ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)));
            } else {
                eventData.put(ContactsEvents.Position_eventDateFirstTime,
                        eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)));

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
+  ~  * Created by Vladimir Belov on 14.03.2025, 16:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.03.2025, 18:59
+  ~  * Last modified 14.03.2025, 16:02
   ~  */
   -->
 
@@ -626,8 +626,8 @@
     <string name="pref_List_SearchDepth_title">Suchtiefe</string>
     <string name="pref_List_SearchDepth_summary">Welche Quellen sollen nach Ereignissen durchsucht werden</string>
     <string-array name="pref_List_SearchDepth_entries">
-        <item>Ausgewählte Quellen</item>
-        <item>Alle Quellen</item>
+        <item>Ereignisse in der Liste</item>
+        <item>Alle Ereignisse</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Heutige Ereignisse</string>

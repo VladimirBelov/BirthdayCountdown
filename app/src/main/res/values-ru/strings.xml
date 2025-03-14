@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
+  ~  * Created by Vladimir Belov on 14.03.2025, 16:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.03.2025, 19:02
+  ~  * Last modified 14.03.2025, 16:02
   ~  */
   -->
 
@@ -635,8 +635,8 @@
     <string name="pref_List_SearchDepth_title">Глубина поиска</string>
     <string name="pref_List_SearchDepth_summary">В каких источниках искать события</string>
     <string-array name="pref_List_SearchDepth_entries">
-        <item>Выбранные источники</item>
-        <item>Все источники</item>
+        <item>События в списке</item>
+        <item>Все события</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">События сегодня</string>

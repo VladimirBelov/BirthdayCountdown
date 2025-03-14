@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 19:58
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.03.2025, 19:50
+ *  * Last modified 14.03.2025, 13:46
  *
  */
 
@@ -1110,7 +1110,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         ArrayList<ContactsEvents.Event> events = null;
                         try {
-                            Date eventDate = eventsData.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
+                            Date eventDate = ContactsEvents.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null) {
                                 Calendar dateEnd = ContactsEvents.removeTime(Calendar.getInstance());
                                 dateEnd.add(Calendar.YEAR, 15);
@@ -1139,7 +1139,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 StringBuilder sb = new StringBuilder();
                                 for (ContactsEvents.Event e: events) {
                                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
-                                    sb.append(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(e.date), ContactsEvents.FormatDate.WithYear));
+                                    sb.append(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(e.date), ContactsEvents.FormatDate.WithYear));
                                     sb.append(Constants.STRING_COLON_SPACE);
                                     sb.append(e.distance);
                                 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 02:55
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 01:29
+ *  * Last modified 14.03.2025, 13:56
  *
  */
 
@@ -539,7 +539,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
                     }
                 }
-                Log.i(TAG + ".Period", eventsData.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + eventsData.sdf_DDMMYYYY.format(calLastDay.getTime()));
+                Log.i(TAG + ".Period", ContactsEvents.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + ContactsEvents.sdf_DDMMYYYY.format(calLastDay.getTime()));
 
                 //Заполнение типов дней из календарей по периоду
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
@@ -811,7 +811,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (!dayInfo.isEmpty()) {
                     Intent intent = new Intent(context, WidgetCalendarPopup.class);
                     intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
-                            .concat(eventsData.getDateFormatted(eventsData.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
+                            .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
                     intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.HTML_BR, dayInfo));
                     intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

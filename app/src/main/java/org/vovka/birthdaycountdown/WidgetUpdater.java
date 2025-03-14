@@ -1,12 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 30.11.2023, 23:23
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 14.03.2025, 13:46
  *
  */
 
 package org.vovka.birthdaycountdown;
+
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -26,6 +28,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,12 +43,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 class WidgetUpdater {
 
@@ -381,7 +381,7 @@ class WidgetUpdater {
             if (isVisibleEvent && daysCount > 0) {
                 Date eventDate = null;
                 try {
-                    eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                    eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                 } catch (Exception e) { /**/ }
 
                 if (eventDate != null) {
@@ -726,7 +726,7 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
-                    strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
+                    strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
                 } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 
@@ -734,7 +734,7 @@ class WidgetUpdater {
                     if (birthDate != null) {
                         Locale locale_en = new Locale(Constants.LANG_EN);
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        strZodiacInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.SIGN, sdfYear.format(birthDate));
+                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(sdfYear.format(birthDate));
                     }
                 }
             }
@@ -755,7 +755,7 @@ class WidgetUpdater {
 
                 if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
 
-                    strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
+                    strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
                 } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
 
@@ -763,7 +763,7 @@ class WidgetUpdater {
                     if (birthDate != null) {
                         Locale locale_en = new Locale(Constants.LANG_EN);
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        strZodiacYearInfo = eventsData.getZodiacInfo(ContactsEvents.ZodiacInfo.YEAR, sdfYear.format(birthDate));
+                        strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, sdfYear.format(birthDate));
                     }
                 }
             }

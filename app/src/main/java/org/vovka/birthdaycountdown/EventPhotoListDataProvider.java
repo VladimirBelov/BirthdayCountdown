@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 30.12.2023, 21:10
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 14.03.2025, 13:56
  *
  */
 
@@ -23,6 +23,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -30,9 +33,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.Nullable;
-import androidx.core.text.HtmlCompat;
 
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
@@ -407,7 +407,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = eventsData.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                            eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

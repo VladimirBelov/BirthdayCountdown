@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 19:58
+  ~  * Created by Vladimir Belov on 14.03.2025, 16:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.03.2025, 18:59
+  ~  * Last modified 14.03.2025, 16:03
   ~  */
   -->
 
@@ -626,8 +626,8 @@
     <string name="pref_List_SearchDepth_title">Hloubka vyhledávání</string>
     <string name="pref_List_SearchDepth_summary">Jaké zdroje hledat události</string>
     <string-array name="pref_List_SearchDepth_entries">
-        <item>Vybrané zdroje</item>
-        <item>Všechny zdroje</item>
+        <item>Události v seznamu</item>
+        <item>Všechny události</item>
     </string-array>
 
     <string name="pref_List_Color_EventToday_title">Dnešní události</string>

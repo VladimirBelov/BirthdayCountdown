@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 19:58
+ *  * Created by Vladimir Belov on 14.03.2025, 16:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.03.2025, 19:45
+ *  * Last modified 14.03.2025, 13:56
  *
  */
 
@@ -3092,16 +3092,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
                 Map<String, ?> prefs = preferences.getAll();
                 SharedPreferences.Editor editor = preferences.edit();
-
-                Set<Integer> prefHashes = new HashSet<>();
-                for (String eventId: prefs.keySet()) {
-                    if (prefs.get(eventId) instanceof String) {
-                        String eventString = (String) prefs.get(eventId);
-                        if (eventString != null) {
-                            prefHashes.add(eventString.hashCode());
-                        }
-                    }
-                }
 
                 final Calendar c = Calendar.getInstance();
                 for (String eventLine: eventsArray) {
