@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 26.11.2023, 20:05
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 15.03.2025, 18:04
  *
  */
 
@@ -27,6 +27,9 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +37,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 // Список событий масштабируемый (с фото)
 public class WidgetPhotoList extends AppWidgetProvider {
@@ -81,8 +81,10 @@ public class WidgetPhotoList extends AppWidgetProvider {
             eventsData.setLocale(true);
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
+            if (appWidgetInfo != null) {
+                widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            }
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
             List<String> widgetPref_eventInfo = new ArrayList<>();
@@ -113,7 +115,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
                 views.setViewVisibility(R.id.config_button, View.VISIBLE);
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
-                intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
             }
 
@@ -179,7 +181,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
                             context.getResources().getResourceEntryName(views.getLayoutId()), String.join(Constants.STRING_COMMA, widgetPref))
-                    : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(String.join(Constants.STRING_COMMA, widgetPref))
+                    : widgetType.concat(Constants.STRING_COLON)
+                    .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
+                    .concat(String.join(Constants.STRING_COMMA, widgetPref))
             );
 
             //Запуск обновления

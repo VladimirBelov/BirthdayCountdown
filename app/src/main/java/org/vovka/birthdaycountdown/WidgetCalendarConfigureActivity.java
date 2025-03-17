@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 00:51
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.03.2025, 23:51
+ *  * Last modified 17.03.2025, 21:04
  *
  */
 
@@ -127,9 +127,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, insets.bottom);
                     } else {
-                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, insets.bottom);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
@@ -173,7 +173,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+                widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
                 if (extras.containsKey(Constants.EXTRA_NEW_WIDGET)) isNewPinnedWidget = true;
             }
             if (widgetId == 0) return;
@@ -574,13 +574,13 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedArrows); //Стрелки
             prefsToStore.add(selectedWeeks); //Дни недели
             prefsToStore.add(selectedToday); //Сегодня
-            prefsToStore.add(String.join(Constants.STRING_PLUS, listColors));
-            prefsToStore.add(selectedOnClick);
+            prefsToStore.add(String.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
+            prefsToStore.add(selectedOnClick); //Действие на нажатие
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 
             final Intent intent = new Intent();
-            intent.putExtra(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
             setResult(Activity.RESULT_OK, intent);
 
             //Посылаем сообщение на обновление виджета
@@ -600,14 +600,14 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putInt(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+        outState.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
+        this.widgetId = savedInstanceState.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
     }
 
     @Override

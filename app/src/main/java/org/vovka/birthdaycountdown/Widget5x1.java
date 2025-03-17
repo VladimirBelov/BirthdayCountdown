@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 14.01.2024, 13:04
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 15.03.2025, 18:04
  *
  */
 
@@ -22,12 +22,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
 
 // На 1-7 событий масштабируемый
 public class Widget5x1 extends AppWidgetProvider {
@@ -76,8 +76,10 @@ public class Widget5x1 extends AppWidgetProvider {
 
             //Уточняем количество событий в настройке
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            String widgetType = Constants.WIDGET_TYPE_5X1;
+            if (appWidgetInfo != null) {
+                widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            }
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
             //Объём событий

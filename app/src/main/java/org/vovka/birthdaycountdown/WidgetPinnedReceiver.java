@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.01.2025, 12:27
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.01.2025, 12:27
+ *  * Last modified 15.03.2025, 16:32
  *
  */
 
@@ -36,7 +36,7 @@ public class WidgetPinnedReceiver extends BroadcastReceiver {
             Intent intentConfig = new Intent(context, Constants.WIDGET_TYPE_CALENDAR.equals(widgetType) ?
                     WidgetCalendarConfigureActivity.class : WidgetConfigureActivity.class);
             intentConfig.setAction(Constants.ACTION_LAUNCH);
-            intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
+            intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             intentConfig.putExtra(Constants.EXTRA_NEW_WIDGET, Constants.STRING_1);
             intentConfig.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {

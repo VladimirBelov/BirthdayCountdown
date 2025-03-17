@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:56
+ *  * Last modified 17.03.2025, 22:18
  *
  */
 
@@ -171,7 +171,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             insets.top * 4/5);
                     TextView viewPadding = this.findViewById(R.id.toolbarPadding);
                     viewPadding.setLayoutParams(lp);
-                    v.setPadding(0, 0, 0, 0);
+                    v.setPadding(0, 0, 0, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -187,6 +187,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Window w = getWindow();
             w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
             w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
+            // Устанавливаем цвет панели навигации
+            //setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 14.01.2024, 13:04
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 15.03.2025, 18:04
  *
  */
 
@@ -21,10 +21,10 @@ import android.os.LocaleList;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
 
 // На 5 событий
 public class Widget4x1 extends AppWidgetProvider {
@@ -71,19 +71,20 @@ public class Widget4x1 extends AppWidgetProvider {
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_4x1bc);
 
-            if (eventsData.preferences_debug_on) {
-
-                final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-                if (appWidgetInfo == null) return;
-                String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
-                List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
-
-                ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                        context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
-                                context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, String.join(Constants.STRING_COMMA, widgetPref))
-                        : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(String.join(Constants.STRING_COMMA, widgetPref))
-                );
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            String widgetType = Constants.WIDGET_TYPE_4X1;
+            if (appWidgetInfo != null) {
+                widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
+            List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
+
+            ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                    context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
+                            context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, String.join(Constants.STRING_COMMA, widgetPref))
+                    : widgetType.concat(Constants.STRING_COLON)
+                    .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
+                    .concat(String.join(Constants.STRING_COMMA, widgetPref))
+            );
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 5, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);

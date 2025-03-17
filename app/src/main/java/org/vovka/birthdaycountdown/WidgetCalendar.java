@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:56
+ *  * Last modified 15.03.2025, 18:04
  *
  */
 
@@ -160,7 +160,10 @@ public class WidgetCalendar extends AppWidgetProvider {
         try {
 
             AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
+            String widgetType = Constants.WIDGET_TYPE_CALENDAR;
+            if (appWidgetInfo != null) {
+                widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            }
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getContext() == null) eventsData.setContext(context);
@@ -213,7 +216,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Настройки
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
             //Размер шрифта
@@ -667,7 +669,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
                         Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
                         intentConfig.setAction(Constants.ACTION_LAUNCH);
-                        intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+                        intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                         calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
                     } else {
                         calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:46
+ *  * Last modified 15.03.2025, 17:53
  *
  */
 
@@ -164,7 +164,10 @@ class WidgetUpdater {
                     }
                     if (widgetType.equals(Constants.WIDGET_TYPE_5X1) || widgetType.equals(Constants.WIDGET_TYPE_4X1)
                             || widgetType.equals(Constants.WIDGET_TYPE_2X2)) {
-                        final String scopeLayout = matchScopes.group(3);
+                        String scopeLayout = null;
+                        try {
+                            scopeLayout = matchScopes.group(3);
+                        } catch (IllegalStateException | IndexOutOfBoundsException ignored) { /**/ }
                         if (scopeLayout != null) {
                             if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
                                 for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
@@ -294,7 +297,7 @@ class WidgetUpdater {
 
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
-                intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
+                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
                 views.setOnClickPendingIntent(R.id.appwidget_text, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
 
             } else {
@@ -887,7 +890,7 @@ class WidgetUpdater {
 
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
-                intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, widgetId);
+                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
                 if (isUpperCaption) {
                     views.setOnClickPendingIntent(textCaptionUpper, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
                 }

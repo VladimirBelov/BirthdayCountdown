@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.03.2025, 16:13
+  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.03.2025, 12:52
+  ~  * Last modified 15.03.2025, 15:27
   ~  */
   -->
 
@@ -177,6 +177,7 @@
     <string name="msg_notifications_were_disabled">"Notifications were disabled\n"</string>
     <string name="msg_widget_prefs_removed">"Preferences for widget #%s has been removed"</string>
     <string name="msg_widget_prefs_saved">"Saved widget #%1$s preferences:\n#%2$s"</string>
+    <string name="msg_widget_bad_id">widgetId is unknown!</string>
     <string name="msg_ringtone">"Ringtone: "</string>
     <string name="msg_deleted_channel">"Notify channel %1$s was deleted\n"</string>
     <string name="msg_created_channel">"Notify channel %1$s was created\n"</string>

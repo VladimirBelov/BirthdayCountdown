@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
+  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.03.2025, 13:47
+  ~  * Last modified 18.03.2025, 00:52
   ~  */
   -->
 
@@ -31,8 +31,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:background="?attr/colorPrimary"
-            android:textColor="?attr/windowTitleColor"
-            />
+            android:textColor="?attr/windowTitleColor" />
 
         <TextView
             android:id="@+id/buttonClose"

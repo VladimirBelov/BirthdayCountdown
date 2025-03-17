@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 30.11.2023, 13:05
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 18.03.2025, 01:11
  *
  */
 
@@ -29,6 +29,9 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,9 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 // Список событий масштабируемый
 public class WidgetList extends AppWidgetProvider {
@@ -83,8 +83,10 @@ public class WidgetList extends AppWidgetProvider {
             eventsData.setLocale(true);
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            String widgetType = Constants.WIDGET_TYPE_LIST;
+            if (appWidgetInfo != null) {
+                widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+            }
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
             List<String> widgetPref_eventInfo = new ArrayList<>();
@@ -117,7 +119,7 @@ public class WidgetList extends AppWidgetProvider {
                 views.setViewVisibility(R.id.config_button, View.VISIBLE);
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
-                intentConfig.putExtra(Constants.PARAM_APP_WIDGET_ID, appWidgetId);
+                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 views.setOnClickPendingIntent(R.id.config_button, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
             }
             //todo: https://stackoverflow.com/questions/5070413/widget-double-click
@@ -184,7 +186,9 @@ public class WidgetList extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
                             context.getResources().getResourceEntryName(views.getLayoutId()), String.join(Constants.STRING_COMMA, widgetPref))
-                    : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(String.join(Constants.STRING_COMMA, widgetPref))
+                    : widgetType.concat(Constants.STRING_COLON)
+                    .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
+                    .concat(String.join(Constants.STRING_COMMA, widgetPref))
             );
 
             //Запуск обновления
@@ -242,47 +246,61 @@ public class WidgetList extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         final String action = intent.getAction();
-        if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
-            String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
-            int actionPref = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
-            if (eventInfo == null || eventInfo.isEmpty()) return;
+        if (action != null)
+            if (action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
+                String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
+                int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+                int actionPref = 8; //intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+                if (eventInfo == null || eventInfo.isEmpty()) return;
 
-            //Toast.makeText(context, "Clicked on item: " + eventInfo, Toast.LENGTH_SHORT).show();
+                String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+                Intent intentAction = null;
 
-            String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+                if (actionPref == 8) { //Меню
 
-                Intent intentView = null;
-
-                if (actionPref == 7) { //Основной список событий
-                    intentView = new Intent(context, MainActivity.class);
-                    intentView.setAction(Constants.ACTION_LAUNCH);
-                } else if (actionPref >= 1 & actionPref <=4) {
-                    intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
-                }
-
-                if (intentView != null) {
-                    intentView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
+                    intentAction = new Intent(context, WidgetMenuActivity.class);
+                    intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+                    intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+                    intentAction.setAction(Constants.ACTION_MENU);
+                    intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
-                        context.getApplicationContext().startActivity(intentView);
+                        context.getApplicationContext().startActivity(intentAction);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
+
+                } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+
+                    if (actionPref == 7) { //Основной список событий
+
+                        intentAction = new Intent(context, MainActivity.class);
+                        intentAction.setAction(Constants.ACTION_LAUNCH);
+
+                    } else if (actionPref >= 1 & actionPref <= 4) {
+                        intentAction = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
+                    }
+
+                    if (intentAction != null) {
+                        intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            context.getApplicationContext().startActivity(intentAction);
+                        } catch (android.content.ActivityNotFoundException e) { /**/ }
+                    }
+
+                } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
+
+                    Intent intentShare = new Intent(Intent.ACTION_SEND);
+                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                    intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
+                    intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    try {
+                        Intent intentChooser = Intent.createChooser(intentShare, "");
+                        intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intentChooser);
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
+
                 }
-
-            } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
-
-                Intent intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
-                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                try {
-                    Intent intentChooser = Intent.createChooser(intentShare, "");
-                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intentChooser);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
-
             }
-
-        }
     }
 
 }

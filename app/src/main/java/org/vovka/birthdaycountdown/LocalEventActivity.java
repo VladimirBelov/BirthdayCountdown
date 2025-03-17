@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:56
+ *  * Last modified 18.03.2025, 00:56
  *
  */
 
@@ -231,7 +231,6 @@ public class LocalEventActivity extends Activity {
 
             setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.FloatingActivity, true);
-
             setContentView(R.layout.activity_event);
 
             LinearLayout layout = findViewById(R.id.layoutMain);

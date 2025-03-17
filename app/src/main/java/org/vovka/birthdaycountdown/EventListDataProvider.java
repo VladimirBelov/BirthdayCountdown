@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:56
+ *  * Last modified 18.03.2025, 00:51
  *
  */
 
@@ -86,10 +86,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+            String eventText = null;
 
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
-                views.setTextViewText(R.id.eventCaption, eventInfo);
+                eventText = eventInfo;
+                views.setTextViewText(R.id.eventCaption, eventText);
 
             } else {
 
@@ -138,8 +140,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                         if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                             if (sb.length() > 0 && (sb.length() - sb.lastIndexOf(Constants.HTML_BR)) != Constants.HTML_BR.length()) sb.append(Constants.STRING_SPACE);
-                            sb.append(ContactsEvents.substringBefore(resources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE))
-                                    .append(Constants.STRING_SPACE);
+                            sb.append(Constants.eventTitleFavoritePrefix);
                         }
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
@@ -289,21 +290,22 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     sb.setLength(sb.lastIndexOf(Constants.HTML_BR));
                 }
 
-                String eventDetails;
                 if (colorizeEntireRow) {
-                    eventDetails = String.format(Constants.HTML_COLOR, colorDate, sb);
+                    eventText = String.format(Constants.HTML_COLOR, colorDate, sb);
                 } else {
-                    eventDetails = sb.toString();
+                    eventText = sb.toString();
                 }
 
-                views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventDetails, 0));
+                views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, 0));
                 views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
 
             }
 
             Intent clickIntent = new Intent();
             clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
             clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
+            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
             views.setOnClickFillInIntent(R.id.eventCaption, clickIntent);
 
         } catch (Exception e) {

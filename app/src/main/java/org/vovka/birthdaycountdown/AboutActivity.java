@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 00:51
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.03.2025, 23:51
+ *  * Last modified 17.03.2025, 21:20
  *
  */
 
@@ -120,9 +120,9 @@ public class AboutActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, insets.bottom);
                     } else {
-                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, insets.bottom);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });

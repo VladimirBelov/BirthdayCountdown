@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.07.2024, 00:04
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 12.07.2024, 23:37
+  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 17.03.2025, 22:37
   ~  */
   -->
 
@@ -230,6 +230,12 @@
             android:excludeFromRecents="true"/>
 
         <activity android:name=".LocalEventActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+
+        <activity
+            android:name=".WidgetMenuActivity"
             android:theme="@android:style/Theme.Dialog"
             android:exported="false"
             android:excludeFromRecents="true"/>

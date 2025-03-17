@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:46
+ *  * Last modified 17.03.2025, 21:24
  *
  */
 
@@ -207,9 +207,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, insets.bottom);
                     } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, insets.bottom);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });

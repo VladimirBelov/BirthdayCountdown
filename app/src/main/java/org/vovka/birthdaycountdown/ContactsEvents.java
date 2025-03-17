@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 15:02
+ *  * Last modified 15.03.2025, 15:27
  *
  */
 
@@ -3631,33 +3631,23 @@ class ContactsEvents {
 
                         boolean eventUseYear = false;
                         Date dateEventFirstTime = null;
-                        //Date dateEventNextTime = null;
                         String eventDateString = singleEventArray[Position_eventDateFirstTime];
 
                         try  {
                             dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString);
                             if (dateEventFirstTime != null) {
-                                //dateEventNextTime = new Date (dateEventFirstTime.getTime());
-                                //dateEventNextTime.setYear(c.get(Calendar.YEAR) - 1900);
                                 eventUseYear = true;
                             }
                         } catch (ParseException pe) {
                             try {
                                 dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString
                                         .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
-                                /*if (dateEventFirstTime != null) {
-                                    dateEventNextTime = new Date (dateEventFirstTime.getTime());
-                                }*/
                             } catch (ParseException ignored) { /**/ }
                         }
 
                         if (dateEventFirstTime == null) {
                             continue;
                         }
-
-                        /*if (dateEventFirstTime.before(c.getTime())) {
-                            dateEventFirstTime.setYear(dateEventFirstTime.getYear() + 1);
-                        }*/
 
                         String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
                                 + (eventUseYear ? sdf_java.format(dateEventFirstTime) : sdf_java_no_year.format(dateEventFirstTime))
@@ -3672,7 +3662,6 @@ class ContactsEvents {
                         TreeMap<Integer, String> eventData = getEventData(eventString);
 
                         eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
-                        //eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateEventNextTime.getTime()));
                         eventData.put(Position_dates, eventDates);
                         eventData.put(Position_eventCaption, event.caption);
                         eventData.put(Position_eventLabel, event.label);
@@ -8319,6 +8308,7 @@ class ContactsEvents {
 
         try {
 
+            //todo: добавить заполнение значениями по-умолчанию, как в getWidgetPreference
             setPreferenceString(context.getString(R.string.widget_config_PrefName) + id, value);
             ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_widget_prefs_saved, String.valueOf(id), value));
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.03.2025, 16:13
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.03.2025, 13:07
+ *  * Last modified 17.03.2025, 23:21
  *
  */
 
@@ -206,6 +206,7 @@ final class Constants {
     static final String ACTION_DIAL = "action.DIAL";
     static final String ACTION_CLOSE = "action.CLOSE";
     static final String ACTION_CLICK = "action.CLICK";
+    static final String ACTION_MENU = "action.MENU";
     static final String ACTION_PREVIOUS_MONTH = "action.PREVIOUS_MONTH";
     static final String ACTION_NEXT_MONTH = "action.NEXT_MONTH";
     static final String ACTION_RESET_MONTH = "action.RESET_MONTH";
@@ -220,6 +221,7 @@ final class Constants {
     static final String EXTRA_QUIZ_RESULT = "quizResult";
     static final String EXTRA_CLICKED_EVENT = "eventDetails";
     static final String EXTRA_CLICKED_PREFS = "actionPreference";
+    static final String EXTRA_CLICKED_TEXT = "eventText";
     static final String EXTRA_TITLE = "title";
     static final String EXTRA_VALUES = "values";
     static final String EXTRA_RESULTS = "results";
@@ -304,7 +306,6 @@ final class Constants {
     static final String RULE_TAG_TYPE = "[type]";
     //static final String RULE_TAG_ALIAS = "[alias]";
 
-    static final String PARAM_APP_WIDGET_ID = "appWidgetId";
     static final String WIDGET_TYPE_LIST = "WidgetList";
     static final String WIDGET_TYPE_PHOTO_LIST = "WidgetPhotoList";
     static final String WIDGET_TYPE_5X1 = "Widget5x1";
@@ -380,7 +381,7 @@ final class Constants {
     static final String eventTitleCalendarPrefix = "📆 ";
     static final String eventTitleContactPrefix = "👨‍💼 ";
     static final String eventTitleFavoritePrefix = "🌟 ";
-    static final String eventTitleLocalPrefix = "📱 ";
+    static final String eventTitleLocalPrefix = "📅 ";
 
     public static final String SHORTCUT_QUIZ = "Quiz";
     public static final String SHORTCUT_SETTINGS = "Settings";

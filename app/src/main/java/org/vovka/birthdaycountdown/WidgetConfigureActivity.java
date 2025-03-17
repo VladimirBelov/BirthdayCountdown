@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2025, 00:51
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.03.2025, 23:54
+ *  * Last modified 17.03.2025, 21:04
  *
  */
 
@@ -129,9 +129,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, insets.bottom);
                     } else {
-                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        mainLayout.setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, insets.bottom);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });
@@ -177,7 +177,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                widgetId = extras.getInt(Constants.PARAM_APP_WIDGET_ID, 0);
+                widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
                 if (extras.containsKey(Constants.EXTRA_NEW_WIDGET)) isNewPinnedWidget = true;
             }
             if (widgetId == 0) return;
@@ -855,7 +855,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
-            final Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
+            final Spinner spinnerEventShift = findViewById(R.id.spinnerEventShift);
             final Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
             final Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
             final Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
@@ -863,7 +863,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
             final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
             final EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
-            final int selectedItemPosition = spinnerIndex.getSelectedItemPosition();
 
             final StringBuilder eventTypes = new StringBuilder();
             for(final String item: spinnerEventTypes.getSelectedStrings()) {
@@ -882,8 +881,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
-            scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
-            scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
+            scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeEvents.getSelectedItem()).append("e");
+            scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeDays.getSelectedItem()).append("d");
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
@@ -963,12 +962,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             //Проверки
             if (this.widgetId == 0) {
-                ToastExpander.showInfoMsg(this, "widgetId is unknown!");
-                return;
-            }
-
-            if (selectedItemPosition ==  android.widget.AdapterView.INVALID_POSITION) {
-                ToastExpander.showInfoMsg(this, "selectedItemPosition is undefined!");
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
                 return;
             }
 
@@ -978,7 +972,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
 
-            prefsToStore.add(spinnerIndex.getItemAtPosition(selectedItemPosition).toString()); //Стартовый номер события
+            prefsToStore.add(spinnerEventShift.getItemAtPosition(spinnerEventShift.getSelectedItemPosition()).toString()); //Стартовый номер события
             prefsToStore.add(magnifyParams); //Масштабирование (позиции в списке выбора)
             prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
@@ -995,7 +989,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 
             final Intent intent = new Intent();
-            intent.putExtra(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
             setResult(Activity.RESULT_OK, intent);
 
             //Посылаем сообщение на обновление виджета
@@ -1015,14 +1009,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putInt(Constants.PARAM_APP_WIDGET_ID, this.widgetId);
+        outState.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        this.widgetId = savedInstanceState.getInt(Constants.PARAM_APP_WIDGET_ID);
+        this.widgetId = savedInstanceState.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
     }
 
     @Override

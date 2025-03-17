@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2025, 01:05
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.02.2025, 00:48
+ *  * Last modified 17.03.2025, 21:33
  *
  */
 
@@ -96,9 +96,9 @@ public class FAQActivity extends AppCompatActivity {
                     v.setPadding(0, 0, 0, 0);
                     int rotation = getWindowManager().getDefaultDisplay().getRotation();
                     if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, insets.bottom);
                     } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, 0);
+                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, insets.bottom);
                     }
                     return WindowInsetsCompat.CONSUMED;
                 });

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 19:58
+ *  * Created by Vladimir Belov on 18.03.2025, 02:16
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.03.2025, 17:31
+ *  * Last modified 15.03.2025, 16:38
  *
  */
 
@@ -115,23 +115,23 @@ public class ToastExpander {
     }
 
     static public void showInfoMsg(@NonNull Context context, @NonNull String msg) {
-        /*try {
+        try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception ignored) { *//**//* }*/
+        } catch (Exception ignored) { /**/ }
         if (ContactsEvents.getInstance().preferences_info_on) getInstance().showText(context, removeDuplicateLines(msg), msgTypeInfo);
     }
 
     static public void showMsg(@NonNull Context context, @NonNull String msg) {
-        /*try {
+        try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception ignored) { *//**//* }*/
+        } catch (Exception ignored) { /**/ }
         getInstance().showText(context, removeDuplicateLines(msg), msgTypeInfo);
     }
 
     static public void showDebugMsg(@NonNull Context context, @NonNull String msg) {
-        /*try {
+        try {
             Log.i(Thread.currentThread().getStackTrace()[3].getMethodName(), msg);
-        } catch (Exception ignored) { *//**//* }*/
+        } catch (Exception ignored) { /**/ }
         if (ContactsEvents.getInstance().preferences_debug_on) getInstance().showText(context, removeDuplicateLines(msg), msgTypeDebug);
     }
 
