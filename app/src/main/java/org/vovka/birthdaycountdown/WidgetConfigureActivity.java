@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 21:04
+ *  * Last modified 19.03.2025, 01:12
  *
  */
 
@@ -223,6 +223,19 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
             spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);
+
+            //Реакция на нажатие
+            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_events_values);
+
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
+                int ind = -1;
+                for (String value: prefActionsValues) {
+                    ind++;
+                    if (value.equals(widgetPref.get(12))) break;
+                }
+                Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+                spinnerOnClickCommon.setSelection(ind);
+            }
 
             //Стиль фото
             int prefPhotoStyle = 0;
@@ -733,7 +746,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (this.isListWidget) {
 
                 findViewById(R.id.blockEventShift).setVisibility(View.GONE);
-
                 findViewById(R.id.dividerCaptions).setVisibility(View.GONE);
                 findViewById(R.id.blockCaptionsUsePrefs).setVisibility(View.GONE);
 
@@ -758,6 +770,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.captionPhotoStyle).setVisibility(View.GONE);
                 findViewById(R.id.spinnerPhotoStyle).setVisibility(View.GONE);
                 findViewById(R.id.hintPhotoStyle).setVisibility(View.GONE);
+
+            } else {
+
+                //Скрываем реакцию на нажатие для остальных типов
+                findViewById(R.id.dividerOnClick).setVisibility(View.GONE);
+                findViewById(R.id.captionOnClick).setVisibility(View.GONE);
+                findViewById(R.id.blockOnClickCommon).setVisibility(View.GONE);
 
             }
 
@@ -960,6 +979,26 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
+            //Реакция на нажатие
+            String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_events_entries);
+            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_events_values);
+            Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+            String spinnerOnClickCommonValue = Constants.STRING_EMPTY;
+
+            if (spinnerOnClickCommon.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
+                int ind = -1;
+                String selectedValue = spinnerOnClickCommon.getSelectedItem().toString();
+                for (String value: prefActionsEntries) {
+                    ind++;
+                    if (value.equals(selectedValue)) {
+                        try {
+                            spinnerOnClickCommonValue = prefActionsValues[ind];
+                        } catch (IndexOutOfBoundsException ignored) { /**/ }
+                        break;
+                    }
+                }
+            }
+
             //Проверки
             if (this.widgetId == 0) {
                 ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
@@ -985,6 +1024,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(String.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
+            prefsToStore.add(spinnerOnClickCommonValue); //Реакция на нажатие
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.03.2025, 02:11
+ *  * Last modified 19.03.2025, 01:25
  *
  */
 
@@ -13,15 +13,19 @@ import android.app.LocaleManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,7 +49,7 @@ import java.util.Locale;
 public class WidgetMenuActivity extends Activity {
     private static final String TAG = "WidgetMenuActivity";
     private int appWidgetId;
-    ArrayList<Integer> menuActions = new ArrayList<>();
+    final ArrayList<Integer> menuActions = new ArrayList<>();
     String eventText = null;
     String[] singleEventArray = null;
     ContactsEvents eventsData;
@@ -120,9 +124,13 @@ public class WidgetMenuActivity extends Activity {
             singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
 
             if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+                final String eventKey = eventsData.getEventKey(singleEventArray);
+                final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+
                 String eventStorage = singleEventArray[ContactsEvents.Position_eventStorage];
 
                 if (eventStorage.contains(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
+
                     menuItems.add(getString(R.string.menu_context_edit_local_event));
                     Drawable actionDrawable = getDrawable(android.R.drawable.ic_menu_edit);
                     if (actionDrawable != null) {
@@ -130,7 +138,80 @@ public class WidgetMenuActivity extends Activity {
                     }
                     menuIcons.add(actionDrawable);
                     menuActions.add(Constants.ContextMenu_EditLocalEvent);
+
                 }
+
+                if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
+
+                    menuItems.add(getString(R.string.menu_context_open_contact));
+                    menuIcons.add(getDrawable(R.drawable.ic_menu_friendslist));
+                    menuActions.add(Constants.ContextMenu_OpenContact);
+
+                }
+
+                if (!singleEventArray[ContactsEvents.Position_eventID].isEmpty() && eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
+
+                    menuItems.add(getString(R.string.menu_context_open_calendar_event));
+                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_month));
+                    menuActions.add(Constants.ContextMenu_OpenCalendar);
+
+                }
+
+                if (!singleEventArray[ContactsEvents.Position_eventURL].isEmpty()) {
+
+                    menuItems.add(getString(R.string.menu_context_open_url));
+                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_directions));
+                    menuActions.add(Constants.ContextMenu_OpenURL);
+
+                }
+
+                if (!Constants.STRING_1.equals(singleEventArray[ContactsEvents.Position_starred])) {
+
+                    if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+
+                        menuItems.add(getString(R.string.menu_context_favorites_remove));
+                        menuIcons.add(getDrawable(R.drawable.ic_menu_unstar));
+                        menuActions.add(Constants.ContextMenu_RemoveFromFavorites);
+
+                    } else {
+
+                        menuItems.add(getString(R.string.menu_context_favorites_add));
+                        Drawable actionDrawable = getDrawable(R.drawable.ic_menu_star);
+                        if (actionDrawable != null) {
+                            actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_yellow)));
+                        }
+                        menuIcons.add(actionDrawable);
+                        menuActions.add(Constants.ContextMenu_AddToFavorites);
+
+                    }
+                }
+
+
+                if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
+
+                    menuItems.add(getString(R.string.menu_context_hide_event));
+                    Drawable actionDrawable = getDrawable(R.drawable.ic_menu_block);
+                    if (actionDrawable != null) {
+                        actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
+                    }
+                    menuIcons.add(actionDrawable);
+                    menuActions.add(Constants.ContextMenu_HideEvent);
+
+                }
+
+                if (eventsData.getSilencedEventsCount() == 0 ||
+                        (!eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId) && !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
+
+                    menuItems.add(getString(R.string.menu_context_silent_event));
+                    Drawable actionDrawable = getDrawable(R.drawable.ic_menu_end_conversation);
+                    if (actionDrawable != null) {
+                        actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
+                    }
+                    menuIcons.add(actionDrawable);
+                    menuActions.add(Constants.ContextMenu_SilentEvent);
+
+                }
+
             }
 
             menuItems.add(getString(R.string.menu_context_share));
@@ -154,6 +235,10 @@ public class WidgetMenuActivity extends Activity {
     private void onMenuItemClick(int itemId, int appWidgetId) {
         try{
 
+            if (singleEventArray == null) return;
+            final String eventKey = eventsData.getEventKey(singleEventArray);
+            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+
             switch (menuActions.get(itemId)) {
                 case Constants.ContextMenu_ShareAsText:
 
@@ -167,20 +252,85 @@ public class WidgetMenuActivity extends Activity {
                         Intent intentChooser = Intent.createChooser(intentShare, "");
                         intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intentChooser);
-                    } catch (ActivityNotFoundException e) { /**/ }
+                    } catch (ActivityNotFoundException ignored) { /**/ }
                     break;
 
                 case Constants.ContextMenu_EditLocalEvent:
 
-                    if (singleEventArray != null) {
-                        Intent intent = new Intent(this, LocalEventActivity.class);
-                        intent.setAction(Intent.ACTION_EDIT);
-                        intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
-                        try {
-                            startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
-                        } catch (ActivityNotFoundException e) { /**/ }
-                    }
+                    Intent intent = new Intent(this, LocalEventActivity.class);
+                    intent.setAction(Intent.ACTION_EDIT);
+                    intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
+                    try {
+                        startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
+                    } catch (ActivityNotFoundException ignored) { /**/ }
                     return;
+
+                case Constants.ContextMenu_OpenCalendar:
+
+                    Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI,
+                            ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_eventID]));
+                    Intent openCalendarIntent = new Intent(Intent.ACTION_VIEW).setData(eventUri);
+                    try {
+                        if (openCalendarIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(openCalendarIntent);
+                        }
+                    } catch (ActivityNotFoundException ignored) { /**/ }
+                    break;
+
+                case Constants.ContextMenu_OpenContact:
+
+                    Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[ContactsEvents.Position_contactID]);
+                    Intent openContactIntent = new Intent(Intent.ACTION_VIEW, contactUri);
+                    try {
+                        if (openContactIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(openContactIntent);
+                        }
+                    } catch (ActivityNotFoundException ignored) { /**/ }
+                    break;
+
+                case Constants.ContextMenu_OpenURL:
+
+                    String[] eventURLs = singleEventArray[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
+                    Intent openURLIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(eventURLs[0]));
+                    try {
+                        if (openURLIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(openURLIntent);
+                        }
+                    } catch (ActivityNotFoundException ignored) { /**/ }
+                    break;
+
+                case Constants.ContextMenu_RemoveFromFavorites:
+
+                    if (eventsData.unsetFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
+                case Constants.ContextMenu_AddToFavorites:
+
+                    if (eventsData.setFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
+                case Constants.ContextMenu_HideEvent:
+
+                    if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
+                        if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                            //Если скрываем - убираем из списка без уведомления
+                            eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                        }
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
+                case Constants.ContextMenu_SilentEvent:
+
+                    if (eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
             }
 
         } catch (Exception e) {

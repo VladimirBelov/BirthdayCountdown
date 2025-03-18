@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
+  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.03.2025, 15:27
+  ~  * Last modified 19.03.2025, 00:52
   ~  */
   -->
 
@@ -40,6 +40,7 @@
     <string name="menu_events_types">Events types…</string>
     <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
+    <string name="menu_context_open_contact">Open contact</string>
     <string name="menu_context_create_contact">Create contact…</string>
     <string name="menu_context_open_calendar_event">Open calendar event</string>
     <string name="menu_context_event_info">Event data</string>
@@ -845,7 +846,7 @@
     <string name="widget_config_magnify_caption">Elements size</string>
     <string name="widget_config_magnify_text_caption">Text</string>
     <string name="widget_config_magnify_photo_caption">Photo</string>
-    <string-array name="widget_config_magnify_variants">
+    <string-array name="widget_config_magnify_entries">
         <item>Automatically</item>
         <item>x0.5</item>
         <item>x0.65</item>
@@ -912,6 +913,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="widget_config_onclick_label">On click behavior</string>
     <string name="widget_config_onclick_common_label">Ordinary days:</string>
     <string name="widget_config_onclick_holidays_label">Days with events:</string>
+    <string name="widget_config_onclick_events_label">Events:</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
     <string name="widget_config_month_color_today_label">Today color</string>
@@ -978,6 +980,12 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string-array name="pref_widget_month_onclick_common_entries">
         <item>None</item>
         <item>Open calendar</item>
+    </string-array>
+
+    <string-array name="pref_widget_list_onclick_events_entries">
+        <item>From common prefs</item>
+        <item>Open menu</item>
+        <item>None</item>
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Favorites</string>
@@ -2077,11 +2085,17 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>14</item>
     </string-array>
 
+    <string-array name="pref_widget_list_onclick_events_values" translatable="false">
+        <item>1</item>
+        <item>8</item>
+        <item>0</item>
+    </string-array>
+
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,</string>
-    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,,</string>
+    <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,,,1</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,,</string>
     <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,2+1</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>

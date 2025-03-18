@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 21:24
+ *  * Last modified 18.03.2025, 23:22
  *
  */
 
@@ -550,18 +550,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 try {
                     startActivity(createContactIntent);
-                } catch (ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException ignored) { /**/ }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_OpenCalendar) {
 
                 Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
-                Intent editEventIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
+                Intent openCalendarIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
                 try {
-                    if (editEventIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(editEventIntent);
+                    if (openCalendarIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(openCalendarIntent);
                     }
-                } catch (ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException ignored) { /**/ }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_OpenURL) {
@@ -630,8 +630,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.ContextMenu_HideEvent) {
 
                 if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
-                    if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId))
-                        eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId); //Если скрываем - убираем из списка без уведомления
+                    if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                        //Если скрываем - убираем из списка без уведомления
+                        eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                    }
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();
@@ -698,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
-                } catch (ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException ignored) { /**/ }
 
             } else if (itemId == Constants.ContextMenu_UnmergeEvent) {
 
@@ -716,132 +718,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_OTHER_CONTACT);
-                } catch (ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException ignored) { /**/ }
                 return true;
 
             } else if (itemId == Constants.ContextMenu_ShareAsImage) {
 
-                //https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items
-                //https://demonuts.com/android-take-screenshot/
-                //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
-
-                View childView = adapter.getView(selectedEvent_num, null, listView);
-
-                childView.measure(
-                        View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-                childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
-                childView.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.theme_secondary)));
-                childView.setDrawingCacheEnabled(true);
-                childView.buildDrawingCache(true);
-                Bitmap bmp = childView.getDrawingCache(true);
-                if (bmp == null) {
-                    ToastExpander.showInfoMsg(this, getString(R.string.msg_error_get_event_image));
-                    return false;
-                }
-
-                Uri bitmapShareUri;
-
-                File file = new File(this.getCacheDir(), "event.jpg");
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-                    fileOutputStream.close();
-                    bitmapShareUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-                    return false;
-                }
-                childView.destroyDrawingCache();
-
-                if (bitmapShareUri != null) {
-                    //https://stackoverflow.com/questions/48045626/chooser-created-with-createchooserintent-title-doesnt-display-a-title
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType(Constants.MIME_IMAGE_ALL);
-                    final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
-                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
-                    intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
-                    Intent chooser = Intent.createChooser(intent, "");
-                    //https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
-                    List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
-                    for (ResolveInfo resolveInfo : resInfoList) {
-                        String packageName = resolveInfo.activityInfo.packageName;
-                        this.grantUriPermission(packageName, bitmapShareUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    }
-                    try {
-                        startActivity(chooser);
-                        return true;
-                    } catch (ActivityNotFoundException e) { /**/ }
-                }
+                shareEventAsImage(listView);
                 return true;
 
             } else if (itemId == Constants.ContextMenu_ShareAsText) {
 
-
-                StringBuilder textBig = new StringBuilder();
-                textBig
-                        .append(eventsData.getFullName(selectedEvent))
-                        .append(Constants.STRING_EOL)
-                        .append(selectedEvent[ContactsEvents.Position_eventEmoji])
-                        .append(Constants.STRING_SPACE)
-                        .append(selectedEvent[ContactsEvents.Position_eventDateNextTime])
-                        .append(Constants.STRING_SPACE)
-                        .append(selectedEvent[ContactsEvents.Position_eventCaption]);
-                if (!TextUtils.isEmpty(selectedEvent[ContactsEvents.Position_age_caption].trim()))
-                    textBig
-                            .append(Constants.STRING_COLON_SPACE)
-                            .append(selectedEvent[ContactsEvents.Position_age_caption]);
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
-                    String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
-
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
-                        final String currentAge = selectedEvent[ContactsEvents.Position_age_current];
-                        if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
-                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            if (eventsData.deathDatesForIds.containsKey(selectedEvent[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
-                                textBig.append(getString(R.string.msg_age_could_be_now));
-                            } else {
-                                textBig.append(getString(R.string.msg_age_now));
-                            }
-                            textBig.append(currentAge);
-                        }
-                    } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
-                        Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
-                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
-                            Locale locale_en = new Locale(Constants.LANG_EN);
-                            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
-                            if (eventDate != null && birthDate != null) {
-                                if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                                textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
-                            }
-                        } else { //Другие события
-                            Locale locale_en = new Locale(Constants.LANG_EN);
-                            SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                            Date eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
-                            Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
-                            if (eventDate != null && birthDate != null) {
-                                if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                                if (eventsData.deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
-                                    textBig.append(getString(R.string.msg_age_could_be));
-                                } else if (eventDate.compareTo(today) == 0) {
-                                    textBig.append(getString(R.string.msg_age_now));
-                                } else {
-                                    textBig.append(getString(R.string.msg_age_will_be));
-                                }
-                                textBig.append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
-                            }
-                        }
-                    }
-                }
-
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                intent.putExtra(Intent.EXTRA_TEXT, textBig.toString());
-                startActivity(Intent.createChooser(intent, ""));
+                shareEventAsText(contactID);
                 return true;
 
             } else if (itemId == Constants.ContextMenu_xDaysEvent) {
@@ -856,126 +743,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     return true;
                 }
 
-                List<String> eventNames = new ArrayList<>();
-                List<Integer> eventIcons = new ArrayList<>();
-
-                eventNames.add(getString(R.string.event_type_birthday));
-                eventIcons.add(R.drawable.ic_event_birthday);
-                eventNames.add(getString(R.string.event_type_anniversary));
-                eventIcons.add(R.drawable.ic_event_wedding);
-                eventNames.add(getString(R.string.event_type_nameday));
-                eventIcons.add(R.drawable.ic_event_nameday);
-                eventNames.add(getString(R.string.event_type_crowning));
-                eventIcons.add(R.drawable.ic_event_crowning);
-                eventNames.add(getString(R.string.event_type_death));
-                eventIcons.add(R.drawable.ic_event_death);
-                eventNames.add(getString(R.string.event_type_other));
-                eventIcons.add(R.drawable.ic_event_other);
-                eventNames.add(getString(R.string.event_type_holiday));
-                eventIcons.add(R.drawable.ic_event_holiday);
-                eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent1_caption);
-                eventIcons.add(R.drawable.ic_event_custom1);
-                eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent2_caption);
-                eventIcons.add(R.drawable.ic_event_custom2);
-                eventNames.add(eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent3_caption);
-                eventIcons.add(R.drawable.ic_event_custom3);
-                eventNames.add(eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent4_caption);
-                eventIcons.add(R.drawable.ic_event_custom4);
-                eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent5_caption);
-                eventIcons.add(R.drawable.ic_event_custom5);
-
-                ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, ImageSelectAdapter.Scale.SQUARED, ta);
-
-                AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.msg_event_type_select_title)
-                        .setAdapter(adapter, null)
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
-
-                AlertDialog alertForEventTypeDialog = builderForEventTypeDialog.create();
-
-                ListView eventList = alertForEventTypeDialog.getListView();
-                eventList.setItemsCanFocus(false);
-                eventList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-                eventList.setOnItemClickListener((parent, view, position, id) -> {
-
-                    final String[] result = {null};
-                    if (position > 5) {
-                        int needConfirmEventTitleIcon = 0;
-                        if (position == 7 && eventsData.preferences_customevent1_caption.isEmpty()) {
-                            needConfirmEventTitleIcon = R.drawable.ic_event_custom1;
-                        } else if (position == 8 && eventsData.preferences_customevent2_caption.isEmpty()) {
-                            needConfirmEventTitleIcon = R.drawable.ic_event_custom2;
-                        } else if (position == 9 && eventsData.preferences_customevent3_caption.isEmpty()) {
-                            needConfirmEventTitleIcon = R.drawable.ic_event_custom3;
-                        } else if (position == 10 && eventsData.preferences_customevent4_caption.isEmpty()) {
-                            needConfirmEventTitleIcon = R.drawable.ic_event_custom4;
-                        } else if (position == 11 && eventsData.preferences_customevent5_caption.isEmpty()) {
-                            needConfirmEventTitleIcon = R.drawable.ic_event_custom5;
-                        }
-                        if (needConfirmEventTitleIcon > 0) {
-
-                            final EditText editText = new EditText(MainActivity.this);
-                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT);
-                            editText.setLayoutParams(lp);
-                            editText.setText(selectedEvent[ContactsEvents.Position_eventLabel]);
-                            editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
-                            editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
-                            editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
-
-                            AlertDialog.Builder builderForEventTitleDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                                    .setTitle(R.string.pref_CustomEvents_Custom_Caption_title)
-                                    .setIcon(needConfirmEventTitleIcon)
-                                    .setView(editText)
-                                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-                                        result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], editText.getText().toString());
-                                        dialog.dismiss();
-                                    })
-                                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                                    .setCancelable(true);
-
-                            if (eventsData.preferences_theme.themeEditText != 0) {
-                                builderForEventTitleDialog.getContext().setTheme(eventsData.preferences_theme.themeEditText);
-                            } else {
-                                builderForEventTitleDialog.getContext().setTheme(ContactsEvents.themeEditText_default);
-                            }
-
-                            AlertDialog alertForEventTitleDialog = builderForEventTitleDialog.create();
-
-                            alertForEventTitleDialog.setOnDismissListener(listener -> {
-                                if (result[0] != null) {
-                                    ToastExpander.showInfoMsg(MainActivity.this, result[0]);
-                                    eventsData.getPreferences();
-                                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-                                }
-                            });
-
-                            alertForEventTitleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            alertForEventTitleDialog.show();
-
-                        } else {
-                            result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
-                        }
-
-                    } else {
-                        result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
-                    }
-
-                    alertForEventTypeDialog.dismiss();
-                    if (result[0] != null && !result[0].isEmpty()) {
-                        ToastExpander.showInfoMsg(MainActivity.this, result[0]);
-                        eventsData.getPreferences();
-                        updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-                    }
-                });
-
-                alertForEventTypeDialog.setOnShowListener(arg0 -> alertForEventTypeDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
-
-                alertForEventTypeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertForEventTypeDialog.show();
+                selectEventTypeForEvent();
                 return true;
             }
 
@@ -984,6 +752,277 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
+    }
+
+    private void shareEventAsImage(ListView listView) {
+        try {
+
+            //https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items
+            //https://demonuts.com/android-take-screenshot/
+            //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
+
+            View childView = adapter.getView(selectedEvent_num, null, listView);
+
+            childView.measure(
+                    View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
+            childView.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.theme_secondary)));
+            childView.setDrawingCacheEnabled(true);
+            childView.buildDrawingCache(true);
+            Bitmap bmp = childView.getDrawingCache(true);
+            if (bmp == null) {
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_error_get_event_image));
+                return;
+            }
+
+            Uri bitmapShareUri;
+
+            File file = new File(this.getCacheDir(), "event.jpg");
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                fileOutputStream.close();
+                bitmapShareUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+                ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                return;
+            }
+            childView.destroyDrawingCache();
+
+            if (bitmapShareUri != null) {
+                //https://stackoverflow.com/questions/48045626/chooser-created-with-createchooserintent-title-doesnt-display-a-title
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType(Constants.MIME_IMAGE_ALL);
+                final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
+                intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
+                Intent chooser = Intent.createChooser(intent, "");
+                //https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    this.grantUriPermission(packageName, bitmapShareUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+                try {
+                    startActivity(chooser);
+                } catch (ActivityNotFoundException e) { /**/ }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void shareEventAsText(String contactID) {
+        try {
+
+            StringBuilder textBig = new StringBuilder();
+            textBig
+                    .append(eventsData.getFullName(selectedEvent))
+                    .append(Constants.STRING_EOL)
+                    .append(selectedEvent[ContactsEvents.Position_eventEmoji])
+                    .append(Constants.STRING_SPACE)
+                    .append(selectedEvent[ContactsEvents.Position_eventDateNextTime])
+                    .append(Constants.STRING_SPACE)
+                    .append(selectedEvent[ContactsEvents.Position_eventCaption]);
+            if (!TextUtils.isEmpty(selectedEvent[ContactsEvents.Position_age_caption].trim()))
+                textBig
+                        .append(Constants.STRING_COLON_SPACE)
+                        .append(selectedEvent[ContactsEvents.Position_age_caption]);
+
+            if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
+                String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
+
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
+                    final String currentAge = selectedEvent[ContactsEvents.Position_age_current];
+                    if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
+                        if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                        if (eventsData.deathDatesForIds.containsKey(selectedEvent[ContactsEvents.Position_contactID])) { //Но есть годовщина смерти
+                            textBig.append(getString(R.string.msg_age_could_be_now));
+                        } else {
+                            textBig.append(getString(R.string.msg_age_now));
+                        }
+                        textBig.append(currentAge);
+                    }
+                } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
+                    Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
+                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                        Date eventDate = null;
+                        try {
+                            eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
+                        } catch (ParseException ignored) { /**/ }
+                        if (eventDate != null && birthDate != null) {
+                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                            textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
+                        }
+                    } else { //Другие события
+                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                        Date eventDate = null;
+                        try {
+                            eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
+                        } catch (ParseException ignored) { /**/ }
+                        if (eventDate != null && birthDate != null) {
+                            Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
+                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                            if (eventsData.deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
+                                textBig.append(getString(R.string.msg_age_could_be));
+                            } else if (eventDate.compareTo(today) == 0) {
+                                textBig.append(getString(R.string.msg_age_now));
+                            } else {
+                                textBig.append(getString(R.string.msg_age_will_be));
+                            }
+                            textBig.append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
+                        }
+                    }
+                }
+            }
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+            intent.putExtra(Intent.EXTRA_TEXT, textBig.toString());
+            startActivity(Intent.createChooser(intent, ""));
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void selectEventTypeForEvent() {
+        try {
+
+            List<String> eventNames = new ArrayList<>();
+            List<Integer> eventIcons = new ArrayList<>();
+
+            eventNames.add(getString(R.string.event_type_birthday));
+            eventIcons.add(R.drawable.ic_event_birthday);
+            eventNames.add(getString(R.string.event_type_anniversary));
+            eventIcons.add(R.drawable.ic_event_wedding);
+            eventNames.add(getString(R.string.event_type_nameday));
+            eventIcons.add(R.drawable.ic_event_nameday);
+            eventNames.add(getString(R.string.event_type_crowning));
+            eventIcons.add(R.drawable.ic_event_crowning);
+            eventNames.add(getString(R.string.event_type_death));
+            eventIcons.add(R.drawable.ic_event_death);
+            eventNames.add(getString(R.string.event_type_other));
+            eventIcons.add(R.drawable.ic_event_other);
+            eventNames.add(getString(R.string.event_type_holiday));
+            eventIcons.add(R.drawable.ic_event_holiday);
+            eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent1_caption);
+            eventIcons.add(R.drawable.ic_event_custom1);
+            eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent2_caption);
+            eventIcons.add(R.drawable.ic_event_custom2);
+            eventNames.add(eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent3_caption);
+            eventIcons.add(R.drawable.ic_event_custom3);
+            eventNames.add(eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent4_caption);
+            eventIcons.add(R.drawable.ic_event_custom4);
+            eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent5_caption);
+            eventIcons.add(R.drawable.ic_event_custom5);
+
+            ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, ImageSelectAdapter.Scale.SQUARED, ta);
+
+            AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_event_type_select_title)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alertForEventTypeDialog = builderForEventTypeDialog.create();
+
+            ListView eventList = alertForEventTypeDialog.getListView();
+            eventList.setItemsCanFocus(false);
+            eventList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+            eventList.setOnItemClickListener((parent, view, position, id) -> {
+
+                final String[] result = {null};
+                if (position > 5) {
+                    int needConfirmEventTitleIcon = 0;
+                    if (position == 7 && eventsData.preferences_customevent1_caption.isEmpty()) {
+                        needConfirmEventTitleIcon = R.drawable.ic_event_custom1;
+                    } else if (position == 8 && eventsData.preferences_customevent2_caption.isEmpty()) {
+                        needConfirmEventTitleIcon = R.drawable.ic_event_custom2;
+                    } else if (position == 9 && eventsData.preferences_customevent3_caption.isEmpty()) {
+                        needConfirmEventTitleIcon = R.drawable.ic_event_custom3;
+                    } else if (position == 10 && eventsData.preferences_customevent4_caption.isEmpty()) {
+                        needConfirmEventTitleIcon = R.drawable.ic_event_custom4;
+                    } else if (position == 11 && eventsData.preferences_customevent5_caption.isEmpty()) {
+                        needConfirmEventTitleIcon = R.drawable.ic_event_custom5;
+                    }
+                    if (needConfirmEventTitleIcon > 0) {
+
+                        final EditText editText = new EditText(MainActivity.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT);
+                        editText.setLayoutParams(lp);
+                        editText.setText(selectedEvent[ContactsEvents.Position_eventLabel]);
+                        editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+                        editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
+                        editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
+
+                        AlertDialog.Builder builderForEventTitleDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                                .setTitle(R.string.pref_CustomEvents_Custom_Caption_title)
+                                .setIcon(needConfirmEventTitleIcon)
+                                .setView(editText)
+                                .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                                    result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], editText.getText().toString());
+                                    dialog.dismiss();
+                                })
+                                .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                                .setCancelable(true);
+
+                        if (eventsData.preferences_theme.themeEditText != 0) {
+                            builderForEventTitleDialog.getContext().setTheme(eventsData.preferences_theme.themeEditText);
+                        } else {
+                            builderForEventTitleDialog.getContext().setTheme(ContactsEvents.themeEditText_default);
+                        }
+
+                        AlertDialog alertForEventTitleDialog = builderForEventTitleDialog.create();
+
+                        alertForEventTitleDialog.setOnDismissListener(listener -> {
+                            if (result[0] != null) {
+                                ToastExpander.showInfoMsg(MainActivity.this, result[0]);
+                                eventsData.getPreferences();
+                                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                            }
+                        });
+
+                        alertForEventTitleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        alertForEventTitleDialog.show();
+
+                    } else {
+                        result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
+                    }
+
+                } else {
+                    result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
+                }
+
+                alertForEventTypeDialog.dismiss();
+                if (result[0] != null && !result[0].isEmpty()) {
+                    ToastExpander.showInfoMsg(MainActivity.this, result[0]);
+                    eventsData.getPreferences();
+                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                }
+            });
+
+            alertForEventTypeDialog.setOnShowListener(arg0 -> alertForEventTypeDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+
+            alertForEventTypeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertForEventTypeDialog.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private void showDialogXDaysCounter(@NonNull View selectedEventView, @NonNull String[] selectedEvent) {

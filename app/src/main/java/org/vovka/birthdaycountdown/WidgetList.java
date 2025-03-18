@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.03.2025, 01:11
+ *  * Last modified 19.03.2025, 01:17
  *
  */
 
@@ -250,13 +250,16 @@ public class WidgetList extends AppWidgetProvider {
             if (action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
                 String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
                 int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-                int actionPref = 8; //intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
-                if (eventInfo == null || eventInfo.isEmpty()) return;
+                int pref_onClick = 0;
+                try {
+                    pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+                } catch (NumberFormatException ignored) { /**/ }
+                if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
 
                 String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
                 Intent intentAction = null;
 
-                if (actionPref == 8) { //Меню
+                if (pref_onClick == 8) { //Меню
 
                     String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
                     intentAction = new Intent(context, WidgetMenuActivity.class);
@@ -271,13 +274,13 @@ public class WidgetList extends AppWidgetProvider {
 
                 } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
 
-                    if (actionPref == 7) { //Основной список событий
+                    if (pref_onClick == 7) { //Основной список событий
 
                         intentAction = new Intent(context, MainActivity.class);
                         intentAction.setAction(Constants.ACTION_LAUNCH);
 
-                    } else if (actionPref >= 1 & actionPref <= 4) {
-                        intentAction = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
+                    } else if (pref_onClick >= 1 & pref_onClick <= 4) {
+                        intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
                     }
 
                     if (intentAction != null) {

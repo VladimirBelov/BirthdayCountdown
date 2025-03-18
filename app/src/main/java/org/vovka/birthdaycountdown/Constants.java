@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 23:21
+ *  * Last modified 18.03.2025, 20:16
  *
  */
 
@@ -366,6 +366,7 @@ final class Constants {
     static final int ContextMenu_AddToFavorites = 21;
     static final int ContextMenu_RemoveFromFavorites = 22;
     static final int ContextMenu_EditLocalEvent = 23;
+    static final int ContextMenu_OpenContact = 24;
 
     static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";

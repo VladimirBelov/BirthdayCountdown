@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.03.2025, 16:13
+  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.03.2025, 16:02
+  ~  * Last modified 19.03.2025, 00:52
   ~  */
   -->
 
@@ -40,6 +40,7 @@
     <string name="menu_events_types">Типы событий…</string>
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
+    <string name="menu_context_open_contact">Открыть контакт</string>
     <string name="menu_context_create_contact">Создать контакт…</string>
     <string name="menu_context_open_calendar_event">Открыть событие в календаре</string>
     <string name="menu_context_event_info">Данные о событии</string>
@@ -844,7 +845,7 @@
     <string name="widget_config_magnify_caption">Масштабирование размеров</string>
     <string name="widget_config_magnify_text_caption">Текст</string>
     <string name="widget_config_magnify_photo_caption">Фото</string>
-    <string-array name="widget_config_magnify_variants">
+    <string-array name="widget_config_magnify_entries">
         <item>Автоматически</item>
         <item>x0.5</item>
         <item>x0.65</item>
@@ -911,6 +912,7 @@
     <string name="widget_config_onclick_label">Реакция на нажатие</string>
     <string name="widget_config_onclick_common_label">Дни без событий:</string>
     <string name="widget_config_onclick_holidays_label">Дни с событиями:</string>
+    <string name="widget_config_onclick_events_label">События:</string>
     <string name="widget_config_month_color_common_label">Обычные дни</string>
     <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
     <string name="widget_config_month_color_today_label">Сегодня</string>
@@ -977,6 +979,12 @@
     <string-array name="pref_widget_month_onclick_common_entries">
         <item>Ничего</item>
         <item>Открыть календарь</item>
+    </string-array>
+
+    <string-array name="pref_widget_list_onclick_events_entries">
+        <item>Из общих настроек</item>
+        <item>Открыть меню</item>
+        <item>Ничего</item>
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Избранные</string>

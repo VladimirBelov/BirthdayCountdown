@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.03.2025, 00:51
+ *  * Last modified 19.03.2025, 01:25
  *
  */
 
@@ -46,6 +46,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
     boolean widgetPref_DatesInBrackets = false;
+    int widgetPref_onClick = 0;
     ContactsEvents eventsData;
 
     public EventListDataProvider(Context context, Intent intent) {
@@ -70,6 +71,134 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         return eventListView.size();
     }
 
+    private void initData() {
+
+        try {
+
+            if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
+
+            eventsData = ContactsEvents.getInstance();
+            if (eventsData.getContext() == null) eventsData.setContext(context);
+            eventsData.getPreferences();
+            eventsData.setLocale(true);
+
+            //Получаем данные
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
+            if (appWidgetInfo == null) return;
+            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
+
+            widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                eventsData.getEvents(context);
+            }
+
+            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
+                if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(resources.getString(R.string.pref_EventInfo_None_ID))) {
+                    widgetPref.set(4, resources.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
+                }
+
+                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
+                widgetPref_DatesInBrackets = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_DatesInBrackets_ID));
+            }
+
+            widgetPref_onClick = eventsData.preferences_widgets_on_click_action;
+            //Если = Constants.STRING_1, значит используем общие настройки
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals(Constants.STRING_1)) {
+                try {
+                    widgetPref_onClick = Integer.parseInt(widgetPref.get(12));
+                } catch (NumberFormatException ignored) { /**/ }
+            }
+
+            eventListView.clear();
+            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
+
+            //Ограничения объёма
+            int maxEvents = 0;
+            int maxDays = 0;
+            int maxFacts = 0;
+            String prefScope = Constants.STRING_EMPTY;
+            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
+
+            if (!TextUtils.isEmpty(prefScope)) {
+                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope);
+                boolean found = matchScopes.find();
+                if (!found) {
+                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
+                    found = matchScopes.find();
+                }
+                if (found) {
+                    final String scopeEvents = matchScopes.group(1);
+                    if (scopeEvents != null) {
+                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                        if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
+                            try {
+                                maxEvents = Integer.parseInt(scopeEvents);
+                            } catch (NumberFormatException e) { /**/ }
+                        }
+                    }
+                    final String scopeDays = matchScopes.group(2);
+                    if (scopeDays != null) {
+                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+                        if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
+                            try {
+                                maxDays = Integer.parseInt(scopeDays);
+                            } catch (NumberFormatException e) { /**/ }
+                        }
+                    }
+                    try {
+                        final String scopeFacts = matchScopes.group(3);
+                        if (scopeFacts != null) {
+                            maxFacts = Integer.parseInt(scopeFacts);
+                        }
+                    } catch (IndexOutOfBoundsException ignored) { /**/ }
+                }
+            }
+
+            List<String> eventsPrefList = new ArrayList<>();
+            if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
+                eventsPrefList = Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
+            }
+            if (maxFacts > 0 && eventsPrefList.contains(resources.getString(R.string.pref_EventTypes_Facts))) {
+                List<String> sourcesPrefList = new ArrayList<>();
+                if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                    sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
+                }
+                List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<>(sourcesPrefList));
+                for (String fact: listFacts) {
+                    eventListView.add(resources.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fact);
+                }
+            }
+            if (maxEvents == 0 && maxDays == 0) {
+                eventListView.addAll(filteredEventList);
+            } else {
+                Calendar now = Calendar.getInstance();
+                Date currentDay = new Date(now.getTimeInMillis());
+                for (int i = 0, filteredEventListSize = filteredEventList.size(); i < filteredEventListSize; i++) {
+                    if (maxEvents > 0 && i >= maxEvents) break;
+                    String event = filteredEventList.get(i);
+                    if (maxDays > 0) {
+                        String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                        Date eventDate = null;
+                        try {
+                            eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                        } catch (Exception e) { /**/ }
+
+                        if (eventDate != null) {
+                            long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                            if (countDays + 1 > maxDays) break;
+                        }
+                    }
+                    eventListView.add(event);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+
+    }
+
     @Override
     public RemoteViews getViewAt(int position) {
 
@@ -86,7 +215,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            String eventText = null;
+            String eventText;
 
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
@@ -304,7 +433,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             Intent clickIntent = new Intent();
             clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
             clickIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
-            clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, widgetPref_onClick);
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
             views.setOnClickFillInIntent(R.id.eventCaption, clickIntent);
 
@@ -338,123 +467,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         return true;
     }
 
-    private void initData() {
-
-        try {
-
-            if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
-
-            eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context);
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
-
-            //Получаем данные
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
-            if (appWidgetInfo == null) return;
-            String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
-            widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
-            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                eventsData.getEvents(context);
-            }
-            if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(resources.getString(R.string.pref_EventInfo_None_ID))) {
-                    widgetPref.set(4, resources.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
-                }
-
-                widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
-                widgetPref_DatesInBrackets = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_DatesInBrackets_ID));
-            }
-
-            eventListView.clear();
-            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
-
-            //Ограничения объёма
-            int maxEvents = 0;
-            int maxDays = 0;
-            int maxFacts = 0;
-            String prefScope = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
-
-            if (!TextUtils.isEmpty(prefScope)) {
-                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope);
-                boolean found = matchScopes.find();
-                if (!found) {
-                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
-                    found = matchScopes.find();
-                }
-                if (found) {
-                    final String scopeEvents = matchScopes.group(1);
-                    if (scopeEvents != null) {
-                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
-                            try {
-                                maxEvents = Integer.parseInt(scopeEvents);
-                            } catch (NumberFormatException e) { /**/ }
-                        }
-                    }
-                    final String scopeDays = matchScopes.group(2);
-                    if (scopeDays != null) {
-                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(resources.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
-                            try {
-                                maxDays = Integer.parseInt(scopeDays);
-                            } catch (NumberFormatException e) { /**/ }
-                        }
-                    }
-                    try {
-                        final String scopeFacts = matchScopes.group(3);
-                        if (scopeFacts != null) {
-                            maxFacts = Integer.parseInt(scopeFacts);
-                        }
-                    } catch (IndexOutOfBoundsException ignored) { /**/ }
-                }
-            }
-
-            List<String> eventsPrefList = new ArrayList<>();
-            if (widgetPref.size() > 3 && !widgetPref.get(3).isEmpty()) {
-                eventsPrefList = Arrays.asList(widgetPref.get(3).split(Constants.REGEX_PLUS));
-            }
-            if (maxFacts > 0 && eventsPrefList.contains(resources.getString(R.string.pref_EventTypes_Facts))) {
-                List<String> sourcesPrefList = new ArrayList<>();
-                if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
-                    sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
-                }
-                List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<>(sourcesPrefList));
-                for (String fact: listFacts) {
-                    eventListView.add(resources.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fact);
-                }
-            }
-            if (maxEvents == 0 && maxDays == 0) {
-                eventListView.addAll(filteredEventList);
-            } else {
-                Calendar now = Calendar.getInstance();
-                Date currentDay = new Date(now.getTimeInMillis());
-                for (int i = 0, filteredEventListSize = filteredEventList.size(); i < filteredEventListSize; i++) {
-                    if (maxEvents > 0 && i >= maxEvents) break;
-                    String event = filteredEventList.get(i);
-                    if (maxDays > 0) {
-                        String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
-                        Date eventDate = null;
-                        try {
-                            eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
-                        } catch (Exception e) { /**/ }
-
-                        if (eventDate != null) {
-                            long countDays = eventsData.countDaysDiff(currentDay, eventDate);
-                            if (countDays + 1 > maxDays) break;
-                        }
-                    }
-                    eventListView.add(event);
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-
+    String surround(@NonNull String str, boolean condition) {
+        return !condition ? str : Constants.STRING_PARENTHESIS_START + str + Constants.STRING_PARENTHESIS_CLOSE;
     }
-
-    String surround(@NonNull String str, boolean condition) {return !condition ? str : Constants.STRING_PARENTHESIS_START + str + Constants.STRING_PARENTHESIS_CLOSE;}
 }

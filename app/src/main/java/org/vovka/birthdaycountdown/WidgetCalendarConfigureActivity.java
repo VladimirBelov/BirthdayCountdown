@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 01:25
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 21:04
+ *  * Last modified 19.03.2025, 00:22
  *
  */
 
@@ -156,17 +156,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
-
-            //Отступы всего окна
-            /*if (eventsData.preferences_list_margin > 0) {
-                RelativeLayout main = findViewById(R.id.layout_main);
-                main.setPadding(
-                        main.getPaddingLeft() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                        main.getPaddingTop(),
-                        main.getPaddingRight() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                        main.getPaddingBottom()
-                );
-            }*/
 
             setResult(RESULT_CANCELED);
 

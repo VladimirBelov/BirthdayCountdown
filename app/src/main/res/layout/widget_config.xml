@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 31.12.2023, 18:06
+  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 19.03.2025, 00:52
   ~  */
   -->
 
@@ -242,34 +242,34 @@
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/blockEventShift"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/captionEventShift"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/blockEventShift"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="3"
-                    android:paddingStart="8dp"
-                    android:text="@string/widget_config_index_label"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinnerEventShift"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
-                    android:contentDescription="@string/widget_config_index_label"
-                    android:entries="@array/widget_config_numbers"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    <TextView
+                        android:id="@+id/captionEventShift"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_index_label"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            </LinearLayout>
+                    <Spinner
+                        android:id="@+id/spinnerEventShift"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_index_label"
+                        android:entries="@array/widget_config_numbers"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/blockFacts"
@@ -710,9 +710,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_magnify_caption"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textStyle="bold"  />
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <LinearLayout
                     android:id="@+id/blockTextMagnify"
@@ -737,7 +737,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:contentDescription="@string/widget_config_magnify_text_caption"
-                        android:entries="@array/widget_config_magnify_variants"
+                        android:entries="@array/widget_config_magnify_entries"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </LinearLayout>
@@ -765,8 +765,52 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:contentDescription="@string/widget_config_magnify_photo_caption"
-                        android:entries="@array/widget_config_magnify_variants"
+                        android:entries="@array/widget_config_magnify_entries"
                         tools:ignore="DuplicateSpeakableTextCheck,TooManyViews" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/dividerOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <TextView
+                    android:id="@+id/captionOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_onclick_label"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <LinearLayout
+                    android:id="@+id/blockOnClickCommon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionOnClickCommon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_onclick_events_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOnClickCommon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_onclick_events_label"
+                        android:entries="@array/pref_widget_list_onclick_events_entries" />
 
                 </LinearLayout>
 
