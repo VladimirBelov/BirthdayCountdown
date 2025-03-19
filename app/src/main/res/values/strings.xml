@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 19.03.2025, 12:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 19.03.2025, 11:18
   ~  */
   -->
 
@@ -164,6 +164,7 @@
     <string name="msg_filter_clean_hidden_result">"Cleared hidden events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_XDays_result">"Removed day counters for non-existent events: "</string>
     <string name="msg_filter_clean_XDays_noresult">"No counter has been removed. If the event is not listed, check the event types enabled for display"</string>
+    <string name="msg_event_hide_confirmation">Hide this event? You can find it later either by app search or by setting the appropriate events list filter</string>
     <string name="msg_account_info">"Event from account \"%1$s\""</string>
     <string name="msg_calendar_info">"Event from calendar \"%1$s\""</string>
     <string name="msg_file_info">"Event from file \"%1$s\""</string>

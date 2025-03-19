@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 12:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 21:20
+ *  * Last modified 19.03.2025, 01:31
  *
  */
 
@@ -68,7 +68,6 @@ public class AboutActivity extends AppCompatActivity {
     int counterClicks = 0;
     private Toast mToast = null;
 
-    @SuppressLint("PrivateResource")
     public void onCreate(Bundle savedInstanceState) {
 
         TypedArray ta = null;

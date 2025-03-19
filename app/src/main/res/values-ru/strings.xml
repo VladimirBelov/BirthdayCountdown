@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 19.03.2025, 12:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 19.03.2025, 11:12
   ~  */
   -->
 
@@ -164,6 +164,7 @@
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_XDays_result">"Удалены счётчики дней для несуществующих событий: "</string>
     <string name="msg_filter_clean_XDays_noresult">"Ни одного счётчика не удалено. Если событие отсутствует в списке, проверьте типы событий, включённые для показа"</string>
+    <string name="msg_event_hide_confirmation">Скрыть это событие? В дальнейшем Вы можете найти его или через поиск в приложении, или установив соответствующий фильтр для списка событий</string>
     <string name="msg_account_info">"Событие из аккаунта \"%1$s\""</string>
     <string name="msg_calendar_info">"Событие из календаря \"%1$s\""</string>
     <string name="msg_file_info">"Событие из файла \"%1$s\""</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 01:25
+ *  * Created by Vladimir Belov on 19.03.2025, 12:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.03.2025, 23:22
+ *  * Last modified 19.03.2025, 11:18
  *
  */
 
@@ -629,16 +629,31 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_HideEvent) {
 
-                if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
-                    if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
-                        //Если скрываем - убираем из списка без уведомления
-                        eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                builder.setTitle(getString(R.string.msg_title_confirmation));
+                builder.setIcon(android.R.drawable.ic_menu_help);
+                builder.setMessage(getString(R.string.msg_event_hide_confirmation));
+                builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                    if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
+                        if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                            //Если скрываем - убираем из списка без уведомления
+                            eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                        }
+                        this.invalidateOptionsMenu();
+                        filterEventsList();
+                        drawList();
+                        eventsData.updateWidgets(0, null);
                     }
-                    this.invalidateOptionsMenu();
-                    filterEventsList();
-                    drawList();
-                    eventsData.updateWidgets(0, null);
-                }
+                    dialog.dismiss();
+                });
+                builder.setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+                AlertDialog alertToShow = builder.create();
+                alertToShow.setOnShowListener(arg0 -> {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                });
+                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                alertToShow.show();
                 return true;
 
             } else if (itemId == Constants.ContextMenu_UnhideEvent) {

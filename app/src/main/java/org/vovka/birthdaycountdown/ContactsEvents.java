@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 19.03.2025, 12:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.03.2025, 15:27
+ *  * Last modified 19.03.2025, 11:40
  *
  */
 
@@ -8884,7 +8884,7 @@ class ContactsEvents {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, quizChannelId)
                         .setColor(getResources().getColor(R.color.dark_green))
-                        .setSmallIcon(R.drawable.quiz_icon)
+                        .setSmallIcon(R.drawable.ic_icon_quiz)
                         .setContentTitle(quest.type)
                         .setContentText(quest.question)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(quest.question))

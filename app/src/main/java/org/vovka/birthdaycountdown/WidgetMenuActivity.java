@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 01:25
+ *  * Created by Vladimir Belov on 19.03.2025, 12:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 01:25
+ *  * Last modified 19.03.2025, 11:25
  *
  */
 
@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -39,6 +41,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
@@ -315,14 +319,36 @@ public class WidgetMenuActivity extends Activity {
 
                 case Constants.ContextMenu_HideEvent:
 
-                    if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
-                        if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
-                            //Если скрываем - убираем из списка без уведомления
-                            eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                    builder.setTitle(getString(R.string.msg_title_confirmation));
+                    builder.setIcon(android.R.drawable.ic_menu_help);
+                    builder.setMessage(getString(R.string.msg_event_hide_confirmation));
+                    builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
+                            if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                                //Если скрываем - убираем из списка без уведомления
+                                eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                            }
+                            eventsData.updateWidgets(appWidgetId, null);
                         }
-                        eventsData.updateWidgets(appWidgetId, null);
-                    }
-                    break;
+                        dialog.dismiss();
+                        finish();
+                    });
+                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> {
+                        dialog.dismiss();
+                        finish();
+                    });
+                    AlertDialog alertToShow = builder.create();
+                    alertToShow.setOnShowListener(arg0 -> {
+                        TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                        alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        ta.recycle();
+                    });
+                    alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertToShow.show();
+
+                    return;
 
                 case Constants.ContextMenu_SilentEvent:
 

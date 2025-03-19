@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 19.03.2025, 12:53
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 19.03.2025, 12:22
   ~  */
   -->
 
@@ -37,7 +37,7 @@
                 <TextView
                     android:id="@+id/info"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="-8dp"
                     android:layout_weight="3"
                     android:alpha="0.7"
@@ -50,7 +50,7 @@
                 <ImageView
                     android:id="@+id/config_button"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_weight="1"
                     android:alpha="0.8"
