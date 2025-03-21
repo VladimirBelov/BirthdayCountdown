@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 12:53
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 11:12
+  ~  * Last modified 21.03.2025, 20:00
   ~  */
   -->
 
@@ -179,6 +179,7 @@
     <string name="msg_notifications_were_disabled">"Уведомления были выключены\n"</string>
     <string name="msg_widget_prefs_removed">"Настройка для виджета %1$s была удалена"</string>
     <string name="msg_widget_prefs_saved">"Сохранена настройка виджета #%1$s:\n#%2$s"</string>
+    <string name="msg_widget_bad_id">widgetId неизвестен!</string>
     <string name="msg_ringtone">"Мелодия: "</string>
     <string name="msg_deleted_channel">"Канал уведомлений #%s был удалён\n"</string>
     <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
@@ -268,6 +269,7 @@
     <string name="event_type_nameday">Именины</string>
     <string name="event_type_calendar">Событие календаря</string>
     <string name="event_type_file">Событие из файла</string>
+    <string name="event_type_custom">Пользовательское событие</string>
     <string name="event_type_unrecognized">Нераспознанное событие</string>
 
     <string name="account_type_local">Локальный аккаунт</string>
@@ -454,11 +456,11 @@
     <string name="pref_List_EventTypes_title">Типы событий</string>
     <string name="pref_List_EventTypes_summary">Какие события отображать в списке</string>
 
+    <string name="pref_List_EventTypes_Holidays">🏖️ Праздники</string>
     <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Дни рождения</item>
         <item>💑 Годовщины свадеб</item>
         <item>🗓️ Другие события</item>
-        <item>🏖️ Праздники</item>
         <item>⏰ Пользовательские события</item>
         <item>🏆 Круглые даты (5K дней)</item>
     </string-array>
@@ -989,7 +991,7 @@
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Избранные</string>
-    <string name="widget_config_events_local_events">📱 Локальные события</string>
+    <string name="widget_config_events_local_events">📅 Локальные события</string>
 
     <string name="pref_Notifications_title">Уведомления</string>
     <string name="pref_Notifications_summary">Когда и как показывать уведомления о событиях</string>

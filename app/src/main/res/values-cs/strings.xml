@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 21.03.2025, 20:33
   ~  */
   -->
 
@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Nastavení</string>
 
     <string name="menu_add_event">Přidat událost</string>
+    <string name="menu_add_event_to_local">Přidat místní událost…</string>
     <string name="menu_add_event_to_contact">Přidat událost ke kontaktu…</string>
     <string name="menu_add_event_to_contact_short">Přidat ke kontaktu…</string>
     <string name="menu_add_event_to_calendar">Přidat událost do kalendáře…</string>
@@ -39,6 +40,7 @@
     <string name="menu_events_types">Typy událostí…</string>
     <string name="menu_hints">Nápovědy pro vyhledávání…</string>
     <string name="menu_context_edit_contact">Upravit kontakt</string>
+    <string name="menu_context_open_contact">Otevřít kontakt</string>
     <string name="menu_context_create_contact">Vytvořit kontakt…</string>
     <string name="menu_context_open_calendar_event">Otevřít událost kalendáře</string>
     <string name="menu_context_event_info">Údaje o události</string>
@@ -62,6 +64,7 @@
     <string name="menu_context_set_event_type">Vyberte typ události…</string>
     <string name="menu_context_favorites_add">Přidat do oblíbených</string>
     <string name="menu_context_favorites_remove">Odebrat z oblíbených</string>
+    <string name="menu_context_edit_local_event">Upravit událost</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Události kalendáře</string>
@@ -136,7 +139,8 @@
     <string name="msg_age_could_be">"Může být: "</string>
     <string name="msg_age_passed">"Splněno: "</string>
     <string name="msg_label_search">Zadejte část celého jména, typ kontaktu, práci, titul, část data události (čárkou):</string>
-    <string name="msg_hint_search">Hledaná hodnota</string>
+    <string name="msg_hint_search">Hledat v seznamu</string>
+    <string name="msg_hint_search_all">Hledejte všude</string>
     <string name="msg_hint_global_search">Vyhledat narozeniny a události</string>
     <string name="msg_notifications_soon_no_events">Žádné události pro vybrané dny</string>
     <string name="msg_notifications_soon">"Události brzy - "</string>
@@ -147,6 +151,7 @@
     <string name="msg_no_accounts_hint">"Nebyly nalezeny žádné účty nebo jste k nim neudělili přístup"</string>
     <string name="msg_no_calendars_hint">"Nebyly nalezeny žádné viditelné kalendáře nebo jste k nim neudělili přístup"</string>
     <string name="msg_no_events_check_prefs">"Nebyly nalezeny žádné události. Zkontrolujte položku \"%1$s\" v části \"%2$s\" nastavení programu"</string>
+    <string name="msg_no_access_calendar_hint">Žádný přístup ke kalendářům. Zkontrolujte oprávnění aplikace</string>
     <string name="msg_no_access_storage_hint">Žádný přístup k externímu úložišti. Zkontrolujte oprávnění aplikace</string>
     <string name="msg_welcome_title">Vítejte!</string>
     <string name="msg_welcome_text">Děkujeme za instalaci tohoto programu. Přestože je většina funkcí konfigurována tak informativně a minimálně otravně, jak je to jen možné, doporučujeme zkontrolovat nastavení aplikace. Můžete tam například povolit upozornění na nadcházející události nebo nastavit parametry pro widgety. Užijte si používání!</string>
@@ -159,18 +164,22 @@
     <string name="msg_filter_clean_hidden_result">"Vymazány skryté události pro nepřítomné kontakty a události kalendáře: "</string>
     <string name="msg_filter_clean_XDays_result">"Odstraněny počítadla dnů pro neexistující události: "</string>
     <string name="msg_filter_clean_XDays_noresult">"Žádné počítadlo nebylo odstraněno. Pokud událost není uvedena, zkontrolujte typy událostí povolené pro zobrazení"</string>
+    <string name="msg_event_hide_confirmation">Skrýt tuto událost? Později jej najdete buď vyhledáváním v aplikaci, nebo nastavením příslušného filtru seznamu událostí</string>
     <string name="msg_account_info">"Událost z účtu \"%1$s\""</string>
     <string name="msg_calendar_info">"Událost z kalendáře \"%1$s\""</string>
     <string name="msg_file_info">"Událost ze souboru \"%1$s\""</string>
     <string name="msg_source_info">"Událost z \"%1$s\""</string>
+    <string name="msg_source_local">Místní událost</string>
     <string name="msg_title_confirmation">Potvrzení</string>
     <string name="msg_title_success">Akce dokončena</string>
     <string name="msg_title_settings">Uložená nastavení</string>
+    <string name="msg_title_local_events">Místní události</string>
     <string name="msg_no_selection">Prázdný výběr! Je třeba vybrat cokoli</string>
     <string name="msg_notifications_were_enabled">"Oznámení byla povolena\n"</string>
     <string name="msg_notifications_were_disabled">"Oznámení byla zakázána\n"</string>
     <string name="msg_widget_prefs_removed">"Předvolby pro widget #%s byly odstraněny"</string>
     <string name="msg_widget_prefs_saved">"Předvolby uloženého widgetu #%1$s:\n#%2$s"</string>
+    <string name="msg_widget_bad_id">ID widgetu není známo!</string>
     <string name="msg_ringtone">"Vyzváněcí tón: "</string>
     <string name="msg_deleted_channel">"Upozornit kanál %1$s byl smazán\n"</string>
     <string name="msg_created_channel">"Upozornit kanál %1$s byl vytvořen\n"</string>
@@ -183,10 +192,12 @@
     <string name="msg_prefs_import_prefs_clear_confirmation">Chcete před importem nového vymazat všechny uložené předvolby?</string>
     <string name="msg_prefs_import_unknown">"Neznámá předvolba: %1$s"</string>
     <string name="msg_prefs_import_error">"Chyba importu: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Vymazat všechny místní události před importem nových?</string>
     <string name="msg_event_type_select_title">Vyberte typ události</string>
     <string name="msg_event_type_label_set">"Sada štítků: %1$s"</string>
     <string name="msg_event_type_label_added">"Štítek přidán: %1$s"</string>
     <string name="msg_event_type_label_absent">Událost nemá štítek!</string>
+    <string name="msg_empty_required_field">"Povinné pole je prázdné: %s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Nadcházející události</string>
     <string name="pref_Notifications_Notification_Channel_Description">Zobrazit upozornění na nadcházející události</string>
@@ -234,6 +245,7 @@
     <string name="button_open">Otevřít</string>
     <string name="button_share">Sdílet</string>
     <string name="button_rgb">Barva RGB</string>
+    <string name="button_save">Uložit</string>
 
     <string name="events_scope_not_hidden">Vše není skryté (%1$d)</string>
     <string name="events_scope_all">Vše (%1$d)</string>
@@ -257,6 +269,7 @@
     <string name="event_type_nameday">Svátky</string>
     <string name="event_type_calendar">Událost kalendáře</string>
     <string name="event_type_file">Událost souboru</string>
+    <string name="event_type_custom">Vlastní událost</string>
     <string name="event_type_unrecognized">Nerozpoznaná událost</string>
 
     <string name="account_type_local">Místní účet</string>
@@ -443,11 +456,11 @@
     <string name="pref_List_EventTypes_title">Typy událostí</string>
     <string name="pref_List_EventTypes_summary">Jaké druhy událostí zahrnout do seznamu</string>
 
+    <string name="pref_List_EventTypes_Holidays">🏖️ Svátky</string>
     <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Narozeniny</item>
         <item>💑 Výročí</item>
         <item>🗓️ Další události</item>
-        <item>🏖️ Svátky</item>
         <item>⏰ Vlastní události</item>
         <item>🏆 Počet zaokrouhlených dní (5000, 10000, 15000 dní)</item>
     </string-array>
@@ -646,6 +659,10 @@
         <item>Střední</item>
         <item>Velký</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_title">Horní odsazení</string>
+    <string name="pref_List_TopPadding_summary">Toto nastavení použijte, pokud se seznam událostí prochází pod názvem okna</string>
+    <string name="pref_List_TopPadding_hint">Zadejte velikost odsazení</string>
 
     <string name="pref_Widgets_title">Widgety</string>
     <string name="pref_Widgets_summary">Běžné předvolby widgetů</string>
@@ -898,6 +915,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="widget_config_onclick_label">Chování při kliknutí</string>
     <string name="widget_config_onclick_common_label">Běžné dny:</string>
     <string name="widget_config_onclick_holidays_label">Dny s událostmi:</string>
+    <string name="widget_config_onclick_events_label">Události:</string>
     <string name="widget_config_month_color_common_label">Barva běžných dnů</string>
     <string name="widget_config_month_color_common_description">Barva běžných dnů</string>
     <string name="widget_config_month_color_today_label">Dnešní barva</string>
@@ -967,6 +985,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Oblíbené</string>
+    <string name="widget_config_events_local_events">📅 Místní události</string>
 
     <string name="pref_Notifications_title">Oznámení</string>
     <string name="pref_Notifications_summary">Kdy a jak zobrazovat oznámení o událostech</string>
@@ -1100,6 +1119,8 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="pref_About_summary">Historie verzí, statistiky událostí, odkazy na obchody s aplikacemi</string>
     <string name="pref_BatteryOptimization_title">Optimalizace baterie je ZAPNUTA</string>
     <string name="pref_BatteryOptimization_summary">Otevřete nastavení a vypněte optimalizaci…</string>
+    <string name="pref_NotificationsAccess_title">Oznámení jsou VYPNUTA</string>
+    <string name="pref_NotificationsAccess_summary">Otevřete nastavení a zapněte toto, chcete-li zobrazovat oznámení…</string>
     <string name="pref_ExactAlarmsAccess_title">Alarmy &amp; připomenutí jsou VYPNUTÁ</string>
     <string name="pref_ExactAlarmsAccess_summary">Otevřete nastavení a zapněte jej, chcete-li naplánovat aktualizace oznámení a widgetů na konkrétní čas…</string>
     <string name="pref_ContactsAccess_title">Žádný přístup k událostem kontaktů</string>
@@ -1125,6 +1146,12 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="pref_Tools_Preferences_Export_result">Exportované předvolby: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Předvolby importu</string>
     <string name="pref_Tools_Preferences_Import_result">Importované předvolby: %1$d, chyby: %2$d</string>
+    <string name="pref_Tools_Events_title">Události</string>
+    <string name="pref_Tools_Events_Show_title">Zobrazit uložené místní události</string>
+    <string name="pref_Tools_Events_Export_title">Exportovat místní události</string>
+    <string name="pref_Tools_Events_Export_result">Exportované události: %1$d</string>
+    <string name="pref_Tools_Events_Import_title">Importovat místní události</string>
+    <string name="pref_Tools_Events_Import_result">Importované události: %1$d, vynechané: %2$d, chyby: %3$d</string>
 
     <string name="changelog_version"><![CDATA[verze: %1$s (%2$s)<br>sestaveno: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalováno z %1$s]]></string>
@@ -1152,6 +1179,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="stats_counters_nicknames"><![CDATA[<li>přezdívky kontaktů: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>webové odkazy: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgety: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>nerozpoznané události: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Události podle zdrojů:</h2><ul>]]></string>
 
@@ -1263,6 +1291,20 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="facts_popup_action_next_fact">⏩ Další</string>
     <string name="facts_popup_action_share">📤 Sdílet</string>
     <string name="facts_popup_empty">Soubor faktů je prázdný</string>
+
+    <string name="local_event_date_picker_use_year">Uveďte rok</string>
+    <string name="local_event_date_picker_title">Vyberte datum:</string>
+    <string name="local_event_dialog_title_new_event">Přidat novou událost</string>
+    <string name="local_event_dialog_title_edit_event">Upravit událost</string>
+    <string name="local_event_dialog_caption_name">Jméno Příjmení:</string>
+    <string name="local_event_dialog_caption_name_alt">Příjmení Jméno:</string>
+    <string name="local_event_dialog_caption_name_holiday">Popis události:</string>
+    <string name="local_event_dialog_caption_title">Pozice, povolání:</string>
+    <string name="local_event_dialog_caption_org">Organizace:</string>
+    <string name="local_event_dialog_date_title">Datum:</string>
+    <string name="local_event_dialog_type_title">Typ události:</string>
+    <string name="local_event_dialog_confirmation_remove">Opravdu chcete odstranit tuto událost?</string>
+    <string name="local_event_dialog_confirmation_cancel">Data události byla změněna. Opravdu chcete toto dialogové okno zavřít?</string>
 
     <!-- https://cs.wikipedia.org/wiki/V%C3%BDro%C4%8D%C3%AD_svatby -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Bavlněná svatba</string>

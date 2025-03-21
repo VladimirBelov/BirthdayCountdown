@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 17.01.2024, 23:29
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.03.2025, 21:25
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.6</item>
+        <item>📅 Local events stored inside the application (in the list and widgets, export-import)</item>
+        <item>Rewritten calculation of the zodiac year (now takes into account the lunar calendar)</item>
+        <item>Ability to add a new widget from the application settings</item>
+        <item>On click settings for list widget (action or menu)</item>
+        <item>In the title of the calendar event, not only the [name] tag is supported, but also [type] (to support events from the Google calendar)</item>
+        <item>Ability to share a fact from the list widget by pressing the event</item>
+        <item>Setting the vertical indent of the event list (extra features - ON, Events list - Top indent)</item>
+        <item>Optimizations for Android 15</item>
+        <item>Bug Fixes</item>
 
         <item>#1.8.5</item>
         <item>Previous events in main list: added 5k, events with floating dates, events from calendars</item>

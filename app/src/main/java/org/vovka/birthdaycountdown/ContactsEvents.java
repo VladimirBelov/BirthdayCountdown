@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 12:53
+ *  * Created by Vladimir Belov on 21.03.2025, 21:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 11:40
+ *  * Last modified 21.03.2025, 19:59
  *
  */
 
@@ -10306,7 +10306,6 @@ class ContactsEvents {
                 final String key = packId.concat(Constants.STRING_COLON).concat(day);
                 final String key_noYear = packId.concat(Constants.STRING_COLON).concat("-").concat(day.substring(4));
 
-                //@ColorInt int colorValue = resources.getColor(R.color.transparent);
                 @ColorInt Integer colorValue = null;
                 if (colors != null && colors.containsKey(packId) && colors.get(packId) != null) {
                     Integer colorFromPack = colors.get(packId);
@@ -10323,7 +10322,6 @@ class ContactsEvents {
                     }
                 }
                 if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
-                    //dayInfo.addAll(Arrays.asList(checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1)));
                     String[] eventsList = checkForNull(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
                     for (String eventInfo: eventsList) {
                         dayInfo.add(String.format(Constants.FONT_COLOR_DOT, colorRGB).concat(eventInfo));
@@ -10363,7 +10361,7 @@ class ContactsEvents {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
 
-                                String eventIcon = "🏖️ ";
+                                String eventIcon = Constants.eventTitleHolidayPrefix;
                                 if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
                                     eventIcon = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
                                 }

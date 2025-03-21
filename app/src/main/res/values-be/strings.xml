@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 21.03.2025, 20:25
   ~  */
   -->
 
@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Наладкі</string>
 
     <string name="menu_add_event">Дадаць падзею</string>
+    <string name="menu_add_event_to_local">Дадаць мясцовую падзею…</string>
     <string name="menu_add_event_to_contact">Дадаць падзею ў кантакт…</string>
     <string name="menu_add_event_to_contact_short">Дадаць ў кантакт…</string>
     <string name="menu_add_event_to_calendar">Дадаць падзею ў каляндар…</string>
@@ -39,6 +40,7 @@
     <string name="menu_events_types">Тыпы падзей…</string>
     <string name="menu_hints">Падказкі для пошука…</string>
     <string name="menu_context_edit_contact">Рэдагаваць кантакт</string>
+    <string name="menu_context_open_contact">Адкрыць кантакт</string>
     <string name="menu_context_create_contact">Стварыць кантакт…</string>
     <string name="menu_context_open_calendar_event">Адкрыць падзею ў календары</string>
     <string name="menu_context_event_info">Дадзеныя аб падзеі</string>
@@ -62,6 +64,7 @@
     <string name="menu_context_set_event_type">Вызначыць тып падзеі…</string>
     <string name="menu_context_favorites_add">Дадаць у абранае</string>
     <string name="menu_context_favorites_remove">Выдаліць з абраных</string>
+    <string name="menu_context_edit_local_event">Рэдагаваць падзею</string>
     <string name="menu_ok">Добра</string>
     <string name="menu_help">Даведка</string>
     <string name="menu_help_events_calendar">Падзеі календара</string>
@@ -136,7 +139,8 @@
     <string name="msg_age_could_be">"Было бы: "</string>
     <string name="msg_age_passed">"Прайшло: "</string>
     <string name="msg_label_search">Увядзіце частку П.І.Імя па бацьку, тып кантакту, месца працы, пасада, даты (праз коску):</string>
-    <string name="msg_hint_search">Пошукавы запыт</string>
+    <string name="msg_hint_search">Шукаць у спісе</string>
+    <string name="msg_hint_search_all">Шукаць усюды</string>
     <string name="msg_hint_global_search">Пошук падзей</string>
     <string name="msg_notifications_soon_no_events">Няма падзей у абраныя дні</string>
     <string name="msg_notifications_soon">"Падзей хутка - "</string>
@@ -147,6 +151,7 @@
     <string name="msg_no_accounts_hint">Уліковыя запісы не знойдзены альбо Вы не далі да іх доступу</string>
     <string name="msg_no_calendars_hint">Даступныя календары не знойдзены альбо Вы не далі да іх доступу</string>
     <string name="msg_no_events_check_prefs">"Няма падзей для адлюстравання. Праверце ў наладах праграмы пункт \"%1$s\" у раздзеле \"%2$s\""</string>
+    <string name="msg_no_access_calendar_hint">Няма доступу да календароў. Праверце дазволы праграмы</string>
     <string name="msg_no_access_storage_hint">Няма доступу да вонкавага сховішча. Праверце дазволы праграмы</string>
     <string name="msg_welcome_title">Сардэчна запрашаем!</string>
     <string name="msg_welcome_text">Дзякуй, што ўсталявалі гэту праграму. Хоць большасць функцый наладжана максімальнае інфарматыўна і мінімальна надакучлівае, рэкамендуецца праверыць налады праграмы. Прыкладам, там можна ўключыць паведамленні пра хуткія падзеі альбо задаць параметры для віджэтаў. Прыемнага карыстання!</string>
@@ -159,18 +164,22 @@
     <string name="msg_filter_clean_hidden_result">"Выдалены ўтоеныя падзеі для адсутных кантактаў і падзей календара: "</string>
     <string name="msg_filter_clean_XDays_result">"Выдалены лічыльнікі дзён для падзей якія не існуюць: "</string>
     <string name="msg_filter_clean_XDays_noresult">"Ніводнага лічыльніка не выдалена. Калі падзея адсутнічае ў спісе, праверце тыпы падзей, уключаныя для паказу"</string>
+    <string name="msg_event_hide_confirmation">Схаваць гэту падзею? Вы можаце знайсці яго пазней альбо з дапамогай пошуку праграмы, альбо ўсталяваўшы адпаведны фільтр спісу падзей</string>
     <string name="msg_account_info">"Падзея з акаўнта \"%1$s\""</string>
     <string name="msg_calendar_info">"Падзея з календара \"%1$s\""</string>
     <string name="msg_file_info">"Падзея з файла \"%1$s\""</string>
     <string name="msg_source_info">"Падзея з \"%1$s\""</string>
+    <string name="msg_source_local">Мясцовая падзея</string>
     <string name="msg_title_confirmation">Пацверджанне</string>
     <string name="msg_title_success">Дзеянне выканана</string>
     <string name="msg_title_settings">Захаваныя налады</string>
+    <string name="msg_title_local_events">Мясцовыя падзеі</string>
     <string name="msg_no_selection">Пусты выбар! Трэба выбраць што-небудзь</string>
     <string name="msg_notifications_were_enabled">"Паведамленні былі ўключаны\n"</string>
     <string name="msg_notifications_were_disabled">"Паведамленні былі выключаны\n"</string>
     <string name="msg_widget_prefs_removed">"Налада для віджэта %1$s была выдалена"</string>
     <string name="msg_widget_prefs_saved">"Захавана налада віджэта #%1$s:\n#%2$s"</string>
+    <string name="msg_widget_bad_id">widgetId невядомы!</string>
     <string name="msg_ringtone">"Мелодыя: "</string>
     <string name="msg_deleted_channel">"Канал паведамленняў #%s быў выдалены\n"</string>
     <string name="msg_created_channel">"Канал паведамленняў #%s быў створаны\n"</string>
@@ -183,10 +192,12 @@
     <string name="msg_prefs_import_prefs_clear_confirmation">Выдаліць усе захаваныя налады перад імпартаваннем новых?</string>
     <string name="msg_prefs_import_unknown">"Невядомая налада: %1$s"</string>
     <string name="msg_prefs_import_error">"Памылка імпарту: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Выдаліць усе мясцовыя падзеі перад імпартам новых?</string>
     <string name="msg_event_type_select_title">Абярыце тып падзеі</string>
     <string name="msg_event_type_label_set">"Метка ўсталявана: %1$s"</string>
     <string name="msg_event_type_label_added">"Метка дададзена: %1$s"</string>
     <string name="msg_event_type_label_absent">У падзеі адсутнічае метка!</string>
+    <string name="msg_empty_required_field">"Абавязковае поле пустое: %s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Маючыя адбыцца падзеі</string>
     <string name="pref_Notifications_Notification_Channel_Description">Паказваць паведамлення аб маючых адбыцца падзеях</string>
@@ -234,6 +245,7 @@
     <string name="button_open">Адкрыць</string>
     <string name="button_share">Падзяліцца</string>
     <string name="button_rgb">RGB колер</string>
+    <string name="button_save">Захаваць</string>
 
     <string name="events_scope_not_hidden">Усе не схаваныя (%1$d)</string>
     <string name="events_scope_all">Усе (%1$d)</string>
@@ -257,6 +269,7 @@
     <string name="event_type_nameday">Імяніны</string>
     <string name="event_type_calendar">Падзея календара</string>
     <string name="event_type_file">Падзея з файла</string>
+    <string name="event_type_custom">Карыстальніцкая падзея</string>
     <string name="event_type_unrecognized">Нераспазнаная падзея</string>
 
     <string name="account_type_local">Лакальны акаўнт</string>
@@ -443,11 +456,11 @@
     <string name="pref_List_EventTypes_title">Тыпы падзей</string>
     <string name="pref_List_EventTypes_summary">Якія падзеі адлюстроўваць у спісе</string>
 
+    <string name="pref_List_EventTypes_Holidays">🏖️ Святы</string>
     <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Дні нараджэння</item>
         <item>💑 Гадавіны вяселляў</item>
         <item>🗓️ Іншыя падзеі</item>
-        <item>🏖️ Святы</item>
         <item>⏰ Карыстальніцкія падзеі</item>
         <item>🏆 Круглыя даты (5K дзён)</item>
     </string-array>
@@ -646,6 +659,10 @@
         <item>Сярэднія</item>
         <item>Вялікія</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_title">Верхняя абіўка</string>
+    <string name="pref_List_TopPadding_summary">Выкарыстоўвайце гэты параметр, калі спіс падзей сканчаецца пад загалоўкам акна</string>
+    <string name="pref_List_TopPadding_hint">Увядзіце памер запаўнення</string>
 
     <string name="pref_Widgets_title">Віджэты</string>
     <string name="pref_Widgets_summary">Агульныя налады для віджэтаў</string>
@@ -898,6 +915,7 @@
     <string name="widget_config_onclick_label">Пры націсканні</string>
     <string name="widget_config_onclick_common_label">Дні без падзей:</string>
     <string name="widget_config_onclick_holidays_label">Дні з падзеямі:</string>
+    <string name="widget_config_onclick_events_label">Падзеі:</string>
     <string name="widget_config_month_color_common_label">Звычайныя дні</string>
     <string name="widget_config_month_color_common_description">Колер звычайных дзён</string>
     <string name="widget_config_month_color_today_label">Сёння</string>
@@ -967,6 +985,7 @@
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Выбранае</string>
+    <string name="widget_config_events_local_events">📅 Мясцовыя падзеі</string>
 
     <string name="pref_Notifications_title">Паведамленні</string>
     <string name="pref_Notifications_summary">Калі і як паказваць паведамленні пра падзеі</string>
@@ -1100,6 +1119,8 @@
     <string name="pref_About_summary">Гісторыя версій, статыстыка падзей, спасылкі на крамы праграмаў</string>
     <string name="pref_BatteryOptimization_title">Аптымізацыя батарэі ЎКЛЮЧАНА</string>
     <string name="pref_BatteryOptimization_summary">Адкрыць настройку і выключыць аптымізацыю…</string>
+    <string name="pref_NotificationsAccess_title">Апавяшчэнні ВЫКЛЮЧАНЫ</string>
+    <string name="pref_NotificationsAccess_summary">Адкрыйце наладу і ўключыце гэта, каб паказваць апавяшчэнні…</string>
     <string name="pref_ExactAlarmsAccess_title">Будзільнікі і напаміны ВЫКЛЮЧАНЫ</string>
     <string name="pref_ExactAlarmsAccess_summary">Адкрыйце наладу і ўключыце гэта, каб запланаваць абнаўленні апавяшчэнняў і віджэтаў на пэўны час…</string>
     <string name="pref_ContactsAccess_title">Няма доступу да кантактаў</string>
@@ -1125,6 +1146,12 @@
     <string name="pref_Tools_Preferences_Export_result">Экспартавана налад: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Імпартаваць налады</string>
     <string name="pref_Tools_Preferences_Import_result">Імпартавана налад: %1$d, памылак: %2$d</string>
+    <string name="pref_Tools_Events_title">Падзеі</string>
+    <string name="pref_Tools_Events_Show_title">Паказаць захаваныя мясцовыя падзеі</string>
+    <string name="pref_Tools_Events_Export_title">Экспарт мясцовых падзей</string>
+    <string name="pref_Tools_Events_Export_result">Экспартаваныя падзеі: %1$d</string>
+    <string name="pref_Tools_Events_Import_title">Імпарт мясцовых падзей</string>
+    <string name="pref_Tools_Events_Import_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>усталявана з %1$s]]></string>
@@ -1152,6 +1179,7 @@
     <string name="stats_counters_nicknames"><![CDATA[<li>псеўданімаў: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>web спасылак: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>віджэты: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>нераспазнаныя падзеі: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Падзеі па крыніцах:</h2><ul>]]></string>
 
@@ -1261,6 +1289,20 @@
     <string name="facts_popup_action_next_fact">⏩ Наступны</string>
     <string name="facts_popup_action_share">📤 Падзяліцца</string>
     <string name="facts_popup_empty">Бул фактаў пусты</string>
+
+    <string name="local_event_date_picker_use_year">Увядзіце год</string>
+    <string name="local_event_date_picker_title">Выберыце дату:</string>
+    <string name="local_event_dialog_title_new_event">Дадаць новую падзею</string>
+    <string name="local_event_dialog_title_edit_event">Рэдагаваць падзею</string>
+    <string name="local_event_dialog_caption_name">Імя Прозвішча:</string>
+    <string name="local_event_dialog_caption_name_alt">Прозвішча Імя:</string>
+    <string name="local_event_dialog_caption_name_holiday">Подпіс да падзеі:</string>
+    <string name="local_event_dialog_caption_title">Пасада, род заняткаў:</string>
+    <string name="local_event_dialog_caption_org">Арганізацыя:</string>
+    <string name="local_event_dialog_date_title">Дата:</string>
+    <string name="local_event_dialog_type_title">Тып падзеі:</string>
+    <string name="local_event_dialog_confirmation_remove">Вы ўпэўнены, што хочаце выдаліць гэту падзею?</string>
+    <string name="local_event_dialog_confirmation_cancel">Даныя падзеі былі зменены. Вы ўпэўнены, што хочаце закрыць гэтае дыялогавае акно?</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Гадавіны_вяселля -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Паркалёвае</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 12:53
+ *  * Created by Vladimir Belov on 21.03.2025, 21:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 12:51
+ *  * Last modified 19.03.2025, 22:30
  *
  */
 
@@ -128,11 +128,10 @@ public class WidgetList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
 
-                views.setViewVisibility(R.id.info, View.VISIBLE);
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
                         + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
             } else {
-                views.setViewVisibility(R.id.info, View.GONE);
+                views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
 
             String prefWidgetCaption = Constants.STRING_EMPTY;
@@ -154,7 +153,7 @@ public class WidgetList extends AppWidgetProvider {
                 views.setViewPadding(R.id.widget_layout, 0, paddingTop, 0, 0);
                 views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             } else {
-                views.setViewVisibility(R.id.caption, View.GONE);
+                views.setViewVisibility(R.id.caption, View.INVISIBLE);
                 views.setViewPadding(R.id.widget_layout, 0, 0, 0, 0);
             }
 

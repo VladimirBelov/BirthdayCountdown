@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 21.03.2025, 20:31
   ~  */
   -->
 
@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Налаштування</string>
 
     <string name="menu_add_event">Додати подію</string>
+    <string name="menu_add_event_to_local">Додати місцеву подію…</string>
     <string name="menu_add_event_to_contact">Додати подію до контакту…</string>
     <string name="menu_add_event_to_contact_short">Додати до контакту…</string>
     <string name="menu_add_event_to_calendar">Додати подію до календаря…</string>
@@ -39,6 +40,7 @@
     <string name="menu_events_types">Типи подій…</string>
     <string name="menu_hints">Пошукові підказки…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
+    <string name="menu_context_open_contact">Відкрити контакт</string>
     <string name="menu_context_create_contact">Crear contacto…</string>
     <string name="menu_context_open_calendar_event">Показати подію у календарі</string>
     <string name="menu_context_event_info">Дані про подію</string>
@@ -62,6 +64,7 @@
     <string name="menu_context_set_event_type">Виберіть тип події…</string>
     <string name="menu_context_favorites_add">Додати до вибраного</string>
     <string name="menu_context_favorites_remove">Видалити з вибраного</string>
+    <string name="menu_context_edit_local_event">Редагувати подію</string>
     <string name="menu_ok">Добре</string>
     <string name="menu_help">Довідка</string>
     <string name="menu_help_events_calendar">Події календаря</string>
@@ -136,7 +139,8 @@
     <string name="msg_age_could_be">"Може бути: "</string>
     <string name="msg_age_passed">"Минуло: "</string>
     <string name="msg_label_search">Введіть частину П.І.Б., тип контакту, місце роботи, посада, дати (через кому):</string>
-    <string name="msg_hint_search">Пошуковий запит</string>
+    <string name="msg_hint_search">Шукати в списку</string>
+    <string name="msg_hint_search_all">Шукати всюди</string>
     <string name="msg_hint_global_search">Пошук подій</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
     <string name="msg_notifications_soon">"Незабаром подій - "</string>
@@ -147,6 +151,7 @@
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
     <string name="msg_no_events_check_prefs">"Жодної події не знайдено. Перевірте в налаштуваннях програми \"%1$s\" у розділі \"%2$s\""</string>
+    <string name="msg_no_access_calendar_hint">Немає доступу до календарів. Перевірте дозволи програми</string>
     <string name="msg_no_access_storage_hint">Немає доступу до зовнішнього сховища. Перевірте надання дозволiв додатку</string>
     <string name="msg_welcome_title">Ласкаво просимо!</string>
     <string name="msg_welcome_text">Дякую, що Ви встановили цю програму, хоча більшість функцій налаштована максимально інформативно та мінімально набридливо, раджу перевірити всi налаштування програми. (наприклад, там можна вiмкнути повідомлення про майбутні події або задати параметри для віджетів) Приємного Вам користування!</string>
@@ -159,18 +164,22 @@
     <string name="msg_filter_clean_hidden_result">"Видалено приховані події для відсутніх контактів та події календаря: "</string>
     <string name="msg_filter_clean_XDays_result">"Видалено лічильники днів для неіснуючих подій: "</string>
     <string name="msg_filter_clean_XDays_noresult">"Жоден лічильник не видалено. Якщо події немає в списку, перевірте типи подій, увімкнені для відображення"</string>
+    <string name="msg_event_hide_confirmation">Приховати цю подію? Ви можете знайти його пізніше за допомогою пошуку програми або встановивши відповідний фільтр списку подій</string>
     <string name="msg_account_info">"Подія з рахунку \"%1$s\""</string>
     <string name="msg_calendar_info">"Подія календаря \"%1$s\""</string>
     <string name="msg_file_info">"Подія з файлу \"%1$s\""</string>
     <string name="msg_source_info">"Подія з \"%1$s\""</string>
+    <string name="msg_source_local">Локальна подія</string>
     <string name="msg_title_confirmation">Підтвердження</string>
     <string name="msg_title_success">Дія завершена</string>
     <string name="msg_title_settings">Збережені налаштування</string>
+    <string name="msg_title_local_events">Місцеві події</string>
     <string name="msg_no_selection">Вибір порожній! Треба що-небудь вибрати</string>
     <string name="msg_notifications_were_enabled">"Сповіщення ввімкнено\n"</string>
     <string name="msg_notifications_were_disabled">"Сповіщення вимкнено\n"</string>
     <string name="msg_widget_prefs_removed">"Налаштування для віджета #%s видалено"</string>
     <string name="msg_widget_prefs_saved">"Збережені параметри віджета #%1$s:\n%2$s"</string>
+    <string name="msg_widget_bad_id">widgetId невідомий!</string>
     <string name="msg_ringtone">"Мелодія: "</string>
     <string name="msg_deleted_channel">"Канал сповіщення %1$s видалено\n"</string>
     <string name="msg_created_channel">"Канал сповіщення %1$s створено\n"</string>
@@ -183,10 +192,12 @@
     <string name="msg_prefs_import_prefs_clear_confirmation">Очистити всі збережені налаштування перед імпортом нових?</string>
     <string name="msg_prefs_import_unknown">"Невідомий параметр: %1$s"</string>
     <string name="msg_prefs_import_error">"Помилка імпорту: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Очистити всі локальні події перед імпортом нових?</string>
     <string name="msg_event_type_select_title">Виберіть тип події</string>
     <string name="msg_event_type_label_set">"Набір міток: %1$s"</string>
     <string name="msg_event_type_label_added">"Додано мітку: %1$s"</string>
     <string name="msg_event_type_label_absent">У події відсутня мітка!</string>
+    <string name="msg_empty_required_field">"Обов'язкове поле порожнє: %s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
@@ -234,6 +245,7 @@
     <string name="button_open">Відкрити</string>
     <string name="button_share">Поділитися</string>
     <string name="button_rgb">Колір RGB</string>
+    <string name="button_save">Зберегти</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -257,6 +269,7 @@
     <string name="event_type_nameday">Іменини</string>
     <string name="event_type_calendar">Подія календаря</string>
     <string name="event_type_file">Подія з файлу</string>
+    <string name="event_type_custom">Користувацька подія</string>
     <string name="event_type_unrecognized">Нерозпізнана подія</string>
 
     <string name="account_type_local">Локальний акаунт</string>
@@ -443,11 +456,11 @@
     <string name="pref_List_EventTypes_title">Типи подій</string>
     <string name="pref_List_EventTypes_summary">Які події відображати в списку подій</string>
 
+    <string name="pref_List_EventTypes_Holidays">🏖️ Свята</string>
     <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Дні народження</item>
         <item>💑 Річниці весілля</item>
         <item>🗓️ Інші події</item>
-        <item>🏖️ Свята</item>
         <item>⏰ Події користувача</item>
         <item>🏆 Круглі дати (5K днів)</item>
     </string-array>
@@ -646,6 +659,10 @@
         <item>Середній</item>
         <item>Великий</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_title">Верхнє відступ</string>
+    <string name="pref_List_TopPadding_summary">Використовуйте це налаштування, якщо список подій сканується під заголовком вікна</string>
+    <string name="pref_List_TopPadding_hint">Введіть розмір відступу</string>
 
     <string name="pref_Widgets_title">Віджети</string>
     <string name="pref_Widgets_summary">Загальні налаштування віджетів</string>
@@ -898,6 +915,7 @@
     <string name="widget_config_onclick_label">При натисканні</string>
     <string name="widget_config_onclick_common_label">Дні без подій:</string>
     <string name="widget_config_onclick_holidays_label">Дні з подіями:</string>
+    <string name="widget_config_onclick_events_label">Події:</string>
     <string name="widget_config_month_color_common_label">Колір загальних днів</string>
     <string name="widget_config_month_color_common_description">Колір звичайних днів</string>
     <string name="widget_config_month_color_today_label">Колір сьогоднішнього дня</string>
@@ -967,6 +985,7 @@
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Вибране</string>
+    <string name="widget_config_events_local_events">📅 Місцеві події</string>
 
     <string name="pref_Notifications_title">Повідомлення</string>
     <string name="pref_Notifications_summary">Коли та як показувати сповіщення про події</string>
@@ -1100,6 +1119,8 @@
     <string name="pref_About_summary">Історія версій, статистика подій, посилання на магазини програм</string>
     <string name="pref_BatteryOptimization_title">Оптимізація батареї ВКЛЮЧЕНА</string>
     <string name="pref_BatteryOptimization_summary">Відкрити налаштування і вимкнути оптимізацію…</string>
+    <string name="pref_NotificationsAccess_title">Сповіщення ВИМКНЕНО</string>
+    <string name="pref_NotificationsAccess_summary">Відкрийте налаштування та ввімкніть це, щоб показувати сповіщення…</string>
     <string name="pref_ExactAlarmsAccess_title">Будильники та нагадування ВИМКНЕНО</string>
     <string name="pref_ExactAlarmsAccess_summary">Відкрийте налаштування та ввімкніть це, щоб запланувати оновлення сповіщень і віджетів на певний час…</string>
     <string name="pref_ContactsAccess_title">Немає доступу до подій контактів</string>
@@ -1125,6 +1146,12 @@
     <string name="pref_Tools_Preferences_Export_result">Експортовано налаштувань: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Параметри імпорту</string>
     <string name="pref_Tools_Preferences_Import_result">Налаштування імпортовано: %1$d, помилок: %2$d</string>
+    <string name="pref_Tools_Events_title">Події</string>
+    <string name="pref_Tools_Events_Show_title">Показати збережені місцеві події</string>
+    <string name="pref_Tools_Events_Export_title">Експорт місцевих подій</string>
+    <string name="pref_Tools_Events_Export_result">Експортовано подій: %1$d</string>
+    <string name="pref_Tools_Events_Import_title">Імпорт місцевих подій</string>
+    <string name="pref_Tools_Events_Import_result">Імпортовано подій: %1$d, пропущено: %2$d, помилок: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>встановлено з %1$s]]></string>
@@ -1152,6 +1179,7 @@
     <string name="stats_counters_nicknames"><![CDATA[<li>псевдонімів: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>веб-посилання: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>віджети: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>нерозпізнані події: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Події за джерелами:</h2><ul>]]></string>
 
@@ -1261,6 +1289,20 @@
     <string name="facts_popup_action_next_fact">⏩ Наступний</string>
     <string name="facts_popup_action_share">📤 Поділіться</string>
     <string name="facts_popup_empty">Блок фактів порожній</string>
+
+    <string name="local_event_date_picker_use_year">Укажіть рік</string>
+    <string name="local_event_date_picker_title">Виберіть дату:</string>
+    <string name="local_event_dialog_title_new_event">Додати нову подію</string>
+    <string name="local_event_dialog_title_edit_event">Редагувати подію</string>
+    <string name="local_event_dialog_caption_name">"Ім'я Прізвище:"</string>
+    <string name="local_event_dialog_caption_name_alt">Прізвище:</string>
+    <string name="local_event_dialog_caption_name_holiday">Підпис події:</string>
+    <string name="local_event_dialog_caption_title">Посада, професія:</string>
+    <string name="local_event_dialog_caption_org">Організація:</string>
+    <string name="local_event_dialog_date_title">Дата:</string>
+    <string name="local_event_dialog_type_title">Тип події:</string>
+    <string name="local_event_dialog_confirmation_remove">Ви впевнені, що хочете видалити цю подію?</string>
+    <string name="local_event_dialog_confirmation_cancel">Дані події було змінено. Ви впевнені, що бажаєте закрити це діалогове вікно?</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/

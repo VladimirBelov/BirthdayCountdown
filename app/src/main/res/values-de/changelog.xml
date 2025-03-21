@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.03.2025, 21:11
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.6</item>
+        <item>📅 Lokale Ereignisse, die innerhalb der Anwendung gespeichert sind (in der Liste und den Widgets, Export-Import)</item>
+        <item>Die Berechnung des Tierkreisjahres wurde neu geschrieben (berücksichtigt jetzt den Mondkalender)</item>
+        <item>Möglichkeit, ein neues Widget aus den Anwendungseinstellungen hinzuzufügen</item>
+        <item>Einrichten eines Klicks in einem Listen-Widget (Aktion oder Menü)</item>
+        <item>Im Kalenderereignis-Header wird nicht nur der Tag [name] unterstützt, sondern auch der Tag [type] (zur Unterstützung von Geburtstagen aus Google Kalender)</item>
+        <item>Möglichkeit, eine Tatsache aus einem Listen-Widget durch Klicken auf ein Ereignis zu teilen</item>
+        <item>Einstellen der vertikalen Einrückung der Ereignisliste (Extrafunktionen - EIN, Ereignisliste - Oberer Einzug)</item>
+        <item>Optimierungen für Android 15</item>
+        <item>Fehlerbehebungen</item>
 
         <item>#1.8.5</item>
         <item>Vorherige Ereignisse in der Hauptliste: 5k hinzugefügt, Ereignisse mit flexiblen Daten, Ereignisse aus Kalendern</item>

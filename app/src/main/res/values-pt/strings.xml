@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 01:25
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 00:52
+  ~  * Last modified 21.03.2025, 20:29
   ~  */
   -->
 
@@ -24,6 +24,7 @@
     <string name="shortcut_settings">Configurações</string>
 
     <string name="menu_add_event">Adicionar evento</string>
+    <string name="menu_add_event_to_local">Adicionar evento local…</string>
     <string name="menu_add_event_to_contact">Adicionar evento ao contato…</string>
     <string name="menu_add_event_to_contact_short">Adicionar ao contato…</string>
     <string name="menu_add_event_to_calendar">Adicionar evento ao calendário…</string>
@@ -39,6 +40,7 @@
     <string name="menu_events_types">Tipos de eventos…</string>
     <string name="menu_hints">Dicas de pesquisa…</string>
     <string name="menu_context_edit_contact">Editar contato</string>
+    <string name="menu_context_open_contact">Abrir contato</string>
     <string name="menu_context_create_contact">Criar contato…</string>
     <string name="menu_context_open_calendar_event">Mostrar evento do calendário</string>
     <string name="menu_context_event_info">Dados do evento</string>
@@ -62,6 +64,7 @@
     <string name="menu_context_set_event_type">Escolha o tipo de evento…</string>
     <string name="menu_context_favorites_add">Adicionar aos favoritos</string>
     <string name="menu_context_favorites_remove">Remover dos favoritos</string>
+    <string name="menu_context_edit_local_event">Editar evento</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referência</string>
     <string name="menu_help_events_calendar">Eventos de calendário</string>
@@ -136,7 +139,8 @@
     <string name="msg_age_could_be">"Pode ser: "</string>
     <string name="msg_age_passed">"Passado: "</string>
     <string name="msg_label_search">Insira parte do nome completo, tipo de contato, cargo, cargo, alguma parte da data do evento (separados por vírgulas):</string>
-    <string name="msg_hint_search">Valor de pesquisa</string>
+    <string name="msg_hint_search">Pesquisar na lista</string>
+    <string name="msg_hint_search_all">Pesquisar em todos os lugares</string>
     <string name="msg_hint_global_search">Pesquisar aniversários e eventos</string>
     <string name="msg_notifications_soon_no_events">Nenhum evento nos dias escolhidos</string>
     <string name="msg_notifications_soon">"Eventos em breve - "</string>
@@ -147,6 +151,7 @@
     <string name="msg_no_accounts_hint">"Nenhuma conta foi encontrada ou você não concedeu acesso a elas"</string>
     <string name="msg_no_calendars_hint">"Nenhum calendário visível foi encontrado ou você não deu acesso a eles"</string>
     <string name="msg_no_events_check_prefs">"Nenhum evento encontrado. Verifique o item \"%1$s\" na seção \"%2$s\" das configurações do programa"</string>
+    <string name="msg_no_access_calendar_hint">Sem acesso aos calendários. Verifique as permissões do aplicativo</string>
     <string name="msg_no_access_storage_hint">Sem acesso ao armazenamento externo. Verifique as permissões do aplicativo</string>
     <string name="msg_welcome_title">Bem-vindo!</string>
     <string name="msg_welcome_text">Obrigado por instalar este programa. Embora a maioria das funções sejam configuradas da forma mais informativa e minimamente irritante possível, é recomendável que você verifique as configurações do aplicativo. Por exemplo, você pode ativar notificações de eventos futuros ou definir parâmetros para widgets. Aproveite seu uso!</string>
@@ -159,18 +164,22 @@
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos apagados para contatos ausentes e eventos de calendário: "</string>
     <string name="msg_filter_clean_XDays_result">"Contadores de dias removidos para eventos inexistentes: "</string>
     <string name="msg_filter_clean_XDays_noresult">"Nenhum contador foi removido. Se o evento não estiver listado, verifique os tipos de eventos habilitados para exibição"</string>
+    <string name="msg_event_hide_confirmation">Ocultar este evento? Você pode encontrá-lo mais tarde pela pesquisa do aplicativo ou definindo o filtro de lista de eventos apropriado</string>
     <string name="msg_account_info">"Evento da conta \"%1$s\""</string>
     <string name="msg_calendar_info">"Evento do calendário \"%1$s\""</string>
     <string name="msg_file_info">"Evento do arquivo \"%1$s\""</string>
     <string name="msg_source_info">"Evento do \"%1$s\""</string>
+    <string name="msg_source_local">Evento local</string>
     <string name="msg_title_confirmation">Confirmação</string>
     <string name="msg_title_success">Ação concluída</string>
     <string name="msg_title_settings">Configurações salvas</string>
+    <string name="msg_title_local_events">Eventos locais</string>
     <string name="msg_no_selection">Seleção vazia! Precisa selecionar qualquer coisa</string>
     <string name="msg_notifications_were_enabled">"As notificações foram ativadas\n"</string>
     <string name="msg_notifications_were_disabled">"As notificações foram desativadas\n"</string>
     <string name="msg_widget_prefs_removed">"As preferências do widget #%s foram removidas"</string>
     <string name="msg_widget_prefs_saved">"Widget salvo #%1$s preferências:\n%2$s"</string>
+    <string name="msg_widget_bad_id">widgetId é desconhecido!</string>
     <string name="msg_ringtone">"Toque: "</string>
     <string name="msg_deleted_channel">"Notificar que o canal %1$s foi excluído\n"</string>
     <string name="msg_created_channel">"Notificar que o canal %1$s foi criado\n"</string>
@@ -183,10 +192,12 @@
     <string name="msg_prefs_import_prefs_clear_confirmation">Limpar todas as preferências salvas antes de importar uma nova?</string>
     <string name="msg_prefs_import_unknown">"Preferência desconhecida: %1$s"</string>
     <string name="msg_prefs_import_error">"Erro de importação: %1$s"</string>
+    <string name="msg_prefs_import_events_clear_confirmation">Limpar todos os eventos locais antes de importar novos?</string>
     <string name="msg_event_type_select_title">Selecione o tipo de evento</string>
     <string name="msg_event_type_label_set">"Conjunto de rótulos: %1$s"</string>
     <string name="msg_event_type_label_added">"Rótulo adicionado: %1$s"</string>
     <string name="msg_event_type_label_absent">O evento não tem rótulo!</string>
+    <string name="msg_empty_required_field">"Campo obrigatório está vazio: %s"</string>
 
     <string name="pref_Notifications_Notification_Channel_Name">Próximos eventos</string>
     <string name="pref_Notifications_Notification_Channel_Description">Mostrar notificações para eventos futuros</string>
@@ -234,6 +245,7 @@
     <string name="button_open">Abrir</string>
     <string name="button_share">Compartilhar</string>
     <string name="button_rgb">Cor RGB</string>
+    <string name="button_save">Salvar</string>
 
     <string name="events_scope_not_hidden">Tudo não oculto (%1$d)</string>
     <string name="events_scope_all">Todos (%1$d)</string>
@@ -257,6 +269,7 @@
     <string name="event_type_nameday">Nome do dia</string>
     <string name="event_type_calendar">Evento de calendário</string>
     <string name="event_type_file">Evento de arquivo</string>
+    <string name="event_type_custom">Evento personalizado</string>
     <string name="event_type_unrecognized">Evento não reconhecido</string>
 
     <string name="account_type_local">Conta local</string>
@@ -443,11 +456,11 @@
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
     <string name="pref_List_EventTypes_summary">Que tipo de eventos incluir na lista</string>
 
+    <string name="pref_List_EventTypes_Holidays">🏖️ Feriados</string>
     <string-array name="pref_List_EventTypes_entries">
         <item>🎂 Aniversários</item>
         <item>💑 Aniversários casamento</item>
         <item>🗓️ Outros eventos</item>
-        <item>🏖️ Feriados</item>
         <item>⏰ Eventos personalizados</item>
         <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
     </string-array>
@@ -646,6 +659,10 @@
         <item>Médio</item>
         <item>Grande</item>
     </string-array>
+
+    <string name="pref_List_TopPadding_title">Preenchimento superior</string>
+    <string name="pref_List_TopPadding_summary">Use esta configuração se a lista de eventos rastejar sob o título da janela</string>
+    <string name="pref_List_TopPadding_hint">Digite o tamanho do preenchimento</string>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Preferências de widgets comuns</string>
@@ -898,6 +915,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="widget_config_onclick_label">Comportamento ao clicar</string>
     <string name="widget_config_onclick_common_label">Dias sem eventos:</string>
     <string name="widget_config_onclick_holidays_label">Dias com eventos:</string>
+    <string name="widget_config_onclick_events_label">Eventos:</string>
     <string name="widget_config_month_color_common_label">Cor dos dias comuns</string>
     <string name="widget_config_month_color_common_description">Cor dos dias comuns</string>
     <string name="widget_config_month_color_today_label">Cor de hoje</string>
@@ -967,6 +985,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Favoritos</string>
+    <string name="widget_config_events_local_events">📅 Eventos locais</string>
 
     <string name="pref_Notifications_title">Notificações</string>
     <string name="pref_Notifications_summary">Quando e como mostrar notificações de eventos</string>
@@ -1100,6 +1119,8 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_About_summary">Histórico de versões, estatísticas de eventos, links de lojas de aplicativos</string>
     <string name="pref_BatteryOptimization_title">A otimização da bateria está ATIVADA</string>
     <string name="pref_BatteryOptimization_summary">Abra a configuração e desative a otimização…</string>
+    <string name="pref_NotificationsAccess_title">Notificações estão DESLIGADAS</string>
+    <string name="pref_NotificationsAccess_summary">Abra a configuração e ative para mostrar notificações…</string>
     <string name="pref_ExactAlarmsAccess_title">Alarmes e lembretes estão DESATIVADOS</string>
     <string name="pref_ExactAlarmsAccess_summary">Abra a configuração e ative-a para agendar notificações e atualizações de widgets para um horário específico…</string>
     <string name="pref_ContactsAccess_title">Sem acesso a eventos de contatos</string>
@@ -1125,6 +1146,12 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_Tools_Preferences_Export_result">Preferências exportadas: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Importar preferências</string>
     <string name="pref_Tools_Preferences_Import_result">Preferências importadas: %1$d, erros: %2$d</string>
+    <string name="pref_Tools_Events_title">Eventos</string>
+    <string name="pref_Tools_Events_Show_title">Mostrar eventos locais salvos</string>
+    <string name="pref_Tools_Events_Export_title">Exportar eventos locais</string>
+    <string name="pref_Tools_Events_Export_result">Eventos exportados: %1$d</string>
+    <string name="pref_Tools_Events_Import_title">Importar eventos locais</string>
+    <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d, ignorados: %2$d, erros: %3$d</string>
 
     <string name="changelog_version"><![CDATA[versão: %1$s (%2$s)<br>construído: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalado de %1$s]]></string>
@@ -1152,6 +1179,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="stats_counters_nicknames"><![CDATA[<li>apelidos de contatos: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>links da web: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>widgets: %1$d]]></string>
+    <string name="stats_counters_unrecognized"><![CDATA[<li>eventos não reconhecidos: %1$s]]></string>
 
     <string name="stats_counters_events_title"><![CDATA[<h2>Eventos por fontes:</h2><ul>]]></string>
 
@@ -1262,6 +1290,20 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="facts_popup_action_next_fact">⏩ Próximo</string>
     <string name="facts_popup_action_share">📤 Compartilhar</string>
     <string name="facts_popup_empty">O pool de fatos está vazio</string>
+
+    <string name="local_event_date_picker_use_year">Fornecer ano</string>
+    <string name="local_event_date_picker_title">Escolher data:</string>
+    <string name="local_event_dialog_title_new_event">Adicionar novo evento</string>
+    <string name="local_event_dialog_title_edit_event">Editar evento</string>
+    <string name="local_event_dialog_caption_name">Nome Sobrenome:</string>
+    <string name="local_event_dialog_caption_name_alt">Sobrenome Nome:</string>
+    <string name="local_event_dialog_caption_name_holiday">Legenda do evento:</string>
+    <string name="local_event_dialog_caption_title">Cargo, ocupação:</string>
+    <string name="local_event_dialog_caption_org">Organização:</string>
+    <string name="local_event_dialog_date_title">Data:</string>
+    <string name="local_event_dialog_type_title">Tipo de evento:</string>
+    <string name="local_event_dialog_confirmation_remove">Tem certeza de que deseja remover este evento?</string>
+    <string name="local_event_dialog_confirmation_cancel">Os dados do evento foram modificados. Tem certeza de que deseja fechar este diálogo?</string>
 
     <!-- https://pt.wikipedia.org/wiki/Anivers%C3%A1rio_de_casamento -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>

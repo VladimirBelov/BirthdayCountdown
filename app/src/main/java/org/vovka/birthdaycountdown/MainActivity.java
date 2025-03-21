@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 12:53
+ *  * Created by Vladimir Belov on 21.03.2025, 21:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 11:18
+ *  * Last modified 20.03.2025, 23:32
  *
  */
 
@@ -930,15 +930,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventIcons.add(R.drawable.ic_event_other);
             eventNames.add(getString(R.string.event_type_holiday));
             eventIcons.add(R.drawable.ic_event_holiday);
-            eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent1_caption);
+            eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption);
             eventIcons.add(R.drawable.ic_event_custom1);
-            eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent2_caption);
+            eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption);
             eventIcons.add(R.drawable.ic_event_custom2);
-            eventNames.add(eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent3_caption);
+            eventNames.add(eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption);
             eventIcons.add(R.drawable.ic_event_custom3);
-            eventNames.add(eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent4_caption);
+            eventNames.add(eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption);
             eventIcons.add(R.drawable.ic_event_custom4);
-            eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.pref_CustomEvents_Custom_title) : eventsData.preferences_customevent5_caption);
+            eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption);
             eventIcons.add(R.drawable.ic_event_custom5);
 
             ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, ImageSelectAdapter.Scale.SQUARED, ta);
@@ -2609,9 +2609,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     void selectEventsTypes() {
         try {
 
-            final List<String> eventTypesIDs = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values));
-            final List<String> eventTypesTitles = Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries));
+            final List<String> eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
+            final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
+
+            eventTypesIDs.add(getString(R.string.pref_EventTypes_Holiday));
+            eventTypesTitles.add(getString(R.string.pref_List_EventTypes_Holidays));
 
             Set<String> preferences_list_types = eventsData.preferences_list_event_types;
             boolean[] sel = new boolean[eventTypesIDs.size()];

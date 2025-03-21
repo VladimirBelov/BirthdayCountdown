@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 01:25
+ *  * Created by Vladimir Belov on 21.03.2025, 21:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 01:12
+ *  * Last modified 20.03.2025, 21:27
  *
  */
 
@@ -258,6 +258,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Типы событий
             eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
             eventTypesValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
+
+            if (!Constants.WIDGET_TYPE_5X1.equals(widgetType) && !Constants.WIDGET_TYPE_4X1.equals(widgetType) && !Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
+                eventTypesIDs.add(getString(R.string.pref_EventTypes_Holiday));
+                eventTypesValues.add(getString(R.string.pref_List_EventTypes_Holidays));
+            }
 
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));

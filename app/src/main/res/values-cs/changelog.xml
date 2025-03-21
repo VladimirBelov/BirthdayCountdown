@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.12.2024, 13:55
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 16.12.2024, 13:55
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.03.2025, 20:53
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.6</item>
+        <item>📅 Místní události uložené v aplikaci (v seznamu a widgetech, export-import)</item>
+        <item>Výpočet roku zvěrokruhu byl přepsán (nyní zohledňuje lunární kalendář)</item>
+        <item>Možnost přidat nový widget z nastavení aplikace</item>
+        <item>Nastavení kliknutí ve widgetu seznamu (akce nebo nabídka)</item>
+        <item>V záhlaví události kalendáře je podporována nejen značka [name], ale také značka [type] (pro podporu narozenin z Kalendáře Google)</item>
+        <item>Možnost sdílet fakt z widgetu seznamu kliknutím na událost</item>
+        <item>Nastavení svislého odsazení seznamu událostí (doplňkové funkce – ZAPNUTO, Seznam událostí – svislé odsazení)</item>
+        <item>Optimalizace pro Android 15</item>
+        <item>Opravy chyb</item>
 
         <item>#1.8.5</item>
         <item>Předchozí události v hlavním seznamu: přidáno 5k, události s plovoucími daty, události z kalendářů</item>

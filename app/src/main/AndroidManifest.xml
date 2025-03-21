@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.03.2025, 22:37
+  ~  * Last modified 20.03.2025, 21:42
   ~  */
   -->
 
@@ -166,6 +166,7 @@
             android:name=".WidgetConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
             tools:ignore="LockedOrientationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleInstance"
             android:autoRemoveFromRecents="true">
@@ -178,6 +179,7 @@
             android:name=".WidgetCalendarConfigureActivity"
             android:theme="@style/AppTheme.DarkGray"
             tools:ignore="LockedOrientationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleInstance"
             android:autoRemoveFromRecents="true">

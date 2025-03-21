@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.03.2025, 20:56
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.6</item>
+        <item>📅 Eventos locais armazenados dentro do aplicativo (na lista e widgets, exportação-importação)</item>
+        <item>O cálculo do ano do zodíaco foi reescrito (agora leva em consideração o calendário lunar)</item>
+        <item>Capacidade de adicionar um novo widget nas configurações do aplicativo</item>
+        <item>Configurando um clique em um widget de lista (ação ou menu)</item>
+        <item>Não apenas a tag [nome] é suportada no cabeçalho de eventos do calendário, mas também a tag [tipo] (para suportar aniversários do Google Agenda)</item>
+        <item>Capacidade de compartilhar um fato de um widget de lista clicando em um evento</item>
+        <item>Definindo o recuo vertical da lista de eventos (Funções adicionais - ON, Lista de eventos - Recuo vertical)</item>
+        <item>Otimizações para Android 15</item>
+        <item>Correções de bugs</item>
 
         <item>#1.8.5</item>
         <item>Eventos anteriores na lista principal: adicionado 5k, eventos com datas flutuantes, eventos de calendários</item>

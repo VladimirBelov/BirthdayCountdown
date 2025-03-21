@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 21.03.2025, 21:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.03.2025, 00:56
+ *  * Last modified 20.03.2025, 23:22
  *
  */
 
@@ -37,7 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -233,13 +232,7 @@ public class LocalEventActivity extends Activity {
             this.getTheme().applyStyle(R.style.FloatingActivity, true);
             setContentView(R.layout.activity_event);
 
-            LinearLayout layout = findViewById(R.id.layoutMain);
-            /*TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            int backColorInt = ta.getColor(R.styleable.Theme_colorPrimary, 0);
-            int newAlpha = (int) (255 * 0.3f);
-            int newColor = Color.argb(newAlpha, Color.red(backColorInt), Color.green(backColorInt), Color.blue(backColorInt));
-            layout.setBackgroundColor(newColor);
-            ta.recycle();*/
+            //LinearLayout layout = findViewById(R.id.layoutMain);
 
             viewActivityTitle = findViewById(R.id.textCaption);
             viewName = findViewById(R.id.captionName);
@@ -276,7 +269,21 @@ public class LocalEventActivity extends Activity {
             eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
             eventTypesIds.add(Constants.Type_HolidayEvent);
             eventSubTypesIds.add(Constants.Type_HolidayEvent);
-            //todo: добавить пользовательские типы событий
+            eventTypesValues.add(getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption));
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Custom1);
+            eventTypesValues.add(getString(R.string.event_type_custom2_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption));
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Custom2);
+            eventTypesValues.add(getString(R.string.event_type_custom3_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption));
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Custom3);
+            eventTypesValues.add(getString(R.string.event_type_custom4_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption));
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Custom4);
+            eventTypesValues.add(getString(R.string.event_type_custom5_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption));
+            eventTypesIds.add(Constants.Type_Custom);
+            eventSubTypesIds.add(Constants.Type_Custom5);
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
