@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 12:53
+ *  * Created by Vladimir Belov on 25.03.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 11:25
+ *  * Last modified 24.03.2025, 12:08
  *
  */
 
@@ -106,10 +106,9 @@ public class WidgetMenuActivity extends Activity {
                 return;
             }
 
-            this.setTheme(eventsData.preferences_theme.themeMain);
-            this.getTheme().applyStyle(R.style.FloatingActivity, true);
+            this.setTheme(eventsData.preferences_theme.themeDialog);
+
             setContentView(R.layout.widget_menu);
-            setFinishOnTouchOutside(true);
 
             //Ширина диалога
             WindowManager.LayoutParams layoutParams = getWindow().getAttributes();

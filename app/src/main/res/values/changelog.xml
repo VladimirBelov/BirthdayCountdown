@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 21:25
+  ~  * Last modified 25.03.2025, 02:16
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>In the title of the calendar event, not only the [name] tag is supported, but also [type] (to support events from the Google calendar)</item>
         <item>Ability to share a fact from the list widget by pressing the event</item>
         <item>Setting the vertical indent of the event list (extra features - ON, Events list - Top indent)</item>
+        <item>List filters for hidden events, favorites, and day counters show events of all types and from all sources</item>
         <item>Optimizations for Android 15</item>
         <item>Bug Fixes</item>
 

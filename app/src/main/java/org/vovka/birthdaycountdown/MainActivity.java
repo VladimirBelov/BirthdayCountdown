@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2025, 21:51
+ *  * Created by Vladimir Belov on 25.03.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.03.2025, 23:32
+ *  * Last modified 25.03.2025, 02:02
  *
  */
 
@@ -2311,25 +2311,45 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
-                boolean isSearchAllTypesAndSources = !filterNames.isEmpty() && eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents;
+                boolean isSearchAllTypesAndSources = (!filterNames.isEmpty() && eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents)
+                        || eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite
+                        || eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays
+                        || eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden;
 
                 for (String event : eventsData.eventList) {
                     String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                     String eventKey = eventsData.getEventKey(singleEventArray);
                     String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
+                    boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
+                    boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
+                    boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
+                            && resources.getString(R.string.event_type_xdays_emoji).equals(singleEventArray[ContactsEvents.Position_eventEmoji]);
+                    //&& !singleEventArray[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Xdays));
+                    //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
+                    boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
+                    boolean isEventTypeToShow = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]);
+
+                    if (isHiddenEvent) statsHiddenEvents++;
+                    if (isSilencedEvent) statsSilencedEvents++;
+                    if (isXDayEvent) statsXDaysEvents++;
+
                     //Фильтр по источникам
-                    if (!(eventsData.preferences_list_EventSources.isEmpty() || isSearchAllTypesAndSources)) {
+                    boolean isEventSourceToShow = false;
+                    if (!eventsData.preferences_list_EventSources.isEmpty()) {
                         final String eventDates = singleEventArray[ContactsEvents.Position_dates];
-                        boolean isVisibleEvent = false;
                         for (String source: eventsData.preferences_list_EventSources) {
                             if (eventDates.contains(source)) {
-                                isVisibleEvent = true;
+                                isEventSourceToShow = true;
                                 break;
                             }
                         }
-                        if (!isVisibleEvent) continue;
+                        if (!isSearchAllTypesAndSources && !isEventSourceToShow) continue;
+                    } else {
+                        isEventSourceToShow = true;
                     }
+
+                    if (isEventTypeToShow && isEventSourceToShow) statsAllEvents++;
 
                     boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
                     boolean skipAdd = false;
@@ -2343,19 +2363,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     //Фильтр по типам
-                    if (eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]) || isSearchAllTypesAndSources) {
-                        statsAllEvents++;
-
-                        boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
-                        boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
-                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
-                                && !singleEventArray[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Xdays));
-                                //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
-                        boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
-
-                        if (isHiddenEvent) statsHiddenEvents++;
-                        if (isSilencedEvent) statsSilencedEvents++;
-                        if (isXDayEvent) statsXDaysEvents++;
+                    if (isEventTypeToShow || isSearchAllTypesAndSources) {
 
                         //Фильтр по режиму отображения
                         if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
@@ -2368,6 +2376,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             statsVisibleEvents++;
                         }
                     }
+
                 }
             }
 
@@ -2776,8 +2785,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 }
 
-                //Дата оригинального события
-                holder.DateTextView.setText(eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear));
+                //Дата оригинального события или предстоящая дата (для 5K и счётчиков дней)
+                String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
+                String dateToShow;
+                if (resources.getString(R.string.event_type_xdays_emoji).equals(eventEmoji) || resources.getString(R.string.event_type_5k_emoji).equals(eventEmoji)) {
+                    dateToShow = singleEventArray[ContactsEvents.Position_eventDateNextTime];
+                } else {
+                    dateToShow = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
+                }
+                holder.DateTextView.setText(eventsData.getDateFormatted(dateToShow, ContactsEvents.FormatDate.WithYear));
 
                 //Фамилия Имя Отчество
                 holder.NameTextView.setText(eventsData.getFullName(singleEventArray));

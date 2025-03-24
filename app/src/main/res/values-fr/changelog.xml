@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:55
+  ~  * Last modified 25.03.2025, 02:17
   ~  */
   -->
 
@@ -19,6 +19,7 @@
     <item>No solo se admite la etiqueta [name] en el encabezado del evento del calendario, sino también la etiqueta [type] (para admitir cumpleaños de Google Calendar)</item>
     <item>Posibilidad de compartir un dato de un widget de lista haciendo clic en un evento</item>
     <item>Configuración de la sangría vertical de la lista de eventos (Funciones adicionales - ACTIVADO, Lista de eventos - Sangría vertical)</item>
+    <item>Les filtres de liste pour les événements masqués, les favoris et les compteurs de jours affichent les événements de tous types et de toutes sources</item>
     <item>Optimizaciones para Android 15</item>
     <item>Corrección de errores</item>
 

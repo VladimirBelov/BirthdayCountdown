@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 21:11
+  ~  * Last modified 25.03.2025, 02:15
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>Im Kalenderereignis-Header wird nicht nur der Tag [name] unterstützt, sondern auch der Tag [type] (zur Unterstützung von Geburtstagen aus Google Kalender)</item>
         <item>Möglichkeit, eine Tatsache aus einem Listen-Widget durch Klicken auf ein Ereignis zu teilen</item>
         <item>Einstellen der vertikalen Einrückung der Ereignisliste (Extrafunktionen - EIN, Ereignisliste - Oberer Einzug)</item>
+        <item>Listenfilter für versteckte Ereignisse, Favoriten und Tageszähler zeigen Ereignisse aller Art und aus allen Quellen an</item>
         <item>Optimierungen für Android 15</item>
         <item>Fehlerbehebungen</item>
 

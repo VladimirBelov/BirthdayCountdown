@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 18.03.2025, 00:54
+  ~  * Last modified 24.03.2025, 12:04
   ~  */
   -->
 
@@ -18,17 +18,19 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:textStyle="bold"
-        android:background="?attr/colorPrimary"
-        android:textColor="?attr/windowTitleColor" />
+        android:background="?attr/windowTitleColor"
+        android:textColor="?attr/windowTitleTextColor" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_marginBottom="2dp"
         android:background="?attr/listDividerColor" />
 
     <ListView
         android:id="@+id/menuListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="?attr/listDividerColor"
+        android:dividerHeight="1dp" />
 </LinearLayout>

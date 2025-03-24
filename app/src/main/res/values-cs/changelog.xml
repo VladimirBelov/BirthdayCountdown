@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:53
+  ~  * Last modified 25.03.2025, 02:17
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>V záhlaví události kalendáře je podporována nejen značka [name], ale také značka [type] (pro podporu narozenin z Kalendáře Google)</item>
         <item>Možnost sdílet fakt z widgetu seznamu kliknutím na událost</item>
         <item>Nastavení svislého odsazení seznamu událostí (doplňkové funkce – ZAPNUTO, Seznam událostí – svislé odsazení)</item>
+        <item>Filtry seznamu pro skryté události, oblíbené položky a počítadla dnů zobrazují události všech typů a ze všech zdrojů</item>
         <item>Optimalizace pro Android 15</item>
         <item>Opravy chyb</item>
 

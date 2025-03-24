@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:33
+  ~  * Last modified 25.03.2025, 01:21
   ~  */
   -->
 
@@ -103,7 +103,7 @@
     <string name="msg_color_parse_error">"Erreur de reconnaissance de couleur!"</string>
     <string name="msg_date_parse_error">"Erreur de reconnaissance de date: "</string>
     <string name="msg_event_parse_error">"Erreur de reconnaissance d'événement: '%1$s'"</string>
-    <string name="msg_jump_to_event_error">"Aucun événement trouvé ! Activer plus de types des événements dans les paramètres de l'application"</string>
+    <string name="msg_jump_to_event_error">"Aucun événement trouvé! Activer plus de types des événements dans les paramètres de l'application"</string>
     <string name="msg_errors_total">"Total des erreurs: "</string>
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">Tous</string>
@@ -111,6 +111,7 @@
     <string name="msg_version">"Version installée: %s"</string>
     <string name="msg_error_get_event_image">"Erreur lors de l'obtention de l'image de l'événement"</string>
     <string name="msg_event_color_selected">"Couleur #%1$s sélectionnée pour %2$s"</string>
+    <string name="msg_event_not_found">Aucun événement trouvé!</string>
 
     <string name="msg_plural_postfix">s</string>
 

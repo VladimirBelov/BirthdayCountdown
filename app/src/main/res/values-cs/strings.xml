@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:33
+  ~  * Last modified 25.03.2025, 01:20
   ~  */
   -->
 
@@ -111,6 +111,7 @@
     <string name="msg_version">"Verze nainstalována: %s"</string>
     <string name="msg_error_get_event_image">Chyba při získávání obrázku události</string>
     <string name="msg_event_color_selected">"Barva #%1$s vybrána pro %2$s"</string>
+    <string name="msg_event_not_found">Událost nenalezena!</string>
 
     <string name="msg_plural_postfix">x</string>
 

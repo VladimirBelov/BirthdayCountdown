@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:55
+  ~  * Last modified 25.03.2025, 02:17
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>W nagłówku wydarzenia kalendarza obsługiwany jest nie tylko tag [name], ale także tag [type] (obsługujący urodziny z Kalendarza Google)</item>
         <item>Możliwość udostępnienia faktu z widżetu listy poprzez kliknięcie zdarzenia</item>
         <item>Ustawianie wcięcia pionowego listy zdarzeń (Funkcje dodatkowe - WŁ., Lista zdarzeń - Wcięcie pionowe)</item>
+        <item>Filtry listy dla ukrytych zdarzeń, ulubionych i liczników dni pokazują zdarzenia wszystkich typów i ze wszystkich źródeł</item>
         <item>Optymalizacje dla Androida 15</item>
         <item>Poprawki błędów</item>
 

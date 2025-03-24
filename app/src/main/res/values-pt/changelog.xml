@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:56
+  ~  * Last modified 25.03.2025, 02:18
   ~  */
   -->
 
@@ -18,6 +18,7 @@
         <item>Não apenas a tag [nome] é suportada no cabeçalho de eventos do calendário, mas também a tag [tipo] (para suportar aniversários do Google Agenda)</item>
         <item>Capacidade de compartilhar um fato de um widget de lista clicando em um evento</item>
         <item>Definindo o recuo vertical da lista de eventos (Funções adicionais - ON, Lista de eventos - Recuo vertical)</item>
+        <item>Filtros de lista para eventos ocultos, favoritos e contadores de dias mostram eventos de todos os tipos e de todas as fontes</item>
         <item>Otimizações para Android 15</item>
         <item>Correções de bugs</item>
 

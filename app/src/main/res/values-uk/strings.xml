@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:31
+  ~  * Last modified 25.03.2025, 01:25
   ~  */
   -->
 
@@ -111,6 +111,7 @@
     <string name="msg_version">"Встановлено версію: %s"</string>
     <string name="msg_error_get_event_image">Помилка отримання зображення події</string>
     <string name="msg_event_color_selected">"Вибраний колір #%1$s для %2$s"</string>
+    <string name="msg_event_not_found">Подія не знайдено!</string>
 
     <string name="msg_plural_postfix">и</string>
 

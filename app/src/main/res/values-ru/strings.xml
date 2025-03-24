@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.03.2025, 20:00
+  ~  * Last modified 25.03.2025, 01:19
   ~  */
   -->
 
@@ -111,6 +111,7 @@
     <string name="msg_version">"Установлена версия: %s"</string>
     <string name="msg_error_get_event_image">Ошибка получения изображения события</string>
     <string name="msg_event_color_selected">"Выбран цвет #%1$s для %2$s"</string>
+    <string name="msg_event_not_found">Событие не найдено!</string>
 
     <string name="msg_plural_postfix">а</string>
 

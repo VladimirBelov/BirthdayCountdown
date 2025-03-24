@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2025, 21:51
+ *  * Created by Vladimir Belov on 25.03.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.03.2025, 19:59
+ *  * Last modified 25.03.2025, 01:25
  *
  */
 
@@ -2495,9 +2495,10 @@ class ContactsEvents {
                 } while (cursor.moveToNext());
 
                 if (!eventData.isEmpty()) { // Данные последнего контакта
-                    if (dataList.add(getEventData(eventData))) { //Добавляем для поиска календарных событий (дни рождения)
+                    if (dataList.add(getEventData(eventData))) {
+                        //Добавляем для поиска календарных событий (дни рождения)
                         String personID = eventData.get(Position_contactID);
-                        if (personID != null && !personID.isEmpty())
+                        if (!TextUtils.isEmpty(personID))
                             map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType), dataList.size() - 1);
                     }
                     eventData.clear();
@@ -3707,10 +3708,22 @@ class ContactsEvents {
     void removeLocalEvent(@NonNull TreeMap<Integer, String> eventData) {
         try {
 
+            final String eventId = eventData.get(Position_eventID);
+            if (eventId == null) return;
+            final String eventKey = getEventKey(getEventData(eventData).split(Constants.STRING_EOT, -1));
+
             SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+            if (!preferences.contains(eventId)) {
+                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_not_found));
+                return;
+            }
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(eventData.get(Position_eventID), null);
-            editor.apply();
+            editor.putString(eventId, null);
+            if (editor.commit()) {
+                unsetHiddenEvent(eventKey, null);
+                unsetSilencedEvent(eventKey, null);
+                unsetFavoriteEvent(eventKey, null);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -5900,6 +5913,9 @@ class ContactsEvents {
                         singleEventArray5K[Position_eventDate_sorted] = getSortKey(singleEventArray5K);
 
                         if (isInsideYear) {
+                            if (Constants.STRING_1.equals(singleEventArray5K[Position_starred])) {
+                                statFavoriteEventsCount++;
+                            }
                             magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
                             increaseStatForEventTypes(getEventType(Constants.Type_5K));
                         } else if (isEventVisibleInList(singleEventArray5K)) {
@@ -5941,7 +5957,9 @@ class ContactsEvents {
                             singleEventArrayXdays[Position_eventIcon] = Integer.toString(R.drawable.ic_event_xdays);
                             singleEventArrayXdays[Position_eventDescription] = Constants.STRING_EMPTY;
                             singleEventArrayXdays[Position_eventDate_sorted] = getSortKey(singleEventArrayXdays);
-
+                            if (Constants.STRING_1.equals(singleEventArrayXdays[Position_starred])) {
+                                statFavoriteEventsCount++;
+                            }
                             magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArrayXdays));
                         }
                     }
@@ -6409,7 +6427,8 @@ class ContactsEvents {
                         return checkIsSilencedEvent(eventKey, eventKeyWithRawId);
                     case Constants.pref_Events_Scope_XDays: //Показывать только счётчики дней
                         return isXDaysEvent(eventKey)
-                                && !singleEventArray[ContactsEvents.Position_eventSubType].equals(getEventType(Constants.Type_Xdays));
+                                && resources.getString(R.string.event_type_xdays_emoji).equals(singleEventArray[ContactsEvents.Position_eventEmoji]);
+                                //&& !singleEventArray[ContactsEvents.Position_eventSubType].equals(getEventType(Constants.Type_Xdays));
                                 //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                     case Constants.pref_Events_Scope_Favorite: //Показывать только избранные
                         return checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
@@ -6933,6 +6952,7 @@ class ContactsEvents {
                             .setAutoCancel(true);
 
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+                    final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
 
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
@@ -6942,6 +6962,7 @@ class ContactsEvents {
                             Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
                             NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
@@ -6952,7 +6973,8 @@ class ContactsEvents {
                         Intent intentShare = new Intent(context, NotifyActionReceiver.class);
                         intentShare.setAction(Constants.ACTION_SHARE);
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
-                        intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, textBig.toString().concat(Constants.STRING_EOL).concat(textSmall));
+
+                        intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
                         PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
                         NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
                         builder.addAction(actionShare);
@@ -6966,7 +6988,7 @@ class ContactsEvents {
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    notificationManager.notify(Constants.defaultNotificationID, builder.build());
+                    notificationManager.notify(notificationID, builder.build());
                 }
             }
 
@@ -7090,6 +7112,7 @@ class ContactsEvents {
                             Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
                             NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
@@ -7767,27 +7790,32 @@ class ContactsEvents {
 
         try {
 
-            SharedPreferences.Editor editor = null;
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            boolean needSave = false;
 
             if (!key.isEmpty()) {
-                preferences_favoriteEvents.add(key);
-                editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
+                if (preferences_favoriteEvents.add(key)) {
+                    editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
+                    needSave = true;
+                }
             }
 
             if (!TextUtils.isEmpty(keyWithRawId)) {
-                preferences_favoriteEventsRawIds.add(keyWithRawId);
-                if (editor == null) editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                editor.putStringSet(context.getString(R.string.pref_Events_Favorite_rawIds_key), preferences_favoriteEventsRawIds);
+                if (preferences_favoriteEventsRawIds.add(keyWithRawId)) {
+                    editor.putStringSet(context.getString(R.string.pref_Events_Favorite_rawIds_key), preferences_favoriteEventsRawIds);
+                    needSave = true;
+                }
             }
 
-            statFavoriteEventsCount++;
-            if (editor != null) {
-                editor.apply();
+            if (!needSave) return false;
+
+            if (editor.commit()) {
+                statFavoriteEventsCount++;
                 preferences_favoriteEvents_ids.clear();
                 preferences_favoriteEventsRawIds_ids.clear();
                 return true;
             }
+            return false;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

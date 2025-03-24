@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2025, 21:51
+ *  * Created by Vladimir Belov on 25.03.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.03.2025, 23:22
+ *  * Last modified 25.03.2025, 01:52
  *
  */
 
@@ -618,6 +618,19 @@ public class LocalEventActivity extends Activity {
                     .setIcon(android.R.drawable.ic_menu_help)
                     .setMessage(getString(R.string.local_event_dialog_confirmation_remove))
                     .setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        //Хранимый тип события и используемый при отрисовке отличаются
+                        String eventType = eventData.get(ContactsEvents.Position_eventType);
+                        if (eventType != null) {
+                            try {
+                                eventData.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                        String eventSubtype = eventData.get(ContactsEvents.Position_eventSubType);
+                        if (eventSubtype != null) {
+                            try {
+                                eventData.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubtype)));
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
                         eventsData.removeLocalEvent(eventData);
                         setResult(RESULT_OK);
                         finish();
