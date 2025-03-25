@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:19
+  ~  * Last modified 25.03.2025, 20:06
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">"Изменения в версии %1$s:"</string>
     <string name="msg_snoozed_until">"Отложено до %1$s"</string>
     <string name="msg_notify_time">"Уведомление установлено на %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Удалить все фильтры?</string>
-    <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или события?</string>
+    <string name="msg_filter_clear_confirmation">Удалить все данные о скрытых событиях, событиях без уведомлений и список избранных событий?</string>
+    <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или календарные события?</string>
     <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_XDays_result">"Удалены счётчики дней для несуществующих событий: "</string>

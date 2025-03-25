@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:19
+  ~  * Last modified 25.03.2025, 20:14
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">"What's new in v. %1$s:"</string>
     <string name="msg_snoozed_until">"Snoozed until %1$s"</string>
     <string name="msg_notify_time">"Notification is set to %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Really clear all filters?</string>
-    <string name="msg_filter_clean_confirmation">Clean all filters from links to absent contacts or calendar events?</string>
+    <string name="msg_filter_clear_confirmation">Clear all data about hidden events, silenced events, and list of favorite events?</string>
+    <string name="msg_filter_clean_confirmation">Clear all filters from references to non-existent contacts or calendar events?</string>
     <string name="msg_filter_clean_silenced_result">"Cleared silenced events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_hidden_result">"Cleared hidden events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_XDays_result">"Removed day counters for non-existent events: "</string>

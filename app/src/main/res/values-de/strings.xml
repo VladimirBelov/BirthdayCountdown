@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:21
+  ~  * Last modified 25.03.2025, 20:10
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">"Änderungen in der Version %1$s:"</string>
     <string name="msg_snoozed_until">"Stummgeschaltet bis %1$s"</string>
     <string name="msg_notify_time">"Die Benachrichtigung erfolgt um %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Alle Filter löschen?</string>
-    <string name="msg_filter_clean_confirmation">Alle Filter von Links zu abwesenden Kontakten oder Kalenderereignissen bereinigen?</string>
+    <string name="msg_filter_clear_confirmation">Alle Daten zu versteckten Ereignissen, stillen Ereignissen und der Liste der Favoritenereignisse löschen?</string>
+    <string name="msg_filter_clean_confirmation">Alle Filter von Verweisen auf nicht vorhandene Kontakte oder Kalenderereignisse löschen?</string>
     <string name="msg_filter_clean_silenced_result">"Stillgelegte Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
     <string name="msg_filter_clean_hidden_result">"Ausgeblendete Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
     <string name="msg_filter_clean_XDays_result">"Tageszähler für nicht vorhandene Ereignisse entfernt: "</string>

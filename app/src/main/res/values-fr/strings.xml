@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:21
+  ~  * Last modified 25.03.2025, 20:09
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">"Modifications apportées à la version %1$s:"</string>
     <string name="msg_snoozed_until">"Ajournée jusqu'au %1$s"</string>
     <string name="msg_notify_time">"Notification est fixée à  %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Voulez-vous supprimer tous les filtres ?</string>
-    <string name="msg_filter_clean_confirmation">Effacer tous les filtres des liens vers des contacts ou des événements inexistants ?</string>
+    <string name="msg_filter_clear_confirmation">Supprimer toutes les données sur les événements masqués, les événements silencieux et la liste des événements favoris?</string>
+    <string name="msg_filter_clean_confirmation">Effacer tous les filtres des références à des contacts ou événements de calendrier inexistants?</string>
     <string name="msg_filter_clean_silenced_result">"Événements silencieux effacés pour les contacts absents et les événements de calendrier: "</string>
     <string name="msg_filter_clean_hidden_result">"Événements désactivés pour les contacts manquants et les événements de calendrier ont été supprimés : "</string>
     <string name="msg_filter_clean_XDays_result">"Compteurs de jours ont été supprimés pour les événements inexistants : "</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2025, 21:51
+ *  * Created by Vladimir Belov on 25.03.2025, 22:30
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.03.2025, 19:59
+ *  * Last modified 25.03.2025, 18:37
  *
  */
 
@@ -194,6 +194,7 @@ final class Constants {
     static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
 
+    static final String NOTIFY_ID = "id: %s";
     static final int defaultNotificationID = 1000;
     static final int defaultNotification2ID = 1100;
     static final int defaultQuizID = 2000;

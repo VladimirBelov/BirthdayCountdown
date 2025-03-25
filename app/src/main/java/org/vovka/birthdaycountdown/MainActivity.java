@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 09:13
+ *  * Created by Vladimir Belov on 25.03.2025, 22:30
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 08:58
+ *  * Last modified 25.03.2025, 21:58
  *
  */
 
@@ -1992,7 +1992,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 filterValues.add(Constants.pref_Events_Scope_Unrecognized);
             }
 
-            if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0)) {
+            if (isDebugOrExtraFun && (hiddenEventsCount > 0 || silencedEventsCount > 0 || eventsData.getFavoritesEventsCount() > 0)) {
                 filterVariants.add(getString(R.string.events_scope_clear));
                 filterValues.add(Constants.pref_Events_Scope_Clear);
             }
@@ -2016,6 +2016,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
                                         eventsData.clearHiddenEvents();
                                         eventsData.clearSilencedEvents();
+                                        eventsData.clearFavoriteEvents();
                                         eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
                                         eventsData.savePreferences();
                                         this.invalidateOptionsMenu();
@@ -2323,8 +2324,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
                     boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
                             && resources.getString(R.string.event_type_xdays_emoji).equals(singleEventArray[ContactsEvents.Position_eventEmoji]);
-                    //&& !singleEventArray[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_Xdays));
-                    //&& !singleEventArray[ContactsEvents.Position_eventStorage].contains(Constants.STRING_STORAGE_XDAYS);
                     boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
                     boolean isEventTypeToShow = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]);
 
@@ -3163,43 +3162,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     if (!dataList.isEmpty()) {
+                        boolean isSearchAllTypesAndSources = eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents;
+                        String hintPrefix;
+
                         if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden) {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_hidden_prefix) : resources.getString(R.string.msg_stats_hidden_filtered_prefix))
-                                    .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                    .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_hidden_prefix) : isSearchAllTypesAndSources ?
+                                    resources.getString(R.string.msg_stats_filtered_prefix) : resources.getString(R.string.msg_stats_hidden_filtered_prefix);
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced) {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_silenced_prefix) : resources.getString(R.string.msg_stats_silenced_filtered_prefix))
-                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                            .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_silenced_prefix) : isSearchAllTypesAndSources ?
+                                    resources.getString(R.string.msg_stats_filtered_prefix) : resources.getString(R.string.msg_stats_silenced_filtered_prefix);
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays) {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_xdays_prefix) : resources.getString(R.string.msg_stats_xdays_filtered_prefix))
-                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                            .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_xdays_prefix) : isSearchAllTypesAndSources ?
+                                    resources.getString(R.string.msg_stats_filtered_prefix) : resources.getString(R.string.msg_stats_xdays_filtered_prefix);
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_unrecognized_prefix) : resources.getString(R.string.msg_stats_unrecognized_filtered_prefix))
-                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                            .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_unrecognized_prefix) : isSearchAllTypesAndSources ?
+                                    resources.getString(R.string.msg_stats_filtered_prefix) : resources.getString(R.string.msg_stats_unrecognized_filtered_prefix);
                         } else if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite) {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_favorite_prefix) : resources.getString(R.string.msg_stats_favorite_filtered_prefix))
-                                            .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                            .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_favorite_prefix) : isSearchAllTypesAndSources ?
+                                    resources.getString(R.string.msg_stats_filtered_prefix) : resources.getString(R.string.msg_stats_favorite_filtered_prefix);
                         } else {
-                            setHint(
-                                    (filterNames.isEmpty() ? resources.getString(R.string.msg_stats_prefix) : resources.getString(R.string.msg_stats_filtered_prefix))
-                                    .concat(filterNames.isEmpty() ? String.valueOf(statsAllEvents - statsHiddenEvents) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
-                                    .concat(Constants.STRING_SPACE)
-                            );
+                            hintPrefix = filterNames.isEmpty() ? resources.getString(R.string.msg_stats_prefix) : resources.getString(R.string.msg_stats_filtered_prefix);
                         }
+
+                        setHint(hintPrefix
+                                .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
+                                .concat(Constants.STRING_SPACE)
+                        );
 
                     } else {
                         setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW).concat(Constants.STRING_SPACE));

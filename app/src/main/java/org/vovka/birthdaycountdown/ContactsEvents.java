@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 02:24
+ *  * Created by Vladimir Belov on 25.03.2025, 22:30
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 01:25
+ *  * Last modified 25.03.2025, 22:06
  *
  */
 
@@ -2029,6 +2029,7 @@ class ContactsEvents {
             editor.putString(context.getString(R.string.pref_Icon_key), preferences_icon);
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
+            editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_key), preferences_BirthDay_calendars);
             editor.putString(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), preferences_birthday_calendars_rules);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Other_Calendars_key), preferences_OtherEvent_calendars);
@@ -2219,7 +2220,7 @@ class ContactsEvents {
                     | getLocalEvents()
                     | getFactsEvents(true);
 
-            statFavoriteEventsCount += preferences_favoriteEvents.size();
+            statFavoriteEventsCount += getFavoritesEventsCount();
 
             if (result) {
                 eventList.clear();
@@ -6941,6 +6942,8 @@ class ContactsEvents {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
 
+                    int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
+                    final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                             .setColor(this.getResources().getColor(R.color.dark_green))
                             .setSmallIcon(R.drawable.ic_icon_notify)
@@ -6951,8 +6954,9 @@ class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
-                    int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                    final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
+                    if (preferences_debug_on) {
+                        builder.setSubText(String.format(Constants.NOTIFY_ID, notificationID));
+                    }
 
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
@@ -7017,6 +7021,10 @@ class ContactsEvents {
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
+
+                        if (preferences_debug_on) {
+                            builder.setSubText(String.format(Constants.NOTIFY_ID, notificationID));
+                        }
 
                         Intent intent = null;
 
@@ -7150,6 +7158,10 @@ class ContactsEvents {
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setAutoCancel(true);
+
+                    if (preferences_debug_on) {
+                        builder.setSubText(String.format(Constants.NOTIFY_ID, notificationID));
+                    }
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                         if (prefRingtone != null)
@@ -7557,18 +7569,7 @@ class ContactsEvents {
 
     }
 
-    int getHiddenEventsCount() {
-
-        try {
-
-            return preferences_hiddenEvents.isEmpty() ? 0 : preferences_hiddenEvents.size();
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return 0;
-        }
-    }
+    int getHiddenEventsCount() {return preferences_hiddenEvents.size();}
 
     boolean checkIsHiddenEvent(@NonNull String key, String keyWithRawId) {
 
@@ -7669,18 +7670,7 @@ class ContactsEvents {
 
     }
 
-    int getSilencedEventsCount() {
-
-        try {
-
-            return preferences_silentEvents.isEmpty() ? 0 : preferences_silentEvents.size();
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return 0;
-        }
-    }
+    int getSilencedEventsCount() {return preferences_silentEvents.size();}
 
     boolean checkIsSilencedEvent(@NonNull String key, String keyWithRawId) {
 
@@ -7885,6 +7875,24 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        }
+
+    }
+
+    int getFavoritesEventsCount() {return preferences_favoriteEvents.size();}
+
+    void clearFavoriteEvents() {
+
+        try {
+
+            preferences_favoriteEvents.clear();
+            preferences_favoriteEventsRawIds.clear();
+            preferences_favoriteEvents_ids.clear();
+            preferences_favoriteEventsRawIds_ids.clear();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

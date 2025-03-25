@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:20
+  ~  * Last modified 25.03.2025, 20:12
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">Co je nového ve verzi %1$s:</string>
     <string name="msg_snoozed_until">"Odloženo do %1$s"</string>
     <string name="msg_notify_time">"Oznámení je nastaveno na %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Opravdu vymazat všechny filtry?</string>
-    <string name="msg_filter_clean_confirmation">Vymazat všechny filtry z odkazů na chybějící kontakty nebo události kalendáře?</string>
+    <string name="msg_filter_clear_confirmation">Smazat všechna data o skrytých událostech, tichých událostech a seznamu oblíbených událostí?</string>
+    <string name="msg_filter_clean_confirmation">Vymazat všechny filtry od odkazů na neexistující kontakty nebo události kalendáře?</string>
     <string name="msg_filter_clean_silenced_result">"Vymazány ztišené události pro nepřítomné kontakty a události kalendáře: "</string>
     <string name="msg_filter_clean_hidden_result">"Vymazány skryté události pro nepřítomné kontakty a události kalendáře: "</string>
     <string name="msg_filter_clean_XDays_result">"Odstraněny počítadla dnů pro neexistující události: "</string>

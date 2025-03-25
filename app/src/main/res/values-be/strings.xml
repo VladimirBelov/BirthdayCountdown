@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 01:20
+  ~  * Last modified 25.03.2025, 20:12
   ~  */
   -->
 
@@ -159,8 +159,8 @@
     <string name="msg_new_version_title">"Змены ў версіі %1$s:"</string>
     <string name="msg_snoozed_until">"Адкладзена да %1$s"</string>
     <string name="msg_notify_time">"Паведамленне ўсталявана на %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Выдаліць усе фільтры?</string>
-    <string name="msg_filter_clean_confirmation">Ачысціць усе фільтры ад спасылак на кантакты альбо падзеі, якія не існуюць?</string>
+    <string name="msg_filter_clear_confirmation">Выдаліць усе дадзеныя аб утоеных падзеях, падзеях без апавяшчэнняў і спіс абраных падзей?</string>
+    <string name="msg_filter_clean_confirmation">Ачысціць усе фільтры ад спасылак на неіснуючыя кантакты або каляндарныя падзеі?</string>
     <string name="msg_filter_clean_silenced_result">"Выдалены адключаныя падзеі для адсутных кантактаў і падзей календара: "</string>
     <string name="msg_filter_clean_hidden_result">"Выдалены ўтоеныя падзеі для адсутных кантактаў і падзей календара: "</string>
     <string name="msg_filter_clean_XDays_result">"Выдалены лічыльнікі дзён для падзей якія не існуюць: "</string>
