@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 02:24
+ *  * Created by Vladimir Belov on 25.03.2025, 09:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 02:02
+ *  * Last modified 25.03.2025, 08:58
  *
  */
 
@@ -126,8 +126,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private int selectedEvent_num;
     private final List<String> dataList = new ArrayList<>();
     private final List<String> dataListFull = new ArrayList<>();
-    private int statsAllEvents = 0;
-    private int statsHiddenEvents = 0;
+    private int statsAllEvents = 0; //Всего событий (для выбранных источников и типов)
+    private int statsHiddenEvents = 0; //Всего скрытых событий (для выбранных источников и типов)
+    private int statsAllHiddenEvents = 0; //Всего скрытых событий (всего)
     private int statsSilencedEvents = 0;
     private int statsXDaysEvents = 0;
     private int statsUnrecognizedEvents = 0;
@@ -1957,10 +1958,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final int hiddenEventsCount = eventsData.getHiddenEventsCount();
             if (hiddenEventsCount > 0) {
                 if (statsHiddenEvents != hiddenEventsCount && isDebugOrExtraFun) {
-                    filterVariants.add(getString(R.string.events_scope_hidden_dead, statsHiddenEvents, hiddenEventsCount));
+                    filterVariants.add(getString(R.string.events_scope_hidden_dead, statsAllHiddenEvents, hiddenEventsCount));
                     isDeadLinks = true;
                 } else
-                    filterVariants.add(getString(R.string.events_scope_hidden, statsHiddenEvents));
+                    filterVariants.add(getString(R.string.events_scope_hidden, statsAllHiddenEvents));
                 filterValues.add(Constants.pref_Events_Scope_Hidden);
             }
             final int silencedEventsCount = eventsData.getSilencedEventsCount();
@@ -2297,18 +2298,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     synchronized private void filterEventsList() {
         try {
+            int statsVisibleEvents = 0;
             statsAllEvents = 0;
+            statsAllHiddenEvents = 0;
             statsHiddenEvents = 0;
             statsSilencedEvents = 0;
             statsXDaysEvents = 0;
             statsUnrecognizedEvents = 0;
-            int statsVisibleEvents = 0;
             eventsData.statEventsPrevEventsFound = 0;
             dataList.clear();
-
-            //final int hiddenEventsCount = eventsData.getHiddenEventsCount();
-            //final int silencedEventsCount = eventsData.getSilencedEventsCount();
-            //final int xDaysEventsCount = eventsData.getXDaysEventsCount();
 
             if (!eventsData.isEmptyEventList()) {
                 boolean isSearchAllTypesAndSources = (!filterNames.isEmpty() && eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents)
@@ -2330,7 +2328,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
                     boolean isEventTypeToShow = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]);
 
-                    if (isHiddenEvent) statsHiddenEvents++;
+                    if (isHiddenEvent) statsAllHiddenEvents++;
                     if (isSilencedEvent) statsSilencedEvents++;
                     if (isXDayEvent) statsXDaysEvents++;
 
@@ -2349,7 +2347,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         isEventSourceToShow = true;
                     }
 
-                    if (isEventTypeToShow && isEventSourceToShow) statsAllEvents++;
+                    if (isEventTypeToShow && isEventSourceToShow) {
+                        statsAllEvents++;
+                        if (isHiddenEvent) statsHiddenEvents++;
+                    }
 
                     boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
                     boolean skipAdd = false;
@@ -2372,15 +2373,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
                                 (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite && isFavoriteEvent) || //Показывать только избранные
                                 eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
-                            if (!skipAdd) dataList.add(event);
-                            statsVisibleEvents++;
+                                    if (!skipAdd) dataList.add(event);
+                                    statsVisibleEvents++;
                         }
                     }
 
                 }
             }
 
-            if (dataList.isEmpty() && eventsData.eventListPrev.isEmpty()) {
+            if (dataList.isEmpty()) { // && eventsData.eventListPrev.isEmpty()
 
                 findViewById(R.id.mainListView).setVisibility(View.GONE);
 
