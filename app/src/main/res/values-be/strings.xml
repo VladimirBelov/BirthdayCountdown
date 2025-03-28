@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 20:12
+  ~  * Last modified 28.03.2025, 10:39
   ~  */
   -->
 
@@ -159,7 +159,10 @@
     <string name="msg_new_version_title">"Змены ў версіі %1$s:"</string>
     <string name="msg_snoozed_until">"Адкладзена да %1$s"</string>
     <string name="msg_notify_time">"Паведамленне ўсталявана на %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Выдаліць усе дадзеныя аб утоеных падзеях, падзеях без апавяшчэнняў і спіс абраных падзей?</string>
+    <string name="msg_filter_clear_confirmation">Выберыце даныя для ачысткі</string>
+    <string name="msg_filter_clear_hidden">Спіс схаваных падзей</string>
+    <string name="msg_filter_clear_silenced">Спіс замоўчаных падзей</string>
+    <string name="msg_filter_clear_favorites">Спіс абраных падзей</string>
     <string name="msg_filter_clean_confirmation">Ачысціць усе фільтры ад спасылак на неіснуючыя кантакты або каляндарныя падзеі?</string>
     <string name="msg_filter_clean_silenced_result">"Выдалены адключаныя падзеі для адсутных кантактаў і падзей календара: "</string>
     <string name="msg_filter_clean_hidden_result">"Выдалены ўтоеныя падзеі для адсутных кантактаў і падзей календара: "</string>
@@ -703,7 +706,8 @@
     <string name="pref_EventInfo_EventDate">Дата падзеі</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата падзеі з годам</string>
     <string name="pref_EventInfo_EventTitle">Загаловак падзеі (ПІБ)</string>
-    <string name="pref_EventInfo_Age">Узрост (гадавіна)</string>
+    <string name="pref_EventInfo_Age">Узрост (поўны фармат)</string>
+    <string name="pref_EventInfo_AgeShort">Узрост (кароткі)</string>
     <string name="pref_EventInfo_CurrentAge">Бягучы ўзрост</string>
     <string name="pref_EventInfo_WeddingName">Назва гадавіны вяселля</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Дзён да падзеі</string>
@@ -716,11 +720,14 @@
     <string name="pref_EventInfo_JobTitle">Пасада</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Абразок крыніцы падзеі</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Ёсць web спасылка</string>
-    <string name="pref_EventInfo_DatesInBrackets">Акружаць даты дужкамі</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Афарбоўваць колерам даты ўсю падзею</string>
     <string name="pref_EventInfo_NewLine1">"- новы радок -"</string>
     <string name="pref_EventInfo_NewLine2">"- новы радок - "</string>
     <string name="pref_EventInfo_NewLine3">"- новы радок -  "</string>
+    <string name="pref_EventInfo_LeftBracket">"("</string>
+    <string name="pref_EventInfo_LeftBracket2">"( "</string>
+    <string name="pref_EventInfo_RightBracket">")"</string>
+    <string name="pref_EventInfo_RightBracket2">") "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -985,6 +992,12 @@
         <item>Адкрыць каляндар</item>
     </string-array>
 
+    <string-array name="pref_widget_list_onclick_events_entries">
+        <item>З агульных налад</item>
+        <item>Адкрыць меню</item>
+        <item>Няма</item>
+    </string-array>
+
     <string name="widget_config_events_favorites">🌟 Выбранае</string>
     <string name="widget_config_events_local_events">📅 Мясцовыя падзеі</string>
 
@@ -1036,6 +1049,17 @@
 
     <string name="pref_Notifications_EventTypes_title">Тыпы падзей</string>
     <string name="pref_Notifications_EventTypes_summary">Якія падзеі ўлучаць у паведамленні</string>
+
+    <string name="pref_Notifications_EventTypes_Facts">📝 Факты</string>
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Дні нараджэння</item>
+        <item>💑 Гадавіны вяселляў</item>
+        <item>🗓️ Іншыя падзеі</item>
+        <item>🏖️ Святы</item>
+        <item>⏰ Карыстальніцкія падзеі</item>
+        <item>🏆 Круглыя даты (5K дзён)</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
+    </string-array>
 
     <string name="pref_Notifications_EventSources_title">Крыніцы падзей</string>
     <string name="pref_Notifications_EventSources_description">Паказваць апавяшчэнні толькі для гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
@@ -1091,17 +1115,6 @@
 
     <string name="pref_Notifications_NotifyTest_title">Тэставае паведамленне</string>
     <string name="pref_Notifications_NotifyTest_summary">Націсніце для паказу тэставага паведамлення за сёння</string>
-
-    <string name="pref_Notifications_EventTypes_Facts">📝 Факты</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Дні нараджэння</item>
-        <item>💑 Гадавіны вяселляў</item>
-        <item>🗓️ Іншыя падзеі</item>
-        <item>🏖️ Святы</item>
-        <item>⏰ Карыстальніцкія падзеі</item>
-        <item>🏆 Круглыя даты (5K дзён)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
 
     <string name="pref_Quiz_title">Віктарына</string>
     <string name="pref_Quiz_summary">Налады віктарыны</string>

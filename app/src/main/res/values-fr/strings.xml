@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 20:09
+  ~  * Last modified 28.03.2025, 10:39
   ~  */
   -->
 
@@ -159,7 +159,10 @@
     <string name="msg_new_version_title">"Modifications apportées à la version %1$s:"</string>
     <string name="msg_snoozed_until">"Ajournée jusqu'au %1$s"</string>
     <string name="msg_notify_time">"Notification est fixée à  %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Supprimer toutes les données sur les événements masqués, les événements silencieux et la liste des événements favoris?</string>
+    <string name="msg_filter_clear_confirmation">Seleccionar datos para borrar</string>
+    <string name="msg_filter_clear_hidden">Lista de eventos ocultos</string>
+    <string name="msg_filter_clear_silenced">Lista de eventos silenciados</string>
+    <string name="msg_filter_clear_favorites">Lista de eventos favoritos</string>
     <string name="msg_filter_clean_confirmation">Effacer tous les filtres des références à des contacts ou événements de calendrier inexistants?</string>
     <string name="msg_filter_clean_silenced_result">"Événements silencieux effacés pour les contacts absents et les événements de calendrier: "</string>
     <string name="msg_filter_clean_hidden_result">"Événements désactivés pour les contacts manquants et les événements de calendrier ont été supprimés : "</string>
@@ -703,7 +706,8 @@
     <string name="pref_EventInfo_EventDate">"Date de l'événement"</string>
     <string name="pref_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
     <string name="pref_EventInfo_EventTitle">"Titre de l'événement (Nom)"</string>
-    <string name="pref_EventInfo_Age">Âge (anniversaire)</string>
+    <string name="pref_EventInfo_Age">Âge (format complet)</string>
+    <string name="pref_EventInfo_AgeShort">Âge (format court)</string>
     <string name="pref_EventInfo_CurrentAge">Âge actuel</string>
     <string name="pref_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
     <string name="pref_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
@@ -716,11 +720,14 @@
     <string name="pref_EventInfo_JobTitle">Emploi</string>
     <string name="pref_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
-    <string name="pref_EventInfo_DatesInBrackets">Entourer les dates de parenthèses</string>
     <string name="pref_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
     <string name="pref_EventInfo_NewLine1">"- nouvelle ligne -"</string>
     <string name="pref_EventInfo_NewLine2">"- nouvelle ligne - "</string>
     <string name="pref_EventInfo_NewLine3">"- nouvelle ligne -  "</string>
+    <string name="pref_EventInfo_LeftBracket">"("</string>
+    <string name="pref_EventInfo_LeftBracket2">"( "</string>
+    <string name="pref_EventInfo_RightBracket">")"</string>
+    <string name="pref_EventInfo_RightBracket2">") "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -985,6 +992,12 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Ouvrir le calendrier</item>
     </string-array>
 
+    <string-array name="pref_widget_list_onclick_events_entries">
+        <item>À partir des préférences communes</item>
+        <item>Ouvrir le menu</item>
+        <item>Aucun</item>
+    </string-array>
+
     <string name="widget_config_events_favorites">🌟 Favoris</string>
     <string name="widget_config_events_local_events">📅 Événements locaux</string>
 
@@ -1036,6 +1049,17 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
 
     <string name="pref_Notifications_EventTypes_title">"Types des événements"</string>
     <string name="pref_Notifications_EventTypes_summary">"Quels événements inclure dans les notifications"</string>
+
+    <string name="pref_Notifications_EventTypes_Facts">📝 Faits</string>
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Anniversaires</item>
+        <item>💑 Anniversaires de mariage</item>
+        <item>🗓️ Autres événements</item>
+        <item>🏖️ Vacances</item>
+        <item>⏰ Événements personnalisés</item>
+        <item>🏆 Jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
+    </string-array>
 
     <string name="pref_Notifications_EventSources_title">"Sources d'événements"</string>
     <string name="pref_Notifications_EventSources_description">"Afficher les notifications uniquement pour ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>
@@ -1091,17 +1115,6 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
 
     <string name="pref_Notifications_NotifyTest_title">Notification de test</string>
     <string name="pref_Notifications_NotifyTest_summary">"Cliquez pour afficher la notification d'aujourd'hui"</string>
-
-    <string name="pref_Notifications_EventTypes_Facts">📝 Faits</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Anniversaires</item>
-        <item>💑 Anniversaires de mariage</item>
-        <item>🗓️ Autres événements</item>
-        <item>🏖️ Vacances</item>
-        <item>⏰ Événements personnalisés</item>
-        <item>🏆 Jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Paramètres du quiz</string>

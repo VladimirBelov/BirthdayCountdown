@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 02:15
+  ~  * Last modified 28.03.2025, 00:58
   ~  */
   -->
 
@@ -20,6 +20,7 @@
         <item>Möglichkeit, eine Tatsache aus einem Listen-Widget durch Klicken auf ein Ereignis zu teilen</item>
         <item>Einstellen der vertikalen Einrückung der Ereignisliste (Extrafunktionen - EIN, Ereignisliste - Oberer Einzug)</item>
         <item>Listenfilter für versteckte Ereignisse, Favoriten und Tageszähler zeigen Ereignisse aller Art und aus allen Quellen an</item>
+        <item>Alter im Kurzformat und Klammern zu den Ereignisdetails im Listen-Widget hinzugefügt, Option \"Datum in Klammern setzen\" entfernt</item>
         <item>Optimierungen für Android 15</item>
         <item>Fehlerbehebungen</item>
 

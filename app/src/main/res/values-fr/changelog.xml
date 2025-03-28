@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 02:17
+  ~  * Last modified 28.03.2025, 00:57
   ~  */
   -->
 
@@ -20,6 +20,7 @@
     <item>Posibilidad de compartir un dato de un widget de lista haciendo clic en un evento</item>
     <item>Configuración de la sangría vertical de la lista de eventos (Funciones adicionales - ACTIVADO, Lista de eventos - Sangría vertical)</item>
     <item>Les filtres de liste pour les événements masqués, les favoris et les compteurs de jours affichent les événements de tous types et de toutes sources</item>
+    <item>"Ajout de l'âge au format court et entre parenthèses aux détails de l'événement dans le widget de liste, suppression de l'option \"entourer la date de parenthèses\""</item>
     <item>Optimizaciones para Android 15</item>
     <item>Corrección de errores</item>
 

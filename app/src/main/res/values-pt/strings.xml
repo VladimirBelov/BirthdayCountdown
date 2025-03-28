@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 20:07
+  ~  * Last modified 28.03.2025, 10:39
   ~  */
   -->
 
@@ -159,7 +159,10 @@
     <string name="msg_new_version_title">"Novidades na versão %1$s:"</string>
     <string name="msg_snoozed_until">"Adiado até %1$s"</string>
     <string name="msg_notify_time">"A notificação está definida como %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Excluir todos os dados sobre eventos ocultos, eventos silenciosos e a lista de eventos favoritos?</string>
+    <string name="msg_filter_clear_confirmation">Selecione os dados para limpar</string>
+    <string name="msg_filter_clear_hidden">Lista de eventos ocultos</string>
+    <string name="msg_filter_clear_silenced">Lista de eventos silenciados</string>
+    <string name="msg_filter_clear_favorites">Lista de eventos favoritos</string>
     <string name="msg_filter_clean_confirmation">Limpar todos os filtros de referências a contatos ou eventos de calendário inexistentes?</string>
     <string name="msg_filter_clean_silenced_result">"Eventos silenciados apagados para contatos ausentes e eventos de calendário: "</string>
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos apagados para contatos ausentes e eventos de calendário: "</string>
@@ -703,7 +706,8 @@
     <string name="pref_EventInfo_EventDate">Data do evento</string>
     <string name="pref_EventInfo_EventDate_WithYear">Data do evento com ano</string>
     <string name="pref_EventInfo_EventTitle">Título do evento (Nome)</string>
-    <string name="pref_EventInfo_Age">Idade (aniversário)</string>
+    <string name="pref_EventInfo_Age">Idade (formato completo)</string>
+    <string name="pref_EventInfo_AgeShort">Idade (curta)</string>
     <string name="pref_EventInfo_CurrentAge">Idade atual</string>
     <string name="pref_EventInfo_WeddingName">Nome do aniversário de casamento</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Dias antes do evento</string>
@@ -716,11 +720,14 @@
     <string name="pref_EventInfo_JobTitle">Título</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ícone de origem do evento</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Link da Web disponível</string>
-    <string name="pref_EventInfo_DatesInBrackets">Coloque as datas entre colchetes</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorir todos os eventos pela cor da data</string>
     <string name="pref_EventInfo_NewLine1">"- nova linha -"</string>
     <string name="pref_EventInfo_NewLine2">"- nova linha - "</string>
     <string name="pref_EventInfo_NewLine3">"- nova linha -  "</string>
+    <string name="pref_EventInfo_LeftBracket">"("</string>
+    <string name="pref_EventInfo_LeftBracket2">"( "</string>
+    <string name="pref_EventInfo_RightBracket">")"</string>
+    <string name="pref_EventInfo_RightBracket2">") "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -985,6 +992,12 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
         <item>Abrir calendário</item>
     </string-array>
 
+    <string-array name="pref_widget_list_onclick_events_entries">
+        <item>De preferências comuns</item>
+        <item>Abrir menu</item>
+        <item>Nenhum</item>
+    </string-array>
+
     <string name="widget_config_events_favorites">🌟 Favoritos</string>
     <string name="widget_config_events_local_events">📅 Eventos locais</string>
 
@@ -1036,6 +1049,17 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
 
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_summary">Que tipo de eventos incluir nas notificações</string>
+
+    <string name="pref_Notifications_EventTypes_Facts">📝 Fatos</string>
+    <string-array name="pref_Notifications_EventTypes_entries">
+        <item>🎂 Aniversários</item>
+        <item>💑 Aniversários casamento</item>
+        <item>🗓️ Outros eventos</item>
+        <item>🏖️ Feriados</item>
+        <item>⏰ Eventos personalizados</item>
+        <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
+        <item>@string/pref_Notifications_EventTypes_Facts</item>
+    </string-array>
 
     <string name="pref_Notifications_EventSources_title">Fontes de eventos</string>
     <string name="pref_Notifications_EventSources_description">Mostrar notificações apenas para essas fontes de eventos. Se nenhuma fonte for selecionada, os eventos de todas as fontes serão mostrados</string>
@@ -1091,17 +1115,6 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
 
     <string name="pref_Notifications_NotifyTest_title">Notificação de teste</string>
     <string name="pref_Notifications_NotifyTest_summary">Clique para mostrar a notificação de hoje</string>
-
-    <string name="pref_Notifications_EventTypes_Facts">📝 Fatos</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Aniversários</item>
-        <item>💑 Aniversários casamento</item>
-        <item>🗓️ Outros eventos</item>
-        <item>🏖️ Feriados</item>
-        <item>⏰ Eventos personalizados</item>
-        <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
 
     <string name="pref_Quiz_title">Teste</string>
     <string name="pref_Quiz_summary">Preferências do questionário</string>

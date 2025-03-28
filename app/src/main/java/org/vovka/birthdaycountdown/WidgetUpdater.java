@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 28.03.2025, 10:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.03.2025, 17:53
+ *  * Last modified 27.03.2025, 22:14
  *
  */
 
@@ -789,8 +789,8 @@ class WidgetUpdater {
 
             //Иконка события без уведомления
             int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.STRING_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_SilentedIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_SilentedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
             } else {

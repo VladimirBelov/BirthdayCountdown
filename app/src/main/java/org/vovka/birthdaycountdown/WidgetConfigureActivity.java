@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2025, 21:51
+ *  * Created by Vladimir Belov on 28.03.2025, 10:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.03.2025, 21:27
+ *  * Last modified 27.03.2025, 22:47
  *
  */
 
@@ -158,17 +158,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
-
-            //Отступы всего окна
-            /*if (eventsData.preferences_list_margin > 0) {
-                RelativeLayout main = findViewById(R.id.layout_main);
-                main.setPadding(
-                        main.getPaddingLeft() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                        main.getPaddingTop(),
-                        main.getPaddingRight() + (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                        main.getPaddingBottom()
-                );
-            }*/
 
             //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color
 
@@ -534,10 +523,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
-                    //if (ContactsEvents.isWidgetSupportConfig()) {
-                        eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
-                    //}
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DatesInBrackets));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
+                    /*eventInfoIDs.add(getString(R.string.pref_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DatesInBrackets));*/
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
@@ -547,6 +534,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventTitle));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_AgeShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_AgeShort));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_WeddingName));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
@@ -562,6 +550,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine1_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine1));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine2));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_NewLine3_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_NewLine3));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_LeftBracket_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_LeftBracket));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_LeftBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_LeftBracket2));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket2));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:
@@ -585,34 +577,22 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_CurrentAge));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeek_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeek));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeek));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
                     break;
 
                 default:
 
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_None_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_None));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_SilentedIcon_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_SilentedIcon));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
-                    this.eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID));
-                    this.eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_None));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_SilencedIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_SilentedIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
             }
 
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
@@ -651,10 +631,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 ArrayList<String> listNonSorted = new ArrayList<String>() {{
                     add(getString(R.string.pref_EventInfo_Border));
                     add(getString(R.string.pref_EventInfo_Dividers));
-                    if (ContactsEvents.isWidgetSupportConfig()) {
-                        add(getString(R.string.pref_EventInfo_ButtonConfig));
-                    }
-                    add(getString(R.string.pref_EventInfo_DatesInBrackets));
+                    add(getString(R.string.pref_EventInfo_ButtonConfig));
+                    /*add(getString(R.string.pref_EventInfo_DatesInBrackets));*/
                     add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);

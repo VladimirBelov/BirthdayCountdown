@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 22:30
+ *  * Created by Vladimir Belov on 28.03.2025, 10:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 21:58
+ *  * Last modified 28.03.2025, 01:01
  *
  */
 
@@ -2008,32 +2008,64 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         final int choice = filterValues.get(((AlertDialog) dialog).getListView().getCheckedItemPosition());
                         if (choice == Constants.pref_Events_Scope_Clear) {
 
-                            AlertDialog.Builder confirm = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                                    .setTitle(R.string.msg_title_confirmation)
-                                    .setMessage(R.string.msg_filter_clear_confirmation)
+                            ArrayList<Boolean> filterSelected = new ArrayList<>(Arrays.asList(false, false, false));
+                            ArrayList<String> filterToSelect = new ArrayList<>();
+                            filterToSelect.add(getString(R.string.msg_filter_clear_hidden)
+                                    + Constants.STRING_BRACKETS_OPEN
+                                    + eventsData.getHiddenEventsCount()
+                                    + Constants.STRING_BRACKETS_CLOSE
+                            );
+                            filterToSelect.add(getString(R.string.msg_filter_clear_silenced)
+                                    + Constants.STRING_BRACKETS_OPEN
+                                    + eventsData.getSilencedEventsCount()
+                                    + Constants.STRING_BRACKETS_CLOSE
+                            );
+                            filterToSelect.add(getString(R.string.msg_filter_clear_favorites)
+                                    + Constants.STRING_BRACKETS_OPEN
+                                    + eventsData.getFavoritesEventsCount()
+                                    + Constants.STRING_BRACKETS_CLOSE
+                            );
+
+                            AlertDialog.Builder clearDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                                    .setTitle(R.string.msg_filter_clear_confirmation)
                                     .setIcon(android.R.drawable.ic_menu_help)
-                                    .setNegativeButton(R.string.button_cancel, (confirm_dialog, confirm_which) -> dialog.cancel())
-                                    .setPositiveButton(R.string.button_ok, (confirm_dialog, confirm_which) -> {
-                                        eventsData.clearHiddenEvents();
-                                        eventsData.clearSilencedEvents();
-                                        eventsData.clearFavoriteEvents();
-                                        eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
-                                        eventsData.savePreferences();
-                                        this.invalidateOptionsMenu();
-                                        filterEventsList();
-                                        drawList();
+                                    .setMultiChoiceItems(filterToSelect.toArray(new CharSequence[0]), null, (clear_dialog, clear_which, isChecked) -> filterSelected.set(clear_which, isChecked))
+                                    .setNegativeButton(R.string.button_cancel, (clear_dialog, clear_which) -> dialog.cancel())
+                                    .setPositiveButton(R.string.button_ok, (clear_dialog, clear_which) -> {
+
+                                        boolean needSave = false;
+                                        if (filterSelected.get(0)) {
+                                            eventsData.clearHiddenEvents();
+                                            needSave = true;
+                                        }
+                                        if (filterSelected.get(1)) {
+                                            eventsData.clearSilencedEvents();
+                                            needSave = true;
+                                        }
+                                            if (filterSelected.get(2)) {
+                                                eventsData.clearFavoriteEvents();
+                                                needSave = true;
+                                            }
+
+                                        if (needSave) {
+                                            eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
+                                            eventsData.savePreferences();
+                                            this.invalidateOptionsMenu();
+                                            filterEventsList();
+                                            drawList();
+                                        }
                                     });
 
-                            AlertDialog confirm_dialog = confirm.create();
+                            AlertDialog clearDialog = clearDialogBuilder.create();
 
                             TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                            confirm_dialog.setOnShowListener(arg0 -> {
-                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                            clearDialog.setOnShowListener(arg0 -> {
+                                clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                             });
 
-                            confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            confirm_dialog.show();
+                            clearDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            clearDialog.show();
 
                         } else if (choice == Constants.pref_Events_Scope_Clean) {
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 20:06
+  ~  * Last modified 28.03.2025, 10:24
   ~  */
   -->
 
@@ -159,7 +159,10 @@
     <string name="msg_new_version_title">"Изменения в версии %1$s:"</string>
     <string name="msg_snoozed_until">"Отложено до %1$s"</string>
     <string name="msg_notify_time">"Уведомление установлено на %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Удалить все данные о скрытых событиях, событиях без уведомлений и список избранных событий?</string>
+    <string name="msg_filter_clear_confirmation">Выберите данные для очистки</string>
+    <string name="msg_filter_clear_hidden">Список скрытых событий</string>
+    <string name="msg_filter_clear_silenced">Список событий без уведомлений</string>
+    <string name="msg_filter_clear_favorites">Список избранных событий</string>
     <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или календарные события?</string>
     <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
@@ -703,7 +706,8 @@
     <string name="pref_EventInfo_EventDate">Дата события</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата события с годом</string>
     <string name="pref_EventInfo_EventTitle">Заголовок события (ФИО)</string>
-    <string name="pref_EventInfo_Age">Возраст (годовщина)</string>
+    <string name="pref_EventInfo_Age">Возраст (полный формат)</string>
+    <string name="pref_EventInfo_AgeShort">Возраст (краткий)</string>
     <string name="pref_EventInfo_CurrentAge">Текущий возраст</string>
     <string name="pref_EventInfo_WeddingName">Название годовщины свадьбы</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Дней до события</string>
@@ -716,11 +720,14 @@
     <string name="pref_EventInfo_JobTitle">Должность</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Иконка источника события</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
-    <string name="pref_EventInfo_DatesInBrackets">Окружать даты скобками</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Окрашивать цветом даты всё событие</string>
     <string name="pref_EventInfo_NewLine1">"- новая строка -"</string>
     <string name="pref_EventInfo_NewLine2">"- новая строка - "</string>
     <string name="pref_EventInfo_NewLine3">"- новая строка -  "</string>
+    <string name="pref_EventInfo_LeftBracket">"("</string>
+    <string name="pref_EventInfo_LeftBracket2">"( "</string>
+    <string name="pref_EventInfo_RightBracket">")"</string>
+    <string name="pref_EventInfo_RightBracket2">") "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

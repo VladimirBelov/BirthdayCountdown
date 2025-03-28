@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 02:24
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 02:18
+  ~  * Last modified 28.03.2025, 00:55
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>Capacidade de compartilhar um fato de um widget de lista clicando em um evento</item>
         <item>Definindo o recuo vertical da lista de eventos (Funções adicionais - ON, Lista de eventos - Recuo vertical)</item>
         <item>Filtros de lista para eventos ocultos, favoritos e contadores de dias mostram eventos de todos os tipos e de todas as fontes</item>
+        <item>Idade adicionada em formato curto e colchetes aos detalhes do evento no widget de lista, opção \"cercar data com colchetes\" removida</item>
         <item>Otimizações para Android 15</item>
         <item>Correções de bugs</item>
 

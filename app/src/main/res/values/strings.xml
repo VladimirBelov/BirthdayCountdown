@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.03.2025, 22:30
+  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.03.2025, 20:14
+  ~  * Last modified 28.03.2025, 10:24
   ~  */
   -->
 
@@ -159,7 +159,10 @@
     <string name="msg_new_version_title">"What's new in v. %1$s:"</string>
     <string name="msg_snoozed_until">"Snoozed until %1$s"</string>
     <string name="msg_notify_time">"Notification is set to %1$s"</string>
-    <string name="msg_filter_clear_confirmation">Clear all data about hidden events, silenced events, and list of favorite events?</string>
+    <string name="msg_filter_clear_confirmation">Select data to clear</string>
+    <string name="msg_filter_clear_hidden">List of hidden events</string>
+    <string name="msg_filter_clear_silenced">List of silenced events</string>
+    <string name="msg_filter_clear_favorites">List of favorites events</string>
     <string name="msg_filter_clean_confirmation">Clear all filters from references to non-existent contacts or calendar events?</string>
     <string name="msg_filter_clean_silenced_result">"Cleared silenced events for absent contacts and calendar events: "</string>
     <string name="msg_filter_clean_hidden_result">"Cleared hidden events for absent contacts and calendar events: "</string>
@@ -703,7 +706,8 @@
     <string name="pref_EventInfo_EventDate">Event date</string>
     <string name="pref_EventInfo_EventDate_WithYear">Event date with year</string>
     <string name="pref_EventInfo_EventTitle">Event title (Person name)</string>
-    <string name="pref_EventInfo_Age">Age (anniversary)</string>
+    <string name="pref_EventInfo_Age">Age (full format)</string>
+    <string name="pref_EventInfo_AgeShort">Age (short)</string>
     <string name="pref_EventInfo_CurrentAge">Current age</string>
     <string name="pref_EventInfo_WeddingName">Wedding anniversary name</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Days before event</string>
@@ -716,11 +720,14 @@
     <string name="pref_EventInfo_JobTitle">Title</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Web link available</string>
-    <string name="pref_EventInfo_DatesInBrackets">Surround dates by brackets</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
     <string name="pref_EventInfo_NewLine1">"- new line -"</string>
     <string name="pref_EventInfo_NewLine2">"- new line - "</string>
     <string name="pref_EventInfo_NewLine3">"- new line -  "</string>
+    <string name="pref_EventInfo_LeftBracket">"("</string>
+    <string name="pref_EventInfo_LeftBracket2">"( "</string>
+    <string name="pref_EventInfo_RightBracket">")"</string>
+    <string name="pref_EventInfo_RightBracket2">") "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -1434,7 +1441,6 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Events_Scope" translatable="false">EventsScope</string>
     <string name="pref_Version_LastRun" translatable="false">Version_LastRun</string>
     <string name="pref_VersionCode_LastRun" translatable="false">VersionCode_LastRun</string>
-    <!--<string name="pref_BattOptiCheck" translatable="false">CheckBatteryOptimization</string>-->
 
     <string name="event_type_birthday_labels" translatable="false">"birthday,рождения,народження,geburtstag,cumpleaños,nacimiento,aniversário,anniversaire,urodziny,narozeniny"</string>
     <string name="event_type_wedding_labels" translatable="false">"anniversary,wedding,годовщина,свадьба,свадьбы,весілля,hochzeitstag,civil,boda,casamento,mariage,ślub,výročí,svatba"</string>
@@ -1948,7 +1954,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_EventInfo_FavIcon_ID" translatable="false">3</string>
     <string name="pref_EventInfo_ZodiacSign_ID" translatable="false">4</string>
     <string name="pref_EventInfo_ZodiacYear_ID" translatable="false">5</string>
-    <string name="pref_EventInfo_SilentedIcon_ID" translatable="false">6</string>
+    <string name="pref_EventInfo_SilencedIcon_ID" translatable="false">6</string>
     <string name="pref_EventInfo_EventCaption_ID" translatable="false">7</string>
     <string name="pref_EventInfo_Border_ID" translatable="false">10</string>
     <string name="pref_EventInfo_EventDate_Original_ID" translatable="false">11</string>
@@ -1972,11 +1978,16 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_EventInfo_Dividers_ID" translatable="false">29</string>
     <string name="pref_EventInfo_ButtonConfig_ID" translatable="false">30</string>
     <string name="pref_EventInfo_DaysBeforeEventShort_ID" translatable="false">31</string>
-    <string name="pref_EventInfo_DatesInBrackets_ID" translatable="false">32</string>
+    <!--<string name="pref_EventInfo_DatesInBrackets_ID" translatable="false">32</string>-->
     <string name="pref_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
     <string name="pref_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
     <string name="pref_EventInfo_CurrentAge_ID" translatable="false">35</string>
     <string name="pref_EventInfo_EventLabel_ID" translatable="false">36</string>
+    <string name="pref_EventInfo_AgeShort_ID" translatable="false">37</string>
+    <string name="pref_EventInfo_LeftBracket_ID" translatable="false">38</string>
+    <string name="pref_EventInfo_LeftBracket2_ID" translatable="false">39</string>
+    <string name="pref_EventInfo_RightBracket_ID" translatable="false">40</string>
+    <string name="pref_EventInfo_RightBracket2_ID" translatable="false">41</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>
@@ -1984,7 +1995,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventInfo_Age_ID</item>
         <item>@string/pref_EventInfo_EventIcon_ID</item>
         <item>@string/pref_EventInfo_FavIcon_ID</item>
-        <item>@string/pref_EventInfo_SilentedIcon_ID</item>
+        <item>@string/pref_EventInfo_SilencedIcon_ID</item>
         <item>@string/pref_EventInfo_ZodiacSign_ID</item>
         <item>@string/pref_EventInfo_ZodiacYear_ID</item>
     </string-array>
