@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 10:39
+  ~  * Last modified 31.03.2025, 08:35
   ~  */
   -->
 
@@ -189,6 +189,7 @@
     <string name="msg_created_channel">"Канал сповіщення %1$s створено\n"</string>
     <string name="msg_sent_widgets_update_request">Надіслано запит на оновлення віджетів</string>
     <string name="msg_next_notification">"Наступне сповіщення: %1$s\n"</string>
+    <string name="msg_canceled_previous_notification">Скасовано попереднє сповіщення для черги #%d\n</string>
     <string name="msg_next_widgetupdate">"Наступне оновлення віджета: %1$s\n"</string>
     <string name="msg_no_action">Немає дій для події</string>
     <string name="msg_icon_changed">"Набір значків програми: %1$s"</string>

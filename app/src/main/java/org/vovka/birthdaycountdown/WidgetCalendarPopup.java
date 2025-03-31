@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2024, 20:48
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 21.02.2024, 20:48
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:32
  *
  */
 
@@ -30,10 +30,33 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
+/**
+ * `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
+ * о выбранном дне из виджета календаря. Оно получает данные, связанные с этим днем,
+ * включая события или другую сопутствующую информацию, и представляет их пользователю.
+ * <p>
+ * Это Activity обрабатывает:
+ * <ul>
+ *   <li>Отображение информации, полученной из экземпляра {@link ContactsEvents}.</li>
+ *   <li>Динамическое изменение языка всплывающего окна на основе предпочтений пользователя или системных настроек.</li>
+ *   <li>Применение темы к всплывающему окну на основе предпочтений пользователя.</li>
+ *   <li>Предоставление действий, таких как просмотр дня в приложении календаря или обмен информацией о дне.</li>
+ *   <li>Отображение кнопки "закрыть" для закрытия всплывающего окна.</li>
+ *   <li>Добавление эффекта нажатия к кнопкам.</li>
+ * </ul>
+ * <p>
+ * Данные передаются этому Activity через Intent extras. Ожидаемые extras:
+ * <ul>
+ *   <li>{@link Constants#EXTRA_DAY_INFO}: Строка, содержащая основную информацию для отображения.</li>
+ *   <li>{@link Constants#EXTRA_DAY_CAPTION}: Строка, содержащая подпись или заголовок для дня.</li>
+ *   <li>{@link Constants#EXTRA_VALUES}: Строка, представляющая миллисекунды для выбранного дня.</li>
+ * </ul>
+ * <p>
+ */
 public class WidgetCalendarPopup extends Activity {
 
     private static final String TAG = "WidgetCalendarPopup";

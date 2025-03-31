@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2025, 13:36
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.03.2025, 13:36
+ *  * Last modified 31.03.2025, 08:08
  *
  */
 
@@ -14,7 +14,14 @@ import android.util.Log;
 
 import androidx.core.app.NotificationManagerCompat;
 
-public class NotifyActivity extends Activity {
+/**
+ * NotifyActivity - это служебная Activity, предназначенная для управления и отображения уведомлений,
+ * связанных с событиями контактов. Она проверяет настройки пользователя для параметров уведомлений и
+ * запускает отображение уведомлений, если они включены. Эта Activity вызывается только
+ * через ярлык на значке приложения, и ее основная цель - обработка логики уведомлений,
+ * а не отображение пользовательского интерфейса. Она немедленно завершает работу после обработки логики уведомлений.
+ */
+public final class NotifyActivity extends Activity {
 
     private static final String TAG = "NotifyActivity";
 

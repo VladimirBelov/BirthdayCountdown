@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 10:39
+  ~  * Last modified 31.03.2025, 08:33
   ~  */
   -->
 
@@ -189,6 +189,7 @@
     <string name="msg_created_channel">"Notificar que o canal %1$s foi criado\n"</string>
     <string name="msg_sent_widgets_update_request">Solicitação de atualização de widgets enviada</string>
     <string name="msg_next_notification">"Próxima notificação: %1$s\n"</string>
+    <string name="msg_canceled_previous_notification">Notificação anterior cancelada para a fila #%d\n</string>
     <string name="msg_next_widgetupdate">"Próxima atualização do widget: %1$s\n"</string>
     <string name="msg_no_action">Nenhuma ação para o evento</string>
     <string name="msg_icon_changed">"Conjunto de ícones do aplicativo: %1$s"</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2025, 10:45
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.03.2025, 01:01
+ *  * Last modified 31.03.2025, 10:19
  *
  */
 
@@ -107,6 +107,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * MainActivity - это активность для отображения списка событий.
+ */
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MainActivity";

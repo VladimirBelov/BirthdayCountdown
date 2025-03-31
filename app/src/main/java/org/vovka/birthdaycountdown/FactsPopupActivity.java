@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.02.2024, 20:48
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 21.02.2024, 20:48
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 09:54
  *
  */
 
@@ -25,15 +25,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+/**
+ *  `FactsPopupActivity` - это всплывающее окно, отображающее случайные факты пользователю.
+ *  Обрабатывает отображение фактов, навигацию между ними, а также отправку фактов в другие приложения.
+ */
 public class FactsPopupActivity extends Activity {
 
     private static final String TAG = "FactsPopupActivity";

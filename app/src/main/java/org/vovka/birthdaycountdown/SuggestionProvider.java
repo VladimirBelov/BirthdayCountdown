@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 10.10.2023, 16:23
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:14
  *
  */
 
@@ -22,6 +22,21 @@ import androidx.annotation.NonNull;
 // https://habr.com/ru/post/111961/
 // https://stackoverflow.com/questions/47917200/android-custom-suggestions-wont-show-up
 
+/**
+ * SuggestionProvider - это пользовательский ContentProvider, который предоставляет поисковые подсказки
+ * для событий на основе пользовательского ввода. Он взаимодействует с классом {@link ContactsEvents} для
+ * получения данных о событиях и форматирования их в структуру, подходящую для отображения в списке
+ * поисковых подсказок.
+ *
+ * <p>
+ *     Этот класс в первую очередь отвечает за:
+ *     <ul>
+ *         <li>Обработку поисковых запросов и генерацию списка подсказок.</li>
+ *         <li>Возвращение объекта Cursor, который содержит данные подсказок.</li>
+ *         <li>Определение MIME-типа для поисковых подсказок.</li>
+ *     </ul>
+ * </p>
+ */
 public class SuggestionProvider extends ContentProvider{
 
     private static final String TAG = "SuggestionProvider";

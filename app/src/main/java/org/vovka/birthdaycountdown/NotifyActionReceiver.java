@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 23.08.2023, 19:34
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:04
  *
  */
 
@@ -18,6 +18,35 @@ import android.webkit.WebView;
 
 import androidx.core.app.NotificationManagerCompat;
 
+/**
+ * NotifyActionReceiver - это BroadcastReceiver, отвечающий за обработку действий,
+ * вызванных из уведомлений. Он получает интенты с определенными действиями
+ * (например, snooze, silent, hide, notify, share, attach, dial, close) и выполняет
+ * соответствующие операции.
+ *
+ * <p>Этот класс взаимодействует с {@link ContactsEvents} для управления данными
+ * событий и настройками. Он также использует {@link NotificationManagerCompat}
+ * для управления уведомлениями.
+ *
+ * <p>Действия, обрабатываемые этим приемником:
+ * <ul>
+ *   <li>{@link Constants#ACTION_SNOOZE}: Откладывает (snooze) уведомление для
+ *       определенного события.</li>
+ *   <li>{@link Constants#ACTION_SILENT}: Отключает звук уведомления для
+ *       определенного события.</li>
+ *   <li>{@link Constants#ACTION_HIDE}: Скрывает уведомление для определенного
+ *       события.</li>
+ *   <li>{@link Constants#ACTION_NOTIFY}: Повторно показывает уведомление для
+ *       определенного события.</li>
+ *   <li>{@link Constants#ACTION_SHARE}: Запускает активность для обмена данными
+ *       о событии.</li>
+ *   <li>{@link Constants#ACTION_ATTACH}: Закрепляет уведомление для предотвращения удаления
+ *      при очистке всех уведомлений пользователем</li>
+ *   <li>{@link Constants#ACTION_DIAL}: Инициирует телефонный вызов контакту,
+ *       связанному с событием.</li>
+ *   <li>{@link Constants#ACTION_CLOSE}: Закрывает уведомление.</li>
+ * </ul>
+ */
 public class NotifyActionReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ActionReceiver";

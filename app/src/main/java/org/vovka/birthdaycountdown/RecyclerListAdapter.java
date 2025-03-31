@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 04.12.2022, 12:46
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:09
  *
  */
 
@@ -33,10 +33,24 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
- * dismiss events from a {@link ItemTouchHelper}.
+ * Пользовательский {@link RecyclerView.Adapter}, предназначенный для управления списком элементов, которые можно переупорядочивать и выбирать.
+ * Он реализует интерфейс {@link ItemTouchHelperAdapter} для обработки функциональности перетаскивания (drag-and-drop) через {@link ItemTouchHelper}.
  *
- * @author Paul Burke (ipaulpro)
+ * <p>
+ *   Этот адаптер предоставляет следующие возможности:
+ *   <ul>
+ *     <li><b>Переупорядочивание:</b> Позволяет пользователям переупорядочивать элементы в списке, перетаскивая их.</li>
+ *     <li><b>Выбор:</b> Поддерживает выбор элементов с помощью флажков (checkbox).</li>
+ *     <li><b>Стилизация:</b> Позволяет устанавливать различные цвета текста для определенных элементов.</li>
+ *     <li><b>Несортируемые элементы:</b> Позволяет отмечать определенные элементы как несортируемые, предотвращая их перемещение.</li>
+ *   </ul>
+ * </p>
+ *
+ * <p>
+ *   Адаптер требует, чтобы в конструкторе был предоставлен {@link OnStartDragListener} для инициализации событий перетаскивания.
+ * </p>
+ *
+ * @author Paul Burke (ipaulpro) - Оригинальная концепция ItemTouchHelperAdapter
  */
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
 

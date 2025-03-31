@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 25.04.2023, 10:18
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 08:41
  *
  */
 
@@ -23,10 +23,24 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 /**
- * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
- * to be used with AppCompat.
- * This technique can be used with an {@link android.app.Activity} class, not just
- * {@link android.preference.PreferenceActivity}.
+ * Класс AppCompatPreferenceActivity действует как прокси для {@link AppCompatDelegate}, обрабатывая
+ * необходимые вызовы для интеграции функций AppCompat внутри {@link PreferenceActivity}.
+ * Это включает управление панелью действий, инфляцию меню и другие события жизненного цикла.
+ * </p>
+ * <p>
+ * Хотя он и предназначен для использования с {@link PreferenceActivity}, основной
+ * метод использования {@link AppCompatDelegate} может быть применен к любому
+ * {@link android.app.Activity} для интеграции возможностей AppCompat.
+ * </p>
+ * <p>
+ * Использование этого класса обеспечит:
+ * <ul>
+ *     <li>Панель действий.</li>
+ *     <li>Темы AppCompat.</li>
+ *     <li>Инфляцию меню из AppCompat.</li>
+ *     <li>И многое другое.</li>
+ * </ul>
+ * </p>
  */
 
 @SuppressWarnings("deprecation")

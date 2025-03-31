@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 25.04.2023, 10:18
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:13
  *
  */
 
@@ -15,6 +15,26 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * SnackbarHandler - это пользовательский обработчик (Handler), ответственный за управление очередью
+ * экземпляров {@link FluentSnackbar.Builder} и их последовательное отображение.
+ * Он обрабатывает отображение новых снекбаров, закрытие существующих и
+ * определяет приоритет важных снекбаров над менее важными.
+ *
+ * <p>
+ *     В этом классе используется очередь ({@link Queue}) для управления снекбарами.
+ *     Для предотвращения утечек памяти он использует WeakReference на экземпляр {@link FluentSnackbar}.
+ * </p>
+ *
+ * <p>
+ *     <b>Обработка сообщений:</b>
+ *     Этот класс обрабатывает два типа сообщений:
+ *     <ul>
+ *         <li>{@link #MESSAGE_DISMISSED}: Указывает, что снекбар был закрыт.</li>
+ *         <li>{@link #MESSAGE_NEW}: Указывает, что поступил новый запрос на отображение снекбара.</li>
+ *     </ul>
+ * </p>
+ */
 final class SnackbarHandler extends Handler {
     static final int MESSAGE_DISMISSED = 0;
     static final int MESSAGE_NEW = 1;

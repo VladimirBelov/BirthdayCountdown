@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2025, 12:53
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.03.2025, 01:31
+ *  * Last modified 31.03.2025, 08:37
  *
  */
 
@@ -61,6 +61,13 @@ import java.util.Map;
 // https://stackoverflow.com/questions/44826452/highlight-new-feature-in-android/44826950
 // https://github.com/apuder/Highlight
 
+/**
+ * Класс AboutActivity отображает информацию о приложении, включая версию,
+ * сведения о сборке, журнал изменений и статистику. Также он предоставляет ссылки
+ * на адрес электронной почты приложения, страницы в магазинах приложений и другие
+ * связанные ресурсы.
+ * <p>
+ */
 public class AboutActivity extends AppCompatActivity {
 
     private static final String TAG = "AboutActivity";

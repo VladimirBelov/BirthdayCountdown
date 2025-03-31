@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 09.01.2024, 23:19
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 09:59
  *
  */
 
@@ -18,16 +18,32 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-// https://trinitytuts.com/tips/multiselect-spinner-item-in-android/
+/**
+ * Пользовательский Spinner, позволяющий выбирать несколько элементов.
+ * <p>
+ * Этот класс наследуется от {@link androidx.appcompat.widget.AppCompatSpinner} и реализует
+ * {@link DialogInterface.OnMultiChoiceClickListener} для обработки множественного выбора
+ * внутри диалогового окна. Он предоставляет методы для установки элементов, управления выбором и
+ * получения списка выбранных элементов.
+ * </p>
+ * <p>
+ * Когда пользователь взаимодействует со спиннером, он может отображать либо диалоговое окно
+ * с множественным выбором, либо пользовательский фрагмент ({@link RecyclerListFragment}),
+ * в зависимости от свойства `isSortable`.
+ * </p>
+ * <p>
+ * Основано на: <a href="https://trinitytuts.com/tips/multiselect-spinner-item-in-android/">trinitytuts.com</a>
+ * </p>
+ */
 public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;

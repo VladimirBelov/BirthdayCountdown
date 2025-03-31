@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2025, 10:45
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.03.2025, 01:20
+ *  * Last modified 31.03.2025, 09:27
  *
  */
 
@@ -31,6 +31,36 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * EventListDataProvider предоставляет данные для ListView, используемого в виджете приложения.
+ * Он реализует интерфейс RemoteViewsService.RemoteViewsFactory для предоставления коллекции RemoteViews,
+ * которые будут отображаться в ListView виджета.
+ *
+ * <p>Этот класс отвечает за:</p>
+ * <ul>
+ *     <li>Инициализацию данных на основе настроек виджета и получение данных о событиях.</li>
+ *     <li>Фильтрацию и ограничение количества отображаемых событий на основе настроек пользователя.</li>
+ *     <li>Создание и заполнение отдельных RemoteViews для каждого элемента в ListView.</li>
+ *     <li>Обработку нажатий пользователя на элементы списка.</li>
+ *     <li>Управление жизненным циклом поставщика данных.</li>
+ * </ul>
+ *
+ * <p><b>Ключевые функции:</b></p>
+ * <ul>
+ *     <li><b>Инициализация данных (initData):</b> Извлекает настройки виджета, получает данные о событиях из {@link ContactsEvents}
+ *     и фильтрует список событий на основе критериев, выбранных пользователем.</li>
+ *     <li><b>Фильтрация и ограничение событий:</b> Применяет ограничения к количеству событий, дней и фактов, отображаемых на основе настроек виджета.</li>
+ *     <li><b>Заполнение представления (getViewAt):</b> Создает и заполняет {@link RemoteViews} для каждого события, отображая детали события,
+ *     форматируя даты и применяя пользовательские цвета в зависимости от близости события. Также конструирует интенты для обработки нажатий на каждый элемент списка.</li>
+ * </ul>
+ *
+ * <p><b>Примечание:</b> Данный код использует классы RemoteViews, RemoteViewsService, AppWidgetManager и другие из пакета Android для создания виджетов.
+ *  Для работы с ним требуется знание основ создания виджетов и принципов их работы.</p>
+ * <p><b>Ссылки на документацию:</b></p>
+ * <ul>
+ *     <li><a href="https://developer.android.com/guide/topics/appwidgets">Руководство по виджетам</a></li>
+ *     <li><a href="https://www.androidauthority.com/create-an-android-widget-1020839/">Как создать виджет Android</a></li>
+ */
 //https://developer.android.com/guide/topics/appwidgets
 //https://www.androidauthority.com/create-an-android-widget-1020839/
 //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/212-urok-121-vidzhety-spisok.html

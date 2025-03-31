@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 26.11.2023, 20:05
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 08:08
  *
  */
 
@@ -13,6 +13,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * Класс AlarmReceiver является BroadcastReceiver, который обрабатывает события будильника,
+ * срабатывающие AlarmManager системы. Он отвечает за проверку наличия ожидающих событий и
+ * отображение уведомлений, а также за обновление виджетов приложения.
+ *
+ * <p>
+ * Этот приемник обычно вызывается, когда срабатывает ранее установленный будильник. Он проверяет
+ * настройки приложения, чтобы определить, нужно ли отображать уведомления для различных очередей
+ * уведомлений (например, очередь 1 или очередь 2).
+ * </p>
+ * <p>
+ * Этот класс в значительной степени полагается на синглтон {@link ContactsEvents} для управления
+ * событиями, настройками и уведомлениями.
+ * </p>
+ */
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String TAG = "AlarmReceiver";

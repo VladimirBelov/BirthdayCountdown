@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 23.08.2023, 19:34
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 09:55
  *
  */
 
@@ -17,15 +17,32 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import org.vovka.birthdaycountdown.helper.ThreadHelper;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import org.vovka.birthdaycountdown.helper.ThreadHelper;
+
+/**
+ * Обертка с "текучим" (fluent) API для {@link Snackbar} из Android, упрощающая его использование и предоставляющая
+ * дополнительные возможности настройки. Этот класс позволяет создавать и отображать Snackbar'ы с более
+ * читаемым и цепочечным синтаксисом.
+ *
+ * <p>
+ *     <b>Ключевые особенности:</b>
+ *     <ul>
+ *         <li><b>"Текучий" (Fluent) интерфейс:</b> Позволяет использовать цепочечный синтаксис для создания и настройки Snackbar'ов.</li>
+ *         <li><b>Настройка:</b> Предоставляет широкие возможности для настройки текста, цветов, кнопок действий и поведения.</li>
+ *         <li><b>Очередь сообщений:</b> Управляет очередью Snackbar'ов, обеспечивая плавные переходы и избегая наложения.</li>
+ *         <li><b>Потокобезопасность:</b> Гарантирует, что все операции выполняются в основном потоке.</li>
+ *         <li><b>Важность:</b> Позволяет пометить Snackbar как важный и получить обратный вызов при его закрытии.</li>
+ *         <li><b>Тип:</b> Позволяет задать тип для Snackbar'а и удалить все Snackbar'ы определенного типа.</li>
+ *     </ul>
+ * </p>
+ */
 public final class FluentSnackbar {
     private final View mView;
 

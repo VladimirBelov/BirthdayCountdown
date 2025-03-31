@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 10:39
+  ~  * Last modified 31.03.2025, 08:30
   ~  */
   -->
 
@@ -189,6 +189,7 @@
     <string name="msg_created_channel">"Benachrichtigen, dass Kanal %1$s erstellt wurde\n"</string>
     <string name="msg_sent_widgets_update_request">Widgets-Aktualisierungsanfrage gesendet</string>
     <string name="msg_next_notification">"Nächste Benachrichtigung: %1$s\n"</string>
+    <string name="msg_canceled_previous_notification">Vorherige Benachrichtigung für Warteschlange #%d abgebrochen\n</string>
     <string name="msg_next_widgetupdate">"Nächstes Widget-Update: %1$s\n"</string>
     <string name="msg_no_action">Keine Aktion für Ereignis</string>
     <string name="msg_icon_changed">"App-Symbolsatz: %1$s"</string>

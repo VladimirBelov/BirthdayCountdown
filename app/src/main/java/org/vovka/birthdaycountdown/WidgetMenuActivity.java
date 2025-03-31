@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 02:24
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.03.2025, 12:08
+ *  * Last modified 31.03.2025, 10:34
  *
  */
 
@@ -50,6 +50,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Класс WidgetMenuActivity отвечает за отображение контекстного меню
+ * для определенного события, на которое нажали на виджете. Он предоставляет различные действия,
+ * связанные с событием, такие как редактирование, совместное использование, открытие в календаре или контактах,
+ * добавление/удаление из избранного, скрытие и отключение уведомлений.
+ * <p>
+ * Это Activity запускается, когда пользователь взаимодействует с событием, отображаемым на виджете.
+ * Оно динамически формирует меню на основе атрибутов события и настроек приложения.
+ */
 public class WidgetMenuActivity extends Activity {
     private static final String TAG = "WidgetMenuActivity";
     private int appWidgetId;

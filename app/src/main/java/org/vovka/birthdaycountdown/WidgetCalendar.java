@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.03.2025, 18:04
+ *  * Last modified 31.03.2025, 10:29
  *
  */
 
@@ -46,6 +46,12 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Виджет Календарь является поставщиком виджетов приложений, который отображает настраиваемый календарь.
+ * Он позволяет пользователям просматривать календарь за один или несколько месяцев, настраивать
+ * внешний вид календаря и взаимодействовать с календарем для перемещения по месяцам и
+ * просмотра событий.
+ */
 public class WidgetCalendar extends AppWidgetProvider {
 
     private static final String TAG = "WidgetCalendar";

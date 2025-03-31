@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 26.11.2023, 20:05
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 09:07
  *
  */
 
@@ -13,6 +13,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * Класс DateReceiver является BroadcastReceiver, который отслеживает системные изменения даты и времени.
+ * Он конкретно отслеживает следующие действия:
+ * <ul>
+ *     <li>{@link Constants#Broadcast_ANDROID_INTENT_ACTION_TIME_SET}: Когда устанавливается системное время.</li>
+ *     <li>{@link Constants#Broadcast_ANDROID_INTENT_ACTION_DATE_CHANGED}: Когда меняется системная дата.</li>
+ *     <li>{@link Constants#Broadcast_ANDROID_INTENT_ACTION_TIMEZONE_CHANGED}: Когда меняется системный часовой пояс.</li>
+ * </ul>
+ * <p>
+ * При получении любого из этих широковещательных сообщений (broadcast), DateReceiver запускает повторную инициализацию
+ * расписаний уведомлений и обновлений виджетов внутри приложения. Это гарантирует, что запланированные
+ * уведомления приложения и отображение виджетов остаются точными и синхронизированными с системной датой и временем.
+ * </p>
+ * <p>
+ * Он использует синглтон-класс {@link ContactsEvents} для управления состоянием приложения,
+ * настройками, расписаниями уведомлений и обновлениями виджетов.
+ * </p>
+ */
 public class DateReceiver extends BroadcastReceiver {
 
     private static final String TAG = "DateReceiver";

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 22:30
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 22:06
+ *  * Last modified 31.03.2025, 09:16
  *
  */
 
@@ -126,6 +126,9 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Синглтон {@link ContactsEvents} для управления данными и настройками приложения
+ */
 class ContactsEvents {
 
     static final int Position_eventDate_sorted = 0;
@@ -6705,8 +6708,25 @@ class ContactsEvents {
 
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.putExtra(Constants.QUEUE, queueNumber);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, queueNumber, alarmIntent, PendingIntentMutable);
+
+            // Проверяем, существует ли уже PendingIntent с таким же queueNumber
+            PendingIntent existingPendingIntent = PendingIntent.getBroadcast(
+                    context, queueNumber, alarmIntent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
+
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+            // Если PendingIntent существует, отменяем его
+            if (existingPendingIntent != null && alarmManager != null) {
+                alarmManager.cancel(existingPendingIntent);
+                existingPendingIntent.cancel(); // Отменяем PendingIntent
+                if (preferences_debug_on) {
+                    log.append(resources.getString(R.string.msg_canceled_previous_notification, queueNumber));
+                }
+            }
+
+            // Создаем новый PendingIntent (или переиспользуем существующий)
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    context, queueNumber, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             boolean needToNotify = false;
             boolean canExactAlarm = false;
@@ -6748,7 +6768,7 @@ class ContactsEvents {
                     if (log.indexOf(logEntry) == -1) log.append(logEntry);
                 }
 
-            } else { //Disable Daily Notifications
+            } else { //Уведомления не нужны или нет доступа показывать уведомления
                 if (PendingIntent.getBroadcast(context, queueNumber, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
                     alarmManager.cancel(pendingIntent);
                 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 09.01.2024, 23:59
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 08:45
  *
  */
 
@@ -35,10 +35,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +42,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * ColorPicker - это пользовательский элемент управления, который позволяет пользователю выбрать цвет из предопределенного набора вариантов
+ * или выбрать цвет с помощью RGB-слайдеров. Его можно использовать в макетах или программно.
+ *
+ * <p>
+ * Этот класс предоставляет визуальный интерфейс выбора цвета в приложении Android. Он предлагает
+ * несколько способов выбора цвета, включая сетку предопределенных вариантов цветов и RGB-селектор.
+ * </p>
+ *
+ * <p>
+ *   <b>Основные характеристики:</b>
+ *   <ul>
+ *     <li><b>Предопределенные варианты цветов:</b> Представляет сетку цветов для удобного выбора.</li>
+ *     <li><b>RGB-селектор:</b> Позволяет пользователям точно настроить выбор цвета с помощью слайдеров Красный, Зеленый, Синий и Альфа.</li>
+ *     <li><b>Настраиваемый:</b> Может быть настроен через атрибуты XML или программно.</li>
+ *   </ul>
+ * </p>
+ */
 public class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     private static final String TAG = "ColorPicker";

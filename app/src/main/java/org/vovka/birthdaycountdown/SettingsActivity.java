@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 22:18
+ *  * Last modified 31.03.2025, 10:19
  *
  */
 
@@ -109,6 +109,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * SettingsActivity - активность для отображения основных настроек приложения.
+ */
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 

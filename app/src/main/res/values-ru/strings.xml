@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 10:24
+  ~  * Last modified 31.03.2025, 08:25
   ~  */
   -->
 
@@ -189,6 +189,7 @@
     <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
     <string name="msg_sent_widgets_update_request">Обновление виджетов…</string>
     <string name="msg_next_notification">"Следующее уведомление: %1$s\n"</string>
+    <string name="msg_canceled_previous_notification">Отменено предыдущее уведомление для очереди #%d\n</string>
     <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>

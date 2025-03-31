@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2025, 10:45
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.03.2025, 22:14
+ *  * Last modified 31.03.2025, 10:30
  *
  */
 
@@ -44,6 +44,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Класс WidgetUpdater отвечает за обновление содержимого виджета.
+ * Он обрабатывает получение данных, применение пользовательских предпочтений и отрисовку пользовательского интерфейса виджета.
+ * Этот класс специализируется на виджетах на основе фотографий, которые отображают события контактов.
+ */
 class WidgetUpdater {
 
     private static final String TAG = "WidgetUpdater";

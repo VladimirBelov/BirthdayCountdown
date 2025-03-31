@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 19.09.2023, 11:17
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 08:46
  *
  */
 
@@ -38,12 +38,30 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.view.ContextThemeWrapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.view.ContextThemeWrapper;
 
-
+/**
+ * Пользовательская настройка для выбора цвета из предопределенного набора или путем указания пользовательского цвета RGB.
+ * <p>
+ * Эта настройка отображает предварительный просмотр цвета и открывает диалоговое окно для выбора цвета при нажатии.
+ * Цвет можно выбрать из сетки предопределенных цветов или путем настройки значений RGB и альфа с помощью полос прокрутки.
+ * </p>
+ *
+ * <p>
+ * <b>Атрибуты XML:</b>
+ * <ul>
+ *   <li>{@code app:dialogTitle} - String: Заголовок диалогового окна выбора цвета.</li>
+ *   <li>{@code app:dialogIcon} - Reference: Иконка, отображаемая в диалоговом окне выбора цвета.</li>
+ *   <li>{@code app:itemLayout} - Reference: ID ресурса макета для каждого элемента цвета в сетке.</li>
+ *   <li>{@code app:numColumns} - Integer: Количество столбцов в сетке цветов.</li>
+ *   <li>{@code app:choices} - Reference: Ресурс массива, содержащий предопределенные варианты выбора цвета в виде целых чисел.</li>
+ * </ul>
+ * </p>
+ */
 public class ColorPreference extends Preference {
     private static final String TAG = "ColorPreference";
     private int[] mColorChoices = {};

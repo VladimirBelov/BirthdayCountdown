@@ -1,14 +1,19 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2025, 22:30
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.03.2025, 18:37
+ *  * Last modified 31.03.2025, 09:04
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-/** @noinspection HardCodedStringLiteral*/
+/**
+ * Класс {@code Constants} предоставляет централизованное хранилище различных констант,
+ * используемых во всём приложении. Этот класс предназначен для повышения читаемости,
+ * удобства сопровождения и согласованности кода, определяя часто используемые литералы и
+ * идентификаторы в одном месте.
+ */
 final class Constants {
 
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/

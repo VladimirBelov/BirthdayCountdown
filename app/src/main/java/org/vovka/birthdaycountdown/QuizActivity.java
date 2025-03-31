@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 25.04.2023, 10:18
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:07
  *
  */
 
@@ -17,6 +17,9 @@ import android.util.Log;
 
 import java.util.Locale;
 
+/**
+ * QuizActivity отвечает за показ викторины (квиза).
+ */
 public class QuizActivity extends Activity {
 
     private static final String TAG = "QuizActivity";

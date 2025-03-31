@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 11.10.2022, 00:28
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 10:11
  *
  */
 
@@ -25,6 +25,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.vovka.birthdaycountdown.helper.ItemTouchHelperCallback;
 import org.vovka.birthdaycountdown.helper.OnStartDragListener;
 
+/**
+ * Фрагмент, который отображает список элементов в RecyclerView.
+ * Этот фрагмент позволяет изменять порядок элементов путем перетаскивания (drag and drop).
+ * Он использует пользовательский адаптер {@link RecyclerListAdapter} для управления данными списка.
+ * <p>
+ * Фрагмент ожидает получения данных через аргументы при создании.
+ * Эти аргументы должны включать:
+ * <ul>
+ *     <li>{@link Constants#EXTRA_LIST}: ArrayList строк, представляющий элементы списка.</li>
+ *     <li>{@link Constants#EXTRA_CHECKS}: ArrayList целых чисел, представляющий состояние "отмеченности" (checked) каждого элемента.</li>
+ *     <li>{@link Constants#EXTRA_COLORED}: ArrayList строк, представляющий состояние "окрашенности" (colored) каждого элемента.</li>
+ *     <li>{@link Constants#EXTRA_COLOR}: Целое число, представляющее основной цвет для этого списка.</li>
+ *     <li>{@link Constants#EXTRA_NON_SORTED}: ArrayList строк, представляющий исходный, неотсортированный список для управления перетаскиванием.</li>
+ *     <li>{@link Constants#EXTRA_TITLE}: Строка, представляющая заголовок, который должен отображаться на панели инструментов (toolbar).</li>
+ * </ul>
+ * <p>
+ * При уничтожении фрагмента он сохраняет результаты (выбранные элементы) обратно в аргументы
+ * под ключом {@link Constants#EXTRA_RESULTS}.
+ * <p>
+ * Он также управляет видимостью элементов макета и заголовком панели инструментов.
+ */
 public class RecyclerListFragment extends Fragment implements OnStartDragListener {
 
     private ItemTouchHelper mItemTouchHelper;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2025, 02:16
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.03.2025, 21:33
+ *  * Last modified 31.03.2025, 10:19
  *
  */
 
@@ -40,6 +40,9 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Locale;
 
+/**
+ * FAQActivity - это активность для отображения справочной информации о функциях приложения.
+ */
 public class FAQActivity extends AppCompatActivity {
 
     private static final String TAG = "FAQActivity";

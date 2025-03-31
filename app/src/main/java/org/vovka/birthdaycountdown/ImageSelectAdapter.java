@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.01.2024, 23:29
- *  * Copyright (c) 2018 - 2024. All rights reserved.
- *  * Last modified 23.08.2023, 19:34
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 31.03.2025, 09:56
  *
  */
 
@@ -19,10 +19,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
+/**
+ * {@link ImageSelectAdapter} - это пользовательский ArrayAdapter, предназначенный для отображения
+ * списка элементов с прикрепленным изображением. Он обрабатывает масштабирование изображений и
+ * отображает текст элемента рядом с отмасштабированным изображением. Адаптер поддерживает
+ * различные варианты масштабирования изображений.
+ */
 class ImageSelectAdapter extends ArrayAdapter<String> {
 
     private static final String TAG = "ImageSelectAdapter";

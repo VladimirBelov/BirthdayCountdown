@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.03.2025, 14:22
+ *  * Created by Vladimir Belov on 31.03.2025, 10:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.03.2025, 12:06
+ *  * Last modified 31.03.2025, 10:05
  *
  */
 
@@ -13,6 +13,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Представляет человека, содержащего информацию об имени, возрасте и поле.
+ * <p>
+ * Этот класс предоставляет методы для разбора и форматирования полного имени человека,
+ * извлечения различных частей имени (фамилия, имя, отчество),
+ * вычисления сокращенного представления имени и определения пола на основе
+ * паттернов имени.
+ */
 class Person {
 
     private static final String TAG = "Person";
