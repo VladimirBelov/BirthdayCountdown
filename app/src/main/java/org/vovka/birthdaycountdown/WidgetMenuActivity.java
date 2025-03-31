@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 31.03.2025, 15:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:34
+ *  * Last modified 31.03.2025, 15:21
  *
  */
 
@@ -28,6 +28,7 @@ import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ public class WidgetMenuActivity extends Activity {
     String eventText = null;
     String[] singleEventArray = null;
     ContactsEvents eventsData;
+    private TypedArray ta = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +117,11 @@ public class WidgetMenuActivity extends Activity {
                 return;
             }
 
-            this.setTheme(eventsData.preferences_theme.themeDialog);
+            //Для диалогов
+            this.setTheme(eventsData.preferences_theme.themeMain);
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
+            this.setTheme(eventsData.preferences_theme.themeDialog);
             setContentView(R.layout.widget_menu);
 
             //Ширина диалога
@@ -153,7 +158,7 @@ public class WidgetMenuActivity extends Activity {
 
                 }
 
-                if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
+                if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_contactID])) {
 
                     menuItems.add(getString(R.string.menu_context_open_contact));
                     menuIcons.add(getDrawable(R.drawable.ic_menu_friendslist));
@@ -242,6 +247,12 @@ public class WidgetMenuActivity extends Activity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (ta != null) ta.recycle();
+        super.onDestroy();
     }
 
     private void onMenuItemClick(int itemId, int appWidgetId) {
@@ -348,10 +359,8 @@ public class WidgetMenuActivity extends Activity {
                     });
                     AlertDialog alertToShow = builder.create();
                     alertToShow.setOnShowListener(arg0 -> {
-                        TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
                         alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                         alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        ta.recycle();
                     });
                     alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     alertToShow.show();

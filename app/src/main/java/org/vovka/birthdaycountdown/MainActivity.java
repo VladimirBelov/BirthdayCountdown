@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 31.03.2025, 15:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:19
+ *  * Last modified 31.03.2025, 15:14
  *
  */
 
@@ -369,11 +369,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             String contactID = selectedEvent[ContactsEvents.Position_contactID];
-            boolean isRealContactID = contactID != null && !contactID.isEmpty() && ContactsEvents.isRealContactEventID(contactID);
-            if (isRealContactID) {
+            if (!TextUtils.isEmpty(contactID)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
                         .setIcon(android.R.drawable.ic_menu_edit);
             } else {
+                //todo: добавить добавление в локальные события
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
                         .setIcon(android.R.drawable.ic_menu_add);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

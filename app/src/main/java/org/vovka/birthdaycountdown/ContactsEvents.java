@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 31.03.2025, 15:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:16
+ *  * Last modified 31.03.2025, 15:21
  *
  */
 
@@ -1002,7 +1002,7 @@ class ContactsEvents {
 
             Uri uri = null;
             final String contactID = singleEventArray[ContactsEvents.Position_contactID];
-            final boolean isRealContactID = contactID != null && !contactID.isEmpty() && isRealContactEventID(contactID);
+            final boolean notEmptyContactID = !TextUtils.isEmpty(contactID);
             final String eventId = singleEventArray[Position_eventID];
             final boolean notEmptyEventId = !TextUtils.isEmpty(eventId);
             final String eventUrl = singleEventArray[Position_eventURL].trim();
@@ -1017,7 +1017,7 @@ class ContactsEvents {
             }
 
             if (prefAction == 1) { //Контакт, календарь, ссылка
-                if (isRealContactID) {
+                if (notEmptyContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
                 } else if (notEmptyEventId && !isFileOrHoliday) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
@@ -1030,7 +1030,7 @@ class ContactsEvents {
 
                 if (notEmptyEventId && !isFileOrHoliday) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
-                } else if (isRealContactID) {
+                } else if (notEmptyContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (notEmptyEventUrl) {
                     String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
@@ -1042,14 +1042,14 @@ class ContactsEvents {
                 if (notEmptyEventUrl) {
                     String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
                     uri = Uri.parse(eventURLs[0].trim());
-                } else if (isRealContactID) {
+                } else if (notEmptyContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (notEmptyEventId && !isFileOrHoliday) {
                     uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, eventId);
                 }
 
             } else if (prefAction == 4) { //Контакт, ссылка, календарь
-                if (isRealContactID) {
+                if (notEmptyContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
                 } else if (notEmptyEventUrl) {
                     String[] eventURLs = eventUrl.split(Constants.STRING_2TILDA);
@@ -4358,20 +4358,15 @@ class ContactsEvents {
                     }
                 }
 
-                //hashCode -> ID
-                if (TextUtils.isEmpty(contactID)) {
-                    contactID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
-                }
-
             } else { //Просто событие
 
                 eventData.put(Position_personFullName, eventTitle);
                 eventData.put(Position_personFullNameAlt, eventTitle);
-                eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
 
             }
 
             eventData.put(Position_notAnnualEvent, !isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
+            eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
 
             //Проверка по организации, что нашли именно требуемый контакт
             String orgNameFile = Constants.STRING_EMPTY;
@@ -4384,7 +4379,6 @@ class ContactsEvents {
                 //Организации не совпадают
                 if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile)) {
                     contactID = null;
-                    eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
                 }
             }
 
@@ -4451,23 +4445,21 @@ class ContactsEvents {
                 } else { //Такого события ещё не было
 
                     //Добавляем данные контакта
-                    if (isRealContactEventID(contactID)) {
-                        final Long contactIDLong = parseToLong(contactID);
-                        HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
-                                ContactsContract.Contacts.PHOTO_URI,
-                                //ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
-                                ContactsContract.Contacts.STARRED
-                        });
+                    final Long contactIDLong = parseToLong(contactID);
+                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                            ContactsContract.Contacts.PHOTO_URI,
+                            //ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                            ContactsContract.Contacts.STARRED
+                    });
 
-                        eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                        if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                            if (Constants.STRING_1.equals(checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
-                                eventData.put(Position_starred, Constants.STRING_1);
-                                if (!isPassedEvent) statFavoriteEventsCount++;
-                            }
+                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                        if (Constants.STRING_1.equals(checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                            eventData.put(Position_starred, Constants.STRING_1);
+                            if (!isPassedEvent) statFavoriteEventsCount++;
                         }
-                        contactDataMap.clear();
                     }
+                    contactDataMap.clear();
 
                     eventData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
                     if (TextUtils.isEmpty(eventData.get(Position_organization)))
@@ -9993,8 +9985,6 @@ class ContactsEvents {
         return localesWithFullDocumentation.contains(Locale.getDefault().getLanguage());
 
     }
-
-    static boolean isRealContactEventID(String id) {return id != null && !id.startsWith(Constants.PREFIX_FileEventID);}
 
     @NonNull String setAgeFormatting(@NonNull String strAge) {
 
