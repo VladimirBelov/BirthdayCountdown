@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
+  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 31.03.2025, 08:33
+  ~  * Last modified 01.04.2025, 12:26
   ~  */
   -->
 
@@ -190,6 +190,7 @@
     <string name="msg_sent_widgets_update_request">Aktualizacja widżetów…</string>
     <string name="msg_next_notification">"Następne powiadomienie: %1$s\n"</string>
     <string name="msg_canceled_previous_notification">Anulowano poprzednie powiadomienie dla kolejki #%d\n</string>
+    <string name="msg_skipped_notification">Pominięto zduplikowane powiadomienie dla kolejki #%d\n</string>
     <string name="msg_next_widgetupdate">"Następna aktualizacja widżetu: %1$s\n"</string>
     <string name="msg_no_action">Brak akcji dla wydarzenia</string>
     <string name="msg_icon_changed">"Zestaw ikon: %1$s"</string>

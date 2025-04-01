@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 15:21
+ *  * Created by Vladimir Belov on 01.04.2025, 12:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 15:14
+ *  * Last modified 01.04.2025, 12:35
  *
  */
 
@@ -2180,7 +2180,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onResume() {
         try {
             super.onResume();
-            if (!filterNames.isEmpty()) return; //чтобы параметра поиска не сбрасывал после просмотра контакта
+            if (!filterNames.isEmpty()) return; //Чтобы не было обновления списка после просмотра контакта (при непустой строке поиска)
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(this);

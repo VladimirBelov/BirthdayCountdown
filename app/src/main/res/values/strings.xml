@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.03.2025, 10:49
+  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 31.03.2025, 08:25
+  ~  * Last modified 01.04.2025, 12:23
   ~  */
   -->
 
@@ -190,6 +190,7 @@
     <string name="msg_sent_widgets_update_request">Sent widgets update request</string>
     <string name="msg_next_notification">"Next notification: %1$s\n"</string>
     <string name="msg_canceled_previous_notification">Canceled previous notification for queue #%d\n</string>
+    <string name="msg_skipped_notification">Skipped duplicate notification for queue #%d\n</string>
     <string name="msg_next_widgetupdate">"Next widget update: %1$s\n"</string>
     <string name="msg_no_action">No action for event</string>
     <string name="msg_icon_changed">"App icon set: %1$s"</string>
@@ -1620,6 +1621,9 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>1</item>
         <item>2</item>
     </string-array>
+    
+    <string name="pref_Notifications_LastNotify" translatable="false">Notifications_LastNotify</string>
+    <string name="pref_Notifications2_LastNotify" translatable="false">Notifications2_LastNotify</string>
 
     <string name="pref_CustomEvents_key" translatable="false">CustomEvents</string>
     <string name="pref_CustomEvents_Sources_key" translatable="false">CustomEvents_Sources</string>

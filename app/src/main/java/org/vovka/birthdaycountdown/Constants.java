@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 01.04.2025, 12:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:04
+ *  * Last modified 01.04.2025, 11:04
  *
  */
 
@@ -299,6 +299,7 @@ final class Constants {
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 30000;
+    static final int TIME_NOTIFY_COOLDOWN = 30000;
     static final int PREV_EVENTS_MAX_DAYS = 14;
     static final String account_google = "com.google";
     static final String account_skype = "com.skype.";

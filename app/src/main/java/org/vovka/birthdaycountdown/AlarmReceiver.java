@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 01.04.2025, 12:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 08:08
+ *  * Last modified 01.04.2025, 12:22
  *
  */
 
@@ -50,26 +50,42 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents(context)) {
 
-                    if (isNeedNotify && intent.getIntExtra(Constants.QUEUE, 0) == 1) {
-                        eventsData.showNotifications(1, false, Integer.toString(eventsData.preferences_notifications_channel_id));
+                    long today = System.currentTimeMillis();
 
-                        //Переинициализируем уведомления
-                        eventsData.initNotificationSchedule(log,
-                                1,
-                                eventsData.preferences_notifications_days,
-                                eventsData.preferences_notifications_alarm_hour,
-                                eventsData.preferences_notifications_alarm_minute);
+                    if (isNeedNotify && intent.getIntExtra(Constants.QUEUE, 0) == 1) {
+                        long lastNotify = eventsData.getLastNotifyForQueue(1);
+                        if (lastNotify == 0 || today - lastNotify > Constants.TIME_NOTIFY_COOLDOWN) {
+                            eventsData.showNotifications(1, false, Integer.toString(eventsData.preferences_notifications_channel_id));
+
+                            eventsData.setLastNotifyForQueue(1, today);
+
+                            //Переинициализируем уведомления
+                            eventsData.initNotificationSchedule(log,
+                                    1,
+                                    eventsData.preferences_notifications_days,
+                                    eventsData.preferences_notifications_alarm_hour,
+                                    eventsData.preferences_notifications_alarm_minute);
+                        } else {
+                            log.append(eventsData.getResources().getString(R.string.msg_skipped_notification, 1));
+                        }
                     }
 
                     if (isNeedNotify2 && intent.getIntExtra(Constants.QUEUE, 0) == 2) {
-                        eventsData.showNotifications(2, false, Integer.toString(eventsData.preferences_notifications2_channel_id));
+                        long lastNotify = eventsData.getLastNotifyForQueue(2);
+                        if (lastNotify == 0 || today - lastNotify > Constants.TIME_NOTIFY_COOLDOWN) {
+                            eventsData.showNotifications(2, false, Integer.toString(eventsData.preferences_notifications2_channel_id));
 
-                        //Переинициализируем уведомления
-                        eventsData.initNotificationSchedule(log,
-                                2,
-                                eventsData.preferences_notifications2_days,
-                                eventsData.preferences_notifications2_alarm_hour,
-                                eventsData.preferences_notifications2_alarm_minute);
+                            eventsData.setLastNotifyForQueue(2, today);
+
+                            //Переинициализируем уведомления
+                            eventsData.initNotificationSchedule(log,
+                                    2,
+                                    eventsData.preferences_notifications2_days,
+                                    eventsData.preferences_notifications2_alarm_hour,
+                                    eventsData.preferences_notifications2_alarm_minute);
+                        } else {
+                            log.append(eventsData.getResources().getString(R.string.msg_skipped_notification, 2));
+                        }
                     }
                 }
             }

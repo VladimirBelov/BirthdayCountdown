@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
+  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 20.03.2025, 21:42
+  ~  * Last modified 31.03.2025, 20:26
   ~  */
   -->
 
@@ -40,9 +40,10 @@
         android:supportsRtl="false"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
-        android:fullBackupContent="true"
         android:hasFragileUserData="true"
+        android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:restoreAnyVersion="true"
         tools:targetApi="tiramisu"
         android:enableOnBackInvokedCallback="false"
         android:taskAffinity=""

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 15:21
+ *  * Created by Vladimir Belov on 01.04.2025, 12:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 15:21
+ *  * Last modified 01.04.2025, 11:55
  *
  */
 
@@ -3889,6 +3889,34 @@ class ContactsEvents {
         }
     }
 
+    public long getLastNotifyForQueue(int i) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            if (i == 1) {
+                return preferences.getLong(resources.getString(R.string.pref_Notifications_LastNotify), 0);
+            } else if (i == 2) {
+                return preferences.getLong(resources.getString(R.string.pref_Notifications2_LastNotify), 0);
+            } else {
+                return 0;
+            }
+        } catch (ClassCastException e) {
+            return 0;
+        }
+    }
+
+    public void setLastNotifyForQueue(int i, long lastNotifyDate) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (i == 1) {
+            editor.putLong(resources.getString(R.string.pref_Notifications_LastNotify), lastNotifyDate);
+        } else if (i == 2) {
+            editor.putLong(resources.getString(R.string.pref_Notifications2_LastNotify), lastNotifyDate);
+        } else {
+            return;
+        }
+        editor.apply();
+    }
+
     void launchIntentOnFile(@NonNull Uri uri) {
         try {
             String mime = context.getContentResolver().getType(uri);
@@ -6719,6 +6747,7 @@ class ContactsEvents {
             // Создаем новый PendingIntent (или переиспользуем существующий)
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     context, queueNumber, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            alarmIntent.putExtra(Constants.QUEUE, queueNumber);
 
             boolean needToNotify = false;
             boolean canExactAlarm = false;
