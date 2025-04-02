@@ -1,0 +1,9 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 02.04.2025, 21:00
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 02.04.2025, 20:52
+ *
+ */
+
+include ':app'
