@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
+  ~  * Created by Vladimir Belov on 02.04.2025, 20:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.03.2025, 23:45
+  ~  * Last modified 01.04.2025, 23:07
   ~  */
   -->
 
@@ -658,7 +658,7 @@
             android:title="@string/pref_List_PrevEvents_title"
             android:icon="@android:drawable/ic_menu_revert"
             android:dialogIcon="@android:drawable/ic_menu_revert"
-            android:negativeButtonText="@string/button_cancel"/> <!--android:minHeight="48dp"-->
+            android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
             android:key="@string/pref_List_FontMagnify_key"

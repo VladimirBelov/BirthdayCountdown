@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 02.04.2025, 20:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:32
+ *  * Last modified 01.04.2025, 18:51
  *
  */
 
@@ -141,7 +141,7 @@ public class WidgetCalendarPopup extends Activity {
                 buttonAction.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
                 buttonAction.setOnClickListener(view -> {
                     Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                    builder.appendPath("time");
+                    builder.appendPath(Constants.QUERY_PARAM_TIME);
                     builder.appendPath(dayMills);
                     Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
                     intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

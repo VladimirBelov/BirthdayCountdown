@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.04.2025, 12:43
+ *  * Created by Vladimir Belov on 02.04.2025, 20:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 11:04
+ *  * Last modified 01.04.2025, 18:51
  *
  */
 
@@ -429,6 +429,7 @@ final class Constants {
     static final String QUERY_PARAM_YEARLY = "FREQ=YEARLY";
     static final String QUERY_PARAM_AND = " AND ";
     static final String QUERY_PARAM_OR = " OR ";
+    static final String QUERY_PARAM_TIME = "time";
     static final String PREF_TYPE_STRING = " (string)";
     static final String PREF_TYPE_BOOLEAN = " (boolean)";
     static final String PREF_TYPE_INT = " (int)";

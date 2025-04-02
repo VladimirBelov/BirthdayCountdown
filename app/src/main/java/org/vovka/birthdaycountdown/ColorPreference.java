@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 02.04.2025, 20:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 08:46
+ *  * Last modified 01.04.2025, 22:56
  *
  */
 
@@ -275,7 +275,7 @@ public class ColorPreference extends Preference {
                 }
 
                 AlertDialog dialog = builder.create();
-                View view = View.inflate(new ContextThemeWrapper(getActivity(), ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_rgbcolor, null);
+                View view = View.inflate(new ContextThemeWrapper(getActivity(), ContactsEvents.getInstance().preferences_theme.themeMain), R.layout.dialog_rgbcolor, null);
                 dialog.setView(view);
 
                 if (mPreference.mSelectDialogTitle.isEmpty()) {
@@ -298,8 +298,6 @@ public class ColorPreference extends Preference {
                 final int[] colorValue = {mPreference.getValue()};
                 TextView color_edit = view.findViewById(R.id.color_edit);
                 color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
-                color_edit.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
-                color_edit.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
 
                 ImageView color_preview = view.findViewById(R.id.color_preview);
                 setColorViewValue(color_preview, colorValue[0]);

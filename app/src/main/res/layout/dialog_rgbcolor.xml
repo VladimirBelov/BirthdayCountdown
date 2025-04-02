@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 19.09.2023, 11:17
+  ~  * Created by Vladimir Belov on 02.04.2025, 20:49
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 01.04.2025, 22:53
   ~  */
   -->
 
@@ -13,7 +13,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|start"
     android:orientation="vertical"
-    android:padding="?attr/dialogPreferredPadding">
+    android:padding="?attr/dialogPreferredPadding"
+    android:background="?attr/dialogBackgroundColor">
 
     <LinearLayout
         android:id="@+id/caption"
@@ -37,7 +38,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAlignment="viewStart" />
+            android:textAlignment="viewStart"
+            android:textColor="?attr/dialogTextColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,7 +64,8 @@
             <TextView
                 android:id="@+id/color_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="?attr/dialogTextColor" />
 
             <EditText
                 android:id="@+id/color_edit"
@@ -72,7 +75,8 @@
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:minHeight="48dp"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:textColor="?attr/dialogTextColor" />
 
         </LinearLayout>
     </LinearLayout>
@@ -87,14 +91,14 @@
             android:id="@+id/seek1_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
         <TextView
             android:id="@+id/seek1_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
     </LinearLayout>
 
@@ -114,14 +118,14 @@
             android:id="@+id/seek2_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
         <TextView
             android:id="@+id/seek2_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
     </LinearLayout>
 
@@ -141,14 +145,14 @@
             android:id="@+id/seek3_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
         <TextView
             android:id="@+id/seek3_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
     </LinearLayout>
 
@@ -168,14 +172,14 @@
             android:id="@+id/seek4_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
         <TextView
             android:id="@+id/seek4_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:textColor="?attr/dialogTextColor" />
 
     </LinearLayout>
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 02.04.2025, 20:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:30
+ *  * Last modified 01.04.2025, 18:55
  *
  */
 
@@ -848,8 +848,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                             picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
 
-                        //} else {
-                        //    ToastExpander.showInfoMsg(getApplicationContext(), "Ошибка выбора цвета для '" + eventSourcesTitles.get(position) + "'");
                         }
 
                         return true;

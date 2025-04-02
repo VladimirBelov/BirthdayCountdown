@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 02.04.2025, 20:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:29
+ *  * Last modified 01.04.2025, 18:51
  *
  */
 
@@ -451,8 +451,15 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                                 @ColorInt int colorValue = Integer.parseInt(colors[1]);
                                 eventsColorsInMonth.put(eventId, colorValue);
-                                eventsColorsOutMonth.put(eventId,
-                                        Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorValue), Color.green(colorValue), Color.blue(colorValue)));
+                                //Если цвет календаря прозрачный - оставляем прозрачным
+                                if (Color.alpha(colorValue) == 0) {
+                                    eventsColorsOutMonth.put(eventId, colorValue);
+                                } else {
+                                    //Иначе делаем затемнение для дней вне месяца
+                                    eventsColorsOutMonth.put(eventId,
+                                            Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorValue),
+                                                    Color.green(colorValue), Color.blue(colorValue)));
+                                }
 
                             } catch (NumberFormatException ignored) {/**/}
                         }
@@ -492,9 +499,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
                     for (int column = 1; column <= columnsMax; column++) {
-                        String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x");
-                        id = res.getIdentifier(idRow.concat(String.valueOf(column)), Constants.STRING_ID, context.getPackageName());
-                        int idDiv = res.getIdentifier(idRow.concat(String.valueOf(column)).concat("div"), Constants.STRING_ID, context.getPackageName());
+                        String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x").concat(String.valueOf(column));
+                        id = res.getIdentifier(idRow, Constants.STRING_ID, context.getPackageName());
+                        int idDiv = res.getIdentifier(idRow.concat("div"), Constants.STRING_ID, context.getPackageName());
                         if (id != 0) {
                             rv.removeAllViews(id);
                             if (column > columnsToDraw) {
@@ -750,9 +757,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                             } else {
                                 colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                             }
-                            if (colorOfDay != null && Color.alpha(colorOfDay) > (inMonth ? 0 : Constants.WIDGET_CALENDAR_OUT_MONTH_TINT)) {
+                            if (colorOfDay == null || dayType.type == ContactsEvents.DayType.Type.Workday) break;
+                            if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
                                 isColoredByEvent = true;
-                                if (dayType.type == ContactsEvents.DayType.Type.Workday) break;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                                 color = colorOfDay;
                             }
@@ -829,7 +836,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             } else if (action == Constants.onClick_Calendar) {
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                builder.appendPath("time");
+                builder.appendPath(Constants.QUERY_PARAM_TIME);
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
                 Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
