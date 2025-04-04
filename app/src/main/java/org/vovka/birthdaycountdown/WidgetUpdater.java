@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:30
+ *  * Last modified 04.04.2025, 11:23
  *
  */
 
@@ -661,7 +661,7 @@ class WidgetUpdater {
             }
 
             Bitmap photo = eventsData.getEventPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, true, roundingFactor);
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, false, roundingFactor);
             if (photo != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -694,7 +694,7 @@ class WidgetUpdater {
                     Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
                     views.setImageViewBitmap(id_Photo, photo_small);
                 } else {
-                    Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, true, roundingFactor);
+                    Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, false, roundingFactor);
                     views.setImageViewBitmap(id_Photo, photo_icon);
 
                 }

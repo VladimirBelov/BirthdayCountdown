@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:44
+ *  * Last modified 04.04.2025, 11:23
  *
  */
 
@@ -264,7 +264,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Photo_ID))
                         : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Photo_ID))) {
                     int roundingFactor = getRoundingFactor();
-                    photo = eventsData.getEventPhoto(eventInfo, true, true, true, roundingFactor);
+                    photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
                 }
                 if (photo != null) {
                     int outWidth;

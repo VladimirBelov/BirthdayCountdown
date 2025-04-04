@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:27
+ *  * Last modified 04.04.2025, 11:11
  *
  */
 
@@ -74,7 +74,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     final int widgetID;
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
-    /*boolean widgetPref_DatesInBrackets = false;*/
     int widgetPref_onClick = 0;
     ContactsEvents eventsData;
 
@@ -127,7 +126,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 }
 
                 widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
-                //widgetPref_DatesInBrackets = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_DatesInBrackets_ID));
             }
 
             widgetPref_onClick = eventsData.preferences_widgets_on_click_action;

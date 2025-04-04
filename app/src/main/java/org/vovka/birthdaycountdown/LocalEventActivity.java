@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:58
+ *  * Last modified 04.04.2025, 11:23
  *
  */
 
@@ -769,7 +769,7 @@ public class LocalEventActivity extends Activity {
                     eventDataForPhoto.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
                 }
 
-                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventDataForPhoto), true, false, false, 1));
+                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventDataForPhoto), true, false, true, 1));
             }
 
         } catch (Exception e) {

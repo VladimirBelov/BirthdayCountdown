@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 15:21
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 15:21
+ *  * Last modified 04.04.2025, 11:29
  *
  */
 
@@ -20,6 +20,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -229,13 +231,20 @@ public class WidgetMenuActivity extends Activity {
 
                 }
 
+                if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_photo_uri])) {
+                    ImageView imagePhoto = findViewById(R.id.imagePhoto);
+                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, true, 0);
+                    if (photo != null) {
+                        imagePhoto.setImageBitmap(photo);
+                        imagePhoto.setVisibility(View.VISIBLE);
+                    }
+                }
+
             }
 
             menuItems.add(getString(R.string.menu_context_share));
             menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
             menuActions.add(Constants.ContextMenu_ShareAsText);
-
-
 
             IconArrayAdapter adapter = new IconArrayAdapter(this, menuItems, menuIcons);
             ListView menuListView = findViewById(R.id.menuListView);

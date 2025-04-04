@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.04.2025, 12:43
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 12:35
+ *  * Last modified 04.04.2025, 11:23
  *
  */
 
@@ -596,7 +596,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                         .setTitle(eventsData.getFullName(selectedEvent))
-                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, true, roundingFactor)))
+                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, roundingFactor)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
 
@@ -2961,7 +2961,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         roundingFactor = eventsData.preferences_list_photostyle;
                     }
 
-                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, false, roundingFactor));
+                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
                     holder.PhotoImageView.setVisibility(View.VISIBLE);
                 } else {
                     holder.PhotoImageView.setImageBitmap(null);

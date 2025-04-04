@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.04.2025, 12:43
+ *  * Created by Vladimir Belov on 04.04.2025, 12:08
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 11:55
+ *  * Last modified 04.04.2025, 11:23
  *
  */
 
@@ -5109,7 +5109,7 @@ class ContactsEvents {
     }
 
     @Nullable
-    Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean forWidget, int roundingFactor) {
+    Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
 
         boolean makeSquared = suggestSquared;
         boolean addMourningTape = false;
@@ -5296,7 +5296,7 @@ class ContactsEvents {
             //Добавление иконки избранного
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
-            if (!forWidget && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
+            if (addFavoritesSign && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
                     && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])
                     && bm.getConfig() != null) {
                 Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
@@ -7181,7 +7181,7 @@ class ContactsEvents {
                         } else {
                             roundingFactor = preferences_list_photostyle;
                         }
-                        builder.setLargeIcon(getEventPhoto(eventAsString, true, true, false, roundingFactor));
+                        builder.setLargeIcon(getEventPhoto(eventAsString, true, true, true, roundingFactor));
 
                         notificationManager.notify(notificationID, builder.build());
                     }
@@ -7559,7 +7559,7 @@ class ContactsEvents {
             } else {
                 roundingFactor = preferences_list_photostyle;
             }
-            builder.setLargeIcon(getEventPhoto(dataNotify, true, true, false, roundingFactor));
+            builder.setLargeIcon(getEventPhoto(dataNotify, true, true, true, roundingFactor));
 
             if (setOnGoing) {
                 if (actions != null && Arrays.asList(actions).contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
@@ -8979,7 +8979,7 @@ class ContactsEvents {
                 builder.setContentIntent(pendingIntent);
 
                 if (!TextUtils.isEmpty(quest.event)) {
-                    builder.setLargeIcon(getEventPhoto(quest.event, true, true, false, preferences_list_photostyle));
+                    builder.setLargeIcon(getEventPhoto(quest.event, true, true, true, preferences_list_photostyle));
 
                     String[] eventInfo = quest.event.split(Constants.STRING_EOT, -1);
                     intent = new Intent(Intent.ACTION_VIEW);
@@ -9029,7 +9029,7 @@ class ContactsEvents {
                 builder.setTitle(quest.type);
                 builder.setMessage(Constants.STRING_EOL + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
-                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(quest.event, true, true, false, preferences_list_photostyle)));
+                    builder.setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(quest.event, true, true, true, preferences_list_photostyle)));
                 }
 
                 for (int i = 0; i < quest.actions.size(); i++) {
