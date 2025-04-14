@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:32
+ *  * Last modified 06.04.2025, 21:44
  *
  */
 
@@ -64,22 +64,14 @@ import java.util.regex.Pattern;
  * отображает.
  *
  * <p>
- * Это Activity обрабатывает различные аспекты конфигурации виджета, включая:
+ * Используется для настройки следующих виджетов:
  * </p>
  * <ul>
- *   <li>Выбор типов событий для отображения.</li>
- *   <li>Выбор информации, отображаемой для каждого события.</li>
- *   <li>Настройка внешнего вида (например, размер шрифта, цвет фона).</li>
- *   <li>Выбор источников данных для виджета.</li>
- *   <li>Настройка реакции на нажатие на виджет.</li>
- *   <li>Настройка количества отображаемых событий.</li>
- *   <li>Настройка масштабирования текста и фотографий.</li>
- *   <li>Настройка отображения заголовков.</li>
- *   <li>Настройка отображения фактов.</li>
- *   <li>Настройка поведения виджета.</li>
- *   <li>Отображение/скрытие элементов в зависимости от выбранных параметров.</li>
- *   <li>Обработка сохранения и загрузки настроек.</li>
- *   <li>Обработка изменения языка.</li>
+ *   <li>{@link WidgetList}</li>
+ *   <li>{@link WidgetPhotoList}</li>
+ *   <li>{@link Widget2x2}</li>
+ *   <li>{@link Widget4x1}</li>
+ *   <li>{@link Widget5x1}</li>
  * </ul>
  */
 public class WidgetConfigureActivity extends AppCompatActivity {
@@ -239,16 +231,37 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);
 
             //Реакция на нажатие
-            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_events_values);
+            //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
+
+            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
+            int selectedLastEventAction = -1;
 
             if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
+                String[] selectedValues = widgetPref.get(12).split(Constants.REGEX_PLUS, -1);
+
                 int ind = -1;
                 for (String value: prefActionsValues) {
                     ind++;
-                    if (value.equals(widgetPref.get(12))) break;
+                    if (value.equals(selectedValues[0])) {
+                        Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+                        spinnerOnClickCommon.setSelection(ind, true);
+                    } else if (selectedValues.length > 1 && value.equals(selectedValues[1])) {
+                        selectedLastEventAction = ind;
+                    }
                 }
-                Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
-                spinnerOnClickCommon.setSelection(ind);
+            }
+            Spinner spinnerOnClickLastEvent = findViewById(R.id.spinnerOnClickLastEvent);
+            if (selectedLastEventAction > -1) {
+                spinnerOnClickLastEvent.setSelection(selectedLastEventAction, true);
+            } else { //Если в настройках нет установленного, ставим по-умолчанию
+                int ind = -1;
+                for (String value: prefActionsValues) {
+                    ind++;
+                    if (value.equals(getResources().getString(R.string.pref_widget_list_onclick_events_list))) {
+                        spinnerOnClickLastEvent.setSelection(ind, true);
+                        break;
+                    }
+                }
             }
 
             //Стиль фото
@@ -358,7 +371,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
                 ArrayAdapter<String> spinnerLayoutAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerLayoutItems);
                 spinnerLayout.setAdapter(spinnerLayoutAdapter);
-                spinnerLayout.setSelection(1); //Оставить пустоту по-умолчанию
+                spinnerLayout.setSelection(1, true); //Оставить пустоту по-умолчанию
 
             }
 
@@ -384,7 +397,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     final String scopeEvents = matchScopes.group(1);
                     if (scopeEvents != null) {
                         if (scopeEvents.equals(Constants.STRING_0)) { //Без ограничений
-                            spinnerScopeEvents.setSelection(0);
+                            spinnerScopeEvents.setSelection(0, true);
                         } else if (spinnerScopeEventsItems.contains(scopeEvents)) {
                             spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
                         }
@@ -392,7 +405,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     final String scopeDays = matchScopes.group(2);
                     if (scopeDays != null) {
                         if (scopeDays.equals(Constants.STRING_0)) { //Без ограничений
-                            spinnerScopeDays.setSelection(0);
+                            spinnerScopeDays.setSelection(0, true);
                         } else if (spinnerScopeDaysItems.contains(scopeDays)) {
                             spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
                         }
@@ -402,9 +415,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         final String scopeLayout = matchScopes.group(3);
                         if (scopeLayout != null) {
                             if (scopeLayout.equals(Constants.STRING_PLUS)) { //Расширить
-                                spinnerLayout.setSelection(0);
+                                spinnerLayout.setSelection(0, true);
                             } else if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
-                                spinnerLayout.setSelection(1);
+                                spinnerLayout.setSelection(1, true);
                             }
                         }
                     } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
@@ -430,15 +443,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
                 Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
                 int position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info_2nd);
-                if (position != -1) spinnerCaptionsUpper.setSelection(position);
+                if (position != -1) spinnerCaptionsUpper.setSelection(position, true);
                 Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
                 position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info);
-                if (position != -1) spinnerCaptionsBottom.setSelection(position);
+                if (position != -1) spinnerCaptionsBottom.setSelection(position, true);
 
                 Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
-                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1);
+                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1, true);
                 Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
-                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1);
+                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1, true);
 
                 Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
                 Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
@@ -458,21 +471,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     checkCaptionsUsePrefs.setChecked(false);
 
                     position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Upper_Caption));
-                    if (position != -1 && spinnerCaptionsUpper.getAdapter().getCount() > position) spinnerCaptionsUpper.setSelection(position);
+                    if (position != -1 && spinnerCaptionsUpper.getAdapter().getCount() > position)
+                        spinnerCaptionsUpper.setSelection(position, true);
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Aligning));
-                        if (spinnerCaptionsUpperAligning.getAdapter().getCount() > position - 1) spinnerCaptionsUpperAligning.setSelection(position - 1);
+                        if (spinnerCaptionsUpperAligning.getAdapter().getCount() > position - 1)
+                            spinnerCaptionsUpperAligning.setSelection(position - 1, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Rows));
-                        if (spinnerCaptionsUpperRows.getAdapter().getCount() > position - 1) spinnerCaptionsUpperRows.setSelection(position - 1);
+                        if (spinnerCaptionsUpperRows.getAdapter().getCount() > position - 1)
+                            spinnerCaptionsUpperRows.setSelection(position - 1, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontStyle));
-                        if (spinnerCaptionsUpperFontStyle.getAdapter().getCount() > position) spinnerCaptionsUpperFontStyle.setSelection(position);
+                        if (spinnerCaptionsUpperFontStyle.getAdapter().getCount() > position)
+                            spinnerCaptionsUpperFontStyle.setSelection(position, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
@@ -486,21 +503,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     } catch (NumberFormatException ignored) { /**/ }
 
                     position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Bottom_Caption));
-                    if (position != -1 && spinnerCaptionsBottom.getAdapter().getCount() > position) spinnerCaptionsBottom.setSelection(position);
+                    if (position != -1 && spinnerCaptionsBottom.getAdapter().getCount() > position)
+                        spinnerCaptionsBottom.setSelection(position, true);
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Aligning));
-                        if (spinnerCaptionsBottomAligning.getAdapter().getCount() > position - 1) spinnerCaptionsBottomAligning.setSelection(position - 1);
+                        if (spinnerCaptionsBottomAligning.getAdapter().getCount() > position - 1)
+                            spinnerCaptionsBottomAligning.setSelection(position - 1, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Rows));
-                        if (spinnerCaptionsBottomRows.getAdapter().getCount() > position - 1) spinnerCaptionsBottomRows.setSelection(position - 1);
+                        if (spinnerCaptionsBottomRows.getAdapter().getCount() > position - 1)
+                            spinnerCaptionsBottomRows.setSelection(position - 1, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
                         position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontStyle));
-                        if (spinnerCaptionsBottomFontStyle.getAdapter().getCount() > position) spinnerCaptionsBottomFontStyle.setSelection(position);
+                        if (spinnerCaptionsBottomFontStyle.getAdapter().getCount() > position)
+                            spinnerCaptionsBottomFontStyle.setSelection(position, true);
                     } catch (NumberFormatException ignored) { /**/ }
 
                     try {
@@ -558,8 +579,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_WithYear));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventTitle));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_AgeShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_AgeShort));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Full));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_AgeShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Short));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_WeddingName));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
@@ -694,9 +715,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
-            //Реакция на нажатие
-            //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
-
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -744,9 +762,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void updateVisibility() {
         try {
 
-            boolean isNotPhotoWidget = !Constants.WIDGET_TYPE_5X1.equals(widgetType) && !Constants.WIDGET_TYPE_4X1.equals(widgetType)
-                    && !Constants.WIDGET_TYPE_2X2.equals(widgetType);
-
             if (!Constants.WIDGET_TYPE_5X1.equals(widgetType)) {
                 findViewById(R.id.blockLayout).setVisibility(View.GONE);
             }
@@ -779,12 +794,19 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerPhotoStyle).setVisibility(View.GONE);
                 findViewById(R.id.hintPhotoStyle).setVisibility(View.GONE);
 
-            } else {
+            }
 
-                //Скрываем реакцию на нажатие для остальных типов
+            //Скрываем реакцию на нажатие
+            if (Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
+
                 findViewById(R.id.dividerOnClick).setVisibility(View.GONE);
                 findViewById(R.id.captionOnClick).setVisibility(View.GONE);
                 findViewById(R.id.blockOnClickCommon).setVisibility(View.GONE);
+                findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
+
+            } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
+
+                findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
 
             }
 
@@ -891,6 +913,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
             final EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
 
+            //Проверки
+            if (this.widgetId == 0) {
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
+                return;
+            }
+
             final StringBuilder eventTypes = new StringBuilder();
             for(final String item: spinnerEventTypes.getSelectedStrings()) {
                 if (eventTypes.length() > 0) eventTypes.append("+");
@@ -903,8 +931,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 eventInfo.append(this.eventInfoIDs.get(this.eventInfoValues.indexOf(item)));
             }
 
-            final StringBuilder scopeInfo = new StringBuilder();
             //Объём событий
+            final StringBuilder scopeInfo = new StringBuilder();
             final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
 
@@ -912,8 +940,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeDays.getSelectedItem()).append("d");
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
-            if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
-                    || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
+            boolean isPhotoWidget = Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    || Constants.WIDGET_TYPE_2X2.equals(widgetType);
+            if (isPhotoWidget) {
 
                 List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
                 if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
@@ -988,10 +1017,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             //Реакция на нажатие
-            String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_events_entries);
-            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_events_values);
+            String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_entries);
+            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
             Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
-            String spinnerOnClickCommonValue = Constants.STRING_EMPTY;
+            StringBuilder spinnerOnClickCommonValue = new StringBuilder(Constants.STRING_EMPTY);
 
             if (spinnerOnClickCommon.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
                 int ind = -1;
@@ -1000,17 +1029,28 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     ind++;
                     if (value.equals(selectedValue)) {
                         try {
-                            spinnerOnClickCommonValue = prefActionsValues[ind];
+                            spinnerOnClickCommonValue = new StringBuilder(prefActionsValues[ind]);
                         } catch (IndexOutOfBoundsException ignored) { /**/ }
                         break;
                     }
                 }
             }
-
-            //Проверки
-            if (this.widgetId == 0) {
-                ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
-                return;
+            if (isPhotoWidget) {
+                Spinner spinnerOnClickLastEvent = findViewById(R.id.spinnerOnClickLastEvent);
+                if (spinnerOnClickLastEvent.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
+                    int ind = -1;
+                    String selectedValue = spinnerOnClickLastEvent.getSelectedItem().toString();
+                    for (String value: prefActionsEntries) {
+                        ind++;
+                        if (value.equals(selectedValue)) {
+                            try {
+                                spinnerOnClickCommonValue.append(Constants.STRING_PLUS
+                                        .concat(prefActionsValues[ind]));
+                            } catch (IndexOutOfBoundsException ignored) { /**/ }
+                            break;
+                        }
+                    }
+                }
             }
 
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
@@ -1032,7 +1072,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(String.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
-            prefsToStore.add(spinnerOnClickCommonValue); //Реакция на нажатие
+            prefsToStore.add(spinnerOnClickCommonValue.toString()); //Реакция на нажатие
 
             this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
 

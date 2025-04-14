@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:28
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">Fecha del evento</string>
     <string name="pref_EventInfo_EventDate_WithYear">Fecha del evento con año</string>
     <string name="pref_EventInfo_EventTitle">Título del evento (Nombre)</string>
-    <string name="pref_EventInfo_Age">Edad (formato completo)</string>
-    <string name="pref_EventInfo_AgeShort">Edad (corta)</string>
+    <string name="pref_EventInfo_Age_Full">Edad (formato completo)</string>
+    <string name="pref_EventInfo_Age_Short">Edad (corta)</string>
+    <string name="pref_EventInfo_Age">Edad</string>
     <string name="pref_EventInfo_CurrentAge">Edad actual</string>
     <string name="pref_EventInfo_WeddingName">Nombre del aniversario de bodas</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Días antes del evento</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -994,9 +995,10 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>Abrir calendario</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>De preferencias comunes</item>
         <item>Abrir menú</item>
+        <item>Lista de eventos</item>
         <item>Ninguno</item>
     </string-array>
 
@@ -1075,7 +1077,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>

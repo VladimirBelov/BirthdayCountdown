@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:34
+ *  * Last modified 13.04.2025, 13:37
  *
  */
 
@@ -41,26 +41,10 @@ import java.util.Locale;
 /**
  * WidgetPhotoList - это AppWidgetProvider, который отображает прокручиваемый список событий,
  * потенциально включая фотографии, в виджете на главном экране.
- *
- * <p>Этот виджет поддерживает настройку через параметры виджета, позволяя пользователям
- * настраивать такие аспекты, как отображаемая информация, цвета и поведение при нажатии.</p>
- *
- * <p><b>Основные характеристики:</b></p>
- * <ul>
- *     <li>Отображает список событий, полученных из {@link ContactsEvents}.</li>
- *     <li>Поддерживает разделители информации о событиях для визуального разделения.</li>
- *     <li>Динамически обновляет отображаемые данные в зависимости от локали устройства и настроек.</li>
- *     <li>Позволяет выполнять конфигурацию через кнопку настроек в виджете (опционально).</li>
- *     <li>Обрабатывает события нажатия на элементы списка для выполнения действий, определенных в настройках.</li>
- *     <li>Настраиваемый цвет фона, заголовок и рамка.</li>
- *     <li>Отображает сообщение "нет событий", когда события отсутствуют.</li>
- *     <li>Предоставляет отладочную информацию через Toast-сообщения, когда включен режим отладки.</li>
- * </ul>
- *
- * <p><b>Зависимости:</b></p>
- * <ul>
- *     <li>{@link ContactsEvents}: Синглтон класс для управления событиями и настройками.</li>
- * </ul>
+ * <p>
+ * Виджет использует RemoteViews для отображения контента и {@link EventPhotoListDataProvider} для заполнения списка.
+ * Он поддерживает настраиваемые заголовки, цвета, границы и другие визуальные атрибуты.
+ * Он использует класс {@link ContactsEvents} для обработки логики приложения, данных событий и настроек.
  */
 public class WidgetPhotoList extends AppWidgetProvider {
 
@@ -269,24 +253,14 @@ public class WidgetPhotoList extends AppWidgetProvider {
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
             if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
 
-                Intent intentView = null;
-
-                if (actionPref == 7) { //Основной список событий
-                    intentView = new Intent(context, MainActivity.class);
-                    intentView.setAction(Constants.ACTION_LAUNCH);
-                } else if (actionPref >= 1 & actionPref <=4) {
-                    intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
-                }
-
+                Intent intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
                 if (intentView != null) {
                     intentView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         context.getApplicationContext().startActivity(intentView);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
-
             }
-
         }
     }
 

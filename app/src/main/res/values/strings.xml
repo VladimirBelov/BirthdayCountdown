@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:23
+  ~  * Last modified 13.04.2025, 13:37
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">Event date</string>
     <string name="pref_EventInfo_EventDate_WithYear">Event date with year</string>
     <string name="pref_EventInfo_EventTitle">Event title (Person name)</string>
-    <string name="pref_EventInfo_Age">Age (full format)</string>
-    <string name="pref_EventInfo_AgeShort">Age (short)</string>
+    <string name="pref_EventInfo_Age_Full">Age (full format)</string>
+    <string name="pref_EventInfo_Age_Short">Age (short)</string>
+    <string name="pref_EventInfo_Age">Age</string>
     <string name="pref_EventInfo_CurrentAge">Current age</string>
     <string name="pref_EventInfo_WeddingName">Wedding anniversary name</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Days before event</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -926,6 +927,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="widget_config_onclick_common_label">Ordinary days:</string>
     <string name="widget_config_onclick_holidays_label">Days with events:</string>
     <string name="widget_config_onclick_events_label">Events:</string>
+    <string name="widget_config_onclick_events_last_label">Last event:</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
     <string name="widget_config_month_color_today_label">Today color</string>
@@ -994,9 +996,10 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>Open calendar</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>From common prefs</item>
         <item>Open menu</item>
+        <item>Events list</item>
         <item>None</item>
     </string-array>
 
@@ -1075,7 +1078,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>
@@ -2041,17 +2044,6 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Widgets_Days_EventSoon_key" translatable="false">Widget_Days_EventSoon</string>
     <string name="pref_Widgets_Days_EventSoon_default" translatable="false">2</string>
 
-    <string name="pref_Widgets_OnClick_key" translatable="false">Widgets_OnClick</string>
-    <string name="pref_Widgets_OnClick_default" translatable="false">1</string>
-    <string-array name="pref_Widgets_OnClick_values" translatable="false">
-        <item>1</item> <!--Контакт, календарь, ссылка-->
-        <item>2</item> <!--Календарь, контакт, ссылка-->
-        <item>3</item> <!--Ссылка, контакт, календарь-->
-        <item>4</item> <!--Контакт, ссылка, календарь-->
-        <item>7</item> <!--Открыть список событий-->
-        <item>9</item> <!--Ничего-->
-    </string-array>
-
     <string name="pref_Widgets_Color_EventToday_key" translatable="false">Widget_Color_EventToday</string>
     <color name="pref_Widgets_Color_EventToday_default" translatable="false">@color/green</color>
 
@@ -2103,16 +2095,32 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>14</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_values" translatable="false">
-        <item>1</item>
-        <item>8</item>
-        <item>0</item>
+    <string name="pref_Widgets_OnClick_key" translatable="false">Widgets_OnClick</string>
+    <string name="pref_Widgets_OnClick_default" translatable="false">1</string>
+    <string-array name="pref_Widgets_OnClick_values" translatable="false">
+        <item>1</item> <!--Контакт, календарь, ссылка-->
+        <item>2</item> <!--Календарь, контакт, ссылка-->
+        <item>3</item> <!--Ссылка, контакт, календарь-->
+        <item>4</item> <!--Контакт, ссылка, календарь-->
+        <item>7</item> <!--Открыть список событий-->
+        <item>0</item> <!--Ничего-->
+    </string-array>
+
+    <string name="pref_widget_list_onclick_from_prefs" translatable="false">1</string>
+    <string name="pref_widget_list_onclick_open_menu" translatable="false">8</string>
+    <string name="pref_widget_list_onclick_events_list" translatable="false">7</string>
+    <string name="pref_widget_list_onclick_none" translatable="false">0</string>
+    <string-array name="pref_widget_list_onclick_values" translatable="false">
+        <item>@string/pref_widget_list_onclick_from_prefs</item>
+        <item>@string/pref_widget_list_onclick_open_menu</item>
+        <item>@string/pref_widget_list_onclick_events_list</item>
+        <item>@string/pref_widget_list_onclick_none</item>
     </string-array>
 
     <string name="widget_FavIcon" translatable="false">Icon</string>
     <string name="widget_config_PrefName" translatable="false">WidgetConfig_</string>
 
-    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,</string>
+    <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,,1+7</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,,,1</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,,</string>
     <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,2+1</string>

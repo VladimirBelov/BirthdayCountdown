@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:33
+ *  * Last modified 14.04.2025, 09:09
  *
  */
 
@@ -43,22 +43,9 @@ import java.util.Locale;
 /**
  * Класс WidgetList - это AppWidgetProvider, который отображает список событий в виджете.
  * <p>
- * Он обрабатывает:
- * <ul>
- *     <li>Обновление виджета списком событий.</li>
- *     <li>Настройку внешнего вида и поведения виджета.</li>
- *     <li>Реагирование на действия пользователя, такие как нажатия на элементы списка или кнопку настроек.</li>
- *     <li>Управление настройками и данными виджета.</li>
- *     <li>Обработку изменений локали и языка.</li>
- *     <li>Отображение пустого представления, когда нет событий.</li>
- *     <li>Обновление данных в виджете в соответствии с настройками.</li>
- *     <li>Обработку удаления виджета.</li>
- *     <li>Обработку изменения параметров виджета.</li>
- * </ul>
- * <p>
- * Виджет использует RemoteViews для отображения контента и EventListWidgetService для заполнения списка.
+ * Виджет использует RemoteViews для отображения контента и {@link EventListDataProvider} для заполнения списка.
  * Он поддерживает настраиваемые заголовки, цвета, границы и другие визуальные атрибуты.
- * Он использует класс `ContactsEvents` для обработки логики приложения, данных событий и настроек.
+ * Он использует класс {@link ContactsEvents} для обработки логики приложения, данных событий и настроек.
  */
 public class WidgetList extends AppWidgetProvider {
 
@@ -128,7 +115,6 @@ public class WidgetList extends AppWidgetProvider {
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
             views.setRemoteAdapter(R.id.widget_list, adapter);
-
             views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
@@ -272,64 +258,55 @@ public class WidgetList extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         final String action = intent.getAction();
-        if (action != null)
-            if (action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
-                String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
-                int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-                int pref_onClick = 0;
+        if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
+            String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            int pref_onClick = 0;
+            try {
+                pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+            } catch (NumberFormatException ignored) { /**/ }
+            if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
+
+            String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+            Intent intentAction = null;
+
+            if (pref_onClick == 8) { //Меню
+
+                String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
+                intentAction = new Intent(context, WidgetMenuActivity.class);
+                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+                intentAction.setAction(Constants.ACTION_MENU);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
-                } catch (NumberFormatException ignored) { /**/ }
-                if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
+                    context.getApplicationContext().startActivity(intentAction);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
 
-                String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-                Intent intentAction = null;
+            } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
 
-                if (pref_onClick == 8) { //Меню
-
-                    String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
-                    intentAction = new Intent(context, WidgetMenuActivity.class);
-                    intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                    intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
-                    intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
-                    intentAction.setAction(Constants.ACTION_MENU);
+                intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
+                if (intentAction != null) {
                     intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         context.getApplicationContext().startActivity(intentAction);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
-
-                } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
-
-                    if (pref_onClick == 7) { //Основной список событий
-
-                        intentAction = new Intent(context, MainActivity.class);
-                        intentAction.setAction(Constants.ACTION_LAUNCH);
-
-                    } else if (pref_onClick >= 1 & pref_onClick <= 4) {
-                        intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
-                    }
-
-                    if (intentAction != null) {
-                        intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        try {
-                            context.getApplicationContext().startActivity(intentAction);
-                        } catch (android.content.ActivityNotFoundException e) { /**/ }
-                    }
-
-                } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
-
-                    Intent intentShare = new Intent(Intent.ACTION_SEND);
-                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                    intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
-                    intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    try {
-                        Intent intentChooser = Intent.createChooser(intentShare, "");
-                        intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        context.startActivity(intentChooser);
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-
                 }
+
+            } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
+
+                Intent intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
+                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                try {
+                    Intent intentChooser = Intent.createChooser(intentShare, "");
+                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentChooser);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
+
             }
+        }
     }
 
 }

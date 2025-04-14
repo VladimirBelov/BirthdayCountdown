@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:25
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">Ereignisdatum</string>
     <string name="pref_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
     <string name="pref_EventInfo_EventTitle">Ereignistitel (Name)</string>
-    <string name="pref_EventInfo_Age">Alter (vollständiges Format)</string>
-    <string name="pref_EventInfo_AgeShort">Alter (kurz)</string>
+    <string name="pref_EventInfo_Age_Full">Alter (vollständiges Format)</string>
+    <string name="pref_EventInfo_Age_Short">Alter (kurz)</string>
+    <string name="pref_EventInfo_Age">Alter</string>
     <string name="pref_EventInfo_CurrentAge">Aktuelles Alter</string>
     <string name="pref_EventInfo_WeddingName">(Bezeichnung für Hochzeitstage)</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Tage vor dem Ereignis</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -994,9 +995,10 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Kalender öffnen</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>Aus den allgemeinen Einstellungen</item>
         <item>Menü öffnen</item>
+        <item>Ereignisliste</item>
         <item>Keine</item>
     </string-array>
 
@@ -1075,7 +1077,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>

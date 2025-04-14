@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:24
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">Дата події</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата події з роком</string>
     <string name="pref_EventInfo_EventTitle">Заголовок події (ПІБ)</string>
-    <string name="pref_EventInfo_Age">Вік (повний формат)</string>
-    <string name="pref_EventInfo_AgeShort">Вік (короткий)</string>
+    <string name="pref_EventInfo_Age_Full">Вік (повний формат)</string>
+    <string name="pref_EventInfo_Age_Short">Вік (короткий)</string>
+    <string name="pref_EventInfo_Age">Вік</string>
     <string name="pref_EventInfo_CurrentAge">Поточний вік</string>
     <string name="pref_EventInfo_WeddingName">Назва річниці весілля</string>
     <string name="pref_EventInfo_DaysBeforeEvent">За дні до події</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -994,9 +995,10 @@
         <item>Відкрити календар</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>Зі загальних налаштувань</item>
         <item>Відкрити меню</item>
+        <item>Список подій</item>
         <item>Немає</item>
     </string-array>
 
@@ -1075,7 +1077,7 @@
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:26
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">"Date de l'événement"</string>
     <string name="pref_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
     <string name="pref_EventInfo_EventTitle">"Titre de l'événement (Nom)"</string>
-    <string name="pref_EventInfo_Age">Âge (format complet)</string>
-    <string name="pref_EventInfo_AgeShort">Âge (format court)</string>
+    <string name="pref_EventInfo_Age_Full">Âge (format complet)</string>
+    <string name="pref_EventInfo_Age_Short">Âge (format court)</string>
+    <string name="pref_EventInfo_Age">Âge</string>
     <string name="pref_EventInfo_CurrentAge">Âge actuel</string>
     <string name="pref_EventInfo_WeddingName">"Nom de l'anniversaire de mariage"</string>
     <string name="pref_EventInfo_DaysBeforeEvent">"Jours avant l'événement"</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -994,9 +995,10 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Ouvrir le calendrier</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>À partir des préférences communes</item>
         <item>Ouvrir le menu</item>
+        <item>Liste des événements</item>
         <item>Aucun</item>
     </string-array>
 
@@ -1075,7 +1077,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:11
+ *  * Last modified 09.04.2025, 20:53
  *
  */
 
@@ -53,13 +53,6 @@ import java.util.regex.Pattern;
  *     <li><b>Заполнение представления (getViewAt):</b> Создает и заполняет {@link RemoteViews} для каждого события, отображая детали события,
  *     форматируя даты и применяя пользовательские цвета в зависимости от близости события. Также конструирует интенты для обработки нажатий на каждый элемент списка.</li>
  * </ul>
- *
- * <p><b>Примечание:</b> Данный код использует классы RemoteViews, RemoteViewsService, AppWidgetManager и другие из пакета Android для создания виджетов.
- *  Для работы с ним требуется знание основ создания виджетов и принципов их работы.</p>
- * <p><b>Ссылки на документацию:</b></p>
- * <ul>
- *     <li><a href="https://developer.android.com/guide/topics/appwidgets">Руководство по виджетам</a></li>
- *     <li><a href="https://www.androidauthority.com/create-an-android-widget-1020839/">Как создать виджет Android</a></li>
  */
 //https://developer.android.com/guide/topics/appwidgets
 //https://www.androidauthority.com/create-an-android-widget-1020839/

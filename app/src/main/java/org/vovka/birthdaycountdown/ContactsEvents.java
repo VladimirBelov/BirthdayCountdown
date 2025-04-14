@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:23
+ *  * Last modified 13.04.2025, 13:20
  *
  */
 
@@ -1016,7 +1016,13 @@ class ContactsEvents {
                 return intent;
             }
 
-            if (prefAction == 1) { //Контакт, календарь, ссылка
+            if (prefAction == 7) {
+
+                Intent intentAction = new Intent(context, MainActivity.class);
+                intentAction.setAction(Constants.ACTION_LAUNCH);
+                return intentAction;
+
+            } else if (prefAction == 1) { //Контакт, календарь, ссылка
                 if (notEmptyContactID) {
                     uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
                 } else if (notEmptyEventId && !isFileOrHoliday) {

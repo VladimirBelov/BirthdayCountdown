@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 12:24
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -708,8 +708,9 @@
     <string name="pref_EventInfo_EventDate">Дата события</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата события с годом</string>
     <string name="pref_EventInfo_EventTitle">Заголовок события (ФИО)</string>
-    <string name="pref_EventInfo_Age">Возраст (полный формат)</string>
-    <string name="pref_EventInfo_AgeShort">Возраст (краткий)</string>
+    <string name="pref_EventInfo_Age_Full">Возраст (полный формат)</string>
+    <string name="pref_EventInfo_Age_Short">Возраст (краткий)</string>
+    <string name="pref_EventInfo_Age">Возраст</string>
     <string name="pref_EventInfo_CurrentAge">Текущий возраст</string>
     <string name="pref_EventInfo_WeddingName">Название годовщины свадьбы</string>
     <string name="pref_EventInfo_DaysBeforeEvent">Дней до события</string>
@@ -734,7 +735,7 @@
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
         <item>@string/pref_EventInfo_Photo</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_EventIcon</item>
         <item>@string/pref_EventInfo_FavIcon</item>
         <item>@string/pref_EventInfo_SilentedIcon</item>
@@ -926,6 +927,7 @@
     <string name="widget_config_onclick_common_label">Дни без событий:</string>
     <string name="widget_config_onclick_holidays_label">Дни с событиями:</string>
     <string name="widget_config_onclick_events_label">События:</string>
+    <string name="widget_config_onclick_events_last_label">Последнее событие:</string>
     <string name="widget_config_month_color_common_label">Обычные дни</string>
     <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
     <string name="widget_config_month_color_today_label">Сегодня</string>
@@ -994,9 +996,10 @@
         <item>Открыть календарь</item>
     </string-array>
 
-    <string-array name="pref_widget_list_onclick_events_entries">
+    <string-array name="pref_widget_list_onclick_entries">
         <item>Из общих настроек</item>
         <item>Открыть меню</item>
+        <item>Список событий</item>
         <item>Ничего</item>
     </string-array>
 
@@ -1075,7 +1078,7 @@
         <item>@string/pref_EventInfo_ZodiacSign</item>
         <item>@string/pref_EventInfo_EventDate</item>
         <item>@string/pref_EventInfo_EventTitle</item>
-        <item>@string/pref_EventInfo_Age</item>
+        <item>@string/pref_EventInfo_Age_Full</item>
         <item>@string/pref_EventInfo_WeddingName</item>
         <item>@string/pref_EventInfo_Organization</item>
         <item>@string/pref_EventInfo_JobTitle</item>

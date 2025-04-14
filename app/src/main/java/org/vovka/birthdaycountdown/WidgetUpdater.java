@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 14.04.2025, 09:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:23
+ *  * Last modified 13.04.2025, 19:05
  *
  */
 
@@ -75,6 +75,8 @@ class WidgetUpdater {
     private int eventsToSkip;
     private List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
+    private int widgetPref_onClick_events;
+    private int widgetPref_onClick_lastEvent;
     private List<String> eventsPrefList = new ArrayList<>();
     private List<String> sourcesPrefList = new ArrayList<>();
     private final Map<Integer, Integer> captionsPrefMap = new HashMap<>();
@@ -280,6 +282,26 @@ class WidgetUpdater {
                     pref = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Color));
                     captionsPrefMap.put(Constants.PhotoWidget_Bottom_Color, pref);
                 } catch (NumberFormatException ignored) { /**/ }
+            }
+
+            //Реакция на нажатие
+            try {
+                this.widgetPref_onClick_events = Integer.parseInt(resources.getString(R.string.pref_widget_list_onclick_from_prefs));
+            } catch (NumberFormatException ignored) { /**/ }
+            try {
+                this.widgetPref_onClick_lastEvent = Integer.parseInt(resources.getString(R.string.pref_widget_list_onclick_events_list));
+            } catch (NumberFormatException ignored) { /**/ }
+
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
+                String[] prefOnClickActions = widgetPref.get(12).split(Constants.REGEX_PLUS, -1);
+                try {
+                    this.widgetPref_onClick_events = Integer.parseInt(prefOnClickActions[0]);
+                } catch (NumberFormatException ignored) { /**/ }
+                if (prefOnClickActions.length > 1) {
+                    try {
+                        this.widgetPref_onClick_lastEvent = Integer.parseInt(prefOnClickActions[1]);
+                    } catch (NumberFormatException ignored) { /**/ }
+                }
             }
 
             //Отрисовываем информацию о событиях
@@ -823,6 +845,7 @@ class WidgetUpdater {
                 eventDistance_Days = 365;
             }
 
+            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
             if (eventDistance_Days == 0) { //Сегодня
 
                 if (colorEventToday != 0) {
@@ -837,12 +860,14 @@ class WidgetUpdater {
                     }
                 }
                 views.setTextViewText(id_widget_Distance, Constants.STRING_EMPTY);
+                colorDate = Integer.toHexString(colorEventToday & 0x00ffffff);
 
             } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
                 views.setTextColor(id_widget_Distance, colorEventSoon);
                 views.setTextViewText(id_widget_Distance, eventDistance);
                 views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_BIG * fontMagnify));
+                colorDate = Integer.toHexString(colorEventSoon & 0x00ffffff);
 
             } else { //Попозже
 
@@ -873,7 +898,68 @@ class WidgetUpdater {
             }
 
             //Если не последнее событие - по нажатию на фото открываем событие
+            int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName);
+            int pref_onClick;
+            int requestCode = 0;
+            Intent intentAction;
+
             if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
+
+                pref_onClick = this.widgetPref_onClick_events;
+
+            } else {
+
+                pref_onClick = this.widgetPref_onClick_lastEvent;
+
+                //Открыть настройки
+                Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
+                intentConfig.setAction(Constants.ACTION_LAUNCH);
+                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable);
+                if (isUpperCaption) {
+                    views.setOnClickPendingIntent(textCaptionUpper, pendingIntent);
+                }
+                if (isBottomCaption) {
+                    views.setOnClickPendingIntent(textCaptionBottom, pendingIntent);
+                }
+            }
+
+            if (pref_onClick == 8) { //Меню
+
+                requestCode = String.valueOf(i).hashCode();
+
+                final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+                String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
+                        Constants.STRING_SPACE +
+                        String.format(Constants.HTML_COLOR, colorDate, eventDay) +
+                        Constants.STRING_SPACE +
+                        eventsData.getFullName(singleEventArray);
+
+                intentAction = new Intent(context, WidgetMenuActivity.class);
+                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, event);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+                intentAction.setAction(Constants.ACTION_MENU);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            } else {
+
+                if (pref_onClick == 1) { //Из общих настроек
+                    intentAction = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action, context);
+                } else {
+                    intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
+                }
+
+            }
+
+            if (intentAction != null) {
+                intentAction.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                views.setOnClickPendingIntent(idEventPlaceholder, PendingIntent.getActivity(context, requestCode, intentAction, PendingIntentImmutable));
+            } else { //Ничего не показываем
+                views.setOnClickPendingIntent(idEventPlaceholder, null);
+            }
+
+            /*if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
 
                 Intent intent = null;
 
@@ -886,9 +972,9 @@ class WidgetUpdater {
 
                 if (intent != null) {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    views.setOnClickPendingIntent(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName), PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
+                    views.setOnClickPendingIntent(idEventPlaceholder, PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
                 } else { //Ничего не показываем
-                    views.setOnClickPendingIntent(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName), null);
+                    views.setOnClickPendingIntent(idEventPlaceholder, null);
                 }
 
             } else {
@@ -903,10 +989,10 @@ class WidgetUpdater {
                     views.setOnClickPendingIntent(textCaptionBottom, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
                 }
 
-            }
+            }*/
 
             //Показываем событие
-            views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName), View.VISIBLE);
+            views.setViewVisibility(idEventPlaceholder, View.VISIBLE);
             eventsDisplayed++;
 
         } catch (Exception e) {

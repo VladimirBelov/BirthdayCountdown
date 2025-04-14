@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2025, 12:53
+  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 12:51
+  ~  * Last modified 06.04.2025, 21:02
   ~  */
   -->
 
@@ -810,7 +810,34 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:contentDescription="@string/widget_config_onclick_events_label"
-                        android:entries="@array/pref_widget_list_onclick_events_entries" />
+                        android:entries="@array/pref_widget_list_onclick_entries" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blockOnClickLastEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/captionOnClickLastEvent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="@string/widget_config_onclick_events_last_label"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOnClickLastEvent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:contentDescription="@string/widget_config_onclick_events_last_label"
+                        android:entries="@array/pref_widget_list_onclick_entries" />
 
                 </LinearLayout>
 
