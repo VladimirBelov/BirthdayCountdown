@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.04.2025, 09:19
+ *  * Created by Vladimir Belov on 17.04.2025, 10:09
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.04.2025, 21:44
+ *  * Last modified 17.04.2025, 10:07
  *
  */
 
@@ -560,6 +560,94 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             editCustomZeroEvents.setText(prefZeroEventsMessage);
 
             //Детали события
+            initEventDetailsOptions();
+
+            final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
+            final List<String> eventInfoSelections = new ArrayList<>();
+            String[] infoArray = null;
+            try {
+                if (widgetPref.size() > 4) {
+                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
+                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
+                    }
+
+                    infoArray = widgetPref.get(4).split(Constants.REGEX_PLUS);
+                }
+                if (infoArray != null) {
+                    for (final String item : infoArray) {
+                        if (this.eventInfoIDs.contains(item)) eventInfoSelections.add(this.eventInfoValues.get(this.eventInfoIDs.indexOf(item)));
+                    }
+                }
+            } catch (final Exception e) {/**/}
+
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
+                spinnerEventInfo.setSortable(true);
+                spinnerEventInfo.fm = getSupportFragmentManager();
+                spinnerEventInfo.setZeroSelectedIndex(-1);
+
+                spinnerEventInfo.setItems(this.eventInfoValues);
+                spinnerEventInfo.moveToBeginning(eventInfoSelections); //Двигаем выбранные вперёд
+                spinnerEventInfo.setColored(new ArrayList<String>(){{
+                    add(getString(R.string.pref_EventInfo_EventDate_Original));
+                    add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
+                    add(getString(R.string.pref_EventInfo_EventDate));
+                    add(getString(R.string.pref_EventInfo_EventDate_WithYear));
+                    add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
+                }}, this.eventsData.preferences_widgets_color_event_today);
+
+                ArrayList<String> listNonSorted = new ArrayList<String>() {{
+                    add(getString(R.string.pref_EventInfo_Border));
+                    add(getString(R.string.pref_EventInfo_Dividers));
+                    add(getString(R.string.pref_EventInfo_ButtonConfig));
+                    add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                }};
+                spinnerEventInfo.setNonSorted(listNonSorted);
+                spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
+
+            } else {
+                spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
+                spinnerEventInfo.setZeroSelectedIndex(0);
+                spinnerEventInfo.setItems(this.eventInfoValues);
+            }
+            spinnerEventInfo.setSelection(eventInfoSelections);
+
+
+            //Цвета
+            int colorWidgetBackground = 0;
+            if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
+                try {
+                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
+                } catch (final Exception e) {/**/}
+            }
+            if (colorWidgetBackground == 0) {
+                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
+            }
+            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
+            colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+
+            //Источники событий
+            if (widgetPref.size() > 10) {
+                String pref = widgetPref.get(10);
+                if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
+            }
+            eventSources.getEventSources(widgetType);
+            updateEventSources();
+            TextView listEventSources = findViewById(R.id.listEventSources);
+            listEventSources.setOnClickListener(v -> selectEventSources());
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        } finally {
+            //Обновляем видимость элементов
+            updateVisibility();
+            if (ta != null) ta.recycle();
+        }
+    }
+
+    private void initEventDetailsOptions() {
+        try {
+
             eventInfoIDs = new ArrayList<>();
             eventInfoValues = new ArrayList<>();
 
@@ -570,7 +658,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
-                    /*eventInfoIDs.add(getString(R.string.pref_EventInfo_DatesInBrackets_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DatesInBrackets));*/
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
@@ -640,88 +727,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacYear));
             }
-
-            final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-            final List<String> eventInfoSelections = new ArrayList<>();
-            String[] infoArray = null;
-            try {
-                if (widgetPref.size() > 4) {
-                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
-                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
-                    }
-
-                    infoArray = widgetPref.get(4).split(Constants.REGEX_PLUS);
-                }
-                if (infoArray != null) {
-                    for (final String item : infoArray) {
-                        if (this.eventInfoIDs.contains(item)) eventInfoSelections.add(this.eventInfoValues.get(this.eventInfoIDs.indexOf(item)));
-                    }
-                }
-            } catch (final Exception e) {/**/}
-
-            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
-                spinnerEventInfo.setSortable(true);
-                spinnerEventInfo.fm = getSupportFragmentManager();
-                spinnerEventInfo.setZeroSelectedIndex(-1);
-
-                spinnerEventInfo.setItems(this.eventInfoValues);
-                spinnerEventInfo.moveToBeginning(eventInfoSelections); //Двигаем выбранные вперёд
-                spinnerEventInfo.setColored(new ArrayList<String>(){{
-                    add(getString(R.string.pref_EventInfo_EventDate_Original));
-                    add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
-                    add(getString(R.string.pref_EventInfo_EventDate));
-                    add(getString(R.string.pref_EventInfo_EventDate_WithYear));
-                    add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
-                }}, this.eventsData.preferences_widgets_color_event_today);
-
-                ArrayList<String> listNonSorted = new ArrayList<String>() {{
-                    add(getString(R.string.pref_EventInfo_Border));
-                    add(getString(R.string.pref_EventInfo_Dividers));
-                    add(getString(R.string.pref_EventInfo_ButtonConfig));
-                    /*add(getString(R.string.pref_EventInfo_DatesInBrackets));*/
-                    add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
-                }};
-                spinnerEventInfo.setNonSorted(listNonSorted);
-                spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
-
-            } else {
-                spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
-                spinnerEventInfo.setZeroSelectedIndex(0);
-                spinnerEventInfo.setItems(this.eventInfoValues);
-            }
-            spinnerEventInfo.setSelection(eventInfoSelections);
-
-
-            //Цвета
-            int colorWidgetBackground = 0;
-            if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
-                try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
-                } catch (final Exception e) {/**/}
-            }
-            if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
-            }
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
-            colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
-
-            //Источники событий
-            if (widgetPref.size() > 10) {
-                String pref = widgetPref.get(10);
-                if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
-            }
-            eventSources.getEventSources(widgetType);
-            updateEventSources();
-            TextView listEventSources = findViewById(R.id.listEventSources);
-            listEventSources.setOnClickListener(v -> selectEventSources());
-
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        } finally {
-            //Обновляем видимость элементов
-            updateVisibility();
-            if (ta != null) ta.recycle();
         }
     }
 

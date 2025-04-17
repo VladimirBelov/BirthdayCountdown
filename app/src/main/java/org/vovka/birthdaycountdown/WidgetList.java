@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2025, 09:38
+ *  * Created by Vladimir Belov on 17.04.2025, 10:09
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.04.2025, 09:15
+ *  * Last modified 17.04.2025, 09:39
  *
  */
 
@@ -270,7 +270,7 @@ public class WidgetList extends AppWidgetProvider {
             if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
 
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            Intent intentAction = null;
+            Intent intentAction;
 
             if (pref_onClick == 8) { //Меню
 

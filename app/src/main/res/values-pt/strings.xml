@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
+  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.04.2025, 21:02
+  ~  * Last modified 17.04.2025, 10:04
   ~  */
   -->
 
@@ -927,6 +927,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="widget_config_onclick_common_label">Dias sem eventos:</string>
     <string name="widget_config_onclick_holidays_label">Dias com eventos:</string>
     <string name="widget_config_onclick_events_label">Eventos:</string>
+    <string name="widget_config_onclick_events_last_label">Último evento:</string>
     <string name="widget_config_month_color_common_label">Cor dos dias comuns</string>
     <string name="widget_config_month_color_common_description">Cor dos dias comuns</string>
     <string name="widget_config_month_color_today_label">Cor de hoje</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
+  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.04.2025, 21:02
+  ~  * Last modified 17.04.2025, 10:07
   ~  */
   -->
 
@@ -927,6 +927,7 @@
     <string name="widget_config_onclick_common_label">Дні без подій:</string>
     <string name="widget_config_onclick_holidays_label">Дні з подіями:</string>
     <string name="widget_config_onclick_events_label">Події:</string>
+    <string name="widget_config_onclick_events_last_label">Остання подія:</string>
     <string name="widget_config_month_color_common_label">Колір загальних днів</string>
     <string name="widget_config_month_color_common_description">Колір звичайних днів</string>
     <string name="widget_config_month_color_today_label">Колір сьогоднішнього дня</string>

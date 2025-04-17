@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
+  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.04.2025, 21:02
+  ~  * Last modified 17.04.2025, 10:02
   ~  */
   -->
 
@@ -927,6 +927,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="widget_config_onclick_common_label">Tage ohne Ereignisse:</string>
     <string name="widget_config_onclick_holidays_label">Tage mit Ereignisse:</string>
     <string name="widget_config_onclick_events_label">Ereignisse:</string>
+    <string name="widget_config_onclick_events_last_label">Letztes Ereignis:</string>
     <string name="widget_config_month_color_common_label">Gemeinsame Tagesfarbe</string>
     <string name="widget_config_month_color_common_description">Farbe der allgemeinen Tage</string>
     <string name="widget_config_month_color_today_label">Heute Farbe</string>
