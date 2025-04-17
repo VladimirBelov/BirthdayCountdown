@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.04.2025, 09:19
+ *  * Created by Vladimir Belov on 17.04.2025, 09:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.04.2025, 13:37
+ *  * Last modified 17.04.2025, 09:15
  *
  */
 
@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -129,9 +130,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
             if (eventsData.preferences_debug_on) {
-
-                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
-                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
+                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
+                        + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
@@ -140,15 +141,24 @@ public class WidgetPhotoList extends AppWidgetProvider {
             if (widgetPref.size() > 9) {
                 prefWidgetCaption = widgetPref.get(9);
             }
+            double defaultMagnify = 1.6;
+            float sizeForWidgetElement = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
             if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
-                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP,
-                        ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
-                views.setViewPadding(R.id.widget_layout, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, context.getResources().getDisplayMetrics()), 0, 0);
+                views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, sizeForWidgetElement);
                 views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             } else {
                 views.setViewVisibility(R.id.caption, View.INVISIBLE);
+            }
+            //Отступ списка от заголовка
+            if (!prefWidgetCaption.isEmpty() || eventsData.preferences_debug_on) {
+                int paddingTop = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), context.getResources().getDisplayMetrics()
+                );
+                views.setViewPadding(R.id.widget_layout, 0, paddingTop, 0, 0);
+            } else {
                 views.setViewPadding(R.id.widget_layout, 0, 0, 0, 0);
             }
 
@@ -159,9 +169,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
 
             //Сообщение при отсутствии событий
-            String prefZeroEventsMessage = context.getString(R.string.msg_no_events);
+            String prefZeroEventsMessage = Constants.STRING_EMPTY;
             if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
-            views.setTextViewText(R.id.empty_view, prefZeroEventsMessage);
+            views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки
             int colorWidgetBackground = 0;

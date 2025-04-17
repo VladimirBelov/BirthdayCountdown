@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.04.2025, 09:19
+ *  * Created by Vladimir Belov on 17.04.2025, 09:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.04.2025, 09:09
+ *  * Last modified 17.04.2025, 09:15
  *
  */
 
@@ -132,9 +132,9 @@ public class WidgetList extends AppWidgetProvider {
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
             if (eventsData.preferences_debug_on) {
-
-                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, eventsData.getResources().getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
-                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow);
+                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
+                        + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
@@ -143,22 +143,24 @@ public class WidgetList extends AppWidgetProvider {
             if (widgetPref.size() > 9) {
                 prefWidgetCaption = widgetPref.get(9);
             }
+            double defaultMagnify = 1.6;
+            float sizeForWidgetElement = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
             if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
-                double defaultMagnify = 1.6;
-                float sizeForWidgetElement = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
-                //Размер шрифта заголовка
                 views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, sizeForWidgetElement);
-                //Отступ списка от заголовка
+                views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
+            } else {
+                views.setViewVisibility(R.id.caption, View.INVISIBLE);
+            }
+            //Отступ списка от заголовка
+            if (!prefWidgetCaption.isEmpty() || eventsData.preferences_debug_on) {
                 int paddingTop = (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
                         (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), context.getResources().getDisplayMetrics()
                 );
                 views.setViewPadding(R.id.widget_layout, 0, paddingTop, 0, 0);
-                views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
             } else {
-                views.setViewVisibility(R.id.caption, View.INVISIBLE);
                 views.setViewPadding(R.id.widget_layout, 0, 0, 0, 0);
             }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.04.2025, 09:19
+ *  * Created by Vladimir Belov on 17.04.2025, 09:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.04.2025, 19:05
+ *  * Last modified 16.04.2025, 23:25
  *
  */
 
@@ -926,7 +926,7 @@ class WidgetUpdater {
 
             if (pref_onClick == 8) { //Меню
 
-                requestCode = String.valueOf(i).hashCode();
+                requestCode = event.hashCode();
 
                 final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
                 String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
