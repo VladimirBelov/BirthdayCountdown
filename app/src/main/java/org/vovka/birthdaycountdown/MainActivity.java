@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 28.04.2025, 01:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:23
+ *  * Last modified 28.04.2025, 01:32
  *
  */
 
@@ -2657,9 +2657,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
 
-            eventTypesIDs.add(getString(R.string.pref_EventTypes_Holiday));
-            eventTypesTitles.add(getString(R.string.pref_List_EventTypes_Holidays));
-
             Set<String> preferences_list_types = eventsData.preferences_list_event_types;
             boolean[] sel = new boolean[eventTypesIDs.size()];
             int ind = 0;
@@ -2694,13 +2691,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         dialog.cancel();
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.msg_all, null)
                     .setCancelable(true);
 
             AlertDialog alertToShow = builder.create();
+            ListView listView = alertToShow.getListView();
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
+                    for (int i = 0; i < listView.getCount(); i++) {
+                        eventTypesSelected.set(i, true);
+                        sel[i] = true;
+                    }
+                    listView.invalidateViews();
+                }));
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

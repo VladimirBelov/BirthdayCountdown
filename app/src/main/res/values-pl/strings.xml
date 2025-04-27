@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:04
+  ~  * Last modified 27.04.2025, 14:53
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Typy wydarzeń</string>
     <string name="pref_List_EventTypes_summary">Które wydarzenia wyświetlić na liście</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Urodziny</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Rocznice ślubu</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Inne wydarzenia kontaktowe</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Wydarzenia niestandardowe</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Okrągłe daty (5 tys. dni)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ ️ Wakacje</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Urodziny</item>
-        <item>💑 Rocznice ślubu</item>
-        <item>🗓️ Inne wydarzenia</item>
-        <item>⏰ Wydarzenia niestandardowe</item>
-        <item>🏆 Okrągłe daty (5 tys. dni)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Inne wydarzenia</string>
 
     <string name="pref_List_EventSources_title">Źródła wydarzeń</string>
     <string name="pref_List_EventSources_description">Pokaż na liście tylko wydarzenia z tych źródeł. Jeśli nie zostanie wybrane żadne źródło, pokazane zostaną zdarzenia ze wszystkich źródeł</string>

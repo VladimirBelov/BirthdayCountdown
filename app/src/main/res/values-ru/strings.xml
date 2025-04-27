@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.04.2025, 21:02
+  ~  * Last modified 27.04.2025, 15:11
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Добавить в избранные</string>
     <string name="menu_context_favorites_remove">Удалить из избранных</string>
     <string name="menu_context_edit_local_event">Редактировать событие</string>
+    <string name="menu_context_dial">Позвонить</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -277,6 +278,7 @@
     <string name="event_type_file">Событие из файла</string>
     <string name="event_type_custom">Пользовательское событие</string>
     <string name="event_type_unrecognized">Нераспознанное событие</string>
+    <string name="event_type_another">Другое событие контакта</string>
 
     <string name="account_type_local">Локальный аккаунт</string>
 
@@ -419,6 +421,10 @@
     <string name="pref_CustomEvents_Death_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Death_Labels_summary">События с такими метками будут идентифицированы как годовщины смерти (через запятую)</string>
 
+    <string name="pref_CustomEvents_Another_title">Другие события контакта</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Свои наименования</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">События с такими метками будут идентифицированы как другие события контакта (через запятую)</string>
+
     <string name="pref_CustomEvents_Other_title">Другие события</string>
     <string name="pref_CustomEvents_Other_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Other_Labels_summary">События с такими метками будут идентифицированы как другие события (через запятую)</string>
@@ -462,14 +468,13 @@
     <string name="pref_List_EventTypes_title">Типы событий</string>
     <string name="pref_List_EventTypes_summary">Какие события отображать в списке</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Дни рождения</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Годовщины свадеб</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Другие события контакта</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Пользовательские события</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Круглые даты (5K дней)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Праздники</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Дни рождения</item>
-        <item>💑 Годовщины свадеб</item>
-        <item>🗓️ Другие события</item>
-        <item>⏰ Пользовательские события</item>
-        <item>🏆 Круглые даты (5K дней)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Другие события</string>
 
     <string name="pref_List_EventSources_title">Источники событий</string>
     <string name="pref_List_EventSources_description">Показывать в списке события только из этих источников. Если ни один источник не выбран - показываются события из всех источников</string>

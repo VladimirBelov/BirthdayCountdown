@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:03
+  ~  * Last modified 27.04.2025, 14:50
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
     <string name="pref_List_EventTypes_summary">Qué eventos mostrar en la lista</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Cumpleaños</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Aniversario de bodas</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Otros eventos de contacto</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Eventos personalizados</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Fechas redondas (5K días)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Vacaciones</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Cumpleaños</item>
-        <item>💑 Aniversario de bodas</item>
-        <item>🗓️ Otros eventos</item>
-        <item>⏰ Eventos personalizados</item>
-        <item>🏆 Fechas redondas (5K días)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Otros eventos</string>
 
     <string name="pref_List_EventSources_title">Fuentes de eventos</string>
     <string name="pref_List_EventSources_description">Mostrar eventos solo de estas fuentes de eventos. Si no se selecciona ninguna fuente, se muestran los eventos de todas las fuentes.</string>

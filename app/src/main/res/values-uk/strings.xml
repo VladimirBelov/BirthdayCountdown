@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:07
+  ~  * Last modified 27.04.2025, 14:55
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Типи подій</string>
     <string name="pref_List_EventTypes_summary">Які події відображати в списку подій</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Дні народження</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Річниці весілля</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Інші події контакту</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Події користувача</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Круглі дати (5K днів)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Свята</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Дні народження</item>
-        <item>💑 Річниці весілля</item>
-        <item>🗓️ Інші події</item>
-        <item>⏰ Події користувача</item>
-        <item>🏆 Круглі дати (5K днів)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Інші події</string>
 
     <string name="pref_List_EventSources_title">Джерела подій</string>
     <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>

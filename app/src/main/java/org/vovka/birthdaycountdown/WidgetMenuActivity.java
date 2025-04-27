@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 28.04.2025, 01:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:29
+ *  * Last modified 27.04.2025, 15:11
  *
  */
 
@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -165,6 +166,13 @@ public class WidgetMenuActivity extends Activity {
                     menuItems.add(getString(R.string.menu_context_open_contact));
                     menuIcons.add(getDrawable(R.drawable.ic_menu_friendslist));
                     menuActions.add(Constants.ContextMenu_OpenContact);
+
+                    String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
+                    if (!phone.equals(Constants.STRING_EMPTY)) {
+                        menuItems.add(getString(R.string.menu_context_dial));
+                        menuIcons.add(getDrawable(android.R.drawable.ic_menu_call));
+                        menuActions.add(Constants.ContextMenu_DialContact);
+                    }
 
                 }
 
@@ -380,6 +388,22 @@ public class WidgetMenuActivity extends Activity {
 
                     if (eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
+                case Constants.ContextMenu_DialContact:
+
+                    if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
+                        String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
+                        if (!phone.equals(Constants.STRING_EMPTY)) {
+                            //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
+                            Intent intentDial = new Intent(Intent.ACTION_DIAL);
+                            intentDial.setData(Uri.parse(WebView.SCHEME_TEL.concat(Uri.encode(phone.trim()))));
+                            intentDial.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            try {
+                                startActivity(intentDial);
+                            } catch (android.content.ActivityNotFoundException e) { /**/ }
+                        }
                     }
                     break;
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2025, 02:16
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.03.2025, 15:27
+  ~  * Last modified 27.04.2025, 13:30
   ~  */
   -->
 
@@ -12,5 +12,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start"
-    android:textColor="@color/white"
-    android:textStyle="normal" />
+    android:fontFamily="sans-serif-condensed"
+    android:textColor="@color/white" />

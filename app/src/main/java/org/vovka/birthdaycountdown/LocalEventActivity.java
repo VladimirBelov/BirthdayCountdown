@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 28.04.2025, 01:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:23
+ *  * Last modified 27.04.2025, 23:47
  *
  */
 
@@ -280,12 +280,15 @@ public class LocalEventActivity extends Activity {
             eventTypesValues.add(getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_nameday));
             eventTypesIds.add(Constants.Type_Custom);
             eventSubTypesIds.add(Constants.Type_NameDay);
-            eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
-            eventTypesIds.add(Constants.Type_Other);
-            eventSubTypesIds.add(Constants.Type_Other);
+            eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_another));
+            eventTypesIds.add(Constants.Type_Another);
+            eventSubTypesIds.add(Constants.Type_Another);
             eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
             eventTypesIds.add(Constants.Type_HolidayEvent);
             eventSubTypesIds.add(Constants.Type_HolidayEvent);
+            eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
+            eventTypesIds.add(Constants.Type_Other);
+            eventSubTypesIds.add(Constants.Type_Other);
             eventTypesValues.add(getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption));
             eventTypesIds.add(Constants.Type_Custom);
             eventSubTypesIds.add(Constants.Type_Custom1);
@@ -328,8 +331,16 @@ public class LocalEventActivity extends Activity {
                         //noinspection AssignmentToStaticFieldFromInstanceMethod
                         eventData = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
                         if (eventData != null) {
+                            String storedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                            String storedEventType = eventData.get(ContactsEvents.Position_eventType);
+                            boolean isNotContactEvent = false;
+                            if (storedEventType != null) {
+                                isNotContactEvent = storedEventType.equals(String.valueOf(Constants.Type_Other))
+                                        || storedEventType.equals(String.valueOf(Constants.Type_HolidayEvent));
+                            }
+
                             String oldCaption;
-                            if (eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
+                            if (isNotContactEvent || eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
                                 oldCaption = eventData.get(ContactsEvents.Position_personFullName);
                             } else {
                                 oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
@@ -362,11 +373,9 @@ public class LocalEventActivity extends Activity {
                                     } catch (ParseException ignored) { /**/ }
                                 }
                             }
-
-                            String savedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
-                            if (savedEventSubType != null) {
+                            if (storedEventSubType != null) {
                                 try {
-                                    Integer eventSubTypeId = Integer.valueOf(savedEventSubType);
+                                    Integer eventSubTypeId = Integer.valueOf(storedEventSubType);
                                     if (eventSubTypesIds.contains(eventSubTypeId)) {
                                         int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
                                         spinnerEventTypes.setSelection(indexEventSubType);
@@ -699,11 +708,12 @@ public class LocalEventActivity extends Activity {
 
            String eventTitle = activity.editName.getText().toString();
            int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
-           boolean isHoliday = eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent);
+           Integer subType = eventSubTypesIds.get(indexType);
+           boolean isNotContactEvent = subType.equals(Constants.Type_HolidayEvent) || subType.equals(Constants.Type_Other);
 
-           if (isHoliday) {
+           if (isNotContactEvent) {
                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-               eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+               eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
            } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
@@ -723,9 +733,9 @@ public class LocalEventActivity extends Activity {
            }
 
            eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
-           eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(indexType)));
+           eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(subType));
 
-           if (isHoliday) {
+           if (isNotContactEvent) {
                eventData.put(ContactsEvents.Position_title, Constants.STRING_EMPTY);
                eventData.put(ContactsEvents.Position_organization, Constants.STRING_EMPTY);
            } else {
@@ -783,7 +793,8 @@ public class LocalEventActivity extends Activity {
 
             int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
 
-            if (eventSubTypesIds.get(indexType).equals(Constants.Type_HolidayEvent)) {
+            Integer subType = eventSubTypesIds.get(indexType);
+            if (subType.equals(Constants.Type_HolidayEvent) || subType.equals(Constants.Type_Other)) {
                 activity.viewName.setText(R.string.local_event_dialog_caption_name_holiday);
                 activity.cardTitle.setVisibility(View.GONE);
                 activity.cardOrganization.setVisibility(View.GONE);

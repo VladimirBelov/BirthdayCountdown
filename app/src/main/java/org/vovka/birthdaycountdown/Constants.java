@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.2025, 20:49
+ *  * Created by Vladimir Belov on 28.04.2025, 01:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 18:51
+ *  * Last modified 27.04.2025, 15:11
  *
  */
 
@@ -167,10 +167,11 @@ final class Constants {
     static final int Type_Custom3 = 10;
     static final int Type_Custom4 = 11;
     static final int Type_Custom5 = 12;
-    static final int Type_HolidayEvent = 23;
+    static final int Type_Another = 19;
     static final int Type_CalendarEvent = 20;
     static final int Type_FileEvent = 21;
     static final int Type_Xdays = 22;
+    static final int Type_HolidayEvent = 23;
     static final int Type_Fact = 24;
     static final int Type_Unrecognized = 99;
     static final String Type_MultiEvent = "30";
@@ -374,6 +375,7 @@ final class Constants {
     static final int ContextMenu_RemoveFromFavorites = 22;
     static final int ContextMenu_EditLocalEvent = 23;
     static final int ContextMenu_OpenContact = 24;
+    static final int ContextMenu_DialContact = 25;
 
     static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";

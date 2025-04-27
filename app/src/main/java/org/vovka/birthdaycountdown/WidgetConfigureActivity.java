@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2025, 10:09
+ *  * Created by Vladimir Belov on 28.04.2025, 01:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.04.2025, 10:07
+ *  * Last modified 27.04.2025, 14:06
  *
  */
 
@@ -245,7 +245,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     if (value.equals(selectedValues[0])) {
                         Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
                         spinnerOnClickCommon.setSelection(ind, true);
-                    } else if (selectedValues.length > 1 && value.equals(selectedValues[1])) {
+                    }
+                    if (selectedValues.length > 1 && value.equals(selectedValues[1])) {
                         selectedLastEventAction = ind;
                     }
                 }
@@ -286,9 +287,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
             eventTypesValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
 
-            if (!Constants.WIDGET_TYPE_5X1.equals(widgetType) && !Constants.WIDGET_TYPE_4X1.equals(widgetType) && !Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
-                eventTypesIDs.add(getString(R.string.pref_EventTypes_Holiday));
-                eventTypesValues.add(getString(R.string.pref_List_EventTypes_Holidays));
+            if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                    || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
+                eventTypesIDs.remove(getString(R.string.pref_EventTypes_Holiday));
+                eventTypesValues.remove(getString(R.string.pref_List_EventTypes_Holidays));
             }
 
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {

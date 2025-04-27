@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:02
+  ~  * Last modified 27.04.2025, 14:48
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Typy událostí</string>
     <string name="pref_List_EventTypes_summary">Jaké druhy událostí zahrnout do seznamu</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Narozeniny</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Výročí</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Další kontaktní události</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Vlastní události</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Počet zaokrouhlených dní (5000, 10000, 15000 dní)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Svátky</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Narozeniny</item>
-        <item>💑 Výročí</item>
-        <item>🗓️ Další události</item>
-        <item>⏰ Vlastní události</item>
-        <item>🏆 Počet zaokrouhlených dní (5000, 10000, 15000 dní)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Další události</string>
 
     <string name="pref_List_EventSources_title">Zdroje událostí</string>
     <string name="pref_List_EventSources_description">Zobrazit události pouze z těchto zdrojů událostí. Pokud není vybrán žádný zdroj, zobrazí se události ze všech zdrojů</string>

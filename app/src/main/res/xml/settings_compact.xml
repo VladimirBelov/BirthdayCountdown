@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.03.2025, 13:36
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 10.03.2025, 23:27
+  ~  * Last modified 17.04.2025, 23:21
   ~  */
   -->
 
@@ -349,29 +349,19 @@
         </PreferenceCategory>
 
         <PreferenceCategory
-            android:title="@string/pref_CustomEvents_Other_title"
+            android:title="@string/pref_CustomEvents_Another_title"
             android:layout="@layout/settings_category_with_icon"
             android:icon="@drawable/ic_event_other">
 
-            <org.vovka.birthdaycountdown.CustomEditTextPreference
-                android:key="@string/pref_CustomEvents_Other_Labels_key"
-                android:summary="@string/pref_CustomEvents_Other_Labels_summary"
-                android:title="@string/pref_CustomEvents_Other_Labels_title"
-                android:hint="@string/pref_CustomEvents_hint"
-                android:inputType="text"
-                android:textSize="16sp"
-                android:dialogIcon="@android:drawable/ic_menu_edit"
-                android:negativeButtonText="@string/button_cancel"/>
-
-            <Preference
-                android:key="@string/pref_CustomEvents_Other_Calendars_key"
-                android:title="@string/pref_CustomEvents_Calendars_title"
-                android:summary="@string/pref_CustomEvents_Calendars_summary"/>
-
-            <Preference
-                android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
-                android:title="@string/pref_CustomEvents_LocalFiles_title"
-                android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
+            android:key="@string/pref_CustomEvents_Another_Labels_key"
+            android:summary="@string/pref_CustomEvents_Another_Labels_summary"
+            android:title="@string/pref_CustomEvents_Another_Labels_title"
+            android:hint="@string/pref_CustomEvents_hint"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:dialogIcon="@android:drawable/ic_menu_edit"
+            android:negativeButtonText="@string/button_cancel"/>
 
         </PreferenceCategory>
 
@@ -402,6 +392,33 @@
 
             <Preference
                 android:key="@string/pref_CustomEvents_Holiday_LocalFiles_key"
+                android:title="@string/pref_CustomEvents_LocalFiles_title"
+                android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/pref_CustomEvents_Other_title"
+            android:layout="@layout/settings_category_with_icon"
+            android:icon="@drawable/ic_event_other">
+
+            <org.vovka.birthdaycountdown.CustomEditTextPreference
+                android:key="@string/pref_CustomEvents_Other_Labels_key"
+                android:summary="@string/pref_CustomEvents_Other_Labels_summary"
+                android:title="@string/pref_CustomEvents_Other_Labels_title"
+                android:hint="@string/pref_CustomEvents_hint"
+                android:inputType="text"
+                android:textSize="16sp"
+                android:dialogIcon="@android:drawable/ic_menu_edit"
+                android:negativeButtonText="@string/button_cancel"/>
+
+            <Preference
+                android:key="@string/pref_CustomEvents_Other_Calendars_key"
+                android:title="@string/pref_CustomEvents_Calendars_title"
+                android:summary="@string/pref_CustomEvents_Calendars_summary"/>
+
+            <Preference
+                android:key="@string/pref_CustomEvents_Other_LocalFiles_key"
                 android:title="@string/pref_CustomEvents_LocalFiles_title"
                 android:summary="@string/pref_CustomEvents_LocalFiles_summary"/>
 

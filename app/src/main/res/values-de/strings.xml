@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:02
+  ~  * Last modified 27.04.2025, 14:51
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
     <string name="pref_List_EventTypes_summary">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Geburtstage</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Hochzeitstage</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Andere Kontaktereignisse</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Benutzerdefinierte Ereignisse</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Besondere Geburtstage (Alle 5000 Tage)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Feiertage</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Geburtstage</item>
-        <item>💑 Hochzeitstage</item>
-        <item>🗓️ Andere Ereignisse</item>
-        <item>⏰ Benutzerdefinierte Ereignisse</item>
-        <item>🏆 Besondere Geburtstage (Alle 5000 Tage)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Andere Ereignisse</string>
 
     <string name="pref_List_EventSources_title">Ereignisquellen</string>
     <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>

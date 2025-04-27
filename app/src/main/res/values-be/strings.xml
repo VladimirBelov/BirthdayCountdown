@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2025, 10:09
+  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.04.2025, 10:02
+  ~  * Last modified 27.04.2025, 14:18
   ~  */
   -->
 
@@ -462,14 +462,13 @@
     <string name="pref_List_EventTypes_title">Тыпы падзей</string>
     <string name="pref_List_EventTypes_summary">Якія падзеі адлюстроўваць у спісе</string>
 
+    <string name="pref_List_EventTypes_Birthdays">🎂 Дні нараджэння</string>
+    <string name="pref_List_EventTypes_Anniversaries">💑 Гадавіны вяселляў</string>
+    <string name="pref_List_EventTypes_Another">🗓️ Іншыя падзеі кантакту</string>
+    <string name="pref_List_EventTypes_Custom">⏰ Карыстальніцкія падзеі</string>
+    <string name="pref_List_EventTypes_RoundDays">🏆 Круглыя даты (5K дзён)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Святы</string>
-    <string-array name="pref_List_EventTypes_entries">
-        <item>🎂 Дні нараджэння</item>
-        <item>💑 Гадавіны вяселляў</item>
-        <item>🗓️ Іншыя падзеі</item>
-        <item>⏰ Карыстальніцкія падзеі</item>
-        <item>🏆 Круглыя даты (5K дзён)</item>
-    </string-array>
+    <string name="pref_List_EventTypes_Other">🗓️ Іншыя падзеі</string>
 
     <string name="pref_List_EventSources_title">Крыніцы падзей</string>
     <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
