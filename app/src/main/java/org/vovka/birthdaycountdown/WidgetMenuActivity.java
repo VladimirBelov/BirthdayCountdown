@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 30.04.2025, 20:12
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.04.2025, 15:11
+ *  * Last modified 30.04.2025, 20:08
  *
  */
 
@@ -237,6 +237,12 @@ public class WidgetMenuActivity extends Activity {
                     menuIcons.add(actionDrawable);
                     menuActions.add(Constants.ContextMenu_SilentEvent);
 
+                } else if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+
+                    menuItems.add(getString(R.string.menu_context_unsilent_event));
+                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_revert));
+                    menuActions.add(Constants.ContextMenu_UnsilentEvent);
+
                 }
 
                 if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_photo_uri])) {
@@ -387,6 +393,13 @@ public class WidgetMenuActivity extends Activity {
                 case Constants.ContextMenu_SilentEvent:
 
                     if (eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    break;
+
+                case Constants.ContextMenu_UnsilentEvent:
+
+                    if (eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
                     }
                     break;
