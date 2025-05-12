@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 12.05.2025, 10:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.04.2025, 01:32
+ *  * Last modified 12.05.2025, 10:50
  *
  */
 
@@ -2643,11 +2643,7 @@ class ContactsEvents {
             String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
-            Calendar now = new GregorianCalendar();
-            now.set(Calendar.HOUR_OF_DAY, 0);
-            now.set(Calendar.MINUTE, 0);
-            now.set(Calendar.SECOND, 0);
-            now.set(Calendar.MILLISECOND, 0);
+            Calendar today = removeTime(new GregorianCalendar());
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -2804,7 +2800,7 @@ class ContactsEvents {
 
                 } else { //Без года
 
-                    String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + now.get(Calendar.YEAR);
+                    String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + today.get(Calendar.YEAR);
                     try {
                         if (!isBirthdaysPlusEvent) {
                             String dateNextFloatingEvent = computeFloatingDate(dateNextEvent, 0);
@@ -2821,7 +2817,7 @@ class ContactsEvents {
                                 dateEvent = sdf_uk.parse(dateNextEvent);
                             } catch (ParseException e3) {
                                 try {
-                                    dateNextEvent = eventDateString.replace(Constants.STRING_BDP_NO_YEAR, Integer.toString(now.get(Calendar.YEAR)));
+                                    dateNextEvent = eventDateString.replace(Constants.STRING_BDP_NO_YEAR, Integer.toString(today.get(Calendar.YEAR)));
                                     dateEvent = sdf_java.parse(dateNextEvent);
                                 } catch (ParseException e4) {
                                     //Не получилось распознать
@@ -2829,7 +2825,7 @@ class ContactsEvents {
                             }
                         }
                     }
-                    if (dateEvent != null && now.after(getCalendarFromDate(dateEvent)))
+                    if (dateEvent != null && today.after(getCalendarFromDate(dateEvent)))
                         dateEvent = addYear(dateEvent, 1);
                 }
 
@@ -5541,18 +5537,13 @@ class ContactsEvents {
             if (isEmptyEventList()) return;
 
             List<String> magicList = new ArrayList<>(); //Для 5k событий
-
-            Calendar now = new GregorianCalendar();
-            now.set(Calendar.HOUR_OF_DAY, 0);
-            now.set(Calendar.MINUTE, 0);
-            now.set(Calendar.SECOND, 0);
-            now.set(Calendar.MILLISECOND, 0);
-            Date currentDay = now.getTime();
+            Calendar today = removeTime(new GregorianCalendar());
+            Date currentDay = today.getTime();
 
             setLocale(false);
 
             for (int i = 0; i < eventList.size(); i++) {
-                computeDateForEvent(i, magicList, now, currentDay);
+                computeDateForEvent(i, magicList, today, currentDay);
             }
 
             //Удаляем пустые
@@ -6274,12 +6265,8 @@ class ContactsEvents {
                     break;
             }
 
-            Calendar now = new GregorianCalendar();
-            now.set(Calendar.HOUR_OF_DAY, 0);
-            now.set(Calendar.MINUTE, 0);
-            now.set(Calendar.SECOND, 0);
-            now.set(Calendar.MILLISECOND, 0);
-            Date currentDay = now.getTime();
+            Calendar today = removeTime(new GregorianCalendar());
+            Date currentDay = today.getTime();
 
             List<String> listPrevEventsPreparatory = new ArrayList<>();
             List<String> listPrevEventsDates = new ArrayList<>();
@@ -6917,12 +6904,8 @@ class ContactsEvents {
 
             setLocale(true);
 
-            Calendar now = new GregorianCalendar();
-            now.set(Calendar.HOUR_OF_DAY, 0);
-            now.set(Calendar.MINUTE, 0);
-            now.set(Calendar.SECOND, 0);
-            now.set(Calendar.MILLISECOND, 0);
-            Date currentDay = now.getTime();
+            Calendar today = removeTime(new GregorianCalendar());
+            Date currentDay = today.getTime();
 
             List<NotifyEvent> listNotify = new ArrayList<>();
             for (String event : eventList) {
@@ -10525,7 +10508,7 @@ class ContactsEvents {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
-            GregorianCalendar now = new GregorianCalendar();
+            Calendar today = removeTime(new GregorianCalendar());
             for (String eventLine: days) {
                 String day = eventLine.trim();
 
@@ -10559,7 +10542,7 @@ class ContactsEvents {
                         eventDateString = dateNextFloatingEvent;
                         isFloating = true;
                     } else if (eventDateString.endsWith(Constants.STRING_0000)) {
-                        eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + now.get(Calendar.YEAR);
+                        eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + today.get(Calendar.YEAR);
                     }
                     dateEvent = sdf_DDMMYYYY.parse(eventDateString);
                 } catch (Exception e1) {
@@ -10830,7 +10813,7 @@ class ContactsEvents {
 
             long statCurrentModuleStart = System.currentTimeMillis();
             final TreeMap<Integer, String> eventData = new TreeMap<>();
-            Calendar now = new GregorianCalendar();
+            Calendar today = removeTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
@@ -10883,7 +10866,7 @@ class ContactsEvents {
                                             eventDateString = dateNextFloatingEvent;
                                             isEndless = false;
                                         } else if (eventDateString.endsWith(Constants.STRING_0000)) {
-                                            eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + now.get(Calendar.YEAR);
+                                            eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + today.get(Calendar.YEAR);
                                         }
                                         dateEvent = sdf_DDMMYYYY.parse(eventDateString);
                                     } catch (ParseException e1) {
@@ -10904,7 +10887,7 @@ class ContactsEvents {
 
                                     if (dateEvent == null) continue;
 
-                                    if (now.after(getCalendarFromDate(dateEvent))) {
+                                    if (today.after(getCalendarFromDate(dateEvent))) {
                                         if (!isEndless) { //Одиночное событие и оно прошло
                                             continue;
                                         } else {
