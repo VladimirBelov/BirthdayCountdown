@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 15.05.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 10:55
+ *  * Last modified 15.05.2025, 01:11
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -33,7 +33,7 @@ android {
             }
         }
     }
-    compileSdk 35
+    compileSdk = 35
 
     defaultConfig {
         buildToolsVersion  = "36.0.0" //https://developer.android.com/tools/releases/build-tools
@@ -50,9 +50,9 @@ android {
     }
 
     buildFeatures {
-        dataBinding false
-        viewBinding false
-        buildConfig true
+        dataBinding = false
+        viewBinding = false
+        buildConfig = true
     }
 
     packagingOptions {
@@ -96,11 +96,11 @@ android {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
 
-            debuggable false
-            minifyEnabled true
-            shrinkResources true
+            debuggable = false
+            minifyEnabled = true
+            shrinkResources = true
             if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
+                signingConfig = signingConfigs.release
             }
             //https://habr.com/ru/post/415499/
             //https://www.guardsquare.com/en/products/proguard/manual/retrace
@@ -110,20 +110,20 @@ android {
             //https://stackoverflow.com/questions/3540739/how-to-programmatically-read-the-date-when-my-android-apk-was-built
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
 
-            debuggable false
-            minifyEnabled false
-            shrinkResources false
+            debuggable = false
+            minifyEnabled = false
+            shrinkResources = false
             if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
+                signingConfig = signingConfigs.release
             }
         }
         debug {
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
 
-            minifyEnabled false
-            shrinkResources false
-            debuggable true
-            jniDebuggable true
+            minifyEnabled = false
+            shrinkResources = false
+            debuggable = true
+            jniDebuggable = true
         }
     }
     compileOptions {
@@ -131,7 +131,7 @@ android {
         targetCompatibility = '1.8'
         //coreLibraryDesugaringEnabled true
     }
-    namespace 'org.vovka.birthdaycountdown'
+    namespace = 'org.vovka.birthdaycountdown'
 
     //https://stackoverflow.com/questions/28249036/app-release-apk-how-to-change-this-default-generated-apk-name
     applicationVariants.configureEach { variant ->

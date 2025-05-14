@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.05.2025, 10:40
+ *  * Created by Vladimir Belov on 15.05.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.05.2025, 10:16
+ *  * Last modified 15.05.2025, 02:22
  *
  */
 
@@ -2640,11 +2640,16 @@ class ContactsEvents {
         int count = 0;
         try {
 
-            String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+            String fileContent = readFileToString(file, Constants.STRING_EOL);
+            String[] eventsArray = fileContent.split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
             Calendar today = removeTime(new GregorianCalendar());
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+
+            if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
+                return  fileContent.split(Constants.iCal_EventBegin, -1).length - 1;
+            }
 
             for (String eventRow : eventsArray) {
 
@@ -4031,16 +4036,27 @@ class ContactsEvents {
                 int indexFileNameEnd = file.indexOf(Constants.STRING_BAR);
                 if (indexFileNameEnd < 0) indexFileNameEnd = 0;
 
-                for (String eventString : eventsArray) {
-                    getFileEventFromLine(
+                if (eventsArray[0].startsWith(Constants.iCal_CalendarBegin)) {
+                    getICalEvents(
                             file,
-                            eventString,
+                            eventsArray,
                             eventType,
                             today,
                             eventSource,
-                            isFirstSecondLastFormat,
                             indexFileNameEnd
                     );
+                } else {
+                    for (String eventString : eventsArray) {
+                        getFileEventFromLine(
+                                file,
+                                eventString,
+                                eventType,
+                                today,
+                                eventSource,
+                                isFirstSecondLastFormat,
+                                indexFileNameEnd
+                        );
+                    }
                 }
             }
 
@@ -4051,6 +4067,137 @@ class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        }
+    }
+
+    private void getICalEvents(@NonNull String file, @NonNull String[] fileLines, @NonNull String eventType, @NonNull Calendar today, @NonNull String eventSource, int indexFileNameEnd) {
+        try {
+
+            TreeMap<Integer, String> eventData = new TreeMap<>();
+            @Nullable Event event = null;
+            @Nullable Date eventDateFirstTime = null;
+            @Nullable Date eventDateThisTime = null;
+            @Nullable String eventNewDate;
+            @Nullable String eventTitle = null;
+            String eventDescription = Constants.STRING_EMPTY;
+            String eventUrl = Constants.STRING_EMPTY;
+            boolean useEventYear = true;
+            final int nowYear = today.get(Calendar.YEAR);
+            StringBuilder eventLines = new StringBuilder();
+
+            for (String line: fileLines) {
+
+                if (line.startsWith(Constants.iCal_EventBegin)) {
+                    if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+
+                        event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+                        useEventYear = true;
+
+                    } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+
+                        event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+                        useEventYear = false;
+
+                    } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+
+                        event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+                        event.subType = getEventType(Constants.Type_FileEvent);
+                        useEventYear = false;
+
+                    }
+                } else if (line.startsWith(Constants.iCal_Summary)) {
+
+                    eventTitle = substringAfter(line, Constants.iCal_Summary);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_Description)) {
+
+                    eventDescription = substringAfter(line, Constants.iCal_Description);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.STRING_SPACE)) {
+
+                    eventDescription = eventDescription.concat(substringAfter(line, Constants.STRING_SPACE));
+
+                } else if (line.startsWith(Constants.iCal_Url)) {
+
+                    eventUrl = substringAfter(line, Constants.iCal_Url);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_Date)) {
+
+                    String storedDate = substringAfter(line, Constants.STRING_COLON);
+                    try {
+                        eventDateFirstTime = sdf_YYYYMMDD_noDiv.parse(storedDate);
+
+                        try {
+                            eventDateThisTime = sdf_YYYYMMDD_noDiv.parse(nowYear + storedDate.substring(4));
+                        } catch (ParseException e) {
+                            //Не получилось распознать
+                        }
+                        if (eventDateThisTime != null) {
+                            if (today.getTime().after(eventDateThisTime)) eventDateThisTime = addYear(eventDateThisTime, 1);
+                        }
+                    } catch (ParseException ignored) { /**/ }
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_EventEnd) && event != null) {
+
+                    if (eventDateFirstTime == null || eventDateThisTime == null || eventTitle == null) {
+                        ToastExpander.showDebugMsg(context, eventLines.toString());
+                    } else {
+
+                        eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
+                                + (useEventYear ? sdf_java.format(eventDateFirstTime) : sdf_java_G.format(eventDateFirstTime))
+                                + Constants.STRING_COLON_SPACE
+                                + getHash(Constants.eventSourceFilePrefix + file);
+
+                        eventData.put(Position_personFullName, eventTitle);
+                        if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+                            String personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
+                            eventData.put(Position_personFullNameAlt, personFullNameAlt);
+                        }
+                        eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
+                        eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
+                        eventData.put(Position_eventCaption, event.caption);
+                        eventData.put(Position_eventLabel, event.label);
+                        eventData.put(Position_eventSource, eventSource);
+                        eventData.put(Position_eventType, event.type);
+                        eventData.put(Position_eventSubType, event.subType);
+                        eventData.put(Position_dates, eventNewDate);
+                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                        eventData.put(Position_eventEmoji, event.emoji);
+                        eventData.put(Position_eventURL, eventUrl);
+                        eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
+                        eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(eventDateFirstTime));
+                        eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDateThisTime));
+
+                        statEventsCount++;
+                        statFilesEventCount++;
+                        fillEmptyEventData(eventData);
+
+                        String eventRow = getEventData(eventData);
+                        if (!eventListUpdated.contains(eventRow)) {
+                            eventListUpdated.add(eventRow);
+                        }
+
+                    }
+
+                    eventData.clear();
+                    eventDateFirstTime = null;
+                    eventDateThisTime = null;
+                    eventTitle = null;
+                    eventDescription = Constants.STRING_EMPTY;
+                    eventUrl = Constants.STRING_EMPTY;
+                    eventLines.setLength(0);
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5666,8 +5813,9 @@ class ContactsEvents {
                                 //Не получилось распознать
                             }
                             if (eventDateThisTime != null) {
-                                long dayDiff_tmp = countDaysDiff(currentDay, eventDateThisTime);
-                                if (dayDiff_tmp < 0) eventDateThisTime = addYear(eventDateThisTime, 1);
+                                //long dayDiff_tmp = countDaysDiff(currentDay, eventDateThisTime);
+                                //if (dayDiff_tmp < 0) eventDateThisTime = addYear(eventDateThisTime, 1);
+                                if (currentDay.after(eventDateThisTime)) eventDateThisTime = addYear(eventDateThisTime, 1);
                                 storedDate_Date = eventDateThisTime;
                             }
 

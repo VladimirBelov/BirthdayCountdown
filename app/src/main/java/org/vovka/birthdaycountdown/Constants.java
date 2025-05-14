@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 15.05.2025, 02:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.04.2025, 15:11
+ *  * Last modified 15.05.2025, 02:22
  *
  */
 
@@ -26,6 +26,7 @@ final class Constants {
     static final String REGEX_EVENTS_SCOPE_RAND = "(\\d+?)[e](\\d+?)[d](\\d+?)[r]";
     static final String REGEX_CALENDAR_LAYOUT = "(\\d+?)[r](\\d+?)[c]";
     static final String REGEX_PERIOD = "\\.";
+    static final String REGEX_BS = "\\";
     static final String STRING_00 = "00";
     static final String STRING_000 = "000";
     static final String STRING_0000 = "0000";
@@ -465,4 +466,14 @@ final class Constants {
     public static final String SQL_EQUAL = " = ";
 
     public static final String LocalEventsFilename = "Events";
+
+    public static final String iCal_CalendarBegin = "BEGIN:VCALENDAR";
+    public static final String iCal_EventBegin = "BEGIN:VEVENT";
+    public static final String iCal_EventEnd = "END:VEVENT";
+    public static final String iCal_Summary = "SUMMARY:";
+    public static final String iCal_Description = "DESCRIPTION:";
+    public static final String iCal_Date = "DTSTART";
+    public static final String iCal_Url = "URL:";
+
+
 }
