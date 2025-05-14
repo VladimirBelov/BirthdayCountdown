@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.05.2025, 10:59
+ *  * Created by Vladimir Belov on 14.05.2025, 10:40
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.05.2025, 10:50
+ *  * Last modified 14.05.2025, 10:16
  *
  */
 
@@ -2644,21 +2644,7 @@ class ContactsEvents {
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
             Calendar today = removeTime(new GregorianCalendar());
-
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
-            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-
-                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
-
-            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-
-                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
-
-            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
-
-                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
-
-            }
 
             for (String eventRow : eventsArray) {
 
@@ -2741,7 +2727,21 @@ class ContactsEvents {
                 if (eventDateString.isEmpty()) continue;
 
                 if (isMultiTypeSource || needEventLabel) {
+
                     event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle, true);
+
+                } else if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+
+                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+
+                } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+
+                    event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+
+                } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+
+                    event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+
                 }
 
                 if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
@@ -4076,23 +4076,6 @@ class ContactsEvents {
             boolean isPassedEvent = false;
             @Nullable Event event = null;
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
-
-            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-
-                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
-
-            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-
-                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
-                event.subType = getEventType(Constants.Type_FileEvent);
-
-            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
-
-                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
-                event.subType = eventType;
-
-            }
-
             int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
             boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
                     && eventLine.endsWith(Constants.STRING_BDP_EOL);
@@ -4161,7 +4144,23 @@ class ContactsEvents {
             }
 
             if (isMultiTypeSource) {
+
                 event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, eventTitle, true);
+
+            } else if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+
+                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+
+            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+                event.subType = getEventType(Constants.Type_FileEvent);
+
+            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+
+                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+                event.subType = eventType;
+
             }
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
