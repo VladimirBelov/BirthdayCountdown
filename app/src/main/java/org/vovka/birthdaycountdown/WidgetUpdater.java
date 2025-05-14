@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2025, 09:38
+ *  * Created by Vladimir Belov on 14.05.2025, 10:48
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.04.2025, 23:25
+ *  * Last modified 14.05.2025, 10:46
  *
  */
 
@@ -933,6 +933,8 @@ class WidgetUpdater {
                         Constants.STRING_SPACE +
                         String.format(Constants.HTML_COLOR, colorDate, eventDay) +
                         Constants.STRING_SPACE +
+                        singleEventArray[ContactsEvents.Position_eventCaption] +
+                        Constants.STRING_COLON_SPACE +
                         eventsData.getFullName(singleEventArray);
 
                 intentAction = new Intent(context, WidgetMenuActivity.class);
