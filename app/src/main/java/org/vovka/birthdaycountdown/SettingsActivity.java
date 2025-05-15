@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 16.05.2025, 01:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:19
+ *  * Last modified 16.05.2025, 01:03
  *
  */
 
@@ -3356,7 +3356,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (resultData != null) {
                         Uri uri = resultData.getData();
                         if (uri != null) {
-                            if (!eventsData.readFileToString(uri.toString(), null).isEmpty()) {
+                            final String fileContent = eventsData.readFileToString(uri.toString(), null);
+                            if (!fileContent.isEmpty()) {
                                 String filename = eventsData.getPath(this, uri);
                                 if (!filename.isEmpty()) {
                                     try {

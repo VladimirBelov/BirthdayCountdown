@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
+  ~  * Created by Vladimir Belov on 16.05.2025, 01:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.03.2025, 00:20
+  ~  * Last modified 16.05.2025, 00:52
   ~  */
   -->
 
@@ -100,9 +100,9 @@
         </ol>]]></item>
 
         <item>#<![CDATA[<a id="events_files">Events from local files]]></item>
-        <item><![CDATA[Events and birthdays from <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> and <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> are supported with some extra features:<ul>
+        <item><![CDATA[Events and birthdays by these formats are supported: <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>, <b>iCalendar (ICS)</b>. Extra notes:<ul>
         <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY, YYYY-MM-DD etc)
-        <li>if the year is unknown set 0000
+        <li>if the year is unknown set 0000 (1900 for Birthdays)
         <li>the file must be saved in UTF-8 encoding
         <li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title
         <li>if the file only lists events of a certain type (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Birthday, <img src="ic_event_other.webp" width=5 % style="vertical-align:middle"> Other event), such files must be specified in the settings section corresponding to their type
@@ -163,6 +163,7 @@
 
         <item>#Importing events from social networks</item>
         <item><![CDATA[Facebook friends\' birthdays can be exported to calendar using the fb2cal tool: <a href="https://github.com/mobeigi/fb2cal">link</a>, <a href="https://www.youtube.com/watch?v=UnsbV8EJ8-Y">video instructions</a>]]></item>
+        <item><![CDATA[You can download friends\' birthdays from VK to iCalendar format on the page: <a href="https://naruhina.ru/VkBirthdayExporter.html">link</a>]]></item>
 
         <item> </item>
         <item>###Common</item>

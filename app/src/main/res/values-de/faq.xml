@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
+  ~  * Created by Vladimir Belov on 16.05.2025, 01:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.03.2025, 00:25
+  ~  * Last modified 16.05.2025, 00:46
   ~  */
   -->
 
@@ -97,9 +97,9 @@
                 </ol>]]></item>
 
                 <item>#<![CDATA[<a id="events_files">Ereignisse aus lokalen Dateien]]></item>
-                <item><![CDATA[Ereignisse und Geburtstage vom <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> und <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> werden mit einigen Funktionen unterstützt:<ul>
+                <item><![CDATA[Ereignisse und Geburtstage werden in folgenden Formaten unterstützt: <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Geburtstage</a>, <b>iCalendar (ICS)</b>. Zusätzliche Hinweise:<ul>
                 <li>Das Ereignisdatum kann ein beliebiges Format ohne Leerzeichen haben (TT.MM.JJJJ, MM/TT/JJJJ, JJJJ-MM-TT usw.)
-                <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein
+                <li>Wenn das Jahr unbekannt ist, stellen Sie 0000 ein (1900 fur Geburtstage Anwendung)
                 <li>Die Datei muss in UTF-8-Kodierung gespeichert werden
                 <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
                 <li>Wenn die Datei nur Ereignisse eines bestimmten Typs auflistet (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Geburtstag, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Sonstiges Ereignis), müssen solche Dateien im Einstellungsbereich entsprechend ihrem Typ angegeben werden

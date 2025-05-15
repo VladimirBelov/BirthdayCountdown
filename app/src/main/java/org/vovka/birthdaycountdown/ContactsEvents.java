@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.05.2025, 02:24
+ *  * Created by Vladimir Belov on 16.05.2025, 01:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.05.2025, 02:22
+ *  * Last modified 16.05.2025, 01:46
  *
  */
 
@@ -4080,10 +4080,11 @@ class ContactsEvents {
             @Nullable String eventNewDate;
             @Nullable String eventTitle = null;
             String eventDescription = Constants.STRING_EMPTY;
-            String eventUrl = Constants.STRING_EMPTY;
+            String eventURL = Constants.STRING_EMPTY;
             boolean useEventYear = true;
             final int nowYear = today.get(Calendar.YEAR);
             StringBuilder eventLines = new StringBuilder();
+            boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
             for (String line: fileLines) {
 
@@ -4098,7 +4099,7 @@ class ContactsEvents {
                         event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
                         useEventYear = false;
 
-                    } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+                    } else {
 
                         event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
                         event.subType = getEventType(Constants.Type_FileEvent);
@@ -4121,7 +4122,7 @@ class ContactsEvents {
 
                 } else if (line.startsWith(Constants.iCal_Url)) {
 
-                    eventUrl = substringAfter(line, Constants.iCal_Url);
+                    eventURL = substringAfter(line, Constants.iCal_Url);
                     eventLines.append(line).append(Constants.STRING_EOL);
 
                 } else if (line.startsWith(Constants.iCal_Date)) {
@@ -4148,15 +4149,28 @@ class ContactsEvents {
                     } else {
 
                         eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
-                                + (useEventYear ? sdf_java.format(eventDateFirstTime) : sdf_java_G.format(eventDateFirstTime))
+                                + (useEventYear ? sdf_java.format(eventDateFirstTime) : sdf_java_no_year.format(eventDateFirstTime))
                                 + Constants.STRING_COLON_SPACE
-                                + getHash(Constants.eventSourceFilePrefix + file);
+                                + getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
+
+                        eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
+
+                        String personFullNameAlt = null;
+                        String personFullNameNormalized = null;
+                        String personFullNameAltNormalized = null;
+                        String contactID = null;
 
                         eventData.put(Position_personFullName, eventTitle);
                         if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-                            String personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
+                            personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
                             eventData.put(Position_personFullNameAlt, personFullNameAlt);
                         }
+
+                        if (event.needScanContacts) {
+                            personFullNameNormalized = normalizeName(eventTitle);
+                            personFullNameAltNormalized = normalizeName(personFullNameAlt);
+                        }
+
                         eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
                         eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
                         eventData.put(Position_eventCaption, event.caption);
@@ -4167,18 +4181,117 @@ class ContactsEvents {
                         eventData.put(Position_dates, eventNewDate);
                         eventData.put(Position_eventIcon, Integer.toString(event.icon));
                         eventData.put(Position_eventEmoji, event.emoji);
-                        eventData.put(Position_eventURL, eventUrl);
+                        eventData.put(Position_eventURL, eventURL);
                         eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
                         eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(eventDateFirstTime));
                         eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDateThisTime));
 
-                        statEventsCount++;
-                        statFilesEventCount++;
-                        fillEmptyEventData(eventData);
+                        if (event.needScanContacts) {
 
-                        String eventRow = getEventData(eventData);
-                        if (!eventListUpdated.contains(eventRow)) {
-                            eventListUpdated.add(eventRow);
+                            //Ищем контакт
+                            if (personFullNameNormalized != null) {
+                                contactID = map_contacts_names.get(personFullNameNormalized);
+                                if (TextUtils.isEmpty(contactID) && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                    contactID = map_contacts_names.get(personFullNameAltNormalized);
+                                }
+                                if (TextUtils.isEmpty(contactID)) {
+                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
+                                }
+                                if (TextUtils.isEmpty(contactID) && personFullNameAltNormalized != null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
+                                    contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                                }
+                            }
+                            if (!TextUtils.isEmpty(contactID)) {
+                                eventData.put(Position_contactID, contactID);
+                                eventData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
+
+                                //Ищем событие контакта в списке событий и добавляем в него
+                                Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
+
+                                    List<String> singleRowList = Arrays.asList(eventListUpdated.get(eventIndex).split(Constants.STRING_EOT, -1));
+                                    final String eventDates = singleRowList.get(Position_dates);
+                                    boolean needUpdate = false;
+
+                                    if (!eventDates.contains(eventNewDate)) { //Пропускаем дубли
+                                        singleRowList.set(Position_dates, eventDates.concat(Constants.STRING_2TILDA).concat(eventNewDate));
+                                        singleRowList.set(Position_eventStorage, singleRowList.get(Position_eventStorage)
+                                                + Constants.STRING_COMMA_SPACE + Constants.STRING_STORAGE_FILE);
+                                        needUpdate = true;
+                                    }
+
+                                    if (!eventURL.isEmpty()) {
+                                        String eventURL_stored = checkForNull(singleRowList.get(Position_eventURL)).trim();
+                                        if (eventURL_stored.isEmpty()) {
+                                            singleRowList.set(Position_eventURL, eventURL);
+                                        } else if (!eventURL_stored.contains(eventURL)) {
+                                            singleRowList.set(Position_eventURL, eventURL_stored.concat(Constants.STRING_2TILDA).concat(eventURL));
+                                        }
+                                        needUpdate = true;
+                                    }
+
+                                    String eventSource_stored = checkForNull(singleRowList.get(Position_eventSource)).trim();
+                                    if (eventSource_stored.isEmpty()) {
+                                        singleRowList.set(Position_eventSource, eventSource);
+                                        needUpdate = true;
+                                    } else if (!eventSource_stored.contains(eventSource)) {
+                                        singleRowList.set(Position_eventSource, eventSource_stored.concat(Constants.STRING_2TILDA).concat(eventSource));
+                                        needUpdate = true;
+                                    }
+
+                                    if (needUpdate) {
+                                        StringBuilder dataRow = new StringBuilder();
+                                        int rNum = 0;
+                                        for (String entry : singleRowList) {
+                                            rNum++;
+                                            if (rNum != 1) dataRow.append(Constants.STRING_EOT);
+                                            dataRow.append(entry);
+                                        }
+                                        eventListUpdated.set(eventIndex, dataRow.toString());
+                                    }
+                                    eventData.clear();
+
+                                } else { //Такого события ещё не было
+
+                                    //Добавляем данные контакта
+                                    final Long contactIDLong = parseToLong(contactID);
+                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                            ContactsContract.Contacts.PHOTO_URI,
+                                            //ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                                            ContactsContract.Contacts.STARRED
+                                    });
+
+                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                                        if (Constants.STRING_1.equals(checkForNull(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                            eventData.put(Position_starred, Constants.STRING_1);
+                                            statFavoriteEventsCount++;
+                                        }
+                                    }
+                                    contactDataMap.clear();
+
+                                    eventData.put(Position_nickname, checkForNull(map_contacts_aliases.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
+                                        eventData.put(Position_organization, checkForNull(map_organizations.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
+                                        eventData.put(Position_title, checkForNull(map_contacts_titles.get(contactID)));
+                                }
+                            }
+                        }
+
+                        if (!eventData.isEmpty()) {
+                            statEventsCount++;
+                            statFilesEventCount++;
+
+                            fillEmptyEventData(eventData);
+
+                            String eventRow = getEventData(eventData);
+                            if (!eventListUpdated.contains(eventRow)) {
+                                eventListUpdated.add(eventRow);
+                                if (!TextUtils.isEmpty(contactID)) {
+                                    map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                                }
+                            }
                         }
 
                     }
@@ -4188,7 +4301,7 @@ class ContactsEvents {
                     eventDateThisTime = null;
                     eventTitle = null;
                     eventDescription = Constants.STRING_EMPTY;
-                    eventUrl = Constants.STRING_EMPTY;
+                    eventURL = Constants.STRING_EMPTY;
                     eventLines.setLength(0);
 
                 }

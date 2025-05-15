@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2025, 00:51
+  ~  * Created by Vladimir Belov on 16.05.2025, 01:51
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.03.2025, 00:24
+  ~  * Last modified 16.05.2025, 01:06
   ~  */
   -->
 
@@ -103,7 +103,7 @@
                 </ol>]]></item>
 
                 <item>#<![CDATA[<a id="events_files">События из локальных файлов]]></item>
-                <item><![CDATA[Поддерживаются как события с заранее определённой датой, так и события с плавающей датой (например, последняя суббота месяца) из файлов в формате <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> или в формате <a href="https://4pda.to/forum/index.php?showtopic=537828">Дни рождения (Birthdays)</a> :<ul>
+                <item><![CDATA[Поддерживаются как события с заранее определённой датой, так и события с плавающей датой (например, последняя суббота месяца) из файлов в формате <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, в формате <a href="https://4pda.to/forum/index.php?showtopic=537828">Дни рождения (Birthdays)</a>, а также события <b>iCalendar (ICS)</b>:<ul>
                 <li>дата события может быть любого формата без пробелов (ДД.ММ.ГГГГГ, MM/DD/YYYY, ГГГГ-ММ-ДД и.т.п)
                 <li>если год неизвестен, необходимо поставить 0000 (в случае с Birthdays: 1900)
                 <li>файл должен быть сохранён в кодировке UTF-8
@@ -175,8 +175,7 @@
                 <item><![CDATA[Приложение позволяет выводить в случайном порядке 1..3 факта в списковом виджете или в уведомлениях. Это могут быть цитаты известных людей, мотивирующие фразы, полезные пословицы или что-то подобное. Источники фактов можно выбрать из списка предустановленных вариантов или выбрать свои собственные файлы.<br><br>Формат данных в файле: каждый факт занимает одну строку. Закомментированные строки должны начинаться с // или #]]></item>
 
                 <item>#Импорт событий из социальных сетей</item>
-                <item><![CDATA[<s>Большинство социальных сетей позволяют выгрузить дни рождения друзей в виде календаря iCalendar</s>]]>.</item>
-                <item><![CDATA[Инструкция, как создать календарь дней рождения друзей из VK, Одноклассники, Мой мир: <a href="https://help.mail.ru/calendar-help/all/birthdays_social">ссылка</a>. Такие календари синхронизируются со смартфоном с помощью приложения <a href="https://help.mail.ru/calendar-help/synchronization/android/install">Mail.ru Календарь</a> (в данный момент недоступно)]]></item>
+                <item><![CDATA[Выгрузить дни рождения друзей из <b>VK</b> в формат iCalendar можно на странице: <a href="https://naruhina.ru/VkBirthdayExporter.html">ссылка</a><br>&nbsp;]]></item>
                 <item><![CDATA[Инструкция, как выгрузить дни рождения друзей из Facebook: <a href="https://4pda.to/forum/index.php?showtopic=939391&view=findpost&p=98641698">ссылка</a>]]></item>
                 <item><![CDATA[<br>Как посмотреть дни рождения онлайн:<ul>
                 <li>VK <a href="https://vk.com/friends?w=calendar">vk.com/friends?w=calendar</a>
