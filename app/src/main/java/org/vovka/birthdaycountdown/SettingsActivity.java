@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.05.2025, 01:51
+ *  * Created by Vladimir Belov on 19.05.2025, 11:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.05.2025, 01:03
+ *  * Last modified 18.05.2025, 17:32
  *
  */
 
@@ -2827,6 +2827,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Widgets_EventInfo_key)
                 ));
 
+                ArrayList<String> listLongs = new ArrayList<>(Arrays.asList(
+                        getString(R.string.pref_Notifications_LastNotify),
+                        getString(R.string.pref_Notifications2_LastNotify)
+                ));
+
                 for (String prefLine: prefsArray) {
                     int indColon = prefLine.indexOf(Constants.STRING_COLON);
                     if (indColon > -1) {
@@ -2889,6 +2894,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                                 editor.putString(pref[0], pref[1]);
                                 countSuccess++;
+
+                            } else if (listLongs.contains(pref[0])) { // Longs
+
+                                Long valLong = null;
+                                try {
+                                    valLong = Long.parseLong(pref[1]);
+                                } catch (NumberFormatException e) {
+                                    countErrors++;
+                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                }
+                                if (valLong != null) {
+                                    editor.putLong(pref[0], valLong);
+                                    countSuccess++;
+                                }
 
                             } else {
 

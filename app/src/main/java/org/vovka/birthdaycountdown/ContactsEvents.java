@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.05.2025, 01:51
+ *  * Created by Vladimir Belov on 19.05.2025, 11:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.05.2025, 01:46
+ *  * Last modified 19.05.2025, 10:36
  *
  */
 
@@ -3654,56 +3654,59 @@ class ContactsEvents {
                 if (prefs.get(eventId) instanceof String) {
                     String eventString = (String) prefs.get(eventId);
                     if (eventString != null) {
-
-                        String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
-
-                        boolean eventUseYear = false;
-                        Date dateEventFirstTime = null;
-                        String eventDateString = singleEventArray[Position_eventDateFirstTime];
-
-                        try  {
-                            dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString);
-                            if (dateEventFirstTime != null) {
-                                eventUseYear = true;
-                            }
-                        } catch (ParseException pe) {
-                            try {
-                                dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString
-                                        .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
-                            } catch (ParseException ignored) { /**/ }
-                        }
-
-                        if (dateEventFirstTime == null) {
-                            continue;
-                        }
-
-                        String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
-                                + (eventUseYear ? sdf_java.format(dateEventFirstTime) : sdf_java_no_year.format(dateEventFirstTime))
-                                + Constants.STRING_COLON_SPACE
-                                + getHash(Constants.eventSourceLocalPrefix);
-
-                        int eventSubType = Constants.Type_BirthDay;
                         try {
-                            eventSubType = Integer.parseInt(singleEventArray[Position_eventSubType]);
-                        } catch (NumberFormatException ignored) { /**/ }
-                        Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
-                        TreeMap<Integer, String> eventData = getEventData(eventString);
+                            String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
 
-                        eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
-                        eventData.put(Position_dates, eventDates);
-                        eventData.put(Position_eventCaption, event.caption);
-                        eventData.put(Position_eventLabel, event.label);
-                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
-                        eventData.put(Position_eventEmoji, event.emoji);
-                        eventData.put(Position_eventType, event.type);
-                        eventData.put(Position_eventSubType, event.subType);
-                        eventData.put(Position_eventStorage, Constants.EVENT_PREFIX_LOCAL_EVENT);
-                        eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_local));
+                            boolean eventUseYear = false;
+                            Date dateEventFirstTime = null;
+                            String eventDateString = singleEventArray[Position_eventDateFirstTime];
 
-                        statEventsCount++;
-                        String eventRow = getEventData(eventData);
-                        if (!eventListUpdated.contains(eventRow)) {
-                            eventListUpdated.add(eventRow);
+                            try {
+                                dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString);
+                                if (dateEventFirstTime != null) {
+                                    eventUseYear = true;
+                                }
+                            } catch (ParseException pe) {
+                                try {
+                                    dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString
+                                            .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
+                                } catch (ParseException ignored) { /**/ }
+                            }
+
+                            if (dateEventFirstTime == null) {
+                                continue;
+                            }
+
+                            String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
+                                    + (eventUseYear ? sdf_java.format(dateEventFirstTime) : sdf_java_no_year.format(dateEventFirstTime))
+                                    + Constants.STRING_COLON_SPACE
+                                    + getHash(Constants.eventSourceLocalPrefix);
+
+                            int eventSubType = Constants.Type_BirthDay;
+                            try {
+                                eventSubType = Integer.parseInt(singleEventArray[Position_eventSubType]);
+                            } catch (NumberFormatException ignored) { /**/ }
+                            Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
+                            TreeMap<Integer, String> eventData = getEventData(eventString);
+
+                            eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
+                            eventData.put(Position_dates, eventDates);
+                            eventData.put(Position_eventCaption, event.caption);
+                            eventData.put(Position_eventLabel, event.label);
+                            eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                            eventData.put(Position_eventEmoji, event.emoji);
+                            eventData.put(Position_eventType, event.type);
+                            eventData.put(Position_eventSubType, event.subType);
+                            eventData.put(Position_eventStorage, Constants.EVENT_PREFIX_LOCAL_EVENT);
+                            eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_local));
+
+                            statEventsCount++;
+                            String eventRow = getEventData(eventData);
+                            if (!eventListUpdated.contains(eventRow)) {
+                                eventListUpdated.add(eventRow);
+                            }
+                        } catch (Exception e) {
+                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
                         }
                     }
                 }

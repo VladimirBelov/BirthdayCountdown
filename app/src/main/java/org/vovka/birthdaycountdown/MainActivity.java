@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 19.05.2025, 11:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.04.2025, 01:32
+ *  * Last modified 19.05.2025, 11:53
  *
  */
 
@@ -2187,7 +2187,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //если "выходили" посмотреть карточку контакта или события на 5 сек
             if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
-                    && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                    && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates
+                    && !eventsData.needUpdateEventList) {
 
                 eventsData.statLastPausedForOtherActivity = 0;
                 return;

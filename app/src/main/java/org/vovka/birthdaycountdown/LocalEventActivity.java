@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 19.05.2025, 11:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.04.2025, 23:47
+ *  * Last modified 19.05.2025, 11:59
  *
  */
 
@@ -249,8 +249,6 @@ public class LocalEventActivity extends Activity {
             this.getTheme().applyStyle(R.style.FloatingActivity, true);
             setContentView(R.layout.activity_event);
 
-            //LinearLayout layout = findViewById(R.id.layoutMain);
-
             viewActivityTitle = findViewById(R.id.textCaption);
             viewName = findViewById(R.id.captionName);
             editName = findViewById(R.id.editName);
@@ -395,10 +393,10 @@ public class LocalEventActivity extends Activity {
             layoutParams.width = (int) (displayMetrics.widthPixels * (isReadOnly ? 0.8 : 0.9));
             getWindow().setAttributes(layoutParams);
 
-            TextView buttonClose = findViewById(R.id.buttonClose);
-            if (buttonClose != null) {
-                buttonClose.setText(Constants.BUTTON_X);
-                buttonClose.setOnClickListener(this::buttonCancelOnClick);
+            TextView buttonCloseX = findViewById(R.id.buttonClose);
+            if (buttonCloseX != null) {
+                buttonCloseX.setText(Constants.BUTTON_X);
+                buttonCloseX.setOnClickListener(this::buttonCancelOnClick);
             }
 
             if (isReadOnly) {
@@ -422,23 +420,28 @@ public class LocalEventActivity extends Activity {
                 }
 
                 setReadOnly(editDate);
-
                 spinnerEventTypes.setVisibility(View.GONE);
-
                 viewEventType.setVisibility(View.VISIBLE);
 
-                TextView buttonSave = findViewById(R.id.buttonThirdAction);
-                buttonSave.setText(R.string.button_ok);
-                buttonSave.setPadding(
+                TextView buttonEdit = findViewById(R.id.buttonSecondAction);
+                buttonEdit.setText(R.string.button_edit);
+                addClickEffect(buttonEdit);
+                buttonEdit.getBackground().setAlpha(50);
+                buttonEdit.setVisibility(View.VISIBLE);
+                buttonEdit.setOnClickListener(this::buttonSwitchToEdit);
+
+                TextView buttonClose = findViewById(R.id.buttonThirdAction);
+                buttonClose.setText(R.string.button_ok);
+                buttonClose.setPadding(
                         ContactsEvents.Dip2Px(getResources(), 15),
-                        buttonSave.getPaddingTop(),
+                        buttonClose.getPaddingTop(),
                         ContactsEvents.Dip2Px(getResources(), 15),
-                        buttonSave.getPaddingBottom()
+                        buttonClose.getPaddingBottom()
                 );
-                addClickEffect(buttonSave);
-                buttonSave.getBackground().setAlpha(50);
-                buttonSave.setVisibility(View.VISIBLE);
-                buttonSave.setOnClickListener(view -> finish());
+                addClickEffect(buttonClose);
+                buttonClose.getBackground().setAlpha(50);
+                buttonClose.setVisibility(View.VISIBLE);
+                buttonClose.setOnClickListener(view -> finish());
 
                 setFinishOnTouchOutside(true);
 
@@ -453,9 +456,7 @@ public class LocalEventActivity extends Activity {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (editName.getContext() instanceof LocalEventActivity) {
-                            updateEventPhoto((LocalEventActivity) editName.getContext());
-                        }
+                        updateEventPhoto(LocalEventActivity.this);
                     }
                 });
 
@@ -480,10 +481,8 @@ public class LocalEventActivity extends Activity {
                 spinnerEventTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (editName.getContext() instanceof LocalEventActivity) {
-                            updateCaptionsAndVisibility((LocalEventActivity) editName.getContext());
-                            updateEventPhoto((LocalEventActivity) editName.getContext());
-                        }
+                        updateCaptionsAndVisibility(LocalEventActivity.this);
+                        updateEventPhoto(LocalEventActivity.this);
                     }
 
                     @Override
@@ -693,10 +692,22 @@ public class LocalEventActivity extends Activity {
 
             prepareEventData(this);
             eventsData.saveLocalEvent(eventData);
+            eventsData.needUpdateEventList = true;
 
             setResult(RESULT_OK);
             finish();
 
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void buttonSwitchToEdit(final View view) {
+        try {
+            Intent intent = getIntent();
+            intent.setAction(Intent.ACTION_EDIT);
+            recreate();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);

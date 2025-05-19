@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 19.05.2025, 11:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 15:11
+  ~  * Last modified 19.05.2025, 10:20
   ~  */
   -->
 
@@ -253,6 +253,7 @@
     <string name="button_share">Поделиться</string>
     <string name="button_rgb">RGB цвет</string>
     <string name="button_save">Сохранить</string>
+    <string name="button_edit">Редактировать</string>
 
     <string name="events_scope_not_hidden">Все не скрытые (%1$d)</string>
     <string name="events_scope_all">Все (%1$d)</string>
