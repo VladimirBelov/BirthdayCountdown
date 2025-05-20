@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.04.2025, 12:08
+ *  * Created by Vladimir Belov on 20.05.2025, 08:40
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.04.2025, 11:23
+ *  * Last modified 19.05.2025, 21:27
  *
  */
 
@@ -56,8 +56,6 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         this.context = context;
         this.resources = context.getResources();
         this.widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        //this.widgetWidth = intent.getIntExtra("intWidgetWidth", 0);
-        //this.floatDensity = intent.getFloatExtra("floatScreenDensity", 1);
     }
 
     @Override
