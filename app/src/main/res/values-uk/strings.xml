@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:55
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Круглі дати (5K днів)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Свята</string>
     <string name="pref_List_EventTypes_Other">🗓️ Інші події</string>
+    <string name="pref_List_EventTypes_Facts">📝 Факти</string>
 
     <string name="pref_List_EventSources_title">Джерела подій</string>
     <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>
@@ -1054,17 +1055,6 @@
     <string name="pref_Notifications_EventTypes_title">Типи подій</string>
     <string name="pref_Notifications_EventTypes_summary">Які події включати в повідомлення</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Факти</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Дні народження</item>
-        <item>💑 Річниці весілля</item>
-        <item>🗓️ Інші події</item>
-        <item>🏖️ Свята</item>
-        <item>⏰ Події користувача</item>
-        <item>🏆 Круглі дати (5K днів)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Джерела подій</string>
     <string name="pref_Notifications_EventSources_description">Показувати сповіщення лише для цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>
 
@@ -1103,7 +1093,7 @@
         <item>Нагадати через 1 годину</item>
         <item>Поділитись</item>
         <item>Прикріпити</item>
-        <item>Закрити (для сповіщень із високим пріоритетом)</item>
+        <item>Закрити</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Дія при натисканні</string>

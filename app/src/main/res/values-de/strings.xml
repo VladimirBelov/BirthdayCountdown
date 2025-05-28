@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:51
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Besondere Geburtstage (Alle 5000 Tage)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Feiertage</string>
     <string name="pref_List_EventTypes_Other">🗓️ Andere Ereignisse</string>
+    <string name="pref_List_EventTypes_Facts">📝 Fakten</string>
 
     <string name="pref_List_EventSources_title">Ereignisquellen</string>
     <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>
@@ -1054,17 +1055,6 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
     <string name="pref_Notifications_EventTypes_title">Ereignistypen</string>
     <string name="pref_Notifications_EventTypes_summary">Welche Ereignisse in den Benachrichtigungen enthalten sein sollen</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Fakten</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Geburtstage</item>
-        <item>💑 Hochzeitstage</item>
-        <item>🗓️ Andere Ereignisse</item>
-        <item>🏖️ Feiertage</item>
-        <item>⏰ Benutzerdefinierte Ereignisse</item>
-        <item>🏆 Besondere Geburtstage (Alle 5000 Tage)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Ereignisquellen</string>
     <string name="pref_Notifications_EventSources_description">Benachrichtigungen nur für diese Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>
 
@@ -1103,7 +1093,7 @@ Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse
         <item>Erinnere mich in 1 Stunde</item>
         <item>Teilen</item>
         <item>Anheften</item>
-        <item>Schließen (für Benachrichtigungen mit hoher Priorität)</item>
+        <item>Schließen</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Benachrichtigungsklick</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:48
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Počet zaokrouhlených dní (5000, 10000, 15000 dní)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Svátky</string>
     <string name="pref_List_EventTypes_Other">🗓️ Další události</string>
+    <string name="pref_List_EventTypes_Facts">📝 Fakta</string>
 
     <string name="pref_List_EventSources_title">Zdroje událostí</string>
     <string name="pref_List_EventSources_description">Zobrazit události pouze z těchto zdrojů událostí. Pokud není vybrán žádný zdroj, zobrazí se události ze všech zdrojů</string>
@@ -1054,17 +1055,6 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
     <string name="pref_Notifications_EventTypes_title">Typy událostí</string>
     <string name="pref_Notifications_EventTypes_summary">Jaké druhy událostí zahrnout do oznámení</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Fakta</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Narozeniny</item>
-        <item>💑 Výročí</item>
-        <item>🗓️ Další události</item>
-        <item>🏖️ Svátky</item>
-        <item>⏰ Vlastní události</item>
-        <item>🏆 Počet zaokrouhlených dní (5K, 10K, 15K dní)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Zdroje událostí</string>
     <string name="pref_Notifications_EventSources_description">Zobrazit oznámení pouze pro tyto zdroje událostí. Pokud není vybrán žádný zdroj, zobrazí se události ze všech zdrojů</string>
 
@@ -1103,7 +1093,7 @@ Další zdroje (soubory, kalendáře) lze zadat v Nastavení->Nastavení událos
         <item>Připomenout za 1 hodinu</item>
         <item>Sdílet</item>
         <item>Připojit</item>
-        <item>Zavřít (pro oznámení s vysokou prioritou)</item>
+        <item>Zavřít</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Akce při kliknutí</string>

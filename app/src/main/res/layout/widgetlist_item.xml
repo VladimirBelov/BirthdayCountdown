@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 13:30
+  ~  * Last modified 20.05.2025, 10:54
   ~  */
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/eventCaption"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/eventEntry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start"
-    android:fontFamily="sans-serif-condensed"
-    android:textColor="@color/white" />
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/eventPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:contentDescription="@string/hint_ContactIcon"
+        android:layout_marginEnd="4dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/eventCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:fontFamily="sans-serif-condensed"
+        android:contentDescription="@string/hint_EventDetails"
+        android:textColor="@color/white" />
+
+</LinearLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:52
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Les jours ronds comptent (5 000, 10 000, 15 000 jours)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Vacances</string>
     <string name="pref_List_EventTypes_Other">🗓️ Autres événements</string>
+    <string name="pref_List_EventTypes_Facts">📝 Faits</string>
 
     <string name="pref_List_EventSources_title">"Sources d'événements"</string>
     <string name="pref_List_EventSources_description">"Afficher uniquement les événements de ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>
@@ -1054,17 +1055,6 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
     <string name="pref_Notifications_EventTypes_title">"Types des événements"</string>
     <string name="pref_Notifications_EventTypes_summary">"Quels événements inclure dans les notifications"</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Faits</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Anniversaires</item>
-        <item>💑 Anniversaires de mariage</item>
-        <item>🗓️ Autres événements</item>
-        <item>🏖️ Vacances</item>
-        <item>⏰ Événements personnalisés</item>
-        <item>🏆 Jours ronds comptent (5 000, 10 000, 15 000 jours)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">"Sources d'événements"</string>
     <string name="pref_Notifications_EventSources_description">"Afficher les notifications uniquement pour ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>
 
@@ -1103,7 +1093,7 @@ Des sources supplémentaires (fichiers, calendriers) peuvent être spécifiées 
         <item>Rappel dans 1 heure</item>
         <item>Partager</item>
         <item>Attacher</item>
-        <item>Fermer (pour les notifications de haute priorité)</item>
+        <item>Fermer</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">"Action sur le clic"</string>

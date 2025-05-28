@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.04.2025, 09:19
+ *  * Created by Vladimir Belov on 29.05.2025, 01:10
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.04.2025, 20:53
+ *  * Last modified 20.05.2025, 09:35
  *
  */
 
@@ -13,9 +13,13 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -65,6 +69,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     final Context context;
     final Resources resources;
     final int widgetID;
+    int widgetWidth;
+    float floatDensity;
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
     int widgetPref_onClick = 0;
@@ -97,6 +103,11 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         try {
 
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
+
+            Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetID);
+            this.widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            this.floatDensity = displayMetrics.density;
 
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(context);
@@ -236,6 +247,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
             String eventText;
+
+            views.setImageViewBitmap(R.id.eventPhoto, null);
+            views.setViewVisibility(R.id.eventPhoto, View.GONE);
 
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
@@ -472,6 +486,31 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, 0));
                 views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
+
+                //Фото
+                Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, 1);
+                if (photo != null) {
+                    int outWidth;
+                    if (widgetWidth > 0) {
+                        outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
+                    } else {
+                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                        outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
+                    }
+
+                    int inWidth = photo.getWidth();
+                    int inHeight = photo.getHeight();
+                    double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, 1, 1);
+                    if (inHeight > 0 && inWidth > 0) {
+                        int outHeight = inHeight * outWidth / inWidth;
+
+                        if (outHeight > 0 && outWidth > 0) {
+                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
+                            views.setImageViewBitmap(R.id.eventPhoto, photo_small);
+                            views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
+                        }
+                    }
+                }
 
             }
 

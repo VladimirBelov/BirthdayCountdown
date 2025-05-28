@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:53
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Okrągłe daty (5 tys. dni)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ ️ Wakacje</string>
     <string name="pref_List_EventTypes_Other">🗓️ Inne wydarzenia</string>
+    <string name="pref_List_EventTypes_Facts">📝 Fakty</string>
 
     <string name="pref_List_EventSources_title">Źródła wydarzeń</string>
     <string name="pref_List_EventSources_description">Pokaż na liście tylko wydarzenia z tych źródeł. Jeśli nie zostanie wybrane żadne źródło, pokazane zostaną zdarzenia ze wszystkich źródeł</string>
@@ -1054,17 +1055,6 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
     <string name="pref_Notifications_EventTypes_title">Typy wydarzeń</string>
     <string name="pref_Notifications_EventTypes_summary">Które wydarzenia uwzględnić w powiadomieniach</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Fakty</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Urodziny</item>
-        <item>💑 Rocznice ślubu</item>
-        <item>🗓️ Inne wydarzenia</item>
-        <item>🏖️ Wakacje</item>
-        <item>⏰ Wydarzenia niestandardowe</item>
-        <item>🏆 Okrągłe daty (5 tys. dni)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Źródła wydarzeń</string>
     <string name="pref_Notifications_EventSources_description">Pokazuj powiadomienia tylko dla tych źródeł wydarzeń. Jeśli nie zostanie wybrane żadne źródło, pokazane zostaną zdarzenia ze wszystkich źródeł</string>
 
@@ -1103,7 +1093,7 @@ Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawien
         <item>Przypomnij za 1 godzinę</item>
         <item>Udostępnij</item>
         <item>Przypnij</item>
-        <item>Zamknij (dla powiadomień o wysokim priorytecie)</item>
+        <item>Zamknij</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Akcja kliknięcia</string>

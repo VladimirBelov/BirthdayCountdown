@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:54
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Feriados</string>
     <string name="pref_List_EventTypes_Other">🗓️ Outros eventos</string>
+    <string name="pref_List_EventTypes_Facts">📝 Fatos</string>
 
     <string name="pref_List_EventSources_title">Fontes de eventos</string>
     <string name="pref_List_EventSources_description">Mostrar eventos apenas destas fontes de eventos. Se nenhuma fonte for selecionada, os eventos de todas as fontes serão mostrados</string>
@@ -1054,17 +1055,6 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_summary">Que tipo de eventos incluir nas notificações</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Fatos</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Aniversários</item>
-        <item>💑 Aniversários casamento</item>
-        <item>🗓️ Outros eventos</item>
-        <item>🏖️ Feriados</item>
-        <item>⏰ Eventos personalizados</item>
-        <item>🏆 Contagem de dias redondos (5 mil, 10 mil, 15 mil dias)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Fontes de eventos</string>
     <string name="pref_Notifications_EventSources_description">Mostrar notificações apenas para essas fontes de eventos. Se nenhuma fonte for selecionada, os eventos de todas as fontes serão mostrados</string>
 
@@ -1103,7 +1093,7 @@ Fontes adicionais (arquivos, calendários) podem ser especificadas em Configura�
         <item>Lembrar em 1 hora</item>
         <item>Compartilhar</item>
         <item>Fixar</item>
-        <item>Fechar (para notificações de alta prioridade)</item>
+        <item>Fechar</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Ação ao clicar</string>

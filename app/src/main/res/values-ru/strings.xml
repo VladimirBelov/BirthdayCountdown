@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.05.2025, 11:59
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.05.2025, 10:20
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -476,6 +476,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Круглые даты (5K дней)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Праздники</string>
     <string name="pref_List_EventTypes_Other">🗓️ Другие события</string>
+    <string name="pref_List_EventTypes_Facts">📝 Факты</string>
 
     <string name="pref_List_EventSources_title">Источники событий</string>
     <string name="pref_List_EventSources_description">Показывать в списке события только из этих источников. Если ни один источник не выбран - показываются события из всех источников</string>
@@ -1061,17 +1062,6 @@
     <string name="pref_Notifications_EventTypes_title">Типы событий</string>
     <string name="pref_Notifications_EventTypes_summary">Какие события включать в уведомления</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Факты</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Дни рождения</item>
-        <item>💑 Годовщины свадеб</item>
-        <item>🗓️ Другие события</item>
-        <item>🏖️ Праздники</item>
-        <item>⏰ Пользовательские события</item>
-        <item>🏆 Круглые даты (5K дней)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Источники событий</string>
     <string name="pref_Notifications_EventSources_description">Показывать уведомления только для этих источников событий. Если ни один источник не выбран - показываются события из всех источников</string>
 
@@ -1110,7 +1100,7 @@
         <item>Напомнить через 1 час</item>
         <item>Поделиться</item>
         <item>Закрепить</item>
-        <item>Закрыть (для уведомлений с высоким приоритетом)</item>
+        <item>Закрыть</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Действие на нажатие</string>

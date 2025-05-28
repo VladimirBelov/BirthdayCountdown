@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.04.2025, 01:33
+ *  * Created by Vladimir Belov on 29.05.2025, 01:10
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.04.2025, 14:06
+ *  * Last modified 28.05.2025, 23:49
  *
  */
 
@@ -295,7 +295,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
-                eventTypesValues.add(getString(R.string.pref_Notifications_EventTypes_Facts));
+                eventTypesValues.add(getString(R.string.pref_List_EventTypes_Facts));
             }
 
             //Добавление количества событий
@@ -897,7 +897,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             findViewById(R.id.blockFacts).setVisibility(
                     Constants.WIDGET_TYPE_LIST.equals(widgetType)
-                            && selectedEventTypes.contains(getString(R.string.pref_Notifications_EventTypes_Facts)) ? View.VISIBLE : View.GONE
+                            && selectedEventTypes.contains(getString(R.string.pref_List_EventTypes_Facts)) ? View.VISIBLE : View.GONE
             );
 
             if (isNewPinnedWidget) {

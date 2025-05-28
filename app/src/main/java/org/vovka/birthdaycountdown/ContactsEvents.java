@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.05.2025, 11:59
+ *  * Created by Vladimir Belov on 29.05.2025, 01:10
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.05.2025, 10:36
+ *  * Last modified 29.05.2025, 00:23
  *
  */
 
@@ -1955,6 +1955,7 @@ class ContactsEvents {
                         .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
                         .setIntent(intentNotify)
                         .setRank(1)
+
                         .build();
                 try {
                     ShortcutManagerCompat.pushDynamicShortcut(context, shortcutNotify);
@@ -7288,16 +7289,16 @@ class ContactsEvents {
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
                         builder.setOngoing(true);
                         builder.setPriority(NotificationCompat.PRIORITY_MAX);
+                    }
 
-                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
-                            Intent intentClose = new Intent(context, NotifyActionReceiver.class);
-                            intentClose.setAction(Constants.ACTION_CLOSE);
-                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
-                            intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
-                            PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
-                            NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
-                            builder.addAction(actionClose);
-                        }
+                    if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
+                        Intent intentClose = new Intent(context, NotifyActionReceiver.class);
+                        intentClose.setAction(Constants.ACTION_CLOSE);
+                        intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                        intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
+                        PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
+                        NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                        builder.addAction(actionClose);
                     }
 
                     if (!noEventsMsg && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
@@ -7348,6 +7349,11 @@ class ContactsEvents {
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
+
+                        if (prefPriority > 2) {
+                            builder.setOngoing(true);
+                            builder.setPriority(NotificationCompat.PRIORITY_MAX);
+                        }
 
                         if (preferences_debug_on) {
                             builder.setSubText(String.format(Constants.NOTIFY_ID, notificationID));
@@ -7431,7 +7437,7 @@ class ContactsEvents {
                             builder.addAction(actionShare);
                         }
 
-                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {
+                        if (prefPriority <= 2 && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {
                             Intent intentAttach = new Intent(context, NotifyActionReceiver.class);
                             intentAttach.setAction(Constants.ACTION_ATTACH);
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -7443,7 +7449,7 @@ class ContactsEvents {
                             builder.addAction(actionAttach);
                         }
 
-                        if (prefPriority > 2 && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
+                        if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
                             Intent intentClose = new Intent(context, NotifyActionReceiver.class);
                             intentClose.setAction(Constants.ACTION_CLOSE);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
@@ -7451,8 +7457,6 @@ class ContactsEvents {
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
                             NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
-                            builder.setOngoing(true);
-                            builder.setPriority(NotificationCompat.PRIORITY_MAX);
                         }
 
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

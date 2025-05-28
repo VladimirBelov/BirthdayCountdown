@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:50
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Fechas redondas (5K días)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Vacaciones</string>
     <string name="pref_List_EventTypes_Other">🗓️ Otros eventos</string>
+    <string name="pref_List_EventTypes_Facts">📝 Hechos</string>
 
     <string name="pref_List_EventSources_title">Fuentes de eventos</string>
     <string name="pref_List_EventSources_description">Mostrar eventos solo de estas fuentes de eventos. Si no se selecciona ninguna fuente, se muestran los eventos de todas las fuentes.</string>
@@ -1054,17 +1055,6 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
     <string name="pref_Notifications_EventTypes_title">Tipos de eventos</string>
     <string name="pref_Notifications_EventTypes_summary">Qué eventos incluir en las notificaciones</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Hechos</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Cumpleaños</item>
-        <item>💑 Aniversario de bodas</item>
-        <item>🗓️ Otros eventos</item>
-        <item>🏖️ Vacaciones</item>
-        <item>⏰ Eventos personalizados</item>
-        <item>🏆 Fechas redondas (5K días)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Fuentes de eventos</string>
     <string name="pref_Notifications_EventSources_description">Mostrar notificaciones solo para estas fuentes de eventos. Si no se selecciona ninguna fuente, se muestran los eventos de todas las fuentes</string>
 
@@ -1103,7 +1093,7 @@ Se pueden especificar fuentes adicionales (archivos, calendarios) en Configuraci
         <item>Recuérdame en 1 hora</item>
         <item>Compartir</item>
         <item>Alfiler</item>
-        <item>Cerrar (para notificaciones de alta prioridad)</item>
+        <item>Cerrar</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Al hacer clic en la acción</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.05.2025, 11:59
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.05.2025, 10:20
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -476,6 +476,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Round days count (5K, 10K, 15K days)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Holidays</string>
     <string name="pref_List_EventTypes_Other">🗓️ Other events</string>
+    <string name="pref_List_EventTypes_Facts">📝 Facts</string>
 
     <string name="pref_List_EventSources_title">Event sources</string>
     <string name="pref_List_EventSources_description">Show events only from these event sources. If no source is selected, events from all sources are shown</string>
@@ -1061,17 +1062,6 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="pref_Notifications_EventTypes_title">Event types</string>
     <string name="pref_Notifications_EventTypes_summary">What kind of events to include in notifications</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Facts</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Birthdays</item>
-        <item>💑 Anniversaries</item>
-        <item>🗓️ Other events</item>
-        <item>🏖️ Holidays</item>
-        <item>⏰ Custom events</item>
-        <item>🏆 Round days count (5K, 10K, 15K days)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Event sources</string>
     <string name="pref_Notifications_EventSources_description">Show notifications only for these event sources. If no source is selected, events from all sources are shown</string>
 
@@ -1110,7 +1100,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>Remind in 1 hour</item>
         <item>Share</item>
         <item>Attach</item>
-        <item>Close (for high priority notifications)</item>
+        <item>Close</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">On click action</string>
@@ -1624,8 +1614,8 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
         <item>@string/pref_EventTypes_Anniversary</item>
         <item>@string/pref_EventTypes_Another</item>
         <item>@string/pref_EventTypes_Custom</item>
-        <item>@string/pref_EventTypes_Holiday</item>
         <item>@string/pref_EventTypes_RoundDays</item>
+        <item>@string/pref_EventTypes_Holiday</item>
         <item>@string/pref_EventTypes_Other</item>
         <item>@string/pref_EventTypes_Facts</item>
     </string-array>
@@ -2240,6 +2230,17 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string-array name="pref_Notifications_Days_values_default" translatable="false">
         <item>0</item>
+    </string-array>
+
+    <string-array name="pref_Notifications_EventTypes_entries" translatable="false">
+        <item>@string/pref_List_EventTypes_Birthdays</item>
+        <item>@string/pref_List_EventTypes_Anniversaries</item>
+        <item>@string/pref_List_EventTypes_Another</item>
+        <item>@string/pref_List_EventTypes_Custom</item>
+        <item>@string/pref_List_EventTypes_RoundDays</item>
+        <item>@string/pref_List_EventTypes_Holidays</item>
+        <item>@string/pref_List_EventTypes_Other</item>
+        <item>@string/pref_List_EventTypes_Facts</item>
     </string-array>
 
     <string name="pref_Notifications_EventInfo_key" translatable="false">Notifications_EventInfo</string>

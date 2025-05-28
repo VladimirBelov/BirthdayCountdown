@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.04.2025, 01:33
+  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.04.2025, 14:18
+  ~  * Last modified 29.05.2025, 01:01
   ~  */
   -->
 
@@ -469,6 +469,7 @@
     <string name="pref_List_EventTypes_RoundDays">🏆 Круглыя даты (5K дзён)</string>
     <string name="pref_List_EventTypes_Holidays">🏖️ Святы</string>
     <string name="pref_List_EventTypes_Other">🗓️ Іншыя падзеі</string>
+    <string name="pref_List_EventTypes_Facts">📝 Факты</string>
 
     <string name="pref_List_EventSources_title">Крыніцы падзей</string>
     <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
@@ -1054,17 +1055,6 @@
     <string name="pref_Notifications_EventTypes_title">Тыпы падзей</string>
     <string name="pref_Notifications_EventTypes_summary">Якія падзеі ўлучаць у паведамленні</string>
 
-    <string name="pref_Notifications_EventTypes_Facts">📝 Факты</string>
-    <string-array name="pref_Notifications_EventTypes_entries">
-        <item>🎂 Дні нараджэння</item>
-        <item>💑 Гадавіны вяселляў</item>
-        <item>🗓️ Іншыя падзеі</item>
-        <item>🏖️ Святы</item>
-        <item>⏰ Карыстальніцкія падзеі</item>
-        <item>🏆 Круглыя даты (5K дзён)</item>
-        <item>@string/pref_Notifications_EventTypes_Facts</item>
-    </string-array>
-
     <string name="pref_Notifications_EventSources_title">Крыніцы падзей</string>
     <string name="pref_Notifications_EventSources_description">Паказваць апавяшчэнні толькі для гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
 
@@ -1103,7 +1093,7 @@
         <item>Нагадаць праз 1 гадзіну</item>
         <item>Падзяліцца</item>
         <item>Замацаваць</item>
-        <item>Закрыць (для апавяшчэнняў з высокім прыярытэтам)</item>
+        <item>Закрыць</item>
     </string-array>
 
     <string name="pref_Notifications_OnClick_title">Дзеянне на націск</string>
