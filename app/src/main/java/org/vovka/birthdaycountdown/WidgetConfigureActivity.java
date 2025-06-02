@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2025, 01:10
+ *  * Created by Vladimir Belov on 02.06.2025, 23:40
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.05.2025, 23:49
+ *  * Last modified 02.06.2025, 23:33
  *
  */
 
@@ -602,6 +602,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_EventInfo_Dividers));
                     add(getString(R.string.pref_EventInfo_ButtonConfig));
                     add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    add(getString(R.string.pref_EventInfo_Photo));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
                 spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
@@ -661,6 +662,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
@@ -670,6 +672,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Full));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_AgeShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Short));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_CurrentAge));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_WeddingName_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_WeddingName));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEventFar));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
@@ -792,11 +795,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (!Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
+            if (!Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType) && !Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 findViewById(R.id.blockPhotoMagnify).setVisibility(View.GONE);
             }
 
-            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
+            /*if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
 
                 //Скрываем стиль фото
                 findViewById(R.id.dividerPhotoStyle).setVisibility(View.GONE);
@@ -804,7 +807,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.spinnerPhotoStyle).setVisibility(View.GONE);
                 findViewById(R.id.hintPhotoStyle).setVisibility(View.GONE);
 
-            }
+            }*/
 
             //Скрываем реакцию на нажатие
             if (Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {

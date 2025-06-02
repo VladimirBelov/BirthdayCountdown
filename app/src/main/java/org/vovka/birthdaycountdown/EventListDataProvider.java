@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2025, 01:10
+ *  * Created by Vladimir Belov on 02.06.2025, 23:40
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.05.2025, 09:35
+ *  * Last modified 02.06.2025, 23:34
  *
  */
 
@@ -298,7 +298,35 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                             !sb.toString().endsWith(Constants.STRING_PARENTHESIS_START);
 
                     boolean notEndWithBR = sb.length() > 0 && !sb.toString().endsWith(Constants.HTML_BR);
-                    if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+                    if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Photo_ID))) {
+
+                        //Фото
+                        int roundingFactor = getRoundingFactor();
+                        Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
+                        if (photo != null) {
+                            int outWidth;
+                            if (widgetWidth > 0) {
+                                outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
+                            } else {
+                                DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                                outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
+                            }
+
+                            int inWidth = photo.getWidth();
+                            int inHeight = photo.getHeight();
+                            double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                            if (inHeight > 0 && inWidth > 0) {
+                                int outHeight = inHeight * outWidth / inWidth;
+
+                                if (outHeight > 0 && outWidth > 0) {
+                                    Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
+                                    views.setImageViewBitmap(R.id.eventPhoto, photo_small);
+                                    views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
+                                }
+                            }
+                        }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
                         sb.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
@@ -453,6 +481,15 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                         sb.append(Constants.HTML_BR);
 
+                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+
+                        final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                        if (!TextUtils.isEmpty(currentAge)) {
+                            if (notEndWithBR) sb.append(Constants.STRING_SPACE);
+                            int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                            sb.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
+                        }
+
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket_ID))
                             || eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket2_ID))) {
 
@@ -487,31 +524,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, 0));
                 views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
 
-                //Фото
-                Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, 1);
-                if (photo != null) {
-                    int outWidth;
-                    if (widgetWidth > 0) {
-                        outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
-                    } else {
-                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                        outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
-                    }
-
-                    int inWidth = photo.getWidth();
-                    int inHeight = photo.getHeight();
-                    double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, 1, 1);
-                    if (inHeight > 0 && inWidth > 0) {
-                        int outHeight = inHeight * outWidth / inWidth;
-
-                        if (outHeight > 0 && outWidth > 0) {
-                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
-                            views.setImageViewBitmap(R.id.eventPhoto, photo_small);
-                            views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
-                        }
-                    }
-                }
-
             }
 
             Intent clickIntent = new Intent();
@@ -528,6 +540,19 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         return views;
 
+    }
+
+    private int getRoundingFactor() {
+        int roundingFactor = 1;
+        if (widgetPref != null && widgetPref.size() > 6) {
+            switch (widgetPref.get(6)) {
+                case Constants.STRING_1: roundingFactor = 2; break;
+                case Constants.STRING_2: roundingFactor = 3; break;
+                case Constants.STRING_3: roundingFactor = 4; break;
+                case Constants.STRING_4: roundingFactor = 9; break;
+            }
+        }
+        return roundingFactor;
     }
 
     @Nullable
