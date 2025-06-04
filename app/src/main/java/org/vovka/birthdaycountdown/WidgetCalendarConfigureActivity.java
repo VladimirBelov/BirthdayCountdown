@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.2025, 20:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 18:55
+ *  * Last modified 05.06.2025, 00:30
  *
  */
 
@@ -487,7 +487,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             List<String> onclickHolidaysIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_values));
             List<String> onclickCommonIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_common_values));
-            List<String> onclickValues = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_entries));
             final Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
             final Spinner spinnerOnClickHolidays = findViewById(R.id.spinnerOnClickHolidays);
             final String selectedOnClick = onclickCommonIDs.get(spinnerOnClickCommon.getSelectedItemPosition())
@@ -730,7 +729,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (Color.alpha(colorValue) == 0) {
                             colorValue = ta.getColor(R.styleable.Theme_backgroundColor, colorValue);
                         }
-                        sb.append(String.format(Constants.FONT_COLOR_DOT, Integer.toHexString(colorValue & 0x00ffffff)));
+                        sb.append(Constants.FONT_COLOR_DOT_START).append(Integer.toHexString(colorValue & 0x00ffffff)).append(Constants.FONT_COLOR_DOT_END);
                     }
                     sb.append(eventSourcesTitles.get(ind));
 
@@ -877,6 +876,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
 
+    /** @noinspection unused*/
     public void setCustomColor(@NonNull String colorId, int colorValue) {
         if (!colorId.isEmpty()) {
             ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(colorValue & 0x00ffffff), colorId));

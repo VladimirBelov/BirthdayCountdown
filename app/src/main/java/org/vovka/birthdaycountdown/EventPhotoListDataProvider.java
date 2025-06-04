@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.05.2025, 08:40
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.05.2025, 21:27
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -135,7 +135,9 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     }
                 }
                 if (colorizeEntireRow) {
-                    views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(String.format(Constants.HTML_COLOR, colorDate, eventCaption), 0));
+                    views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(
+                                    Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventCaption + Constants.HTML_COLOR_END
+                            , 0));
                 } else {
                     views.setTextViewText(R.id.eventCaption, eventCaption);
                 }
@@ -243,12 +245,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         }
                     }
 
-                    sbDetails.append(String.format(Constants.HTML_COLOR, colorDate, textDistance).concat(Constants.HTML_FONT_END));
+                    sbDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
+                            .append(textDistance).append(Constants.HTML_COLOR_END);
                 }
 
                 String eventDetails;
                 if (colorizeEntireRow) {
-                    eventDetails = String.format(Constants.HTML_COLOR, colorDate, sbDetails);
+                    eventDetails = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + sbDetails + Constants.HTML_COLOR_END;
                 } else {
                     eventDetails = sbDetails.toString();
                 }

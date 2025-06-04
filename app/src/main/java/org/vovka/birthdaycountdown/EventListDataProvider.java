@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.06.2025, 23:40
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 02.06.2025, 23:34
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  *     и фильтрует список событий на основе критериев, выбранных пользователем.</li>
  *     <li><b>Фильтрация и ограничение событий:</b> Применяет ограничения к количеству событий, дней и фактов, отображаемых на основе настроек виджета.</li>
  *     <li><b>Заполнение представления (getViewAt):</b> Создает и заполняет {@link RemoteViews} для каждого события, отображая детали события,
- *     форматируя даты и применяя пользовательские цвета в зависимости от близости события. Также конструирует интенты для обработки нажатий на каждый элемент списка.</li>
+ *     форматируя даты и применяя пользовательские цвета в зависимости от близости события. Также конструирует намерения для обработки нажатий на каждый элемент списка.</li>
  * </ul>
  */
 //https://developer.android.com/guide/topics/appwidgets
@@ -376,25 +376,25 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
                         final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithoutYear);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDay));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
                         final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDay));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
                         final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDay));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
                         final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDay));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
 
@@ -438,12 +438,12 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDistanceInfo[0]));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID))) {
 
                         if (notEndWithBR) sb.append(Constants.STRING_SPACE);
-                        sb.append(String.format(Constants.HTML_COLOR, colorDate, eventDistanceInfo[0]));
+                        sb.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                     } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID))) {
 
@@ -516,7 +516,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 }
 
                 if (colorizeEntireRow) {
-                    eventText = String.format(Constants.HTML_COLOR, colorDate, sb);
+                    eventText = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + sb + Constants.HTML_COLOR_END;
+
                 } else {
                     eventText = sb.toString();
                 }

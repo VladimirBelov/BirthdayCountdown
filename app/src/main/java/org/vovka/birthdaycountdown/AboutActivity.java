@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 08:37
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -296,7 +296,6 @@ public class AboutActivity extends AppCompatActivity {
                     }
 
                     final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                    final float density = displayMetrics.density;
                     sb.append(getString(R.string.stats_permissions_device, Build.BRAND, Build.MODEL));
                     sb.append(getString(R.string.stats_permissions_os, Build.VERSION.RELEASE, Build.VERSION.SDK_INT));
                     sb.append(getString(R.string.stats_permissions_display, displayMetrics.heightPixels,
@@ -370,10 +369,10 @@ public class AboutActivity extends AppCompatActivity {
 
             findViewById(R.id.buttonRate).setOnClickListener(view -> {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Constants.STORE_LINK_GOOGLE_MARKET, BuildConfig.APPLICATION_ID))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_GOOGLE_MARKET + BuildConfig.APPLICATION_ID)));
                 } catch (ActivityNotFoundException e) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Constants.STORE_LINK_PLAY_MARKET, BuildConfig.APPLICATION_ID))));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STORE_LINK_PLAY_MARKET + BuildConfig.APPLICATION_ID)));
                     } catch (ActivityNotFoundException e2) { /**/ }
                 }
                 finish();

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:16
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -35,7 +35,7 @@ import java.util.Objects;
  *   <li>Сбрасывает расписания уведомлений для основного и дополнительного уведомления (если они включены), используя
  *   {@link ContactsEvents#initNotificationSchedule}.</li>
  *   <li>Инициирует обновления виджетов, используя {@link ContactsEvents#initWidgetUpdate(StringBuilder)}.</li>
- *   <li>Отображает отладочное сообщение через {@link ToastExpander#showDebugMsg(Context, String)}, если в процессе инициализации были сгенерированы какие-либо логи.</li>
+ *   <li>Отображает отладочное сообщение через {@link ToastExpander#showDebugMsg(Context, String)}, если в процессе инициализации были созданы какие-либо логи.</li>
  * </ol>
  * </p>
  *

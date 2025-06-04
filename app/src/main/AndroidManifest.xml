@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
+  ~  * Created by Vladimir Belov on 05.06.2025, 00:35
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 03.06.2025, 02:33
+  ~  * Last modified 04.06.2025, 21:17
   ~  */
   -->
 
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" /> <!-- для проигрывания уведомлений из внешнего хранилища https://stackoverflow.com/questions/54120745/android-9-0-notificationmanager-notify-throwing-java-lang-securityexception -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:ignore="PhotoAndVideoPolicy" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/> <!-- для проигрывания уведомлений из внешнего хранилища (Android 13+) -->
     <uses-permission android:name="android.permission.READ_CALENDAR"/>

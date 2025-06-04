@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2025, 18:24
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.06.2025, 18:10
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -571,7 +571,6 @@ public class LocalEventActivity extends Activity {
         try {
 
             eventData.put(ContactsEvents.Position_image, Constants.STRING_EMPTY);
-            eventData.put(ContactsEvents.Position_contactID, Constants.STRING_EMPTY);
             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
             updateCaptionsAndVisibility(this);
             updateEventPhoto(this);
@@ -664,7 +663,6 @@ public class LocalEventActivity extends Activity {
                                     ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
                             });
                             eventData.put(ContactsEvents.Position_photo_uri, ContactsEvents.checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
-                            eventData.put(ContactsEvents.Position_contactID, contactID);
                             updateCaptionsAndVisibility(this);
                             updateEventPhoto(this);
                         }
@@ -672,7 +670,6 @@ public class LocalEventActivity extends Activity {
                 } else if (requestCode == Constants.RESULT_PICK_PHOTO) {
                     Uri selectedImageUri = data.getData();
                     eventData.put(ContactsEvents.Position_image, ContactsEvents.encodeImageToBase64(this, selectedImageUri, 500));
-                    eventData.put(ContactsEvents.Position_contactID, Constants.STRING_EMPTY);
                     eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
                     updateCaptionsAndVisibility(this);
                     updateEventPhoto(this);
@@ -766,10 +763,11 @@ public class LocalEventActivity extends Activity {
                         .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
                 androidx.appcompat.app.AlertDialog alertToShow = builder.create();
                 alertToShow.setOnShowListener(dialog -> {
-                    TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
+                    try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                        alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                        ta.recycle();
+                    }
                 });
                 alertToShow.show();
             } else {
@@ -813,10 +811,11 @@ public class LocalEventActivity extends Activity {
                     .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(dialog -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    ta.recycle();
+                }
             });
             alertToShow.show();
 

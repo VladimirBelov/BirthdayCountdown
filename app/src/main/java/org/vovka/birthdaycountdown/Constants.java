@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2025, 18:24
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.06.2025, 02:37
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -86,7 +86,6 @@ final class Constants {
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
-    static final String LANG_US = "en_US";
     static final String LANG_UA = "uk_UA";
 
     //https://en.wikipedia.org/wiki/Date_format_by_country
@@ -126,9 +125,7 @@ final class Constants {
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";
     static final String STRING_STORAGE_FILE = "file";
-    static final String STRING_STORAGE_XDAYS = "x days";
     static final String STRING_STORAGE_HOLIDAYS = "holidays";
-    static final String STRING_STORAGE_PHONE = "phone";
     static final int Storage_Calendar = 0;
     static final int Storage_Contacts = 1;
     static final int Storage_File = 2;
@@ -190,7 +187,6 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 104;
     static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_2 = 105;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 = 106;
-    static final int MY_PERMISSIONS_REQUEST_READ_MEDIA_IMAGES = 107;
 
     static final int RESULT_PICK_CONTACT = 200;
     static final int RESULT_PICK_FILE = 201;
@@ -203,7 +199,7 @@ final class Constants {
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
     static final int RESULT_PICK_PHOTO = 209;
 
-    static final String NOTIFY_ID = "id: %s";
+    static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;
     static final int defaultNotification2ID = 1100;
     static final int defaultQuizID = 2000;
@@ -261,17 +257,19 @@ final class Constants {
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
     static final String HTML_COLOR = "<font color=\"#%s\">%s</font>"; //https://dzone.com/articles/java-string-format-examples
-    static final String HTML_COLOR_START = "<font color=\"#%s\">";
+    static final String HTML_COLOR_START = "<font color=\"#";
+    static final String HTML_COLOR_MIDDLE = "\">";
     static final String HTML_COLOR_END = "</font>";
     static final String FONT_COLOR_RED = "<font color=red>";
     static final String FONT_COLOR_DOT = "<bold><font color=#%s>●</font></bold> ";
+    static final String FONT_COLOR_DOT_START = "<bold><font color=#";
+    static final String FONT_COLOR_DOT_END = ">●</font></bold> ";
     static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";
     static final String HTML_LI = "<li>";
     static final String HTML_LI_API21 = "&nbsp;-&nbsp;";
     static final String HTML_LI_END = "</li>";
     static final String HTML_UL_END = "</ul>";
     static final String HTML_UL_START = "<ul>";
-    static final String HTML_FONT_END = "</font>";
     static final String HTML_H1_START = "<h1>";
     static final String HTML_H1_END = "</h1>";
     static final String HTML_H2_START = "<h2>";
@@ -442,11 +440,12 @@ final class Constants {
     static final String CHARSET_HTML_UTF_8 = "text/html; charset=utf-8";
     static final String CHARSET_UTF_8 = "utf-8";
     static final String MAILTO_TEMPLATE = "mailto:belov.vladimir@mail.ru?subject=";
-    static final String ANCHOR_LINK = "<script>window.location.hash=\"%s\";</script>";
+    static final String ANCHOR_LINK_START = "<script>window.location.hash=\"";
+    static final String ANCHOR_LINK_END = "\";</script>";
     static final String DRAWABLE_BASE_URL = "file:///android_res/drawable/";
 
-    static final String STORE_LINK_GOOGLE_MARKET = "market://details?id=%s";
-    static final String STORE_LINK_PLAY_MARKET = "https://play.google.com/store/apps/details?id=%s";
+    static final String STORE_LINK_GOOGLE_MARKET = "market://details?id=";
+    static final String STORE_LINK_PLAY_MARKET = "https://play.google.com/store/apps/details?id=";
     static final String STORE_LINK_HUAWEI = "https://appgallery.huawei.com/app/C101143661";
     static final String STORE_NAME_HUAWEI = "Huawei AppGallery";
     static final String STORE_LINK_RUSTORE = "https://www.rustore.ru/catalog/app/org.vovka.birthdaycountdown";

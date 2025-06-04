@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.2025, 20:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 22:56
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -524,18 +524,6 @@ public class ColorPicker extends FrameLayout implements View.OnClickListener {
                 if (!mChoices.contains(mValue)) {
                     mChoices.add(mValue);
                 }
-
-                /*int numToFillRecent = Math.min(mChoices.size() % mNumColumns == 0 ? mNumColumns : mNumColumns - (mChoices.size() % mNumColumns), eventsData.preferences_RecentColors.size());
-                int numFilled = 0;
-                int currentIndex = eventsData.preferences_RecentColors.size() - 1;
-                while(currentIndex >= 0 && numFilled < numToFillRecent) {
-                    int valueInt = eventsData.preferences_RecentColors.get(currentIndex);
-                    if (!mChoices.contains(valueInt)) {
-                        mChoices.add(valueInt);
-                        numFilled++;
-                    }
-                    currentIndex--;
-                }*/
 
                 for (int valueInt : eventsData.preferences_RecentColors) {
                     if (!mChoices.contains(valueInt)) {

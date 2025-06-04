@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:05
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -25,15 +25,6 @@ class Person {
 
     private static final String TAG = "Person";
     private String LastName;
-
-    String getFirstName() {
-        return FirstName;
-    }
-
-    String getSecondName() {
-        return SecondName;
-    }
-
     private String FirstName = Constants.STRING_EMPTY;
     private String SecondName = Constants.STRING_EMPTY;
     int Age = -1;

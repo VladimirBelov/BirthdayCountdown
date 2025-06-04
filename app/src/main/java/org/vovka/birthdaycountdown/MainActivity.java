@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2025, 18:24
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.06.2025, 15:24
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -149,11 +149,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //Оформление стиля окна приложения
             //https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
             //https://stackoverflow.com/questions/29069070/completely-transparent-status-bar-and-navigation-bar-on-lollipop
-            //Window w = getWindow();
-            //w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            //w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(this);
@@ -583,13 +578,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 StringBuilder eventInfo = new StringBuilder();
                 int eventRows = selectedEvent.length;
                 for (int i = 0; i < eventRows; i++) {
-                    if (i == ContactsEvents.Position_image) {
-                        eventInfo.append(i).append(Constants.STRING_COLON_SPACE)
-                                .append(!selectedEvent[i].isEmpty() ? getString(R.string.event_photo_details, selectedEvent[i].length()) : Constants.STRING_EMPTY).append(Constants.STRING_EOL);
-                    } else {
-                        eventInfo.append(i).append(Constants.STRING_COLON_SPACE)
-                                .append(selectedEvent[i]).append(Constants.STRING_EOL);
-                    }
+                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(selectedEvent[i]).append(Constants.STRING_EOL);
                 }
 
                 String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
@@ -2067,11 +2056,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             AlertDialog clearDialog = clearDialogBuilder.create();
 
-                            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                            clearDialog.setOnShowListener(arg0 -> {
-                                clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            });
+                            try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                                clearDialog.setOnShowListener(arg0 -> {
+                                    clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                });
+                                ta.recycle();
+                            }
 
                             clearDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             clearDialog.show();
@@ -2096,11 +2087,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             AlertDialog confirm_dialog = confirm.create();
 
-                            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                            confirm_dialog.setOnShowListener(arg0 -> {
-                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                            });
+                            try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                                confirm_dialog.setOnShowListener(arg0 -> {
+                                    confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                });
+                                ta.recycle();
+                            }
 
                             confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             confirm_dialog.show();
@@ -2130,12 +2123,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
-
-            //Ширина диалога
-                /*Rect displayRectangle = new Rect();
-                Window window = this.getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-                alertToShow.getWindow().setLayout((int) (displayRectangle.width() * 0.9f), alertToShow.getWindow().getAttributes().height);*/
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2319,13 +2306,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 registerForContextMenu(findViewById(R.id.mainListView));
                 updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-                //showWelcomeScreen();
-
-                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                        && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-                        && (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty())) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
-                }*/
 
             } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
 
@@ -2785,7 +2765,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventsData.setLocale(false);
                 if (convertedView == null) {
                     //https://stackoverflow.com/questions/10641144/difference-between-getcontext-getapplicationcontext-getbasecontext-and
-                    LayoutInflater inflater = LayoutInflater.from(getBaseContext());
                         convertedView = LayoutInflater.from(getBaseContext()).inflate(R.layout.entry_main, parent, false);
                         holder = createViewHolderFrom(convertedView);
                         convertedView.setTag(holder);

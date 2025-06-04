@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.05.2025, 02:24
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.05.2025, 01:11
+ *  * Last modified 04.06.2025, 21:31
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -40,7 +40,7 @@ android {
 
         def locales = ['en', 'de', 'ru', 'es', 'uk', 'pt', 'fr', 'be', 'pl', 'cs']
         buildConfigField "String[]", "TRANSLATIONS", "new String[]{\""+locales.join("\",\"")+"\"}"
-        resConfigs locales
+        resourceConfigurations += locales
     }
 
     bundle {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.05.2025, 10:48
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.05.2025, 10:46
+ *  * Last modified 05.06.2025, 00:30
  *
  */
 
@@ -931,7 +931,7 @@ class WidgetUpdater {
                 final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
                 String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
                         Constants.STRING_SPACE +
-                        String.format(Constants.HTML_COLOR, colorDate, eventDay) +
+                        Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
                         Constants.STRING_SPACE +
                         singleEventArray[ContactsEvents.Position_eventCaption] +
                         Constants.STRING_COLON_SPACE +
@@ -960,38 +960,6 @@ class WidgetUpdater {
             } else { //Ничего не показываем
                 views.setOnClickPendingIntent(idEventPlaceholder, null);
             }
-
-            /*if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
-
-                Intent intent = null;
-
-                if (eventsData.preferences_widgets_on_click_action == 7) { //Основной список событий
-                    intent = new Intent(context, MainActivity.class);
-                    intent.setAction(Constants.ACTION_LAUNCH);
-                } else if (eventsData.preferences_widgets_on_click_action >= 1 & eventsData.preferences_widgets_on_click_action <=4) {
-                    intent = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action, context);
-                }
-
-                if (intent != null) {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    views.setOnClickPendingIntent(idEventPlaceholder, PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable));
-                } else { //Ничего не показываем
-                    views.setOnClickPendingIntent(idEventPlaceholder, null);
-                }
-
-            } else {
-
-                Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
-                intentConfig.setAction(Constants.ACTION_LAUNCH);
-                intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                if (isUpperCaption) {
-                    views.setOnClickPendingIntent(textCaptionUpper, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
-                }
-                if (isBottomCaption) {
-                    views.setOnClickPendingIntent(textCaptionBottom, PendingIntent.getActivity(context, widgetId, intentConfig, PendingIntentImmutable));
-                }
-
-            }*/
 
             //Показываем событие
             views.setViewVisibility(idEventPlaceholder, View.VISIBLE);

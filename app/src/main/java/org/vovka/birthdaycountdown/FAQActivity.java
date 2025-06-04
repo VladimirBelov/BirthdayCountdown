@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:19
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -167,7 +167,7 @@ public class FAQActivity extends AppCompatActivity {
                     if (!anchor.isEmpty()) {
                         // https://stackoverflow.com/questions/14062901/webview-jump-to-anchor-using-loaddatawithbaseurl
                         webView.getSettings().setJavaScriptEnabled(true);
-                        sb.append(String.format(Constants.ANCHOR_LINK, anchor));
+                        sb.append(Constants.ANCHOR_LINK_START).append(anchor).append(Constants.ANCHOR_LINK_END);
                     }
                 }
                 sb.append("</body></html>");

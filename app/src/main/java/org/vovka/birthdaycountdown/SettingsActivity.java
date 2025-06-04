@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.05.2025, 11:59
+ *  * Created by Vladimir Belov on 05.06.2025, 00:35
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.05.2025, 17:32
+ *  * Last modified 05.06.2025, 00:07
  *
  */
 
@@ -276,16 +276,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             updateVisibility();
         }
     }
-
-/*    @Override
-    public void onBackPressed()
-    {
-        //если используется compacted menu, то без этого после recreate на выходе из активности по back nav key вылетает ANR
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        //super.onBackPressed();
-        finish();
-    }*/
 
     @Override
     protected void onDestroy() {
@@ -2470,9 +2460,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    ta.recycle();
+                }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
@@ -3117,7 +3108,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Map<String, ?> prefs = preferences.getAll();
                 SharedPreferences.Editor editor = preferences.edit();
 
-                final Calendar c = Calendar.getInstance();
                 for (String eventLine: eventsArray) {
                     if (eventLine != null) {
                         String eventString = eventLine.replaceAll(Constants.STRING_PIPE, Constants.STRING_EOT);
@@ -3187,9 +3177,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    ta.recycle();
+                }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
@@ -3346,12 +3337,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         new String[]{Manifest.permission.READ_CALENDAR},
                         resultCode
                 );
-                /*if (eventsData.checkNoCalendarAccess()) {
-                    ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
-                    try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                    } catch (ActivityNotFoundException e) { *//**//* }
-                }*/
             } else {
                 ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
                 try {
