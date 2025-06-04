@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.05.2025, 02:24
+ *  * Created by Vladimir Belov on 04.06.2025, 18:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.05.2025, 02:22
+ *  * Last modified 03.06.2025, 02:37
  *
  */
 
@@ -190,6 +190,7 @@ final class Constants {
     static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 104;
     static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_2 = 105;
     static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 = 106;
+    static final int MY_PERMISSIONS_REQUEST_READ_MEDIA_IMAGES = 107;
 
     static final int RESULT_PICK_CONTACT = 200;
     static final int RESULT_PICK_FILE = 201;
@@ -200,6 +201,7 @@ final class Constants {
     static final int RESULT_EDIT_EVENT = 206;
     static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
+    static final int RESULT_PICK_PHOTO = 209;
 
     static final String NOTIFY_ID = "id: %s";
     static final int defaultNotificationID = 1000;

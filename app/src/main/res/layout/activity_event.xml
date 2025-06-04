@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.05.2025, 11:59
+  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 18.05.2025, 17:47
+  ~  * Last modified 04.06.2025, 18:15
   ~  */
   -->
 
@@ -75,6 +75,27 @@
                     android:layout_height="50dp"
                     android:contentDescription="@string/widget_Photo"
                     android:scaleType="centerCrop" />
+
+                <Button
+                    android:id="@+id/buttonPickContactData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonPickPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_gallery"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonClearPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout

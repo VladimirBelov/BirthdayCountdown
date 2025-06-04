@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
+  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.05.2025, 01:01
+  ~  * Last modified 04.06.2025, 16:22
   ~  */
   -->
 
@@ -73,6 +73,7 @@
     <string name="menu_help_events_facts">Факты</string>
 
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
+    <string name="msg_no_access_storage">Нет доступа к хранилищу</string>
     <string name="msg_no_events">События не найдены</string>
     <string name="msg_no_files_selected">"  - не выбраны -"</string>
     <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
@@ -1318,6 +1319,12 @@
     <string name="local_event_dialog_type_title">Тип события:</string>
     <string name="local_event_dialog_confirmation_remove">Вы уверены, что хотите удалить это событие?</string>
     <string name="local_event_dialog_confirmation_cancel">Данные были изменены. Вы уверены, что хотите закрыть диалог?</string>
+
+    <string name="event_photo_details">"[фото, %d байт]"</string>
+    <string name="event_photo_pick_contact_hint">Выбрать фото из контакта…</string>
+    <string name="event_photo_select_photo_hint">Выбрать фото…</string>
+    <string name="event_photo_clear_photo_hint">Удалить фото из события</string>
+    <string name="event_photo_select_photo_title">Выберите фото</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

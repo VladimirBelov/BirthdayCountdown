@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.04.2025, 12:43
+  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 31.03.2025, 20:26
+  ~  * Last modified 03.06.2025, 02:33
   ~  */
   -->
 
@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" /> <!-- для проигрывания уведомлений из внешнего хранилища https://stackoverflow.com/questions/54120745/android-9-0-notificationmanager-notify-throwing-java-lang-securityexception -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/> <!-- для проигрывания уведомлений из внешнего хранилища (Android 13+) -->
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/> <!-- для установки высокого приоритета уведомлениям викторины на младших Android https://stackoverflow.com/questions/42597698/android-how-to-allow-enable-floating-notifications-setting-as-default-for-ap -->

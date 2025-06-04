@@ -1,13 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.05.2025, 11:59
+ *  * Created by Vladimir Belov on 04.06.2025, 18:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.05.2025, 11:59
+ *  * Last modified 04.06.2025, 18:10
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +16,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.LocaleManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -23,9 +26,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -34,6 +39,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,11 +52,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
@@ -102,7 +111,9 @@ public class LocalEventActivity extends Activity {
     TextView editDate;
     TextView viewEventType;
     Spinner spinnerEventTypes;
-
+    Button buttonPickContactData;
+    Button buttonPickPhoto;
+    Button buttonClearPhoto;
 
     static {
         eventsData = ContactsEvents.getInstance();
@@ -262,6 +273,9 @@ public class LocalEventActivity extends Activity {
             spinnerEventTypes = findViewById(R.id.spinnerEventType);
             viewEventType = findViewById(R.id.viewEventType);
             imagePhoto = findViewById(R.id.imagePhoto);
+            buttonPickContactData = findViewById(R.id.buttonPickContactData);
+            buttonPickPhoto = findViewById(R.id.buttonPickPhoto);
+            buttonClearPhoto = findViewById(R.id.buttonClearPhoto);
 
             eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
             eventTypesIds.add(Constants.Type_BirthDay);
@@ -518,6 +532,24 @@ public class LocalEventActivity extends Activity {
                 buttonSave.setVisibility(View.VISIBLE);
                 buttonSave.setOnClickListener(this::buttonSaveOnClick);
 
+                buttonPickContactData.setOnClickListener(v -> pickContactData());
+                buttonPickContactData.setOnLongClickListener(v -> {
+                    Toast.makeText(LocalEventActivity.this, getString(R.string.event_photo_pick_contact_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+
+                buttonPickPhoto.setOnClickListener(v -> LocalEventActivity.this.pickPhoto());
+                buttonPickPhoto.setOnLongClickListener(v -> {
+                    Toast.makeText(LocalEventActivity.this, getString(R.string.event_photo_select_photo_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+
+                buttonClearPhoto.setOnClickListener(v -> LocalEventActivity.this.clearPhoto());
+                buttonClearPhoto.setOnLongClickListener(v -> {
+                    Toast.makeText(LocalEventActivity.this, getString(R.string.event_photo_clear_photo_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+
                 setFinishOnTouchOutside(false);
                 editName.requestFocus();
                 if (getWindow() != null) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -532,6 +564,124 @@ public class LocalEventActivity extends Activity {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void clearPhoto() {
+        try {
+
+            eventData.put(ContactsEvents.Position_image, Constants.STRING_EMPTY);
+            eventData.put(ContactsEvents.Position_contactID, Constants.STRING_EMPTY);
+            eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
+            updateCaptionsAndVisibility(this);
+            updateEventPhoto(this);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void pickPhoto() {
+        try {
+            boolean requestPermissions = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions = true;
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions = true;
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+            } else {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions = true;
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+            }
+
+            if (!requestPermissions) {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.event_photo_select_photo_title)), Constants.RESULT_PICK_PHOTO);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void pickContactData() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+
+        try {
+            startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
+        } catch (ActivityNotFoundException ignored) { /**/ }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            boolean granted = false;
+
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                    granted = true;
+                    break;
+                }
+            }
+
+            if (granted) {
+                pickPhoto();
+            } else {
+                // Разрешение отклонено, обработать ситуацию
+                Toast.makeText(this, getString(R.string.msg_no_access_storage), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+
+            if (resultCode == RESULT_OK) {
+                if (requestCode == Constants.RESULT_PICK_CONTACT) {
+                    Uri contactUri = data.getData();
+                    if (contactUri != null) {
+                        String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
+                        if (!contactID.isEmpty()) {
+                            HashMap<String, String> contactDataMap = eventsData.getContactDataMulti(ContactsEvents.parseToLong(contactID), new String[]{
+                                    ContactsContract.Contacts.PHOTO_URI,
+                                    ContactsContract.Data.DISPLAY_NAME,
+                                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
+                            });
+                            eventData.put(ContactsEvents.Position_photo_uri, ContactsEvents.checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
+                            eventData.put(ContactsEvents.Position_contactID, contactID);
+                            updateCaptionsAndVisibility(this);
+                            updateEventPhoto(this);
+                        }
+                    }
+                } else if (requestCode == Constants.RESULT_PICK_PHOTO) {
+                    Uri selectedImageUri = data.getData();
+                    eventData.put(ContactsEvents.Position_image, ContactsEvents.encodeImageToBase64(this, selectedImageUri, 500));
+                    eventData.put(ContactsEvents.Position_contactID, Constants.STRING_EMPTY);
+                    eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
+                    updateCaptionsAndVisibility(this);
+                    updateEventPhoto(this);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -818,6 +968,19 @@ public class LocalEventActivity extends Activity {
                 if (!activity.isReadOnly) {
                     activity.cardTitle.setVisibility(View.VISIBLE);
                     activity.cardOrganization.setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (!activity.isReadOnly) {
+                activity.buttonPickContactData.setVisibility(View.VISIBLE);
+                activity.buttonPickPhoto.setVisibility(View.VISIBLE);
+
+                String imageData = eventData.get(ContactsEvents.Position_image);
+                String imageUrl = eventData.get(ContactsEvents.Position_photo_uri);
+                if ((imageData != null && !imageData.isEmpty()) || (imageUrl != null && !imageUrl.isEmpty())) {
+                    activity.buttonClearPhoto.setVisibility(View.VISIBLE);
+                } else {
+                    activity.buttonClearPhoto.setVisibility(View.GONE);
                 }
             }
 

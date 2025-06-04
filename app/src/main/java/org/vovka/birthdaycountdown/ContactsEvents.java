@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2025, 01:10
+ *  * Created by Vladimir Belov on 04.06.2025, 18:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 29.05.2025, 00:23
+ *  * Last modified 04.06.2025, 18:10
  *
  */
 
@@ -62,6 +62,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -95,6 +96,8 @@ import androidx.core.text.HtmlCompat;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -163,7 +166,8 @@ class ContactsEvents {
     static final int Position_eventURL = 29;
     static final int Position_eventDescription = 30;
     static final int Position_notAnnualEvent = 31;
-    static final int Position_attrAmount = 32; //MAX
+    static final int Position_image = 32;
+    static final int Position_attrAmount = 33; //MAX
 
     private static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
         put(Constants.Type_BirthDay, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY));
@@ -3702,6 +3706,7 @@ class ContactsEvents {
                             eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_local));
 
                             statEventsCount++;
+                            fillEmptyEventData(eventData);
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
                                 eventListUpdated.add(eventRow);
@@ -5417,112 +5422,123 @@ class ContactsEvents {
             String eventType = singleEventArray[Position_eventType];
             String eventSubType = singleEventArray[Position_eventSubType];
 
-            if (eventType.equals(getEventType(Constants.Type_Unrecognized))) {
+            if (!TextUtils.isEmpty(singleEventArray[Position_image])) {
 
-                bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
+                try {
+                    byte[] decodedBytes = Base64.decode(singleEventArray[Position_image], Base64.DEFAULT);
+                    bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                } catch (Exception ignored) { /**/ }
 
-            } else if ((
-                    eventSubType.equals(getEventType(Constants.Type_CalendarEvent))
-                            || eventSubType.equals(getEventType(Constants.Type_FileEvent))
-                            || eventSubType.equals(getEventType(Constants.Type_Other))
-            ) && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
+            }
 
-                bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
+            if (bm == null) {
+                if (eventType.equals(getEventType(Constants.Type_Unrecognized))) {
 
-            } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
+                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
 
-                bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
+                } else if ((
+                        eventSubType.equals(getEventType(Constants.Type_CalendarEvent))
+                                || eventSubType.equals(getEventType(Constants.Type_FileEvent))
+                                || eventSubType.equals(getEventType(Constants.Type_Other))
+                ) && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
 
-                //todo: https://stackoverflow.com/questions/77168650/draw-emoji-to-image-in-android
-                //https://stackoverflow.com/questions/41212092/drawing-emojis-on-android-canvas-using-unicode-values
-                //https://stackoverflow.com/questions/47807621/draw-emoji-on-bitmap-with-drawtextonpath
+                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
 
-            } else {
+                } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
 
-                @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
+                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
 
-                addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
-                        (preferences_sad_photo == 2 && deathDatesForIds.containsKey(contactID));
+                    //todo: https://stackoverflow.com/questions/77168650/draw-emoji-to-image-in-android
+                    //https://stackoverflow.com/questions/41212092/drawing-emojis-on-android-canvas-using-unicode-values
+                    //https://stackoverflow.com/questions/47807621/draw-emoji-on-bitmap-with-drawtextonpath
 
-                if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
-                    //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                    if (contentResolver == null) contentResolver = context.getContentResolver();
-                    Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
-                    InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
-                    if (photo_stream != null) {
-                        BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                        bm = BitmapFactory.decodeStream(buf);
-                        buf.close();
-                        photo_stream.close();
+                } else {
+
+                    @NonNull String contactID = checkForNull(singleEventArray[Position_contactID]);
+
+                    addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
+                            (preferences_sad_photo == 2 && deathDatesForIds.containsKey(contactID));
+
+                    if (showPhotos && !contactID.isEmpty() && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
+                        //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+                        if (contentResolver == null) contentResolver = context.getContentResolver();
+                        Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
+                        InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
+                        if (photo_stream != null) {
+                            BufferedInputStream buf = new BufferedInputStream(photo_stream);
+                            bm = BitmapFactory.decodeStream(buf);
+                            buf.close();
+                            photo_stream.close();
+                        }
                     }
-                }
 
-                if (bm == null) {
-                    //Если событие - не день рождения, пытаемся достать возраст из дня рождения
-                    if (!eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
-                        Date birthDate = birthdayDatesForIds.get(contactID);
-                        Date BDay = null;
-                        try {
-                            BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateNextTime]);
-                        } catch (ParseException e) { /**/ }
+                    if (bm == null) {
+                        //Если событие - не день рождения, пытаемся достать возраст из дня рождения
+                        if (!eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
+                            Date birthDate = birthdayDatesForIds.get(contactID);
+                            Date BDay = null;
+                            try {
+                                BDay = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateNextTime]);
+                            } catch (ParseException e) { /**/ }
 
-                        List<String> singleRowList = Arrays.asList(singleEventArray);
-                        if (birthDate != null && BDay != null) {
-                            final int countYearsDiff = countYearsDiff(birthDate, BDay);
-                            if (countYearsDiff > 0) {
-                                singleRowList.set(Position_age, String.valueOf(countYearsDiff));
+                            List<String> singleRowList = Arrays.asList(singleEventArray);
+                            if (birthDate != null && BDay != null) {
+                                final int countYearsDiff = countYearsDiff(birthDate, BDay);
+                                if (countYearsDiff > 0) {
+                                    singleRowList.set(Position_age, String.valueOf(countYearsDiff));
+                                } else {
+                                    //если день рождения без года - мы об этом никак не узнаем
+                                    singleRowList.set(Position_age, Constants.STRING_MINUS1);
+                                }
+                                singleEventArray = singleRowList.toArray(new String[0]);
+                            }
+                        }
+
+                        //Случайное фото с соответствии с возрастом и полом
+                        Person person = new Person(context, singleEventArray);
+                        int gender = person.getGender();
+
+                        //По-умолчанию
+                        Integer idPhoto = R.drawable.ic_pack00_m1;
+                        if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
+                            idPhoto = preferences_IconPackImages_F.get(0);
+                        } else if (preferences_IconPackImages_M.get(0) != null) {
+                            idPhoto = preferences_IconPackImages_M.get(0);
+                        }
+
+                        //Если определён возраст
+                        if (person.Age >= 0) {
+                            if (gender == 2) {
+                                for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
+                                    int beforeAge = entry.getKey();
+                                    if (beforeAge > 0 && person.Age <= beforeAge) {
+                                        idPhoto = preferences_IconPackImages_F.get(beforeAge);
+                                        break;
+                                    }
+                                }
                             } else {
-                                //если день рождения без года - мы об этом никак не узнаем
-                                singleRowList.set(Position_age, Constants.STRING_MINUS1);
-                            }
-                            singleEventArray = singleRowList.toArray(new String[0]);
-                        }
-                    }
-
-                    //Случайное фото с соответствии с возрастом и полом
-                    Person person = new Person(context, singleEventArray);
-                    int gender = person.getGender();
-
-                    //По-умолчанию
-                    Integer idPhoto = R.drawable.ic_pack00_m1;
-                    if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
-                        idPhoto = preferences_IconPackImages_F.get(0);
-                    } else if (preferences_IconPackImages_M.get(0) != null) {
-                        idPhoto = preferences_IconPackImages_M.get(0);
-                    }
-
-                    //Если определён возраст
-                    if (person.Age >= 0) {
-                        if (gender == 2) {
-                            for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
-                                int beforeAge = entry.getKey();
-                                if (beforeAge > 0 && person.Age <= beforeAge) {
-                                    idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                    break;
+                                for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
+                                    int beforeAge = entry.getKey();
+                                    if (beforeAge > 0 && person.Age <= beforeAge) {
+                                        idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                        break;
+                                    }
                                 }
                             }
+                        }
+                        if (idPhoto == null) return null;
+                        bm = getBitmap(context, idPhoto);
+                        if (bm == null) return null;
+
+                        int bmWidth = bm.getWidth();
+                        int bmHeight = bm.getHeight();
+                        if (bmHeight > bmWidth) {
+                            //noinspection SuspiciousNameCombination
+                            bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
                         } else {
-                            for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
-                                int beforeAge = entry.getKey();
-                                if (beforeAge > 0 && person.Age <= beforeAge) {
-                                    idPhoto = preferences_IconPackImages_M.get(beforeAge);
-                                    break;
-                                }
-                            }
+                            //noinspection SuspiciousNameCombination
+                            bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                         }
-                    }
-                    if (idPhoto == null) return null;
-                    bm = getBitmap(context, idPhoto);
-                    if (bm == null) return null;
-
-                    int bmWidth = bm.getWidth();
-                    int bmHeight = bm.getHeight();
-                    if (bmHeight > bmWidth) {
-                        //noinspection SuspiciousNameCombination
-                        bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
-                    } else {
-                        //noinspection SuspiciousNameCombination
-                        bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                     }
                 }
             }
@@ -11665,6 +11681,37 @@ class ContactsEvents {
 
     static boolean isLeapYear(int year) {
         return year % 400 == 0 || (year % 100 != 0 && (year % 4 == 0));
+    }
+
+    @Nullable
+    public static String encodeImageToBase64(Context context, Uri imageUri, int maxSize) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            bitmap = scaleDownBitmap(bitmap, maxSize); // уменьшаем изображение
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            bitmap.recycle();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return null;
+        }
+    }
+
+    // Функция уменьшения размера изображения
+    public static Bitmap scaleDownBitmap(Bitmap bitmap, int maxPixels) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float ratio = Math.min((float) maxPixels / width, (float) maxPixels / height);
+        int newWidth = (int) (width * ratio);
+        int newHeight = (int) (height * ratio);
+
+        if (newWidth == width && newHeight == height) return bitmap; //без изменений
+
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
 }

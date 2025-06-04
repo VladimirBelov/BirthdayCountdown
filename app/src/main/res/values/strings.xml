@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
+  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.05.2025, 01:01
+  ~  * Last modified 04.06.2025, 16:22
   ~  */
   -->
 
@@ -73,6 +73,7 @@
     <string name="menu_help_events_facts">Facts</string>
 
     <string name="msg_no_access_contacts">No access to contacts</string>
+    <string name="msg_no_access_storage">No access to storage</string>
     <string name="msg_no_events">Events not found</string>
     <string name="msg_no_files_selected">"  - not selected -"</string>
     <string name="msg_file_open_error">"Error opening file: "</string>
@@ -1320,6 +1321,12 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="local_event_dialog_type_title">Event type:</string>
     <string name="local_event_dialog_confirmation_remove">Are you sure you want to remove this event?</string>
     <string name="local_event_dialog_confirmation_cancel">Event data has been modified. Are you sure you want to close this dialog?</string>
+
+    <string name="event_photo_details">"[image data, %d bytes]"</string>
+    <string name="event_photo_pick_contact_hint">Select photo from contact…</string>
+    <string name="event_photo_select_photo_hint">Select photo…</string>
+    <string name="event_photo_clear_photo_hint">Clear photo from event</string>
+    <string name="event_photo_select_photo_title">Select photo</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->
