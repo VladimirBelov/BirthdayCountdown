@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 22:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 02:58
+ *  * Last modified 17.06.2025, 19:48
  *
  */
 
@@ -644,8 +644,17 @@ public class LocalEventActivity extends Activity {
             if (granted) {
                 pickPhoto();
             } else {
-                // Разрешение отклонено, обработать ситуацию
+                // Разрешение отклонено
                 Toast.makeText(this, getString(R.string.msg_no_access_storage), Toast.LENGTH_SHORT).show();
+
+                //Доступа до фото нет. Выбираем просто файл
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image/*");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                try {
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
             }
         }
     }
@@ -670,7 +679,7 @@ public class LocalEventActivity extends Activity {
                             updateEventPhoto(this);
                         }
                     }
-                } else if (requestCode == Constants.RESULT_PICK_PHOTO) {
+                } else if (requestCode == Constants.RESULT_PICK_PHOTO || requestCode == Constants.RESULT_PICK_FILE) {
                     Uri selectedImageUri = data.getData();
                     CropIntent intent = new CropIntent();
                     intent.setImagePath(selectedImageUri);
@@ -840,13 +849,13 @@ public class LocalEventActivity extends Activity {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
         try {
 
-            EditText editCaption = findViewById(R.id.editName);
-            String eventTitle = editCaption.getText().toString();
+            EditText editEventTitle = findViewById(R.id.editName);
+            String eventEventTitle = editEventTitle.getText().toString();
 
-            if (eventTitle.isEmpty()) {
-                TextView viewEventTitle = findViewById(R.id.captionOrganization);
+            if (eventEventTitle.isEmpty()) {
+                TextView captionEventTitle = findViewById(R.id.captionName);
                 Toast.makeText(context, getString(R.string.msg_empty_required_field,
-                        ContactsEvents.substringBefore(viewEventTitle.getText().toString(), Constants.STRING_COLON)), Toast.LENGTH_LONG).show();
+                        ContactsEvents.substringBefore(captionEventTitle.getText().toString(), Constants.STRING_COLON)), Toast.LENGTH_LONG).show();
                 return;
             }
 

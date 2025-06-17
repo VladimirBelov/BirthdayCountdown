@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 17:39
+  ~  * Created by Vladimir Belov on 17.06.2025, 22:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 17:34
+  ~  * Last modified 17.06.2025, 19:17
   ~  */
   -->
 
@@ -1324,7 +1324,7 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
 
     <string name="event_photo_details">"[image data, %d bytes]"</string>
     <string name="event_photo_pick_contact_hint">Select photo from contact…</string>
-    <string name="event_photo_select_photo_hint">Select photo…</string>
+    <string name="event_photo_select_photo_hint">Select local photo…</string>
     <string name="event_photo_clear_photo_hint">Clear photo from event</string>
     <string name="event_photo_select_photo_title">Select photo</string>
 

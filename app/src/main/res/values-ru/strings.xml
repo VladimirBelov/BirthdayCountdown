@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 17:39
+  ~  * Created by Vladimir Belov on 17.06.2025, 22:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 17:33
+  ~  * Last modified 17.06.2025, 19:17
   ~  */
   -->
 
@@ -1322,7 +1322,7 @@
 
     <string name="event_photo_details">"[фото, %d байт]"</string>
     <string name="event_photo_pick_contact_hint">Выбрать фото из контакта…</string>
-    <string name="event_photo_select_photo_hint">Выбрать фото…</string>
+    <string name="event_photo_select_photo_hint">Выбрать локальное фото…</string>
     <string name="event_photo_clear_photo_hint">Удалить фото из события</string>
     <string name="event_photo_select_photo_title">Выберите фото</string>
 
