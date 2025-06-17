@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 02:18
+ *  * Last modified 17.06.2025, 13:59
  *
  */
 
@@ -14,7 +14,7 @@ package org.vovka.birthdaycountdown;
  * удобства сопровождения и согласованности кода, определяя часто используемые литералы и
  * идентификаторы в одном месте.
  */
-final class Constants {
+public final class Constants {
 
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String REGEX_COMMAS = " *, *";
@@ -53,7 +53,7 @@ final class Constants {
     static final String STRING_13 = "13";
     static final String STRING_BAR = "|";
     static final String STRING_COLON = ":";
-    static final String STRING_COLON_SPACE = ": ";
+    public static final String STRING_COLON_SPACE = ": ";
     static final String STRING_COMMA = ",";
     static final String STRING_COMMA_SPACE = ", ";
     static final String STRING_EMPTY = "";

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 03:39
+ *  * Last modified 17.06.2025, 17:12
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -12,17 +12,30 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
 import org.vovka.birthdaycountdown.R;
+import org.vovka.birthdaycountdown.ToastExpander;
 
 import java.io.Closeable;
 import java.io.File;
@@ -34,6 +47,7 @@ import java.lang.ref.WeakReference;
 
 public class CropImageActivity extends Activity {
 
+    private static final String TAG = "CropImageActivity";
     private Bitmap mBitmap;
     private Uri mInputPath = null;
     private static Uri mOutputPath = null;
@@ -52,38 +66,69 @@ public class CropImageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ContactsEvents eventsData = ContactsEvents.getInstance();
-        setTheme(eventsData.preferences_theme.themeMain);
+        try {
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            setTheme(eventsData.preferences_theme.themeMain);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_cropimage);
-        mCropImageView = findViewById(R.id.CropWindow);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setContentView(R.layout.activity_cropimage);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            mOutputPath = extras.getParcelable(MediaStore.EXTRA_OUTPUT);
+            View layoutMain = findViewById(R.id.layout_main);
+            if (ContactsEvents.isEdgeToEdge()) {
+                ViewCompat.setOnApplyWindowInsetsListener(layoutMain, (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    layoutMain.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+                    return WindowInsetsCompat.CONSUMED;
+                });
+                //} else {
+                //layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+            }
+
+            mCropImageView = findViewById(R.id.CropWindow);
+
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                mOutputPath = extras.getParcelable(MediaStore.EXTRA_OUTPUT);
+            }
+            if (mOutputPath == null) {
+                String defaultPath = getCacheDir().getPath() + "cropped.jpg";
+                mOutputPath = Uri.fromFile(new File(defaultPath));
+            }
+
+            mInputPath = intent.getData();
+            if (mInputPath == null) {
+                startPickImage();
+                return;
+            }
+
+            mBitmap = loadBitmap(mInputPath);
+            if (mBitmap == null) {
+                setResult(RESULT_CANCELED);
+                finish();
+                return;
+            }
+
+            mCropImageView.initialize(mBitmap, getCropParam(intent));
+
+            TextView buttonSave = findViewById(R.id.buttonSave);
+            addClickEffect(buttonSave);
+            buttonSave.getBackground().setAlpha(50);
+            TextView buttonRotate = findViewById(R.id.buttonRotate);
+            addClickEffect(buttonRotate);
+            buttonRotate.getBackground().setAlpha(50);
+            TextView buttonReset = findViewById(R.id.buttonReset);
+            addClickEffect(buttonReset);
+            buttonReset.getBackground().setAlpha(50);
+            TextView buttonCrop = findViewById(R.id.buttonCrop);
+            addClickEffect(buttonCrop);
+            buttonCrop.getBackground().setAlpha(50);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        if (mOutputPath == null) {
-            String defaultPath = getCacheDir().getPath() + "cropped.jpg";
-            mOutputPath = Uri.fromFile(new File(defaultPath));
-        }
-
-        mInputPath = intent.getData();
-        if (mInputPath == null) {
-            startPickImage();
-            return;
-        }
-
-        mBitmap = loadBitmap(mInputPath);
-        if (mBitmap == null) {
-            setResult(RESULT_CANCELED);
-            finish();
-            return;
-        }
-
-        mCropImageView.initialize(mBitmap, getCropParam(intent));
     }
 
     @Override
@@ -238,5 +283,21 @@ public class CropImageActivity extends Activity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 0);
+    }
+
+    private void addClickEffect(@NonNull View view)
+    {
+        Drawable drawableNormal = view.getBackground();
+
+        if (view.getBackground().getConstantState() != null) {
+            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
+            drawablePressed.mutate();
+            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+
+            StateListDrawable listDrawable = new StateListDrawable();
+            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
+            listDrawable.addState(new int[]{}, drawableNormal);
+            view.setBackground(listDrawable);
+        }
     }
 }

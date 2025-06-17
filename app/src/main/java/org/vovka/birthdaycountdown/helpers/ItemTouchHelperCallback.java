@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.06.2025, 23:33
+ *  * Last modified 17.06.2025, 15:20
  *
  */
 
@@ -48,15 +48,16 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         // Set movement flags based on the layout manager
+        final int dragFlags;
+        final int swipeFlags;
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
-            final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-            final int swipeFlags = 0;
-            return makeMovementFlags(dragFlags, swipeFlags);
+            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+            swipeFlags = 0;
         } else {
-            final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags, swipeFlags);
+            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         }
+        return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override

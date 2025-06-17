@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 03:07
+ *  * Last modified 17.06.2025, 15:25
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -87,17 +87,9 @@ public class CropImageView extends View implements TouchEventListener {
         mOutsidePainter.setStrokeWidth(OUTSIDE_WINDOW_PAINTER_WIDTH);
     }
 
-    /*public void initialize(Bitmap bitmap) {
-        initialize(bitmap, 0, new CropParam());
-    }*/
-
     public void initialize(Bitmap bitmap, CropParam param) {
         initialize(bitmap, 0, param);
     }
-
-    /*public void initialize(Bitmap bitmap, int degrees) {
-        initialize(bitmap, degrees, new CropParam());
-    }*/
 
     public void initialize(Bitmap bitmap, int degrees, CropParam param) {
         mCropParam = param;

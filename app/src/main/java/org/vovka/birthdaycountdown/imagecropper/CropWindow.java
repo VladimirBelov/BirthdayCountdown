@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 01:34
+ *  * Last modified 17.06.2025, 15:20
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -13,7 +13,7 @@ import android.graphics.RectF;
 
 public class CropWindow {
 
-    private static final int TOUCH_NONE = (1 << 0);
+    private static final int TOUCH_NONE = 1;
     private static final int TOUCH_GROW_LEFT_EDGE = (1 << 1);
     private static final int TOUCH_GROW_RIGHT_EDGE = (1 << 2);
     private static final int TOUCH_GROW_TOP_EDGE = (1 << 3);
@@ -21,15 +21,15 @@ public class CropWindow {
     private static final int TOUCH_MOVE_WINDOW = (1 << 5);
 
     private static final float BORDER_THRESHOLD = 30f;
-    private static final float DEFAULT_MIN_WDITH = 30f;
+    private static final float DEFAULT_MIN_WIDTH = 30f;
     private static final float DEFAULT_MIN_HEIGHT = 30f;
 
     private float mLeft;
     private float mTop;
     private float mWidth;
     private float mHeight;
-    private RectF mImageRect;
-    private org.vovka.birthdaycountdown.imagecropper.CropImageActivity.CropParam mCropParam;
+    private final RectF mImageRect;
+    private final org.vovka.birthdaycountdown.imagecropper.CropImageActivity.CropParam mCropParam;
     private int mTouchMode = TOUCH_NONE;
 
     public CropWindow(RectF imageRect, org.vovka.birthdaycountdown.imagecropper.CropImageActivity.CropParam params) {
@@ -56,7 +56,6 @@ public class CropWindow {
 
         mLeft = imageRect.left + (imageRect.width() - mWidth) / 2;
         mTop = imageRect.top + (imageRect.height() - mHeight) / 2;
-        ;
         mImageRect = imageRect;
         mCropParam = params;
     }
@@ -137,9 +136,9 @@ public class CropWindow {
 
     //Make sure the crop window inside the border
     private void adjustWindowRect() {
-        mLeft = (left() < mImageRect.left) ? mImageRect.left : left();
+        mLeft = Math.max(left(), mImageRect.left);
         mLeft = (right() >= mImageRect.right) ? mImageRect.right - mWidth : left();
-        mTop = (top() < mImageRect.top) ? mImageRect.top : top();
+        mTop = Math.max(top(), mImageRect.top);
         mTop = (bottom() >= mImageRect.bottom) ? mImageRect.bottom - mHeight : top();
     }
 
@@ -204,7 +203,7 @@ public class CropWindow {
                 if ((TOUCH_GROW_RIGHT_EDGE & mTouchMode) == 0 || (TOUCH_GROW_BOTTOM_EDGE & mTouchMode) == 0) {
                     return false;
                 }
-                float min_scale = Math.max(DEFAULT_MIN_WDITH / mWidth, DEFAULT_MIN_HEIGHT / mHeight);
+                float min_scale = Math.max(DEFAULT_MIN_WIDTH / mWidth, DEFAULT_MIN_HEIGHT / mHeight);
                 RectF border = getGrowBorder();
                 float max_right_scale = (border.right - left()) / width();
                 float max_bottom_scale = (border.bottom - top()) / height();
@@ -221,23 +220,23 @@ public class CropWindow {
 
             if ((TOUCH_GROW_LEFT_EDGE & mTouchMode) != 0) {
                 window.left += deltaX;
-                window.left = (window.left < border.left) ? border.left : window.left;
-                window.left = (window.left > window.right - DEFAULT_MIN_WDITH) ? window.right - DEFAULT_MIN_WDITH : window.left;
+                window.left = Math.max(window.left, border.left);
+                window.left = Math.min(window.left, window.right - DEFAULT_MIN_WIDTH);
             }
             if ((TOUCH_GROW_RIGHT_EDGE & mTouchMode) != 0) {
                 window.right += deltaX;
-                window.right = (window.right > border.right) ? border.right : window.right;
-                window.right = (window.right < window.left + DEFAULT_MIN_WDITH) ? window.left + DEFAULT_MIN_WDITH : window.right;
+                window.right = Math.min(window.right, border.right);
+                window.right = Math.max(window.right, window.left + DEFAULT_MIN_WIDTH);
             }
             if ((TOUCH_GROW_TOP_EDGE & mTouchMode) != 0) {
                 window.top += deltaY;
-                window.top = (window.top < border.top) ? border.top : window.top;
-                window.top = (window.top > window.bottom - DEFAULT_MIN_HEIGHT) ? window.bottom - DEFAULT_MIN_HEIGHT : window.top;
+                window.top = Math.max(window.top, border.top);
+                window.top = Math.min(window.top, window.bottom - DEFAULT_MIN_HEIGHT);
             }
             if ((TOUCH_GROW_BOTTOM_EDGE & mTouchMode) != 0) {
                 window.bottom += deltaY;
-                window.bottom = (window.bottom > border.bottom) ? border.bottom : window.bottom;
-                window.bottom = (window.bottom < window.top + DEFAULT_MIN_HEIGHT) ? window.top + DEFAULT_MIN_HEIGHT : window.bottom;
+                window.bottom = Math.min(window.bottom, border.bottom);
+                window.bottom = Math.max(window.bottom, window.top + DEFAULT_MIN_HEIGHT);
             }
 
             mLeft = window.left;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.06.2025, 15:05
+ *  * Last modified 17.06.2025, 12:28
  *
  */
 
@@ -21,15 +21,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.CalendarContract;
-import android.text.SpannableString;
 import android.text.format.DateFormat;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -749,14 +746,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             if (enabledFillDays || inMonth) {
-                final String dayValue = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-                if (isToday) {
-                    SpannableString spanValue = new SpannableString(dayValue);
-                    spanValue.setSpan(new StyleSpan(Typeface.BOLD), 0, dayValue.length() - 1, 0);
-                    cellRv.setTextViewText(android.R.id.text1, spanValue);
-                } else {
-                    cellRv.setTextViewText(android.R.id.text1, dayValue);
-                }
+                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
             }
             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
 

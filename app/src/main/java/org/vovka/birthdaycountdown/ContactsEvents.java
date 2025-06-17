@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 17.06.2025, 17:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 01:46
+ *  * Last modified 17.06.2025, 15:20
  *
  */
 
@@ -1140,7 +1140,7 @@ public class ContactsEvents {
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return method name
      */
-    static String getMethodName(final int depth) {
+    public static String getMethodName(final int depth) {
         StackTraceElement[] ste = null;
         try {
             ste = Thread.currentThread().getStackTrace();
@@ -1162,7 +1162,7 @@ public class ContactsEvents {
                 || (isXiaomi() & Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q);
     }
 
-    static boolean isEdgeToEdge() {
+    public static boolean isEdgeToEdge() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM;
     }
 
@@ -5409,7 +5409,7 @@ public class ContactsEvents {
                     } else { //Само фото (редактирование локального события)
                         eventPhoto = eventPhotoData;
                     }
-                    if (!eventPhoto.isEmpty()) {
+                    if (eventPhoto != null && !eventPhoto.isEmpty()) {
                         byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
                         bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                     }
@@ -11581,7 +11581,7 @@ public class ContactsEvents {
         return Constants.STRING_EMPTY;
     }
 
-    static int Dip2Px(Resources res, int sizeDP) {
+    public static int Dip2Px(Resources res, int sizeDP) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeDP, res.getDisplayMetrics()));
     }
 

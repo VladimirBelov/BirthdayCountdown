@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
+  ~  * Created by Vladimir Belov on 17.06.2025, 17:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.06.2025, 16:22
+  ~  * Last modified 17.06.2025, 17:33
   ~  */
   -->
 
@@ -1325,6 +1325,14 @@
     <string name="event_photo_select_photo_hint">Выбрать фото…</string>
     <string name="event_photo_clear_photo_hint">Удалить фото из события</string>
     <string name="event_photo_select_photo_title">Выберите фото</string>
+
+    <string name="crop_image_back">Закрыть</string>
+    <string name="crop_image_save">Сохранить</string>
+    <string name="crop_image_title">Обрезать фото</string>
+    <string name="crop_image_rotate">Повернуть</string>
+    <string name="crop_image_reset">Сбросить</string>
+    <string name="crop_image_crop">Обрезать</string>
+    <string name="crop_image_saving">Сохранение…</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>
