@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:30
+ *  * Last modified 09.06.2025, 13:11
  *
  */
 
@@ -96,7 +96,6 @@ class WidgetUpdater {
     @SuppressLint("DiscouragedApi")
     void invokePhotoEventsUpdate() {
         //По нажатию на виджет открываем основное окно
-        //http://flowovertop.blogspot.com/2013/04/android-widget-with-button-click-to.html
         Intent intentView = new Intent(context, MainActivity.class);
         intentView.setAction(Constants.ACTION_LAUNCH);
         views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));

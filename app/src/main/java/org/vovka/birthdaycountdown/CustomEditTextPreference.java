@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:06
+ *  * Last modified 05.06.2025, 23:30
  *
  */
 
@@ -68,13 +68,6 @@ public class CustomEditTextPreference extends EditTextPreference {
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
 
-        /*int alertTitleId = getContext().getResources().getIdentifier("alertTitle", "id", "android");
-        TextView alertTitle = (TextView) dialog.getWindow().getDecorView().findViewById(alertTitleId);
-        alertTitle.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
-
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));*/
-
         final EditText editText = getEditText();
         if (editText != null) {
             //https://www.thetopsites.net/article/51779376.shtml
@@ -86,7 +79,7 @@ public class CustomEditTextPreference extends EditTextPreference {
             //editText.setMinimumHeight((int) (48 * scale + 0.5f));
             //todo: сделать опциональный MaxLine
             editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getContext().getResources().getDisplayMetrics()));
-            ta.recycle();
         }
+        ta.recycle();
     }
 }

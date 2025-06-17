@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.2025, 20:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 18:51
+ *  * Last modified 16.06.2025, 15:05
  *
  */
 
@@ -21,12 +21,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.CalendarContract;
+import android.text.SpannableString;
 import android.text.format.DateFormat;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -69,6 +72,7 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean colorizeSundays;
     private boolean enabledFillDays;
     private float fontMagnify;
+    private float fontMagnifyMonthRow = 1; //0.6f;
     private List<String> prefOtherEvents;
     private int prefOnClickCommon = Constants.onClick_None;
     private int prefOnClickHolidays = Constants.onClick_None;
@@ -588,7 +592,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                         } else {
                             calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
                         }
-                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        //todo: добавить масштабирование для отдельных элементов календаря: заголовка, дней недели, дней
+                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
+                        //calendarRv.setFloat(R.id.month_label, Constants.METHOD_SET_SCALE_Y, 0.66f);
                         if (row == rowsToDraw) {
                             calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
                         } else {
@@ -617,7 +623,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     //Дни недели
                     if (enabledWeeks) {
-                        RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weeks);
+                        RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weekdays);
                         for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
                             RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                             dayRv.setTextColor(android.R.id.text1, colorWeeks);
@@ -646,6 +652,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                         }
                     }
 
+                    // не подходит - высота не меняется, только визуальный размер
+                    //calendarRv.setFloat(R.id.prev_month_button, Constants.METHOD_SET_SCALE_Y, 0.66f);
+                    //calendarRv.setFloat(R.id.next_month_button, Constants.METHOD_SET_SCALE_Y, 0.66f);
+
                     if (row > 1 || (column != 1 && columnsToDraw > 1)) {
                         calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
                         calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
@@ -653,7 +663,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
                         calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
@@ -669,7 +679,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
                         //calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
                         calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify);
+                        calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
                         calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
                         calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
                                 new Intent(context, WidgetCalendar.class)
@@ -726,6 +736,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
             if (isToday) {
                 color = colorToday;
+                //todo: сделать различные варианты выделения "сегодня": рамка, подчёркивание
                 cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_today);
                 atLeastOneDayInMonth = true;
             } else if (inMonth) {
@@ -738,7 +749,14 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             if (enabledFillDays || inMonth) {
-                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+                final String dayValue = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+                if (isToday) {
+                    SpannableString spanValue = new SpannableString(dayValue);
+                    spanValue.setSpan(new StyleSpan(Typeface.BOLD), 0, dayValue.length() - 1, 0);
+                    cellRv.setTextViewText(android.R.id.text1, spanValue);
+                } else {
+                    cellRv.setTextViewText(android.R.id.text1, dayValue);
+                }
             }
             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
 

@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
+  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.03.2025, 12:46
+  ~  * Last modified 16.06.2025, 14:50
   ~  */
   -->
 
@@ -766,7 +766,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">center_horizontal|top</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:lines">1</item>
     </style>

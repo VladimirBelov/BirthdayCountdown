@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:19
+ *  * Last modified 05.06.2025, 23:05
  *
  */
 
@@ -92,6 +92,7 @@ public class ToastExpander {
                             TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
                             colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
                             colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
+                            ta.recycle();
                         } catch (Resources.NotFoundException ignored) { /**/ }
 
                         mFluentSnackbar

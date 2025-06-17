@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:55
+ *  * Last modified 16.06.2025, 23:33
  *
  */
 
@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import org.vovka.birthdaycountdown.helper.ThreadHelper;
+import org.vovka.birthdaycountdown.helpers.ThreadHelper;
 
 /**
  * Обертка с "текучим" (fluent) API для {@link Snackbar} из Android, упрощающая его использование и предоставляющая

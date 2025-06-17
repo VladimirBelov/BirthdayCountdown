@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
+  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.06.2025, 16:22
+  ~  * Last modified 17.06.2025, 02:27
   ~  */
   -->
 
@@ -1327,6 +1327,15 @@ Additional sources (files, calendars) can be specified in Settings->Event setup-
     <string name="event_photo_select_photo_hint">Select photo…</string>
     <string name="event_photo_clear_photo_hint">Clear photo from event</string>
     <string name="event_photo_select_photo_title">Select photo</string>
+
+    <string name="crop_image_back">Back</string>
+    <string name="crop_image_save">Save</string>
+    <string name="crop_image_title">Crop the image</string>
+    <string name="crop_image_rotate">Rotate</string>
+    <string name="crop_image_reset">Reset</string>
+    <string name="crop_image_crop">Crop</string>
+    <string name="crop_image_loading">Loading</string>
+    <string name="crop_image_saving">Saving…</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->

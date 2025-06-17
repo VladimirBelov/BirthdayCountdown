@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.04.2025, 20:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.04.2025, 22:56
+ *  * Last modified 09.06.2025, 11:40
  *
  */
 
@@ -72,18 +72,21 @@ public class ColorPreference extends Preference {
     private int mSelectDialogIcon;
     private final Context context;
 
+    /** @noinspection unused*/
     public ColorPreference(Context context) {
         super(context);
         this.context = context;
         initAttrs(null, 0);
     }
 
+    /** @noinspection unused*/
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initAttrs(attrs, 0);
     }
 
+    /** @noinspection unused*/
     public ColorPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
@@ -463,18 +466,6 @@ public class ColorPreference extends Preference {
                     if (!mChoices.contains(mPreference.getValue())) {
                         mChoices.add(mPreference.getValue());
                     }
-
-                    /*int numToFillRecent = Math.min(mChoices.size() % mPreference.mNumColumns == 0 ? mPreference.mNumColumns : mPreference.mNumColumns - (mChoices.size() % mPreference.mNumColumns), eventsData.preferences_RecentColors.size());
-                    int numFilled = 0;
-                    int currentIndex = eventsData.preferences_RecentColors.size() - 1;
-                    while(currentIndex >= 0 && numFilled < numToFillRecent) {
-                        int valueInt = eventsData.preferences_RecentColors.get(currentIndex);
-                        if (!mChoices.contains(valueInt)) {
-                            mChoices.add(valueInt);
-                            numFilled++;
-                        }
-                        currentIndex--;
-                    }*/
 
                     for (int valueInt : eventsData.preferences_RecentColors) {
                         if (!mChoices.contains(valueInt)) {

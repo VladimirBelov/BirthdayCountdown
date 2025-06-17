@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 17.06.2025, 02:18
  *
  */
 
@@ -198,6 +198,7 @@ final class Constants {
     static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
     static final int RESULT_PICK_PHOTO = 209;
+    static final int RESULT_CROP_PHOTO = 210;
 
     static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;

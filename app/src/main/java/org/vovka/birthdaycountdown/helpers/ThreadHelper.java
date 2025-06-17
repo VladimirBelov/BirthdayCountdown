@@ -1,4 +1,12 @@
-package org.vovka.birthdaycountdown.helper;
+/*
+ * *
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 16.06.2025, 23:33
+ *
+ */
+
+package org.vovka.birthdaycountdown.helpers;
 
 import android.os.Looper;
 

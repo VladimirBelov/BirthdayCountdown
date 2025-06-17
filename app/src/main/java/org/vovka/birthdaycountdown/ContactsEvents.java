@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 17.06.2025, 01:46
  *
  */
 
@@ -132,7 +132,7 @@ import java.util.regex.Pattern;
 /**
  * Синглтон {@link ContactsEvents} для управления данными и настройками приложения
  */
-class ContactsEvents {
+public class ContactsEvents {
 
     static final int Position_eventDate_sorted = 0;
     static final int Position_personFullName = 1; //ИОФ
@@ -166,7 +166,7 @@ class ContactsEvents {
     static final int Position_eventURL = 29;
     static final int Position_eventDescription = 30;
     static final int Position_notAnnualEvent = 31;
-    static final int Position_image = 32;
+    static final int Position_photo = 32;
     static final int Position_attrAmount = 33; //MAX
 
     private static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
@@ -284,7 +284,7 @@ class ContactsEvents {
     String preferences_language;
     String preferences_icon;
     boolean preferences_menustyle_compact;
-    ColorTheme preferences_theme;
+    public ColorTheme preferences_theme;
     String preferences_quiz_interface;
     String preferences_first_names_female_custom;
     String preferences_first_names_male_custom;
@@ -427,6 +427,7 @@ class ContactsEvents {
     private Set<String> preferences_notifications_quick_actions;
     private Set<String> preferences_notifications2_quick_actions;
 
+    public int preferences_event_image_max_size = 500;
     //Виджеты
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     int preferences_widgets_update_period;
@@ -500,7 +501,7 @@ class ContactsEvents {
     }
 
     @NonNull
-    static ContactsEvents getInstance() {
+    public static ContactsEvents getInstance() {
         return ourInstance;
     }
 
@@ -516,9 +517,9 @@ class ContactsEvents {
         ListEvents, AllEvents
     }
 
-    static class ColorTheme {
+    public static class ColorTheme {
         int prefNumber; //Номер в shared preferences
-        int themeMain; //Тема основной активности
+        public int themeMain; //Тема основной активности
         int themePopup; //Тема всплывающего меню
         int themeDialog; //Тема диалогов
         int themeEditText; //Тема для EditText (если 0, то используется тема по-умолчанию)
@@ -3664,9 +3665,9 @@ class ContactsEvents {
                             Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
                             TreeMap<Integer, String> eventData = getEventData(eventString);
 
-                            String eventPhoto = eventData.get(ContactsEvents.Position_image);
+                            String eventPhoto = eventData.get(ContactsEvents.Position_photo);
                             if (eventPhoto != null && !eventPhoto.isEmpty()) {
-                                eventData.put(ContactsEvents.Position_image, context.getString(R.string.event_photo_details, eventPhoto.length()));
+                                eventData.put(ContactsEvents.Position_photo, context.getString(R.string.event_photo_details, eventPhoto.length()));
                             }
 
                             eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateEventFirstTime.getTime()));
@@ -5395,18 +5396,24 @@ class ContactsEvents {
             String eventType = singleEventArray[Position_eventType];
             String eventSubType = singleEventArray[Position_eventSubType];
 
-            if (!TextUtils.isEmpty(singleEventArray[Position_image])) {
-
+            String eventPhotoData = singleEventArray[Position_photo];
+            String eventPhoto = null;
+            if (!TextUtils.isEmpty(eventPhotoData)) {
                 try {
-                    TreeMap<Integer, String> localEvent = getLocalEvent(singleEventArray[Position_eventID]);
-                    if (localEvent != null) {
-                        String eventPhoto = localEvent.get(Position_image);
-                        localEvent.clear();
+                    if (eventPhotoData.startsWith(Constants.STRING_BRACKETS_START)) { //Описание фото
+                        TreeMap<Integer, String> localEvent = getLocalEvent(singleEventArray[Position_eventID]);
+                        if (localEvent != null) {
+                            eventPhoto = localEvent.get(Position_photo);
+                            localEvent.clear();
+                        }
+                    } else { //Само фото (редактирование локального события)
+                        eventPhoto = eventPhotoData;
+                    }
+                    if (!eventPhoto.isEmpty()) {
                         byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
                         bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                     }
                 } catch (Exception ignored) { /**/ }
-
             }
 
             if (bm == null) {
@@ -8819,10 +8826,9 @@ class ContactsEvents {
             //todo: https://stackoverflow.com/questions/66504777/how-to-scroll-to-a-specific-list-position-inside-alertdialog
 
             alertToShow.setOnShowListener(arg0 -> {
-                try (TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
-                }
+                TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -11398,122 +11404,123 @@ class ContactsEvents {
         final List<String> eventSourcesSelected = new ArrayList<>();
         try {
 
-            if (!eventSources.getIds().isEmpty()) {
-                TypedArray ta = baseContext.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                List<String> sourceChoices = new ArrayList<>();
+            if (eventSources.getIds().isEmpty()) return;
 
-                for (int i = 0; i < eventSources.getIds().size(); i++) {
-                    String sourceId = eventSources.getIds().get(i);
-                    String sourceTitle = eventSources.getTitles().get(i);
+            TypedArray ta = baseContext.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            List<String> sourceChoices = new ArrayList<>();
 
-                    if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
+            for (int i = 0; i < eventSources.getIds().size(); i++) {
+                String sourceId = eventSources.getIds().get(i);
+                String sourceTitle = eventSources.getTitles().get(i);
 
-                        final String accountType = substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + getContactsEventsCount(accountType, substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
-                                + Constants.STRING_BRACKETS_CLOSE);
+                if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
 
-                    } else if (sourceId.startsWith(Constants.eventSourcePhonePrefix)) {
+                    final String accountType = substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                    sourceChoices.add(sourceTitle
+                            + Constants.STRING_BRACKETS_OPEN
+                            + getContactsEventsCount(accountType, substringBefore(sourceTitle, Constants.STRING_PARENTHESIS_OPEN))
+                            + Constants.STRING_BRACKETS_CLOSE);
 
-                        final String accountType = substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + getContactsEventsCount(accountType, null)
-                                + Constants.STRING_BRACKETS_CLOSE);
+                } else if (sourceId.startsWith(Constants.eventSourcePhonePrefix)) {
 
-                    } else if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
+                    final String accountType = substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                    sourceChoices.add(sourceTitle
+                            + Constants.STRING_BRACKETS_OPEN
+                            + getContactsEventsCount(accountType, null)
+                            + Constants.STRING_BRACKETS_CLOSE);
 
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + getCalendarEventsCount(substringAfter(sourceId, Constants.eventSourceCalendarPrefix))
-                                + Constants.STRING_BRACKETS_CLOSE);
+                } else if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
 
-                    } else if (sourceId.startsWith(Constants.eventSourceFilePrefix)) {
+                    sourceChoices.add(sourceTitle
+                            + Constants.STRING_BRACKETS_OPEN
+                            + getCalendarEventsCount(substringAfter(sourceId, Constants.eventSourceCalendarPrefix))
+                            + Constants.STRING_BRACKETS_CLOSE);
 
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                //todo: тут жертвуем типом события в пользу "фактов" и скорости
-                                + getFileEventsCount(sourceId, getEventType(Constants.Type_Fact), false)
-                                + Constants.STRING_BRACKETS_CLOSE);
+                } else if (sourceId.startsWith(Constants.eventSourceFilePrefix)) {
 
-                    } else if (sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
+                    sourceChoices.add(sourceTitle
+                            + Constants.STRING_BRACKETS_OPEN
+                            //todo: тут жертвуем типом события в пользу "фактов" и скорости
+                            + getFileEventsCount(sourceId, getEventType(Constants.Type_Fact), false)
+                            + Constants.STRING_BRACKETS_CLOSE);
 
-                        sourceChoices.add(sourceTitle
-                                + Constants.STRING_BRACKETS_OPEN
-                                + getFileEventsCount(sourceId, Constants.Type_MultiEvent, true)
-                                + Constants.STRING_BRACKETS_CLOSE);
+                } else if (sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
 
-                    } else {
+                    sourceChoices.add(sourceTitle
+                            + Constants.STRING_BRACKETS_OPEN
+                            + getFileEventsCount(sourceId, Constants.Type_MultiEvent, true)
+                            + Constants.STRING_BRACKETS_CLOSE);
 
-                        //количество событий входит в заголовок
-                        sourceChoices.add(sourceTitle);
+                } else {
 
+                    //количество событий входит в заголовок
+                    sourceChoices.add(sourceTitle);
+
+                }
+            }
+
+            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, sourceChoices, eventSources.getIcons(), eventSources.getPackages(), null, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
+                    .setTitle(R.string.widget_config_events_sources_label)
+                    .setIcon(R.drawable.btn_zoom_page_press)
+                    .setAdapter(adapter, null)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
+                        SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                eventSourcesSelected.add(eventSources.getHashes().get(checked.keyAt(i)));
+                            }
+                        }
+                        if (baseContext instanceof Activity) {
+                            try {
+                                if (eventConsumer == null) {
+                                    Method method = baseContext.getClass().getMethod("getSelectedSources", List.class);
+                                    method.invoke(baseContext, eventSourcesSelected);
+                                } else {
+                                    Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
+                                    method.invoke(baseContext, eventConsumer, eventSourcesSelected);
+                                }
+                            } catch (Exception ignored) {
+                                ToastExpander.showDebugMsg(baseContext, "No method getSelectedSources found for " + baseContext.getClass().getSimpleName());
+                            }
+                        }
+
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.msg_all, null)
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                //Только здесь работает
+                for (int i = 0; i < eventSources.getHashes().size(); i++) {
+                    if (preselectedSources.contains(eventSources.getHashes().get(i))) {
+                        listView.setItemChecked(i, true);
                     }
                 }
 
-                ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, sourceChoices, eventSources.getIcons(), eventSources.getPackages(), null, ta);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
-                        .setTitle(R.string.widget_config_events_sources_label)
-                        .setIcon(R.drawable.btn_zoom_page_press)
-                        .setAdapter(adapter, null)
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-
-                            //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
-                            SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
-                            for (int i = 0; i < checked.size(); i++) {
-                                if (checked.get(checked.keyAt(i))) {
-                                    eventSourcesSelected.add(eventSources.getHashes().get(checked.keyAt(i)));
-                                }
-                            }
-                            if (baseContext instanceof Activity) {
-                                try {
-                                    if (eventConsumer == null) {
-                                        Method method = baseContext.getClass().getMethod("getSelectedSources", List.class);
-                                        method.invoke(baseContext, eventSourcesSelected);
-                                    } else {
-                                        Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
-                                        method.invoke(baseContext, eventConsumer, eventSourcesSelected);
-                                    }
-                                } catch (Exception ignored) {
-                                    ToastExpander.showDebugMsg(baseContext, "No method getSelectedSources found for " + baseContext.getClass().getSimpleName());
-                                }
-                            }
-
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setNeutralButton(R.string.msg_all, null)
-                        .setCancelable(true);
-
-                AlertDialog alertToShow = builder.create();
-
-                ListView listView = alertToShow.getListView();
-                listView.setItemsCanFocus(false);
-                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-
-                    //Только здесь работает
-                    for (int i = 0; i < eventSources.getHashes().size(); i++) {
-                        if (preselectedSources.contains(eventSources.getHashes().get(i))) {
-                            listView.setItemChecked(i, true);
-                        }
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
+                    for (int i = 0; i < listView.getCount(); i++) {
+                        listView.setItemChecked(i, true);
                     }
+                    listView.invalidateViews();
+                }));
+            });
 
-                    alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
-                        for (int i = 0; i < listView.getCount(); i++) {
-                            listView.setItemChecked(i, true);
-                        }
-                        listView.invalidateViews();
-                    }));
-                });
-
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-            }
+            alertToShow.setOnDismissListener(dialog -> ta.recycle());
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2025, 18:24
+  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.06.2025, 18:15
+  ~  * Last modified 17.06.2025, 03:03
   ~  */
   -->
 
@@ -74,27 +74,33 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:contentDescription="@string/widget_Photo"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
                 <Button
                     android:id="@+id/buttonPickContactData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                    android:background="@android:color/transparent"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/buttonPickPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:drawableStart="@android:drawable/ic_menu_gallery"
+                    android:background="@android:color/transparent"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/buttonClearPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+                    android:background="@android:color/transparent"
                     android:visibility="gone" />
             </LinearLayout>
 

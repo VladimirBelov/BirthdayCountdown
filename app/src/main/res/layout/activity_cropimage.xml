@@ -1,0 +1,127 @@
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 17.06.2025, 02:06
+  ~  */
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/backgroundColor">
+        
+    <org.vovka.birthdaycountdown.imagecropper.CropImageView
+        android:id="@+id/CropWindow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:src="@drawable/abc_ic_ab_back"
+            android:onClick="onClickBack"/>
+
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/crop_image_back"
+            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/view_click_selector"
+            android:onClick="onClickBack"/>-->
+    
+        <TextView
+            android:id="@+id/TitleView"
+            android:layout_width="wrap_content"        
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/crop_image_title"
+            android:textColor="?android:attr/textColorSecondary"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textSize="20sp"                         
+            android:gravity="center_vertical"/>
+    
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/crop_image_save"
+            android:textColor="?android:attr/textColorSecondary"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/view_click_selector"
+            android:onClick="onClickSave"/>    
+
+    </RelativeLayout>
+
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp">
+                
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"            
+            android:text="@string/crop_image_rotate"
+            android:textColor="?android:attr/textColorSecondary"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/view_click_selector"
+            android:onClick="onClickRotate"/>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/crop_image_reset"
+            android:textColor="?android:attr/textColorSecondary"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/view_click_selector"
+            android:onClick="onClickReset"/>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/crop_image_crop"
+            android:textColor="?android:attr/textColorSecondary"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/view_click_selector"
+            android:onClick="onClickCrop"/>
+        
+    </LinearLayout>
+        
+</FrameLayout>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 17.06.2025, 02:58
  *
  */
 
@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -54,6 +55,8 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -570,7 +573,7 @@ public class LocalEventActivity extends Activity {
     private void clearPhoto() {
         try {
 
-            eventData.put(ContactsEvents.Position_image, Constants.STRING_EMPTY);
+            eventData.put(ContactsEvents.Position_photo, Constants.STRING_EMPTY);
             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
             updateCaptionsAndVisibility(this);
             updateEventPhoto(this);
@@ -669,10 +672,20 @@ public class LocalEventActivity extends Activity {
                     }
                 } else if (requestCode == Constants.RESULT_PICK_PHOTO) {
                     Uri selectedImageUri = data.getData();
-                    eventData.put(ContactsEvents.Position_image, ContactsEvents.encodeImageToBase64(this, selectedImageUri, 500));
-                    eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
-                    updateCaptionsAndVisibility(this);
-                    updateEventPhoto(this);
+                    CropIntent intent = new CropIntent();
+                    intent.setImagePath(selectedImageUri);
+                    startActivityForResult(intent.getIntent(this), Constants.RESULT_CROP_PHOTO);
+
+                } else if (requestCode == Constants.RESULT_CROP_PHOTO) {
+                    if (data.getExtras() != null) {
+                        Uri croppedUri = data.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
+                        if (croppedUri != null) {
+                            eventData.put(ContactsEvents.Position_photo, ContactsEvents.encodeImageToBase64(this, croppedUri, eventsData.preferences_event_image_max_size));
+                            eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
+                            updateCaptionsAndVisibility(this);
+                            updateEventPhoto(this);
+                        }
+                    }
                 }
             }
 
@@ -763,11 +776,10 @@ public class LocalEventActivity extends Activity {
                         .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
                 androidx.appcompat.app.AlertDialog alertToShow = builder.create();
                 alertToShow.setOnShowListener(dialog -> {
-                    try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                        alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                        ta.recycle();
-                    }
+                    TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    ta.recycle();
                 });
                 alertToShow.show();
             } else {
@@ -811,11 +823,10 @@ public class LocalEventActivity extends Activity {
                     .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(dialog -> {
-                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
-                }
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
             });
             alertToShow.show();
 
@@ -974,7 +985,7 @@ public class LocalEventActivity extends Activity {
                 activity.buttonPickContactData.setVisibility(View.VISIBLE);
                 activity.buttonPickPhoto.setVisibility(View.VISIBLE);
 
-                String imageData = eventData.get(ContactsEvents.Position_image);
+                String imageData = eventData.get(ContactsEvents.Position_photo);
                 String imageUrl = eventData.get(ContactsEvents.Position_photo_uri);
                 if ((imageData != null && !imageData.isEmpty()) || (imageUrl != null && !imageUrl.isEmpty())) {
                     activity.buttonClearPhoto.setVisibility(View.VISIBLE);

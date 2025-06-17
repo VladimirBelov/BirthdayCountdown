@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 05.06.2025, 23:30
  *
  */
 
@@ -2460,10 +2460,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
-                }
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
@@ -3177,10 +3176,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
-                }
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();

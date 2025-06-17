@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:09
+ *  * Last modified 16.06.2025, 23:33
  *
  */
 
@@ -24,9 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.vovka.birthdaycountdown.helper.ItemTouchHelperAdapter;
-import org.vovka.birthdaycountdown.helper.ItemTouchHelperViewHolder;
-import org.vovka.birthdaycountdown.helper.OnStartDragListener;
+import org.vovka.birthdaycountdown.helpers.ItemTouchHelperAdapter;
+import org.vovka.birthdaycountdown.helpers.ItemTouchHelperViewHolder;
+import org.vovka.birthdaycountdown.helpers.OnStartDragListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

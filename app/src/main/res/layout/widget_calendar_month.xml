@@ -1,9 +1,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.02.2025, 02:09
+  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.02.2025, 00:32
+  ~  * Last modified 16.06.2025, 13:50
   ~  */
   -->
 
@@ -29,6 +29,7 @@
             android:minWidth="1dp"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
+            android:singleLine="true"
             android:scaleX="2" />
 
         <TextView
@@ -53,6 +54,7 @@
             android:minWidth="1dp"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
+            android:singleLine="true"
             android:scaleX="2" />
     </LinearLayout>
 

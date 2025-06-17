@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 17.06.2025, 10:00
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:30
+ *  * Last modified 05.06.2025, 23:19
  *
  */
 
@@ -752,110 +752,111 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void selectEventSources() {
         try {
 
-            if (!eventSourcesIds.isEmpty()) {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                List<String> sourceChoices = new ArrayList<>();
-                List<Integer> colorDots = new ArrayList<>();
+            if (eventSourcesIds.isEmpty()) return;
 
-                for (int i = 0; i < eventSourcesIds.size(); i++) {
-                    String sourceId = eventSourcesIds.get(i);
-                    sourceChoices.add(eventSourcesTitles.get(i));
+            TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            List<String> sourceChoices = new ArrayList<>();
+            List<Integer> colorDots = new ArrayList<>();
 
-                    if (eventSourcesColors.containsKey(sourceId)) {
-                        colorDots.add(eventSourcesColors.get(sourceId));
-                    } else {
-                        colorDots.add(ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default));
-                    }
+            for (int i = 0; i < eventSourcesIds.size(); i++) {
+                String sourceId = eventSourcesIds.get(i);
+                sourceChoices.add(eventSourcesTitles.get(i));
 
+                if (eventSourcesColors.containsKey(sourceId)) {
+                    colorDots.add(eventSourcesColors.get(sourceId));
+                } else {
+                    colorDots.add(ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default));
                 }
 
-                ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, null, null, colorDots, ta);
+            }
 
-                //todo: заголовок на несколько строк https://stackoverflow.com/questions/14439538/how-can-i-change-the-color-of-alertdialog-title-and-the-color-of-the-line-under
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(R.string.widget_config_month_events_sources_label)
-                        .setIcon(R.drawable.btn_zoom_page_press)
-                        .setAdapter(adapter, null)
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, null, null, colorDots, ta);
 
-                            //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
-                            SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
-                            eventSourcesSelected.clear();
-                            for (int i = 0; i < checked.size(); i++) {
-                                if (checked.get(checked.keyAt(i))) {
-                                    eventSourcesSelected.add(eventSourcesIds.get(checked.keyAt(i)));
-                                }
+            //todo: заголовок на несколько строк https://stackoverflow.com/questions/14439538/how-can-i-change-the-color-of-alertdialog-title-and-the-color-of-the-line-under
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.widget_config_month_events_sources_label)
+                    .setIcon(R.drawable.btn_zoom_page_press)
+                    .setAdapter(adapter, null)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        //https://stackoverflow.com/questions/8326830/how-to-uncheck-item-checked-by-setitemchecked
+                        SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                        eventSourcesSelected.clear();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                eventSourcesSelected.add(eventSourcesIds.get(checked.keyAt(i)));
                             }
-                            updateEventSources();
+                        }
+                        updateEventSources();
 
-                        })
-                        .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setCancelable(true);
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
 
-                AlertDialog alertToShow = builder.create();
+            AlertDialog alertToShow = builder.create();
 
-                ListView listView = alertToShow.getListView();
-                listView.setItemsCanFocus(false);
-                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-                alertToShow.setOnShowListener(arg0 -> {
-                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
-                    //Только здесь работает
-                    for (int i = 0; i < sourceChoices.size(); i++) {
-                        String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
-                        if (eventSourcesTitles.contains(title)) {
-                            if (eventSourcesSelected.contains(eventSourcesIds.get(eventSourcesTitles.indexOf(title)))) {
-                                listView.setItemChecked(i, true);
-                            }
+                //Только здесь работает
+                for (int i = 0; i < sourceChoices.size(); i++) {
+                    String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
+                    if (eventSourcesTitles.contains(title)) {
+                        if (eventSourcesSelected.contains(eventSourcesIds.get(eventSourcesTitles.indexOf(title)))) {
+                            listView.setItemChecked(i, true);
                         }
                     }
+                }
 
-                    listView.setOnItemLongClickListener((parent, view, position, id) -> {
+                listView.setOnItemLongClickListener((parent, view, position, id) -> {
 
-                        ColorPicker picker = new ColorPicker(thisActivity);
-                        String sourceId = eventSourcesIds.get(position);
-                        Integer colorValue;
-                        if (eventSourcesColors.containsKey(sourceId) && eventSourcesColors.get(sourceId) != null) {
-                            colorValue = eventSourcesColors.get(sourceId);
+                    ColorPicker picker = new ColorPicker(thisActivity);
+                    String sourceId = eventSourcesIds.get(position);
+                    Integer colorValue;
+                    if (eventSourcesColors.containsKey(sourceId) && eventSourcesColors.get(sourceId) != null) {
+                        colorValue = eventSourcesColors.get(sourceId);
+                    } else {
+                        colorValue = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
+                    }
+                    if (colorValue != null) {
+
+                        SparseBooleanArray checked = listView.getCheckedItemPositions();
+                        eventSourcesSelected.clear();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                eventSourcesSelected.add(eventSourcesIds.get(checked.keyAt(i)));
+                            }
+                        }
+                        alertToShow.dismiss();
+
+                        int colorDefault;
+                        Integer colorCalendar = eventsData.map_calendars_colors.get(sourceId);
+                        if (sourceId.equals(getString(R.string.widget_config_month_events_saturday_id))) {
+                            colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Saturday_default);
+                        } else if (sourceId.equals(getString(R.string.widget_config_month_events_sunday_id))) {
+                            colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Sunday_default);
+                        } else if (colorCalendar != null) {
+                            colorDefault = colorCalendar;
                         } else {
-                            colorValue = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
-                        }
-                        if (colorValue != null) {
-
-                            SparseBooleanArray checked = listView.getCheckedItemPositions();
-                            eventSourcesSelected.clear();
-                            for (int i = 0; i < checked.size(); i++) {
-                                if (checked.get(checked.keyAt(i))) {
-                                    eventSourcesSelected.add(eventSourcesIds.get(checked.keyAt(i)));
-                                }
-                            }
-                            alertToShow.dismiss();
-
-                            int colorDefault;
-                            Integer colorCalendar = eventsData.map_calendars_colors.get(sourceId);
-                            if (sourceId.equals(getString(R.string.widget_config_month_events_saturday_id))) {
-                                colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Saturday_default);
-                            } else if (sourceId.equals(getString(R.string.widget_config_month_events_sunday_id))) {
-                                colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Sunday_default);
-                            } else if (colorCalendar != null) {
-                                colorDefault = colorCalendar;
-                            } else {
-                                colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
-                            }
-
-                            picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
-
+                            colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                         }
 
-                        return true;
-                    });
+                        picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
+
+                    }
+
+                    return true;
                 });
+            });
 
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertToShow.show();
-            }
+            alertToShow.setOnDismissListener(dialog -> ta.recycle());
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
