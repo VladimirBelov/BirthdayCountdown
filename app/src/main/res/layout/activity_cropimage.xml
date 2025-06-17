@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 17:39
+  ~  * Created by Vladimir Belov on 17.06.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 17:07
+  ~  * Last modified 17.06.2025, 22:44
   ~  */
   -->
 
@@ -23,7 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
             android:clickable="true"
             android:contentDescription="@string/crop_image_back"
             android:focusable="true"
@@ -34,15 +36,17 @@
 
         <TextView
             android:id="@+id/TitleView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:gravity="center_vertical"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:padding="10dp"
             android:text="@string/crop_image_title"
             android:textColor="?attr/dialogTextColor"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/buttonSave"
@@ -50,10 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/border_button"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"

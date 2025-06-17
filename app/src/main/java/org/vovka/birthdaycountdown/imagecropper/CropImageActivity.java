@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 17:39
+ *  * Created by Vladimir Belov on 17.06.2025, 22:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 17:12
+ *  * Last modified 17.06.2025, 22:51
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -81,8 +81,6 @@ public class CropImageActivity extends Activity {
                     layoutMain.setPadding(insets.left, insets.top, insets.right, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
-                //} else {
-                //layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
 
             mCropImageView = findViewById(R.id.CropWindow);
@@ -114,16 +112,16 @@ public class CropImageActivity extends Activity {
 
             TextView buttonSave = findViewById(R.id.buttonSave);
             addClickEffect(buttonSave);
-            buttonSave.getBackground().setAlpha(50);
+            buttonSave.getBackground().setAlpha(125);
             TextView buttonRotate = findViewById(R.id.buttonRotate);
             addClickEffect(buttonRotate);
-            buttonRotate.getBackground().setAlpha(50);
+            buttonRotate.getBackground().setAlpha(125);
             TextView buttonReset = findViewById(R.id.buttonReset);
             addClickEffect(buttonReset);
-            buttonReset.getBackground().setAlpha(50);
+            buttonReset.getBackground().setAlpha(125);
             TextView buttonCrop = findViewById(R.id.buttonCrop);
             addClickEffect(buttonCrop);
-            buttonCrop.getBackground().setAlpha(50);
+            buttonCrop.getBackground().setAlpha(125);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
