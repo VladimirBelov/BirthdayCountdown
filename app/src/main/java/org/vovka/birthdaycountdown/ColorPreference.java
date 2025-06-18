@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.06.2025, 11:40
+ *  * Last modified 18.06.2025, 15:21
  *
  */
 
@@ -62,7 +62,7 @@ import java.util.List;
  * </ul>
  * </p>
  */
-public class ColorPreference extends Preference {
+class ColorPreference extends Preference {
     private static final String TAG = "ColorPreference";
     private int[] mColorChoices = {};
     private int mValue = 0;

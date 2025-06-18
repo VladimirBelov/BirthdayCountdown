@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:59
+ *  * Last modified 18.06.2025, 15:21
  *
  */
 
@@ -44,7 +44,7 @@ import java.util.List;
  * Основано на: <a href="https://trinitytuts.com/tips/multiselect-spinner-item-in-android/">trinitytuts.com</a>
  * </p>
  */
-public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
+class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;
     private boolean isSortable = false;

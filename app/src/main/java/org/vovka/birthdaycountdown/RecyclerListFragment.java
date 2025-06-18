@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.06.2025, 23:33
+ *  * Last modified 18.06.2025, 15:21
  *
  */
 
@@ -46,7 +46,7 @@ import org.vovka.birthdaycountdown.helpers.OnStartDragListener;
  * <p>
  * Он также управляет видимостью элементов макета и заголовком панели инструментов.
  */
-public class RecyclerListFragment extends Fragment implements OnStartDragListener {
+class RecyclerListFragment extends Fragment implements OnStartDragListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private String parentTitle = null;

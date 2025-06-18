@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 23:30
+ *  * Last modified 18.06.2025, 15:21
  *
  */
 
@@ -28,7 +28,7 @@ import android.widget.EditText;
  * улучшить удобство использования.
  * </p>
  */
-public class CustomEditTextPreference extends EditTextPreference {
+class CustomEditTextPreference extends EditTextPreference {
 
     public CustomEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);

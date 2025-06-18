@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 22:58
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 22:51
+ *  * Last modified 18.06.2025, 14:10
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -45,7 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
-public class CropImageActivity extends Activity {
+class CropImageActivity extends Activity {
 
     private static final String TAG = "CropImageActivity";
     private Bitmap mBitmap;

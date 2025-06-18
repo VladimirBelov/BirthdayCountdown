@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.06.2025, 23:33
+ *  * Last modified 18.06.2025, 15:43
  *
  */
 
@@ -43,7 +43,7 @@ import org.vovka.birthdaycountdown.helpers.ThreadHelper;
  *     </ul>
  * </p>
  */
-public final class FluentSnackbar {
+final class FluentSnackbar {
     private final View mView;
 
     private final org.vovka.birthdaycountdown.SnackbarHandler mSnackbarHandler;
@@ -161,26 +161,6 @@ public final class FluentSnackbar {
             mTextColor = color;
             return this;
         }
-
-        /*public Builder successBackgroundColor() {
-            mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.green_500);
-            return this;
-        }
-
-        public Builder errorBackgroundColor() {
-            mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.red_500);
-            return this;
-        }
-
-        public Builder warningBackgroundColor() {
-            mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.yellow_700);
-            return this;
-        }
-
-        public Builder neutralBackgroundColor() {
-            mBackgroundColor = ContextCompat.getColor(mView.getContext(), R.color.theme_grey_primary);
-            return this;
-        }*/
 
         public Builder backgroundColorRes(@ColorRes int color) {
             mBackgroundColor = ContextCompat.getColor(mView.getContext(), color);

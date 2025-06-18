@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 17:39
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 15:20
+ *  * Last modified 18.06.2025, 14:10
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -11,7 +11,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-public class CropWindow {
+class CropWindow {
 
     private static final int TOUCH_NONE = 1;
     private static final int TOUCH_GROW_LEFT_EDGE = (1 << 1);

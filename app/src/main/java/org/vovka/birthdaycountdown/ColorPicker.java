@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 18.06.2025, 15:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 18.06.2025, 15:21
  *
  */
 
@@ -64,7 +64,7 @@ import java.util.List;
  *   </ul>
  * </p>
  */
-public class ColorPicker extends FrameLayout implements View.OnClickListener {
+class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     private static final String TAG = "ColorPicker";
     private int[] mColorChoices = {};
