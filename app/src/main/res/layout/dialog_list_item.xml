@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 23.06.2025, 00:51
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 23.06.2025, 00:13
+  ~  */
+  -->
+
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
+    android:textAppearance="?android:attr/textAppearanceListItem"
+    android:gravity="center_vertical"
+    android:paddingStart="10dip"
+    android:paddingEnd="10dip"
+/>

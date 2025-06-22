@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 23.06.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 23:30
+ *  * Last modified 22.06.2025, 21:28
  *
  */
 
@@ -55,6 +55,7 @@ import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -107,6 +108,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -692,7 +694,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Anniversary_List_key).equals(key)) { //Список всех годовщин свадеб
 
-                eventsData.showAnniversaryList(this);
+                eventsData.showAnniversaryList(this, null);
                 return true;
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
@@ -3159,21 +3161,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             for (String eventId: prefs.keySet()) {
                 if (prefs.get(eventId) instanceof String) {
-                    String eventData = (String) prefs.get(eventId);
-                    if (eventData != null) {
-                        sb.append(eventId)
+                    String eventDataString = (String) prefs.get(eventId);
+                    if (eventDataString != null) {
+                        TreeMap<Integer, String> eventData = eventsData.getEventData(eventDataString);
+                        String eventPhoto = eventData.get(ContactsEvents.Position_photo);
+                        if (eventPhoto != null && !eventPhoto.isEmpty()) {
+                            eventData.put(ContactsEvents.Position_photo, getString(R.string.event_photo_details, eventPhoto.length()));
+                        }
+                        eventDataString = eventsData.getEventData(eventData);
+                        sb.append(Constants.HTML_BOLD_START).append(eventId).append(Constants.HTML_BOLD_END)
                                 .append(Constants.STRING_COLON_SPACE)
-                                .append(eventData.replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
-                                .append(Constants.HTML_BR);
+                                .append(eventDataString.replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
+                                .append(Constants.HTML_BR).append(Constants.HTML_BR);
                     }
                 }
             }
 
+            Spanned eventsData = HtmlCompat.fromHtml(sb.toString(), 0);
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(R.string.msg_title_local_events);
             builder.setIcon(android.R.drawable.ic_menu_info_details);
-            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+            builder.setMessage(eventsData);
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+            builder.setNeutralButton(R.string.button_share, (dialog, which) -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intent.putExtra(Intent.EXTRA_TEXT, eventsData.toString());
+                startActivity(Intent.createChooser(intent, null));
+            });
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);

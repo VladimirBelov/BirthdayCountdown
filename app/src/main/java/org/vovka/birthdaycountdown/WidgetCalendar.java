@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 17:39
+ *  * Created by Vladimir Belov on 23.06.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 12:28
+ *  * Last modified 22.06.2025, 21:15
  *
  */
 
@@ -555,7 +555,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
                     }
                 }
-                Log.i(TAG + ".Period", ContactsEvents.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + ContactsEvents.sdf_DDMMYYYY.format(calLastDay.getTime()));
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG + ".Period", ContactsEvents.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + ContactsEvents.sdf_DDMMYYYY.format(calLastDay.getTime()));
+                }
 
                 //Заполнение типов дней из календарей по периоду
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);

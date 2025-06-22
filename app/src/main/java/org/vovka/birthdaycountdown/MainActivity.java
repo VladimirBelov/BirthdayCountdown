@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 23.06.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 22.06.2025, 21:28
  *
  */
 
@@ -684,7 +684,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_AnniversaryList) {
 
-                eventsData.showAnniversaryList(this);
+                eventsData.showAnniversaryList(this, selectedEvent[ContactsEvents.Position_age]);
                 return true;
 
             } else if (itemId == Constants.ContextMenu_SilentEvent) {
@@ -901,7 +901,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
             intent.putExtra(Intent.EXTRA_TEXT, textBig.toString());
-            startActivity(Intent.createChooser(intent, ""));
+            startActivity(Intent.createChooser(intent, null));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

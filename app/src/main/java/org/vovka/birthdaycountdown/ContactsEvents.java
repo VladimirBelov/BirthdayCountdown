@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 17:39
+ *  * Created by Vladimir Belov on 23.06.2025, 00:51
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 15:20
+ *  * Last modified 23.06.2025, 00:44
  *
  */
 
@@ -42,6 +42,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
@@ -59,9 +60,11 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -8799,11 +8802,48 @@ public class ContactsEvents {
     }
 
     @SuppressLint("DiscouragedApi")
-    void showAnniversaryList(Context context) {
+    void showAnniversaryList(Context context, String age) {
+
+        int selectedAge = -1;
+        int selectedPossition = -1;
 
         try{
 
+            class HolidayAdapter extends ArrayAdapter<String> {
+
+                final int selectedPosition;
+
+                public HolidayAdapter(Context context, int resource, String[] objects, int selectedPosition) {
+                    super(context, resource, objects);
+                    this.selectedPosition = selectedPosition;
+                }
+
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    TextView textView = view.findViewById(android.R.id.text1);
+
+                    String item = getItem(position);
+                    if (position == this.selectedPosition) {
+                        SpannableString spannableString = new SpannableString(item);
+                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, spannableString.length(), 0);
+                        textView.setText(spannableString);
+                    } else {
+                        textView.setText(item);
+                    }
+
+                    return view;
+                }
+            }
+
             List<String> items = new ArrayList<>();
+            if (age != null) {
+                try {
+                    selectedAge = Integer.parseInt(age);
+                } catch (NumberFormatException ignored) { /**/ }
+            }
+
             for (int i = 1; i <= 100; i++) {
                 @Nullable String anCaption;
                 try {
@@ -8811,24 +8851,37 @@ public class ContactsEvents {
                 } catch (Resources.NotFoundException nfe) {
                     anCaption = null;
                 }
-                if (anCaption != null && !anCaption.equals(Constants.STRING_EMPTY))
-                    items.add(i + Constants.STRING_COLON_SPACE + anCaption);
+                if (anCaption != null && !anCaption.equals(Constants.STRING_EMPTY)) {
+                    String holiday = i + Constants.STRING_COLON_SPACE + anCaption;
+                    if (i == selectedAge) {
+                        selectedPossition = items.size();
+                    }
+                    items.add(holiday);
+                } else if (selectedAge > -1 && i == selectedAge) {
+                    selectedPossition = items.size();
+                    String holiday = i + " ???";
+                    items.add(holiday);
+                }
             }
+            HolidayAdapter adapter = new HolidayAdapter(context, R.layout.dialog_list_item, items.toArray(new String[0]), selectedPossition);
+
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_CustomEvents_Anniversary_List_summary)
                     .setIcon(R.drawable.ic_event_wedding)
-                    .setItems(items.toArray(new CharSequence[0]), null)
+                    .setAdapter(adapter, null)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
             AlertDialog alertToShow = builder.create();
 
-            //todo: https://stackoverflow.com/questions/66504777/how-to-scroll-to-a-specific-list-position-inside-alertdialog
-
+            int finalSelectedPossition = selectedPossition;
             alertToShow.setOnShowListener(arg0 -> {
                 TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 ta.recycle();
+                if (finalSelectedPossition > -1) {
+                    alertToShow.getListView().smoothScrollToPosition(finalSelectedPossition + 4);
+                }
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
