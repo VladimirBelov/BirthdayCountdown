@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.06.2025, 00:51
+ *  * Created by Vladimir Belov on 24.06.2025, 13:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.06.2025, 00:44
+ *  * Last modified 24.06.2025, 13:19
  *
  */
 
@@ -137,17 +137,35 @@ import java.util.regex.Pattern;
  */
 public class ContactsEvents {
 
+    /** Сортировка события в общем списке
+     * Устанавливается в {@link ContactsEvents#getSortKey}
+     * */
     static final int Position_eventDate_sorted = 0;
-    static final int Position_personFullName = 1; //ИОФ
-    static final int Position_personFullNameAlt = 2; //ФИО
+    /** ИОФ */
+    static final int Position_personFullName = 1;
+    /** ФИО */
+    static final int Position_personFullNameAlt = 2;
+    /** Тип события */
     static final int Position_eventCaption = 3;
+    /** Исходное наименование события */
     static final int Position_eventLabel = 4;
+    /** Ник */
     static final int Position_nickname = 5;
-    static final int Position_dates = 6; //accountType: date: eventHash
+    /** Массив дат события
+     * accountType: date: eventHash
+     */
+    static final int Position_dates = 6;
+    /** Следующая дата появления события */
     static final int Position_eventDateNextTime = 7;
+    /** Дата возникновения события */
     static final int Position_eventDateFirstTime = 8;
+    /** Число дней до события */
     static final int Position_eventDistance = 9;
+    /** Число дней до события с доп. информацией
+     * Устанавливается в {@link ContactsEvents#getEventDistanceText}
+     */
     static final int Position_eventDistanceText = 10;
+    /** Наступающий возраст */
     static final int Position_age = 11;
     static final int Position_age_caption = 12;
     static final int Position_organization = 13;
@@ -156,8 +174,11 @@ public class ContactsEvents {
     static final int Position_eventIcon = 16;
     static final int Position_eventEmoji = 17; //https://www.piliapp.com/emoji/list/
     static final int Position_starred = 18;
+    /** Текущий возраст */
     static final int Position_age_current = 19;
+    /** Тип события */
     static final int Position_eventType = 20;
+    /** Подтип события */
     static final int Position_eventSubType = 21;
     static final int Position_contactID = 22;
     static final int Position_eventID = 23;
@@ -6238,6 +6259,11 @@ public class ContactsEvents {
         }
     }
 
+    /** Возвращает ключ сортировки события в общем списке
+     *
+     * @param singleEventArray данные события
+     * @return ключ сортировки
+     */
     @NonNull
     private String getSortKey(@NonNull String[] singleEventArray) {
         try {
@@ -6264,6 +6290,14 @@ public class ContactsEvents {
         }
     }
 
+    /** Возвращает текущий возраст по данным события
+     *
+     * @param singleEventArray данные события
+     * @param eventSubType подтип события
+     * @param currentAge количество дней до события или после события
+     * @param today дата сегодня
+     * @return текущий возраст с префиксом
+     */
     @NonNull
     private String fillCurrentAge(@NonNull String[] singleEventArray, @NonNull String eventSubType, @NonNull String currentAge, Date today) {
 
@@ -8859,10 +8893,16 @@ public class ContactsEvents {
                     items.add(holiday);
                 } else if (selectedAge > -1 && i == selectedAge) {
                     selectedPossition = items.size();
-                    String holiday = i + " ???";
+                    String holiday = i + Constants.STRING_COLON_SPACE + " ???";
                     items.add(holiday);
                 }
             }
+            if (age != null && selectedPossition == -1) {
+                selectedPossition = items.size();
+                String holiday = age + Constants.STRING_COLON_SPACE + " ???";
+                items.add(holiday);
+            }
+
             HolidayAdapter adapter = new HolidayAdapter(context, R.layout.dialog_list_item, items.toArray(new String[0]), selectedPossition);
 
 

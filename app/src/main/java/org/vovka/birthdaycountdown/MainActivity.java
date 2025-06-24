@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.06.2025, 00:51
+ *  * Created by Vladimir Belov on 24.06.2025, 13:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.06.2025, 21:28
+ *  * Last modified 24.06.2025, 10:49
  *
  */
 
@@ -2856,7 +2856,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventCaption);
-                    if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equals(eventLabel)) {
+                    if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equalsIgnoreCase(eventLabel)) {
                         eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(Constants.STRING_PARENTHESIS_CLOSE);
                     }
 
@@ -2871,9 +2871,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
 
-                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventLabel.isEmpty()) {
+                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(eventLabel);
+                    if (!eventLabel.isEmpty()) {
+                        eventDetails.append(eventLabel);
+                    } else {
+                        eventDetails.append(eventCaption);
+                    }
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
