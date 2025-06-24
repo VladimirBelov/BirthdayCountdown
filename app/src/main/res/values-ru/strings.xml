@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 22:27
+  ~  * Created by Vladimir Belov on 24.06.2025, 21:52
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 19:17
+  ~  * Last modified 24.06.2025, 21:45
   ~  */
   -->
 
@@ -395,7 +395,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Показывать дни рождения из выбранных календарей</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Использовать год</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Использовать год из события календаря для расчёта годовщин (не только день и месяц)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов. Долгое нажатие на элементе списка для просмотра файла</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Показывать дни рождения из выбранных файлов (форматы: DarkBirthday, iCalendar, BirthdayPro). Долгое нажатие на элементе списка для просмотра файла</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Годовщины свадеб</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Стандартные наименования</string>

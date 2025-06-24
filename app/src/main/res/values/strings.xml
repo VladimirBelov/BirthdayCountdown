@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 22:27
+  ~  * Created by Vladimir Belov on 24.06.2025, 21:52
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 19:17
+  ~  * Last modified 24.06.2025, 21:45
   ~  */
   -->
 
@@ -395,7 +395,7 @@
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Show birthday events from chosen calendars</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Use date with year</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use full calendar event date for event (not only day and month)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files. Long press on list item to view a file</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Show birthday events from chosen files (formats: DarkBirthday, iCalendar, BirthdayPro). Long press on list item to view a file</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Anniversaries</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use standard labels</string>
