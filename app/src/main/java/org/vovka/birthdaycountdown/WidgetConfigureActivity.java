@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 16:57
+ *  * Created by Vladimir Belov on 25.06.2025, 18:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 16:52
+ *  * Last modified 25.06.2025, 18:20
  *
  */
 
@@ -139,7 +139,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
 
             //Отступы всего окна

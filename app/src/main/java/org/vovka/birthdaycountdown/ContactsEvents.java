@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 15:43
+ *  * Created by Vladimir Belov on 25.06.2025, 18:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 15:37
+ *  * Last modified 25.06.2025, 17:47
  *
  */
 
@@ -3688,6 +3688,11 @@ public class ContactsEvents {
                             } catch (NumberFormatException ignored) { /**/ }
                             Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
                             TreeMap<Integer, String> eventData = getEventData(eventString);
+
+                            final String eventTitleAlt = eventData.get(Position_personFullNameAlt);
+                            if (eventTitleAlt == null || eventTitleAlt.isEmpty()) {
+                                eventData.put(Position_personFullNameAlt, eventData.get(Position_personFullName));
+                            }
 
                             String eventPhoto = eventData.get(ContactsEvents.Position_photo);
                             if (eventPhoto != null && !eventPhoto.isEmpty()) {

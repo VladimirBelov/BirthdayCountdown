@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 15:43
+ *  * Created by Vladimir Belov on 25.06.2025, 18:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 15:25
+ *  * Last modified 25.06.2025, 18:17
  *
  */
 
@@ -88,11 +88,11 @@ public class FAQActivity extends AppCompatActivity {
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
+                    layoutMain.setPadding(0, insets.bottom, 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
