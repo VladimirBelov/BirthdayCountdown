@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.06.2025, 21:52
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.06.2025, 21:45
+  ~  * Last modified 25.06.2025, 11:46
   ~  */
   -->
 
@@ -453,7 +453,7 @@
     <string name="pref_CustomEvents_Calendars_title">Календари</string>
     <string name="pref_CustomEvents_Calendars_summary">Показывать события из выбранных календарей</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Показывать события из выбранных файлов. Долгое нажатие на элементе списка для просмотра файла</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Показывать события из выбранных файлов (форматы: DarkBirthday, iCalendar, BirthdayPro). Долгое нажатие на элементе списка для просмотра файла</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричневая</item>
@@ -676,7 +676,7 @@
 
     <string name="pref_List_TopPadding_title">Вертикальный отступ</string>
     <string name="pref_List_TopPadding_summary">Используйте эту настройку, если список событий заползает под заголовок окна</string>
-    <string name="pref_List_TopPadding_hint">Введите размер отступа</string>
+    <string name="pref_List_TopPadding_hint">Введите размер отступа (15, 25, …)</string>
 
     <string name="pref_Widgets_title">Виджеты</string>
     <string name="pref_Widgets_summary">Общие настройки для виджетов</string>
@@ -923,8 +923,8 @@
     <string name="widget_config_layout_description">Сколько месяцев отображать</string>
     <string name="widget_config_month_events_sources_label">Источники праздников и событий</string>
     <string name="widget_config_month_events_sources_description">"Источники, по которым определять рабочие, выходные и праздничные дни.
-Долгое нажатие на элементе списка для выбора цвета.
-Дополнительные источники (файлы, календари) можно указать в Настройки->Настройка событий->Праздники"</string>
+Дополнительные источники (файлы, календари) можно указать в Настройки->Настройка событий->Праздники.
+Долгое нажатие на элементе списка для выбора цвета"</string>
     <string name="widget_config_month_shift_title">Стартовый месяц</string>
     <string name="widget_config_month_shift_label">Смещение:</string>
     <string name="widget_config_starting_month_position_label">Положение:</string>

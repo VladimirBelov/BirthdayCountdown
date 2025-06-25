@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.05.2025, 01:01
+  ~  * Last modified 25.06.2025, 10:35
   ~  */
   -->
 
@@ -915,8 +915,8 @@
     <string name="widget_config_layout_description">Колькі месяцаў адлюстроўваць</string>
     <string name="widget_config_month_events_sources_label">Крыніцы свят і падзей</string>
     <string name="widget_config_month_events_sources_description">"Крыніцы, па якіх вызначаць працоўныя, выходныя і святочныя дні.
-Доўгі націск на элеменце спісу для выбару колеру.
-Дадатковыя крыніцы (файлы, календары) можна пазначыць у Налады->Налада падзей->Святы"</string>
+Дадатковыя крыніцы (файлы, календары) можна пазначыць у Налады->Налада падзей->Святы.
+Доўгі націск на элеменце спісу для выбару колеру"</string>
     <string name="widget_config_month_shift_title">Стартавы месяц</string>
     <string name="widget_config_month_shift_label">Зрушэнне:</string>
     <string name="widget_config_starting_month_position_label">Палажэнне:</string>

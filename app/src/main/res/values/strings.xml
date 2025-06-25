@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.06.2025, 21:52
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.06.2025, 21:45
+  ~  * Last modified 25.06.2025, 11:46
   ~  */
   -->
 
@@ -453,7 +453,7 @@
     <string name="pref_CustomEvents_Calendars_title">Calendars</string>
     <string name="pref_CustomEvents_Calendars_summary">Show events from chosen calendars</string>
     <string name="pref_CustomEvents_LocalFiles_title">Local files</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Show events from chosen files. Long press on a list item to view a file</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Show events from chosen files (formats: DarkBirthday, iCalendar, BirthdayPro). Long press on a list item to view a file</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brown</item>
@@ -676,7 +676,7 @@
 
     <string name="pref_List_TopPadding_title">Top indent</string>
     <string name="pref_List_TopPadding_summary">Use this setting if the event list crawls under the window title</string>
-    <string name="pref_List_TopPadding_hint">Enter indent size</string>
+    <string name="pref_List_TopPadding_hint">Enter indent size (15, 25, …)</string>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Common widgets preferences</string>
@@ -923,8 +923,8 @@
     <string name="widget_config_layout_description">How many months to display</string>
     <string name="widget_config_month_events_sources_label">Sources of holidays and events</string>
     <string name="widget_config_month_events_sources_description">"Sources to determine type of day: working day, day off, holiday.
-Long click on item to select color.
-Additional sources (files, calendars) can be specified in Settings->Event setup->Holidays"</string>
+Additional sources (files, calendars) can be specified in Settings->Event setup->Holidays.
+Long click on item to select color"</string>
     <string name="widget_config_month_shift_title">Starting month</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>

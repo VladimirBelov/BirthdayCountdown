@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.05.2025, 01:01
+  ~  * Last modified 25.06.2025, 10:35
   ~  */
   -->
 
@@ -915,8 +915,8 @@
     <string name="widget_config_layout_description">Ile miesięcy wyświetlić</string>
     <string name="widget_config_month_events_sources_label">Źródła świąt i wydarzeń</string>
     <string name="widget_config_month_events_sources_description">"Źródła, na podstawie których można określić dni robocze, weekendy i święta.
-Naciśnij i przytrzymaj element listy, aby wybrać kolor.
-Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawienia wydarzeń->Wakacje</string>
+Dodatkowe źródła (pliki, kalendarze) można określić w Ustawienia->Ustawienia wydarzeń->Wakacje.
+Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="widget_config_month_shift_title">Rozpocznij miesiąc</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Pozycja:</string>

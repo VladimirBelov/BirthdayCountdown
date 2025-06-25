@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.05.2025, 01:01
+  ~  * Last modified 25.06.2025, 10:35
   ~  */
   -->
 
@@ -915,8 +915,8 @@
     <string name="widget_config_layout_description">Quantos meses exibir</string>
     <string name="widget_config_month_events_sources_label">Fontes de feriados e eventos</string>
     <string name="widget_config_month_events_sources_description">"Fontes para determinar o tipo de dia: dia útil, dia de folga, feriado.
-Clique longamente no item para selecionar a cor.
-Fontes adicionais (arquivos, calendários) podem ser especificadas em Configurações->Configuração de eventos->Feriados"</string>
+Fontes adicionais (arquivos, calendários) podem ser especificadas em Configurações->Configuração de eventos->Feriados.
+Clique longamente no item para selecionar a cor"</string>
     <string name="widget_config_month_shift_title">Mês de início</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Posição:</string>

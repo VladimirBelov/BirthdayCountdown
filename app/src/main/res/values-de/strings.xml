@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 24.06.2025, 21:52
+  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 24.06.2025, 21:48
+  ~  * Last modified 25.06.2025, 11:46
   ~  */
   -->
 
@@ -445,7 +445,7 @@
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>
     <string name="pref_CustomEvents_Calendars_summary">Ereignisse aus ausgewählten Kalendern anzeigen</string>
     <string name="pref_CustomEvents_LocalFiles_title">Lokale Dateien</string>
-    <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen. Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
+    <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>
@@ -668,7 +668,7 @@
 
     <string name="pref_List_TopPadding_title">Oberer Einzug</string>
     <string name="pref_List_TopPadding_summary">Diese Einstellung verwenden, wenn die Ereignisliste unter den Fenstertitel rutscht</string>
-    <string name="pref_List_TopPadding_hint">Einzug eingeben</string>
+    <string name="pref_List_TopPadding_hint">Einzug eingeben (15, 25, …)</string>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>
@@ -915,8 +915,8 @@
     <string name="widget_config_layout_description">Wie viele Monate werden angezeigt</string>
     <string name="widget_config_month_events_sources_label">Quellen für Feiertage und Ereignisse</string>
     <string name="widget_config_month_events_sources_description">"Quellen zur Bestimmung der Art des Tages: Arbeitstag, freier Tag, Feiertag.
-Klicken Sie lange auf das Element, um die Farbe auszuwählen.
-Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse einrichten->Feiertage angegeben werden"</string>
+Zusätzliche Quellen (Dateien, Kalender) können unter Einstellungen->Ereignisse einrichten->Feiertage angegeben werden.
+Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="widget_config_month_shift_title">Startmonat</string>
     <string name="widget_config_month_shift_label">Schicht:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
