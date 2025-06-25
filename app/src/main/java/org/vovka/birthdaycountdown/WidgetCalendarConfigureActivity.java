@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 18:21
+ *  * Created by Vladimir Belov on 25.06.2025, 19:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 18:20
+ *  * Last modified 25.06.2025, 19:33
  *
  */
 
@@ -120,8 +120,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    Insets insetsStatus = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
+                    layoutMain.setPadding(0, insetsStatus.bottom + ContactsEvents.Sp2Px(getResources(), 50), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
