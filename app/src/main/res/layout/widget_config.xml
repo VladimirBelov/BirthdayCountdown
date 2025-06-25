@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.04.2025, 09:19
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.04.2025, 21:02
+  ~  * Last modified 25.06.2025, 15:08
   ~  */
   -->
 
@@ -14,19 +14,13 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/windowStatusbarColor"
     tools:context=".WidgetConfigureActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/colorPrimary"	>
-
-        <TextView
-            android:id="@+id/toolbarPadding"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/windowStatusbarColor" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

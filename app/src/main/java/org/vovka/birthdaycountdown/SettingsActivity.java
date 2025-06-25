@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.06.2025, 00:51
+ *  * Created by Vladimir Belov on 25.06.2025, 15:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.06.2025, 21:28
+ *  * Last modified 25.06.2025, 15:37
  *
  */
 
@@ -93,8 +93,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.appbar.AppBarLayout;
-
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -169,19 +167,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setContentView(R.layout.activity_settings);
 
             if (ContactsEvents.isEdgeToEdge()) {
-                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                View layoutCoordinator = findViewById(R.id.coordinator);
+                ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            insets.top * 4/5);
-                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                    viewPadding.setLayoutParams(lp);
-                    v.setPadding(0, 0, 0, insets.bottom);
+                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
-            } else {
-                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                viewPadding.setVisibility(View.GONE);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -365,7 +356,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDepth_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_TopPadding_key);
+            //hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_TopPadding_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
@@ -2745,7 +2736,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_Filling_key),
                         getString(R.string.pref_List_Jubilee_Algorithm_key),
                         getString(R.string.pref_List_Margin_key),
-                        getString(R.string.pref_List_TopPadding_key),
+                        //getString(R.string.pref_List_TopPadding_key),
                         getString(R.string.pref_List_NameFormat_key),
                         getString(R.string.pref_List_OnClick_key),
                         getString(R.string.pref_List_PhotoStyle_key),

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 11:46
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -674,9 +674,9 @@
         <item>Big</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Top indent</string>
+    <!--<string name="pref_List_TopPadding_title">Top indent</string>
     <string name="pref_List_TopPadding_summary">Use this setting if the event list crawls under the window title</string>
-    <string name="pref_List_TopPadding_hint">Enter indent size (15, 25, …)</string>
+    <string name="pref_List_TopPadding_hint">Enter indent size (15, 25, …)</string>-->
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Common widgets preferences</string>
@@ -1958,7 +1958,7 @@ Long click on item to select color"</string>
         <item>10</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_key" translatable="false">List_TopPadding</string>
+    <!--<string name="pref_List_TopPadding_key" translatable="false">List_TopPadding</string>-->
 
     <string name="pref_Widgets_key" translatable="false">Widgets</string>
     <string name="pref_Widgets_AddWidget_key" translatable="false">Widgets_Add</string>

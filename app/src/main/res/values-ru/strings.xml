@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 11:46
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -674,9 +674,9 @@
         <item>Большие</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Вертикальный отступ</string>
+    <!--<string name="pref_List_TopPadding_title">Вертикальный отступ</string>
     <string name="pref_List_TopPadding_summary">Используйте эту настройку, если список событий заползает под заголовок окна</string>
-    <string name="pref_List_TopPadding_hint">Введите размер отступа (15, 25, …)</string>
+    <string name="pref_List_TopPadding_hint">Введите размер отступа (15, 25, …)</string>-->
 
     <string name="pref_Widgets_title">Виджеты</string>
     <string name="pref_Widgets_summary">Общие настройки для виджетов</string>

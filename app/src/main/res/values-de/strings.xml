@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 11:46
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -666,9 +666,9 @@
         <item>Groß</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Oberer Einzug</string>
+    <!--<string name="pref_List_TopPadding_title">Oberer Einzug</string>
     <string name="pref_List_TopPadding_summary">Diese Einstellung verwenden, wenn die Ereignisliste unter den Fenstertitel rutscht</string>
-    <string name="pref_List_TopPadding_hint">Einzug eingeben (15, 25, …)</string>
+    <string name="pref_List_TopPadding_hint">Einzug eingeben (15, 25, …)</string>-->
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Allgemeine Widget-Einstellungen</string>

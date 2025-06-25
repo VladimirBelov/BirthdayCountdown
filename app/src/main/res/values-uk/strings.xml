@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 10:35
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -666,9 +666,9 @@
         <item>Великий</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Верхнє відступ</string>
+    <!--<string name="pref_List_TopPadding_title">Верхнє відступ</string>
     <string name="pref_List_TopPadding_summary">Використовуйте це налаштування, якщо список подій сканується під заголовком вікна</string>
-    <string name="pref_List_TopPadding_hint">Введіть розмір відступу</string>
+    <string name="pref_List_TopPadding_hint">Введіть розмір відступу</string>-->
 
     <string name="pref_Widgets_title">Віджети</string>
     <string name="pref_Widgets_summary">Загальні налаштування віджетів</string>

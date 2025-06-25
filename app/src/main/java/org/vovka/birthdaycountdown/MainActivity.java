@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.06.2025, 13:24
+ *  * Created by Vladimir Belov on 25.06.2025, 15:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.06.2025, 10:49
+ *  * Last modified 25.06.2025, 15:08
  *
  */
 
@@ -51,7 +51,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -85,9 +84,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.AppBarLayout.LayoutParams;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -193,29 +189,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             setContentView(R.layout.activity_main);
 
+            View layoutMain = findViewById(R.id.layout_main);
             if (ContactsEvents.isEdgeToEdge()) {
-                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    AppBarLayout.LayoutParams lp = new LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            insets.top * 4/5);
-                    lp.setScrollFlags(0);
-                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                    viewPadding.setVisibility(View.VISIBLE);
-                    viewPadding.setLayoutParams(lp);
-                    v.setPadding(0, 0, 0, 0);
-                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 52), 0, insets.bottom);
-                    } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top + 11), 0, insets.bottom);
-                    }
+                View layoutCoordinator = findViewById(R.id.coordinator);
+                ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
+                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
             }
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
@@ -2269,14 +2253,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             //Отступы списка событий
-            LinearLayout mainLayout = findViewById(R.id.layout_main);
+            /*LinearLayout mainLayout = findViewById(R.id.layout_main);
             LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
-            mainLayout.setLayoutParams(marginParams);
+            mainLayout.setLayoutParams(marginParams);*/
+                LinearLayout mainLayout = findViewById(R.id.layout_main);
+                LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
+                marginParams.setMargins(
+                        (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
+                        marginParams.topMargin,
+                        (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
+                        marginParams.bottomMargin);
+                mainLayout.setLayoutParams(marginParams);
 
             //Тему не меняли, просто обновляем данные
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()

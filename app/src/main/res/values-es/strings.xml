@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 10:35
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -666,9 +666,9 @@
         <item>Grande</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Sangría superior</string>
+    <!--<string name="pref_List_TopPadding_title">Sangría superior</string>
     <string name="pref_List_TopPadding_summary">Utilice esta configuración si la lista de eventos se arrastra bajo el título de la ventana</string>
-    <string name="pref_List_TopPadding_hint">Introduzca el tamaño del relleno</string>
+    <string name="pref_List_TopPadding_hint">Introduzca el tamaño del relleno</string>-->
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Preferencias de widgets comunes</string>

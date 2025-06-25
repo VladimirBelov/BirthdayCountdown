@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 25.06.2025, 15:43
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 25.06.2025, 15:25
  *
  */
 
@@ -21,12 +21,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.Log;
-import android.view.Surface;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +32,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Locale;
 
@@ -87,28 +82,17 @@ public class FAQActivity extends AppCompatActivity {
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.activity_faq);
 
+            View layoutMain = findViewById(R.id.layout_main);
             if (ContactsEvents.isEdgeToEdge()) {
-                ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.coordinator), (v, windowInsets) -> {
+                View layoutCoordinator = findViewById(R.id.coordinator);
+                ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    AppBarLayout.LayoutParams lp = new AppBarLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            insets.top * 4/5);
-                    lp.setScrollFlags(0);
-                    TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                    viewPadding.setLayoutParams(lp);
-                    v.setPadding(0, 0, 0, 0);
-                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top - 62), 0, insets.bottom);
-                    } else {
-                        findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), insets.top), 0, insets.bottom);
-                    }
+                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
+                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                TextView viewPadding = this.findViewById(R.id.toolbarPadding);
-                viewPadding.setVisibility(View.GONE);
-                findViewById(R.id.layout_main).setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);

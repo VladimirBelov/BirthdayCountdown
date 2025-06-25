@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 12:16
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 10:35
+  ~  * Last modified 25.06.2025, 15:41
   ~  */
   -->
 
@@ -666,9 +666,9 @@
         <item>Вялікія</item>
     </string-array>
 
-    <string name="pref_List_TopPadding_title">Верхняя абіўка</string>
+    <!--<string name="pref_List_TopPadding_title">Верхняя абіўка</string>
     <string name="pref_List_TopPadding_summary">Выкарыстоўвайце гэты параметр, калі спіс падзей сканчаецца пад загалоўкам акна</string>
-    <string name="pref_List_TopPadding_hint">Увядзіце памер запаўнення</string>
+    <string name="pref_List_TopPadding_hint">Увядзіце памер запаўнення</string>-->
 
     <string name="pref_Widgets_title">Віджэты</string>
     <string name="pref_Widgets_summary">Агульныя налады для віджэтаў</string>

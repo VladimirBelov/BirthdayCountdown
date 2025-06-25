@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 23.08.2023, 19:34
+  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 25.06.2025, 15:08
   ~  */
   -->
 
@@ -21,13 +21,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="?android:attr/colorPrimary">
-
-		<TextView
-			android:id="@+id/toolbarPadding"
-			style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="?attr/windowStatusbarColor" />
 
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
