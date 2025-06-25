@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 15:43
+ *  * Created by Vladimir Belov on 25.06.2025, 16:57
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 15:33
+ *  * Last modified 25.06.2025, 16:52
  *
  */
 
@@ -119,7 +119,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (ContactsEvents.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
                     layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
