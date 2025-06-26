@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
+  ~  * Created by Vladimir Belov on 27.06.2025, 01:34
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.03.2025, 12:43
+  ~  * Last modified 26.06.2025, 23:15
   ~  */
   -->
 
@@ -44,6 +44,13 @@
         <attr name="summary" format="string"/>
         <attr name="defaultValue" format="string|boolean|integer|reference|float" />
         <attr name="icon"/>
+    </declare-styleable>
+
+    <declare-styleable name="SeekBarPreference">
+        <attr name="maxValue" format="integer" />
+        <attr name="minValue" format="integer" />
+        <attr name="step" format="integer" />
+        <attr name="minSummaryValue" format="integer" />
     </declare-styleable>
 
 </resources>

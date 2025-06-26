@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 22:27
+ *  * Created by Vladimir Belov on 27.06.2025, 01:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 19:48
+ *  * Last modified 27.06.2025, 01:01
  *
  */
 
@@ -689,7 +689,13 @@ public class LocalEventActivity extends Activity {
                     if (data.getExtras() != null) {
                         Uri croppedUri = data.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
                         if (croppedUri != null) {
-                            eventData.put(ContactsEvents.Position_photo, ContactsEvents.encodeImageToBase64(this, croppedUri, eventsData.preferences_event_image_max_size));
+                            int maxSize = 500;
+                            try {
+                                int step = eventsData.getResources().getInteger(R.integer.pref_LocalEvents_PhotoSize_step);
+                                maxSize = step + step * eventsData.preferences_local_events_photo_size;
+                            } catch (NumberFormatException ignored) { /**/ }
+
+                            eventData.put(ContactsEvents.Position_photo, ContactsEvents.encodeImageToBase64(this, croppedUri, maxSize));
                             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
                             updateCaptionsAndVisibility(this);
                             updateEventPhoto(this);

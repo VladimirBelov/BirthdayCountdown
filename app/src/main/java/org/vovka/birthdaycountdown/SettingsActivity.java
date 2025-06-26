@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 27.06.2025, 01:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:50
+ *  * Last modified 27.06.2025, 01:30
  *
  */
 
@@ -337,6 +337,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Female_Names_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Male_Names_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_LocalEvents_PhotoSize_key);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Birthday_key, R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key);
@@ -2676,6 +2677,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_FontMagnify_Distance_key),
                         getString(R.string.pref_List_FontMagnify_Name_key),
                         getString(R.string.pref_List_QuickAction_key),
+                        getString(R.string.pref_LocalEvents_PhotoSize_key),
                         getString(R.string.pref_Notifications2_ChannelID),
                         getString(R.string.pref_Notifications_ChannelID),
                         getString(R.string.pref_Widgets_Color_EventCaption_key),

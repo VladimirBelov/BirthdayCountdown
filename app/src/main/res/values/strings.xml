@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 27.06.2025, 01:34
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 27.06.2025, 00:55
   ~  */
   -->
 
@@ -1747,6 +1747,10 @@ Long click on item to select color"</string>
     <string name="pref_CustomEvents_UseYear_default" translatable="false">true</string>
 
     <string name="pref_List_EventSources_key" translatable="false">List_EventSources</string>
+
+    <string name="pref_LocalEvents_PhotoSize_key" translatable="false">LocalEvents_PhotoSize</string>
+    <integer name="pref_LocalEvents_PhotoSize_default" translatable="false">9</integer>
+    <integer name="pref_LocalEvents_PhotoSize_step" translatable="false">50</integer>
 
     <string name="pref_List_NameFormat_key" translatable="false">List_Caption</string>
     <string name="pref_List_NameFormat_FirstSecondLast" translatable="false">1</string>

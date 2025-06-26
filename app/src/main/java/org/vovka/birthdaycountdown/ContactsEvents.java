@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 27.06.2025, 01:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:33
+ *  * Last modified 27.06.2025, 00:58
  *
  */
 
@@ -363,6 +363,7 @@ public class ContactsEvents {
     private boolean preferences_customevent5_enabled;
     private Matcher preferences_customevent5_labels;
     private boolean preferences_customevent5_useyear;
+    int preferences_local_events_photo_size;
     final private Set<String> preferences_hiddenEvents = new HashSet<>();
     final private Set<String> preferences_hiddenEventsRawIds = new HashSet<>();
     final private Set<String> preferences_silentEvents = new HashSet<>();
@@ -451,7 +452,6 @@ public class ContactsEvents {
     private Set<String> preferences_notifications_quick_actions;
     private Set<String> preferences_notifications2_quick_actions;
 
-    public int preferences_event_image_max_size = 500;
     //Виджеты
     private Set<String> pref_Widgets_EventInfo_Info_Default;
     int preferences_widgets_update_period;
@@ -1790,6 +1790,8 @@ public class ContactsEvents {
             }
             preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
+            preferences_local_events_photo_size = getPreferenceInt(preferences, context.getString(R.string.pref_LocalEvents_PhotoSize_key), resources.getInteger(R.integer.pref_LocalEvents_PhotoSize_default));
+
             //Имена
             preferences_first_names_female_custom = getPreferenceString(preferences, context.getString(R.string.pref_Female_Names_key), Constants.STRING_EMPTY);
             preferences_first_names_male_custom = getPreferenceString(preferences, context.getString(R.string.pref_Male_Names_key), Constants.STRING_EMPTY);
@@ -1809,7 +1811,7 @@ public class ContactsEvents {
             preferences_second_name_completions_male = Pattern.compile(context.getString(R.string.second_name_completions_man).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
             preferences_second_name_completions_female = Pattern.compile(context.getString(R.string.second_name_completions_female).replace(Constants.STRING_COMMA, Constants.REGEX_INTER) + Constants.REGEX_LAST).matcher(Constants.STRING_EMPTY);
 
-            //Запоминаем информацию о темах
+            //Темы
             preferences_theme = new ColorTheme();
             try {
                 preferences_theme.prefNumber = getPreferenceInt(preferences, context.getString(R.string.pref_Theme_key), context.getString(R.string.pref_Theme_default));
@@ -11692,7 +11694,7 @@ public class ContactsEvents {
     /** Преобразует значение из SP в фактические пиксели на основе текущей плотности экрана и пользовательских настроек масштаба шрифта
      *
      * @param res Объект Resources, используемый для получения метрик дисплея (плотности)
-     * @param sizeDP Размер в SP
+     * @param sizeSP Размер в SP
      * @return Размер в пикселях
      */
     public static int Sp2Px(Resources res, int sizeSP) {
