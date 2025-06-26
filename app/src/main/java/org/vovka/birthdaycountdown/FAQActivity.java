@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 18:21
+ *  * Created by Vladimir Belov on 26.06.2025, 13:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 18:17
+ *  * Last modified 26.06.2025, 12:48
  *
  */
 
@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -94,6 +95,15 @@ public class FAQActivity extends AppCompatActivity {
             } else {
                 layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
             }
+
+            //Отступы всего окна
+            RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
+            marginParams.setMargins(
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
+                    (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
+                    marginParams.bottomMargin);
+            layoutMain.setLayoutParams(marginParams);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);

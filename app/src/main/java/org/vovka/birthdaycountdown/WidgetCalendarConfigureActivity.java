@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 19:39
+ *  * Created by Vladimir Belov on 26.06.2025, 13:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 19:33
+ *  * Last modified 26.06.2025, 12:48
  *
  */
 
@@ -133,7 +133,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    marginParams.topMargin,
+                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             layoutMain.setLayoutParams(marginParams);

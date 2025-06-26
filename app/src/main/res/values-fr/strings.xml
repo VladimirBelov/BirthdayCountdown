@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 15:41
+  ~  * Last modified 26.06.2025, 11:11
   ~  */
   -->
 
@@ -666,9 +666,9 @@
         <item>Grand</item>
     </string-array>
 
-    <!--<string name="pref_List_TopPadding_title">Remplissage supérieur</string>
+    <string name="pref_List_TopPadding_title">Remplissage supérieur</string>
     <string name="pref_List_TopPadding_summary">"Utilisez ce paramètre si la liste des événements s'affiche sous le titre de la fenêtre"</string>
-    <string name="pref_List_TopPadding_hint">Entrez la taille du remplissage</string>-->
+    <string name="pref_List_TopPadding_hint">Entrez la taille du remplissage</string>
 
     <string name="pref_Widgets_title">Widgets</string>
     <string name="pref_Widgets_summary">Paramètres généraux des widgets</string>

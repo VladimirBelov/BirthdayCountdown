@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 15:43
+ *  * Created by Vladimir Belov on 26.06.2025, 13:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 15:08
+ *  * Last modified 26.06.2025, 12:48
  *
  */
 
@@ -2252,23 +2252,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
 
-            //Отступы списка событий
-            /*LinearLayout mainLayout = findViewById(R.id.layout_main);
+            LinearLayout mainLayout = findViewById(R.id.layout_main);
             LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, eventsData.preferences_list_top_padding, displayMetrics),
+                    ContactsEvents.Dip2Px(resources, eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
-            mainLayout.setLayoutParams(marginParams);*/
-                LinearLayout mainLayout = findViewById(R.id.layout_main);
-                LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
-                marginParams.setMargins(
-                        (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                        marginParams.topMargin,
-                        (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                        marginParams.bottomMargin);
-                mainLayout.setLayoutParams(marginParams);
+            mainLayout.setLayoutParams(marginParams);
 
             //Тему не меняли, просто обновляем данные
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 15:35
+  ~  * Last modified 26.06.2025, 11:11
   ~  */
   -->
 
@@ -820,7 +820,7 @@
             android:dialogIcon="@drawable/ic_menu_chat_dashboard"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <!--<org.vovka.birthdaycountdown.CustomEditTextPreference
+        <org.vovka.birthdaycountdown.CustomEditTextPreference
             android:key="@string/pref_List_TopPadding_key"
             android:title="@string/pref_List_TopPadding_title"
             android:summary="@string/pref_List_TopPadding_summary"
@@ -829,7 +829,7 @@
             android:textSize="16sp"
             android:icon="@android:drawable/ic_menu_preferences"
             android:dialogIcon="@android:drawable/ic_menu_preferences"
-            android:negativeButtonText="@string/button_cancel"/>-->
+            android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceScreen>
 

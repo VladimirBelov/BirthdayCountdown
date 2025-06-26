@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 18:21
+ *  * Created by Vladimir Belov on 26.06.2025, 13:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 17:47
+ *  * Last modified 26.06.2025, 12:33
  *
  */
 
@@ -398,7 +398,7 @@ public class ContactsEvents {
     int preferences_list_photostyle;
     int preferences_list_filling;
     int preferences_list_margin;
-    //int preferences_list_top_padding;
+    int preferences_list_top_padding;
     Set<String> preferences_list_age_format;
     @ColorInt int preferences_list_color_eventtoday;
     @ColorInt int preferences_list_color_eventsoon;
@@ -1512,7 +1512,7 @@ public class ContactsEvents {
             preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
             preferences_jubilee_algorithm = getPreferenceInt(preferences, context.getString(R.string.pref_List_Jubilee_Algorithm_key), context.getString(R.string.pref_List_Jubilee_Algorithm_default));
             preferences_list_margin = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
-            //preferences_list_top_padding = getPreferenceInt(preferences, context.getString(R.string.pref_List_TopPadding_key), 0);
+            preferences_list_top_padding = getPreferenceInt(preferences, context.getString(R.string.pref_List_TopPadding_key), 0);
             preferences_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
             preferences_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)) == 1 ? FormatName.NameFirst : FormatName.LastnameFirst;
             preferences_date_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));
@@ -11679,10 +11679,22 @@ public class ContactsEvents {
         return Constants.STRING_EMPTY;
     }
 
+    /** Преобразует значение из DIP в фактические пиксели
+     *
+     * @param res Объект Resources, используемый для получения метрик дисплея (плотности)
+     * @param sizeDP Размер в DIP
+     * @return Размер в пикселях
+     */
     public static int Dip2Px(Resources res, int sizeDP) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeDP, res.getDisplayMetrics()));
     }
 
+    /** Преобразует значение из SP в фактические пиксели на основе текущей плотности экрана и пользовательских настроек масштаба шрифта
+     *
+     * @param res Объект Resources, используемый для получения метрик дисплея (плотности)
+     * @param sizeDP Размер в SP
+     * @return Размер в пикселях
+     */
     public static int Sp2Px(Resources res, int sizeSP) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sizeSP, res.getDisplayMetrics()));
     }
