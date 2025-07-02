@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 02.07.2025, 22:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 27.06.2025, 01:59
  *
  */
 
@@ -120,13 +120,6 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
 
     @Override
     public void onItemDismiss(int position) {
-        //Toast.makeText(context, "remove: " + position, Toast.LENGTH_SHORT).show();
-        //mSelected.remove((int)mIndex.get(position));
-        //mIndex.remove(position);
-        //mItems.remove(position);
-
-        //notifyItemRemoved(position);
-        //printAll();
     }
 
     @Override
@@ -181,11 +174,4 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
         return result;
     }
 
-    /*public void printAll() {
-        ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < getItemCount(); i++) {
-            result.add(mIndex.get(i) + ": " + mItems.get(i) + ", selected:" + mSelected.get(i) + "\n"); //mSelected.get(mIndex.get(i)) + "\n");
-        }
-       Toast.makeText(context, result.toString(), Toast.LENGTH_LONG).show();
-    }*/
 }

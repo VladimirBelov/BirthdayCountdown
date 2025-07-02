@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.06.2025, 01:34
+ *  * Created by Vladimir Belov on 02.07.2025, 22:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:30
+ *  * Last modified 02.07.2025, 22:34
  *
  */
 
@@ -2967,7 +2967,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         for (String key : prefs.keySet()) {
                             Object pref = prefs.get(key);
                             if (pref != null) {
-                                outputStream.write(pref.toString().replaceAll(Constants.STRING_EOT, Constants.STRING_BAR)
+                                outputStream.write(pref.toString()
+                                        .replace(Constants.STRING_EOL, Constants.STRING_EMPTY)
+                                        .replace(Constants.STRING_EOT, Constants.STRING_BAR)
                                         .concat(Constants.STRING_EOL)
                                         .getBytes(StandardCharsets.UTF_8)
                                 );
@@ -3099,7 +3101,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 int countError = 0;
 
                 SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
-                Map<String, ?> prefs = preferences.getAll();
                 SharedPreferences.Editor editor = preferences.edit();
 
                 for (String eventLine: eventsArray) {
@@ -3112,7 +3113,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 try {
                                     eventId = String.valueOf(singleEventArray[ContactsEvents.Position_eventID]);
                                 } catch (Exception ignored) { /**/ }
-                                if (eventId != null && !prefs.containsKey(eventId)) {
+                                if (eventId != null) {
                                     editor.putString(eventId, eventString);
                                     countSuccess++;
                                 } else {

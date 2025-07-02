@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 02.07.2025, 22:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:13
+ *  * Last modified 27.06.2025, 01:59
  *
  */
 
@@ -113,10 +113,6 @@ final class SnackbarHandler extends Handler {
                 msg.important(false);
             }
         }
-/*
-        while (!mQueue.isEmpty()) {
-            mQueue.poll();
-        }*/
     }
 
     private boolean hasItemsToRemove() {

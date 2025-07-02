@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 02.07.2025, 22:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 27.06.2025, 01:59
  *
  */
 
@@ -190,7 +190,7 @@ class ColorPreference extends Preference {
             return new ColorDialogFragment();
         }
 
-        public void setPreference(ColorPreference preference) {
+        void setPreference(ColorPreference preference) {
             mPreference = preference;
             tryBindLists();
         }
