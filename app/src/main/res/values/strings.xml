@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.06.2025, 01:34
+  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.06.2025, 00:55
+  ~  * Last modified 02.07.2025, 22:55
   ~  */
   -->
 
@@ -357,6 +357,10 @@
         <item>fr</item>
         <item>sa</item>
     </string-array>
+
+    <string name="pref_LocalEvents_Size_title">Photo size in local events</string>
+    <string name="pref_LocalEvents_Size_summary">"Current value: %s pixels"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Set size</string>
 
     <string name="pref_CustomEvents_title">Events setup</string>
     <string name="pref_CustomEvents_summary">Events sources, types classification, labels customizing</string>

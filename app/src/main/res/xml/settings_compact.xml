@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.06.2025, 01:34
+  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.06.2025, 01:05
+  ~  * Last modified 02.07.2025, 22:52
   ~  */
   -->
 
@@ -123,14 +123,14 @@
 
         <org.vovka.birthdaycountdown.SeekBarPreference
             android:key="@string/pref_LocalEvents_PhotoSize_key"
-            android:title="Размер фото в локальных событиях"
-            android:summary="Текущее значение: %s пикселей"
+            android:title="@string/pref_LocalEvents_Size_title"
+            android:summary="@string/pref_LocalEvents_Size_summary"
             android:defaultValue="@integer/pref_LocalEvents_PhotoSize_default"
             app:maxValue="9"
             app:minValue="0"
             app:step="@integer/pref_LocalEvents_PhotoSize_step"
             app:minSummaryValue="@integer/pref_LocalEvents_PhotoSize_step"
-            android:dialogTitle="Установите размер"
+            android:dialogTitle="@string/pref_LocalEvents_Size_dialogTitle"
             android:icon="@drawable/ic_menu_chat_dashboard"
             android:dialogIcon="@drawable/ic_menu_chat_dashboard"
             android:negativeButtonText="@string/button_cancel" />

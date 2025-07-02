@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 02.07.2025, 22:52
   ~  */
   -->
 
@@ -357,6 +357,10 @@
         <item>пт</item>
         <item>сб</item>
     </string-array>
+
+    <string name="pref_LocalEvents_Size_title">Размер фото в локальных событиях</string>
+    <string name="pref_LocalEvents_Size_summary">"Текущее значение: %s пикселей"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Установите размер</string>
 
     <string name="pref_CustomEvents_title">Настройка событий</string>
     <string name="pref_CustomEvents_summary">Источники событий, классификация типов, настройка меток</string>

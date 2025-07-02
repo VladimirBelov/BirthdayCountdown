@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 02.07.2025, 22:55
   ~  */
   -->
 
@@ -123,6 +123,20 @@
             android:icon="@drawable/ic_menu_friendslist"
             android:dialogIcon="@android:drawable/ic_menu_edit"
             android:negativeButtonText="@string/button_cancel"/>
+
+        <org.vovka.birthdaycountdown.SeekBarPreference
+            android:key="@string/pref_LocalEvents_PhotoSize_key"
+            android:title="@string/pref_LocalEvents_Size_title"
+            android:summary="@string/pref_LocalEvents_Size_summary"
+            android:defaultValue="@integer/pref_LocalEvents_PhotoSize_default"
+            app:maxValue="9"
+            app:minValue="0"
+            app:step="@integer/pref_LocalEvents_PhotoSize_step"
+            app:minSummaryValue="@integer/pref_LocalEvents_PhotoSize_step"
+            android:dialogTitle="@string/pref_LocalEvents_Size_dialogTitle"
+            android:icon="@drawable/ic_menu_chat_dashboard"
+            android:dialogIcon="@drawable/ic_menu_chat_dashboard"
+            android:negativeButtonText="@string/button_cancel" />
 
 		<!-- https://www.javarticles.com/2015/04/example-of-grouping-android-preferences-by-sub-screens.html -->
 		<!-- https://stackoverflow.com/questions/18261601/how-do-i-do-sub-categories-in-preferences -->
