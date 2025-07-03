@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 03.07.2025, 16:03
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 11:56
+ *  * Last modified 03.07.2025, 15:34
  *
  */
 
@@ -1055,7 +1055,7 @@ public class ContactsEvents {
 
                 Intent intent = new Intent(context, LocalEventActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
                 return intent;
 
