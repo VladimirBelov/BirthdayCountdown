@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 03.07.2025, 22:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.06.2025, 21:31
+ *  * Last modified 03.07.2025, 20:36
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -33,7 +33,7 @@ android {
             }
         }
     }
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         buildToolsVersion  = "36.0.0" //https://developer.android.com/tools/releases/build-tools
@@ -83,7 +83,7 @@ android {
             minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
             //https://stackoverflow.com/questions/26694108/what-is-the-difference-between-compilesdkversion-and-targetsdkversion
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
-            targetSdkVersion 35 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+            targetSdkVersion 36 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
             versionName "1.8.7"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app

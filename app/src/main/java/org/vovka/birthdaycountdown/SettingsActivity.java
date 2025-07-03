@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.07.2025, 22:38
+ *  * Created by Vladimir Belov on 03.07.2025, 22:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 02.07.2025, 22:34
+ *  * Last modified 03.07.2025, 22:43
  *
  */
 
@@ -124,6 +124,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private Set<String> filesList;
     private int runningQueue = 0;
     boolean skipSharedPreferenceChangedEvent = false;
+    private Insets statusBarInsets;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,6 +171,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    this.statusBarInsets = insets; //windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
@@ -1359,16 +1361,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ListView list = dialog.findViewById(android.R.id.list);
             Toolbar bar;
 
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
 
-                //todo: make sure that you're not hardcoding sp calculations from Configuration or DisplayMetrics, and use TypedValue's applyDimension() and deriveDimension() to convert between sp and px
-                //https://android-developers.googleblog.com/2023/06/android-14-beta-3-and-platform-stability.html
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
+                marginParams.setMargins(0, this.statusBarInsets.top + ContactsEvents.Dip2Px(getResources(), 48), 0, 0);
+                ViewGroup root = (ViewGroup) list.getParent();
+                bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+
+                ViewGroup.MarginLayoutParams marginBar = (ViewGroup.MarginLayoutParams) bar.getLayoutParams();
+                marginBar.setMargins(0, this.statusBarInsets.top, 0, 0);
+                bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
+
+                root.addView(bar, 0); // insert at top
+                bar.setTitle(preferenceScreen.getTitle());
+                bar.setNavigationOnClickListener(v -> dialog.dismiss());
+                root.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
+                list.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
+
+            } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) { //Для Android > 6
 
                 ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
                 marginParams.setMargins(0, (int) (48 * displayMetrics.density + 0.5f), 0, 0);
                 list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
                 ViewGroup root = (ViewGroup) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
