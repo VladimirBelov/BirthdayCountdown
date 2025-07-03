@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.06.2025, 01:34
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 00:58
+ *  * Last modified 03.07.2025, 11:56
  *
  */
 
@@ -1026,7 +1026,6 @@ public class ContactsEvents {
         try {
 
             if (singleEventArray.length < Position_attrAmount) return null;
-            if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) return null;
 
             Uri uri = null;
             final String contactID = singleEventArray[ContactsEvents.Position_contactID];
@@ -1037,18 +1036,28 @@ public class ContactsEvents {
             final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
             final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
 
-            if (Constants.EVENT_PREFIX_LOCAL_EVENT.equals(singleEventArray[Position_eventStorage])) {
-                Intent intent = new Intent(context, LocalEventActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
-                return intent;
-            }
+            if (prefAction == 0) {
 
-            if (prefAction == 7) {
+                return null;
+
+            } else if (prefAction == 7) {
 
                 Intent intentAction = new Intent(context, MainActivity.class);
                 intentAction.setAction(Constants.ACTION_LAUNCH);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 return intentAction;
+
+            } else if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) {
+
+                return null;
+
+            } else if (Constants.EVENT_PREFIX_LOCAL_EVENT.equals(singleEventArray[Position_eventStorage])) {
+
+                Intent intent = new Intent(context, LocalEventActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
+                return intent;
 
             } else if (prefAction == 1) { //Контакт, календарь, ссылка
                 if (notEmptyContactID) {
@@ -1093,7 +1102,7 @@ public class ContactsEvents {
                 }
             }
 
-            return uri != null ? new Intent(Intent.ACTION_VIEW, uri) : null;
+            return uri != null ? new Intent(Intent.ACTION_VIEW, uri).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK) : null;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

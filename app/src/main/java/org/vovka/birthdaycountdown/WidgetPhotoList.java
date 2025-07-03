@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2025, 09:38
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.04.2025, 09:15
+ *  * Last modified 03.07.2025, 12:43
  *
  */
 
@@ -252,24 +252,44 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         super.onReceive(context, intent);
 
         final String action = intent.getAction();
         if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
-            int actionPref = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
-            if (eventInfo == null || eventInfo.isEmpty()) return;
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            int pref_onClick = 0;
+            try {
+                pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+            } catch (NumberFormatException ignored) { /**/ }
+            if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
 
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+            Intent intentAction;
 
-                Intent intentView = ContactsEvents.getViewActionIntent(singleEventArray, actionPref, context);
-                if (intentView != null) {
-                    intentView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (pref_onClick == 8) { //Меню
+
+                String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
+                intentAction = new Intent(context, WidgetMenuActivity.class);
+                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+                intentAction.setAction(Constants.ACTION_MENU);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                try {
+                    context.getApplicationContext().startActivity(intentAction);
+                } catch (android.content.ActivityNotFoundException e) { /**/ }
+
+            } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+
+                intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
+                if (intentAction != null) {
                     try {
-                        context.getApplicationContext().startActivity(intentView);
+                        context.getApplicationContext().startActivity(intentAction);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }
+
             }
         }
     }

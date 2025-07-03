@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 03.07.2025, 13:20
  *
  */
 
@@ -50,6 +50,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
     float floatDensity;
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
+    int widgetPref_onClick = 0;
     ContactsEvents eventsData;
 
     public EventPhotoListDataProvider(Context context, Intent intent) {
@@ -93,6 +94,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
 
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
@@ -108,7 +110,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 } catch (Exception e) {
                     eventDistance_Days = 365;
                 }
-                String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
+
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
 
@@ -291,9 +293,20 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
             }
 
+            final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+            String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
+                    Constants.STRING_SPACE +
+                    Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
+                    Constants.STRING_SPACE +
+                    singleEventArray[ContactsEvents.Position_eventCaption] +
+                    Constants.STRING_COLON_SPACE +
+                    eventsData.getFullName(singleEventArray);
+
             Intent clickIntent = new Intent();
             clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
-            clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, eventsData.preferences_widgets_on_click_action);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, widgetPref_onClick);
+            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
             views.setOnClickFillInIntent(R.id.eventEntry, clickIntent);
 
         } catch (Exception e) {
@@ -366,6 +379,14 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             widgetPref_eventInfo = new ArrayList<>();
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
                 widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
+            }
+
+            widgetPref_onClick = eventsData.preferences_widgets_on_click_action;
+            //Если = Constants.STRING_1, значит используем общие настройки
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals(Constants.STRING_1)) {
+                try {
+                    widgetPref_onClick = Integer.parseInt(widgetPref.get(12));
+                } catch (NumberFormatException ignored) { /**/ }
             }
 
             eventListView.clear();

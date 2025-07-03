@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.06.2025, 13:11
+ *  * Last modified 03.07.2025, 12:27
  *
  */
 
@@ -896,7 +896,6 @@ class WidgetUpdater {
 
             }
 
-            //Если не последнее событие - по нажатию на фото открываем событие
             int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName);
             int pref_onClick;
             int requestCode = 0;
@@ -910,7 +909,7 @@ class WidgetUpdater {
 
                 pref_onClick = this.widgetPref_onClick_lastEvent;
 
-                //Открыть настройки
+                //Если последнее событие - по нажатию на надпись открыть настройки виджета
                 Intent intentConfig = new Intent(context, WidgetConfigureActivity.class);
                 intentConfig.setAction(Constants.ACTION_LAUNCH);
                 intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -937,11 +936,10 @@ class WidgetUpdater {
                         eventsData.getFullName(singleEventArray);
 
                 intentAction = new Intent(context, WidgetMenuActivity.class);
-                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
                 intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, event);
                 intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
                 intentAction.setAction(Constants.ACTION_MENU);
-                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
 
             } else {
 
@@ -954,8 +952,9 @@ class WidgetUpdater {
             }
 
             if (intentAction != null) {
-                intentAction.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                views.setOnClickPendingIntent(idEventPlaceholder, PendingIntent.getActivity(context, requestCode, intentAction, PendingIntentImmutable));
+                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intentAction, PendingIntentImmutable);
+                views.setOnClickPendingIntent(idEventPlaceholder, pendingIntent);
             } else { //Ничего не показываем
                 views.setOnClickPendingIntent(idEventPlaceholder, null);
             }

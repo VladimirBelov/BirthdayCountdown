@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2025, 10:09
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.04.2025, 09:39
+ *  * Last modified 03.07.2025, 12:40
  *
  */
 
@@ -280,7 +280,7 @@ public class WidgetList extends AppWidgetProvider {
                 intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
                 intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
                 intentAction.setAction(Constants.ACTION_MENU);
-                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 try {
                     context.getApplicationContext().startActivity(intentAction);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
@@ -289,7 +289,6 @@ public class WidgetList extends AppWidgetProvider {
 
                 intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
                 if (intentAction != null) {
-                    intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         context.getApplicationContext().startActivity(intentAction);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }

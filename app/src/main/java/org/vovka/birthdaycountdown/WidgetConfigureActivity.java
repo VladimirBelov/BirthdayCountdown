@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:48
+ *  * Last modified 03.07.2025, 12:56
  *
  */
 
@@ -787,9 +787,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Скрываем реакцию на нажатие
             if (Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
 
-                findViewById(R.id.dividerOnClick).setVisibility(View.GONE);
-                findViewById(R.id.captionOnClick).setVisibility(View.GONE);
-                findViewById(R.id.blockOnClickCommon).setVisibility(View.GONE);
+                //findViewById(R.id.dividerOnClick).setVisibility(View.GONE);
+                //findViewById(R.id.captionOnClick).setVisibility(View.GONE);
+                //findViewById(R.id.blockOnClickCommon).setVisibility(View.GONE);
                 findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
 
             } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {

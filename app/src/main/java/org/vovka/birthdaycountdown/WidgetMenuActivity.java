@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.04.2025, 20:12
+ *  * Created by Vladimir Belov on 03.07.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.04.2025, 20:08
+ *  * Last modified 03.07.2025, 13:26
  *
  */
 
@@ -65,7 +65,7 @@ import java.util.Locale;
  */
 public class WidgetMenuActivity extends Activity {
     private static final String TAG = "WidgetMenuActivity";
-    private int appWidgetId;
+    private int appWidgetId = 0;
     final ArrayList<Integer> menuActions = new ArrayList<>();
     String eventText = null;
     String[] singleEventArray = null;
