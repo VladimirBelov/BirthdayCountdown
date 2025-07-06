@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 17:39
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.06.2025, 13:59
+ *  * Last modified 06.07.2025, 13:49
  *
  */
 
@@ -236,6 +236,7 @@ public final class Constants {
     static final String EXTRA_CHECKS = "checks";
     static final String EXTRA_COLORED = "colored";
     static final String EXTRA_NON_SORTED = "nonsorted";
+    static final String EXTRA_BOLD = "bold";
     static final String EXTRA_COLOR = "color";
     static final String EXTRA_ANCHOR = "anchor";
     static final String EXTRA_CONTACT_ON_SAVE_RESULT = "finishActivityOnSaveCompleted";

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
+  ~  * Created by Vladimir Belov on 06.07.2025, 14:02
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.07.2025, 22:55
+  ~  * Last modified 06.07.2025, 13:49
   ~  */
   -->
 
@@ -743,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- bold - (start)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- bold - (end)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -2032,6 +2034,8 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_LeftBracket2_ID" translatable="false">39</string>
     <string name="pref_EventInfo_RightBracket_ID" translatable="false">40</string>
     <string name="pref_EventInfo_RightBracket2_ID" translatable="false">41</string>
+    <string name="pref_EventInfo_BoldStart_ID" translatable="false">42</string>
+    <string name="pref_EventInfo_BoldEnd_ID" translatable="false">43</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

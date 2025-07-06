@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 06.07.2025, 13:49
  *
  */
 
@@ -46,7 +46,7 @@ import org.vovka.birthdaycountdown.helpers.OnStartDragListener;
  * <p>
  * Он также управляет видимостью элементов макета и заголовком панели инструментов.
  */
-class RecyclerListFragment extends Fragment implements OnStartDragListener {
+public class RecyclerListFragment extends Fragment implements OnStartDragListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private String parentTitle = null;
@@ -83,7 +83,8 @@ class RecyclerListFragment extends Fragment implements OnStartDragListener {
                 args.getIntegerArrayList(Constants.EXTRA_CHECKS),
                 args.getStringArrayList(Constants.EXTRA_COLORED),
                 args.getInt(Constants.EXTRA_COLOR),
-                args.getStringArrayList(Constants.EXTRA_NON_SORTED)
+                args.getStringArrayList(Constants.EXTRA_NON_SORTED),
+                args.getStringArrayList(Constants.EXTRA_BOLD)
         );
 
         Toolbar toolbar = fa.findViewById(R.id.toolbar);

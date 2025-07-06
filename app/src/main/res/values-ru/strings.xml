@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
+  ~  * Created by Vladimir Belov on 06.07.2025, 14:02
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.07.2025, 22:52
+  ~  * Last modified 06.07.2025, 13:49
   ~  */
   -->
 
@@ -743,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- жирным - (начало)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- жирным - (конец)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

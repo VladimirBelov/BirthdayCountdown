@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 12:56
+ *  * Last modified 06.07.2025, 13:50
  *
  */
 
@@ -592,6 +592,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 spinnerEventInfo.setNonSorted(listNonSorted);
                 spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
 
+                spinnerEventInfo.setBold(new ArrayList<String>() {{
+                    add(getString(R.string.pref_EventInfo_BoldStart));
+                    add(getString(R.string.pref_EventInfo_BoldEnd));
+                }});
+
             } else {
                 spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
                 spinnerEventInfo.setZeroSelectedIndex(0);
@@ -677,6 +682,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_LeftBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_LeftBracket2));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket2));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldStart_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldStart));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldEnd_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldEnd));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:
@@ -785,17 +792,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             //Скрываем реакцию на нажатие
-            if (Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
-
-                //findViewById(R.id.dividerOnClick).setVisibility(View.GONE);
-                //findViewById(R.id.captionOnClick).setVisibility(View.GONE);
-                //findViewById(R.id.blockOnClickCommon).setVisibility(View.GONE);
+            if (Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType) || Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
-
-            } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
-
-                findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
-
             }
 
             if (!this.eventsData.preferences_extrafun) {

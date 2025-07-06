@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 06.07.2025, 14:02
  *
  */
 
@@ -506,9 +506,18 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         }
 
                     } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ColorizeEntireRow_ID))) {
-                        colorizeEntireRow = true;
-                    }
 
+                        colorizeEntireRow = true;
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldStart_ID))) {
+
+                        sb.append(Constants.HTML_BOLD_START);
+
+                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldEnd_ID))) {
+
+                        sb.append(Constants.HTML_BOLD_END);
+
+                    }
                 }
 
                 if (sb.length() - sb.lastIndexOf(Constants.HTML_BR) == Constants.HTML_BR.length()) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.07.2025, 22:38
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:59
+ *  * Last modified 06.07.2025, 13:49
  *
  */
 
@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -57,13 +58,15 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
     private final List<String> mItems = new ArrayList<>();
     private final List<String> mColoredItems = new ArrayList<>();
     private final List<String> mNonSortableItems = new ArrayList<>();
+    private final List<String> mBoldItems = new ArrayList<>();
     private final List<Integer> mSelected = new ArrayList<>();
     private final List<Integer> mIndex = new ArrayList<>();
     private final int colorItem;
     private final int colorAlt;
     private final OnStartDragListener mDragStartListener;
 
-    public RecyclerListAdapter(@NonNull Context context, OnStartDragListener dragStartListener, List<String> items, List<Integer> selected, List<String> coloredItems, int color, List<String> nonSortableItems) {
+    public RecyclerListAdapter(@NonNull Context context, OnStartDragListener dragStartListener, List<String> items,
+                               List<Integer> selected, List<String> coloredItems, int color, List<String> nonSortableItems, List<String> boldItems) {
 
         List<Integer> selectedItems = selected;
         mDragStartListener = dragStartListener;
@@ -79,11 +82,11 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
         }
         if (coloredItems != null) mColoredItems.addAll(coloredItems);
         if (nonSortableItems != null) mNonSortableItems.addAll(nonSortableItems);
+        if (boldItems != null) mBoldItems.addAll(boldItems);
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.dialogHintColor, typedValue, true);
         colorItem = typedValue.data;
         colorAlt = color;
-        //printAll();
     }
 
     @NonNull
@@ -101,6 +104,11 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
             holder.textView.setTextColor(colorAlt);
         } else {
             holder.textView.setTextColor(colorItem);
+        }
+        if (mBoldItems.contains(mItems.get(position))) {
+            holder.textView.setTypeface(null, Typeface.BOLD);
+        } else {
+            holder.textView.setTypeface(null, Typeface.NORMAL);
         }
         holder.checkBoxView.setChecked(mSelected.get(mIndex.get(position)) == 1);
         holder.checkBoxView.setOnClickListener(view -> mSelected.set(position, mSelected.get(position) == 1 ? 0 : 1));
@@ -126,10 +134,8 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
     public void onItemMove(int fromPosition, int toPosition) {
         if (!mNonSortableItems.isEmpty() && toPosition < mNonSortableItems.size()) return; //Dragged too much
         Collections.swap(mItems, fromPosition, toPosition);
-        //Collections.swap(mSelected, fromPosition, toPosition);
         Collections.swap(mIndex, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
-        //printAll();
     }
 
     @Override

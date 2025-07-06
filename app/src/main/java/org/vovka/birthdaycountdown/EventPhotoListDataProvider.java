@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 13:20
+ *  * Last modified 06.07.2025, 13:11
  *
  */
 
@@ -160,15 +160,18 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
 
                 //Иконка
+                boolean isEventTypeIcon = false;
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))
                         : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
                     if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
                     sbDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
+                    isEventTypeIcon = true;
                 }
 
                 //Наименование события и возраст
                 boolean isLabel = false;
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
+                    if (sbDetails.length() > 0 && !isEventTypeIcon) sbDetails.append(Constants.HTML_BR);
                     sbDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
                         if (!singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty()) {
@@ -185,12 +188,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         isLabel = true;
                     }
                 }
-                if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() && widgetPref_eventInfo.isEmpty()
-                        ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
-                        : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
-                    if ((widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel) && !singleEventArray[ContactsEvents.Position_age_caption].isEmpty())
-                        sbDetails.append(Constants.STRING_COLON_SPACE);
-                    sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
+                if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
+                    if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
+                            : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
+                        if ((widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel))
+                            sbDetails.append(Constants.STRING_COLON_SPACE);
+                        sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
+                    }
                 }
                 //Текущий возраст
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {

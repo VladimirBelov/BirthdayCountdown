@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 06.07.2025, 14:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 06.07.2025, 13:49
  *
  */
 
@@ -54,6 +54,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
     final ArrayAdapter<String> adapter;
     private ArrayList<String> mColored = new ArrayList<>();
     private ArrayList<String> mNonSorted = new ArrayList<>();
+    private ArrayList<String> mBold = new ArrayList<>();
     private int mColor = 0;
     FragmentManager fm;
     Fragment fragment;
@@ -131,6 +132,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
             args.putIntegerArrayList(Constants.EXTRA_CHECKS, mSelected);
             args.putStringArrayList(Constants.EXTRA_COLORED, mColored);
             args.putStringArrayList(Constants.EXTRA_NON_SORTED, mNonSorted);
+            args.putStringArrayList(Constants.EXTRA_BOLD, mBold);
             args.putInt(Constants.EXTRA_COLOR, mColor);
             args.putString(Constants.EXTRA_TITLE, getContext().getString(R.string.pref_List_EventInfo_title));
 
@@ -278,4 +280,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
         this.mNonSorted = listNonSorted;
     }
 
+    public void setBold(ArrayList<String> listBold) {
+        this.mBold = listBold;
+    }
 }
