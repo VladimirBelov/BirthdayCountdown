@@ -10,9 +10,6 @@ package org.vovka.birthdaycountdown.imagecropper;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
-/*
- * Modified from original in AOSP.
- */
 class RotateBitmap {
 
     private Bitmap bitmap;
