@@ -59,6 +59,11 @@ The program does not change anything in system or user data, only reads data fro
 
 Note: standard Android Contacts application may not allow custom event date w/o year. To set this kind of events (for example, for name days) use 3d party contacts application.
 
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE). For more details, see the ⓃLICENSEⓃ file.
+
+
 ## Installation
 
 https://play.google.com/store/apps/details?id=org.vovka.birthdaycountdown
