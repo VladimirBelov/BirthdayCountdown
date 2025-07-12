@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.03.2025, 13:55
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.03.2025, 13:50
+  ~  * Last modified 11.07.2025, 17:31
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <color name="theme_blue_gray_primary">#455a64</color>
     <color name="theme_blue_gray_secondary">@color/theme_secondary</color>
     <color name="theme_blue_gray_status">#384951</color>
+    <color name="theme_blue_gray_status_transp">#33384951</color>
     <color name="theme_blue_gray_panels">#33455A64</color>
 
     <color name="theme_black_primary">#FF121212</color>
@@ -83,7 +84,7 @@
     <color name="blue_gray_light">#FF718792</color>
     <color name="blue_gray_dark">#FF1c313a</color>
     <color name="blue_gray_dark_transp">#991C313A</color>
-    <color name="blue_gray_transp">#331c313a</color>
+    <!--<color name="blue_gray_transp">#331c313a</color>-->
     <color name="blue_gray_gradient1">#B0BEC5</color>
     <color name="medium_dark_gray">#FF232323</color>
 	<color name="widget_name_shadow">#40232323</color> <!--#26232323-->

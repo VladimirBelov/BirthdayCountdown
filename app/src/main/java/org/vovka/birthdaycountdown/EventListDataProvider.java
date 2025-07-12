@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 14:02
+ *  * Last modified 12.07.2025, 11:47
  *
  */
 
@@ -531,7 +531,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     eventText = sb.toString();
                 }
 
-                views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, 0));
+                views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, HtmlCompat.FROM_HTML_MODE_LEGACY));
                 views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
 
             }

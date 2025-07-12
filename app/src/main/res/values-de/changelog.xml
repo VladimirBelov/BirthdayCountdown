@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 00:58
+  ~  * Last modified 12.07.2025, 11:24
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.7</item>
+        <item>Unterstützung für Geburtstage und Feiertage aus 📅 iCalendar-Dateien (ICS) hinzugefügt</item>
+        <item>Neuer Ereignistyp „Anderes Kontaktereignis“. Der Ereignistyp \"Anderes Ereignis\" versucht nicht mehr, eine Verbindung mit einem Kontakt aus dem Adressbuch herzustellen (verhält sich wie \"Feiertag\").</item>
+        <item>Reaktion auf Drücken im Foto-Widget (+ Menü mit Aktionen)</item>
+        <item>Im Kalender-Widget können jetzt separate Größen für Monat, Wochentage und Tage eingestellt werden</item>
+        <item>\"Kontaktfoto\", \"Aktuelles Alter\" und \"Fett\" wurden dem Listen-Widget hinzugefügt</item>
+        <item>🖼️ Auswahl eines Fotos für ein lokales Ereignis (lokales Foto oder aus der Kontaktkarte). Die Größe des lokalen Fotos wird in den allgemeinen Zusatzeinstellungen festgelegt</item>
+        <item>Positionierung auf dem aktuellen Hochzeitstag in der allgemeinen Liste der Jahrestage (langes Tippen auf das Ereignis – alle Hochzeitstage)</item>
+        <item>Optimierung für Android 15 und 16</item>
+        <item>Fehlerbehebungen</item>
 
         <item>#1.8.6</item>
         <item>📅 Lokale Ereignisse, die innerhalb der Anwendung gespeichert sind (in der Liste und den Widgets, Export-Import)</item>

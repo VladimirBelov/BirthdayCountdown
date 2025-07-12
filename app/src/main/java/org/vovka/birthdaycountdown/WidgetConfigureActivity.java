@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 13:50
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -42,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
@@ -1182,12 +1183,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (colorBottom != 0) colorCaptionBottom = colorBottom;
 
             TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
-            captionCaptionsUpperColor.setText(Html.fromHtml(
-                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim()));
+            captionCaptionsUpperColor.setText(HtmlCompat.fromHtml(
+                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
-            captionCaptionsBottomColor.setText(Html.fromHtml(
-                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim()));
+            captionCaptionsBottomColor.setText(HtmlCompat.fromHtml(
+                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1205,13 +1206,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 if (colorId.equals(UPPER_ROW)) {
                     colorCaptionUpper = colorValue;
                     TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
-                    captionCaptionsUpperColor.setText(Html.fromHtml(
-                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim()));
+                    captionCaptionsUpperColor.setText(HtmlCompat.fromHtml(
+                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                 } else if (colorId.equals(BOTTOM_ROW)) {
                     colorCaptionBottom = colorValue;
                     TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
-                    captionCaptionsBottomColor.setText(Html.fromHtml(
-                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim()));
+                    captionCaptionsBottomColor.setText(HtmlCompat.fromHtml(
+                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                 }
             }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 22:58
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 22:43
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -2467,7 +2467,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(R.string.msg_title_settings);
             builder.setIcon(android.R.drawable.ic_menu_info_details);
-            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
@@ -3188,7 +3188,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 }
             }
 
-            Spanned eventsData = HtmlCompat.fromHtml(sb.toString(), 0);
+            Spanned eventsData = HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY);
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
             builder.setTitle(R.string.msg_title_local_events);
             builder.setIcon(android.R.drawable.ic_menu_info_details);

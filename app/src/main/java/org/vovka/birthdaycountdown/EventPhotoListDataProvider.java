@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 13:11
+ *  * Last modified 12.07.2025, 11:47
  *
  */
 
@@ -139,7 +139,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (colorizeEntireRow) {
                     views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(
                                     Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventCaption + Constants.HTML_COLOR_END
-                            , 0));
+                            , HtmlCompat.FROM_HTML_MODE_LEGACY));
                 } else {
                     views.setTextViewText(R.id.eventCaption, eventCaption);
                 }
@@ -262,7 +262,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     eventDetails = sbDetails.toString();
                 }
 
-                views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(eventDetails, 0));
+                views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(eventDetails, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                 //Фото
                 views.setImageViewBitmap(R.id.eventPhoto, null);

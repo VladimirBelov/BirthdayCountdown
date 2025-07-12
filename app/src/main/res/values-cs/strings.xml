@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 12.07.2025, 10:07
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Přidat do oblíbených</string>
     <string name="menu_context_favorites_remove">Odebrat z oblíbených</string>
     <string name="menu_context_edit_local_event">Upravit událost</string>
+    <string name="menu_context_dial">Vytočit</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Události kalendáře</string>
@@ -72,6 +73,7 @@
     <string name="menu_help_events_facts" tools:ignore="MissingTranslation">Fakta</string>
 
     <string name="msg_no_access_contacts">Žádný přístup ke kontaktům</string>
+    <string name="msg_no_access_storage">Žádný přístup k úložišti</string>
     <string name="msg_no_events">Události nenalezeny</string>
     <string name="msg_no_files_selected">" - nevybráno -"</string>
     <string name="msg_file_open_error">"Chyba při otevírání souboru: "</string>
@@ -252,6 +254,7 @@
     <string name="button_share">Sdílet</string>
     <string name="button_rgb">Barva RGB</string>
     <string name="button_save">Uložit</string>
+    <string name="button_edit">Upravit</string>
 
     <string name="events_scope_not_hidden">Vše není skryté (%1$d)</string>
     <string name="events_scope_all">Vše (%1$d)</string>
@@ -277,6 +280,7 @@
     <string name="event_type_file">Událost souboru</string>
     <string name="event_type_custom">Vlastní událost</string>
     <string name="event_type_unrecognized">Nerozpoznaná událost</string>
+    <string name="event_type_another">Událost jiného kontaktu</string>
 
     <string name="account_type_local">Místní účet</string>
 
@@ -354,6 +358,10 @@
         <item>so</item>
     </string-array>
 
+    <string name="pref_LocalEvents_Size_title">Velikost fotografií v místních událostech</string>
+    <string name="pref_LocalEvents_Size_summary">"Aktuální hodnota: %s pixelů"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Nastavit velikost</string>
+
     <string name="pref_CustomEvents_title">Nastavení událostí</string>
     <string name="pref_CustomEvents_summary">Zdroje událostí, klasifikace typů, přizpůsobení štítků</string>
     <string name="pref_CustomEvents_hint">Zadejte štítky událostí (čárkou)</string>
@@ -418,6 +426,10 @@
     <string name="pref_CustomEvents_Death_UseInternal_summary">Používejte standardní štítky k detekci událostí výročí úmrtí</string>
     <string name="pref_CustomEvents_Death_Labels_title">Štítky událostí</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Události s těmito štítky budou označeny jako výročí úmrtí (čárkou)</string>
+
+    <string name="pref_CustomEvents_Another_title">Události ostatních kontaktů</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Štítky událostí</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">Události s těmito štítky budou identifikovány jako události ostatních kontaktů (odděleny čárkou)</string>
 
     <string name="pref_CustomEvents_Other_title">Další události</string>
     <string name="pref_CustomEvents_Other_Labels_title">Štítky událostí</string>
@@ -731,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- tučné - (začátek)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- tučné - (konec)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -921,8 +935,11 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Pozice:</string>
     <string name="widget_config_month_sources_empty">-Žádné-</string>
-    <string name="widget_config_month_font_magnify_label">Velikost písma</string>
-    <string name="widget_config_month_font_magnify_description">Násobitel měřítka písma pro název měsíce, pracovní dny a dny</string>
+    <string name="widget_config_font_magnify_label">Velikost písma</string>
+    <string name="widget_config_month_font_magnify_description">Měřítko písma pro všechny prvky</string>
+    <string name="widget_config_font_magnify_month_label">Název měsíce</string>
+    <string name="widget_config_font_magnify_weekday_label">Dny v týdnu</string>
+    <string name="widget_config_font_magnify_day_label">Dny</string>
     <string name="widget_config_onclick_label">Chování při kliknutí</string>
     <string name="widget_config_onclick_common_label">Běžné dny:</string>
     <string name="widget_config_onclick_holidays_label">Dny s událostmi:</string>
@@ -1313,6 +1330,20 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="local_event_dialog_type_title">Typ události:</string>
     <string name="local_event_dialog_confirmation_remove">Opravdu chcete odstranit tuto událost?</string>
     <string name="local_event_dialog_confirmation_cancel">Data události byla změněna. Opravdu chcete toto dialogové okno zavřít?</string>
+
+    <string name="event_photo_details">"[data obrázku, %d bajtů]"</string>
+    <string name="event_photo_pick_contact_hint">Vybrat fotografii z kontaktu…</string>
+    <string name="event_photo_select_photo_hint">Vybrat místní fotografii…</string>
+    <string name="event_photo_clear_photo_hint">Vymazat fotografii z události</string>
+    <string name="event_photo_select_photo_title">Vybrat fotografii</string>
+
+    <string name="crop_image_back">Zpět</string>
+    <string name="crop_image_save">Uložit</string>
+    <string name="crop_image_title">Oříznout fotografii</string>
+    <string name="crop_image_rotate">Otočit</string>
+    <string name="crop_image_reset">Obnovit</string>
+    <string name="crop_image_crop">Oříznout</string>
+    <string name="crop_image_saving">Ukládání…</string>
 
     <!-- https://cs.wikipedia.org/wiki/V%C3%BDro%C4%8D%C3%AD_svatby -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Bavlněná svatba</string>

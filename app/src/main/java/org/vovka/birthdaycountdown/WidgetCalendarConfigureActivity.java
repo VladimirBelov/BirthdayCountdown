@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:48
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -19,6 +19,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -29,6 +30,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -45,8 +48,10 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.transition.TransitionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +78,17 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private AppCompatActivity thisActivity;
     private int customMonthShift = 0;
     private boolean isNewPinnedWidget;
+
+    CheckBox checkFontMagnifyManual;
+    SeekBar seekFontMagnify;
+    TextView valueFontMagnify;
+    LinearLayout blockFontMagnifyManual;
+    SeekBar seekFontMagnifyMonth;
+    TextView valueFontMagnifyMonth;
+    SeekBar seekFontMagnifyWeek;
+    TextView valueFontMagnifyWeek;
+    SeekBar seekFontMagnifyDay;
+    TextView valueFontMagnifyDay;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -267,17 +283,35 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Размер шрифта
             try {
-                int prefFontMagnify = 0;
-                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
 
-                SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
+                checkFontMagnifyManual = findViewById(R.id.checkFontMagnifyManual);
+                blockFontMagnifyManual = findViewById(R.id.blockFontMagnifyManual);
+
+                String[] prefFontMagnify;
+                int prefFontMagnify_Common = 0;
+                int prefFontMagnify_Month = 0;
+                int prefFontMagnify_Weekdays = 0;
+                int prefFontMagnify_Days = 0;
+                if (widgetPref.size() > 6) {
+                    prefFontMagnify = widgetPref.get(6).split(Constants.REGEX_PLUS, -1);
+                    try {
+                        prefFontMagnify_Common = Integer.parseInt(prefFontMagnify[0]);
+                        if (prefFontMagnify.length > 3) {
+                            prefFontMagnify_Month = Integer.parseInt(prefFontMagnify[1]);
+                            prefFontMagnify_Weekdays = Integer.parseInt(prefFontMagnify[2]);
+                            prefFontMagnify_Days = Integer.parseInt(prefFontMagnify[3]);
+                        } else {
+                            this.checkFontMagnifyManual.setChecked(true);
+                        }
+                    } catch (NumberFormatException ignored) { /**/ }
+                }
+
+                //Общий
+                seekFontMagnify = findViewById(R.id.seekFontMagnify);
                 seekFontMagnify.setMax(25);
-                seekFontMagnify.setProgress(prefFontMagnify + 5);
-
-                TextView valueFontMagnify = findViewById(R.id.valueFontMagnify);
+                valueFontMagnify = findViewById(R.id.valueFontMagnify);
                 valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
-
-                seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                this.seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
                     }
@@ -286,6 +320,59 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {}
                 });
+
+                //Название месяца
+                seekFontMagnifyMonth = findViewById(R.id.seekFontMagnifyMonth);
+                seekFontMagnifyMonth.setMax(25);
+                valueFontMagnifyMonth = findViewById(R.id.valueFontMagnifyMonth);
+                valueFontMagnifyMonth.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyMonth.getProgress() - 5) * 10)));
+                seekFontMagnifyMonth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        valueFontMagnifyMonth.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyMonth.getProgress() - 5) * 10)));
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+
+                //Дни недели
+                seekFontMagnifyWeek = findViewById(R.id.seekFontMagnifyWeek);
+                seekFontMagnifyWeek.setMax(25);
+                valueFontMagnifyWeek = findViewById(R.id.valueFontMagnifyWeek);
+                valueFontMagnifyWeek.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyWeek.getProgress() - 5) * 10)));
+                seekFontMagnifyWeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        valueFontMagnifyWeek.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyWeek.getProgress() - 5) * 10)));
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+
+                //Дни
+                seekFontMagnifyDay = findViewById(R.id.seekFontMagnifyDay);
+                seekFontMagnifyDay.setMax(25);
+                valueFontMagnifyDay = findViewById(R.id.valueFontMagnifyDay);
+                valueFontMagnifyDay.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyDay.getProgress() - 5) * 10)));
+                seekFontMagnifyDay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        valueFontMagnifyDay.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyDay.getProgress() - 5) * 10)));
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+
+                checkFontMagnifyManual.setOnCheckedChangeListener((buttonView, isChecked) -> updateVisibility());
+
+                seekFontMagnify.setProgress(prefFontMagnify_Common + 5);
+                seekFontMagnifyMonth.setProgress(prefFontMagnify_Month + 5);
+                seekFontMagnifyWeek.setProgress(prefFontMagnify_Weekdays + 5);
+                seekFontMagnifyDay.setProgress(prefFontMagnify_Days + 5);
+
             } catch (Exception e) {/**/}
 
             //Реакция на нажатие
@@ -467,7 +554,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
 
-            SeekBar seekFontMagnify = findViewById(R.id.seekFontMagnify);
+            String fontMagnify;
+            if (this.checkFontMagnifyManual.isChecked()) {
+                fontMagnify = String.valueOf(seekFontMagnify.getProgress() - 5);
+            } else {
+                fontMagnify =  String.valueOf(seekFontMagnify.getProgress() - 5)
+                        .concat(Constants.STRING_PLUS)
+                        .concat(String.valueOf(seekFontMagnifyMonth.getProgress() - 5))
+                        .concat(Constants.STRING_PLUS)
+                        .concat(String.valueOf(seekFontMagnifyWeek.getProgress() - 5))
+                        .concat(Constants.STRING_PLUS)
+                        .concat(String.valueOf(seekFontMagnifyDay.getProgress() - 5));
+            }
 
             List<String> onclickHolidaysIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_values));
             List<String> onclickCommonIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_common_values));
@@ -544,7 +642,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(String.valueOf(customMonthShift)); //Ручное смещение месяцев
             prefsToStore.add(selectedElements.toString()); //Элементы
             prefsToStore.add(eventSources); //Источники событий (через +)
-            prefsToStore.add(String.valueOf(seekFontMagnify.getProgress() - 5)); //Размер шрифта
+            prefsToStore.add(fontMagnify); //Размер шрифта
             prefsToStore.add(selectedWidgetBackground); //Цвет подложки
             prefsToStore.add(selectedCommon); //Обычные дни
             prefsToStore.add(selectedMonthTitle); //Заголовок
@@ -724,7 +822,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (sb.length() == 0) {
                 listEventSources.setText(R.string.widget_config_month_sources_empty);
             } else {
-                listEventSources.setText(Html.fromHtml(sb.toString()));
+                listEventSources.setText(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
             }
 
         } catch (final Exception e) {
@@ -853,6 +951,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             if (isNewPinnedWidget) {
                 findViewById(R.id.button_cancel).setVisibility(View.GONE);
+            }
+
+            TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main));
+            int currentPaintFlags = valueFontMagnify.getPaintFlags();
+            if (checkFontMagnifyManual.isChecked()) {
+                seekFontMagnify.setEnabled(true);
+                valueFontMagnify.setPaintFlags(currentPaintFlags & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                blockFontMagnifyManual.setVisibility(View.GONE);
+            } else {
+                seekFontMagnify.setEnabled(false);
+                valueFontMagnify.setPaintFlags(currentPaintFlags | Paint.STRIKE_THRU_TEXT_FLAG);
+                blockFontMagnifyManual.setVisibility(View.VISIBLE);
             }
 
         } catch (final Exception e) {

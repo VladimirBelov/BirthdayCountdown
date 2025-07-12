@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.07.2025, 14:02
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.07.2025, 13:49
+  ~  * Last modified 12.07.2025, 09:28
   ~  */
   -->
 
@@ -935,8 +935,11 @@ Long click on item to select color"</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
     <string name="widget_config_month_sources_empty">-None-</string>
-    <string name="widget_config_month_font_magnify_label">Font size</string>
-    <string name="widget_config_month_font_magnify_description">Font scale multiplier for month title, weekdays and days</string>
+    <string name="widget_config_font_magnify_label">Font size</string>
+    <string name="widget_config_month_font_magnify_description">Font scale for all elements</string>
+    <string name="widget_config_font_magnify_month_label">Month title</string>
+    <string name="widget_config_font_magnify_weekday_label">Weekdays</string>
+    <string name="widget_config_font_magnify_day_label">Days</string>
     <string name="widget_config_onclick_label">On click behavior</string>
     <string name="widget_config_onclick_common_label">Ordinary days:</string>
     <string name="widget_config_onclick_holidays_label">Days with events:</string>

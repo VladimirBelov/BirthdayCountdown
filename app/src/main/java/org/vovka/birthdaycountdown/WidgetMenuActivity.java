@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 13:26
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -136,7 +135,7 @@ public class WidgetMenuActivity extends Activity {
 
             TextView titleView = findViewById(R.id.titleView);
             //todo: добавить ограничение на длину
-            titleView.setText(HtmlCompat.fromHtml(eventText, 0));
+            titleView.setText(HtmlCompat.fromHtml(eventText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             ArrayList<String> menuItems = new ArrayList<>();
             List<Drawable> menuIcons = new ArrayList<>();
@@ -288,8 +287,7 @@ public class WidgetMenuActivity extends Activity {
             switch (menuActions.get(itemId)) {
                 case Constants.ContextMenu_ShareAsText:
 
-                    final String plainText = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-                            ? Html.fromHtml(eventText, Html.FROM_HTML_MODE_LEGACY).toString() : Html.fromHtml(eventText).toString();
+                    final String plainText = HtmlCompat.fromHtml(eventText, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                     intentShare.putExtra(Intent.EXTRA_TEXT, plainText);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 23:19
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 
 import java.util.Locale;
 
@@ -124,7 +125,7 @@ public class WidgetCalendarPopup extends Activity {
                                 Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0)  & 0x00ffffff));
                         ta.recycle();
                     }
-                    txtInfo.setText(Html.fromHtml(dayInfo));
+                    txtInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
                 }
             } else {
                 ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");

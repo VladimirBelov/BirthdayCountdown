@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.07.2025, 14:02
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.07.2025, 13:49
+  ~  * Last modified 10.07.2025, 23:45
   ~  */
   -->
 
@@ -935,8 +935,11 @@
     <string name="widget_config_month_shift_label">Смещение:</string>
     <string name="widget_config_starting_month_position_label">Положение:</string>
     <string name="widget_config_month_sources_empty">-Не выбрано-</string>
-    <string name="widget_config_month_font_magnify_label">Размер шрифта</string>
+    <string name="widget_config_font_magnify_label">Размер шрифта</string>
     <string name="widget_config_month_font_magnify_description">Изменение размера шрифта для всех элементов</string>
+    <string name="widget_config_font_magnify_month_label">Название месяца</string>
+    <string name="widget_config_font_magnify_weekday_label">Дни недели</string>
+    <string name="widget_config_font_magnify_day_label">Дни</string>
     <string name="widget_config_onclick_label">Реакция на нажатие</string>
     <string name="widget_config_onclick_common_label">Дни без событий:</string>
     <string name="widget_config_onclick_holidays_label">Дни с событиями:</string>

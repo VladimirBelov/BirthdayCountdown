@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 12.07.2025, 10:07
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Дадаць у абранае</string>
     <string name="menu_context_favorites_remove">Выдаліць з абраных</string>
     <string name="menu_context_edit_local_event">Рэдагаваць падзею</string>
+    <string name="menu_context_dial">Набраць</string>
     <string name="menu_ok">Добра</string>
     <string name="menu_help">Даведка</string>
     <string name="menu_help_events_calendar">Падзеі календара</string>
@@ -72,6 +73,7 @@
     <string name="menu_help_events_facts">Факты</string>
 
     <string name="msg_no_access_contacts">Адсутнічае доступ да кантактаў</string>
+    <string name="msg_no_access_storage">Няма доступу да сховішча</string>
     <string name="msg_no_events">Падзеі не знойдзены</string>
     <string name="msg_no_files_selected">"  - не абраны -"</string>
     <string name="msg_file_open_error">"Памылка адкрыцця файла: "</string>
@@ -252,6 +254,7 @@
     <string name="button_share">Падзяліцца</string>
     <string name="button_rgb">RGB колер</string>
     <string name="button_save">Захаваць</string>
+    <string name="button_edit">Рэдагаваць</string>
 
     <string name="events_scope_not_hidden">Усе не схаваныя (%1$d)</string>
     <string name="events_scope_all">Усе (%1$d)</string>
@@ -277,6 +280,7 @@
     <string name="event_type_file">Падзея з файла</string>
     <string name="event_type_custom">Карыстальніцкая падзея</string>
     <string name="event_type_unrecognized">Нераспазнаная падзея</string>
+    <string name="event_type_another">Іншая падзея кантакту</string>
 
     <string name="account_type_local">Лакальны акаўнт</string>
 
@@ -354,6 +358,10 @@
         <item>сб</item>
     </string-array>
 
+    <string name="pref_LocalEvents_Size_title">Памер фота ў лакальных падзеях</string>
+    <string name="pref_LocalEvents_Size_summary">"Бягучае значэнне: %s пікселяў"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Устанавіць памер</string>
+
     <string name="pref_CustomEvents_title">Налада падзей</string>
     <string name="pref_CustomEvents_summary">Крыніцы падзей, класіфікацыя тыпаў, налада пазнак</string>
     <string name="pref_CustomEvents_hint">Увядзіце назвы (праз коску)</string>
@@ -418,6 +426,10 @@
     <string name="pref_CustomEvents_Death_UseInternal_summary">Выкарыстаць стандартныя назвы для вызначэння гадавін смерці</string>
     <string name="pref_CustomEvents_Death_Labels_title">Свае назвы</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гадавіны смерці (праз коску)</string>
+
+    <string name="pref_CustomEvents_Another_title">Іншыя падзеі кантактаў</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Пазнакі падзей</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">Падзеі з гэтымі пазнакамі будуць ідэнтыфікавацца як падзеі іншых кантактаў (праз коску)</string>
 
     <string name="pref_CustomEvents_Other_title">Іншыя падзеі</string>
     <string name="pref_CustomEvents_Other_Labels_title">Свае назвы</string>
@@ -731,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- паўтлусты - (пачатак)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- паўтлусты - (канец)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -921,8 +935,11 @@
     <string name="widget_config_month_shift_label">Зрушэнне:</string>
     <string name="widget_config_starting_month_position_label">Палажэнне:</string>
     <string name="widget_config_month_sources_empty">-Не абрана-</string>
-    <string name="widget_config_month_font_magnify_label">Памер шрыфта</string>
-    <string name="widget_config_month_font_magnify_description">Змена памеру шрыфта для ўсіх элементаў</string>
+    <string name="widget_config_font_magnify_label">Памер шрыфта</string>
+    <string name="widget_config_month_font_magnify_description">Маштаб шрыфта для ўсіх элементаў</string>
+    <string name="widget_config_font_magnify_month_label">Назва месяца</string>
+    <string name="widget_config_font_magnify_weekday_label">Дні тыдня</string>
+    <string name="widget_config_font_magnify_day_label">Дні</string>
     <string name="widget_config_onclick_label">Пры націсканні</string>
     <string name="widget_config_onclick_common_label">Дні без падзей:</string>
     <string name="widget_config_onclick_holidays_label">Дні з падзеямі:</string>
@@ -1311,6 +1328,20 @@
     <string name="local_event_dialog_type_title">Тып падзеі:</string>
     <string name="local_event_dialog_confirmation_remove">Вы ўпэўнены, што хочаце выдаліць гэту падзею?</string>
     <string name="local_event_dialog_confirmation_cancel">Даныя падзеі былі зменены. Вы ўпэўнены, што хочаце закрыць гэтае дыялогавае акно?</string>
+
+    <string name="event_photo_details">"[дадзеныя выявы, %d байтаў]"</string>
+    <string name="event_photo_pick_contact_hint">Выбраць фота з кантакту…</string>
+    <string name="event_photo_select_photo_hint">Выбраць лакальнае фота…</string>
+    <string name="event_photo_clear_photo_hint">Ачысціць фота з падзеі</string>
+    <string name="event_photo_select_photo_title">Выбраць фота</string>
+
+    <string name="crop_image_back">Назад</string>
+    <string name="crop_image_save">Захаваць</string>
+    <string name="crop_image_title">Абрэзаць фота</string>
+    <string name="crop_image_rotate">Павярнуць</string>
+    <string name="crop_image_reset">Скінуць</string>
+    <string name="crop_image_crop">Абрэзаць</string>
+    <string name="crop_image_saving">Захаванне…</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Гадавіны_вяселля -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Паркалёвае</string>

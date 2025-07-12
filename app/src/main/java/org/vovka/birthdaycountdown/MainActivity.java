@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:48
+ *  * Last modified 12.07.2025, 11:52
  *
  */
 
@@ -1340,7 +1340,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                             builder.setTitle(getString(R.string.msg_new_version_title, currentVersion));
                             builder.setIcon(android.R.drawable.ic_menu_info_details);
-                            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+                            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
                             builder.setNeutralButton(R.string.button_open_version_history, (dialog, which) -> {
                                 try {
@@ -1818,7 +1818,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.window_search_hints));
                     builder.setIcon(android.R.drawable.ic_menu_info_details);
-                    builder.setMessage(HtmlCompat.fromHtml(sb.toString(), 0));
+                    builder.setMessage(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                     builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
                     alertToShow = builder.create();
                     alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
@@ -2396,7 +2396,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         getString(R.string.msg_zero_events_title) +
                                 eventsData.getCurrentParams() +
                                 getString(R.string.msg_zero_events_footer)
-                        , 0));
+                        , HtmlCompat.FROM_HTML_MODE_LEGACY));
                     //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
                     viewZero.setMovementMethod(new ScrollingMovementMethod());
                 }
@@ -2500,7 +2500,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void setHint(@NonNull String msg) {
         try {
             TextView stats = findViewById(R.id.mainStatsTextView);
-            stats.setText(HtmlCompat.fromHtml(msg, 0), TextView.BufferType.SPANNABLE);
+            stats.setText(HtmlCompat.fromHtml(msg, HtmlCompat.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
 
             if (eventsData.preferences_list_margin > 0) {
                     stats.setPadding(
@@ -2927,7 +2927,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT));
                     } else {
-                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), 0));
+                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                     }
                 }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 13:49
+ *  * Last modified 12.07.2025, 09:28
  *
  */
 
@@ -258,12 +258,10 @@ public final class Constants {
     static final String HTML_BOLD_START = "<b>";
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
-    static final String HTML_COLOR = "<font color=\"#%s\">%s</font>"; //https://dzone.com/articles/java-string-format-examples
     static final String HTML_COLOR_START = "<font color=\"#";
     static final String HTML_COLOR_MIDDLE = "\">";
     static final String HTML_COLOR_END = "</font>";
     static final String FONT_COLOR_RED = "<font color=red>";
-    static final String FONT_COLOR_DOT = "<bold><font color=#%s>●</font></bold> ";
     static final String FONT_COLOR_DOT_START = "<bold><font color=#";
     static final String FONT_COLOR_DOT_END = ">●</font></bold> ";
     static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";

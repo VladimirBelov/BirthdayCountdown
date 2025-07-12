@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 14:10
+ *  * Last modified 12.07.2025, 09:11
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -35,6 +35,7 @@ class CropWindow {
     public CropWindow(RectF imageRect, org.vovka.birthdaycountdown.imagecropper.CropImageActivity.CropParam params) {
 
         mWidth = Math.min(imageRect.width(), imageRect.height()); // * 4 / 5;
+        //noinspection SuspiciousNameCombination
         mHeight = mWidth;
 
         if (params.mOutputX != 0 && params.mOutputY != 0) {
@@ -142,6 +143,7 @@ class CropWindow {
         mTop = (bottom() >= mImageRect.bottom) ? mImageRect.bottom - mHeight : top();
     }
 
+    /** @noinspection UnusedReturnValue*/
     public boolean onTouchDown(float x, float y) {
 
         RectF window = getWindowRectF();
@@ -176,11 +178,13 @@ class CropWindow {
         return mTouchMode != TOUCH_NONE;
     }
 
+    /** @noinspection UnusedReturnValue, SameReturnValue */
     public boolean onTouchUp() {
         mTouchMode = TOUCH_NONE;
         return true;
     }
 
+    /** @noinspection UnusedReturnValue*/
     public boolean onTouchMoved(float deltaX, float deltaY) {
 
         if (mTouchMode == TOUCH_NONE) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 12.07.2025, 10:04
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Dodaj do ulubionych</string>
     <string name="menu_context_favorites_remove">Usuń z ulubionych</string>
     <string name="menu_context_edit_local_event">Edytuj wydarzenie</string>
+    <string name="menu_context_dial">Wybierz</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_help_events_calendar">Wydarzenia w kalendarzu</string>
@@ -72,6 +73,7 @@
     <string name="menu_help_events_facts">Fakty</string>
 
     <string name="msg_no_access_contacts">Brak dostępu do kontaktów</string>
+    <string name="msg_no_access_storage">Brak dostępu do magazynu</string>
     <string name="msg_no_events">Nie znaleziono żadnych wydarzeń</string>
     <string name="msg_no_files_selected">" - nie wybrano -"</string>
     <string name="msg_file_open_error">"Błąd podczas otwierania pliku: "</string>
@@ -252,6 +254,7 @@
     <string name="button_share">Udostępnij</string>
     <string name="button_rgb">Kolor RGB</string>
     <string name="button_save">Zapisz</string>
+    <string name="button_edit">Edytuj</string>
 
     <string name="events_scope_not_hidden">Wszystkie nie są ukryte (%1$d)</string>
     <string name="events_scope_all">Wszystkie (%1$d)</string>
@@ -277,6 +280,7 @@
     <string name="event_type_file">Wydarzenie z pliku</string>
     <string name="event_type_custom">Wydarzenie niestandardowe</string>
     <string name="event_type_unrecognized">Nierozpoznane wydarzenie</string>
+    <string name="event_type_another">Inne zdarzenie kontaktowe</string>
 
     <string name="account_type_local">Konto lokalne</string>
 
@@ -354,6 +358,10 @@
         <item>so</item>
     </string-array>
 
+    <string name="pref_LocalEvents_Size_title">Rozmiar zdjęcia w wydarzeniach lokalnych</string>
+    <string name="pref_LocalEvents_Size_summary">"Bieżąca wartość: %s pikseli"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Ustaw rozmiar</string>
+
     <string name="pref_CustomEvents_title">Dostosowywanie wydarzenia</string>
     <string name="pref_CustomEvents_summary">Źródła wydarzeń, klasyfikacja typów, ustawienia etykiet</string>
     <string name="pref_CustomEvents_hint">Wprowadź nazwy (oddzielone przecinkami)</string>
@@ -418,6 +426,10 @@
     <string name="pref_CustomEvents_Death_UseInternal_summary">Użyj standardowych nazw do określenia rocznic śmierci</string>
     <string name="pref_CustomEvents_Death_Labels_title">Nazwy niestandardowe</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Wydarzenia z takimi etykietami będą identyfikowane jako rocznice śmierci (oddzielone przecinkami)</string>
+
+    <string name="pref_CustomEvents_Another_title">Inne zdarzenia kontaktu</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Etykiety zdarzeń</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">Zdarzenia z tymi etykietami będą oznaczane jako inne zdarzenia kontaktu (oddzielone przecinkami)</string>
 
     <string name="pref_CustomEvents_Other_title">Inne wydarzenia</string>
     <string name="pref_CustomEvents_Other_Labels_title">Nazwy niestandardowe</string>
@@ -731,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- pogrubienie - (początek)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- pogrubienie - (koniec)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -921,8 +935,11 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Pozycja:</string>
     <string name="widget_config_month_sources_empty">-Nie wybrano-</string>
-    <string name="widget_config_month_font_magnify_label">Rozmiar czcionki</string>
-    <string name="widget_config_month_font_magnify_description">Zmień rozmiar czcionki dla wszystkich elementów</string>
+    <string name="widget_config_font_magnify_label">Rozmiar czcionki</string>
+    <string name="widget_config_month_font_magnify_description">Skala czcionki dla wszystkich elementów</string>
+    <string name="widget_config_font_magnify_month_label">Tytuł miesiąca</string>
+    <string name="widget_config_font_magnify_weekday_label">Dni robocze</string>
+    <string name="widget_config_font_magnify_day_label">Dni</string>
     <string name="widget_config_onclick_label">Odpowiedź na kliknięcie</string>
     <string name="widget_config_onclick_common_label">Dni bez wydarzeń:</string>
     <string name="widget_config_onclick_holidays_label">Dni z wydarzeniami:</string>
@@ -1311,6 +1328,20 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="local_event_dialog_type_title">Typ wydarzenia:</string>
     <string name="local_event_dialog_confirmation_remove">Czy na pewno chcesz usunąć to wydarzenie?</string>
     <string name="local_event_dialog_confirmation_cancel">Dane wydarzenia zostały zmodyfikowane. Czy na pewno chcesz zamknąć to okno dialogowe?</string>
+
+    <string name="event_photo_details">"[dane obrazu, %d bajtów]"</string>
+    <string name="event_photo_pick_contact_hint">Wybierz zdjęcie z kontaktu…</string>
+    <string name="event_photo_select_photo_hint">Wybierz zdjęcie lokalne…</string>
+    <string name="event_photo_clear_photo_hint">Wyczyść zdjęcie z wydarzenia</string>
+    <string name="event_photo_select_photo_title">Wybierz zdjęcie</string>
+
+    <string name="crop_image_back">Wstecz</string>
+    <string name="crop_image_save">Zapisz</string>
+    <string name="crop_image_title">Przytnij zdjęcie</string>
+    <string name="crop_image_rotate">Obróć</string>
+    <string name="crop_image_reset">Resetuj</string>
+    <string name="crop_image_crop">Przytnij</string>
+    <string name="crop_image_saving">Zapisywanie…</string>
 
     <!-- https://savicki.pl/nazwy-rocznic-slubu -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierowa</string>

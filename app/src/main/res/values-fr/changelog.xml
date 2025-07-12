@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 00:57
+  ~  * Last modified 12.07.2025, 11:16
   ~  */
   -->
 
@@ -11,6 +11,17 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+    <item>#1.8.7</item>
+    <item>Ajout de la prise en charge des anniversaires et des jours fériés à partir des fichiers iCalendar (ics)</item>
+    <item>"Nouveau type d'événement «Autre événement de contact». Ce type d'événement ne tente plus de trouver un contact dans le carnet d'adresses (il se comporte comme «Jour férié»)"</item>
+    <item>Réaction à un clic dans le widget photo (+ menu avec actions)</item>
+    <item>Dans le widget calendrier, il est désormais possible de définir des tailles distinctes pour le mois, les jours de la semaine et les jours</item>
+    <item>«Photo du contact», «Âge actuel» et «Gras» ont été ajoutés au widget liste</item>
+    <item>"Sélection d'une photo pour un événement local (photo locale ou depuis la fiche du contact). La taille de la photo locale est définie dans les paramètres supplémentaires communs"</item>
+    <item>"Positionnement sur l'anniversaire de mariage actuel dans la liste générale des anniversaires (appui long sur l'événement - tous les anniversaires de mariage)"</item>
+    <item>Optimisation pour Android 15 et 16</item>
+    <item>Corrections de errores</item>
+    
     <item>#1.8.6</item>
     <item>📅 Eventos locales almacenados dentro de la aplicación (en la lista y widgets, exportación-importación)</item>
     <item>Se ha reescrito el cálculo del año zodiacal (ahora tiene en cuenta el calendario lunar)</item>

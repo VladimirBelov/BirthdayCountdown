@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:48
+ *  * Last modified 12.07.2025, 11:47
  *
  */
 
@@ -166,7 +166,7 @@ public class AboutActivity extends AppCompatActivity {
                     BuildConfig.VERSION_NAME,
                     Integer.toString(BuildConfig.VERSION_CODE),
                     eventsData.getDateTimePreferable(BuildConfig.BUILD_TIME)
-                    ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), 0)); //
+                    ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), HtmlCompat.FROM_HTML_MODE_LEGACY)); //
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);
 

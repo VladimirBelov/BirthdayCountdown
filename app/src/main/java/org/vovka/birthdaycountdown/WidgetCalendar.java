@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.06.2025, 00:51
+ *  * Created by Vladimir Belov on 12.07.2025, 12:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.06.2025, 21:15
+ *  * Last modified 11.07.2025, 16:31
  *
  */
 
@@ -68,8 +68,8 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean colorizeSaturdays;
     private boolean colorizeSundays;
     private boolean enabledFillDays;
-    private float fontMagnify;
-    private float fontMagnifyMonthRow = 1; //0.6f;
+    //private float fontMagnify;
+    //private float fontMagnifyMonthRow = 1; //0.6f;
     private List<String> prefOtherEvents;
     private int prefOnClickCommon = Constants.onClick_None;
     private int prefOnClickHolidays = Constants.onClick_None;
@@ -226,11 +226,31 @@ public class WidgetCalendar extends AppWidgetProvider {
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
 
             //Размер шрифта
-            int prefFontMagnify = 0;
-            try {
-                if (widgetPref.size() > 6) prefFontMagnify = Integer.parseInt(widgetPref.get(6));
-            } catch (Exception e) {/**/}
-            fontMagnify = (float) (1 + prefFontMagnify * 0.1);
+            String[] prefFontMagnify;
+            int prefFontMagnify_Common = 0;
+            int prefFontMagnify_Month = 0;
+            int prefFontMagnify_Weekdays = 0;
+            int prefFontMagnify_Days = 0;
+            if (widgetPref.size() > 6) {
+                prefFontMagnify = widgetPref.get(6).split(Constants.REGEX_PLUS, -1);
+                try {
+                    prefFontMagnify_Common = Integer.parseInt(prefFontMagnify[0]);
+                    if (prefFontMagnify.length > 3) {
+                        prefFontMagnify_Month = Integer.parseInt(prefFontMagnify[1]);
+                        prefFontMagnify_Weekdays = Integer.parseInt(prefFontMagnify[2]);
+                        prefFontMagnify_Days = Integer.parseInt(prefFontMagnify[3]);
+                    } else {
+                        prefFontMagnify_Month = prefFontMagnify_Common;
+                        prefFontMagnify_Weekdays = prefFontMagnify_Common;
+                        prefFontMagnify_Days = prefFontMagnify_Common;
+                    }
+                } catch (NumberFormatException ignored) { /**/ }
+            }
+
+            float fontMagnify_Common = (float) (1 + prefFontMagnify_Common * 0.1);
+            float fontMagnify_Month = (float) (1 + prefFontMagnify_Month * 0.1);
+            float fontMagnify_Weekdays = (float) (1 + prefFontMagnify_Weekdays * 0.1);
+            float fontMagnify_Days = (float) (1 + prefFontMagnify_Days * 0.1);
 
             //Количество месяцев
             String prefLayout = res.getString(R.string.widget_config_layout_default);
@@ -243,9 +263,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
                 if (widgetOptions != null) {
                     int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                    float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify;
+                    float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify_Common;
                     int minWidthPixel = ContactsEvents.Dip2Px(res, minWidthDp);
-                    float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify / minWidthPixel;
+                    float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify_Common / minWidthPixel;
 
                     if (heightRatio > 4.5) {
                         columnsToDraw = 1;
@@ -468,7 +488,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             } catch (Exception e) {/**/}
 
-            int sidePadding = enabledMargins ? (int) (4 * fontMagnify) : 0 ;
+            int sidePadding = enabledMargins ? (int) (4 * fontMagnify_Common) : 0 ;
 
             Calendar cal = Calendar.getInstance();
             cal.setMinimalDaysInFirstWeek(1);
@@ -565,6 +585,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
 
+            float monthRowTextSize = 12 * fontMagnify_Month;
+
             for (int row = 1; row <= rowsToDraw; row++) {
                 for (int column = 1; column <= columnsToDraw; column++) {
 
@@ -591,14 +613,12 @@ public class WidgetCalendar extends AppWidgetProvider {
                         } else {
                             calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
                         }
-                        //todo: добавить масштабирование для отдельных элементов календаря: заголовка, дней недели, дней
-                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
-                        //calendarRv.setFloat(R.id.month_label, Constants.METHOD_SET_SCALE_Y, 0.66f);
+                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, monthRowTextSize);
                         if (row == rowsToDraw) {
                             calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
                         } else {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify, COMPLEX_UNIT_SP);
+                                calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify_Month, COMPLEX_UNIT_SP);
                             }
                         }
                     } else {
@@ -627,7 +647,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                             dayRv.setTextColor(android.R.id.text1, colorWeeks);
                             dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
-                            dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
+                            dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Weekdays);
                             headerRowRv.addView(R.id.row_container, dayRv);
                         }
                         headerRowRv.setInt(R.id.row_container, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
@@ -642,7 +662,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
                         atLeastOneDayInMonth = false;
                         for (int day = 0; day < 7; day++) {
-                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId);
+                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days);
                             if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
                             cal.add(Calendar.DAY_OF_MONTH, 1);
                         }
@@ -651,54 +671,52 @@ public class WidgetCalendar extends AppWidgetProvider {
                         }
                     }
 
-                    // не подходит - высота не меняется, только визуальный размер
-                    //calendarRv.setFloat(R.id.prev_month_button, Constants.METHOD_SET_SCALE_Y, 0.66f);
-                    //calendarRv.setFloat(R.id.next_month_button, Constants.METHOD_SET_SCALE_Y, 0.66f);
+                    if (enabledHeader) {
+                        if (row > 1 || (column != 1 && columnsToDraw > 1)) {
+                            calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
+                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
+                            calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                        } else {
+                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
+                            calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
+                            calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                            calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
+                                    new Intent(context, WidgetCalendar.class)
+                                            .setAction(Constants.ACTION_PREVIOUS_MONTH)
+                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                        }
 
-                    if (row > 1 || (column != 1 && columnsToDraw > 1)) {
-                        calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
-                    } else {
-                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
-                        //calendarRv.setViewVisibility(R.id.prev_month_button, View.VISIBLE);
-                        calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
-                        calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                        calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
-                                new Intent(context, WidgetCalendar.class)
-                                        .setAction(Constants.ACTION_PREVIOUS_MONTH)
-                                        .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-                    }
+                        if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
+                            calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
+                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
+                            calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                        } else {
+                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
+                            calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
+                            calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                            calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
+                                    new Intent(context, WidgetCalendar.class)
+                                            .setAction(Constants.ACTION_NEXT_MONTH)
+                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                        }
 
-                    if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
-                        calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
-                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
-                    } else {
-                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
-                        //calendarRv.setViewVisibility(R.id.next_month_button, View.VISIBLE);
-                        calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
-                        calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, 12 * fontMagnify * fontMagnifyMonthRow);
-                        calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                        calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
-                                new Intent(context, WidgetCalendar.class)
-                                        .setAction(Constants.ACTION_NEXT_MONTH)
-                                        .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-                    }
-
-                    calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                    if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
-                        Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
-                        intentConfig.setAction(Constants.ACTION_LAUNCH);
-                        intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                        calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
-                    } else {
-                        calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
-                                new Intent(context, WidgetCalendar.class)
-                                        .setAction(Constants.ACTION_RESET_MONTH)
-                                        .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                        calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                        if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
+                            Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
+                            intentConfig.setAction(Constants.ACTION_LAUNCH);
+                            intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                            calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+                        } else {
+                            calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
+                                    new Intent(context, WidgetCalendar.class)
+                                            .setAction(Constants.ACTION_RESET_MONTH)
+                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                        }
                     }
 
                     int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.STRING_ID, context.getPackageName());
@@ -722,7 +740,7 @@ public class WidgetCalendar extends AppWidgetProvider {
         }
     }
 
-    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today, int appWidgetId) {
+    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today, int appWidgetId, float fontMagnify_Days) {
         RemoteViews cellRv = null;
 
         try {
@@ -750,7 +768,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (enabledFillDays || inMonth) {
                 cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
             }
-            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify);
+            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Days);
 
             //Цвет дня
             List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);

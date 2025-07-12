@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 16:57
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 16:54
+  ~  * Last modified 11.07.2025, 03:06
   ~  */
   -->
 
@@ -233,7 +233,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
-                        android:text="@string/widget_config_month_font_magnify_label"
+                        android:text="@string/widget_config_font_magnify_label"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textStyle="bold" />
@@ -252,18 +252,129 @@
                     android:id="@+id/seekFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/widget_config_month_font_magnify_label"
+                    android:contentDescription="@string/widget_config_font_magnify_label"
                     android:maxHeight="50dp"
                     android:minHeight="50dp"
                     android:thumbTintMode="src_in" />
 
-                <TextView
-                    android:id="@+id/hintFontMagnify"
+                <CheckBox
+                    android:id="@+id/checkFontMagnifyManual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_month_font_magnify_description"
                     android:textColor="?android:attr/textColorSecondary"
                     tools:ignore="VisualLintLongText" />
+
+                <LinearLayout
+                    android:id="@+id/blockFontMagnifyManual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
+
+                        <TextView
+                            android:id="@+id/captionFontMagnifyMonth"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="@string/widget_config_font_magnify_month_label"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/valueFontMagnifyMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnifyMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
+
+                        <TextView
+                            android:id="@+id/captionFontMagnifyWeek"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="@string/widget_config_font_magnify_weekday_label"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/valueFontMagnifyWeek"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnifyWeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
+
+                        <TextView
+                            android:id="@+id/captionFontMagnifyDay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="@string/widget_config_font_magnify_day_label"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/valueFontMagnifyDay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnifyDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
+
+                </LinearLayout>
 
                 <View
                     android:id="@+id/dividerOnClick"

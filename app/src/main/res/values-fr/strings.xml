@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 12.07.2025, 10:04
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Ajouter aux favoris</string>
     <string name="menu_context_favorites_remove">Supprimer des favoris</string>
     <string name="menu_context_edit_local_event">"Modifier l'événement"</string>
+    <string name="menu_context_dial">Composer</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Aide</string>
     <string name="menu_help_events_calendar">Événements du calendrier</string>
@@ -72,6 +73,7 @@
     <string name="menu_help_events_facts">Faits</string>
 
     <string name="msg_no_access_contacts">Aucun accès aux contacts</string>
+    <string name="msg_no_access_storage">Aucun accès au stockage</string>
     <string name="msg_no_events">Aucun événement trouvé</string>
     <string name="msg_no_files_selected">" - pas sélectionné -"</string>
     <string name="msg_file_open_error">"Erreur d'ouverture du fichier: "</string>
@@ -252,6 +254,7 @@
     <string name="button_share">Partager</string>
     <string name="button_rgb">Couleur RGB</string>
     <string name="button_save">Enregistrer</string>
+    <string name="button_edit">Modifier</string>
 
     <string name="events_scope_not_hidden">"Tout n'est pas caché (%1$d)"</string>
     <string name="events_scope_all">Tous (%1$d)</string>
@@ -277,6 +280,7 @@
     <string name="event_type_file">Événement de fichier</string>
     <string name="event_type_custom">Événement personnalisé</string>
     <string name="event_type_unrecognized">Événement non reconnu</string>
+    <string name="event_type_another">Autre événement de contact</string>
 
     <string name="account_type_local">Compte local</string>
 
@@ -354,6 +358,10 @@
         <item>sam</item>
     </string-array>
 
+    <string name="pref_LocalEvents_Size_title">Taille de la photo dans les événements locaux</string>
+    <string name="pref_LocalEvents_Size_summary">Valeur actuelle: %s pixels</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Définir la taille</string>
+
     <string name="pref_CustomEvents_title">Configuration des événements</string>
     <string name="pref_CustomEvents_summary">"Sources des événements, classification des types, personnalisation des étiquettes"</string>
     <string name="pref_CustomEvents_hint">Entrez les noms (par virgule)</string>
@@ -419,13 +427,17 @@
     <string name="pref_CustomEvents_Death_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Les événements portant ces étiquettes seront identifiés comme anniversaires de mort (par virgule)</string>
 
+    <string name="pref_CustomEvents_Another_title">Autres événements de contact</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Libellés des événements</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">"Les événements portant ces libellés seront identifiés comme d'autres événements de contact (par virgule)"</string>
+
     <string name="pref_CustomEvents_Other_title">"D'autres événements"</string>
     <string name="pref_CustomEvents_Other_Labels_title">"Ses étiquettes"</string>
     <string name="pref_CustomEvents_Other_Labels_summary">"Les événements avec ces étiquettes seront identifiés comme d'autres événements (par virgule)"</string>
 
     <string name="pref_CustomEvents_Holiday_title">Vacances</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">"Noms des événements"</string>
-    <string name="pref_CustomEvents_Holiday_Labels_summary">Les événements portant de telles étiquettes seront identifiés comme des jours vacances (séparés par des virgules)</string>
+    <string name="pref_CustomEvents_Holiday_Labels_summary">Les événements portant de telles étiquettes seront identifiés comme des jours vacances (par virgule)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Jours vacances</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Afficher ces jours vacances</string>
 
@@ -731,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- gras - (début)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- gras - (fin)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -921,8 +935,11 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="widget_config_month_shift_label">Maj:</string>
     <string name="widget_config_starting_month_position_label">Position:</string>
     <string name="widget_config_month_sources_empty">-Aucun-</string>
-    <string name="widget_config_month_font_magnify_label">Taille de police</string>
-    <string name="widget_config_month_font_magnify_description">"Multiplicateur d'échelle de police pour le titre du mois, les jours de la semaine et les jours"</string>
+    <string name="widget_config_font_magnify_label">Taille de police</string>
+    <string name="widget_config_month_font_magnify_description">Échelle de police pour tous les éléments</string>
+    <string name="widget_config_font_magnify_month_label">Titre du mois</string>
+    <string name="widget_config_font_magnify_weekday_label">Jours de la semaine</string>
+    <string name="widget_config_font_magnify_day_label">Jours</string>
     <string name="widget_config_onclick_label">Comportement au clic</string>
     <string name="widget_config_onclick_common_label">Jours sans événements:</string>
     <string name="widget_config_onclick_holidays_label">Journées avec événements:</string>
@@ -1313,6 +1330,20 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="local_event_dialog_type_title">"Type d'événement:"</string>
     <string name="local_event_dialog_confirmation_remove">Voulez-vous vraiment supprimer cet événement?</string>
     <string name="local_event_dialog_confirmation_cancel">"Les données de l'événement ont été modifiées. Voulez-vous vraiment fermer cette boîte de dialogue?"</string>
+
+    <string name="event_photo_details">"[données image, %d octets]"</string>
+    <string name="event_photo_pick_contact_hint">Sélectionner une photo du contact…</string>
+    <string name="event_photo_select_photo_hint">Sélectionner une photo locale…</string>
+    <string name="event_photo_clear_photo_hint">"Effacer la photo de l'événement"</string>
+    <string name="event_photo_select_photo_title">Sélectionner une photo</string>
+
+    <string name="crop_image_back">Retour</string>
+    <string name="crop_image_save">Enregistrer</string>
+    <string name="crop_image_title">Recadrer la photo</string>
+    <string name="crop_image_rotate">Faire pivoter</string>
+    <string name="crop_image_reset">Réinitialiser</string>
+    <string name="crop_image_crop">Recadrer</string>
+    <string name="crop_image_saving">Enregistrement…</string>
 
     <!--https://fr.wikipedia.org/wiki/Anniversaire_de_mariage-->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Coton</string>

@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 00:56
+  ~  * Last modified 12.07.2025, 11:13
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.7</item>
+        <item>Přidána podpora pro narozeniny a svátky ze souborů iCalendar (ics)</item>
+        <item>Nový typ události „Událost jiného kontaktu“. Typ události „Jiná událost“ se již nepokouší najít spojení s kontaktem z adresáře (chová se jako „Svátek“)</item>
+        <item>Reakce na stisknutí ve widgetu fotografie (+ menu s akcemi)</item>
+        <item>Ve widgetu kalendáře je nyní možné nastavit samostatné velikosti pro měsíc, dny v týdnu a dny</item>
+        <item>Do widgetu seznamu byly přidány možnosti „Fotografie kontaktu“, „Aktuální věk“ a „Tučné“</item>
+        <item>Výběr fotografie pro lokální událost (lokální fotografie nebo z karty kontaktu). Velikost lokální fotografie se nastavuje v běžném doplňkovém nastavení</item>
+        <item>Umístění na aktuální výročí svatby v obecném seznamu výročí (dlouhé klepnutí na událost - všechna výročí svatby)</item>
+        <item>Optimalizace pro Android 15 a 16</item>
+        <item>Opravy chyb</item>
 
         <item>#1.8.6</item>
         <item>📅 Místní události uložené v aplikaci (v seznamu a widgetech, export-import)</item>

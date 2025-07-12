@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 00:55
+  ~  * Last modified 12.07.2025, 11:23
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.7</item>
+        <item>Added support for birthdays and holidays from 📅 iCalendar (ics) files</item>
+        <item>New event type "Other contact event". The "Other event" event type no longer tries to find a connection with a contact from the address book (behaves like "Holiday")</item>
+        <item>Reaction to pressing in the photo widget (+ menu with actions)</item>
+        <item>In the calendar widget now it\'s possible to set separate sizes for the month, days of the week and days</item>
+        <item>"Contact photo", "Current age" and "Bold" have been added to the list widget</item>
+        <item>🖼️ Selection a photo for a local event (local photo or from the contact card). The size of the local photo is set in the common extra setting</item>
+        <item>Positioning on the current wedding anniversary in the general list of anniversaries (long tap on the event - all wedding anniversaries)</item>
+        <item>Optimization for Android 15 and 16</item>
+        <item>Bug fixes</item>
 
         <item>#1.8.6</item>
         <item>📅 Local events stored inside the application (in the list and widgets, export-import)</item>
@@ -22,7 +33,7 @@
         <item>List filters for hidden events, favorites, and day counters show events of all types and from all sources</item>
         <item>Age in short format and brackets added to event details in list widget, option \"surround date with brackets\" removed</item>
         <item>Optimizations for Android 15</item>
-        <item>Bug Fixes</item>
+        <item>Bug fixes</item>
 
         <item>#1.8.5</item>
         <item>Previous events in main list: added 5k, events with floating dates, events from calendars</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2025, 13:04
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 11:11
+  ~  * Last modified 12.07.2025, 10:03
   ~  */
   -->
 
@@ -65,6 +65,7 @@
     <string name="menu_context_favorites_add">Додати до вибраного</string>
     <string name="menu_context_favorites_remove">Видалити з вибраного</string>
     <string name="menu_context_edit_local_event">Редагувати подію</string>
+    <string name="menu_context_dial">Набрати</string>
     <string name="menu_ok">Добре</string>
     <string name="menu_help">Довідка</string>
     <string name="menu_help_events_calendar">Події календаря</string>
@@ -72,6 +73,7 @@
     <string name="menu_help_events_facts">Факти</string>
 
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
+    <string name="msg_no_access_storage">Немає доступу до сховища</string>
     <string name="msg_no_events">Подій не знайдено</string>
     <string name="msg_no_files_selected">"  - не вибрано -"</string>
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
@@ -252,6 +254,7 @@
     <string name="button_share">Поділитися</string>
     <string name="button_rgb">Колір RGB</string>
     <string name="button_save">Зберегти</string>
+    <string name="button_edit">Редагувати</string>
 
     <string name="events_scope_not_hidden">Всі неприховані (%1$d)</string>
     <string name="events_scope_all">Всі (%1$d)</string>
@@ -277,6 +280,7 @@
     <string name="event_type_file">Подія з файлу</string>
     <string name="event_type_custom">Користувацька подія</string>
     <string name="event_type_unrecognized">Нерозпізнана подія</string>
+    <string name="event_type_another">Інша подія контакту</string>
 
     <string name="account_type_local">Локальний акаунт</string>
 
@@ -354,6 +358,10 @@
         <item>сб</item>
     </string-array>
 
+    <string name="pref_LocalEvents_Size_title">Розмір фотографії в локальних подіях</string>
+    <string name="pref_LocalEvents_Size_summary">"Поточне значення: %s пікселів"</string>
+    <string name="pref_LocalEvents_Size_dialogTitle">Встановити розмір</string>
+
     <string name="pref_CustomEvents_title">Налаштування подій</string>
     <string name="pref_CustomEvents_summary">Джерела подій, класифікація типів, налаштування міток</string>
     <string name="pref_CustomEvents_hint">Введіть мітки подій (через кому)</string>
@@ -418,6 +426,10 @@
     <string name="pref_CustomEvents_Death_UseInternal_summary">Використовувати стандартні найменування для визначення річниць смерті</string>
     <string name="pref_CustomEvents_Death_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Death_Labels_summary">Події з такими мітками будуть ідентифіковані як річниці смерті (через кому)</string>
+
+    <string name="pref_CustomEvents_Another_title">Інші події контактів</string>
+    <string name="pref_CustomEvents_Another_Labels_title">Мітки подій</string>
+    <string name="pref_CustomEvents_Another_Labels_summary">Події з цими мітками будуть ідентифіковані як події інших контактів (через кому)</string>
 
     <string name="pref_CustomEvents_Other_title">Iнші події</string>
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
@@ -731,6 +743,8 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_BoldStart">"- жирний - (початок)"</string>
+    <string name="pref_EventInfo_BoldEnd">"- жирний - (кінець)"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -921,8 +935,11 @@
     <string name="widget_config_month_shift_label">Shift:</string>
     <string name="widget_config_starting_month_position_label">Посада:</string>
     <string name="widget_config_month_sources_empty">-Немає-</string>
-    <string name="widget_config_month_font_magnify_label">Розмір шрифту</string>
-    <string name="widget_config_month_font_magnify_description">Множник масштабу шрифту для назви місяця, днів тижня та днів</string>
+    <string name="widget_config_font_magnify_label">Розмір шрифту</string>
+    <string name="widget_config_month_font_magnify_description">Масштаб шрифту для всіх елементів</string>
+    <string name="widget_config_font_magnify_month_label">Назва місяця</string>
+    <string name="widget_config_font_magnify_weekday_label">Дні тижня</string>
+    <string name="widget_config_font_magnify_day_label">Дні</string>
     <string name="widget_config_onclick_label">При натисканні</string>
     <string name="widget_config_onclick_common_label">Дні без подій:</string>
     <string name="widget_config_onclick_holidays_label">Дні з подіями:</string>
@@ -1311,6 +1328,20 @@
     <string name="local_event_dialog_type_title">Тип події:</string>
     <string name="local_event_dialog_confirmation_remove">Ви впевнені, що хочете видалити цю подію?</string>
     <string name="local_event_dialog_confirmation_cancel">Дані події було змінено. Ви впевнені, що бажаєте закрити це діалогове вікно?</string>
+
+    <string name="event_photo_details">"[дані зображення, %d байтів]"</string>
+    <string name="event_photo_pick_contact_hint">Вибрати фотографію з контакту…</string>
+    <string name="event_photo_select_photo_hint">Вибрати локальну фотографію…</string>
+    <string name="event_photo_clear_photo_hint">Очистити фотографію з події</string>
+    <string name="event_photo_select_photo_title">Вибрати фотографію</string>
+
+    <string name="crop_image_back">Назад</string>
+    <string name="crop_image_save">Зберегти</string>
+    <string name="crop_image_title">Обрізати фотографію</string>
+    <string name="crop_image_rotate">Повернути</string>
+    <string name="crop_image_reset">Скинути</string>
+    <string name="crop_image_crop">Обрізати</string>
+    <string name="crop_image_saving">Збереження…</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/

@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2025, 10:45
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.03.2025, 00:59
+  ~  * Last modified 12.07.2025, 11:15
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.7</item>
+        <item>Se ha añadido compatibilidad con cumpleaños y festivos desde archivos de iCalendar (ics)</item>
+        <item>Nuevo tipo de evento: "Otro evento de contacto". Este tipo ya no intenta encontrar una conexión con un contacto de la libreta de direcciones (se comporta como "Festivo").</item>
+        <item>Reacción al pulsar en el widget de foto (+ menú con acciones)</item>
+        <item>En el widget de calendario, ahora es posible configurar tamaños separados para el mes, los días de la semana y los días.</item>
+        <item>Se han añadido "Foto de contacto", "Edad actual" y "Negrita" al widget de lista.</item>
+        <item>Seleccionar una foto para un evento local (foto local o de la tarjeta de contacto). El tamaño de la foto local se configura en la configuración adicional común.</item>
+        <item>Posicionamiento en el aniversario de boda actual en la lista general de aniversarios (pulsación prolongada sobre el evento - todos los aniversarios de boda)</item>
+        <item>Optimización para Android 15 y 16</item>
+        <item>Corrección de errores</item>
 
         <item>#1.8.6</item>
         <item>📅 Eventos locales almacenados dentro de la aplicación (en la lista y widgets, exportación-importación)</item>

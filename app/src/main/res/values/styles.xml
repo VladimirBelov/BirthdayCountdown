@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
+  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 16.06.2025, 14:50
+  ~  * Last modified 11.07.2025, 17:28
   ~  */
   -->
 
@@ -314,7 +314,7 @@
         <item name="android:dividerHeight">1dp</item>
         <item name="android:itemBackground">@color/theme_blue_gray_secondary</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.BlueGrey</item>
-        <item name="android:listDivider">@color/lighter_gray</item>
+        <item name="android:listDivider">@color/theme_blue_gray_status_transp</item>
         <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
@@ -336,7 +336,7 @@
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
         <item name="gradientEndColor">@color/blue_gray_gradient1</item>
         <item name="gradientStartColor">@color/theme_blue_gray_secondary</item>
-        <item name="listDividerColor">@color/lighter_gray</item>
+        <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_blue_gray_status</item>
         <item name="windowTitleColor">@color/white</item>
         <item name="editTextBackgroundCustom">@color/theme_blue_gray_secondary</item>
@@ -372,7 +372,7 @@
         <item name="colorAccent">@color/blue_gray_dark</item>
         <item name="textColorAlertDialogListItem">@color/theme_black_primary</item>
         <item name="android:textColorAlertDialogListItem">@color/theme_black_primary</item>
-        <item name="listDividerColor">@color/blue_gray_transp</item>
+        <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
         <!--<item name="android:editTextStyle">@style/EditText.BlueGrey</item>-->
 <!--        <item name="android:listPopupWindowStyle">@style/AlertDialog.Popup.BlueGrey</item>
