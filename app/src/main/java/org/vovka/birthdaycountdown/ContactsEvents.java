@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 13.07.2025, 10:48
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:47
+ *  * Last modified 12.07.2025, 23:50
  *
  */
 
@@ -59,7 +59,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -3384,7 +3383,7 @@ public class ContactsEvents {
                                 for (Matcher matcherName : matcherNames) {
                                     if (matcherName.reset(eventTitle).find()) {
                                         foundName = matcherName.group(1);
-                                        break;
+                                        //тут без break - используем последнее подошедшее совпадение
                                     }
                                 }
                             }
@@ -4741,7 +4740,6 @@ public class ContactsEvents {
                     final Long contactIDLong = parseToLong(contactID);
                     HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
                             ContactsContract.Contacts.PHOTO_URI,
-                            //ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
                             ContactsContract.Contacts.STARRED
                     });
 

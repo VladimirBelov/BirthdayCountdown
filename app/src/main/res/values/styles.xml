@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 13.07.2025, 10:48
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 11.07.2025, 17:28
+  ~  * Last modified 13.07.2025, 08:56
   ~  */
   -->
 
@@ -308,7 +308,6 @@
         <item name="actionBarSize">48dp</item>
         <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
-        <item name="alertDialogTheme">@style/AlertDialog.BlueGrey</item>
         <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
         <item name="android:alertDialogTheme">@style/AlertDialog.BlueGrey</item>
         <item name="android:dividerHeight">1dp</item>
@@ -374,17 +373,7 @@
         <item name="android:textColorAlertDialogListItem">@color/theme_black_primary</item>
         <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
-        <!--<item name="android:editTextStyle">@style/EditText.BlueGrey</item>-->
-<!--        <item name="android:listPopupWindowStyle">@style/AlertDialog.Popup.BlueGrey</item>
-        <item name="android:contextPopupMenuStyle" tools:ignore="NewApi">@style/AlertDialog.Popup.BlueGrey</item>
-        <item name="android:popupTheme">@style/AlertDialog.Popup.BlueGrey</item>
-        <item name="android:popupWindowStyle">@style/AlertDialog.Popup.BlueGrey</item>-->
     </style>
-<!--
-    <style name="AlertDialog.Popup.BlueGrey" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:background">@color/theme_blue_gray_status</item>
-        <item name="android:popupBackground">@color/dark_green</item>
-    </style>-->
 
     <!-- Оранжевая тема ===========================================================================-->
 
