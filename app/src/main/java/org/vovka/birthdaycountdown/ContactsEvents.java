@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.07.2025, 10:48
+ *  * Created by Vladimir Belov on 14.07.2025, 21:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 23:50
+ *  * Last modified 14.07.2025, 21:48
  *
  */
 
@@ -11467,6 +11467,12 @@ public class ContactsEvents {
 
     }
 
+    /** Диалог выбора источников событий
+     * @param eventSources Доступные источники событий
+     * @param preselectedSources Предвыбранные источники
+     * @param baseContext Контекст вызова (для наследования темы и возврата результата)
+     * @param eventConsumer Id потребителя, для которого выбирали источники событий и который необходимо вернуть с результатом
+     */
     void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String eventConsumer) {
 
         final List<String> eventSourcesSelected = new ArrayList<>();
@@ -11579,8 +11585,12 @@ public class ContactsEvents {
                 }
 
                 alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
-                    for (int i = 0; i < listView.getCount(); i++) {
-                        listView.setItemChecked(i, true);
+                    if (listView.getCheckedItemCount() < listView.getCount()) {
+                        for (int i = 0; i < listView.getCount(); i++) {
+                            listView.setItemChecked(i, true);
+                        }
+                    } else {
+                        listView.clearChoices();
                     }
                     listView.invalidateViews();
                 }));

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 14.07.2025, 21:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 14.07.2025, 21:56
  *
  */
 
@@ -80,34 +80,28 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     public ColorPicker(@NonNull Context context) {
         super(context);
         this.context = context;
-        initAttrs(null, 0, 0);
+        initAttrs(null, 0);
     }
 
     public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        initAttrs(attrs, 0, 0);
+        initAttrs(attrs, 0);
     }
 
     public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        initAttrs(attrs, defStyleAttr, 0);
-    }
-
-    public ColorPicker(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        this.context = context;
-        initAttrs(attrs, defStyleAttr, defStyleRes);
+        initAttrs(attrs, defStyleAttr);
     }
 
     @SuppressLint("DiscouragedApi")
-    private void initAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    private void initAttrs(AttributeSet attrs, int defStyleAttr) {
 
         LayoutInflater.from(getContext()).inflate(R.layout.picker_color, this);
         setOnClickListener(this);
 
-        TypedArray ta = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.ColorPreference, defStyleAttr, defStyleRes);
+        TypedArray ta = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.ColorPreference, defStyleAttr, 0);
 
         try {
             mSelectDialogTitle = ta.getString(R.styleable.ColorPreference_dialogTitle);
@@ -402,7 +396,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
 
-            mAdapter = new ColorGridAdapter(getContext());
+            mAdapter = new ColorGridAdapter();
             if (initValue != 0) {
                 mAdapter.setSelectedColor(initValue);
             } else if (defaultValue != 0) {
@@ -423,7 +417,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 });
             }
 
-            AlertDialog alertToShow = colorDialogBuilder.create();
+            AlertDialog colorDialog = colorDialogBuilder.create();
 
             GridView mColorGrid = rootView.findViewById(R.id.color_grid);
             if (mColorGrid != null) {
@@ -440,7 +434,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                             method.invoke(context, idToPass, colorInt);
                         } catch (Exception ignored) {/**/}
                     }
-                    alertToShow.dismiss();
+                    colorDialog.dismiss();
                 });
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
                     Toast.makeText(context,
@@ -451,13 +445,21 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     return true;
                 });
             }
+            if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                colorDialog.setOnCancelListener(dialog -> {
+                    try {
+                        Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                        method.invoke(context, Constants.STRING_EMPTY, 0);
+                    } catch (Exception ignored) {/**/}
+                });
+            }
             View mCaptionView = rootView.findViewById(R.id.caption);
             if (mCaptionView != null) {
                 mCaptionView.setVisibility(View.GONE);
             }
 
-            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            alertToShow.show();
+            colorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            colorDialog.show();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -514,7 +516,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         private final List<Integer> mChoices = new ArrayList<>();
         private int mSelectedColor;
 
-        private ColorGridAdapter(Context context) {
+        private ColorGridAdapter() {
             try {
                 for (int color : mColorChoices) {
                     mChoices.add(color);
@@ -577,10 +579,5 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             notifyDataSetChanged();
         }
 
-        public int getSelectedColor() {
-            return mSelectedColor;
-        }
-
     }
-
 }

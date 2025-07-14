@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 14.07.2025, 21:58
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:52
+ *  * Last modified 14.07.2025, 21:48
  *
  */
 
@@ -23,7 +23,6 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.text.Html;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -906,7 +905,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         colorValue = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                     }
                     if (colorValue != null) {
-
                         SparseBooleanArray checked = listView.getCheckedItemPositions();
                         eventSourcesSelected.clear();
                         for (int i = 0; i < checked.size(); i++) {
@@ -929,7 +927,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         }
 
                         picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
-
                     }
 
                     return true;
