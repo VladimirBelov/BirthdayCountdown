@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 26.07.2025, 15:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:52
+ *  * Last modified 26.07.2025, 14:59
  *
  */
 
@@ -259,6 +259,17 @@ public class WidgetMenuActivity extends Activity {
             menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
             menuActions.add(Constants.ContextMenu_ShareAsText);
 
+            if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
+                ArrayList<String> recentFacts = eventsData.getRecentFacts();
+                recentFacts.remove(eventInfo);
+
+                if (!recentFacts.isEmpty()) {
+                    menuItems.add(getString(R.string.menu_context_prev));
+                    menuIcons.add(getDrawable(R.drawable.ic_menu_back));
+                    menuActions.add(Constants.ContextMenu_PrevFact);
+                }
+            }
+
             IconArrayAdapter adapter = new IconArrayAdapter(this, menuItems, menuIcons);
             ListView menuListView = findViewById(R.id.menuListView);
             menuListView.setAdapter(adapter);
@@ -281,8 +292,13 @@ public class WidgetMenuActivity extends Activity {
         try{
 
             if (singleEventArray == null) return;
-            final String eventKey = eventsData.getEventKey(singleEventArray);
-            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+            String eventKey = null;
+            String eventKeyWithRawId = null;
+
+            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
+                eventKey = eventsData.getEventKey(singleEventArray);
+                eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+            }
 
             switch (menuActions.get(itemId)) {
                 case Constants.ContextMenu_ShareAsText:
@@ -345,29 +361,33 @@ public class WidgetMenuActivity extends Activity {
 
                 case Constants.ContextMenu_RemoveFromFavorites:
 
-                    if (eventsData.unsetFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventKey != null && eventsData.unsetFavoriteEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
                     }
                     break;
 
                 case Constants.ContextMenu_AddToFavorites:
 
-                    if (eventsData.setFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventKey != null &&  eventsData.setFavoriteEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
                     }
                     break;
 
                 case Constants.ContextMenu_HideEvent:
 
+                    if (eventKey == null && eventKeyWithRawId == null) break;
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_title_confirmation));
                     builder.setIcon(android.R.drawable.ic_menu_help);
                     builder.setMessage(getString(R.string.msg_event_hide_confirmation));
+                    String finalEventKey = eventKey;
+                    String finalEventKeyWithRawId = eventKeyWithRawId;
                     builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
-                        if (eventsData.setHiddenEvent(eventKey, eventKeyWithRawId)) {
-                            if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+                        if (eventsData.setHiddenEvent(finalEventKey, finalEventKeyWithRawId)) {
+                            if (eventsData.checkIsSilencedEvent(finalEventKey, finalEventKeyWithRawId)) {
                                 //Если скрываем - убираем из списка без уведомления
-                                eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId);
+                                eventsData.unsetSilencedEvent(finalEventKey, finalEventKeyWithRawId);
                             }
                             eventsData.updateWidgets(appWidgetId, null);
                         }
@@ -390,14 +410,14 @@ public class WidgetMenuActivity extends Activity {
 
                 case Constants.ContextMenu_SilentEvent:
 
-                    if (eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventKey != null && eventsData.setSilencedEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
                     }
                     break;
 
                 case Constants.ContextMenu_UnsilentEvent:
 
-                    if (eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId)) {
+                    if (eventKey != null && eventsData.unsetSilencedEvent(eventKey, eventKeyWithRawId)) {
                         eventsData.updateWidgets(appWidgetId, null);
                     }
                     break;
@@ -417,6 +437,22 @@ public class WidgetMenuActivity extends Activity {
                         }
                     }
                     break;
+
+                case Constants.ContextMenu_PrevFact:
+
+                    ArrayList<String> recentFacts = eventsData.getRecentFacts();
+                    TextView titleView = findViewById(R.id.titleView);
+                    String eventTitle = titleView.getText().toString();
+                    int indCurrentFact = recentFacts.indexOf(eventTitle);
+                    if (indCurrentFact > 0) {
+                        eventText = recentFacts.get(indCurrentFact - 1);
+                        titleView.setText(eventText);
+                    } else {
+                        ListView menuListView = findViewById(R.id.menuListView);
+                        ((IconArrayAdapter) menuListView.getAdapter()).remove(getString(R.string.menu_context_prev));
+                    }
+
+                    return;
 
             }
 

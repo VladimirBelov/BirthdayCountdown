@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 26.07.2025, 15:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 09:28
+ *  * Last modified 26.07.2025, 13:46
  *
  */
 
@@ -303,6 +303,7 @@ public final class Constants {
     static final int TIME_FORCE_UPDATE = 30000;
     static final int TIME_NOTIFY_COOLDOWN = 30000;
     static final int PREV_EVENTS_MAX_DAYS = 14;
+    static final int RECENT_FACTS_MAX = 10;
     static final String account_google = "com.google";
     static final String account_skype = "com.skype.";
     static final String account_vk = "com.vkontakte.account";
@@ -377,6 +378,7 @@ public final class Constants {
     static final int ContextMenu_EditLocalEvent = 23;
     static final int ContextMenu_OpenContact = 24;
     static final int ContextMenu_DialContact = 25;
+    static final int ContextMenu_PrevFact = 26;
 
     static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";

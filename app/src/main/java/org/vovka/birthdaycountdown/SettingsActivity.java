@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 26.07.2025, 15:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:52
+ *  * Last modified 26.07.2025, 13:21
  *
  */
 
@@ -2746,6 +2746,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key),
                         getString(R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key),
                         getString(R.string.pref_CustomEvents_Rules_Unrecognized_key),
+                        getString(R.string.pref_Facts_Recent_key),
                         getString(R.string.pref_Female_Names_key),
                         getString(R.string.pref_Icon_key),
                         getString(R.string.pref_Language_key),

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2025, 21:58
+ *  * Created by Vladimir Belov on 26.07.2025, 15:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.07.2025, 21:48
+ *  * Last modified 26.07.2025, 13:19
  *
  */
 
@@ -121,6 +121,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -11657,6 +11658,62 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return Constants.STRING_EMPTY;
+    }
+
+    /** Сохраняет факт в список недавно показанных
+     * @param factToSave Факт
+     */
+    public void saveRecentFact(@NonNull String factToSave) {
+        try {
+
+            if (factToSave.trim().isEmpty()) return;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            LinkedHashSet<String> currentList;
+            String storedString = getPreferenceString(preferences, context.getString(R.string.pref_Facts_Recent_key), Constants.STRING_EMPTY);
+            if (storedString.isEmpty()) {
+                currentList = new LinkedHashSet<>();
+            } else {
+                String[] parts = storedString.split(Constants.STRING_EOT);
+                currentList = new LinkedHashSet<>(Arrays.asList(parts));
+            }
+            currentList.add(factToSave);
+
+            while (currentList.size() > Constants.RECENT_FACTS_MAX) {
+                Iterator<String> iterator = currentList.iterator();
+                if (iterator.hasNext()) {
+                    iterator.next();
+                    iterator.remove();
+                }
+            }
+
+            String joinedString = String.join(Constants.STRING_EOT, currentList);
+            preferences.edit().putString(context.getString(R.string.pref_Facts_Recent_key), joinedString).apply();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public ArrayList<String> getRecentFacts() {
+        ArrayList<String> factsList = new ArrayList<>();
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String storedString = getPreferenceString(preferences, context.getString(R.string.pref_Facts_Recent_key), Constants.STRING_EMPTY);
+            if (!storedString.isEmpty()) {
+                String[] parts = storedString.split(Constants.STRING_EOT);
+                factsList.addAll(Arrays.asList(parts));
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return factsList;
     }
 
     /** Преобразует значение из DIP в фактические пиксели
