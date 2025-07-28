@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.07.2025, 15:59
+  ~  * Created by Vladimir Belov on 28.07.2025, 23:38
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.07.2025, 13:38
+  ~  * Last modified 28.07.2025, 23:23
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Присоединить к др. контакту…</string>
     <string name="menu_context_open_url">Открыть web ссылку</string>
     <string name="menu_context_share">Поделиться событием…</string>
+    <string name="menu_context_share_fact">Поделиться фактом…</string>
     <string name="menu_context_share_as_image">как изображение</string>
     <string name="menu_context_share_as_text">как текст</string>
     <string name="menu_context_xDaysEvent_add">Добавить счётчик дней…</string>

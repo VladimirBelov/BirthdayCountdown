@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.07.2025, 15:59
+ *  * Created by Vladimir Belov on 28.07.2025, 23:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.07.2025, 14:59
+ *  * Last modified 28.07.2025, 23:23
  *
  */
 
@@ -253,13 +253,16 @@ public class WidgetMenuActivity extends Activity {
                     }
                 }
 
-            }
+                menuItems.add(getString(R.string.menu_context_share));
+                menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
+                menuActions.add(Constants.ContextMenu_ShareAsText);
 
-            menuItems.add(getString(R.string.menu_context_share));
-            menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
-            menuActions.add(Constants.ContextMenu_ShareAsText);
+            } else {
 
-            if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
+                menuItems.add(getString(R.string.menu_context_share_fact));
+                menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
+                menuActions.add(Constants.ContextMenu_ShareAsText);
+
                 ArrayList<String> recentFacts = eventsData.getRecentFacts();
                 recentFacts.remove(eventInfo);
 
@@ -268,6 +271,7 @@ public class WidgetMenuActivity extends Activity {
                     menuIcons.add(getDrawable(R.drawable.ic_menu_back));
                     menuActions.add(Constants.ContextMenu_PrevFact);
                 }
+
             }
 
             IconArrayAdapter adapter = new IconArrayAdapter(this, menuItems, menuIcons);
@@ -447,11 +451,11 @@ public class WidgetMenuActivity extends Activity {
                     if (indCurrentFact > 0) {
                         eventText = recentFacts.get(indCurrentFact - 1);
                         titleView.setText(eventText);
-                    } else {
+                    }
+                    if (indCurrentFact == 1) {
                         ListView menuListView = findViewById(R.id.menuListView);
                         ((IconArrayAdapter) menuListView.getAdapter()).remove(getString(R.string.menu_context_prev));
                     }
-
                     return;
 
             }

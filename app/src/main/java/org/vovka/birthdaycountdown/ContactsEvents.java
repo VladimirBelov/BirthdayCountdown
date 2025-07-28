@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.07.2025, 15:59
+ *  * Created by Vladimir Belov on 28.07.2025, 23:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.07.2025, 13:19
+ *  * Last modified 28.07.2025, 23:36
  *
  */
 
@@ -4331,8 +4331,6 @@ public class ContactsEvents {
             String eventLabel_forSearch = Constants.STRING_EMPTY;
             String eventTitle = Constants.STRING_EMPTY;
             String eventDateString = Constants.STRING_EMPTY;
-            boolean useEventYear = true;
-            @Nullable Date dateEvent = null;
             String eventNewDate;
             @Nullable String contactID = null;
             String eventURL = Constants.STRING_EMPTY;
@@ -4433,6 +4431,8 @@ public class ContactsEvents {
                 return;
             }
 
+            @Nullable Date dateEvent = null;
+            boolean useEventYear = true;
             int indexDateNoYear = isBirthdaysPlusEvent ? eventDateString.indexOf(Constants.STRING_BDP_NO_YEAR) : eventDateString.indexOf(Constants.STRING_0000);
             if (indexDateNoYear == -1) { //С годом
                 try {
