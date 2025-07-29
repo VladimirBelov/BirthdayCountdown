@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.07.2025, 15:59
+ *  * Created by Vladimir Belov on 30.07.2025, 01:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.07.2025, 13:46
+ *  * Last modified 30.07.2025, 01:08
  *
  */
 
@@ -471,6 +471,7 @@ public final class Constants {
     public static final String LocalEventsFilename = "Events";
 
     public static final String iCal_CalendarBegin = "BEGIN:VCALENDAR";
+    public static final String iCal_PROD_ID_VK = "PRODID:VkFriendExporter";
     public static final String iCal_EventBegin = "BEGIN:VEVENT";
     public static final String iCal_EventEnd = "END:VEVENT";
     public static final String iCal_Summary = "SUMMARY:";

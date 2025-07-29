@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 30.07.2025, 01:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:47
+ *  * Last modified 30.07.2025, 01:18
  *
  */
 
@@ -90,6 +90,8 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
             views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
+
+            if (eventListView.size() < position + 1) return views;
 
             //Информация о событии
             String eventInfo = eventListView.get(position);

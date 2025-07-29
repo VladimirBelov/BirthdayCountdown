@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.07.2025, 23:38
+ *  * Created by Vladimir Belov on 30.07.2025, 01:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.07.2025, 23:36
+ *  * Last modified 30.07.2025, 01:08
  *
  */
 
@@ -165,13 +165,18 @@ public class ContactsEvents {
      * Устанавливается в {@link ContactsEvents#getEventDistanceText}
      */
     static final int Position_eventDistanceText = 10;
-    /** Наступающий возраст */
+    /** Наступающий возраст (число лет) */
     static final int Position_age = 11;
+    /** Наступающий возраст (полный формат) */
     static final int Position_age_caption = 12;
+    /** Организация */
     static final int Position_organization = 13;
     static final int Position_title = 14;
+    /** Путь до фото контакта или события */
     static final int Position_photo_uri = 15;
+    /** Иконка события */
     static final int Position_eventIcon = 16;
+    /** Эмоджи события */
     static final int Position_eventEmoji = 17; //https://www.piliapp.com/emoji/list/
     static final int Position_starred = 18;
     /** Текущий возраст */
@@ -180,17 +185,29 @@ public class ContactsEvents {
     static final int Position_eventType = 20;
     /** Подтип события */
     static final int Position_eventSubType = 21;
+    /** ID контакта из адресной книги */
     static final int Position_contactID = 22;
+    /** ID события */
     static final int Position_eventID = 23;
+    /** raw ID контакта из адресной книги (для составных контактов от нескольких провайдеров) */
     static final int Position_rawContactID = 24;
+    /** Место хранения события */
     static final int Position_eventStorage = 25;
+    /** Источник события */
     static final int Position_eventSource = 26;
+    /** Знак зодиака контакта */
     static final int Position_zodiacSign = 27;
+    /** Зодиакальный год дня рождения контакта */
     static final int Position_zodiacYear = 28;
+    /** Web ссылка на событие */
     static final int Position_eventURL = 29;
+    /** Дополнительное описание события */
     static final int Position_eventDescription = 30;
+    /** Не ежегодное событие */
     static final int Position_notAnnualEvent = 31;
+    /** Данные фото контакта или события */
     static final int Position_photo = 32;
+    /** Размерность массива с данными события (для проверки целостности) */
     static final int Position_attrAmount = 33; //MAX
 
     private static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
@@ -3990,6 +4007,9 @@ public class ContactsEvents {
 
         } catch (SecurityException se) {
             ToastExpander.showInfoMsg(context, context.getText(R.string.msg_file_access_write_error).toString());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4091,10 +4111,16 @@ public class ContactsEvents {
             final int nowYear = today.get(Calendar.YEAR);
             StringBuilder eventLines = new StringBuilder();
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+            String emptyEventYear = null;
 
             for (String line: fileLines) {
 
-                if (line.startsWith(Constants.iCal_EventBegin)) {
+                if (emptyEventYear == null && line.startsWith(Constants.iCal_PROD_ID_VK)) {
+
+                    //Если год рождения скрыт, VkFriendExporter ставит год = 2000
+                    emptyEventYear = "2000";
+
+                } else if (line.startsWith(Constants.iCal_EventBegin)) {
                     if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
 
                         event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
@@ -4145,6 +4171,10 @@ public class ContactsEvents {
                         if (eventDateThisTime != null) {
                             if (today.getTime().after(eventDateThisTime)) eventDateThisTime = addYear(eventDateThisTime, 1);
                         }
+
+                        if (useEventYear && emptyEventYear != null && storedDate.startsWith(emptyEventYear)) {
+                            useEventYear = false;
+                        }
                     } catch (ParseException ignored) { /**/ }
                     eventLines.append(line).append(Constants.STRING_EOL);
 
@@ -4189,8 +4219,10 @@ public class ContactsEvents {
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventURL, eventURL);
                         eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
-                        eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(eventDateFirstTime));
-                        eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDateThisTime));
+                        if (useEventYear) {
+                            eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(eventDateFirstTime));
+                            eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDateThisTime));
+                        }
 
                         if (event.needScanContacts) {
 
@@ -4569,7 +4601,7 @@ public class ContactsEvents {
                 if (!isPassedEvent) statContactsURLCount++;
             }
 
-            //Description
+            //Описание события
             int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
             if (indStartDescription > -1) {
                 int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
@@ -4821,6 +4853,11 @@ public class ContactsEvents {
         }
     }
 
+    /** Возвращает следующую дату плавающего события
+     * @param eventDateString Изначальная дата в формате DD.MM.YYYY
+     * @param yearShift Сколько лет прибавить или отнять
+     * @return Дата в формате DD.MM.YYYY
+     */
     @NonNull private String computeFloatingDate(String eventDateString, int yearShift) {
 
         try {
@@ -4836,96 +4873,97 @@ public class ContactsEvents {
             int eventYear = dateRubicon.get(Calendar.YEAR);
 
             //Именные события
+            if (eventDateComponents.length == 2) {
+                if (eventDayString.startsWith(eventNameEaster)) {
 
-            if (eventDateComponents.length == 2 && eventDayString.startsWith(eventNameEaster)) {
+                    //Православная Пасха
 
-                //Православная Пасха
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    String strAfterEventName = eventDayString.substring(eventNameEaster.length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
 
-                //Определяем смещение в днях
-                int daysShift = 0;
-                String strAfterEventName = eventDayString.substring(eventNameEaster.length());
-                if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                    try {
-                        daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                    try {
-                        daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                }
-
-                cal = getEasterDateFor(eventYear, true);
-                if (cal != null) {
-                    cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                    if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                        cal = getEasterDateFor(eventYear + 1, true);
-                        if (cal != null) {
-                            cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                    cal = getEasterDateFor(eventYear, true);
+                    if (cal != null) {
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                            cal = getEasterDateFor(eventYear + 1, true);
+                            if (cal != null) {
+                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                                return sdf_DDMMYYYY.format(cal.getTime());
+                            }
+                        } else {
                             return sdf_DDMMYYYY.format(cal.getTime());
                         }
-                    } else {
-                        return sdf_DDMMYYYY.format(cal.getTime());
                     }
-                }
 
-            } else if (eventDateComponents.length == 2 && eventDayString.startsWith(eventNameCatholicEaster)) {
+                } else if (eventDayString.startsWith(eventNameCatholicEaster)) {
 
-                //Католическая Пасха
+                    //Католическая Пасха
 
-                //Определяем смещение в днях
-                int daysShift = 0;
-                String strAfterEventName = eventDayString.substring(eventNameCatholicEaster.length());
-                if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                    try {
-                        daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                    try {
-                        daysShift = - Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                }
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    String strAfterEventName = eventDayString.substring(eventNameCatholicEaster.length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
 
-                cal = getEasterDateFor(eventYear, false);
-                if (cal != null) {
-                    cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                    if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                        cal = getEasterDateFor(eventYear + 1, false);
-                        if (cal != null) {
-                            cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                    cal = getEasterDateFor(eventYear, false);
+                    if (cal != null) {
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                            cal = getEasterDateFor(eventYear + 1, false);
+                            if (cal != null) {
+                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                                return sdf_DDMMYYYY.format(cal.getTime());
+                            }
+                        } else {
                             return sdf_DDMMYYYY.format(cal.getTime());
                         }
-                    } else {
-                        return sdf_DDMMYYYY.format(cal.getTime());
                     }
-                }
 
-            } else if (eventDateComponents.length == 2 && eventDayString.startsWith(eventNameNY)) {
+                } else if (eventDayString.startsWith(eventNameNY)) {
 
-                //XX день от начала года
+                    //XX день от начала года
 
-                //Определяем смещение в днях
-                int daysShift = 0;
-                String strAfterEventName = eventDayString.substring(eventNameNY.length());
-                if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                    try {
-                        daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                    try {
-                        daysShift = - Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                    } catch (NumberFormatException ignored) { /**/ }
-                }
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    String strAfterEventName = eventDayString.substring(eventNameNY.length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
 
-                cal = (Calendar) dateRubicon.clone();
-                cal.set(eventYear, Calendar.JANUARY, 1);
-                cal.add(Calendar.DAY_OF_YEAR, daysShift);
-
-                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                    cal.set(eventYear + 1, Calendar.JANUARY, 1);
+                    cal = (Calendar) dateRubicon.clone();
+                    cal.set(eventYear, Calendar.JANUARY, 1);
                     cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                }
 
-                return sdf_DDMMYYYY.format(cal.getTime());
+                    if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                        cal.set(eventYear + 1, Calendar.JANUARY, 1);
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                    }
+
+                    return sdf_DDMMYYYY.format(cal.getTime());
+                }
             }
 
             //NWW[+-OFFSET].ММ.ГГГГ

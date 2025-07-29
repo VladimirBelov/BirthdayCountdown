@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.07.2025, 15:59
+ *  * Created by Vladimir Belov on 30.07.2025, 01:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.07.2025, 15:22
+ *  * Last modified 30.07.2025, 01:13
  *
  */
 
@@ -244,6 +244,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             //Размер
             views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
                     ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+
+            if (eventListView.size() < position + 1) return views;
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
