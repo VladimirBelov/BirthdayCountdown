@@ -1,0 +1,35 @@
+/*
+ * *
+ *  * Created by Vladimir Belov on 02.08.2025, 11:20
+ *  * Copyright (c) 2018 - 2025. All rights reserved.
+ *  * Last modified 01.08.2025, 11:50
+ *
+ */
+//file:noinspection HardCodedStringLiteral
+
+buildscript {
+    
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.13.0-alpha03'
+        //https://developer.android.com/build/releases/gradle-plugin
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                options.compilerArgs << "-Xlint:unchecked"
+                //options.compilerArgs << "-Xlint:deprecation"
+            }
+        }
+    }
+}
