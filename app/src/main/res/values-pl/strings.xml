@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 10:04
+  ~  * Last modified 01.08.2025, 23:05
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Dołącz do innego kontaktu…</string>
     <string name="menu_context_open_url">Otwórz link internetowy</string>
     <string name="menu_context_share">Udostępnij wydarzenie…</string>
+    <string name="menu_context_share_fact">Udostępnij fakt…</string>
     <string name="menu_context_share_as_image">jako obraz</string>
     <string name="menu_context_share_as_text">jako tekst</string>
     <string name="menu_context_xDaysEvent_add">Dodaj licznik dni…</string>
@@ -66,6 +67,7 @@
     <string name="menu_context_favorites_remove">Usuń z ulubionych</string>
     <string name="menu_context_edit_local_event">Edytuj wydarzenie</string>
     <string name="menu_context_dial">Wybierz</string>
+    <string name="menu_context_prev">Poprzedni fakt</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_help_events_calendar">Wydarzenia w kalendarzu</string>
@@ -1000,6 +1002,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
         <item>Dni tygodnia</item>
         <item>Dni przed i po miesiącu</item>
         <item>Marginesy zewnętrzne</item>
+        <item>Podświetl dzień tygodnia</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

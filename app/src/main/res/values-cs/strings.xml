@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 10:07
+  ~  * Last modified 01.08.2025, 23:04
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Odkaz na jiný kontakt…</string>
     <string name="menu_context_open_url">Otevřít webový odkaz</string>
     <string name="menu_context_share">Sdílet událost…</string>
+    <string name="menu_context_share_fact">Sdílet fakt…</string>
     <string name="menu_context_share_as_image">jako obrázek</string>
     <string name="menu_context_share_as_text">jako text</string>
     <string name="menu_context_xDaysEvent_add">Přidat počítadlo dnů…</string>
@@ -66,6 +67,7 @@
     <string name="menu_context_favorites_remove">Odebrat z oblíbených</string>
     <string name="menu_context_edit_local_event">Upravit událost</string>
     <string name="menu_context_dial">Vytočit</string>
+    <string name="menu_context_prev">Předchozí fakt</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help" tools:ignore="MissingTranslation">Reference</string>
     <string name="menu_help_events_calendar" tools:ignore="MissingTranslation">Události kalendáře</string>
@@ -1000,6 +1002,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
         <item>Štítky pracovních dnů</item>
         <item>Dny před a po měsíci</item>
         <item>Vnější okraje</item>
+        <item>Zvýraznit den v týdnu</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

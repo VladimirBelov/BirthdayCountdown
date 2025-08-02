@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.07.2025, 23:38
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.07.2025, 23:23
+  ~  * Last modified 01.08.2025, 22:28
   ~  */
   -->
 
@@ -1002,6 +1002,7 @@ Long click on item to select color"</string>
         <item>Weekdays labels</item>
         <item>Days before and after month</item>
         <item>External side margins</item>
+        <item>Highlight day of week</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">
@@ -2440,12 +2441,14 @@ Long click on item to select color"</string>
     <string name="widget_config_elements_weeks" translatable="false">2</string>
     <string name="widget_config_elements_margins" translatable="false">3</string>
     <string name="widget_config_elements_fill_days" translatable="false">5</string>
+    <string name="widget_config_elements_highlight_weekday" translatable="false">6</string>
     <string-array name="widget_config_elements_values" translatable="false">
         <item>@string/widget_config_elements_month</item>
         <item>@string/widget_config_elements_year</item>
         <item>@string/widget_config_elements_weeks</item>
         <item>@string/widget_config_elements_fill_days</item>
         <item>@string/widget_config_elements_margins</item>
+        <item>@string/widget_config_elements_highlight_weekday</item>
     </string-array>
 
     <string name="previous_month_arrow" translatable="false">˄</string>

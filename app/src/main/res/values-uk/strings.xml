@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 10:03
+  ~  * Last modified 01.08.2025, 23:07
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Посилання на інший контакт…</string>
     <string name="menu_context_open_url">Відкрити веб-посилання</string>
     <string name="menu_context_share">Поділіться подією…</string>
+    <string name="menu_context_share_fact">Поділитися фактом…</string>
     <string name="menu_context_share_as_image">як зображення</string>
     <string name="menu_context_share_as_text">як текст</string>
     <string name="menu_context_xDaysEvent_add">Додати лічильник днів…</string>
@@ -66,6 +67,7 @@
     <string name="menu_context_favorites_remove">Видалити з вибраного</string>
     <string name="menu_context_edit_local_event">Редагувати подію</string>
     <string name="menu_context_dial">Набрати</string>
+    <string name="menu_context_prev">Попередній факт</string>
     <string name="menu_ok">Добре</string>
     <string name="menu_help">Довідка</string>
     <string name="menu_help_events_calendar">Події календаря</string>
@@ -1000,6 +1002,7 @@
         <item>Мітки днів тижня</item>
         <item>Дні до і після місяця</item>
         <item>Зовнішні бічні поля</item>
+        <item>Виділіть день тижня</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

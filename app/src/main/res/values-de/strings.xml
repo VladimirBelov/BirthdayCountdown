@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 10:22
+  ~  * Last modified 01.08.2025, 23:04
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Link zu anderen Kontakt…</string>
     <string name="menu_context_open_url">Weblink öffnen</string>
     <string name="menu_context_share">Ereignis teilen…</string>
+    <string name="menu_context_share_fact">Fakt teilen…</string>
     <string name="menu_context_share_as_image">als Bild</string>
     <string name="menu_context_share_as_text">als Text</string>
     <string name="menu_context_xDaysEvent_add">Tageszähler hinzufügen…</string>
@@ -66,6 +67,7 @@
     <string name="menu_context_favorites_remove">Aus Favoriten entfernen</string>
     <string name="menu_context_edit_local_event">Ereignis bearbeiten</string>
     <string name="menu_context_dial">Wählen</string>
+    <string name="menu_context_prev">Vorherige Tatsache</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
@@ -1000,6 +1002,7 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
         <item>Wochentagsbeschriftungen</item>
         <item>Tage vor und nach dem Monat</item>
         <item>Außenseitenränder</item>
+        <item>Wochentag hervorheben</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 10:04
+  ~  * Last modified 01.08.2025, 23:05
   ~  */
   -->
 
@@ -57,6 +57,7 @@
     <string name="menu_context_remerge_event">Attacher à un autre contact…</string>
     <string name="menu_context_open_url">Ouvrir le lien Web</string>
     <string name="menu_context_share">"Partager l'événement…"</string>
+    <string name="menu_context_share_fact">Partager des faits…</string>
     <string name="menu_context_share_as_image">comme une image</string>
     <string name="menu_context_share_as_text">en tant que texte</string>
     <string name="menu_context_xDaysEvent_add">Ajouter un compteur de jours…</string>
@@ -66,6 +67,7 @@
     <string name="menu_context_favorites_remove">Supprimer des favoris</string>
     <string name="menu_context_edit_local_event">"Modifier l'événement"</string>
     <string name="menu_context_dial">Composer</string>
+    <string name="menu_context_prev">Fait précédent</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Aide</string>
     <string name="menu_help_events_calendar">Événements du calendrier</string>
@@ -1000,6 +1002,7 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
         <item>Étiquettes des jours de la semaine</item>
         <item>Jours avant et après le mois</item>
         <item>Marges latérales externes</item>
+        <item>Mettre en évidence le jour de la semaine</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

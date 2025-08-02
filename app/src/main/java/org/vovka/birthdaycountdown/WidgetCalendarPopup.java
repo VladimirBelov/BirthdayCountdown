@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 02.08.2025, 09:37
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:52
+ *  * Last modified 01.08.2025, 23:24
  *
  */
 
@@ -24,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.CalendarContract;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;

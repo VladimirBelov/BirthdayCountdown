@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 02.08.2025, 09:37
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.07.2025, 16:31
+ *  * Last modified 01.08.2025, 22:45
  *
  */
 
@@ -342,6 +342,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
+            boolean highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
             enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
 
             //Источники событий и цвета по умолчанию
@@ -494,13 +495,16 @@ public class WidgetCalendar extends AppWidgetProvider {
             cal.setMinimalDaysInFirstWeek(1);
             DateFormatSymbols dfs = DateFormatSymbols.getInstance();
             String[] weekdays;
+            boolean weekdaysFromSunday;
             if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) {
                 weekdays = dfs.getShortWeekdays();
+                weekdaysFromSunday = true;
             } else { //Воскресенье - в конец списка
                 List<String> listWeekDays = new ArrayList<>(Arrays.asList(dfs.getShortWeekdays()));
                 String daySun = listWeekDays.remove(1);
                 listWeekDays.add(daySun);
                 weekdays = listWeekDays.toArray(new String[0]);
+                weekdaysFromSunday = false;
             }
             //Убираем точки (pt, fr)
             for (int i = 0, weekdaysLength = weekdays.length; i < weekdaysLength; i++) {
@@ -512,6 +516,8 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             int today = cal.get(Calendar.DAY_OF_YEAR);
             int todayYear = cal.get(Calendar.YEAR);
+            int todayMonth = cal.get(Calendar.MONTH);
+            int todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
             rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
@@ -597,6 +603,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
                     cal.add(Calendar.MONTH, prefMonthsShift);
                     final int thisMonth = cal.get(Calendar.MONTH);
+                    final int thisYear = cal.get(Calendar.YEAR);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
 
                     //Шапка
@@ -643,9 +650,18 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //Дни недели
                     if (enabledWeeks) {
                         RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weekdays);
+
+                        boolean inMonth = thisMonth == todayMonth;
+                        boolean inYear = thisYear == todayYear;
+                        int todayWeekdayFromSunday = weekdaysFromSunday ? todayWeekday : (todayWeekday == Calendar.SUNDAY ? 7 : todayWeekday - 1);
+
                         for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
                             RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
-                            dayRv.setTextColor(android.R.id.text1, colorWeeks);
+                            if (highlightDayOfWeek && inYear && inMonth && todayWeekdayFromSunday == day) {
+                                dayRv.setTextColor(android.R.id.text1, colorToday);
+                            } else {
+                                dayRv.setTextColor(android.R.id.text1, colorWeeks);
+                            }
                             dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
                             dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Weekdays);
                             headerRowRv.addView(R.id.row_container, dayRv);

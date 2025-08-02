@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.07.2025, 23:38
+  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 28.07.2025, 23:23
+  ~  * Last modified 01.08.2025, 22:33
   ~  */
   -->
 
@@ -1002,6 +1002,7 @@
         <item>Дни недели</item>
         <item>Дни до и после месяца</item>
         <item>Внешние боковые отступы</item>
+        <item>Выделить день недели</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">
