@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 23:05
+  ~  * Last modified 04.08.2025, 21:33
   ~  */
   -->
 
@@ -950,7 +950,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="widget_config_month_color_common_label">Color de días comunes</string>
     <string name="widget_config_month_color_common_description">Color de días comunes</string>
     <string name="widget_config_month_color_today_label">Color de hoy</string>
-    <string name="widget_config_month_color_today_description">Color de la fecha de hoy (para días comunes)</string>
+    <string name="widget_config_month_color_today_description">Color de fondo para hoy (para días comunes)</string>
     <string name="widget_config_month_color_header_label">Color del encabezado del mes</string>
     <string name="widget_config_month_color_header_description">Color del título del mes</string>
     <string name="widget_config_month_color_header_back_label">Fondo del encabezado</string>

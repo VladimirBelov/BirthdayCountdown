@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 22:28
+  ~  * Last modified 04.08.2025, 21:32
   ~  */
   -->
 
@@ -950,7 +950,7 @@ Long click on item to select color"</string>
     <string name="widget_config_month_color_common_label">Common days color</string>
     <string name="widget_config_month_color_common_description">Color of common days</string>
     <string name="widget_config_month_color_today_label">Today color</string>
-    <string name="widget_config_month_color_today_description">Color of today date (for common days)</string>
+    <string name="widget_config_month_color_today_description">Background color for today (for common days)</string>
     <string name="widget_config_month_color_header_label">Month header color</string>
     <string name="widget_config_month_color_header_description">Color of month title</string>
     <string name="widget_config_month_color_header_back_label">Header background</string>

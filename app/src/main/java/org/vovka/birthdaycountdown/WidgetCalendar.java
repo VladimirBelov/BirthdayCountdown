@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.08.2025, 09:37
+ *  * Created by Vladimir Belov on 04.08.2025, 22:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.08.2025, 22:45
+ *  * Last modified 04.08.2025, 22:39
  *
  */
 
@@ -658,7 +658,27 @@ public class WidgetCalendar extends AppWidgetProvider {
                         for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
                             RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
                             if (highlightDayOfWeek && inYear && inMonth && todayWeekdayFromSunday == day) {
-                                dayRv.setTextColor(android.R.id.text1, colorToday);
+                                //Подсветка дня недели
+                                int sundayPosition =  weekdaysFromSunday ? 1 : 7;
+                                int saturdayPosition =  weekdaysFromSunday ? 7 : 6;
+                                @ColorInt int color = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorToday), Color.green(colorToday), Color.blue(colorToday));
+                                if (day == sundayPosition) {
+                                    Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
+                                    if (colorFromPref != null) {
+                                        color = colorFromPref;
+                                    }
+                                } else if (day == saturdayPosition) {
+                                    Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
+                                    if (colorFromPref != null) {
+                                        color = colorFromPref;
+                                    }
+                                }
+                                dayRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
+                                if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
+                                    dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
+                                } else {
+                                    dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
+                                }
                             } else {
                                 dayRv.setTextColor(android.R.id.text1, colorWeeks);
                             }

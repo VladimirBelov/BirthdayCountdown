@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 23:05
+  ~  * Last modified 04.08.2025, 21:34
   ~  */
   -->
 
@@ -950,7 +950,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="widget_config_month_color_common_label">Zwykłe dni</string>
     <string name="widget_config_month_color_common_description">Kolor typowych dni</string>
     <string name="widget_config_month_color_today_label">Dzisiaj</string>
-    <string name="widget_config_month_color_today_description">Kolor daty na dzisiaj (dla zwykłych dni)</string>
+    <string name="widget_config_month_color_today_description">Kolor tła na dziś (dla zwykłych dni)</string>
     <string name="widget_config_month_color_header_label">Kolor nagłówka</string>
     <string name="widget_config_month_color_header_description">Kolor tytułu miesiąca</string>
     <string name="widget_config_month_color_header_back_label">Tło nagłówka</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 23:05
+  ~  * Last modified 04.08.2025, 21:33
   ~  */
   -->
 
@@ -950,7 +950,7 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="widget_config_month_color_common_label">Couleur des jours communs</string>
     <string name="widget_config_month_color_common_description">Couleur des jours communs</string>
     <string name="widget_config_month_color_today_label">Couleur du jour</string>
-    <string name="widget_config_month_color_today_description">"Couleur de la date d'aujourd'hui (pour les jours courants)"</string>
+    <string name="widget_config_month_color_today_description">"Couleur de fond pour aujourd'hui (pour les jours courants)"</string>
     <string name="widget_config_month_color_header_label">"Couleur de l'en-tête du mois"</string>
     <string name="widget_config_month_color_header_description">Couleur du titre du mois</string>
     <string name="widget_config_month_color_header_back_label">"Arrière-plan de l'en-tête"</string>

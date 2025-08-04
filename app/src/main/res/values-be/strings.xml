@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 23:04
+  ~  * Last modified 04.08.2025, 21:32
   ~  */
   -->
 
@@ -950,7 +950,7 @@
     <string name="widget_config_month_color_common_label">Звычайныя дні</string>
     <string name="widget_config_month_color_common_description">Колер звычайных дзён</string>
     <string name="widget_config_month_color_today_label">Сёння</string>
-    <string name="widget_config_month_color_today_description">Колер даты для сёння (для звычайных дзён)</string>
+    <string name="widget_config_month_color_today_description">Колер фону на сёння (для звычайных дзён)</string>
     <string name="widget_config_month_color_header_label">Колер загалоўка</string>
     <string name="widget_config_month_color_header_description">Колер наймення месяца</string>
     <string name="widget_config_month_color_header_back_label">Фон загалоўка</string>

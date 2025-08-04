@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 22:33
+  ~  * Last modified 04.08.2025, 21:32
   ~  */
   -->
 
@@ -950,7 +950,7 @@
     <string name="widget_config_month_color_common_label">Обычные дни</string>
     <string name="widget_config_month_color_common_description">Цвет обычных дней</string>
     <string name="widget_config_month_color_today_label">Сегодня</string>
-    <string name="widget_config_month_color_today_description">Цвет даты для сегодня (для обычных дней)</string>
+    <string name="widget_config_month_color_today_description">Цвет фона для сегодня (для обычных дней)</string>
     <string name="widget_config_month_color_header_label">Цвет заголовка</string>
     <string name="widget_config_month_color_header_description">Цвет наименования месяца</string>
     <string name="widget_config_month_color_header_back_label">Фон заголовка</string>

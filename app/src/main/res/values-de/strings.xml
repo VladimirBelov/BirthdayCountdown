@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 09:37
+  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.08.2025, 23:04
+  ~  * Last modified 04.08.2025, 21:32
   ~  */
   -->
 
@@ -950,7 +950,7 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="widget_config_month_color_common_label">Gemeinsame Tagesfarbe</string>
     <string name="widget_config_month_color_common_description">Farbe der allgemeinen Tage</string>
     <string name="widget_config_month_color_today_label">Heute Farbe</string>
-    <string name="widget_config_month_color_today_description">Farbe des heutigen Datums (für gewöhnliche Tage)</string>
+    <string name="widget_config_month_color_today_description">Hintergrundfarbe für heute (für gewöhnliche Tage)</string>
     <string name="widget_config_month_color_header_label">Monatskopfzeilenfarbe</string>
     <string name="widget_config_month_color_header_description">Farbe des Monatstitels</string>
     <string name="widget_config_month_color_header_back_label">Header-Hintergrund</string>
