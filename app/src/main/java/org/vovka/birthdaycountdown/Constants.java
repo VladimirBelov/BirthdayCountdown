@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.07.2025, 01:18
+ *  * Created by Vladimir Belov on 06.08.2025, 12:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.07.2025, 01:08
+ *  * Last modified 06.08.2025, 11:15
  *
  */
 
@@ -298,6 +298,7 @@ public final class Constants {
     static final int WIDGET_TEXT_SIZE_BIG = 18;
     static final int WIDGET_EVENTS_MAX = 7;
     static final int WIDGET_CALENDAR_OUT_MONTH_TINT = (int) (255 * 0.4);
+    static final int WIDGET_CALENDAR_DAY_OF_WEEK_TINT = (int) (255 * 0.6);
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 30000;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.08.2025, 22:39
+ *  * Created by Vladimir Belov on 06.08.2025, 12:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.08.2025, 22:39
+ *  * Last modified 06.08.2025, 11:15
  *
  */
 
@@ -661,7 +661,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 //Подсветка дня недели
                                 int sundayPosition =  weekdaysFromSunday ? 1 : 7;
                                 int saturdayPosition =  weekdaysFromSunday ? 7 : 6;
-                                @ColorInt int color = Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorToday), Color.green(colorToday), Color.blue(colorToday));
+                                @ColorInt int color = Color.argb(Constants.WIDGET_CALENDAR_DAY_OF_WEEK_TINT, Color.red(colorToday), Color.green(colorToday), Color.blue(colorToday));
                                 if (day == sundayPosition) {
                                     Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
                                     if (colorFromPref != null) {

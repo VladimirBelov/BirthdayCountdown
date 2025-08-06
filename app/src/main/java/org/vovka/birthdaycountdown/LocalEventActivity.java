@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.06.2025, 01:34
+ *  * Created by Vladimir Belov on 06.08.2025, 12:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:01
+ *  * Last modified 06.08.2025, 11:27
  *
  */
 
@@ -168,6 +168,9 @@ public class LocalEventActivity extends Activity {
                 if (yearSpinnerId!=0){
                     spinnerYear = datePicker.findViewById(yearSpinnerId);
                 }
+                Calendar minDate = Calendar.getInstance();
+                minDate.set(1, Calendar.JANUARY, 1); //java.util.Calendar не поддерживает годы до нашей эры (0 или отрицательные годы)
+                datePicker.setMinDate(minDate.getTimeInMillis());
                 datePicker.init(yearToChange.get(), monthToChange.get(), dayToChange.get(), (
                                 view, year, monthOfYear, dayOfMonth) -> {
                             yearToChange.set(year);
