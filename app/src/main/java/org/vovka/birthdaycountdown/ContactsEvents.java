@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.07.2025, 01:18
+ *  * Created by Vladimir Belov on 08.08.2025, 00:48
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.07.2025, 01:08
+ *  * Last modified 08.08.2025, 00:28
  *
  */
 
@@ -3983,6 +3983,7 @@ public class ContactsEvents {
                 //https://stackoverflow.com/questions/24604346/issue-opening-document-using-flag-grant-write-uri-permission-intent-android
                 final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
                 intentEdit.addFlags(flags);
+                intentEdit.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     for (ResolveInfo resolveInfo : context.getPackageManager().queryIntentActivities(intentEdit, PackageManager.MATCH_ALL)) {
@@ -3998,6 +3999,7 @@ public class ContactsEvents {
                 try {
                     final int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
                     intentView.addFlags(flags);
+                    intentEdit.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intentView);
                 } catch (ActivityNotFoundException e) { /**/ }
             } else {

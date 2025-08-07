@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.08.2025, 11:17
+  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.08.2025, 11:06
+  ~  * Last modified 08.08.2025, 00:10
   ~  */
   -->
 
@@ -13,7 +13,7 @@
 
         <item>#1.8.7</item>
         <item>Unterstützung für Geburtstage und Feiertage aus 📅 iCalendar-Dateien (ICS) hinzugefügt</item>
-        <item>Neuer Ereignistyp „Anderes Kontaktereignis“. Der Ereignistyp \"Anderes Ereignis\" versucht nicht mehr, eine Verbindung mit einem Kontakt aus dem Adressbuch herzustellen (verhält sich wie \"Feiertag\").</item>
+        <item>Neuer Ereignistyp \"Anderes Kontaktereignis\". Der Ereignistyp \"Anderes Ereignis\" versucht nicht mehr, eine Verbindung mit einem Kontakt aus dem Adressbuch herzustellen (verhält sich wie \"Feiertag\")</item>
         <item>Reaktion auf Drücken im Foto-Widget (+ Menü mit Aktionen)</item>
         <item>Im Kalender-Widget können jetzt separate Größen für Monat, Wochentage und Tage festlegen und auch den aktuellen Wochentag hervorheben</item>
         <item>\"Kontaktfoto\", \"Aktuelles Alter\" und \"Fett\" wurden dem Listen-Widget hinzugefügt</item>

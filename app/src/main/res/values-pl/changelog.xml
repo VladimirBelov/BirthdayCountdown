@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
+  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 11:18
+  ~  * Last modified 08.08.2025, 00:18
   ~  */
   -->
 
@@ -13,10 +13,10 @@
 
         <item>#1.8.7</item>
         <item>Dodano obsługę urodzin i świąt z plików iCalendar (ics)</item>
-        <item>Nowy typ zdarzenia „Inne zdarzenie kontaktu”. Typ zdarzenia „Inne zdarzenie” nie próbuje już znaleźć połączenia z kontaktem z książki adresowej (zachowuje się jak „Święto”)</item>
+        <item>Nowy typ zdarzenia \"Inne zdarzenie kontaktu\". Typ zdarzenia \"Inne zdarzenie\" nie próbuje już znaleźć połączenia z kontaktem z książki adresowej (zachowuje się jak \"Święto\")</item>
         <item>Reakcja na naciśnięcie w widżecie zdjęcia (+ menu z akcjami)</item>
         <item>W widżecie kalendarza można teraz ustawić oddzielne rozmiary dla miesiąca, dni tygodnia i dni</item>
-        <item>Do widżetu listy dodano „Zdjęcie kontaktu”, „Aktualny wiek” i „Pogrubienie”</item>
+        <item>Do widżetu listy dodano \"Zdjęcie kontaktu\", \"Aktualny wiek\" i \"Pogrubienie\"</item>
         <item>Wybór zdjęcia dla wydarzenia lokalnego (zdjęcie lokalne lub z karty kontaktu). Rozmiar zdjęcia lokalnego jest ustawiany w ustawieniu dodatkowym</item>
         <item>Ustawianie bieżącej rocznicy ślubu na ogólnej liście rocznic (długie dotknięcie wydarzenia – wszystkie rocznice ślubu)</item>
         <item>Optymalizacja dla Androida 15 i 16</item>
