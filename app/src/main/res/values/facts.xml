@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.08.2025, 20:32
+  ~  * Created by Vladimir Belov on 08.08.2025, 09:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.08.2025, 20:01
+  ~  * Last modified 08.08.2025, 09:51
   ~  */
   -->
 
@@ -201,7 +201,8 @@
 Отношения - это то, что должно спасать вас в тяжёлые дни, а не мучить ещё больше
 На земле бесконечное множество красивых мест, но самое лучшее то, где тебя просто ждут (Александр Розенбаум)
 Понравились бы вы себе, если встретили себя в своей жизни? И дружили бы с самим собой?
-Все начинается с мыслей, создайте счастье в своей голове, и оно обязательно станет реальностью (Марк Аврелий)Быть человеком — это значит чувствовать, что ты за все в ответе (Антуан де Сент-Экзюпери)
+Всё начинается с мыслей, создайте счастье в своей голове, и оно обязательно станет реальностью (Марк Аврелий)
+Быть человеком — это значит чувствовать, что ты за все в ответе (Антуан де Сент-Экзюпери)
 Главное — идти. Дорога не кончается, а цель — всегда обман зрения странника: он поднялся на вершину, но ему уже видится другая… (Антуан де Сент-Экзюпери)
 Если путник, взбираясь на гору, слишком занят каждым шагом и забывает сверяться с путеводной звездой, он рискует ее потерять и сбиться с пути (Антуан де Сент-Экзюпери)
 Если ты умеешь правильно судить себя, значит, ты поистине мудр (Антуан де Сент-Экзюпери)
@@ -284,7 +285,8 @@
 Мнение — оно как транспорт: у кого нет собственного, пользуется общественным
 Не трать время, доказывая свою ценность тем, кто её не видит. Сконцентрируйся на тех, кто действительно слушает
 Тишина часто говорит громче слов. Прежде чем ответить — подумай, прежде чем судить — пойми
-Перед тем как мстить, вырой две могилы (Конфуций)"</item>
+Перед тем как мстить, вырой две могилы (Конфуций)
+Благими делами вымощена дорога в рай. А благими намерениями (не воплощенными в дела) - вымощена дорога в ад"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -574,6 +576,7 @@ The price of inaction is far greater than the cost of a mistake (Meg Whitman)
 The purpose of our lives is to be happy (Dalai Lama)
 The question isn't who is going to let me; it’s who is going to stop me (Ayn Rand)
 The real test is not whether you avoid this failure, because you won't. It's whether you let it harden or shame you into inaction, or whether you learn from it; whether you choose to persevere (Barack Obama)
+The road to hell is paved with good intentions (Bernard of Clairvaux)
 The road to success and the road to failure are almost exactly the same (Colin R. Davis)
 The secret of success is to do the common thing uncommonly well (John D. Rockefeller Jr.)
 The trouble is, you think you have time (Jack Kornfield)
