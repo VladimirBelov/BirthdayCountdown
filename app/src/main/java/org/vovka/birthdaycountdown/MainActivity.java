@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 02.09.2025, 01:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:52
+ *  * Last modified 02.09.2025, 01:28
  *
  */
 
@@ -2040,13 +2040,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             AlertDialog clearDialog = clearDialogBuilder.create();
 
-                            try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                                clearDialog.setOnShowListener(arg0 -> {
-                                    clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                    clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                });
+                            clearDialog.setOnShowListener(arg0 -> {
+                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                                clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                                 ta.recycle();
-                            }
+                            });
 
                             clearDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             clearDialog.show();
@@ -2071,13 +2070,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                             AlertDialog confirm_dialog = confirm.create();
 
-                            try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                                confirm_dialog.setOnShowListener(arg0 -> {
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                    confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                });
+                            confirm_dialog.setOnShowListener(arg0 -> {
+                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                                 ta.recycle();
-                            }
+                            });
 
                             confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             confirm_dialog.show();
