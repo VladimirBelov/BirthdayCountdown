@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.08.2025, 00:48
+ *  * Created by Vladimir Belov on 01.09.2025, 16:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.08.2025, 00:31
+ *  * Last modified 01.09.2025, 16:49
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -85,7 +85,7 @@ android {
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 36 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.8.7"
+            versionName "1.8.8"
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
